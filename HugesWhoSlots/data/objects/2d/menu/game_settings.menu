@@ -1,0 +1,96 @@
+<menu>
+
+    <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
+    
+    <scriptLst>
+        <script onTransIn="Menu_TransIn"/>
+        <script onTransOut="Menu_TransOut"/>
+    </scriptLst>
+
+    <staticMenuControls>
+
+        <!-- Settings Label -->
+        <control controlType="label" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/menu_label.ctrl"/>
+            <position x="0" y="165" z="0"/>
+            <fontStringLst>
+                <string text="Game|Settings"/>
+            </fontStringLst>
+        </control>
+
+    </staticMenuControls>
+
+    <mouseOnlyControls>
+
+        <!-- mouse-only close Button -->
+        <control name="close_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/close_button.ctrl"/>
+            <position x="150" y="205" z="0"/>
+            <fontStringLst>
+                <string text="x"/>
+            </fontStringLst>
+            <action actionType="close"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+
+        <!-- mouse-only back Button -->
+        <control name="back_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/back_button.ctrl"/>
+            <position x="115" y="205" z="0"/>
+            <fontStringLst>
+                <string text="^"/>
+            </fontStringLst>
+            <action actionType="back"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+    
+    </mouseOnlyControls>
+  
+    <menuControls>
+        
+        <!-- Lobby Music Check Box -->
+        <control name="lobby_music_check_box" controlType="check_box" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/check_box_330x60.ctrl"/>
+            <position x="0" y="65" z="0"/>
+            <fontStringLst>
+                <string text="Lobby Music"/>
+                <string text="x"/>
+            </fontStringLst>
+            <navigate up="stop_sounds_check_box" down="spin_music_check_box"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+        
+        <!-- Spin Music Check Box -->
+        <control name="spin_music_check_box" controlType="check_box" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/check_box_330x60.ctrl"/>
+            <position x="0" y="-5" z="0"/>
+            <fontStringLst>
+                <string text="Spin Music"/>
+                <string text="x"/>
+            </fontStringLst>
+            <navigate up="stop_sounds_check_box" down="lobby_music_check_box"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+        
+        <!-- Stop Sounds Check Box -->
+        <control name="stop_sounds_check_box" controlType="check_box" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/check_box_330x60.ctrl"/>
+            <position x="0" y="-75" z="0"/>
+            <fontStringLst>
+                <string text="Stop Sounds"/>
+                <string text="x"/>
+            </fontStringLst>
+            <navigate up="spin_music_check_box" down="lobby_music_check_box"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+
+    </menuControls>
+
+    <spriteList>
+
+        <sprite objectName="game_settings_menu_bg"/>
+    
+    </spriteList>
+  
+</menu>
+

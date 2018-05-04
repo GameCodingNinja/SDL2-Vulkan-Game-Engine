@@ -1,0 +1,8 @@
+1) Select the UV Editing Screen layout
+2) Select the object to be textured with the right mouse button.
+3) From the Shading/UV's tab, select the "Unwrap" menu and select "Unwrap" again. You now have UV's and can edit them.
+4) Switch back to the default sceeen layout and create a material and name it. There might already be one there by default. The selected material is linked to the texture tab. Load a texture and it can be set as defuse (color), normal, etc. One material can have any number of textures. All textures loaded are associated with the selected material.
+5) In edit mode, select the face and apply the material.
+
+done.
+

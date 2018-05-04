@@ -1,0 +1,62 @@
+
+/************************************************************************
+*    FILE NAME:       testScript.ang
+*
+*    DESCRIPTION:     Script testing
+************************************************************************/
+
+class MyClass
+{
+    void Execute()
+    {
+        uint value = 0;
+        uint test;
+        uint maxValue = 1000000;
+
+        do
+        {
+            test = ++value;
+
+            do
+            { 
+                if ((test & 1) == 0)
+                    test /= 2;
+                //if( (test % 2) == 0 )
+                //    test /= 2;
+                else
+                    test = (test * 3) + 1;
+            }
+            while (test > 1);
+        }
+        while ((test > 0) && (value < maxValue));
+        
+        Print("Final value: " + value);
+    }
+};
+
+/************************************************************************
+*    desc:  Test code
+************************************************************************/
+void Script_Run()
+{
+    Print("Test Started.");
+    
+    HighResTimer.timerStart();
+    
+    //MyClass myClass;
+    //myClass.Execute();
+    double setPi;
+    
+    PI = 0;
+    
+    for( int i = 0; i < 100000000; ++i )
+    {
+        setPi = PI;
+        setPi = PI / 7;
+        setPi = PI * 7;
+    }
+    
+    Print("Test Completed: " + HighResTimer.timerStop());
+}
+
+

@@ -1,0 +1,49 @@
+<menu>
+
+    <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
+    
+    <scriptLst>
+        <script onTransIn="Menu_TransIn"/>
+        <script onTransOut="Menu_TransOut"/>
+    </scriptLst>
+
+    <staticMenuControls>
+
+        <!-- Settings Label -->
+        <control controlType="label" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/menu_label.ctrl"/>
+            <position x="-10" y="180" z="0"/>
+            <fontStringLst>
+                <string text="Settings"/>
+            </fontStringLst>
+        </control>
+
+    </staticMenuControls>
+
+    <menuControls>
+
+        <control name="done_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_150x75.ctrl"/>
+            <position x="0" y="0" z="0"/>
+            <fontStringLst>
+                <string text="Done"/>
+            </fontStringLst>
+            <action actionType="back"/>
+            <!--<navigate up="done_btn2" down="done_btn2"/>-->
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+
+    </menuControls>
+
+    <spriteList>
+
+        <sprite objectName="settings_menu_bg">
+            <script>
+                <transition in="Menu_TransIn" out="Menu_TransOut"/>
+            </script>
+        </sprite>
+
+    </spriteList>
+
+</menu>
+

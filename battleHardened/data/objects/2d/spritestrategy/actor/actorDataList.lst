@@ -1,0 +1,50 @@
+<spriteList defaultGroup="(actor)">
+    
+    <!-- Example actor
+    <actor name="actor_name" playerActor="true" aiName="ai_name" file="data/objects/2d/actor/player_ship.act">
+        <collision group="1" mask="2" radiusScaler="0.75"/>
+        <position x="0" y="0" z="0"/>
+        <rotation x="0" y="0" z="0"/>
+        <scale x="1" y="1" z="1"/>
+    </actor> -->
+
+    <actor2d name="player_ship" playerActor="true" aiName="player_ship">
+        <collision group="1" mask="2" radiusScaler="0.75"/>
+        <position x="-500" y="0" z="0"/>
+        <spriteList>
+            <sprite name="player_fire_tail" objectName="player_fire_tail">
+                <position x="-190" y="4" z="0"/>
+            </sprite>
+
+            <sprite objectName="player_ship"/>
+
+            <sprite name="ship_gun" objectName="ship_gun">
+                <centerPos x="35" y="0" z="0"/>
+                <position x="20" y="0" z="0"/>
+            </sprite>
+        </spriteList>
+    </actor2d>
+    
+    <!--<actor name="player_projectile" playerActor="true" aiName="player_projectile">
+        <collision group="1" mask="2" radiusScaler="0.75"/>
+        <spriteList>
+            <sprite objectName="player_projectile"/>
+        </spriteList>
+    </actor>-->
+    
+    <sprite2d name="player_projectile" objectName="player_projectile" aiName="player_projectile"/>
+    
+    <sprite2d name="enemy_ship" objectName="enemy_ship" aiName="enemy_ship">
+        <position x="500" y="0" z="0"/>
+    </sprite2d>
+    
+    <!--<actor name="enemy_ship" aiName="enemy_ship">
+        <collision group="2" mask="1" radiusScaler="0.75"/>
+        <position x="500" y="0" z="0"/>
+        <spriteList>
+            <sprite objectName="enemy_ship"/>
+        </spriteList>
+    </actor>-->
+ 
+</spriteList>
+

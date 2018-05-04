@@ -1,0 +1,252 @@
+<objectDataList2D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <!-- Resolution swap only used for mobile devices - list from lowest to highest resolution -->
+            <graphicResSwap>
+                <res heightOrLess="1100" defaultUniformScale="1.5" ext="_720"/>
+            </graphicResSwap>
+            <texture file="data/textures/bigPayBack/basegame_spriteSheet.png" compressed="false"/>
+            <mesh genType="sprite_sheet">
+                <spriteSheet file="data/objects/2d/mesh/bigPayBack/basegame.xml"/>
+            </mesh>
+            <shader id="shader_2d_spriteSheet"/>
+        </visual>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+        
+        <object name="symb_logo">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_logo"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+
+        <object name="symb_gold_record">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_gold_record"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_stack_of_money">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_stack_of_money"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_diamond_ring">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_diamond_ring"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="sym_limo">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="sym_limo"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_piano_keys">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_piano_keys"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_microphone">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_microphone"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_music_note">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_music_note"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_t">
+            <visual>
+                <texture file="data/textures/bigPayBack/symbol_t_spriteSheet.png"/>
+                <mesh>
+                    <spriteSheet file="data/objects/2d/mesh/bigPayBack/symbol_t.xml">
+                        <glyph id="T_00000"/>
+                        <glyph id="T_00001"/>
+                        <glyph id="T_00002"/>
+                        <glyph id="T_00003"/>
+                        <glyph id="T_00004"/>
+                        <glyph id="T_00005"/>
+                        <glyph id="T_00006"/>
+                        <glyph id="T_00007"/>
+                        <glyph id="T_00008"/>
+                        <glyph id="T_00009"/>
+                        <glyph id="T_00010"/>
+                        <glyph id="T_00011"/>
+                        <glyph id="T_00012"/>
+                        <glyph id="T_00013"/>
+                        <glyph id="T_00014"/>
+                        <glyph id="T_00015"/>
+                        <glyph id="T_00016"/>
+                        <glyph id="T_00017"/>
+                        <glyph id="T_00018"/>
+                        <glyph id="T_00019"/>
+                        <glyph id="T_00020"/>
+                        <glyph id="T_00021"/>
+                        <glyph id="T_00022"/>
+                        <glyph id="T_00023"/>
+                        <glyph id="T_00024"/>
+                        <glyph id="T_00025"/>
+                        <glyph id="T_00026"/>
+                        <glyph id="T_00027"/>
+                        <glyph id="T_00028"/>
+                        <glyph id="T_00029"/>
+                        <glyph id="T_00030"/>
+                        <glyph id="T_00031"/>
+                        <glyph id="T_00032"/>
+                        <glyph id="T_00033"/>
+                        <glyph id="T_00034"/>
+                        <glyph id="T_00000"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_b">
+            <visual>
+                <texture file="data/textures/bigPayBack/symbol_b_spriteSheet.png"/>
+                <mesh>
+                    <spriteSheet file="data/objects/2d/mesh/bigPayBack/symbol_b.xml">
+                        <glyph id="B_00000"/>
+                        <glyph id="B_00001"/>
+                        <glyph id="B_00002"/>
+                        <glyph id="B_00003"/>
+                        <glyph id="B_00004"/>
+                        <glyph id="B_00005"/>
+                        <glyph id="B_00006"/>
+                        <glyph id="B_00007"/>
+                        <glyph id="B_00008"/>
+                        <glyph id="B_00009"/>
+                        <glyph id="B_00010"/>
+                        <glyph id="B_00011"/>
+                        <glyph id="B_00012"/>
+                        <glyph id="B_00013"/>
+                        <glyph id="B_00014"/>
+                        <glyph id="B_00015"/>
+                        <glyph id="B_00016"/>
+                        <glyph id="B_00017"/>
+                        <glyph id="B_00018"/>
+                        <glyph id="B_00019"/>
+                        <glyph id="B_00020"/>
+                        <glyph id="B_00021"/>
+                        <glyph id="B_00022"/>
+                        <glyph id="B_00023"/>
+                        <glyph id="B_00024"/>
+                        <glyph id="B_00025"/>
+                        <glyph id="B_00026"/>
+                        <glyph id="B_00027"/>
+                        <glyph id="B_00028"/>
+                        <glyph id="B_00029"/>
+                        <glyph id="B_00030"/>
+                        <glyph id="B_00031"/>
+                        <glyph id="B_00032"/>
+                        <glyph id="B_00033"/>
+                        <glyph id="B_00034"/>
+                        <glyph id="B_00000"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="symb_p">
+            <visual>
+                <texture file="data/textures/bigPayBack/symbol_p_spriteSheet.png"/>
+                <mesh>
+                    <spriteSheet file="data/objects/2d/mesh/bigPayBack/symbol_p.xml">
+                        <glyph id="P_00000"/>
+                        <glyph id="P_00001"/>
+                        <glyph id="P_00002"/>
+                        <glyph id="P_00003"/>
+                        <glyph id="P_00004"/>
+                        <glyph id="P_00005"/>
+                        <glyph id="P_00006"/>
+                        <glyph id="P_00007"/>
+                        <glyph id="P_00008"/>
+                        <glyph id="P_00009"/>
+                        <glyph id="P_00010"/>
+                        <glyph id="P_00011"/>
+                        <glyph id="P_00012"/>
+                        <glyph id="P_00013"/>
+                        <glyph id="P_00014"/>
+                        <glyph id="P_00015"/>
+                        <glyph id="P_00016"/>
+                        <glyph id="P_00017"/>
+                        <glyph id="P_00018"/>
+                        <glyph id="P_00019"/>
+                        <glyph id="P_00020"/>
+                        <glyph id="P_00021"/>
+                        <glyph id="P_00022"/>
+                        <glyph id="P_00023"/>
+                        <glyph id="P_00024"/>
+                        <glyph id="P_00025"/>
+                        <glyph id="P_00026"/>
+                        <glyph id="P_00027"/>
+                        <glyph id="P_00028"/>
+                        <glyph id="P_00029"/>
+                        <glyph id="P_00030"/>
+                        <glyph id="P_00031"/>
+                        <glyph id="P_00032"/>
+                        <glyph id="P_00033"/>
+                        <glyph id="P_00034"/>
+                        <glyph id="P_00000"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+
+        <object name="symb_coin">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="symb_coin"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+    </objectList>
+
+</objectDataList2D>
+

@@ -1,0 +1,135 @@
+<objectDataList2D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <texture count="0" file="" compressed="false"/>
+            <mesh genType="quad">
+                <quad uv.x1="0" uv.y1="0" uv.x2="1" uv.y2="1"/>
+                <spriteSheet defIndex="0" glyphCount="0" columns="0"/>
+                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
+                <file name=""/>
+            </mesh>
+            <color r="1" g="1" b="1" a="1"/>
+            <shader id="shader_2d"/>
+        </visual>
+        <physics world="">
+            <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
+            <fixtureLst>
+                <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
+                    <!-- vert list for polygon shapes - max of 8
+                    Box2D polygons are defined using Counter Clockwise Winding (CCW)
+                    <vert x="" y=""/> -->
+                    <sizeMod top="0" bottom="0" left="0" right="0"/>
+                </fixture>
+            </fixtureLst>
+        </physics>
+        <size width="0" height="0"/>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+
+      <object name="title_screen_slider_selection_frame">
+        <visual>
+          <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+          <mesh genType="scaled_frame">
+            <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+          </mesh>
+          <color r="48" g="97" b="153" a="1"/>
+        </visual>
+        <size width="340" height="95"/>
+      </object>
+
+      <object name="title_screen_slider_frame">
+        <visual>
+          <texture file="data/textures/menu/16x16_2_pixel_frame.png"/>
+          <mesh genType="scaled_frame">
+            <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+          </mesh>
+          <color r="48" g="97" b="153" a="1"/>
+        </visual>
+        <size width="280" height="10"/>
+      </object>
+
+        <object name="250x90_slider_selection_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="250" height="90"/>
+        </object>
+
+        <object name="230x10_slider_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_2_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="230" height="10"/>
+        </object>
+
+        <object name="button_slider">
+            <visual>
+                <texture file="data/textures/menu/slider_button.png"/>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+        </object>
+    
+        <object name="arrow_button_face">
+            <visual>
+                <texture file="data/textures/menu/arrow.png"/>
+                <color r="64" g="125" b="192" a="1"/>
+            </visual>
+        </object>
+
+        <object name="arrow_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_2_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="217"/>
+            </visual>
+            <size width="33" height="41"/>
+        </object>
+
+        <object name="arrow_button_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="31" height="39"/>
+        </object>
+
+        <object name="key_binding_scroll_box_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_2_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="36" g="82" b="115" a="1"/>
+            </visual>
+            <size width="930" height="562"/>
+        </object>
+
+        <object name="key_binding_slider_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_2_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="10" height="560"/>
+        </object>
+
+    </objectList>
+
+</objectDataList2D>
+

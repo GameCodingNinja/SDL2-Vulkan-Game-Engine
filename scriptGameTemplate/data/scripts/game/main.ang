@@ -1,0 +1,20 @@
+
+//
+//  FILE NAME:  main.ang
+//
+//  DESC:       Main game function
+//
+
+void main()
+{
+    // Create the game
+    CGame game;
+    game.Init();
+
+    // Call the game loop
+    while(true)
+    {
+        game.GameLoop();
+        Suspend();
+    }
+}

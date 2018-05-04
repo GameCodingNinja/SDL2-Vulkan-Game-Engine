@@ -1,0 +1,9 @@
+<listTable>
+
+  <groupList groupName="(cube)">
+    <file path="data/objects/3d/scripts/utilities.ang"/>
+    <file path="data/objects/3d/scripts/defs.ang"/>
+    <file path="data/objects/3d/scripts/cube.ang"/>
+  </groupList>
+
+</listTable>

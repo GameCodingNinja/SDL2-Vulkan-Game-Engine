@@ -1,0 +1,74 @@
+<menu>
+  
+    <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
+
+    <menuControls>
+
+        <!-- slider Control -->
+        <control name="consecutive_explosions_slider" controltype="slider" defaultState="inactive">
+              <filePath file="data/objects/2d/menu/control/consecutive_explosions_slider.ctrl"/>
+              <position x="0" y="220" z="0"/>
+              <settings orientation="HORZ" minValue="0" maxValue="5" defValue="2" incValue="1" displayValueAsInt="true"/>
+              <fontStringLst>
+                  <string text="Consecutive Explosions: %d"/>
+              </fontStringLst>
+              <navigate up="exit_btn" down="cubes_explosion_slider"/>
+              <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+              <scroll startDelay="750" scrollDelay="100" left="true" right="true"/>
+        </control>
+
+        <!-- slider Control -->
+        <control name="cubes_explosion_slider" controltype="slider" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/consecutive_explosions_slider.ctrl"/>
+            <position x="0" y="105" z="0"/>
+            <settings orientation="HORZ" minValue="1" maxValue="100" defValue="5" incValue="1" displayValueAsInt="true"/>
+            <fontStringLst>
+                <string text="Cubes Per Explosions: %d"/>
+            </fontStringLst>
+            <navigate up="consecutive_explosions_slider" down="cubes_bounce_btn_lst"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scroll startDelay="750" scrollDelay="100" left="true" right="true"/>
+        </control>
+
+        <!-- Resolution button list -->
+        <control name="cubes_bounce_btn_lst" controltype="button_list" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/bounce_button_list.ctrl"/>
+            <position x="0" y="0" z="0"/>
+            <fontStringLst>
+                <string text="Some Bounce"/>
+                <string text="More Bounce"/>
+                <string text="Lots of Bounce"/>
+            </fontStringLst>
+            <navigate up="cubes_explosion_slider" down="settings_btn"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scroll startDelay="750" scrollDelay="350" left="true" right="true"/>
+        </control>
+
+        <!-- Settings Button -->
+        <control name="settings_btn" controltype="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="-75" z="0"/>
+            <fontStringLst>
+                <string text="Settings"/>
+            </fontStringLst>
+            <action actionType="to_menu" executionAction="settings_menu"/>
+            <navigate up="cubes_bounce_btn_lst" down="exit_btn"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control>
+
+        <!-- Exit Game Button -->
+        <control name="exit_btn" faction="decision_btn" controltype="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="-140" z="0"/>
+            <fontStringLst>
+                <string text="Exit"/>
+            </fontStringLst>
+            <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <navigate up="settings_btn" down="consecutive_explosions_slider"/>
+            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+        </control> 
+
+    </menuControls>
+
+</menu>
+

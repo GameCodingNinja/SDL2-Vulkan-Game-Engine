@@ -1,0 +1,74 @@
+
+/************************************************************************
+*    FILE NAME:       cube.ang
+*
+*    DESCRIPTION:     Cube related scripts
+************************************************************************/
+
+/************************************************************************
+*    desc:  Shoot cube to destination                                                             
+************************************************************************/
+void ShootTo( float time, CPoint dest, CSprite3d & sprite, int spriteId )
+{
+	// Move the sprite to the destination
+    MoveTo( time, dest, sprite );
+
+	// This sprite is done so sent the kill message
+	BroadcastSprite( ESM_KILL_SPRITE, spriteId );
+
+}   // ShootTo
+
+
+/************************************************************************
+*    desc:  Pick random color to transition to                                                             
+************************************************************************/
+void ChangeColor( CSprite3d & sprite, CColor color, int spriteId, int consecutiveCount )
+{
+	ColorTo( 500, color, sprite );
+
+	Hold( 2000 );
+	
+	// This sprite is done so sent the kill message
+	BroadcastSprite( ESM_KILL_SPRITE, spriteId, consecutiveCount );
+}
+
+
+/************************************************************************
+*    desc:  Pick random color to transition to                                                             
+************************************************************************/
+void RandomColorTo( CSprite3d & sprite )
+{
+	CColor finalColor;
+
+	switch( UniformRandomInt( 0, 5 ) )
+	{
+		case 0:
+			finalColor.Set( 1, 0, 0, 1 );
+		break;
+
+		case 1:
+			finalColor.Set( 0, 1, 0, 1 );
+		break;
+
+		case 2:
+			finalColor.Set( 0, 0, 1, 1 );
+		break;
+
+		case 3:
+			finalColor.Set( 1, 1, 0, 1 );
+		break;
+
+		case 4:
+			finalColor.Set( 1, 0, 1, 1 );
+		break;
+
+		case 5:
+			finalColor.Set( 1, 0, 1, 1 );
+		break;
+	}
+
+	finalColor.TransformHSV( UniformRandomInt( 0, 359 ), 1, 1 );
+
+	ColorTo( 500, finalColor, sprite );
+
+}   // RandomColorTo

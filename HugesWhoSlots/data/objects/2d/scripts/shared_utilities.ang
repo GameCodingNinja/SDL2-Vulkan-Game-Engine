@@ -1,0 +1,236 @@
+
+/************************************************************************
+*    FILE NAME:       shared_utilities.ang
+*
+*    DESCRIPTION:     General purpose shared utility scripts
+*                     The keyword "shared" allows for only one copy to
+*                     loaded and used among all modules
+************************************************************************/
+
+/************************************************************************
+*    desc:  Color to the final color in time
+************************************************************************/
+shared void ColorTo( float time, CColor &in final, iSprite & sprite )
+{
+    CColor current = sprite.getColor();
+    CColor inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            sprite.setColor( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            sprite.setColor( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // ColorTo
+
+
+/************************************************************************
+*    desc:  Shader color to the final color in time
+************************************************************************/
+shared void ShaderColorTo( float time, CColor current, CColor &in final, const string &in shaderMember )
+{
+    CColor inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+        
+        if( time < 0 )
+        {
+            ShaderMgr.setAllShaderColor( shaderMember, final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            
+            ShaderMgr.setAllShaderColor( shaderMember, current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // ShaderColorTo
+
+
+/************************************************************************
+*    desc:  Alpha to the final alpha
+************************************************************************/
+shared void AlphaTo( float time, float final, iSprite & sprite )
+{
+    // Convert from RGB value to normalized value
+    if( final > 1.5 )
+        final *= 0.00390625f;
+
+    float current = sprite.getAlpha();
+    float inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            sprite.setAlpha( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            sprite.setAlpha( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // AlphaTo
+
+shared void AlphaToSprite( float time, float final, iSprite & sprite )
+{
+    AlphaTo( time, final, sprite );
+}
+
+shared void AlphaTo( float time, float final, CMenu & menu )
+{
+    // Convert from RGB value to normalized value
+    if( final > 1.5 )
+        final *= 0.00390625f;
+
+    float current = menu.getAlpha();
+    float inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            menu.setAlpha( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            menu.setAlpha( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // AlphaTo
+
+
+/************************************************************************
+*    desc:  Volume to the final volume
+************************************************************************/
+shared void VolumeTo( float time, int final, CSound & sound )
+{
+    float current = sound.getVolume();
+    float inc = (float(final) - current) / time;
+    int lastVolume = int(current);
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            sound.setVolume( int(final) );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+        
+            if( lastVolume != int(current) )
+            {
+                sound.setVolume( int(current) );
+                lastVolume = int(current);
+            }
+        }
+        
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // VolumeTo
+
+shared void VolumeTo( float time, int final, CPlayList & playLst )
+{
+    float current = playLst.getVolume();
+    float inc = (float(final) - current) / time;
+    int lastVolume = int(current);
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            playLst.setVolume( int(final) );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+        
+            if( lastVolume != int(current) )
+            {
+                playLst.setVolume( int(current) );
+                lastVolume = int(current);
+            }
+        }
+        
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // VolumeTo
+
+
+/************************************************************************
+*    desc:  Play the animation
+************************************************************************/
+shared void Play( int fps, iSprite & sprite, bool loop = false )
+{
+    float time = 1000.0 / fps;
+    uint frameCount = sprite.getFrameCount();
+
+    do
+    {
+        for( uint i = 0; i < frameCount; ++i )
+        {
+            sprite.setFrame( i );
+
+            Hold( time );
+        }
+    }
+    while( loop );
+
+}   // Play
+
+
+/************************************************************************
+*    desc:  Hold the sprite execution in time
+************************************************************************/
+shared void Hold( float time )
+{
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // Hold

@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="data\objects\2d\hud\control\progress_bar.ctrl" />
+    <None Include="data\objects\2d\hud\run.hud" />
+    <None Include="data\objects\2d\loadscreens\gameLoadScreen.cfg" />
+    <None Include="data\objects\2d\loadscreens\startupLoadScreen.cfg" />
+    <None Include="data\objects\2d\menu\confirmation.menu">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\back_button.ctrl" />
+    <None Include="data\objects\2d\menu\control\button_125x55.ctrl" />
+    <None Include="data\objects\2d\menu\control\button_145x55.ctrl" />
+    <None Include="data\objects\2d\menu\control\button_275x55.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_arrow.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_list.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_slider.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\check_box_245x55.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\close_button.ctrl" />
+    <None Include="data\objects\2d\menu\control\confirmation_label.ctrl" />
+    <None Include="data\objects\2d\menu\control\deadzone_slider.ctrl" />
+    <None Include="data\objects\2d\menu\control\key_binding_button.ctrl" />
+    <None Include="data\objects\2d\menu\control\key_binding_label.ctrl" />
+    <None Include="data\objects\2d\menu\control\key_binding_scroll_box.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\key_binding_seperator.ctrl" />
+    <None Include="data\objects\2d\menu\control\key_binding_slider.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\control\menu_label.ctrl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\key_bindings.menu" />
+    <None Include="data\objects\2d\menu\pause.menu">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\settings.menu">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\title_screen.menu" />
+    <None Include="data\objects\2d\menu\tree.list">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\menu\tree.menu">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\objectDataList\dataListTable.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\objectDataList\menuBackgrounds.lst" />
+    <None Include="data\objects\2d\objectDataList\menuDataList.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\objectDataList\menuGeneric.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\objectDataList\startupDataList.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\objectDataList\titleScreenDataList.lst" />
+    <None Include="data\objects\2d\physics\gamePhysics.cfg" />
+    <None Include="data\objects\2d\physics\physicsListTable.lst" />
+    <None Include="data\objects\2d\scripts\menu.ang" />
+    <None Include="data\objects\2d\scripts\menu_defs.ang" />
+    <None Include="data\objects\2d\scripts\scriptListTable.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\objects\2d\scripts\shared_utilities.ang" />
+    <None Include="data\objects\3d\objectDataList\cube.lst" />
+    <None Include="data\objects\3d\objectDataList\dataListTable.lst" />
+    <None Include="data\settings\controllerMapping.cfg">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\settings\gamecontrollerdb.txt" />
+    <None Include="data\settings\settings.cfg">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\shaders\shader.cfg">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\shaders\shader_solid_v2.vert" />
+    <None Include="data\shaders\shader_v2.frag" />
+    <None Include="data\shaders\shader_v2.vert" />
+    <None Include="data\shaders\shader_soild_v2.frag" />
+    <None Include="data\shaders\shader_v3.frag" />
+    <None Include="data\shaders\shader_v3.vert" />
+    <None Include="data\sound\menuSound.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\sound\soundListTable.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="data\textures\fonts\font.lst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="source\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\angelscript\projects\msvc2015\angelscript.vcxproj">
+      <Project>{39e6af97-6ba3-4a72-8c61-bcebf214ebfd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Box2D\Box2D.vcxproj">
+      <Project>{90ff76ae-9e6d-407f-912e-152f43f3cd13}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\bulletPhysics\build3\vs2010\BulletCollision.vcxproj">
+      <Project>{b96b7d43-be74-9c43-aaa2-a9847bdd6486}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\bulletPhysics\build3\vs2010\BulletDynamics.vcxproj">
+      <Project>{73ee1ec3-f2a2-654a-ad6d-04973a2c8c54}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\bulletPhysics\build3\vs2010\BulletSoftBody.vcxproj">
+      <Project>{646f8491-e4d4-034c-9603-4f31ccaac8c5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\bulletPhysics\build3\vs2010\LinearMath.vcxproj">
+      <Project>{dbd67531-de98-cd42-a0fa-89327a7108d0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\library\library.vcxproj">
+      <Project>{808ea7b5-03b5-485b-942b-975df186a328}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\ai\ballai.cpp" />
+    <ClCompile Include="source\game\game.cpp" />
+    <ClCompile Include="source\game\main.cpp" />
+    <ClCompile Include="source\smartGUI\smartapplysettingsbtn.cpp" />
+    <ClCompile Include="source\smartGUI\smartconfirmbtn.cpp" />
+    <ClCompile Include="source\smartGUI\smartdeadzoneslider.cpp" />
+    <ClCompile Include="source\smartGUI\smartfullscreencheckbox.cpp" />
+    <ClCompile Include="source\smartGUI\smartkeybindbtn.cpp" />
+    <ClCompile Include="source\smartGUI\smartresetkeybind.cpp" />
+    <ClCompile Include="source\smartGUI\smartresolutionbtn.cpp" />
+    <ClCompile Include="source\smartGUI\smartsettingsmenubtn.cpp" />
+    <ClCompile Include="source\smartGUI\smartvsynccheckbox.cpp" />
+    <ClCompile Include="source\state\commonstate.cpp" />
+    <ClCompile Include="source\state\loadstate.cpp" />
+    <ClCompile Include="source\state\runstate.cpp" />
+    <ClCompile Include="source\state\startupstate.cpp" />
+    <ClCompile Include="source\state\titlescreenstate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\ai\ballai.h" />
+    <ClInclude Include="source\game\game.h" />
+    <ClInclude Include="source\smartGUI\smartapplysettingsbtn.h" />
+    <ClInclude Include="source\smartGUI\smartconfirmbtn.h" />
+    <ClInclude Include="source\smartGUI\smartdeadzoneslider.h" />
+    <ClInclude Include="source\smartGUI\smartfullscreencheckbox.h" />
+    <ClInclude Include="source\smartGUI\smartkeybindbtn.h" />
+    <ClInclude Include="source\smartGUI\smartresetkeybind.h" />
+    <ClInclude Include="source\smartGUI\smartresolutionbtn.h" />
+    <ClInclude Include="source\smartGUI\smartsettingsmenubtn.h" />
+    <ClInclude Include="source\smartGUI\smartvsynccheckbox.h" />
+    <ClInclude Include="source\state\commonstate.h" />
+    <ClInclude Include="source\state\gamedefs.h" />
+    <ClInclude Include="source\state\loadstate.h" />
+    <ClInclude Include="source\state\igamestate.h" />
+    <ClInclude Include="source\state\runstate.h" />
+    <ClInclude Include="source\state\startupstate.h" />
+    <ClInclude Include="source\state\statemessage.h" />
+    <ClInclude Include="source\state\titlescreenstate.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\game.rc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9C7BBD82-D546-4554-BCCE-DE38726B042D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>gameTemplate</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\library;C:\devlib\boost;C:\devlib\SDL2\include;..\angelscript\add_on;..\angelscript\include;..\;..\bulletPhysics\src;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\devlib\SDL2\lib\x86;C:\devlib\glew\lib\Release\Win32;C:\devlib\SDL2_mixer\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\library;C:\devlib\boost;C:\devlib\SDL2\include;..\angelscript\add_on;..\angelscript\include;..\;..\bulletPhysics\src;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\devlib\SDL2\lib\x86;C:\devlib\SDL2_mixer\lib\x86;C:\devlib\glew\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HAVE_M_PI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;Winmm.lib;Imm32.lib;Version.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;HAVE_M_PI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>
+      </CompileAsManaged>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OpenGL32.lib;Winmm.lib;Imm32.lib;Version.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

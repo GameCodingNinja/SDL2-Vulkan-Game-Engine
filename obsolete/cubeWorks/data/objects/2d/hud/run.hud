@@ -1,0 +1,14 @@
+<hud>
+
+    <hudControls>
+      
+        <control name="progress_bar" controltype="progress_bar">
+            <filePath file="data/objects/2d/hud/control/progress_bar.ctrl"/>
+            <dynamicOffset right="220" bottom="220"/>
+            <string justify="center" text="%d/%d"/>
+        </control>
+
+    </hudControls>
+  
+</hud>
+

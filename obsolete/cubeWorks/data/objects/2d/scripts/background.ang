@@ -1,0 +1,20 @@
+
+/************************************************************************
+*    FILE NAME:       background.ang
+*
+*    DESCRIPTION:     background related scripts
+************************************************************************/
+
+/************************************************************************
+*    desc:  Shoot cube to destination                                                             
+************************************************************************/
+void Blowout( CSprite2d & sprite )
+{
+	CColor finalColor;
+	finalColor.Set( 1,1,1,.80 );
+	ColorTo( 125, finalColor, sprite );
+
+	finalColor.Set( 1,1,1,1 );
+	ColorTo( 1000, finalColor, sprite );
+
+}   // Blowout

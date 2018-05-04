@@ -1,0 +1,31 @@
+
+//
+//  FILE NAME:  confirm.ang
+//
+//  DESC:       Scripts for the button triggering the confirm menu
+//
+
+
+//
+//  Execution script for the menu control to change to the confirmation menu
+//
+void ControlConfirm_OnExecute( CUIControl & control )
+{
+    CUIControl @yesBtn = MenuMgr.getMenuControl( "confirmation_menu", "yes_btn" );
+    CUIControl @msgLbl = MenuMgr.getMenuControl( "confirmation_menu", "message_lbl" );
+    
+    string actionType;
+    string executionAction;
+    string conformationMsg;
+    
+    if( control.getName() == "exit_btn" )
+    {
+        actionType = "quit_game";
+        conformationMsg = "Do you want to|quit the game?";
+    }
+    
+    yesBtn.setActionType( actionType );
+    yesBtn.setExecutionAction( executionAction );
+    msgLbl.createFontString( conformationMsg );
+}
+

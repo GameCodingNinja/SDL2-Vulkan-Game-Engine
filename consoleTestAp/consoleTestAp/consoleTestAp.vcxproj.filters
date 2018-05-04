@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="library">
+      <UniqueIdentifier>{789f6713-cc40-45c8-a5d9-a16de536bc25}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="consoleTestAp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\library\utilities\genfunc.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\library\utilities\highresolutiontimer.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\library\utilities\genfunc.h">
+      <Filter>library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\library\utilities\highresolutiontimer.h">
+      <Filter>library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\library\common\point.h">
+      <Filter>library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\library\common\defs.h">
+      <Filter>library</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

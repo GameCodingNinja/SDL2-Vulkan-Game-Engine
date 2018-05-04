@@ -1,0 +1,30 @@
+<UIControl>
+
+  <spriteList>
+
+    <sprite objectName="key_binding_button_solid">
+      <script>
+        <state disabled="Control_Disabled" inactive="Control_Hidden" active="Control_Solid_Active" selected="Control_Solid_Selected"/>
+      </script>
+    </sprite>
+    
+    <sprite objectName="key_binding_reset_button_frame">
+      <script>
+        <transition in="Control_TransIn" out="Control_TransOut"/>
+        <state disabled="Control_Disabled" inactive="Control_Inactive" active="Control_Active" selected="Control_Selected_frame_highlight"/>
+      </script>
+    </sprite>
+
+    <sprite objectName="control_font">
+      <font fontName="dejavu_sans_cond_32">
+        <alignment horzAlign="center" vertAlign="center"/>
+      </font>
+      <script>
+        <transition in="Control_TransIn" out="Control_TransOut"/>
+        <state disabled="Control_Disabled" inactive="Control_Inactive" active="Control_Active" selected="Control_Selected_Dispatch_Exe"/>
+      </script>
+    </sprite>
+
+  </spriteList>
+
+</UIControl>

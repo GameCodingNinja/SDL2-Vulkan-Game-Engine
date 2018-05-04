@@ -1,0 +1,19 @@
+<menuTreeList file="data/objects/2d/menu/tree.menu">
+
+    <action>
+        <backAction>Menu Back</backAction>
+        <toggleAction>Menu Toggle</toggleAction>
+        <escapeAction>Menu Escape</escapeAction>
+        <selectAction>Menu Select</selectAction>
+        <upAction>Menu Up</upAction>
+        <downAction>Menu Down</downAction>
+        <leftAction>Menu Left</leftAction>
+        <rightAction>Menu Right</rightAction>
+        <tabLeft>Menu Tab Left</tabLeft>
+        <tabRight>Menu Tab Right</tabRight>
+    </action>
+    <tree name="title_screen" root="title_screen_menu" default=""/>
+    <tree name="pause" root="" default="pause_menu"/>
+
+</menuTreeList>
+

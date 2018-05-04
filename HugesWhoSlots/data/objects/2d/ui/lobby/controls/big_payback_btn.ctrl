@@ -1,0 +1,18 @@
+<UIControl>
+
+    <spriteList>
+
+        <sprite objectName="Payback Pig Normal"/>
+
+        <sprite objectName="Payback Pig Roll Over">
+            <scriptLst>
+                <script init="MenuBtn_Init"/>
+                <script inactive="MenuBtnActOver_Inactive"/>
+                <script active="MenuBtnActOver_Active"/>
+                <script selected="MenuBtnActOver_Selected"/>
+            </scriptLst>
+        </sprite>
+
+    </spriteList>
+
+</UIControl>

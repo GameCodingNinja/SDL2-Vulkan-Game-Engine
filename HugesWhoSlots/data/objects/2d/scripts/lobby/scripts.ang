@@ -1,0 +1,44 @@
+
+/************************************************************************
+*    FILE NAME:       menu.ang
+*
+*    DESCRIPTION:     Scripts for controlling/animating menu interface
+************************************************************************/
+
+/************************************************************************
+*    desc:  Play lobby music
+************************************************************************/
+void Lobby_PlayMusic()
+{
+    Hold( 500 );
+    
+    CPlayList @playLst = SoundMgr.getPlayList( "(lobby)", "lobby_music" );
+    
+    playLst.setVolume( MAX_SOUND_VOLUME );
+    playLst.play();
+    
+    do
+    {
+        Hold( 1000 );
+        
+        if( !playLst.isPlaying() )
+            playLst.play();
+
+    }
+    while( true );
+}
+
+
+/************************************************************************
+*    desc:  Fast stop lobby music
+************************************************************************/
+void Lobby_FastStopMusic()
+{
+    CPlayList @playLst = SoundMgr.getPlayList( "(lobby)", "lobby_music" );
+    
+    if( playLst.isPlaying() )
+    {
+        VolumeTo( 500.f, 0.f, playLst );
+        playLst.stop();
+    }
+}

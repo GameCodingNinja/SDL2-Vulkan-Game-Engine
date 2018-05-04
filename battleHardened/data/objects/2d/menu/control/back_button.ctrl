@@ -1,0 +1,25 @@
+<UIControl>
+
+    <spriteList>
+      
+        <sprite objectName="mouse_only_button_solid">
+            <scriptLst>
+                <script disabled="Control_Hidden"/>
+                <script inactive="Control_Hidden"/>
+                <script active="Control_Solid_Active"/>
+                <script selected="Control_Solid_Selected"/>
+            </scriptLst>
+        </sprite>
+    
+        <sprite objectName="mouse_back_button_face">
+            <scriptLst>
+                <state disabled="Control_Disabled"/>
+                <state inactive="Control_Inactive"/>
+                <state active="Control_Active"/>
+                <state selected="Control_Selected_Dispatch_Exe"/>
+            </scriptLst>
+        </sprite>
+
+    </spriteList>
+
+</UIControl>

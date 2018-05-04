@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{808EA7B5-03B5-485B-942B-975DF186A328}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>library</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>..\library;C:\devlib\boost;C:\devlib\SDL2\include;..\angelscript\include;..\angelscript\add_on;C:\devlib\SDL2_mixer\include;C:\devlib\glew\include;..\;..\bulletPhysics\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.lib</TargetExt>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>..\library;C:\devlib\boost;C:\devlib\SDL2\include;..\angelscript\include;C:\devlib\SDL2_mixer\include;C:\devlib\glew\include;..\;..\bulletPhysics\src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HAVE_M_PI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;HAVE_M_PI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="2d\actorsprite2d.cpp" />
+    <ClCompile Include="2d\basicspritestrategy2d.cpp" />
+    <ClCompile Include="2d\basicstagestrategy2d.cpp" />
+    <ClCompile Include="2d\font.cpp" />
+    <ClCompile Include="2d\iaibase2d.cpp" />
+    <ClCompile Include="2d\isprite2d.cpp" />
+    <ClCompile Include="2d\linearstagestrategy2d.cpp" />
+    <ClCompile Include="2d\loopstagestrategy2d.cpp" />
+    <ClCompile Include="2d\object2d.cpp" />
+    <ClCompile Include="2d\sector2d.cpp" />
+    <ClCompile Include="2d\sprite2d.cpp" />
+    <ClCompile Include="2d\spritechild2d.cpp" />
+    <ClCompile Include="2d\visualcomponent2d.cpp" />
+    <ClCompile Include="3d\actorsprite3d.cpp" />
+    <ClCompile Include="3d\basicspritestrategy3d.cpp" />
+    <ClCompile Include="3d\basicstagestrategy3d.cpp" />
+    <ClCompile Include="3d\isprite3d.cpp" />
+    <ClCompile Include="3d\light.cpp" />
+    <ClCompile Include="3d\lightlist.cpp" />
+    <ClCompile Include="3d\object3d.cpp" />
+    <ClCompile Include="3d\sector3d.cpp" />
+    <ClCompile Include="3d\sprite3d.cpp" />
+    <ClCompile Include="3d\visualcomponent3d.cpp" />
+    <ClCompile Include="common\actordata.cpp" />
+    <ClCompile Include="common\basestrategy.cpp" />
+    <ClCompile Include="common\build_defs.cpp" />
+    <ClCompile Include="common\camera.cpp" />
+    <ClCompile Include="common\fontdata.cpp" />
+    <ClCompile Include="common\fontproperties.cpp" />
+    <ClCompile Include="common\object.cpp" />
+    <ClCompile Include="common\playlist.cpp" />
+    <ClCompile Include="common\shaderdata.cpp" />
+    <ClCompile Include="common\sound.cpp" />
+    <ClCompile Include="common\spritedata.cpp" />
+    <ClCompile Include="common\spritedatacontainer.cpp" />
+    <ClCompile Include="common\spritesheet.cpp" />
+    <ClCompile Include="common\worldvalue.cpp" />
+    <ClCompile Include="gui\controlbase.cpp" />
+    <ClCompile Include="gui\ismartguibase.cpp" />
+    <ClCompile Include="gui\menu.cpp" />
+    <ClCompile Include="gui\menumanager.cpp" />
+    <ClCompile Include="gui\menutree.cpp" />
+    <ClCompile Include="gui\scrollparam.cpp" />
+    <ClCompile Include="gui\uibutton.cpp" />
+    <ClCompile Include="gui\uibuttonlist.cpp" />
+    <ClCompile Include="gui\uicheckbox.cpp" />
+    <ClCompile Include="gui\uicontrol.cpp" />
+    <ClCompile Include="gui\uicontrolfactory.cpp" />
+    <ClCompile Include="gui\uilabel.cpp" />
+    <ClCompile Include="gui\uimeter.cpp" />
+    <ClCompile Include="gui\uiprogressbar.cpp" />
+    <ClCompile Include="gui\uiscrollbox.cpp" />
+    <ClCompile Include="gui\uislider.cpp" />
+    <ClCompile Include="gui\uisubcontrol.cpp" />
+    <ClCompile Include="managers\fontmanager.cpp" />
+    <ClCompile Include="managers\managerbase.cpp" />
+    <ClCompile Include="managers\actionmanager.cpp" />
+    <ClCompile Include="managers\meshmanager.cpp" />
+    <ClCompile Include="managers\signalmanager.cpp" />
+    <ClCompile Include="managers\shadermanager.cpp" />
+    <ClCompile Include="managers\soundmanager.cpp" />
+    <ClCompile Include="managers\spritesheetmanager.cpp" />
+    <ClCompile Include="managers\spritestrategymanager.cpp" />
+    <ClCompile Include="managers\texturemanager.cpp" />
+    <ClCompile Include="managers\vertexbuffermanager.cpp" />
+    <ClCompile Include="objectdata\objectdata2d.cpp" />
+    <ClCompile Include="objectdata\objectdata3d.cpp" />
+    <ClCompile Include="objectdata\objectdatamanager.cpp" />
+    <ClCompile Include="objectdata\objectphysicsdata2d.cpp" />
+    <ClCompile Include="objectdata\objectphysicsdata3d.cpp" />
+    <ClCompile Include="objectdata\objectvisualdata2d.cpp" />
+    <ClCompile Include="objectdata\objectvisualdata3d.cpp" />
+    <ClCompile Include="physics\physicscomponent2d.cpp" />
+    <ClCompile Include="physics\physicscomponent3d.cpp" />
+    <ClCompile Include="physics\physicsworld2d.cpp" />
+    <ClCompile Include="physics\physicsworld3d.cpp" />
+    <ClCompile Include="physics\physicsworldmanager.cpp" />
+    <ClCompile Include="script\scriptcolor.cpp" />
+    <ClCompile Include="script\scriptcomponent.cpp" />
+    <ClCompile Include="script\scriptglobals.cpp" />
+    <ClCompile Include="script\scriptmanager.cpp" />
+    <ClCompile Include="script\scriptpoint.cpp" />
+    <ClCompile Include="slot\animatedcycleresults.cpp" />
+    <ClCompile Include="slot\basegamemusic.cpp" />
+    <ClCompile Include="slot\betmanager.cpp" />
+    <ClCompile Include="slot\icycleresults.cpp" />
+    <ClCompile Include="slot\mathsymbol.cpp" />
+    <ClCompile Include="slot\pay.cpp" />
+    <ClCompile Include="slot\paycombo.cpp" />
+    <ClCompile Include="slot\paylineset.cpp" />
+    <ClCompile Include="slot\paytableset.cpp" />
+    <ClCompile Include="slot\playresult.cpp" />
+    <ClCompile Include="slot\reelgroupview.cpp" />
+    <ClCompile Include="slot\reelstripview.cpp" />
+    <ClCompile Include="slot\simplecycleresults.cpp" />
+    <ClCompile Include="slot\slotgame.cpp" />
+    <ClCompile Include="slot\slotgroup.cpp" />
+    <ClCompile Include="slot\slotgroupfactory.cpp" />
+    <ClCompile Include="slot\slotgroupmodel.cpp" />
+    <ClCompile Include="slot\slotgroupview.cpp" />
+    <ClCompile Include="slot\slotmath.cpp" />
+    <ClCompile Include="slot\slotmathmanager.cpp" />
+    <ClCompile Include="slot\slotresults.cpp" />
+    <ClCompile Include="slot\slotstripmodel.cpp" />
+    <ClCompile Include="slot\spinprofile.cpp" />
+    <ClCompile Include="slot\stripset.cpp" />
+    <ClCompile Include="slot\stripstop.cpp" />
+    <ClCompile Include="slot\symbol2d.cpp" />
+    <ClCompile Include="slot\symbolsetview.cpp" />
+    <ClCompile Include="slot\symbolsetviewmanager.cpp" />
+    <ClCompile Include="slot\valuetable.cpp" />
+    <ClCompile Include="slot\weightedtable.cpp" />
+    <ClCompile Include="slot\wheelgroupview.cpp" />
+    <ClCompile Include="slot\wheelview.cpp" />
+    <ClCompile Include="soil\image_DXT.c" />
+    <ClCompile Include="soil\image_helper.c" />
+    <ClCompile Include="soil\SOIL.c" />
+    <ClCompile Include="soil\stb_image_aug.c" />
+    <ClCompile Include="system\basegame.cpp" />
+    <ClCompile Include="system\device.cpp" />
+    <ClCompile Include="utilities\genfunc.cpp" />
+    <ClCompile Include="utilities\highresolutiontimer.cpp" />
+    <ClCompile Include="utilities\mathfunc.cpp" />
+    <ClCompile Include="utilities\matrix.cpp" />
+    <ClCompile Include="utilities\settings.cpp" />
+    <ClCompile Include="utilities\statcounter.cpp" />
+    <ClCompile Include="utilities\state.cpp" />
+    <ClCompile Include="utilities\threadpool.cpp" />
+    <ClCompile Include="utilities\timer.cpp" />
+    <ClCompile Include="utilities\xmlparsehelper.cpp" />
+    <ClCompile Include="utilities\xmlParser.cpp" />
+    <ClCompile Include="utilities\xmlpreloader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="2d\actorsprite2d.h" />
+    <ClInclude Include="2d\basicspritestrategy2d.h" />
+    <ClInclude Include="2d\basicstagestrategy2d.h" />
+    <ClInclude Include="2d\font.h" />
+    <ClInclude Include="2d\iaibase2d.h" />
+    <ClInclude Include="2d\isprite2d.h" />
+    <ClInclude Include="2d\linearstagestrategy2d.h" />
+    <ClInclude Include="2d\loopstagestrategy2d.h" />
+    <ClInclude Include="2d\object2d.h" />
+    <ClInclude Include="2d\sector2d.h" />
+    <ClInclude Include="2d\sprite2d.h" />
+    <ClInclude Include="2d\spritechild2d.h" />
+    <ClInclude Include="2d\visualcomponent2d.h" />
+    <ClInclude Include="3d\actorsprite3d.h" />
+    <ClInclude Include="3d\basicspritestrategy3d.h" />
+    <ClInclude Include="3d\basicstagestrategy3d.h" />
+    <ClInclude Include="3d\isprite3d.h" />
+    <ClInclude Include="3d\light.h" />
+    <ClInclude Include="3d\lightlist.h" />
+    <ClInclude Include="3d\object3d.h" />
+    <ClInclude Include="3d\sector3d.h" />
+    <ClInclude Include="3d\sprite3d.h" />
+    <ClInclude Include="3d\visualcomponent3d.h" />
+    <ClInclude Include="common\actordata.h" />
+    <ClInclude Include="common\basestrategy.h" />
+    <ClInclude Include="common\build_defs.h" />
+    <ClInclude Include="common\camera.h" />
+    <ClInclude Include="common\collisionmesh3d.h" />
+    <ClInclude Include="common\color.h" />
+    <ClInclude Include="common\defs.h" />
+    <ClInclude Include="common\dynamicoffset.h" />
+    <ClInclude Include="common\face2d.h" />
+    <ClInclude Include="common\fontdata.h" />
+    <ClInclude Include="common\fontproperties.h" />
+    <ClInclude Include="common\ispritestrategy.h" />
+    <ClInclude Include="common\keycodeaction.h" />
+    <ClInclude Include="common\meshbinaryfileheader.h" />
+    <ClInclude Include="common\normal.h" />
+    <ClInclude Include="common\object.h" />
+    <ClInclude Include="common\playlist.h" />
+    <ClInclude Include="common\point.h" />
+    <ClInclude Include="common\quad.h" />
+    <ClInclude Include="common\quad2d.h" />
+    <ClInclude Include="common\quaternion.h" />
+    <ClInclude Include="common\radian.h" />
+    <ClInclude Include="common\rect.h" />
+    <ClInclude Include="common\relativeoffset.h" />
+    <ClInclude Include="common\scaledframe.h" />
+    <ClInclude Include="common\shaderdata.h" />
+    <ClInclude Include="common\size.h" />
+    <ClInclude Include="common\sound.h" />
+    <ClInclude Include="common\spritedata.h" />
+    <ClInclude Include="common\spritedatacontainer.h" />
+    <ClInclude Include="common\spritesheet.h" />
+    <ClInclude Include="common\spritesheetglyph.h" />
+    <ClInclude Include="common\texture.h" />
+    <ClInclude Include="common\uv.h" />
+    <ClInclude Include="common\mesh3d.h" />
+    <ClInclude Include="common\vertex2d.h" />
+    <ClInclude Include="common\vertex3d.h" />
+    <ClInclude Include="common\worldvalue.h" />
+    <ClInclude Include="gui\controlbase.h" />
+    <ClInclude Include="gui\ismartguibase.h" />
+    <ClInclude Include="gui\menu.h" />
+    <ClInclude Include="gui\menumanager.h" />
+    <ClInclude Include="gui\menutree.h" />
+    <ClInclude Include="gui\messagecracker.h" />
+    <ClInclude Include="gui\scrollparam.h" />
+    <ClInclude Include="gui\uibutton.h" />
+    <ClInclude Include="gui\uibuttonlist.h" />
+    <ClInclude Include="gui\uicheckbox.h" />
+    <ClInclude Include="gui\uicontrol.h" />
+    <ClInclude Include="gui\uicontroldefs.h" />
+    <ClInclude Include="gui\uicontrolfactory.h" />
+    <ClInclude Include="gui\uicontrolnavnode.h" />
+    <ClInclude Include="gui\uilabel.h" />
+    <ClInclude Include="gui\menudefs.h" />
+    <ClInclude Include="gui\uimeter.h" />
+    <ClInclude Include="gui\uiprogressbar.h" />
+    <ClInclude Include="gui\uiscrollbox.h" />
+    <ClInclude Include="gui\uislider.h" />
+    <ClInclude Include="gui\uisubcontrol.h" />
+    <ClInclude Include="managers\fontmanager.h" />
+    <ClInclude Include="managers\managerbase.h" />
+    <ClInclude Include="managers\actionmanager.h" />
+    <ClInclude Include="managers\meshmanager.h" />
+    <ClInclude Include="managers\signalmanager.h" />
+    <ClInclude Include="managers\shadermanager.h" />
+    <ClInclude Include="managers\soundmanager.h" />
+    <ClInclude Include="managers\spritesheetmanager.h" />
+    <ClInclude Include="managers\spritestrategymanager.h" />
+    <ClInclude Include="managers\texturemanager.h" />
+    <ClInclude Include="managers\vertexbuffermanager.h" />
+    <ClInclude Include="objectdata\objectdata2d.h" />
+    <ClInclude Include="objectdata\objectdata3d.h" />
+    <ClInclude Include="objectdata\objectdatamanager.h" />
+    <ClInclude Include="objectdata\objectphysicsdata2d.h" />
+    <ClInclude Include="objectdata\objectphysicsdata3d.h" />
+    <ClInclude Include="objectdata\objectvisualdata2d.h" />
+    <ClInclude Include="objectdata\objectvisualdata3d.h" />
+    <ClInclude Include="physics\physicscomponent2d.h" />
+    <ClInclude Include="physics\physicscomponent3d.h" />
+    <ClInclude Include="physics\physicsworld2d.h" />
+    <ClInclude Include="physics\physicsworld3d.h" />
+    <ClInclude Include="physics\physicsworldmanager.h" />
+    <ClInclude Include="script\scriptcolor.h" />
+    <ClInclude Include="script\scriptcomponent.h" />
+    <ClInclude Include="script\scriptdefs.h" />
+    <ClInclude Include="script\scriptglobals.h" />
+    <ClInclude Include="script\scriptmanager.h" />
+    <ClInclude Include="script\scriptpoint.h" />
+    <ClInclude Include="slot\animatedcycleresults.h" />
+    <ClInclude Include="slot\basegamemusic.h" />
+    <ClInclude Include="slot\betmanager.h" />
+    <ClInclude Include="slot\icycleresults.h" />
+    <ClInclude Include="slot\ifrontpanel.h" />
+    <ClInclude Include="slot\igamemusic.h" />
+    <ClInclude Include="slot\mathsymbol.h" />
+    <ClInclude Include="slot\pay.h" />
+    <ClInclude Include="slot\paycombo.h" />
+    <ClInclude Include="slot\paylineset.h" />
+    <ClInclude Include="slot\paytableset.h" />
+    <ClInclude Include="slot\playresult.h" />
+    <ClInclude Include="slot\reelgroupview.h" />
+    <ClInclude Include="slot\reelstripview.h" />
+    <ClInclude Include="slot\simplecycleresults.h" />
+    <ClInclude Include="slot\slotdefs.h" />
+    <ClInclude Include="slot\slotgame.h" />
+    <ClInclude Include="slot\slotgroup.h" />
+    <ClInclude Include="slot\slotgroupfactory.h" />
+    <ClInclude Include="slot\slotgroupmodel.h" />
+    <ClInclude Include="slot\slotgroupview.h" />
+    <ClInclude Include="slot\slotmath.h" />
+    <ClInclude Include="slot\slotmathmanager.h" />
+    <ClInclude Include="slot\slotresults.h" />
+    <ClInclude Include="slot\slotstripmodel.h" />
+    <ClInclude Include="slot\spinprofile.h" />
+    <ClInclude Include="slot\stripset.h" />
+    <ClInclude Include="slot\stripstop.h" />
+    <ClInclude Include="slot\symbol2d.h" />
+    <ClInclude Include="slot\symbolposition.h" />
+    <ClInclude Include="slot\symbolsetview.h" />
+    <ClInclude Include="slot\symbolsetviewmanager.h" />
+    <ClInclude Include="slot\valuetable.h" />
+    <ClInclude Include="slot\weightedtable.h" />
+    <ClInclude Include="slot\wheelgroupview.h" />
+    <ClInclude Include="slot\wheelview.h" />
+    <ClInclude Include="soil\image_DXT.h" />
+    <ClInclude Include="soil\image_helper.h" />
+    <ClInclude Include="soil\SOIL.h" />
+    <ClInclude Include="soil\stbi_DDS_aug.h" />
+    <ClInclude Include="soil\stbi_DDS_aug_c.h" />
+    <ClInclude Include="soil\stb_image_aug.h" />
+    <ClInclude Include="system\basegame.h" />
+    <ClInclude Include="system\device.h" />
+    <ClInclude Include="utilities\bitmask.h" />
+    <ClInclude Include="utilities\deletefuncs.h" />
+    <ClInclude Include="utilities\exceptionhandling.h" />
+    <ClInclude Include="utilities\genfunc.h" />
+    <ClInclude Include="utilities\highresolutiontimer.h" />
+    <ClInclude Include="utilities\mathfunc.h" />
+    <ClInclude Include="utilities\matrix.h" />
+    <ClInclude Include="utilities\settings.h" />
+    <ClInclude Include="utilities\smartpointers.h" />
+    <ClInclude Include="utilities\statcounter.h" />
+    <ClInclude Include="utilities\state.h" />
+    <ClInclude Include="utilities\thread.h" />
+    <ClInclude Include="utilities\threadpool.h" />
+    <ClInclude Include="utilities\timer.h" />
+    <ClInclude Include="utilities\xmlparsehelper.h" />
+    <ClInclude Include="utilities\xmlParser.h" />
+    <ClInclude Include="utilities\xmlpreloader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

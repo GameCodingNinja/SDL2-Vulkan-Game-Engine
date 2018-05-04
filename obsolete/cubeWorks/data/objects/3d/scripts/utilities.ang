@@ -1,0 +1,104 @@
+
+/************************************************************************
+*    FILE NAME:       utilities.ang
+*
+*    DESCRIPTION:     General purpose utility scripts
+************************************************************************/
+
+/************************************************************************
+*    desc:  Color to the final color in time                                                             
+************************************************************************/
+void ColorTo( float time, CColor final, CSprite3d & sprite )
+{
+    CColor current = sprite.GetColor();
+    CColor inc = (final - current) / time;
+
+    do
+    {
+        time -= GetElapsedTime();
+
+        current += inc * GetElapsedTime();
+        sprite.SetColor( current );
+
+        if( time < 0 )
+            sprite.SetColor( final );
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // ColorTo
+
+
+/************************************************************************
+*    desc:  Color to the final color in time                                                             
+************************************************************************/
+void MoveTo( float time, CPoint dest, CSprite3d & sprite )
+{
+	CPoint current = sprite.GetPos();
+    CPoint inc = (dest - current) / time;
+
+    do
+    {
+		float elapsedTime = GetElapsedTime();
+        time -= elapsedTime;
+
+        current += inc * elapsedTime;
+        sprite.SetPos( current );
+
+		sprite.IncRot( CPoint( 0.15 * elapsedTime, 0.2 * elapsedTime, 0.1 * elapsedTime ) );
+
+        if( time < 0 )
+            sprite.SetPos( dest );
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // MoveTo
+
+
+/************************************************************************
+*    desc:  Fade to the final alpha                                                             
+************************************************************************/
+void FadeTo( float time, float final, CSprite3d & sprite )
+{
+    // Convert from RGB value to normalized value
+    if( final > 1.5 )
+        final *= 0.00390625f;
+
+    float current = sprite.GetAlpha();
+    float inc = (final - current) / time;
+
+    do
+    {
+		float elapsedTime = GetElapsedTime();
+        time -= elapsedTime;
+
+        current += inc * elapsedTime;
+        sprite.SetAlpha( current );
+
+        if( time < 0 )
+            sprite.SetAlpha( final );
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // FadeTo
+
+
+/************************************************************************
+*    desc:  Hold the sprite execution in time                                                            
+************************************************************************/
+void Hold( float time )
+{
+    do
+    {
+        time -= GetElapsedTime();
+
+        Suspend();
+    }
+    while( time > 0 );
+
+}   // Hold

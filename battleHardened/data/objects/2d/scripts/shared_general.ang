@@ -1,0 +1,36 @@
+
+/************************************************************************
+*    FILE NAME:       shared_general.ang
+*
+*    DESCRIPTION:     General purpose shared scripts. Game specific scrips
+*                     that are not specific to any one group.
+*
+*                     The keyword "shared" allows for only one copy to
+*                     loaded and used among all modules
+************************************************************************/
+
+/************************************************************************
+*    desc:  Screen fade in script
+************************************************************************/
+shared void Screen_FadeIn()
+{
+    CColor current(0,0,0,1);
+    CColor final(1,1,1,1);
+    ShaderColorTo( 250, current, final, "additive" );
+    
+}   // Screen_FadeIn
+
+
+/************************************************************************
+*    desc:  Screen fade out script
+************************************************************************/
+shared void Screen_FadeOut()
+{
+    CColor current(1,1,1,1);
+    CColor final(0,0,0,1);
+    ShaderColorTo( 250, current, final, "additive" );
+    
+    DispatchEvent( EGE_MENU_GAME_STATE_CHANGE, ETC_END );
+    
+}   // Screen_FadeOut
+

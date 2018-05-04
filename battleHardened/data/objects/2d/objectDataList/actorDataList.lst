@@ -1,0 +1,95 @@
+<objectDataList2D>
+
+        <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <!-- Resolution swap only used for mobile devices - list from lowest to highest resolution -->
+            <graphicResSwap>
+                <res heightOrLess="800" defaultUniformScale="1.5" ext="_720"/>
+            </graphicResSwap>
+            <texture file="data/textures/actor/actor_spriteSheet.png"/>
+            <mesh genType="sprite_sheet" file="">
+                <spriteSheet file="data/objects/2d/mesh/actor.xml">
+                    <!--
+                    <glyph id="weaponicons (2)"/>
+                    <glyph id="pomel (14)"/> -->
+                </spriteSheet>
+                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
+            </mesh>
+            <color r="1" g="1" b="1" a="1"/>
+            <shader id="shader_2d_spriteSheet"/>
+        </visual>
+        <physics world="">
+            <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
+            <fixtureLst>
+                <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
+                    <!-- <collisionFilter categoryBits="" maskBits="" groupIndex=""/> -->
+                    <!-- <vertLst>
+                    vert list for polygon shapes - max of 8
+                    Box2D polygons are defined using Counter Clockwise Winding (CCW)
+                    <vert x="" y=""/>
+                    </vertLst> -->
+                    <sizeMod top="0" bottom="0" left="0" right="0"/>
+                </fixture>
+            </fixtureLst>
+        </physics>
+        <size width="0" height="0"/>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+
+    <objectList>
+        
+        <object name="player_ship">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="skyship"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="ship_gun">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="redblueship"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="player_fire_tail">
+            <visual>
+                <mesh>
+                    <spriteSheet glyphCount="13">
+                        <glyph id="firetail%04i"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="player_projectile">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="projectile"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+        
+        <object name="enemy_ship">
+            <visual>
+                <mesh>
+                    <spriteSheet>
+                        <glyph id="ship1"/>
+                    </spriteSheet>
+                </mesh>
+            </visual>
+        </object>
+
+    </objectList>
+
+</objectDataList2D>
+

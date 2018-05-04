@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<spriteSheet width="988" height="850">
+
+    <rect x1=" 861" y1="  87" x2=" 126" y2="  84" cx="   0" cy="   0" name="buy_btn"/>
+    <rect x1=" 861" y1="   1" x2=" 126" y2="  84" cx="   0" cy="   0" name="buy_btn_active_overlay"/>
+    <rect x1=" 353" y1=" 755" x2=" 212" y2="  70" cx="   0" cy="   0" name="credit_meter"/>
+    <rect x1=" 481" y1="   1" x2=" 378" y2=" 380" cx="  -1" cy="  -1" name="Galactic Girl Normal1"/>
+    <rect x1=" 463" y1=" 387" x2=" 362" y2=" 356" cx="  -2" cy="   6" name="Galactic Girl Overlay1"/>
+    <rect x1="   1" y1=" 755" x2=" 350" y2="  94" cx="   0" cy="  -1" name="Level Meter"/>
+    <rect x1=" 861" y1=" 173" x2="  86" y2="  78" cx="   0" cy="  -1" name="Level Meter Star"/>
+    <rect x1=" 861" y1=" 307" x2="  76" y2="  52" cx="   0" cy="   0" name="menu_btn"/>
+    <rect x1=" 861" y1=" 253" x2="  76" y2="  52" cx="   0" cy="   0" name="menu_btn_active_overlay"/>
+    <rect x1="   1" y1=" 387" x2=" 460" y2=" 366" cx="   0" cy="   9" name="Payback Pig Normal"/>
+    <rect x1="   1" y1="   1" x2=" 478" y2=" 384" cx="  -1" cy="   9" name="Payback Pig Roll Over"/>
+    <rect x1=" 567" y1=" 755" x2=" 330" y2="  44" cx="   0" cy="  -1" name="Level Meter Color"/>
+
+</spriteSheet>

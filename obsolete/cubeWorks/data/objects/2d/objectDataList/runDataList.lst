@@ -1,0 +1,93 @@
+<objectDataList2D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <texture count="0" file="" compressed="false"/>
+            <mesh genType="quad">
+                <quad uv.x1="0" uv.y1="0" uv.x2="1" uv.y2="1"/>
+                <spriteSheet defIndex="0" glyphCount="0" columns="0"/>
+                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
+                <file name=""/>
+            </mesh>
+            <color r="1" g="1" b="1" a="1"/>
+            <shader id="shader_2d"/>
+        </visual>
+        <physics world="(game)">
+            <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
+            <fixtureLst>
+                <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
+                    <!-- vert list for polygon shapes - max of 8
+                    Box2D polygons are defined using Counter Clockwise Winding (CCW)
+                    <vert x="" y=""/> -->
+                    <sizeMod top="0" bottom="0" left="0" right="0"/>
+                </fixture>
+            </fixtureLst>
+        </physics>
+        <size width="0" height="0"/>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+    
+        <object name="box">
+            <visual>
+                <texture file="data/textures/run/box.png"/>
+            </visual>
+            <physics>
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="polygon" density="0.1" restitution="0.5">
+                        <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
+                    </fixture>
+                </fixtureLst>
+            </physics>
+            <size width="100" height="100"/>
+        </object>
+    
+        <object name="triangle">
+            <visual>
+                <texture file="data/textures/run/triangle.png"/>
+            </visual>
+            <physics>
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="polygon" density="0.1" restitution="0.5">
+                        <vert x="50" y="5"/>
+                        <vert x="5" y="94"/>
+                        <vert x="94" y="94"/>
+                    </fixture>
+                </fixtureLst>
+            </physics>
+        </object>
+    
+        <object name="circle">
+            <visual>
+                <texture file="data/textures/run/circle.png"/>
+            </visual>
+            <physics>
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="circle" radius="48" density="0.1" restitution="0.5"/>
+                </fixtureLst>
+            </physics>
+        </object>
+
+        <object name="floor">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="0" g="0" b="1" a="1"/>
+            </visual>
+            <physics>
+                <body type="static"/>
+                <fixtureLst>
+                    <fixture shape="polygon"/>
+                </fixtureLst>
+            </physics>
+            <size width="700" height="50"/>
+        </object>
+
+    </objectList>
+
+</objectDataList2D>
+

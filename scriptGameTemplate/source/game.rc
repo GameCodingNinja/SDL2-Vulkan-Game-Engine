@@ -1,0 +1,9 @@
+//  Resource File
+//  File game.rc
+
+
+// AppIcon automatically makes it the icon for the *.exe
+// This icon is also used for the parent window
+AppIcon ICON "game.ico"
+
+

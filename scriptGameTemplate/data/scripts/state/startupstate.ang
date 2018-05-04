@@ -1,0 +1,110 @@
+
+//
+//  FILE NAME:  startupstate.ang
+//
+//  DESC:       Start up game state
+//
+
+final class CStartUpState : iGameState
+{
+    // Startup logo
+    iSprite @m_logo;
+
+    // Basic strategy
+    iStrategy @strategyFor2D;
+
+    //
+    //  Constructor
+    //
+    CStartUpState()
+    {
+        super( EGS_STARTUP, EGS_TITLE_SCREEN );
+    }
+
+    //
+    //  Destructor
+    //
+    ~CStartUpState()
+    {
+        ObjectDataMgr.freeGroup2D( "(startup)" );
+        strategyFor2D.setToDestroy( m_logo.getId() );
+    }
+
+    //
+    //  Init the state
+    //
+    void init() override
+    {
+        // Create all the needed strategies
+        @strategyFor2D = StrategyMgr.createBasicSpriteStrategy( "strategyFor2D" );
+        StrategyMgr.createBasicSpriteStrategy( "strategyFor3D" );
+        StrategyMgr.createMenuStrategy( "menu" );
+
+        // Load this states assets and display the logo
+        loadStateAndFadeIn();
+
+        // Do the fade in
+        Screen_FadeIn();
+
+        // Load the remaining assets
+        loadAssets();
+
+        // Loading done, fade out
+        Screen_FadeOut();
+
+        doChangeState();
+    }
+
+    //
+    //  Load this states assets for displaying the logo
+    //
+    void loadStateAndFadeIn()
+    {
+        // Load the shaders
+        ShaderMgr.load( "data/shaders/shader.cfg" );
+        ShaderMgr.setAllShaderColor( "additive", 0, 0, 0, 1 );
+
+        // Load the 2d object data list table
+        ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
+
+        // Load the start up group
+        ObjectDataMgr.loadGroup2D( "(startup)" );
+
+        // Create the logo for the sprite strategy
+        @m_logo = strategyFor2D.createSprite( "(startup)", "logo" );
+    }
+
+    //
+    //  Load the remaining assets
+    //
+    void loadAssets()
+    {
+        // Load the list tables
+        ObjectDataMgr.loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
+        MenuMgr.loadListTable( "data/objects/2d/menu/menuListTable.lst" );
+        SoundMgr.loadListTable( "data/sound/soundListTable.lst" );
+
+        // Load the menu scripts
+        ScriptMgr.loadGroup( "(menu)" );
+
+        // Load in any fonts
+        FontMgr.load( "data/textures/fonts/font.lst" );
+
+        // Load the action manager - Must be loaded before memu system
+        ActionMgr.load( "data/settings/controllerMapping.cfg" );
+
+        // Load the menu action list
+        MenuMgr.loadMenuAction( "data/objects/2d/menu/menu_action.list" );
+
+        // Load the start up animation group
+        ObjectDataMgr.loadGroup2D( "(menu)" );
+        
+        SoundMgr.loadGroup("(menu)");
+
+        // Load the menu group
+        MenuMgr.loadGroup("(menu)");
+        
+        NTitleScreenState::ObjectDataLoad();
+    }
+};
+

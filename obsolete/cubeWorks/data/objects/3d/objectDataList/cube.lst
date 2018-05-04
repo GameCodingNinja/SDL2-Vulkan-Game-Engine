@@ -1,0 +1,42 @@
+<objectDataList3D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual file="">
+            <color r="1" g="1" b="1" a="1"/>
+            <shader id="shader_3d_no_txt"/>
+        </visual>
+        <physics world="">
+            <body shape="" mass="0" linearDamping="0" angularDamping="0" friction="0.5" rollingFriction="0.0" restitution="0.0"/>
+            <collisionFilter filter="0" mask="0"/>
+            <planeNormal x="" y="" z=""/>
+        </physics>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+
+        <object name="cubeShoot">
+            <visual file="data/objects/3d/meshes/cube.3dm"/>
+        </object>
+
+        <object name="cubePhysics">
+            <visual file="data/objects/3d/meshes/cube.3dm"/>
+            <physics world="(cube)">
+                <body shape="box" mass="1.0"/>
+                <collisionFilter group="1" mask="2"/>
+            </physics>
+        </object>
+
+        <object name="plane">
+          <physics world="(cube)">
+              <body shape="plane"/>
+              <collisionFilter group="2" mask="1"/>
+              <planeNormal x="0" y="1" z="0"/>
+          </physics>
+        </object>
+
+    </objectList>
+
+</objectDataList3D>
+

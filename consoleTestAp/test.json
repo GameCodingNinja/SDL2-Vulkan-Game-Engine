@@ -1,0 +1,12 @@
+{ "data": {
+"employees":
+    [{"firstName":"John", "lastName":"Doe"},
+    {"firstName":"Anna", "lastName":"Smith"},
+    {"firstName":"Peter", "lastName":"Jones"}],
+
+"customers":
+    [{"firstName":"Larry", "lastName":"Doe"},
+    {"firstName":"Steve", "lastName":"Smith"},
+    {"firstName":"Robbert", "lastName":"Jones"}]
+}}
+

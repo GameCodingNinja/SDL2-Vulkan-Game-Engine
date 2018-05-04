@@ -1,0 +1,22 @@
+1) copy "build_msvc10.bat" from C:\svnRabidSquirrelGamesClient\tools to the boost library
+2) Run the "Visual Studio Command Prompt" from menu "option Microsoft Visual Studio" " "Visual Tools"
+3) Make your way to the boost libaray
+4) Excute   bootstrap          from the command line.
+5) Excute   build_msvc10.bat   from command line.
+
+6) Sit back and relax. This will take a while
+7) Now perform a clean build on whole project. This assume you have C:\Program Files\boost\stage\lib as the path to the libraries setup in MSVC.
+
+Another way to just build everything is to bypass "build_msvc10.bat"
+1) Run the "Visual Studio Command Prompt" from menu "option Microsoft Visual Studio" " "Visual Tools"
+   MSBuild Command prompt from Visual Studio 2015
+2) Make your way to the boost libaray
+3) Excute   bootstrap          from the command line.
+4) b2 --toolset=msvc-14.0 --build-type=complete stage
+5) toolset=msvc-10.0 or toolset=msvc-12.0 or or toolset=msvc-14.0
+
+For Linux
+// Install boost
+./bootstrap.sh --prefix=/usr
+./b2 stage threading=multi link=shared
+./b2 install --prefix=/usr threading=multi link=shared

@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="data">
+      <UniqueIdentifier>{2dfa8326-8d6e-4cf7-9688-497c7271578d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\settings">
+      <UniqueIdentifier>{a02470a6-3f07-482e-8a55-be0db4f273bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders">
+      <UniqueIdentifier>{9b3b5197-b4df-4123-bb95-72f1bb2d1508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects">
+      <UniqueIdentifier>{704d41f8-edef-401e-9453-dacac670b12b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d">
+      <UniqueIdentifier>{311071e9-71e7-43f8-833c-e004af346f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\objectDataList">
+      <UniqueIdentifier>{8e81b27f-6f56-45a9-9d4d-94c8802c1c7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="source\game">
+      <UniqueIdentifier>{bc8898de-e7fe-4945-8bdd-f572e7c89af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\scripts">
+      <UniqueIdentifier>{a8d1b703-03fe-4370-aeca-9617d4acd472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\sound">
+      <UniqueIdentifier>{b4cc36b3-1817-4a08-8a94-3d16faaef365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\menu">
+      <UniqueIdentifier>{8d421a29-337a-4a06-989c-0c13658e9efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\menu\control">
+      <UniqueIdentifier>{c1ac8283-329a-410b-b0ad-7b37dc5265a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\smartGUI">
+      <UniqueIdentifier>{adb79d6b-63b5-413f-bf9b-537a758557ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\physics">
+      <UniqueIdentifier>{75a84172-c932-4b26-b452-fe79278dbd13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\state">
+      <UniqueIdentifier>{6a673694-da0b-416f-bee5-72998dac95a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\loadscreens">
+      <UniqueIdentifier>{e90cbaca-c8a0-45d8-8355-51d1a4b7020e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\hud">
+      <UniqueIdentifier>{0a75ecd6-8cac-4ddb-8d90-f96389b0a609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\2d\hud\control">
+      <UniqueIdentifier>{4989cbf2-668a-43e1-8ced-de9001ddf11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\3d">
+      <UniqueIdentifier>{7fb3e026-3bda-4261-8ed4-f9a49224df43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\objects\3d\objectDataList">
+      <UniqueIdentifier>{09896821-8d41-41a7-884c-48905a784660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\ai">
+      <UniqueIdentifier>{b12c7e29-46d3-4cb4-82c2-f258d4cbcab6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\settings\settings.cfg">
+      <Filter>data\settings</Filter>
+    </None>
+    <None Include="data\shaders\shader.cfg">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\objects\2d\objectDataList\startupDataList.lst">
+      <Filter>data\objects\2d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\2d\objectDataList\dataListTable.lst">
+      <Filter>data\objects\2d\objectDataList</Filter>
+    </None>
+    <None Include="data\shaders\shader_v2.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\shader_v2.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\shader_v3.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\shader_v3.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\shader_solid_v2.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\shaders\shader_soild_v2.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="data\textures\fonts\font.lst">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\objects\2d\scripts\scriptListTable.lst">
+      <Filter>data\objects\2d\scripts</Filter>
+    </None>
+    <None Include="data\sound\menuSound.lst">
+      <Filter>data\sound</Filter>
+    </None>
+    <None Include="data\sound\soundListTable.lst">
+      <Filter>data\sound</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\tree.menu">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\pause.menu">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\objectDataList\menuDataList.lst">
+      <Filter>data\objects\2d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\tree.list">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\scripts\menu.ang">
+      <Filter>data\objects\2d\scripts</Filter>
+    </None>
+    <None Include="data\objects\2d\scripts\menu_defs.ang">
+      <Filter>data\objects\2d\scripts</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\menu_label.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_275x55.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="CMakeLists.txt" />
+    <None Include="source\CMakeLists.txt">
+      <Filter>source</Filter>
+    </None>
+    <None Include="data\settings\controllerMapping.cfg">
+      <Filter>data\settings</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\settings.menu">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\key_bindings.menu">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\confirmation.menu">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_125x55.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\confirmation_label.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_list.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_arrow.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\check_box_245x55.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\physics\physicsListTable.lst">
+      <Filter>data\objects\2d\physics</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\back_button.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\close_button.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_145x55.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\objectDataList\titleScreenDataList.lst">
+      <Filter>data\objects\2d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\title_screen.menu">
+      <Filter>data\objects\2d\menu</Filter>
+    </None>
+    <None Include="data\objects\2d\loadscreens\startupLoadScreen.cfg">
+      <Filter>data\objects\2d\loadscreens</Filter>
+    </None>
+    <None Include="data\objects\2d\loadscreens\gameLoadScreen.cfg">
+      <Filter>data\objects\2d\loadscreens</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\button_slider.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\deadzone_slider.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\settings\gamecontrollerdb.txt">
+      <Filter>data\settings</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\key_binding_scroll_box.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\objectDataList\menuBackgrounds.lst">
+      <Filter>data\objects\2d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\2d\objectDataList\menuGeneric.lst">
+      <Filter>data\objects\2d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\key_binding_slider.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\key_binding_label.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\key_binding_button.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\menu\control\key_binding_seperator.ctrl">
+      <Filter>data\objects\2d\menu\control</Filter>
+    </None>
+    <None Include="data\objects\2d\physics\gamePhysics.cfg">
+      <Filter>data\objects\2d\physics</Filter>
+    </None>
+    <None Include="data\objects\2d\hud\run.hud">
+      <Filter>data\objects\2d\hud</Filter>
+    </None>
+    <None Include="data\objects\2d\hud\control\progress_bar.ctrl">
+      <Filter>data\objects\2d\hud\control</Filter>
+    </None>
+    <None Include="data\objects\3d\objectDataList\cube.lst">
+      <Filter>data\objects\3d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\3d\objectDataList\dataListTable.lst">
+      <Filter>data\objects\3d\objectDataList</Filter>
+    </None>
+    <None Include="data\objects\2d\scripts\shared_utilities.ang">
+      <Filter>data\objects\2d\scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\game\game.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game\main.cpp">
+      <Filter>source\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartconfirmbtn.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartresolutionbtn.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartsettingsmenubtn.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartapplysettingsbtn.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartfullscreencheckbox.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartvsynccheckbox.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\state\commonstate.cpp">
+      <Filter>source\state</Filter>
+    </ClCompile>
+    <ClCompile Include="source\state\startupstate.cpp">
+      <Filter>source\state</Filter>
+    </ClCompile>
+    <ClCompile Include="source\state\titlescreenstate.cpp">
+      <Filter>source\state</Filter>
+    </ClCompile>
+    <ClCompile Include="source\state\runstate.cpp">
+      <Filter>source\state</Filter>
+    </ClCompile>
+    <ClCompile Include="source\state\loadstate.cpp">
+      <Filter>source\state</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartdeadzoneslider.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartkeybindbtn.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\smartGUI\smartresetkeybind.cpp">
+      <Filter>source\smartGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ai\ballai.cpp">
+      <Filter>source\ai</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\game\game.h">
+      <Filter>source\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartconfirmbtn.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartresolutionbtn.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartsettingsmenubtn.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartapplysettingsbtn.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartfullscreencheckbox.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartvsynccheckbox.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\commonstate.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\igamestate.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\startupstate.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\titlescreenstate.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\runstate.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\loadstate.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartdeadzoneslider.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartkeybindbtn.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\smartGUI\smartresetkeybind.h">
+      <Filter>source\smartGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ai\ballai.h">
+      <Filter>source\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\gamedefs.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+    <ClInclude Include="source\state\statemessage.h">
+      <Filter>source\state</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\game.rc" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,38 @@
+<soundList>
+
+  <soundFiles>
+    <load id="shoot_0" file="data/sound/cube/Shoot1.wav"/>
+    <load id="shoot_1" file="data/sound/cube/Shoot2.wav"/>
+    <load id="shoot_2" file="data/sound/cube/Shoot3.wav"/>
+    <load id="shoot_3" file="data/sound/cube/Shoot4.wav"/>
+    <load id="shoot_4" file="data/sound/cube/Shoot7.wav"/>
+    <load id="explode_0" file="data/sound/cube/Explode1.wav"/>
+    <load id="explode_1" file="data/sound/cube/Explode2.wav"/>
+    <load id="explode_2" file="data/sound/cube/Explode3.wav"/>
+    <load id="explode_3" file="data/sound/cube/Explode4.wav"/>
+    <load id="explode_4" file="data/sound/cube/Explode5.wav"/>
+    <load id="explode_5" file="data/sound/cube/Explode6.wav"/>
+    <load id="explode_6" file="data/sound/cube/Explode7.wav"/>
+  </soundFiles>
+
+  <playlistSet>
+    <playList id="shoot" playtype="random">
+      <sound id="shoot_0"/>
+      <sound id="shoot_1"/>
+      <sound id="shoot_2"/>
+      <sound id="shoot_3"/>
+      <sound id="shoot_4"/>
+    </playList>
+    
+    <playList id="explode" playtype="random">
+      <sound id="explode_0"/>
+      <sound id="explode_1"/>
+      <sound id="explode_2"/>
+      <sound id="explode_3"/>
+      <sound id="explode_4"/>
+      <sound id="explode_5"/>
+      <sound id="explode_6"/>
+    </playList>
+  </playlistSet>
+
+</soundList>

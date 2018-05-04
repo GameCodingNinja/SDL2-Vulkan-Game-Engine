@@ -1,0 +1,44 @@
+<UIControl>
+
+  <spriteList>
+
+    <sprite objectName="title_screen_slider_selection_frame">
+      <position x="0" y="0" z="0"/>
+      <script>
+        <state disabled="Control_Hidden" inactive="Control_Hidden" active="Control_Active" selected="Control_Selected"/>
+      </script>
+    </sprite>
+
+    <sprite objectName="title_screen_slider_frame">
+      <position x="0" y="-15" z="0"/>
+      <script>
+        <transition in="Control_TransIn" out="Control_TransOut"/>
+        <state disabled="Control_Disabled" inactive="Control_Inactive" active="Control_Active" selected="Control_Selected"/>
+      </script>
+    </sprite>
+
+    <sprite objectName="control_font">
+      <position x="-145" y="25" z="0"/>
+      <font fontName="dejavu_sans_cond_26">
+        <alignment horzAlign="left" vertAlign="center"/>
+      </font>
+      <script>
+        <transition in="Control_TransIn" out="Control_TransOut"/>
+        <state disabled="Control_Disabled" inactive="Control_Inactive" active="Control_Active" selected="Control_Selected"/>
+      </script>
+    </sprite>
+
+  </spriteList>
+
+  <settings maxTravelDistPixels="230"/>
+
+  <subControlList>
+
+    <control name="slider1" controltype="button" defaultState="inactive" mouseSelectDown="true">
+      <filePath file="data/objects/2d/menu/control/button_slider.ctrl"/>
+      <position x="0" y="-15" z="0"/>
+    </control>
+
+  </subControlList>
+
+</UIControl>

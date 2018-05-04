@@ -1,0 +1,159 @@
+<objectDataList2D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <texture count="0" file="" compressed="false"/>
+            <mesh genType="quad" file="">
+                <spriteSheet defIndex="0" glyphCount="0" columns="0"/>
+                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
+            </mesh>
+            <color r="1" g="1" b="1" a="1"/>
+            <shader id="shader_2d"/>
+        </visual>
+        <physics world="">
+            <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
+            <fixtureLst>
+                <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
+                    <!-- vert list for polygon shapes - max of 8
+                    Box2D polygons are defined using Counter Clockwise Winding (CCW)
+                    <vert x="" y=""/> -->
+                    <sizeMod top="0" bottom="0" left="0" right="0"/>
+                </fixture>
+            </fixtureLst>
+        </physics>
+        <size width="0" height="0"/>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+
+        <object name="label_font">
+            <visual>
+                <mesh genType="font"/>
+                <color r="64" g="125" b="192" a="1"/>
+            </visual>
+        </object>
+
+        <object name="control_font">
+            <visual>
+                <mesh genType="font"/>
+                <color r="64" g="125" b="192" a="1"/>
+            </visual>
+        </object>
+        
+        <object name="700x70_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="217"/>
+            </visual>
+            <size width="700" height="70"/>
+        </object>
+        
+        <object name="700x70_button_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="696" height="66"/>
+        </object>
+        
+        
+        <object name="330x60_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="217"/>
+            </visual>
+            <size width="330" height="60"/>
+        </object>
+
+        <object name="330x60_button_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="326" height="56"/>
+        </object>
+        
+        
+        <object name="280x60_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="217"/>
+            </visual>
+            <size width="280" height="60"/>
+        </object>
+        
+        
+        <object name="150x60_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="150" height="60"/>
+        </object>
+
+        <object name="150x60_button_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="146" height="56"/>
+        </object>
+        
+    
+        <object name="126x60_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="126" height="60"/>
+        </object>
+
+        <object name="126x60_button_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="122" height="56"/>
+        </object>
+        
+        
+        <object name="28x28_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_2_pixel_frame.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="28" height="28"/>
+        </object>
+
+        <object name="28x28_button_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="26" height="26"/>
+        </object>
+
+    </objectList>
+
+</objectDataList2D>
+

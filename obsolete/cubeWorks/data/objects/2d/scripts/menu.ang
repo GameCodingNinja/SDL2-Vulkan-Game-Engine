@@ -1,0 +1,216 @@
+
+
+void Control_OnActive()
+{
+    PlaySound( "(menu)", "active" );
+}
+
+void Control_OnSelect()
+{
+    PlaySound( "(menu)", "select" );
+}
+
+
+void Menu_TransIn( CSprite2d & sprite )
+{
+    sprite.SetAlpha( 0 );
+    FadeTo( 250, sprite.GetDefaultAlpha(), sprite );
+}
+
+void Menu_TransOut( CSprite2d & sprite )
+{
+    FadeTo( 250, 0, sprite );
+}
+
+void Control_TransIn( CSprite2d & sprite )
+{
+    g_allowEvent = true;
+
+    sprite.SetAlpha( 0 );
+    FadeTo( 250, sprite.GetDefaultAlpha(), sprite );
+
+    if( g_allowEvent )
+    {
+        g_allowEvent = false;
+        DispatchEvent( EGE_MENU_TRANS_IN, ETC_END );
+    }
+}
+
+void Control_TransOut( CSprite2d & sprite )
+{
+    g_allowEvent = true;
+
+    FadeTo( 250, 0, sprite );
+
+    if( g_allowEvent )
+    {
+        g_allowEvent = false;
+        DispatchEvent( EGE_MENU_TRANS_OUT, ETC_END );
+    }
+}
+
+void Control_Disabled( CSprite2d & sprite )
+{
+    CColor color = sprite.GetDefaultColor();
+    color.TransformHSV( 0, 0, 1 );
+
+    sprite.SetColor( color );
+}
+
+void Control_Inactive( CSprite2d & sprite )
+{
+    sprite.SetDefaultColor();
+}
+
+void Control_Hidden( CSprite2d & sprite )
+{
+    sprite.SetVisible( false );
+}
+
+
+void Ctrl_Active( CSprite2d & sprite, float hiHSV, float lowHSV )
+{
+    sprite.SetVisible( true );
+
+    CColor hiColor = sprite.GetDefaultColor();
+    hiColor.TransformHSV( 0, 1, hiHSV );
+
+    CColor lowColor = sprite.GetDefaultColor();
+    lowColor.TransformHSV( 0, 1, lowHSV );
+
+    while(true)
+    {
+        ColorTo( 500, hiColor, sprite );
+        ColorTo( 500, lowColor, sprite );
+    }
+}
+
+void Control_Active( CSprite2d & sprite )
+{
+    Ctrl_Active( sprite, 1.3, .5 );
+}
+
+void Control_Solid_Active( CSprite2d & sprite )
+{
+    Ctrl_Active( sprite, 1.1, .5 );
+}
+
+
+void Ctrl_Selected( CSprite2d & sprite, float hiHSV, float lowHSV )
+{
+    sprite.SetVisible( true );
+
+    CColor hiColor = sprite.GetDefaultColor();
+    hiColor.TransformHSV( 0, 1, hiHSV );
+
+    CColor lowColor = sprite.GetDefaultColor();
+    lowColor.TransformHSV( 0, 1, lowHSV );
+
+    sprite.SetColor( hiColor );
+
+    ColorTo( 120, lowColor, sprite );
+    ColorTo( 100, hiColor, sprite );
+}
+
+void Control_Selected_Dispatch_Exe( CSprite2d & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.SetColor( sprite.GetDefaultColor() );
+
+    DispatchEvent( EGE_MENU_SELECT_EXECUTE );
+}
+
+void Control_Selected_Dispatch_Exe_Act( CSprite2d & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.SetColor( sprite.GetDefaultColor() );
+
+    DispatchEvent( EGE_MENU_SELECT_EXECUTE );
+    DispatchEvent( EGE_MENU_REACTIVATE );
+}
+
+void Control_Solid_Selected_visible( CSprite2d & sprite )
+{
+    Ctrl_Selected( sprite, 1.5, .6 );
+
+    sprite.SetColor( sprite.GetDefaultColor() );
+}
+
+void Control_Selected( CSprite2d & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.SetVisible( false );
+}
+
+void Control_Solid_Selected( CSprite2d & sprite )
+{
+    Ctrl_Selected( sprite, 1.5, .6 );
+
+    sprite.SetVisible( false );
+}
+
+
+void Control_Selected_frame_highlight( CSprite2d & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.SetRGBA( 1, 1, 1, 1 );
+}
+
+
+void Ctrl_Fast_Selected( CSprite2d & sprite, float hiHSV )
+{
+    sprite.SetVisible( true );
+
+    CColor hiColor = sprite.GetDefaultColor();
+    hiColor.TransformHSV( 0, 1, hiHSV );
+
+    sprite.SetColor( hiColor );
+}
+
+void Control_Fast_Face_Selected( CSprite2d & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.7 );
+
+    Hold( 80 );
+
+    sprite.SetDefaultColor();
+}
+
+void Control_Fast_Face_Selected_Act( CSprite2d & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.7 );
+
+    Hold( 80 );
+
+    sprite.SetDefaultColor();
+
+    DispatchEvent( EGE_MENU_REACTIVATE );
+}
+
+void Control_Fast_Selected( CSprite2d & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.5 );
+
+    Hold( 80 );
+
+    sprite.SetVisible( false );
+}
+
+void Control_Fast_Solid_Selected( CSprite2d & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.3 );
+
+    Hold( 80 );
+
+    sprite.SetVisible( false );
+}
+
+
+void Control_slider_btn_Selected( CSprite2d & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.7 );
+}

@@ -1,0 +1,13 @@
+<HudControl>
+
+  <spriteList>
+    
+    <sprite objectName="125x55_button_frame"/>
+
+    <sprite objectName="control_font">
+      <font fontName="dejavu_sans_cond_24"/>
+    </sprite>
+
+  </spriteList>
+
+</HudControl>

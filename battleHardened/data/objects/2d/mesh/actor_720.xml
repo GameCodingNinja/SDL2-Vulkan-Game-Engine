@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<spriteSheet width="990" height="254">
+
+    <rect x1=" 589" y1=" 179" x2=" 188" y2="  74" cx="   1" cy="  -1" name="firetail0000"/>
+    <rect x1=" 391" y1=" 179" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0001"/>
+    <rect x1=" 193" y1=" 179" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0002"/>
+    <rect x1="   1" y1=" 179" x2=" 190" y2="  74" cx="  -1" cy="  -1" name="firetail0003"/>
+    <rect x1=" 793" y1=" 103" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0004"/>
+    <rect x1=" 595" y1=" 103" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0005"/>
+    <rect x1=" 397" y1=" 103" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0006"/>
+    <rect x1=" 199" y1=" 103" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0007"/>
+    <rect x1="   1" y1=" 103" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0008"/>
+    <rect x1=" 699" y1="   1" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0009"/>
+    <rect x1=" 501" y1="   1" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0010"/>
+    <rect x1=" 303" y1="   1" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0011"/>
+    <rect x1=" 105" y1="   1" x2=" 196" y2="  74" cx="  -4" cy="  -1" name="firetail0012"/>
+    <rect x1=" 105" y1="  77" x2="  74" y2="  20" cx="   0" cy="  -1" name="redblueship"/>
+    <rect x1=" 181" y1="  77" x2="  22" y2="  14" cx="   0" cy="  -1" name="projectile"/>
+    <rect x1=" 897" y1="   1" x2="  50" y2="  48" cx="   0" cy="  -1" name="ship1"/>
+    <rect x1="   1" y1="   1" x2=" 102" y2=" 100" cx="   0" cy="   0" name="skyship"/>
+
+</spriteSheet>

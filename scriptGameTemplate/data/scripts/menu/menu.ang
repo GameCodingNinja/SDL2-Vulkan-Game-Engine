@@ -1,0 +1,271 @@
+
+//
+//  FILE NAME:  menu.ang
+//
+//  DESC:       Scripts for controlling/animating menu interface
+//
+
+
+//
+//  Sound to play when the menu control becomes active
+//
+void Control_OnActive( CUIControl & control )
+{
+    SoundMgr.play( "(menu)", "active" );
+}
+
+//
+//  Sound to play when the menu control is selected
+//
+void Control_OnSelect( CUIControl & control )
+{
+    SoundMgr.play( "(menu)", "select" );
+}
+
+//
+//  Menu transition in script
+//
+void Menu_TransIn( CMenu & menu )
+{
+    menu.setVisible( true );
+
+    AlphaTo( 250, 1.f, menu );
+
+    DispatchEvent( EGE_MENU_TRANS_IN, ETC_END );
+}
+
+//
+//  Menu transition out script
+//
+void Menu_TransOut( CMenu & menu )
+{
+    AlphaTo( 250, 0.f, menu );
+
+    menu.setVisible( false );
+
+    DispatchEvent( EGE_MENU_TRANS_OUT, ETC_END );
+}
+
+//
+//  Script for setting the look of the disabled state
+//
+void Control_Disabled( iSprite & sprite )
+{
+    CColor color = sprite.getDefaultColor();
+    color.transformHSV( 0, 0, 1 );
+
+    sprite.setColor( color );
+}
+
+//
+//  Script for setting the look of the inactive state
+//
+void Control_Inactive( iSprite & sprite )
+{
+    sprite.setDefaultColor();
+}
+
+//
+//  Script for setting the look of the hidden state
+//
+void Control_Hidden( iSprite & sprite )
+{
+    sprite.setVisible( false );
+}
+
+//
+//  Script for animating the look of the active state
+//
+void Ctrl_Active( iSprite & sprite, float hiHSV, float lowHSV )
+{
+    sprite.setVisible( true );
+
+    CColor hiColor = sprite.getDefaultColor();
+    hiColor.transformHSV( 0, 1, hiHSV );
+
+    CColor lowColor = sprite.getDefaultColor();
+    lowColor.transformHSV( 0, 1, lowHSV );
+
+    while(true)
+    {
+        ColorTo( 500, hiColor, sprite );
+        ColorTo( 500, lowColor, sprite );
+    }
+}
+
+void Control_Active( iSprite & sprite )
+{
+    Ctrl_Active( sprite, 1.3, .5 );
+}
+
+void Control_Solid_Active( iSprite & sprite )
+{
+    Ctrl_Active( sprite, 1.1, .5 );
+}
+
+//
+//  Script for animating the look of the selected state
+//
+void Ctrl_Selected( iSprite & sprite, float hiHSV, float lowHSV )
+{
+    sprite.setVisible( true );
+
+    CColor hiColor = sprite.getDefaultColor();
+    hiColor.transformHSV( 0, 1, hiHSV );
+
+    CColor lowColor = sprite.getDefaultColor();
+    lowColor.transformHSV( 0, 1, lowHSV );
+
+    sprite.setColor( hiColor );
+
+    ColorTo( 120, lowColor, sprite );
+    ColorTo( 100, hiColor, sprite );
+}
+
+//
+//  Animates the selected state and sends a message
+//
+void Control_Selected_Dispatch_Exe( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.setColor( sprite.getDefaultColor() );
+
+    DispatchEvent( EGE_MENU_SELECT_EXECUTE );
+}
+
+void Control_Selected_Dispatch_Exe_Act( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.setColor( sprite.getDefaultColor() );
+
+    DispatchEvent( EGE_MENU_SELECT_EXECUTE );
+    DispatchEvent( EGE_MENU_REACTIVATE );
+}
+
+void Control_Selected_Visible( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.setColor( sprite.getDefaultColor() );
+}
+
+//
+//  Animates the selected state for solid
+//
+void Control_Solid_Selected_visible( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.5, .6 );
+
+    sprite.setColor( sprite.getDefaultColor() );
+}
+
+void Control_Selected( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.setVisible( false );
+}
+
+void Control_Solid_Selected( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.5, .6 );
+
+    sprite.setVisible( false );
+}
+
+//
+//  Animates the selected state and sets final color to white
+//
+void Control_Selected_frame_highlight( iSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.setColor( 1, 1, 1, 1 );
+}
+
+//
+//  Fast display of selected state
+//
+void Ctrl_Fast_Selected( iSprite & sprite, float hiHSV )
+{
+    sprite.setVisible( true );
+
+    CColor hiColor = sprite.getDefaultColor();
+    hiColor.transformHSV( 0, 1, hiHSV );
+
+    sprite.setColor( hiColor );
+}
+
+void Control_Fast_Face_Selected( iSprite & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.7 );
+
+    Hold( 80 );
+
+    sprite.setDefaultColor();
+}
+
+void Control_Fast_Face_Selected_Act( iSprite & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.7 );
+
+    Hold( 80 );
+
+    sprite.setDefaultColor();
+
+    DispatchEvent( EGE_MENU_REACTIVATE );
+}
+
+void Control_Fast_Selected( iSprite & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.5 );
+
+    Hold( 80 );
+
+    sprite.setVisible( false );
+}
+
+void Control_Fast_Solid_Selected( iSprite & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.3 );
+
+    Hold( 80 );
+
+    sprite.setVisible( false );
+}
+
+void Control_slider_btn_Selected( iSprite & sprite )
+{
+    Ctrl_Fast_Selected( sprite, 1.7 );
+}
+
+//
+//  Meter on start
+//
+void Meter_OnStart( iSprite & sprite )
+{
+    sprite.setVisible( true );
+    AlphaTo( 300, 1, sprite );
+}
+
+//
+//  Meter on stop
+//
+void Meter_OnStop( iSprite & sprite )
+{
+}
+
+//
+//  Meter on clear
+//
+void Meter_OnClear( iSprite & sprite, uint value )
+{
+    if( sprite.isVisible() )
+    {
+        AlphaTo( 250, 0, sprite );
+        sprite.setVisible( false );
+        sprite.createFontString( "" + value );
+    }
+}

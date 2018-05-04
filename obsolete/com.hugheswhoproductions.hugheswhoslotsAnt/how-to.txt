@@ -1,0 +1,21 @@
+Instructions on how to build this Android app from command line on Linux
+
+1) cd into the root folder of the project
+2) To build the native code: ndk-build -j2
+3) Now build the Java part: ant debug
+4) To install on device: ant debug install
+
+5) To clean the native code part of the project: ndk-build clean
+
+
+Run in debug mode on phone
+
+1) Install Eclipse for C/C++
+2) Install ADT plugin for Android development
+   ADT Plugin
+   https://dl-ssl.google.com/android/eclipse/
+3) Needed to install ncurses-5 because it was needed by the dubugger.
+   Ended up just downloading an RPM and extracted to my root drive.
+4) Works better if you Import an existing Android app from the file menu.
+   Right click on the project, choose Android Tools, Add Native Support.
+5) From the Project menu do "clean..." and "Build All". Won't debug if built from command line

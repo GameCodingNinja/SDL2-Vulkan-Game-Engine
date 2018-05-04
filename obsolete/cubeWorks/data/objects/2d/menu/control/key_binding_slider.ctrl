@@ -1,0 +1,25 @@
+<UIControl>
+
+  <spriteList>
+
+    <sprite objectName="key_binding_slider_frame">
+      <script>
+        <transition in="Control_TransIn" out="Control_TransOut"/>
+        <state disabled="Control_Disabled" inactive="Control_Inactive" active="Control_Active" selected="Control_Selected"/>
+      </script>
+    </sprite>
+    
+  </spriteList>
+
+  <settings maxTravelDistPixels="505"/>
+
+  <subControlList>
+
+    <control name="key_binding_slider_button" controltype="button" defaultState="inactive" mouseSelectDown="true">
+      <filePath file="data/objects/2d/menu/control/button_slider.ctrl"/>
+      <rotation z="90"/>
+    </control>
+
+  </subControlList>
+
+</UIControl>
