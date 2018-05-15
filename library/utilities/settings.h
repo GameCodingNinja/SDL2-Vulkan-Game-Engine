@@ -29,12 +29,18 @@ public:
 
     // Save the settings file
     void saveSettings();
-    
+
     // Init the file path for loading the settings file
     void initFilePath( const std::string & filePath );
 
     // Load settings data from xml file
     void loadXML();
+
+    // Get game info
+    const std::string & getGameName() const;
+    const std::string & getEngineName() const;
+    uint32_t getGameVersion() const;
+    uint32_t getEngineVersion() const;
 
     // Get game window size
     const CSize<float> & getResolution() const;
@@ -49,14 +55,14 @@ public:
     bool getVSync() const;
     void setVSync( bool value );
 
-    // Get the OpenGL major version
+    // Get the Vulkan major version
     int getMajorVersion() const;
 
-    // Get the OpenGL minor version
+    // Get the Vulkan minor version
     int getMinorVersion() const;
 
-    // Get the OpenGL profile type
-    int getProfile() const;
+    // Get if we want debug mode
+    bool getDebugMode() const;
 
     // Get the view angle
     float getViewAngle() const;
@@ -66,7 +72,7 @@ public:
 
     // Get the maximum z distance
     float getMaxZdist() const;
-    
+
     // Height and width screen ratio for orthographic objects.
     // The difference between screen and the default size
     const CSize<float> & getOrthoAspectRatio() const;
@@ -101,41 +107,41 @@ public:
 
     // Do we clear the target buffer
     bool getClearTargetBuffer() const;
-    
+
     // Get the sound frequency
     int getFrequency() const;
-    
+
     // Get the sound channels: mono, stero, quad, suround, etc
     int getSoundChannels() const;
-    
+
     // Get the number of channels used for mixing
     int getMixChannels() const;
-    
+
     // Get the chunk size.
     int getChunkSize() const;
-    
+
     // Get the minimum thread count
     int getMinThreadCount() const;
-    
+
     // Get the maximum thread count
     int getMaxThreadCount() const;
-    
+
     // Get the sector size
     int getSectorSize() const;
-    
+
     // Get half of the sector size
     int getSectorSizeHalf() const;
-    
+
     // Get the Anisotropic setting
     int getAnisotropicLevel() const;
     void setAnisotropicLevel( int level );
-    
+
     // Get the projection type
     NDefs::EProjectionType getProjectionType() const;
-    
+
     // Get the projection scale
     float getProjectionScale() const;
-    
+
     // Set/Get debug string visible
     void setDebugStrVisible( bool value );
     bool getDebugStrVisible() const;
@@ -153,6 +159,12 @@ private:
     // xml node
     XMLNode m_mainNode;
 
+    // The game/engine info
+    std::string m_gameName;
+    std::string m_engineName;
+    uint32_t m_gameVersion;
+    uint32_t m_engineVersion;
+
     // file path string
     std::string m_filePath;
 
@@ -162,16 +174,16 @@ private:
     CSize<float> m_native_size;
     CSize<float> m_default_size;
     CSize<float> m_default_size_half;
-    
+
     // Orientation of game window
     NDefs::EOrentation m_orientation;
-    
+
     // Height and width screen ratio for perspective projection
     CSize<float> m_screenAspectRatio;
 
     // Pre-calculated aspect ratios for orthographic projection
     CSize<float> m_orthoAspectRatio;
-    
+
     // Projection scale
     float m_projectionScale;
 
@@ -184,7 +196,7 @@ private:
     // OpenGL versions
     int m_major;
     int m_minor;
-    int m_profile;
+    bool m_debugMode;
 
     // view angle
     float m_viewAngle;
@@ -197,7 +209,7 @@ private:
 
     // Gamepad dead zone
     int m_gamepadStickDeadZone;
-    
+
     // Sound members
     int m_frequency;
     int m_sound_channels;
@@ -218,24 +230,24 @@ private:
 
     // Do we clear the target buffer
     bool m_clearTargetBuffer;
-    
+
     // Minimum thread count
     int m_minThreadCount;
-    
+
     // Max thread count
     // Value of zero means use max hardware threads to cores
     int m_maxThreadCount;
-    
+
     // the sector size
     float m_sectorSize;
     float m_sectorSizeHalf;
-    
+
     // Anisotropic filtering level
     NDefs::ETextFilter m_anisotropicLevel;
-    
+
     // The projection type
     NDefs::EProjectionType m_projectionType;
-    
+
     // Debug string members
     std::string m_debugStrGroup;
     std::string m_debugStrObject;

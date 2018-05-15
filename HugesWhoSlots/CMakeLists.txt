@@ -42,6 +42,7 @@ else()
     # Use the normal means to find the other packages
     find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)
+    find_package(Vulkan REQUIRED)
 
     # List all the include directories
     include_directories(

@@ -61,6 +61,7 @@ else()
         ${OPENGL_LIBRARIES}
         ${SDL2_LIBRARIES}
         ${SDL2MIXER_LIBRARIES}
+        ${Vulkan_LIBRARY}
         ${CMAKE_BINARY_DIR}/angelscript/libangelscript.a
         ${CMAKE_BINARY_DIR}/Box2D/libBox2D.a
         ${CMAKE_BINARY_DIR}/bulletPhysics/libbulletPhysics.a

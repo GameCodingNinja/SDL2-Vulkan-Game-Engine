@@ -5,12 +5,12 @@
 *    DESCRIPTION:     base game class
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
+/*#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
 #include "SDL_opengles2.h"
 #else
 #include <GL/glew.h>     // Glew dependencies (have to be defined first)
 #include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
+#endif*/
 
 // Physical component dependency
 #include <system/basegame.h>
@@ -35,7 +35,6 @@
 ************************************************************************/
 CBaseGame::CBaseGame()
     : m_pWindow(nullptr),
-      m_context(nullptr),
       m_gameRunning(false),
       m_clearBufferMask(0)
 {
@@ -47,13 +46,16 @@ CBaseGame::CBaseGame()
 ************************************************************************/
 CBaseGame::~CBaseGame()
 {
+    // Destroy the window and Vulkan instance
+    CDevice::Instance().destroy();
+    
     // Destroy the OpenGL context
-    if( m_context != nullptr )
-        SDL_GL_DeleteContext( m_context );
+    //if( m_context != nullptr )
+    //    SDL_GL_DeleteContext( m_context );
 
     // Destroy window
-    if( m_pWindow != nullptr )
-        SDL_DestroyWindow( m_pWindow );
+    //if( m_pWindow != nullptr )
+    //    SDL_DestroyWindow( m_pWindow );
 
     // Quit SDL subsystems
     SDL_Quit();
@@ -70,7 +72,7 @@ void CBaseGame::create()
 
     // Get local copies of the device handles
     m_pWindow = CDevice::Instance().getWindow();
-    m_context = CDevice::Instance().getContext();
+    //m_context = CDevice::Instance().getContext();
 
     // Game start init
     init();
@@ -83,7 +85,7 @@ void CBaseGame::create()
 void CBaseGame::init()
 {
     // Init the clear color
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    /*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     // Init the stencil clear mask based on the bit size of the mask
     // Stencil buffer can only be 1 or 8 bits per pixel
@@ -120,14 +122,14 @@ void CBaseGame::init()
     // Clear the back buffer and flip it prior to showing the window
     // Keeps us from seeing a flash or flicker of pre init junk
     glClear( GL_COLOR_BUFFER_BIT );
-    SDL_GL_SwapWindow( m_pWindow );
+    SDL_GL_SwapWindow( m_pWindow );*/
 
     // Show the window
     CDevice::Instance().showWindow( true );
 
     // Display a black screen
-    glClear( GL_COLOR_BUFFER_BIT );
-    SDL_GL_SwapWindow( m_pWindow );
+    /*glClear( GL_COLOR_BUFFER_BIT );
+    SDL_GL_SwapWindow( m_pWindow );*/
 }
 
 
@@ -164,7 +166,7 @@ void CBaseGame::pollEvents()
 bool CBaseGame::gameLoop()
 {
     // Handle the state change
-    doStateChange();
+    //doStateChange();
 
     // Poll for game events
     pollEvents();
@@ -172,7 +174,7 @@ bool CBaseGame::gameLoop()
     // Get our elapsed time
     CHighResTimer::Instance().calcElapsedTime();
 
-    if( m_gameRunning )
+    /*if( m_gameRunning )
     {
         // Handle any misc processing before the real work is started
         miscProcess();
@@ -203,7 +205,7 @@ bool CBaseGame::gameLoop()
         // Inc the cycle
         if( NBDefs::IsDebugMode() )
             CStatCounter::Instance().incCycle();
-    }
+    }*/
 
     return m_gameRunning;
 }

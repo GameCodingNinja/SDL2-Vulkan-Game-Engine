@@ -82,8 +82,8 @@ void CGame::init()
     CBetMgr::Instance().setCredits( 50000 );
 
     // Create the startup state
-    upGameState.reset( new CStartUpState );
-    upGameState->init();
+    //upGameState.reset( new CStartUpState );
+    //upGameState->init();
 
     // Let the games begin
     startGame();

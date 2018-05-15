@@ -30,9 +30,9 @@ CSettings::CSettings() :
     m_projectionScale(1),
     m_fullScreen(false),
     m_vSync(false),
-    m_major(2),
-    m_minor(1),
-    m_profile(SDL_GL_CONTEXT_PROFILE_CORE),
+    m_major(1),
+    m_minor(0),
+    m_debugMode(false),
     m_viewAngle(45.f),
     m_minZdist(5.f),
     m_maxZdist(1000.f),
@@ -89,6 +89,22 @@ void CSettings::loadXML()
 
     if( !m_mainNode.isEmpty() )
     {
+        const XMLNode infoNode = m_mainNode.getChildNode("info");
+        if( !infoNode.isEmpty() )
+        {
+            if( infoNode.isAttributeSet("gameName") )
+                m_gameName = infoNode.getAttribute("gameName");
+            
+            if( infoNode.isAttributeSet("engineName") )
+                m_engineName = infoNode.getAttribute("engineName");
+            
+            if( infoNode.isAttributeSet("gameVersion") )
+                m_gameVersion = std::atoi(infoNode.getAttribute("gameVersion"));
+            
+            if( infoNode.isAttributeSet("engineVersion") )
+                m_engineVersion = std::atoi(infoNode.getAttribute("engineVersion"));
+        }
+
         const XMLNode displayListNode = m_mainNode.getChildNode("display");
         if( !displayListNode.isEmpty() )
         {
@@ -151,26 +167,17 @@ void CSettings::loadXML()
         if( !deviceNode.isEmpty() )
         {
             // Get the attribute for OpenGL node
-            const XMLNode OpenGLNode = deviceNode.getChildNode("OpenGL");
-            if( !OpenGLNode.isEmpty() )
+            const XMLNode vulkanNode = deviceNode.getChildNode("Vulkan");
+            if( !vulkanNode.isEmpty() )
             {
-                m_major = std::atoi( OpenGLNode.getAttribute("major") );
-                m_minor = std::atoi( OpenGLNode.getAttribute("minor") );
-
-                const char * pAttr = OpenGLNode.getAttribute("profile");
-
-                if( std::strcmp( pAttr, "core" ) == 0 )
-                    m_profile = SDL_GL_CONTEXT_PROFILE_CORE;
-
-                else if( std::strcmp( pAttr, "es" ) == 0 )
-                    m_profile = SDL_GL_CONTEXT_PROFILE_ES;
-
-                else if( std::strcmp( pAttr, "compatibility" ) == 0 )
-                    m_profile = SDL_GL_CONTEXT_PROFILE_COMPATIBILITY;
-
-                #if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-                m_profile = SDL_GL_CONTEXT_PROFILE_ES;
-                #endif
+                if( vulkanNode.isAttributeSet("major") )
+                    m_major = std::atoi( vulkanNode.getAttribute("major") );
+                
+                if( vulkanNode.isAttributeSet("minor") )
+                    m_minor = std::atoi( vulkanNode.getAttribute("minor") );
+                
+                if( vulkanNode.isAttributeSet("debugMode") )
+                    m_debugMode = ( std::strcmp( vulkanNode.getAttribute("debugMode"), "true" ) == 0 );
             }
 
             // Get the projection info
@@ -298,6 +305,30 @@ void CSettings::loadXML()
 
 
 /************************************************************************
+*    DESC:  Get game info
+************************************************************************/
+const std::string & CSettings::getGameName() const
+{
+    return m_gameName;
+}
+
+const std::string & CSettings::getEngineName() const
+{
+    return m_engineName;
+}
+
+uint32_t CSettings::getGameVersion() const
+{
+    return m_gameVersion;
+}
+
+uint32_t CSettings::getEngineVersion() const
+{
+    return m_engineVersion;
+}
+
+
+/************************************************************************
 *    DESC:  Calculate the ratios
 ************************************************************************/
 void CSettings::calcRatio()
@@ -413,7 +444,7 @@ void CSettings::setVSync( bool value )
 
 
 /************************************************************************
-*    DESC:  Get the OpenGL major version
+*    DESC:  Get the Vulkan major version
 ************************************************************************/
 int CSettings::getMajorVersion() const
 {
@@ -422,7 +453,7 @@ int CSettings::getMajorVersion() const
 
 
 /************************************************************************
-*    DESC:  Get the OpenGL minor version
+*    DESC:  Get the Vulkan minor version
 ************************************************************************/
 int CSettings::getMinorVersion() const
 {
@@ -431,11 +462,11 @@ int CSettings::getMinorVersion() const
 
 
 /************************************************************************
-*    DESC:  Get the OpenGL profile type
+*    DESC:  Get if we want validation
 ************************************************************************/
-int CSettings::getProfile() const
+bool CSettings::getDebugMode() const
 {
-    return m_profile;
+    return m_debugMode;
 }
 
 
