@@ -52,7 +52,8 @@ CSettings::CSettings() :
     m_sectorSizeHalf(256),
     m_anisotropicLevel(NDefs::ETF_ANISOTROPIC_0X),
     m_projectionType(NDefs::EPT_PERSPECTIVE),
-    m_debugStrVisible(false)
+    m_debugStrVisible(false),
+    m_tripleBuffering(false)
 {
     CWorldValue::setSectorSize( 512 );
 }
@@ -230,7 +231,7 @@ void CSettings::loadXML()
             const XMLNode backBufferNode = deviceNode.getChildNode("backbuffer");
             if( !backBufferNode.isEmpty() )
             {
-                //tripleBuffering = (backBufferNode.getAttribute("tripleBuffering") == string("true"));
+                m_tripleBuffering = ( std::strcmp( backBufferNode.getAttribute("tripleBuffering"), "true" ) == 0 );
                 m_vSync = ( std::strcmp( backBufferNode.getAttribute("VSync"), "true" ) == 0 );
             }
 
@@ -692,6 +693,16 @@ bool CSettings::getDebugStrVisible() const
 {
     return m_debugStrVisible;
 }
+
+
+/************************************************************************
+*    desc:  Do we want triple buffering?
+************************************************************************/
+bool CSettings::getTripleBuffering() const
+{
+    return m_tripleBuffering;
+}
+
 
 
 /************************************************************************

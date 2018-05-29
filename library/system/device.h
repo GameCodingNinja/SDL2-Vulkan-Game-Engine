@@ -82,6 +82,9 @@ private:
     
     // Check if the device extension is supported
     bool isDeviceExtension( VkPhysicalDevice physicalDevice, const char* extenName );
+    
+    // Create the swap chain
+    void createSwapChain();
 
 private:
 
@@ -105,6 +108,15 @@ private:
     
     // Present queue handle
     VkQueue m_presentQueue;
+    
+    // Surface capabilities
+    VkSurfaceCapabilitiesKHR m_surfCapabilities;
+    
+    // Swap chain
+    VkSwapchainKHR m_swapchain;
+    
+    // Swap chain info
+    VkSwapchainCreateInfoKHR m_swapchainInfo = {};
 
     // OpenGL context
     //SDL_GLContext m_context;
@@ -117,6 +129,8 @@ private:
     
     // Last error result
     VkResult m_lastResult;
+    
+    
     
     // List of grpahics hardware
     //std::vector<VkPhysicalDevice> m_physicalDeviceVec;

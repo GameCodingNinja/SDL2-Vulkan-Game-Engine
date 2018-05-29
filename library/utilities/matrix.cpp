@@ -108,15 +108,20 @@ void CMatrix::clearTranlate()
 void CMatrix::mergeMatrix( const float mat[mMax] )
 {
     float temp[mMax];
+    
+    // Converting to a two demensional array much faster for the 4 loops
+    float (*Mat)[4] = (float (*)[4]) mat;
+    float (*Matrix)[4] = (float (*)[4]) matrix;
+    float (*Temp)[4] = (float (*)[4]) temp;
 
     for( int i = 0; i < 4; ++i )
     {
         for( int j = 0; j < 4; ++j )
         {
-            temp[(i*4)+j] = (matrix[i*4] * mat[j])
-            + (matrix[(i*4)+1] * mat[4+j])
-            + (matrix[(i*4)+2] * mat[8+j])
-            + (matrix[(i*4)+3] * mat[12+j]);
+            Temp[i][j] = (Matrix[i][0] * Mat[0][j])
+            + (Matrix[i][1] * Mat[1][j])
+            + (Matrix[i][2] * Mat[2][j])
+            + (Matrix[i][3] * Mat[3][j]);
         }
     }
 
@@ -132,29 +137,6 @@ void CMatrix::mergeMatrix( const CMatrix & obj )
 
 
 /************************************************************************
-*    DESC:  Merge matrix into master matrix
-************************************************************************/
-void CMatrix::reverseMergeMatrix( const float mat[mMax] )
-{
-    float temp[mMax];
-
-    for( int i = 0; i < 4; ++i )
-    {
-        for( int j = 0; j < 4; ++j )
-        {
-            temp[(i*4)+j] = (mat[i*4] * matrix[j])
-            + (mat[(i*4)+1] * matrix[4+j])
-            + (mat[(i*4)+2] * matrix[8+j])
-            + (mat[(i*4)+3] * matrix[12+j]);
-        }
-    }
-
-    // Copy temp to master Matrix
-    std::memcpy( matrix, temp, sizeof(temp) );
-}
-
-
-/************************************************************************
 *    DESC:  Merge source matrix into destination matrix.
 *
 *    param: float Dest[16] - Destination Matric
@@ -163,15 +145,20 @@ void CMatrix::reverseMergeMatrix( const float mat[mMax] )
 void CMatrix::mergeMatrices( float dest[mMax], const float source[mMax] )
 {
     float temp[mMax];
+    
+    // Converting to a two demensional array much faster for the 4 loops
+    float (*Dest)[4] = (float (*)[4]) dest;
+    float (*Source)[4] = (float (*)[4]) source;
+    float (*Temp)[4] = (float (*)[4]) temp;
 
     for( int i = 0; i < 4; ++i )
     {
         for( int j = 0; j < 4; ++j )
         {
-            temp[ (i*4)+j ] = ( source[ i*4 ] * dest[ j ] )
-            + ( source[ (i*4)+1 ] * dest[ 4+j ] )
-            + ( source[ (i*4)+2 ] * dest[ 8+j ] )
-            + ( source[ (i*4)+3 ] * dest[ 12+j ] );
+            Temp[i][j] = ( Source[i][0] * Dest[0][j] )
+            + ( Source[i][1] * Dest[1][j] )
+            + ( Source[i][2] * Dest[2][j] )
+            + ( Source[i][3] * Dest[3][j] );
         }
     }
 

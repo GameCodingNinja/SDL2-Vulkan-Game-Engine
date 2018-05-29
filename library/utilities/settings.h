@@ -145,6 +145,9 @@ public:
     // Set/Get debug string visible
     void setDebugStrVisible( bool value );
     bool getDebugStrVisible() const;
+    
+    // Do we want tripple buffering?
+    bool getTripleBuffering() const;
 
 private:
 
@@ -253,6 +256,10 @@ private:
     std::string m_debugStrObject;
     std::string m_debugStrFont;
     bool m_debugStrVisible;
+    
+    // Triple buffering flag
+    bool m_tripleBuffering;
+
 };
 
 #endif  // __settings_h__

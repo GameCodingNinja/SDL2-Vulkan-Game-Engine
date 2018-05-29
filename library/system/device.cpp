@@ -50,9 +50,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 }
 
 VkDebugReportCallbackEXT msg_callback = nullptr;
-PFN_vkCreateDebugReportCallbackEXT CreateDebugReportCallback = nullptr;
 PFN_vkDestroyDebugReportCallbackEXT DestroyDebugReportCallback = nullptr;
-PFN_vkDebugReportMessageEXT DebugReportMessage = nullptr;
 
 
 /************************************************************************
@@ -66,6 +64,7 @@ CDevice::CDevice() :
     m_logicalDevice(nullptr),
     m_graphicsQueue(nullptr),
     m_presentQueue(nullptr),
+    m_swapchain(nullptr),
     m_lastResult(VK_SUCCESS)
 {
     m_vulkanError.emplace( VK_SUCCESS,                        "Vulkan Success!" );
@@ -156,7 +155,7 @@ void CDevice::create()
     if( CSettings::Instance().getCreateStencilBuffer() )
         SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, CSettings::Instance().getStencilBufferBitSize() );*/
 
-    // Get the window size
+    // Get the render size of the window
     const CSize<int> size( CSettings::Instance().getSize() );
 
     // Create window
@@ -173,20 +172,20 @@ void CDevice::create()
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, nullptr) || (instanceExtensionCount == 0) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension count!", SDL_GetError() );
 
-    std::vector<const char*> extensionNameVec(instanceExtensionCount);
+    std::vector<const char*> instanceExtensionNameVec(instanceExtensionCount);
     std::vector<const char*> validationNameVec;
         
-    if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, extensionNameVec.data()) )
+    if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, instanceExtensionNameVec.data()) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension names!", SDL_GetError() );
 
     // If we are in debug mode, add validation and debug reporting extension
     if( CSettings::Instance().getDebugMode() )
     {
         validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
-        extensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
+        instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
         
         // Print out extension list for debug mode
-        for( auto iter : extensionNameVec )
+        for( auto iter : instanceExtensionNameVec )
             NGenFunc::PostDebugMsg( "Instance Extension: " + std::string(iter));
     }
 
@@ -207,8 +206,8 @@ void CDevice::create()
         .pApplicationInfo = &app,
         .enabledLayerCount = static_cast<uint32_t>(validationNameVec.size()),
         .ppEnabledLayerNames = validationNameVec.data(),
-        .enabledExtensionCount = static_cast<uint32_t>(extensionNameVec.size()),
-        .ppEnabledExtensionNames = extensionNameVec.data()
+        .enabledExtensionCount = static_cast<uint32_t>(instanceExtensionNameVec.size()),
+        .ppEnabledExtensionNames = instanceExtensionNameVec.data()
     };
 
     // Try to create the instance
@@ -222,14 +221,14 @@ void CDevice::create()
     
     if( CSettings::Instance().getDebugMode() )
     {
+        PFN_vkCreateDebugReportCallbackEXT CreateDebugReportCallback = nullptr;
+        
+        // Get the function instances of the debug report callback messages
         if( !(CreateDebugReportCallback = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateDebugReportCallbackEXT")) )
             throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkCreateDebugReportCallbackEXT!" );
 
         if( !(DestroyDebugReportCallback = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr( m_vulkanInstance, "vkDestroyDebugReportCallbackEXT")) )
             throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkDestroyDebugReportCallbackEXT!" );
-
-        if( !(DebugReportMessage = (PFN_vkDebugReportMessageEXT)vkGetInstanceProcAddr(m_vulkanInstance, "vkDebugReportMessageEXT")) )
-            throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkDebugReportMessageEXT!" );
 
         VkDebugReportCallbackCreateInfoEXT dbgCreateInfo = {
             .sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT,
@@ -297,6 +296,13 @@ void CDevice::create()
     ///////////////////////////////////////////////////
     // Create a logical device
     //////////////////////////////////////////////////
+    
+    // Make sure we have a swap chain
+    if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
+        throw NExcept::CCriticalException( "Vulkin Error!", "No swap chain support!" );
+    
+    std::vector<const char*> physicalDeviceExtensionNameVec = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+    
     float queuePriority = 1.0f;
     VkDeviceQueueCreateInfo queueCreateInfo = {
         .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
@@ -308,14 +314,21 @@ void CDevice::create()
     };
     
     // Get all the features supported on this device
-    VkPhysicalDeviceFeatures deviceFeatures;
-    vkGetPhysicalDeviceFeatures(m_physicalDevice, &deviceFeatures);
+    VkPhysicalDeviceFeatures physicalDeviceFeatures;
+    vkGetPhysicalDeviceFeatures(m_physicalDevice, &physicalDeviceFeatures);
     
-    VkDeviceCreateInfo createInfo = {};
-    createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-    createInfo.pQueueCreateInfos = &queueCreateInfo;
-    createInfo.queueCreateInfoCount = 1;
-    createInfo.pEnabledFeatures = &deviceFeatures;
+    VkDeviceCreateInfo createInfo = {
+        .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .pNext = nullptr,
+        .flags = 0,
+        .queueCreateInfoCount = 1,
+        .pQueueCreateInfos = &queueCreateInfo,
+        .enabledLayerCount = static_cast<uint32_t>(validationNameVec.size()),
+        .ppEnabledLayerNames = validationNameVec.data(),
+        .enabledExtensionCount = static_cast<uint32_t>(physicalDeviceExtensionNameVec.size()),
+        .ppEnabledExtensionNames = physicalDeviceExtensionNameVec.data(),
+        .pEnabledFeatures = &physicalDeviceFeatures
+    };
     
     if( CSettings::Instance().getDebugMode() )
     {
@@ -342,9 +355,122 @@ void CDevice::create()
     ///////////////////////////////////////////////////
     // Setup swap chain
     //////////////////////////////////////////////////
+
+    PFN_vkGetPhysicalDeviceSurfaceFormatsKHR GetPhysicalDeviceSurfaceFormats = nullptr;
+    PFN_vkGetPhysicalDeviceSurfacePresentModesKHR GetPhysicalDeviceSurfacePresentModes = nullptr;
+    PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR GetPhysicalDeviceSurfaceCapabilities = nullptr;
+    //PFN_vkGetPhysicalDeviceSurfaceSupportKHR GetPhysicalDeviceSurfaceSupport = nullptr;
     
-    if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
-        throw NExcept::CCriticalException( "Vulkin Error!", "No swap chain support!" );
+    if( !(GetPhysicalDeviceSurfaceFormats = (PFN_vkGetPhysicalDeviceSurfaceFormatsKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfaceFormatsKHR")) )
+        throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfaceFormatsKHR!" );
+    
+    if( !(GetPhysicalDeviceSurfacePresentModes = (PFN_vkGetPhysicalDeviceSurfacePresentModesKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfacePresentModesKHR")) )
+        throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfacePresentModesKHR!" );
+    
+    if( !(GetPhysicalDeviceSurfaceCapabilities = (PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR")) )
+        throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR!" );
+
+    /*if( !(GetPhysicalDeviceSurfaceSupport = (PFN_vkGetPhysicalDeviceSurfaceSupportKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfaceSupportKHR")) )
+        throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfaceSupportKHR!" );*/
+    
+    // Get the device surface capabilities
+    if( (m_lastResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &m_surfCapabilities )) )
+        throw NExcept::CCriticalException( "Vulkin Error!", boost::str( boost::format("Failed to get physical device surface capabilities! %s") % getError() ) );
+    
+    // Get the best surface format
+    VkSurfaceFormatKHR surfaceFormat;
+    uint32_t surfaceFormatCount;
+    if( (m_lastResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, nullptr)) || (surfaceFormatCount == 0) )
+        throw NExcept::CCriticalException( "Vulkin Error!", boost::str( boost::format("Failed to get physical device surface format count! %s") % getError() ) );
+    
+    std::vector<VkSurfaceFormatKHR> surfaceFormatVec(surfaceFormatCount);
+    
+    if( (m_lastResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, surfaceFormatVec.data())) )
+        throw NExcept::CCriticalException( "Vulkin Error!", boost::str( boost::format("Failed to get physical device surface formats! %s") % getError() ) );
+    
+    // Init to the first format in the event the below two fail
+    surfaceFormat = surfaceFormatVec.front();
+    
+    if( (surfaceFormatCount == 1) && surfaceFormatVec.back().format == VK_FORMAT_UNDEFINED)
+    {
+        surfaceFormat.format = VK_FORMAT_B8G8R8A8_UNORM;
+        surfaceFormat.colorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+    }
+    else
+    {
+        for( const auto & sFormat : surfaceFormatVec )
+        {
+            if( (sFormat.format == VK_FORMAT_B8G8R8A8_UNORM) && (sFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) )
+            {
+                surfaceFormat = sFormat;
+                break;
+            }
+        }
+    }
+    
+    // Get the best presentation mode
+    VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_FIFO_KHR;
+    uint32_t surfacePresModeCount;
+    if( (m_lastResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
+        throw NExcept::CCriticalException( "Vulkin Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError() ) );
+    
+    std::vector<VkPresentModeKHR> surfacePresModeVec(surfacePresModeCount);
+    
+    if( (m_lastResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data())) )
+        throw NExcept::CCriticalException( "Vulkin Error!", boost::str( boost::format("Failed to get physical device surface presentation modes! %s") % getError() ) );
+    
+    for( const auto & presentMode : surfacePresModeVec )
+    {
+        if( presentMode == VK_PRESENT_MODE_MAILBOX_KHR )
+        {
+            surfacePresMode = presentMode;
+            break;
+        }
+        else if( presentMode == VK_PRESENT_MODE_IMMEDIATE_KHR )
+            surfacePresMode = presentMode;
+    }
+    
+    
+    // Set the extent of the render resolution
+    VkExtent2D swapchainExtent;
+    
+    // width and height are either both -1, or both not -1.
+    if (m_surfCapabilities.currentExtent.width == (uint32_t)-1)
+    {
+        // If the surface size is undefined, the size is set to
+        // the size of the images requested.
+        swapchainExtent.width = size.getW();
+        swapchainExtent.height = size.getH();
+    }
+    else
+    {
+        // If the surface size is defined, the swap chain size must match
+        swapchainExtent = m_surfCapabilities.currentExtent;
+    }
+    
+    VkSurfaceTransformFlagBitsKHR preTransform;
+    if (m_surfCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
+        preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+    else
+        preTransform = m_surfCapabilities.currentTransform;
+    
+    m_swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+    m_swapchainInfo.surface = m_vulkanSurface;
+    m_swapchainInfo.imageFormat = surfaceFormat.format;
+    m_swapchainInfo.imageColorSpace = surfaceFormat.colorSpace;
+    m_swapchainInfo.imageExtent = swapchainExtent;
+    m_swapchainInfo.imageArrayLayers = 1;
+    m_swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    m_swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    m_swapchainInfo.queueFamilyIndexCount = 0;
+    m_swapchainInfo.preTransform = preTransform;
+    m_swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+    m_swapchainInfo.presentMode = surfacePresMode;
+    m_swapchainInfo.clipped = true;
+    
+    // Create the swap chain
+    createSwapChain();
+    
     
     
     
@@ -385,6 +511,36 @@ void CDevice::create()
 
     // Init current gamepads plugged in at startup
     initStartupGamepads();
+}
+
+
+/***************************************************************************
+*   DESC:  Create the swap chain
+****************************************************************************/
+void CDevice::createSwapChain()
+{
+    PFN_vkCreateSwapchainKHR CreateSwapchain = nullptr;
+    
+    if( !(CreateSwapchain = (PFN_vkCreateSwapchainKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateSwapchainKHR")) )
+        throw NExcept::CCriticalException( "Vulkin Error!", "Unable to find PFN_vkCreateSwapchainKHR!" );
+    
+    // Determine the number of VkImage's to use in the swap chain.
+    // This is
+    uint32_t minImageCount = m_surfCapabilities.minImageCount + 1;
+    
+    if( CSettings::Instance().getTripleBuffering() )
+        ++minImageCount;
+    
+    // Application must settle for fewer images than desired
+    if ((m_surfCapabilities.maxImageCount > 0) && (minImageCount > m_surfCapabilities.maxImageCount))
+        minImageCount = m_surfCapabilities.maxImageCount;
+    
+    VkSwapchainKHR oldSwapchain = m_swapchain;
+    m_swapchainInfo.oldSwapchain = oldSwapchain;
+    m_swapchainInfo.minImageCount = minImageCount;
+    
+    if( (m_lastResult = CreateSwapchain( m_logicalDevice, &m_swapchainInfo, nullptr, &m_swapchain)) )
+        throw NExcept::CCriticalException( "Vulkin Error!", boost::str( boost::format("Failed to create swap chain! %s") % getError() ) );
 }
 
 

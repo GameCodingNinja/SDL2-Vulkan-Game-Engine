@@ -133,7 +133,6 @@ private:
 
     // Merge matrix into master matrix
     void mergeMatrix( const float newMatrix[mMax] );
-    void reverseMergeMatrix( const float newMatrix[mMax] );
     void mergeMatrix3x3( const float mat[mMax] );
 
     // Separate axis rotation functions
