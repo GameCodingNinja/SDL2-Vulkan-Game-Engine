@@ -174,38 +174,39 @@ bool CBaseGame::gameLoop()
     // Get our elapsed time
     CHighResTimer::Instance().calcElapsedTime();
 
-    /*if( m_gameRunning )
+    if( m_gameRunning )
     {
         // Handle any misc processing before the real work is started
-        miscProcess();
+        //miscProcess();
 
         // Handle the physics
-        physics();
+        //physics();
 
         // Update animations, Move sprites, Check for collision
-        update();
+        //update();
 
         // Transform game objects
-        transform();
+        //transform();
 
         // Clear the buffers
-        glClear( m_clearBufferMask );
+        //glClear( m_clearBufferMask );
 
         // Do the rendering
-        render();
+        CDevice::Instance().render();
+        //render();
 
         // Do the back buffer swap
-        SDL_GL_SwapWindow( m_pWindow );
+        //SDL_GL_SwapWindow( m_pWindow );
 
         // Unbind everything after a round of rendering
-        CShaderMgr::Instance().unbind();
-        CTextureMgr::Instance().unbind();
-        CVertBufMgr::Instance().unbind();
+        //CShaderMgr::Instance().unbind();
+        //CTextureMgr::Instance().unbind();
+        //CVertBufMgr::Instance().unbind();
 
         // Inc the cycle
         if( NBDefs::IsDebugMode() )
             CStatCounter::Instance().incCycle();
-    }*/
+    }
 
     return m_gameRunning;
 }

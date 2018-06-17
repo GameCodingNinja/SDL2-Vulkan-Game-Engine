@@ -48,6 +48,7 @@ CSettings::CSettings() :
     m_clearTargetBuffer(true),
     m_minThreadCount(2),
     m_maxThreadCount(0),
+    m_maxConcurrentFrameRender(1),
     m_sectorSize(512),
     m_sectorSizeHalf(256),
     m_anisotropicLevel(NDefs::ETF_ANISOTROPIC_0X),
@@ -179,6 +180,9 @@ void CSettings::loadXML()
                 
                 if( vulkanNode.isAttributeSet("debugMode") )
                     m_debugMode = ( std::strcmp( vulkanNode.getAttribute("debugMode"), "true" ) == 0 );
+                
+                if( vulkanNode.isAttributeSet("maxConcurrentFrameRender") )
+                    m_maxConcurrentFrameRender = std::atoi( vulkanNode.getAttribute("maxConcurrentFrameRender") );
             }
 
             // Get the projection info
@@ -703,6 +707,14 @@ bool CSettings::getTripleBuffering() const
     return m_tripleBuffering;
 }
 
+
+/************************************************************************
+*    desc:  Get the max concurrent frame Render count
+************************************************************************/
+int CSettings::getMaxConcurrentFrameRender() const
+{
+    return m_maxConcurrentFrameRender;
+}
 
 
 /************************************************************************
