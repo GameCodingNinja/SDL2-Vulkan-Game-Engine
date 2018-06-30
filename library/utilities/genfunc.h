@@ -9,6 +9,7 @@
 
 // Standard lib dependencies
 #include <string>
+#include <vector>
 #include <memory>
 #include <assert.h>
 
@@ -20,6 +21,7 @@ namespace NGenFunc
     // Read in a file and return it as a buffer
     std::shared_ptr<char> FileToBuf( const std::string & file );
     std::shared_ptr<char> FileToBuf( const std::string & file, size_t & sizeInBytes );
+    std::vector<char> FileToVec( const std::string & file );
 
     // Output string info
     void PostDebugMsg( const std::string & msg );

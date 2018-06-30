@@ -61,8 +61,8 @@ public:
     // Get the Vulkan minor version
     int getMinorVersion() const;
 
-    // Get if we want debug mode
-    bool getDebugMode() const;
+    // Do we want validation layers
+    bool isValidationLayers() const;
 
     // Get the view angle
     float getViewAngle() const;
@@ -199,10 +199,10 @@ private:
     // VSync flag
     bool m_vSync;
 
-    // OpenGL versions
+    // Vulkan versions
     int m_major;
     int m_minor;
-    bool m_debugMode;
+    bool m_validationLayers;
 
     // view angle
     float m_viewAngle;

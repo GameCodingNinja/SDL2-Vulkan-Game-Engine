@@ -21,7 +21,12 @@
 #include <SDL.h>
 
 // Vulkan lib dependencies
+#if defined(__ANDROID__)
+#include <system/vulkan_wrapper.h>
+#else
 #include <vulkan/vulkan.h>
+#endif
+
 
 class CDevice
 {
@@ -81,7 +86,10 @@ private:
     
     // Find the queue family index
     uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice, uint32_t queueMask );
-    uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice, VkSurfaceKHR surface );
+    uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice );
+    
+    // Find the GPU memory type
+    uint32_t findMemoryType( uint32_t typeFilter, VkMemoryPropertyFlags properties );
     
     // Check if the device extension is supported
     bool isDeviceExtension( VkPhysicalDevice physicalDevice, const char* extenName );
@@ -90,6 +98,9 @@ private:
     void createVulkanInstance(
         const std::vector<const char*> & validationNameVec,
         const std::vector<const char*> & instanceExtensionNameVec );
+    
+    // Create the Vulkan surface
+    void createVulkanSurface();
     
     // Select a physical device (GPU)
     void selectPhysicalDevice();
@@ -115,6 +126,23 @@ private:
     // Create the command pool
     void createCommandPool();
     
+    // Create a buffer
+    void createBuffer(
+        VkDeviceSize size,
+        VkBufferUsageFlags usage,
+        VkMemoryPropertyFlags properties,
+        VkBuffer & buffer,
+        VkDeviceMemory & bufferMemory );
+    
+    // Copy a buffer
+    void copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size );
+    
+    // Create the vertex buffer
+    void createVertexBuffer();
+    
+    // Create the index buffer
+    void createIndexBuffer();
+    
     // Create the command buffers
     void createCommandBuffers();
     
@@ -126,9 +154,6 @@ private:
     
     // Destroy the swap chain
     void destroySwapChain();
-    
-    // read the file
-    std::vector<char> readFile(const std::string& filename);
     
     void tmpShaderSetup();
 
@@ -185,6 +210,12 @@ private:
     // Command pool
     VkCommandPool m_commandPool;
     
+    // Vertex buffer
+    VkBuffer m_vertexBuffer;
+    VkDeviceMemory m_vertexBufferMemory;
+    VkBuffer m_indexBuffer;
+    VkDeviceMemory m_indexBufferMemory;
+    
     // Command pool
     std::vector<VkCommandBuffer> m_commandBufferVec;
 
@@ -216,6 +247,8 @@ private:
     // Vulkan functions
     PFN_vkDestroySwapchainKHR vkDestroySwapchainKHR;
     PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
+    VkDebugReportCallbackEXT vkDebugReportCallbackEXT;
+    PFN_vkDestroyDebugReportCallbackEXT vkDestroyDebugReportCallbackEXT;
     
     // temporary members
     VkShaderModule m_shaderModuleVert;

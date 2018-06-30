@@ -61,8 +61,7 @@ namespace NGenFunc
         while( found != std::string::npos );
 
         return result;
-
-    }	// CountStrOccurrence
+    }
 
 
     /************************************************************************
@@ -111,13 +110,43 @@ namespace NGenFunc
         }*/
 
         return spChar;
-
-    }	// FileToBuf
+    }
 
     std::shared_ptr<char> FileToBuf( const std::string & file )
     {
         size_t sizeInBytes;
         return FileToBuf( file, sizeInBytes );
+    }
+    
+    
+    /************************************************************************
+    *    DESC:  Read in a file and return it as a vector buffer
+    ************************************************************************/
+    std::vector<char> FileToVec( const std::string & file )
+    {
+        // Open file for reading
+        NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( file.c_str(), "rb" ) );
+        if( scpFile.isNull() )
+            throw NExcept::CCriticalException("File Load Error!",
+                boost::str( boost::format("Error Loading file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
+
+        // Seek to the end of the file to find out how many 
+        // bytes into the file we are and add one for temination
+        size_t sizeInBytes = (size_t)SDL_RWseek( scpFile.get(), 0, RW_SEEK_END );
+        
+        if( (int)sizeInBytes == -1 )
+            throw NExcept::CCriticalException("File Load Error!",
+                boost::str( boost::format("Error Loading file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
+
+        // Allocate a vector to the entire length of the file
+        std::vector<char> bufferVec(sizeInBytes);
+
+        // Go back to the beginning of the file and 
+        // read the contents of the file in to the buffer
+        SDL_RWseek( scpFile.get(), 0, RW_SEEK_SET );
+        SDL_RWread( scpFile.get(), bufferVec.data(), 1, sizeInBytes );
+
+        return bufferVec;
     }
 
 
@@ -135,8 +164,7 @@ namespace NGenFunc
         _event.user.data2 = pData2;
 
         return SDL_PushEvent(&_event);
-
-    }   // DispatchEvent
+    }
 
 
     /************************************************************************
@@ -152,8 +180,7 @@ namespace NGenFunc
     #else
         std::cout << msg << std::endl;
     #endif
-
-    }   // PostDebugMsg
+    }
 
 
     /************************************************************************
@@ -173,8 +200,7 @@ namespace NGenFunc
         // Project x,y to a z plane of 1
         destX = aspect * tangent* fx;
         destY = -tangent * fy;
-
-    }   // Convert2Dto3D
+    }
 
 
     /************************************************************************
@@ -233,6 +259,5 @@ namespace NGenFunc
             dest.append( source.substr(index, source.length() - 1) );
         }
     }
-
-}   // NGenFunc
+}
 

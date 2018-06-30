@@ -51,7 +51,7 @@ public:
     void render( const CMatrix & objMatrix, const CMatrix & matrix );
 
     // Is this a font sprite
-    bool isFontSprite();
+    bool isFontSprite() override;
 
     // Set the frame index
     void setFrame( uint index );

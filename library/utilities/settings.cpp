@@ -32,7 +32,7 @@ CSettings::CSettings() :
     m_vSync(false),
     m_major(1),
     m_minor(0),
-    m_debugMode(false),
+    m_validationLayers(false),
     m_viewAngle(45.f),
     m_minZdist(5.f),
     m_maxZdist(1000.f),
@@ -178,8 +178,10 @@ void CSettings::loadXML()
                 if( vulkanNode.isAttributeSet("minor") )
                     m_minor = std::atoi( vulkanNode.getAttribute("minor") );
                 
-                if( vulkanNode.isAttributeSet("debugMode") )
-                    m_debugMode = ( std::strcmp( vulkanNode.getAttribute("debugMode"), "true" ) == 0 );
+                #if !defined(__ANDROID__) // Android doesn't support validation layers
+                if( vulkanNode.isAttributeSet("validationLayers") )
+                    m_validationLayers = ( std::strcmp( vulkanNode.getAttribute("validationLayers"), "true" ) == 0 );
+                #endif
                 
                 if( vulkanNode.isAttributeSet("maxConcurrentFrameRender") )
                     m_maxConcurrentFrameRender = std::atoi( vulkanNode.getAttribute("maxConcurrentFrameRender") );
@@ -467,11 +469,11 @@ int CSettings::getMinorVersion() const
 
 
 /************************************************************************
-*    DESC:  Get if we want validation
+*    DESC:  Do we want validation layers
 ************************************************************************/
-bool CSettings::getDebugMode() const
+bool CSettings::isValidationLayers() const
 {
-    return m_debugMode;
+    return m_validationLayers;
 }
 
 

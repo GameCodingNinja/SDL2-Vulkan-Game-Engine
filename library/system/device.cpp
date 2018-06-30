@@ -17,6 +17,7 @@
 // Standard lib dependencies
 #include <cstring>
 #include <fstream>
+#include <array>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -25,9 +26,9 @@
 #include <SDL_vulkan.h>
 
 /************************************************************************
-*    DESC:  Debug callback
+*    DESC:  Validation layer callback
 ************************************************************************/
-VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayerCallback(
     VkFlags msgFlags,
     VkDebugReportObjectTypeEXT objType,
     uint64_t srcObject,
@@ -35,41 +36,96 @@ VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
     int32_t msgCode,
     const char *pLayerPrefix,
     const char *pMsg,
-    void *pUserData) {
-
-    // std::string info = "validation layer: " + msg;
+    void *pUserData)
+{
     NGenFunc::PostDebugMsg( pMsg );
 
     return VK_FALSE;
 }
 
-VkDebugReportCallbackEXT msg_callback = nullptr;
-PFN_vkDestroyDebugReportCallbackEXT DestroyDebugReportCallback = nullptr;
+struct vec2
+{
+    float x;
+    float y;
+};
 
+struct vec3
+{
+    float x;
+    float y;
+    float z;
+};
+
+struct Vertex {
+    vec2 pos;
+    vec3 color;
+
+    static VkVertexInputBindingDescription getBindingDescription() {
+        VkVertexInputBindingDescription bindingDescription = {};
+        bindingDescription.binding = 0;
+        bindingDescription.stride = sizeof(Vertex);
+        bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+
+        return bindingDescription;
+    }
+
+    static std::array<VkVertexInputAttributeDescription, 2> getAttributeDescriptions() {
+        std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions = {};
+
+        attributeDescriptions[0].binding = 0;
+        attributeDescriptions[0].location = 0;
+        attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+        attributeDescriptions[0].offset = offsetof(Vertex, pos);
+
+        attributeDescriptions[1].binding = 0;
+        attributeDescriptions[1].location = 1;
+        attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+        attributeDescriptions[1].offset = offsetof(Vertex, color);
+
+        return attributeDescriptions;
+    }
+};
+
+const std::vector<Vertex> vertices =
+{
+    {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+    {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+    {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
+};
+
+const std::vector<uint16_t> indices =
+{
+    0, 1, 2, 2, 3, 0
+};
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
 CDevice::CDevice() :
     m_pWindow(nullptr),
-    m_vulkanInstance(nullptr),
-    m_vulkanSurface(nullptr),
-    m_physicalDevice(nullptr),
-    m_logicalDevice(nullptr),
-    m_graphicsQueueFamilyIndex(0),
-    m_presentQueueFamilyIndex(0),
-    m_graphicsQueue(nullptr),
-    m_presentQueue(nullptr),
-    m_swapchain(nullptr),
-    m_pipelineLayout(nullptr),
-    m_renderPass(nullptr),
-    m_graphicsPipeline(nullptr),
-    m_commandPool(nullptr),
-    m_currentFrame(0),
-    m_maxConcurrentFrames(0),
+    m_vulkanInstance(VK_NULL_HANDLE),
+    m_vulkanSurface(VK_NULL_HANDLE),
+    m_physicalDevice(VK_NULL_HANDLE),
+    m_logicalDevice(VK_NULL_HANDLE),
+    m_graphicsQueueFamilyIndex(VK_NULL_HANDLE),
+    m_presentQueueFamilyIndex(VK_NULL_HANDLE),
+    m_graphicsQueue(VK_NULL_HANDLE),
+    m_presentQueue(VK_NULL_HANDLE),
+    m_swapchain(VK_NULL_HANDLE),
+    m_pipelineLayout(VK_NULL_HANDLE),
+    m_renderPass(VK_NULL_HANDLE),
+    m_graphicsPipeline(VK_NULL_HANDLE),
+    m_commandPool(VK_NULL_HANDLE),
+    m_vertexBuffer(VK_NULL_HANDLE),
+    m_vertexBufferMemory(VK_NULL_HANDLE),
+    m_currentFrame(VK_NULL_HANDLE),
+    m_maxConcurrentFrames(VK_NULL_HANDLE),
     m_lastResult(VK_SUCCESS),
-    vkDestroySwapchainKHR(nullptr),
-    vkGetSwapchainImagesKHR(nullptr)
+    vkDestroySwapchainKHR(VK_NULL_HANDLE),
+    vkGetSwapchainImagesKHR(VK_NULL_HANDLE),
+    vkDebugReportCallbackEXT(VK_NULL_HANDLE),
+    vkDestroyDebugReportCallbackEXT(nullptr)
 {
     m_vulkanErrorMap.emplace( VK_SUCCESS,                        "Vulkan Success!" );
     m_vulkanErrorMap.emplace( VK_NOT_READY,                      "Vulkan Not Ready!" );
@@ -116,7 +172,7 @@ CDevice::~CDevice()
 ****************************************************************************/
 void CDevice::destroy()
 {
-    if( m_logicalDevice != nullptr )
+    if( m_logicalDevice != VK_NULL_HANDLE )
     {
         // Wait for the logical device to be idle before doing the clean up
         vkDeviceWaitIdle( m_logicalDevice );
@@ -147,35 +203,59 @@ void CDevice::destroy()
         
         destroySwapChain();
         
-        if( m_commandPool != nullptr )
+        if( m_commandPool != VK_NULL_HANDLE )
         {
             vkDestroyCommandPool( m_logicalDevice, m_commandPool, nullptr );
-            m_commandPool = nullptr;
-        }
-
-        if( m_shaderModuleVert != nullptr )
-        {
-            vkDestroyShaderModule( m_logicalDevice, m_shaderModuleVert, nullptr );
-            m_shaderModuleVert = nullptr;
+            m_commandPool = VK_NULL_HANDLE;
         }
         
-        if( m_shaderModuleFrag != nullptr )
+        if( m_vertexBuffer != VK_NULL_HANDLE )
+        {
+            vkDestroyBuffer( m_logicalDevice, m_vertexBuffer, nullptr );
+            m_vertexBuffer = VK_NULL_HANDLE;
+        }
+        
+        if( m_vertexBufferMemory != VK_NULL_HANDLE )
+        {
+            vkFreeMemory( m_logicalDevice, m_vertexBufferMemory, nullptr);
+            m_vertexBufferMemory = VK_NULL_HANDLE;
+        }
+        
+        if( m_indexBuffer != VK_NULL_HANDLE )
+        {
+            vkDestroyBuffer( m_logicalDevice, m_indexBuffer, nullptr );
+            m_indexBuffer = VK_NULL_HANDLE;
+        }
+        
+        if( m_indexBufferMemory != VK_NULL_HANDLE )
+        {
+            vkFreeMemory( m_logicalDevice, m_indexBufferMemory, nullptr);
+            m_indexBufferMemory = VK_NULL_HANDLE;
+        }
+
+        if( m_shaderModuleVert != VK_NULL_HANDLE )
+        {
+            vkDestroyShaderModule( m_logicalDevice, m_shaderModuleVert, nullptr );
+            m_shaderModuleVert = VK_NULL_HANDLE;
+        }
+        
+        if( m_shaderModuleFrag != VK_NULL_HANDLE )
         {
             vkDestroyShaderModule( m_logicalDevice, m_shaderModuleFrag, nullptr );
-            m_shaderModuleFrag = nullptr;
+            m_shaderModuleFrag = VK_NULL_HANDLE;
         }
 
         vkDestroyDevice( m_logicalDevice, nullptr );
-        m_logicalDevice = nullptr;
+        m_logicalDevice = VK_NULL_HANDLE;
     }
     
-    if( m_vulkanInstance != nullptr )
+    if( m_vulkanInstance != VK_NULL_HANDLE )
     {
-        if( CSettings::Instance().getDebugMode() && (DestroyDebugReportCallback != nullptr) )
-            DestroyDebugReportCallback( m_vulkanInstance, msg_callback, nullptr );
+        if( CSettings::Instance().isValidationLayers() && (vkDestroyDebugReportCallbackEXT != nullptr) )
+            vkDestroyDebugReportCallbackEXT( m_vulkanInstance, vkDebugReportCallbackEXT, nullptr );
 
         vkDestroyInstance( m_vulkanInstance, nullptr );
-        m_vulkanInstance = nullptr;
+        m_vulkanInstance = VK_NULL_HANDLE;
     }
 
     if( m_pWindow != nullptr )
@@ -191,7 +271,7 @@ void CDevice::destroy()
 ****************************************************************************/
 void CDevice::destroySwapChain()
 {
-    if( m_logicalDevice != nullptr )
+    if( m_logicalDevice != VK_NULL_HANDLE )
     {
         if( !m_framebufferVec.empty() )
         {
@@ -201,25 +281,25 @@ void CDevice::destroySwapChain()
             m_framebufferVec.clear();
         }
         
-        if( m_graphicsPipeline != nullptr )
+        if( m_graphicsPipeline != VK_NULL_HANDLE )
         {
             vkDestroyPipeline( m_logicalDevice, m_graphicsPipeline, nullptr );
-            m_graphicsPipeline = nullptr;
+            m_graphicsPipeline = VK_NULL_HANDLE;
         }
         
-        if( m_renderPass != nullptr )
+        if( m_renderPass != VK_NULL_HANDLE )
         {
             vkDestroyRenderPass( m_logicalDevice, m_renderPass, nullptr );
-            m_renderPass = nullptr;
+            m_renderPass = VK_NULL_HANDLE;
         }
         
-        if( m_pipelineLayout != nullptr )
+        if( m_pipelineLayout != VK_NULL_HANDLE )
         {
             vkDestroyPipelineLayout( m_logicalDevice, m_pipelineLayout, nullptr );
-            m_pipelineLayout = nullptr;
+            m_pipelineLayout = VK_NULL_HANDLE;
         }
         
-        if( m_swapchain != nullptr )
+        if( m_swapchain != VK_NULL_HANDLE )
         {
             for( auto imageView : m_swapChainImageViewVec )
                 vkDestroyImageView( m_logicalDevice, imageView, nullptr );
@@ -227,7 +307,7 @@ void CDevice::destroySwapChain()
             m_swapChainImageViewVec.clear();
 
             vkDestroySwapchainKHR( m_logicalDevice, m_swapchain, nullptr );
-            m_swapchain = nullptr;
+            m_swapchain = VK_NULL_HANDLE;
         }
     }
 }
@@ -270,6 +350,11 @@ void CDevice::create()
     // Prepare to create the Vulkan instance
     //////////////////////////////////////////////////
     
+    #if defined(__ANDROID__)
+    if( InitVulkan() == 0 )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Could not initialize Vulkan library!" );
+    #endif
+    
     uint32_t instanceExtensionCount(0);
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, nullptr) || (instanceExtensionCount == 0) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension count!", SDL_GetError() );
@@ -280,19 +365,22 @@ void CDevice::create()
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, instanceExtensionNameVec.data()) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension names!", SDL_GetError() );
 
-    // If we are in debug mode, add validation and debug reporting extension
-    if( CSettings::Instance().getDebugMode() )
+    // If we want validation, add it and debug reporting extension
+    if( CSettings::Instance().isValidationLayers() )
     {
         validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
         instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
         
-        // Print out extension list for debug mode
+        // Print out extension list for validation layers
         for( auto iter : instanceExtensionNameVec )
             NGenFunc::PostDebugMsg( "Instance Extension: " + std::string(iter));
     }
 
     // Create the vulkan instance
     createVulkanInstance( validationNameVec, instanceExtensionNameVec );
+    
+    // Create the Vulkan surface
+    createVulkanSurface();
     
     // Select a physical device (GPU)
     selectPhysicalDevice();
@@ -319,6 +407,12 @@ void CDevice::create()
     
     // Create the command pool
     createCommandPool();
+    
+    // Create vertex buffer
+    createVertexBuffer();
+    
+    // Create the index buffer
+    createIndexBuffer();
     
     // Create the command buffers
     createCommandBuffers();
@@ -402,10 +496,10 @@ void CDevice::createVulkanInstance(
 
     
     ///////////////////////////////////////////////////
-    // Setup the debug call back
+    // Setup validation layers() call back
     //////////////////////////////////////////////////
     
-    if( CSettings::Instance().getDebugMode() )
+    if( CSettings::Instance().isValidationLayers() )
     {
         PFN_vkCreateDebugReportCallbackEXT CreateDebugReportCallback = nullptr;
         
@@ -413,20 +507,26 @@ void CDevice::createVulkanInstance(
         if( !(CreateDebugReportCallback = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateDebugReportCallbackEXT")) )
             throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCreateDebugReportCallbackEXT!" );
 
-        if( !(DestroyDebugReportCallback = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr( m_vulkanInstance, "vkDestroyDebugReportCallbackEXT")) )
+        if( !(vkDestroyDebugReportCallbackEXT = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr( m_vulkanInstance, "vkDestroyDebugReportCallbackEXT")) )
             throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkDestroyDebugReportCallbackEXT!" );
 
         VkDebugReportCallbackCreateInfoEXT dbgCreateInfo = {};
         dbgCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
         dbgCreateInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
-        dbgCreateInfo.pfnCallback = debugCallback;
+        dbgCreateInfo.pfnCallback = ValidationLayerCallback;
         dbgCreateInfo.pUserData = nullptr;
 
-        if( (m_lastResult = CreateDebugReportCallback(m_vulkanInstance, &dbgCreateInfo, nullptr, &msg_callback)) )
+        if( (m_lastResult = CreateDebugReportCallback(m_vulkanInstance, &dbgCreateInfo, nullptr, &vkDebugReportCallbackEXT)) )
             throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create debug report callback! %s") % getError() ) );
     }
-    
-    // Create the Vulkan surface
+}
+
+
+/***************************************************************************
+*   DESC:  Create the Vulkan surface
+****************************************************************************/
+void CDevice::createVulkanSurface()
+{
     if( !SDL_Vulkan_CreateSurface( m_pWindow, m_vulkanInstance, &m_vulkanSurface ) )
         throw NExcept::CCriticalException("Could not create Vulkan surface!", SDL_GetError() );
 }
@@ -454,8 +554,8 @@ void CDevice::selectPhysicalDevice()
         auto props = VkPhysicalDeviceProperties{};
         vkGetPhysicalDeviceProperties(iter, &props);
 
-        // Print out the GPU in debug mode
-        if( CSettings::Instance().getDebugMode() )
+        // Print out the GPU if validation layers is enabled
+        if( CSettings::Instance().isValidationLayers() )
             NGenFunc::PostDebugMsg( "GPU: " + std::string(props.deviceName));
         
         m_graphicsQueueFamilyIndex = findQueueFamilyIndex( iter, VK_QUEUE_GRAPHICS_BIT );
@@ -511,7 +611,7 @@ void CDevice::createLogicalDevice( const std::vector<const char*> & validationNa
     createInfo.ppEnabledExtensionNames = physicalDeviceExtensionNameVec.data();
     createInfo.pEnabledFeatures = &physicalDeviceFeatures;
     
-    if( CSettings::Instance().getDebugMode() )
+    if( CSettings::Instance().isValidationLayers() )
     {
         createInfo.enabledLayerCount = static_cast<uint32_t>(validationNameVec.size());
         createInfo.ppEnabledLayerNames = validationNameVec.data();
@@ -528,7 +628,7 @@ void CDevice::createLogicalDevice( const std::vector<const char*> & validationNa
         throw NExcept::CCriticalException( "Vulkan Error!", "Could not get handle to graphics queue family!" );
     
     // Get a handle to the present queue
-    m_presentQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice, m_vulkanSurface );
+    m_presentQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice );
     vkGetDeviceQueue( m_logicalDevice, m_presentQueueFamilyIndex, 0, &m_presentQueue );
     if( m_presentQueue == nullptr )
         throw NExcept::CCriticalException( "Vulkan Error!", "Could not get handle to present queue family!" );
@@ -720,7 +820,7 @@ void CDevice::createSwapChain()
         imageViewCreateInfo.subresourceRange.baseArrayLayer = 0;
         imageViewCreateInfo.subresourceRange.layerCount = 1;
         
-        VkImageView imageView(nullptr);
+        VkImageView imageView(0);
         if( (m_lastResult = vkCreateImageView( m_logicalDevice, &imageViewCreateInfo, nullptr, &imageView)) )
             throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create image view! %s") % getError() ) );
         
@@ -735,8 +835,8 @@ void CDevice::createSwapChain()
 void CDevice::tmpShaderSetup()
 {
     // Load shaders  **** temporary code ****
-    std::vector<char> shaderVert = readFile("data/shaders/vulkanTriangleVert.spv");
-    std::vector<char> shaderFrag = readFile("data/shaders/vulkanTriangleFrag.spv");
+    std::vector<char> shaderVert = NGenFunc::FileToVec("data/shaders/vulkanTriangleVert2.spv");
+    std::vector<char> shaderFrag = NGenFunc::FileToVec("data/shaders/vulkanTriangleFrag.spv");
     
     VkShaderModuleCreateInfo shaderInfo = {};
     shaderInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -828,11 +928,17 @@ void CDevice::createGraphicsPipeline()
 
     VkPipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
     
+    // Bind the vertex buffer
+    auto bindingDescription = Vertex::getBindingDescription();
+    auto attributeDescriptions = Vertex::getAttributeDescriptions();
+    
     VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInputInfo.vertexBindingDescriptionCount = 0;
-    vertexInputInfo.vertexAttributeDescriptionCount = 0;
-    
+    vertexInputInfo.vertexBindingDescriptionCount = 1;
+    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+    vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
+    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+        
     VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
     inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
     inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
@@ -956,6 +1062,148 @@ void CDevice::createCommandPool()
 
 
 /***************************************************************************
+*   DESC:  Create a buffer
+****************************************************************************/
+void CDevice::createBuffer(
+    VkDeviceSize size,
+    VkBufferUsageFlags usage,
+    VkMemoryPropertyFlags properties,
+    VkBuffer& buffer,
+    VkDeviceMemory& bufferMemory )
+{
+    VkBufferCreateInfo bufferInfo = {};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.size = size;
+    bufferInfo.usage = usage;
+    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    
+    if( (m_lastResult = vkCreateBuffer( m_logicalDevice, &bufferInfo, nullptr, &buffer)) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create buffer! %s") % getError() ) );
+
+    VkMemoryRequirements memRequirements;
+    vkGetBufferMemoryRequirements( m_logicalDevice, buffer, &memRequirements );
+
+    VkMemoryAllocateInfo allocInfo = {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.allocationSize = memRequirements.size;
+    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
+    
+    if( (m_lastResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &bufferMemory)) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate buffer memory! %s") % getError() ) );
+    
+    vkBindBufferMemory( m_logicalDevice, buffer, bufferMemory, 0);
+}
+
+
+/***************************************************************************
+*   DESC:  Copy a buffer
+****************************************************************************/
+void CDevice::copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size )
+{    
+    VkCommandBufferAllocateInfo allocInfo = {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandPool = m_commandPool;
+    allocInfo.commandBufferCount = 1;
+
+    VkCommandBuffer commandBuffer;
+    vkAllocateCommandBuffers( m_logicalDevice, &allocInfo, &commandBuffer );
+
+    VkCommandBufferBeginInfo beginInfo = {};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+    vkBeginCommandBuffer( commandBuffer, &beginInfo );
+
+    VkBufferCopy copyRegion = {};
+    copyRegion.size = size;
+    vkCmdCopyBuffer( commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion );
+
+    vkEndCommandBuffer( commandBuffer );
+
+    VkSubmitInfo submitInfo = {};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &commandBuffer;
+
+    vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+    vkQueueWaitIdle( m_graphicsQueue );
+
+    vkFreeCommandBuffers( m_logicalDevice, m_commandPool, 1, &commandBuffer );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the vertex buffer
+****************************************************************************/
+void CDevice::createVertexBuffer()
+{    
+    VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
+
+    VkBuffer stagingBuffer;
+    VkDeviceMemory stagingBufferMemory;
+    createBuffer(
+        bufferSize,
+        VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        stagingBuffer,
+        stagingBufferMemory );
+
+    void* data;
+    vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data );
+    memcpy( data, vertices.data(), (size_t) bufferSize );
+    vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
+
+    createBuffer(
+        bufferSize,
+        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+        m_vertexBuffer,
+        m_vertexBufferMemory );
+    
+    copyBuffer( stagingBuffer, m_vertexBuffer, bufferSize );
+
+    vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
+    vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the index buffer
+****************************************************************************/
+void CDevice::createIndexBuffer()
+{
+    VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
+
+    VkBuffer stagingBuffer;
+    VkDeviceMemory stagingBufferMemory;
+    createBuffer(
+        bufferSize,
+        VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        stagingBuffer,
+        stagingBufferMemory );
+
+    void* data;
+    vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data );
+    memcpy( data, indices.data(), (size_t) bufferSize );
+    vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
+
+    createBuffer(
+        bufferSize,
+        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+        m_indexBuffer,
+        m_indexBufferMemory );
+
+    copyBuffer( stagingBuffer, m_indexBuffer, bufferSize );
+
+    vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
+    vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
+}
+
+
+/***************************************************************************
 *   DESC:  Create the command buffers
 ****************************************************************************/
 void CDevice::createCommandBuffers()
@@ -996,7 +1244,17 @@ void CDevice::createCommandBuffers()
         
         vkCmdBeginRenderPass( m_commandBufferVec[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE );
         vkCmdBindPipeline( m_commandBufferVec[i], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline );
-        vkCmdDraw( m_commandBufferVec[i], 3, 1, 0, 0 );
+        
+        // Bind vertex buffer
+        VkBuffer vertexBuffers[] = {m_vertexBuffer};
+        VkDeviceSize offsets[] = {0};
+        vkCmdBindVertexBuffers( m_commandBufferVec[i], 0, 1, vertexBuffers, offsets );
+        
+        // Bind the index buffer
+        vkCmdBindIndexBuffer( m_commandBufferVec[i], m_indexBuffer, 0, VK_INDEX_TYPE_UINT16 );
+        
+        vkCmdDrawIndexed( m_commandBufferVec[i], static_cast<uint32_t>(indices.size()), 1, 0, 0, 0 );
+        
         vkCmdEndRenderPass( m_commandBufferVec[i] );
 
         if( (m_lastResult = vkEndCommandBuffer( m_commandBufferVec[i] )) )
@@ -1040,7 +1298,17 @@ void CDevice::render()
     vkResetFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame] );
     
     uint32_t imageIndex(0);
-    vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
+    m_lastResult = vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
+    if( (m_lastResult == VK_ERROR_OUT_OF_DATE_KHR) || (m_lastResult == VK_SUBOPTIMAL_KHR) )
+    {
+        recreateSwapChain();
+        return;
+    }
+    else if( m_lastResult == VK_ERROR_SURFACE_LOST_KHR )
+        createVulkanSurface();
+
+    else if( m_lastResult != VK_SUCCESS )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
     
     VkSubmitInfo submitInfo = {};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -1074,6 +1342,9 @@ void CDevice::render()
     m_lastResult = vkQueuePresentKHR( m_presentQueue, &presentInfo );
     if( (m_lastResult == VK_ERROR_OUT_OF_DATE_KHR) || (m_lastResult == VK_SUBOPTIMAL_KHR) )
         recreateSwapChain();
+    
+    else if( m_lastResult == VK_ERROR_SURFACE_LOST_KHR )
+        createVulkanSurface();
     
     else if( m_lastResult != VK_SUCCESS )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
@@ -1115,6 +1386,22 @@ void CDevice::recreateSwapChain()
 }
 
 
+/***************************************************************************
+*   DESC:  Find the GPU memory type
+****************************************************************************/
+uint32_t CDevice::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+{
+    VkPhysicalDeviceMemoryProperties memProperties;
+    vkGetPhysicalDeviceMemoryProperties( m_physicalDevice, &memProperties );
+
+    for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
+        if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
+            return i;
+        }
+    }
+
+    throw NExcept::CCriticalException( "Vulkan Error!", "Failed to find suitable memory type!" );
+}
 
 
 /***************************************************************************
@@ -1161,7 +1448,7 @@ uint32_t CDevice::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, uint32_
     return UINT32_MAX;
 }
 
-uint32_t CDevice::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, VkSurfaceKHR surface )
+uint32_t CDevice::findQueueFamilyIndex( VkPhysicalDevice physicalDevice )
 {
     // Get the queue family information - Check that graphics bit is available
     uint32_t queueFamilyCount = 0;
@@ -1175,7 +1462,7 @@ uint32_t CDevice::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, VkSurfa
         for( uint32_t i = 0; i < queueFamiliesVec.size(); ++i )
         {
             VkBool32 presentSupport = false;
-            vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
+            vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, m_vulkanSurface, &presentSupport);
             
             if( (queueFamiliesVec[i].queueCount > 0) && presentSupport )
                 return i;
@@ -1184,31 +1471,6 @@ uint32_t CDevice::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, VkSurfa
     
     return UINT32_MAX;
 }
-
-
-/***************************************************************************
-*   DESC:  read the file
-****************************************************************************/
-std::vector<char> CDevice::readFile(const std::string& filename)
-{
-    std::ifstream file(filename, std::ios::ate | std::ios::binary);
-
-    if (!file.is_open())
-        throw std::runtime_error("failed to open file!");
-
-    size_t fileSize = (size_t) file.tellg();
-    std::vector<char> buffer(fileSize);
-
-    file.seekg(0);
-    file.read(buffer.data(), fileSize);
-
-    file.close();
-
-    return buffer;
-}
-
-
-
 
 
 /***************************************************************************

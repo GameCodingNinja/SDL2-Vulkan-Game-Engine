@@ -53,6 +53,7 @@ add_library(
         script/scriptuicontrol.cpp
         system/basegame.cpp
         system/device.cpp
+        system/vulkan_wrapper.cpp
         utilities/xmlparsehelper.cpp
         utilities/statcounter.cpp
         utilities/genfunc.cpp
