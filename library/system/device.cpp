@@ -375,7 +375,25 @@ void CDevice::destroySwapChain()
             vkDestroyDescriptorSetLayout( m_logicalDevice, m_descriptorSetLayout, nullptr );
             m_descriptorSetLayout = VK_NULL_HANDLE;
         }
+
+        if( m_depthImageView != VK_NULL_HANDLE )
+        {
+            vkDestroyImageView( m_logicalDevice, m_depthImageView, nullptr );
+            m_depthImageView = VK_NULL_HANDLE;
+        }
         
+        if( m_depthImage != VK_NULL_HANDLE )
+        {
+            vkDestroyImage( m_logicalDevice, m_depthImage, nullptr );
+            m_depthImage = VK_NULL_HANDLE;
+        }
+        
+        if( m_depthImageMemory != VK_NULL_HANDLE )
+        {
+            vkFreeMemory( m_logicalDevice, m_depthImageMemory, nullptr );
+            m_depthImageMemory = VK_NULL_HANDLE;
+        }
+
         if( m_swapchain != VK_NULL_HANDLE )
         {
             for( auto imageView : m_swapChainImageViewVec )
@@ -465,6 +483,7 @@ void CDevice::create()
     // Create the logical device
     createLogicalDevice( validationNameVec );
     
+    // Temp shader setup
     tmpShaderSetup();
     
     // Setup the swap chain to be created
@@ -482,15 +501,15 @@ void CDevice::create()
     // Create the graphics pipeline
     createGraphicsPipeline();
     
-    // Create the frame buffer
-    createFrameBuffer();
-    
     // Create the command pool
     createCommandPool();
     
     // Create depth resources
     createDepthResources();
     
+    // Create the frame buffer
+    createFrameBuffer();
+
     // Create texture image
     createTextureImage();
     
@@ -578,9 +597,9 @@ void CDevice::createVulkanInstance(
     VkInstanceCreateInfo instCreateInfo = {};
     instCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     instCreateInfo.pApplicationInfo = &appInfo;
-    instCreateInfo.enabledLayerCount = static_cast<uint32_t>(validationNameVec.size());
+    instCreateInfo.enabledLayerCount = validationNameVec.size();
     instCreateInfo.ppEnabledLayerNames = validationNameVec.data();
-    instCreateInfo.enabledExtensionCount = static_cast<uint32_t>(instanceExtensionNameVec.size());
+    instCreateInfo.enabledExtensionCount = instanceExtensionNameVec.size();
     instCreateInfo.ppEnabledExtensionNames = instanceExtensionNameVec.data();
 
     // Try to create the instance
@@ -706,15 +725,15 @@ void CDevice::createLogicalDevice( const std::vector<const char*> & validationNa
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     createInfo.queueCreateInfoCount = 1;
     createInfo.pQueueCreateInfos = &deviceQueueInfo;
-    createInfo.enabledLayerCount = static_cast<uint32_t>(validationNameVec.size());
+    createInfo.enabledLayerCount = validationNameVec.size();
     createInfo.ppEnabledLayerNames = validationNameVec.data();
-    createInfo.enabledExtensionCount = static_cast<uint32_t>(physicalDeviceExtensionNameVec.size());
+    createInfo.enabledExtensionCount = physicalDeviceExtensionNameVec.size();
     createInfo.ppEnabledExtensionNames = physicalDeviceExtensionNameVec.data();
     createInfo.pEnabledFeatures = &physicalDeviceFeatures;
     
     if( CSettings::Instance().isValidationLayers() )
     {
-        createInfo.enabledLayerCount = static_cast<uint32_t>(validationNameVec.size());
+        createInfo.enabledLayerCount = validationNameVec.size();
         createInfo.ppEnabledLayerNames = validationNameVec.data();
     }
     
@@ -733,6 +752,31 @@ void CDevice::createLogicalDevice( const std::vector<const char*> & validationNa
     vkGetDeviceQueue( m_logicalDevice, m_presentQueueFamilyIndex, 0, &m_presentQueue );
     if( m_presentQueue == nullptr )
         throw NExcept::CCriticalException( "Vulkan Error!", "Could not get handle to present queue family!" );
+}
+
+
+/***************************************************************************
+*   DESC:  Temp shader setup
+****************************************************************************/
+void CDevice::tmpShaderSetup()
+{
+    // Load shaders  **** temporary code ****
+    std::vector<char> shaderVert = NGenFunc::FileToVec("data/shaders/vulkanTriangleVert4.spv");
+    std::vector<char> shaderFrag = NGenFunc::FileToVec("data/shaders/vulkanTriangleFrag1.spv");
+    
+    VkShaderModuleCreateInfo shaderInfo = {};
+    shaderInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    shaderInfo.codeSize = shaderVert.size();
+    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderVert.data());
+    
+    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &m_shaderModuleVert )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create vertex shader! %s") % getError() ) );
+    
+    shaderInfo.codeSize = shaderFrag.size();
+    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderFrag.data());
+    
+    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &m_shaderModuleFrag )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create fragment shader! %s") % getError() ) );
 }
 
 
@@ -903,88 +947,7 @@ void CDevice::createSwapChain()
     m_swapChainImageViewVec.reserve( swapChainImageCount );
     
     for( uint32_t i = 0; i < swapChainImageCount; ++i )
-        m_swapChainImageViewVec.push_back( createImageView( swapChainImage[i], m_swapchainInfo.imageFormat ) );
-}
-
-
-/***************************************************************************
-*   DESC:  Temp shader setup
-****************************************************************************/
-void CDevice::tmpShaderSetup()
-{
-    // Load shaders  **** temporary code ****
-    std::vector<char> shaderVert = NGenFunc::FileToVec("data/shaders/vulkanTriangleVert4.spv");
-    std::vector<char> shaderFrag = NGenFunc::FileToVec("data/shaders/vulkanTriangleFrag1.spv");
-    
-    VkShaderModuleCreateInfo shaderInfo = {};
-    shaderInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    shaderInfo.codeSize = shaderVert.size();
-    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderVert.data());
-    
-    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &m_shaderModuleVert )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create vertex shader! %s") % getError() ) );
-    
-    shaderInfo.codeSize = shaderFrag.size();
-    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderFrag.data());
-    
-    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &m_shaderModuleFrag )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create fragment shader! %s") % getError() ) );
-}
-
-
-/***************************************************************************
-*   DESC:  Create the render pass
-****************************************************************************/
-void CDevice::createRenderPass()
-{
-    // Create the pipeline layout
-    VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
-    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.setLayoutCount = 1;
-    pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
-
-    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &m_pipelineLayout )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
-    
-    // Create the render pass
-    VkAttachmentDescription colorAttachment = {};
-    colorAttachment.format = m_swapchainInfo.imageFormat;
-    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-    colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-    colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    
-    VkAttachmentReference colorAttachmentRef = {};
-    colorAttachmentRef.attachment = 0;
-    colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-    
-    VkSubpassDescription subpass = {};
-    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments = &colorAttachmentRef;
-    
-    VkSubpassDependency dependency = {};
-    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-    dependency.dstSubpass = 0;
-    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.srcAccessMask = 0;
-    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-    
-    VkRenderPassCreateInfo renderPassInfo = {};
-    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    renderPassInfo.attachmentCount = 1;
-    renderPassInfo.pAttachments = &colorAttachment;
-    renderPassInfo.subpassCount = 1;
-    renderPassInfo.pSubpasses = &subpass;
-    renderPassInfo.dependencyCount = 1;
-    renderPassInfo.pDependencies = &dependency;
-    
-    if( (m_lastResult = vkCreateRenderPass( m_logicalDevice, &renderPassInfo, nullptr, &m_renderPass )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError() ) );
+        m_swapChainImageViewVec.push_back( createImageView( swapChainImage[i], m_swapchainInfo.imageFormat, VK_IMAGE_ASPECT_COLOR_BIT ) );
 }
 
 
@@ -1011,7 +974,7 @@ void CDevice::createDescriptorSetLayout()
 
     VkDescriptorSetLayoutCreateInfo layoutInfo = {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutInfo.bindingCount = static_cast<uint32_t>(bindings.size());
+    layoutInfo.bindingCount = bindings.size();
     layoutInfo.pBindings = bindings.data();
     
     if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &m_descriptorSetLayout )) )
@@ -1020,10 +983,83 @@ void CDevice::createDescriptorSetLayout()
 
 
 /***************************************************************************
+*   DESC:  Create the render pass
+****************************************************************************/
+void CDevice::createRenderPass()
+{
+    // Create the render pass
+    VkAttachmentDescription colorAttachment = {};
+    colorAttachment.format = m_swapchainInfo.imageFormat;
+    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+    colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+    
+    VkAttachmentDescription depthAttachment = {};
+    depthAttachment.format = findDepthFormat();
+    depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+    depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    depthAttachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+    
+    VkAttachmentReference colorAttachmentRef = {};
+    colorAttachmentRef.attachment = 0;
+    colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    
+    VkAttachmentReference depthAttachmentRef = {};
+    depthAttachmentRef.attachment = 1;
+    depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+    
+    VkSubpassDescription subpass = {};
+    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    subpass.colorAttachmentCount = 1;
+    subpass.pColorAttachments = &colorAttachmentRef;
+    subpass.pDepthStencilAttachment = &depthAttachmentRef;
+    
+    VkSubpassDependency dependency = {};
+    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+    dependency.dstSubpass = 0;
+    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    dependency.srcAccessMask = 0;
+    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    
+    std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
+    
+    VkRenderPassCreateInfo renderPassInfo = {};
+    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    renderPassInfo.attachmentCount = attachments.size();
+    renderPassInfo.pAttachments = attachments.data();
+    renderPassInfo.subpassCount = 1;
+    renderPassInfo.pSubpasses = &subpass;
+    renderPassInfo.dependencyCount = 1;
+    renderPassInfo.pDependencies = &dependency;
+    
+    if( (m_lastResult = vkCreateRenderPass( m_logicalDevice, &renderPassInfo, nullptr, &m_renderPass )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError() ) );
+}
+
+
+/***************************************************************************
 *   DESC:  Create the graphics pipeline
 ****************************************************************************/
 void CDevice::createGraphicsPipeline()
 {
+    // Create the pipeline layout
+    VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
+    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipelineLayoutInfo.setLayoutCount = 1;
+    pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
+
+    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &m_pipelineLayout )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
+    
     // Create the graphics pipeline
     VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -1046,7 +1082,7 @@ void CDevice::createGraphicsPipeline()
     VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputInfo.vertexBindingDescriptionCount = 1;
-    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+    vertexInputInfo.vertexAttributeDescriptionCount = attributeDescriptions.size();
     vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
     vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
         
@@ -1092,6 +1128,16 @@ void CDevice::createGraphicsPipeline()
     multisampling.sampleShadingEnable = VK_FALSE;
     multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
     
+    VkPipelineDepthStencilStateCreateInfo depthStencil = {};
+    depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+    depthStencil.depthTestEnable = VK_FALSE;
+    depthStencil.depthWriteEnable = VK_FALSE;
+    depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
+    depthStencil.depthBoundsTestEnable = VK_FALSE;
+    depthStencil.stencilTestEnable = VK_FALSE;
+    depthStencil.front = {}; // Optional
+    depthStencil.back = {}; // Optional
+    
     VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
     colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
     colorBlendAttachment.blendEnable = VK_FALSE;
@@ -1118,7 +1164,7 @@ void CDevice::createGraphicsPipeline()
     pipelineInfo.pViewportState = &viewportState;
     pipelineInfo.pRasterizationState = &rasterizer;
     pipelineInfo.pMultisampleState = &multisampling;
-    pipelineInfo.pDepthStencilState = nullptr;
+    pipelineInfo.pDepthStencilState = &depthStencil;
     pipelineInfo.pColorBlendState = &colorBlending;
     pipelineInfo.pDynamicState = nullptr;
     pipelineInfo.layout = m_pipelineLayout;
@@ -1129,32 +1175,6 @@ void CDevice::createGraphicsPipeline()
 
     if( (m_lastResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError() ) );
-}
-
-
-/***************************************************************************
-*   DESC:  Create the frame buffer
-****************************************************************************/
-void CDevice::createFrameBuffer()
-{
-    m_framebufferVec.resize( m_swapChainImageViewVec.size() );
-    
-    for( size_t i = 0; i < m_swapChainImageViewVec.size(); ++i )
-    {
-        std::vector<VkImageView> attachmentVec = { m_swapChainImageViewVec[i] };
-
-        VkFramebufferCreateInfo framebufferInfo = {};
-        framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-        framebufferInfo.renderPass = m_renderPass;
-        framebufferInfo.attachmentCount = attachmentVec.size();
-        framebufferInfo.pAttachments = attachmentVec.data();
-        framebufferInfo.width = m_swapchainInfo.imageExtent.width;
-        framebufferInfo.height = m_swapchainInfo.imageExtent.height;
-        framebufferInfo.layers = 1;
-
-        if( (m_lastResult = vkCreateFramebuffer( m_logicalDevice, &framebufferInfo, nullptr, &m_framebufferVec[i] )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create frame buffer! %s") % getError() ) );
-    }
 }
 
 
@@ -1178,10 +1198,50 @@ void CDevice::createCommandPool()
 ****************************************************************************/
 void CDevice::createDepthResources()
 {
-    VkFormat depthFormat = findSupportedFormat(
-        {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
+    VkFormat depthFormat = findDepthFormat();
+        
+    if( depthFormat == VK_FORMAT_UNDEFINED )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Could not find depth format!");
+        
+    createImage(
+        m_swapchainInfo.imageExtent.width,
+        m_swapchainInfo.imageExtent.height,
+        depthFormat,
         VK_IMAGE_TILING_OPTIMAL,
-        VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
+        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+        m_depthImage,
+        m_depthImageMemory );
+    
+    m_depthImageView = createImageView( m_depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT );
+
+    transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the frame buffer
+****************************************************************************/
+void CDevice::createFrameBuffer()
+{
+    m_framebufferVec.resize( m_swapChainImageViewVec.size() );
+    
+    for( size_t i = 0; i < m_swapChainImageViewVec.size(); ++i )
+    {
+        std::array<VkImageView, 2> attachmentsAry = { m_swapChainImageViewVec[i], m_depthImageView };
+
+        VkFramebufferCreateInfo framebufferInfo = {};
+        framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+        framebufferInfo.renderPass = m_renderPass;
+        framebufferInfo.attachmentCount = attachmentsAry.size();
+        framebufferInfo.pAttachments = attachmentsAry.data();
+        framebufferInfo.width = m_swapchainInfo.imageExtent.width;
+        framebufferInfo.height = m_swapchainInfo.imageExtent.height;
+        framebufferInfo.layers = 1;
+
+        if( (m_lastResult = vkCreateFramebuffer( m_logicalDevice, &framebufferInfo, nullptr, &m_framebufferVec[i] )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create frame buffer! %s") % getError() ) );
+    }
 }
 
 
@@ -1244,7 +1304,7 @@ void CDevice::createTextureImage()
 ****************************************************************************/
 void CDevice::createTextureImageView()
 {
-    m_textureImageView = createImageView( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM );
+    m_textureImageView = createImageView( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_ASPECT_COLOR_BIT );
 }
 
 
@@ -1373,15 +1433,15 @@ void CDevice::createDescriptorPool()
 {
     std::array<VkDescriptorPoolSize, 2> poolSize = {};
     poolSize[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    poolSize[0].descriptorCount = static_cast<uint32_t>(m_framebufferVec.size());
+    poolSize[0].descriptorCount = m_framebufferVec.size();
     poolSize[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    poolSize[1].descriptorCount = static_cast<uint32_t>(m_framebufferVec.size());
+    poolSize[1].descriptorCount = m_framebufferVec.size();
 
     VkDescriptorPoolCreateInfo poolInfo = {};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    poolInfo.poolSizeCount = static_cast<uint32_t>(poolSize.size());
+    poolInfo.poolSizeCount = poolSize.size();
     poolInfo.pPoolSizes = poolSize.data();
-    poolInfo.maxSets = static_cast<uint32_t>(m_framebufferVec.size());
+    poolInfo.maxSets = m_framebufferVec.size();
     
     if( (m_lastResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &m_descriptorPool )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
@@ -1397,7 +1457,7 @@ void CDevice::createDescriptorSet()
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = m_descriptorPool;
-    allocInfo.descriptorSetCount = static_cast<uint32_t>(m_framebufferVec.size());
+    allocInfo.descriptorSetCount = m_framebufferVec.size();
     allocInfo.pSetLayouts = layouts.data();
 
     m_descriptorSetVec.resize(m_framebufferVec.size());
@@ -1435,7 +1495,33 @@ void CDevice::createDescriptorSet()
         descriptorWrites[1].descriptorCount = 1;
         descriptorWrites[1].pImageInfo = &imageInfo;
 
-        vkUpdateDescriptorSets( m_logicalDevice, static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr );
+        vkUpdateDescriptorSets( m_logicalDevice, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr );
+    }
+}
+
+
+/***************************************************************************
+*   DESC:  Create the Semaphores and fences
+****************************************************************************/
+void CDevice::createSyncObjects()
+{    
+    m_imageAvailableSemaphoreVec.resize( m_maxConcurrentFrames );
+    m_renderFinishedSemaphoreVec.resize( m_maxConcurrentFrames );
+    m_frameFenceVec.resize( m_maxConcurrentFrames );
+            
+    VkSemaphoreCreateInfo semaphoreInfo = {};
+    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    
+    VkFenceCreateInfo fenceInfo = {};
+    fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+    
+    for( int i = 0; i < m_maxConcurrentFrames; ++i )
+    {
+        if( (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_imageAvailableSemaphoreVec[i] )) ||
+            (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_renderFinishedSemaphoreVec[i] )) ||
+            (m_lastResult = vkCreateFence( m_logicalDevice, &fenceInfo, nullptr, &m_frameFenceVec[i] )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create synchronization objects! %s") % getError() ) );
     }
 }
 
@@ -1497,7 +1583,7 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex  )
         
         vkCmdBindDescriptorSets( m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipelineLayout, 0, 1, &m_descriptorSetVec[cmdBufIndex], 0, nullptr);
 
-        vkCmdDrawIndexed( m_squareCmdBufVec[cmdBufIndex], static_cast<uint32_t>(indices.size()), 1, 0, 0, 0 );
+        vkCmdDrawIndexed( m_squareCmdBufVec[cmdBufIndex], indices.size(), 1, 0, 0, 0 );
 
         vkEndCommandBuffer( m_squareCmdBufVec[cmdBufIndex]);
     }
@@ -1515,6 +1601,10 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex  )
         if( (m_lastResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
             throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
         
+        std::array<VkClearValue, 2> clearValues = {};
+        clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
+        clearValues[1].depthStencil = {1.0f, 0};
+        
         // Start a render pass
         VkRenderPassBeginInfo renderPassInfo = {};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -1522,10 +1612,8 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex  )
         renderPassInfo.framebuffer = m_framebufferVec[cmdBufIndex];
         renderPassInfo.renderArea.offset = {0, 0};
         renderPassInfo.renderArea.extent = m_swapchainInfo.imageExtent;
-        
-        VkClearValue clearColor = {0.0f, 0.0f, 0.0f, 1.0f};
-        renderPassInfo.clearValueCount = 1;
-        renderPassInfo.pClearValues = &clearColor;
+        renderPassInfo.clearValueCount = clearValues.size();
+        renderPassInfo.pClearValues = clearValues.data();
         
         vkCmdBeginRenderPass( m_primaryCmdBufVec[cmdBufIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS );
 
@@ -1562,32 +1650,6 @@ void CDevice::updateUniformBuffer( uint32_t unfBufIndex )
     vkMapMemory( m_logicalDevice, m_uniformBufMemVec[unfBufIndex], 0, sizeof(ubo), 0, &data );
     memcpy( data, &ubo, sizeof(ubo));
     vkUnmapMemory( m_logicalDevice, m_uniformBufMemVec[unfBufIndex] );
-}
-
-
-/***************************************************************************
-*   DESC:  Create the Semaphores and fences
-****************************************************************************/
-void CDevice::createSyncObjects()
-{    
-    m_imageAvailableSemaphoreVec.resize( m_maxConcurrentFrames );
-    m_renderFinishedSemaphoreVec.resize( m_maxConcurrentFrames );
-    m_frameFenceVec.resize( m_maxConcurrentFrames );
-            
-    VkSemaphoreCreateInfo semaphoreInfo = {};
-    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    
-    VkFenceCreateInfo fenceInfo = {};
-    fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-    fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-    
-    for( int i = 0; i < m_maxConcurrentFrames; ++i )
-    {
-        if( (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_imageAvailableSemaphoreVec[i] )) ||
-            (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_renderFinishedSemaphoreVec[i] )) ||
-            (m_lastResult = vkCreateFence( m_logicalDevice, &fenceInfo, nullptr, &m_frameFenceVec[i] )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create synchronization objects! %s") % getError() ) );
-    }
 }
 
 
@@ -1686,6 +1748,9 @@ void CDevice::recreateSwapChain()
     
     // Create the graphics pipeline
     createGraphicsPipeline();
+    
+    // Create depth resources
+    createDepthResources();
     
     // Create the frame buffer
     createFrameBuffer();
@@ -1797,6 +1862,18 @@ VkFormat CDevice::findSupportedFormat( const std::vector<VkFormat> & candidates,
     }
     
     return VK_FORMAT_UNDEFINED;
+}
+
+
+/***************************************************************************
+*   DESC:  Find the depth format
+****************************************************************************/
+VkFormat CDevice::findDepthFormat()
+{
+    return findSupportedFormat(
+        {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
+        VK_IMAGE_TILING_OPTIMAL,
+        VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
 }
 
 
@@ -1948,15 +2025,26 @@ void CDevice::transitionImageLayout( VkImage image, VkFormat format, VkImageLayo
     barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
     barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
     barrier.image = image;
-    barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
     barrier.subresourceRange.baseMipLevel = 0;
     barrier.subresourceRange.levelCount = 1;
     barrier.subresourceRange.baseArrayLayer = 0;
     barrier.subresourceRange.layerCount = 1;
 
+    if( newLayout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL )
+    {
+        barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+
+        if( format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT )
+            barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+    }
+    else
+    {
+        barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    }
+
     VkPipelineStageFlags sourceStage;
     VkPipelineStageFlags destinationStage;
-
+    
     if( oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL )
     {
         barrier.srcAccessMask = 0;
@@ -1973,9 +2061,17 @@ void CDevice::transitionImageLayout( VkImage image, VkFormat format, VkImageLayo
         sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
         destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
     }
+    else if( oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL )
+    {
+        barrier.srcAccessMask = 0;
+        barrier.dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+
+        sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+        destinationStage = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+    }
     else
     {
-        throw NExcept::CCriticalException( "Vulkan Error!", "unsupported layout transition! %s" );
+        throw NExcept::CCriticalException( "Vulkan Error!", "unsupported layout transition!" );
     }
 
     vkCmdPipelineBarrier(
@@ -2021,7 +2117,7 @@ void CDevice::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t width,
 /***************************************************************************
 *   DESC:  Create the image view
 ****************************************************************************/
-VkImageView CDevice::createImageView( VkImage image, VkFormat format )
+VkImageView CDevice::createImageView( VkImage image, VkFormat format, VkImageAspectFlags aspectFlags )
 {
     VkImageViewCreateInfo viewInfo = {};
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -2032,7 +2128,7 @@ VkImageView CDevice::createImageView( VkImage image, VkFormat format )
     // imageViewCreateInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
     // imageViewCreateInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
     // imageViewCreateInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-    viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    viewInfo.subresourceRange.aspectMask = aspectFlags;
     viewInfo.subresourceRange.baseMipLevel = 0;
     viewInfo.subresourceRange.levelCount = 1;
     viewInfo.subresourceRange.baseArrayLayer = 0;

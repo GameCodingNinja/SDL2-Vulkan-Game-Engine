@@ -207,10 +207,13 @@ private:
     void copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t width, uint32_t height );
     
     // Create the image view
-    VkImageView createImageView( VkImage image, VkFormat format );
+    VkImageView createImageView( VkImage image, VkFormat format, VkImageAspectFlags aspectFlags );
     
     // Find supported format
     VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );
+    
+    // Find the depth format
+    VkFormat findDepthFormat();
     
     void tmpShaderSetup();
 
