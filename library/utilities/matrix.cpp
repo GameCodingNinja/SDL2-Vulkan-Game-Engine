@@ -500,6 +500,22 @@ void CMatrix::setScale( float scale )
     matrix[10] *= scale;
 }
 
+void CMatrix::setScale( float scaleX, float scaleY )
+{
+    // Initialize scaling matrix:
+    matrix[0]  *= scaleX;
+    matrix[5]  *= scaleY;
+    matrix[10] *= 1.f;
+}
+
+void CMatrix::setScale( float scaleX, float scaleY, float scaleZ )
+{
+    // Initialize scaling matrix:
+    matrix[0]  *= scaleX;
+    matrix[5]  *= scaleY;
+    matrix[10] *= scaleZ;
+}
+
 
 /************************************************************************
 *    DESC: Scale the matrix
@@ -517,6 +533,16 @@ void CMatrix::scale( const CSize<float> & size )
 void CMatrix::scale( float scale )
 {
     mergeScale( scale, scale, scale );
+}
+
+void CMatrix::scale( float scaleX, float scaleY )
+{
+    mergeScale( scaleY, scaleY, 1.0f );
+}
+
+void CMatrix::scale( float scaleX, float scaleY, float scaleZ )
+{
+    mergeScale( scaleY, scaleY, scaleZ );
 }
 
 
@@ -849,7 +875,7 @@ void CMatrix::orthographicLH( float w, float h, float zn, float zf )
 ************************************************************************/
 void CMatrix::perspectiveFovRH( float fovy, float aspect, float zn, float zf )
 {
-	 // Formula for a right handed perspective matrix
+    // Formula for a right handed perspective matrix
     //  yScale = cot(fovY/2)
     //  xScale = yScale / aspect ratio
     //  xScale     0          0              0
@@ -869,7 +895,7 @@ void CMatrix::perspectiveFovRH( float fovy, float aspect, float zn, float zf )
 
 void CMatrix::perspectiveFovLH( float fovy, float aspect, float zn, float zf )
 {
-	 // Formula for a left handed perspective matrix
+    // Formula for a left handed perspective matrix
     //  yScale = cot(fovY/2)
     //  xScale = yScale / aspect ratio
     //  xScale     0          0               0

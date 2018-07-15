@@ -61,9 +61,13 @@ public:
     void setScale( const CPoint<float> & point );
     void setScale( const CSize<float> & size );
     void setScale( float scale );
+    void setScale( float scaleX, float scaleY );
+    void setScale( float scaleX, float scaleY, float scaleZ );
     void scale( const CPoint<float> & point );
     void scale( const CSize<float> & size );
     void scale( float scale );
+    void scale( float scaleX, float scaleY );
+    void scale( float scaleX, float scaleY, float scaleZ );
 
     // Functions designed to transform using the master matrix
     void transform( CPoint<float> & dest, const CPoint<float> & source ) const;

@@ -117,6 +117,9 @@ private:
     // Create the render pass
     void createRenderPass();
     
+    // Create the descriptor set layout
+    void createDescriptorSetLayout();
+    
     // Create the graphics pipeline
     void createGraphicsPipeline();
     
@@ -126,6 +129,48 @@ private:
     // Create the command pool
     void createCommandPool();
     
+    // Create depth resources
+    void createDepthResources();
+    
+    // Create texture image
+    void createTextureImage();
+    
+    // Create the image texture view
+    void createTextureImageView();
+    
+    // Create texture sampler
+    void createTextureSampler();
+    
+    // Create the vertex buffer
+    void createVertexBuffer();
+    
+    // Create the index buffer
+    void createIndexBuffer();
+    
+    // Create uniform buffer
+    void createUniformBuffer();
+    
+    // Create descriptor pool
+    void createDescriptorPool();
+    
+    // Create descriptor sets
+    void createDescriptorSet();
+    
+    // Create the command buffers
+    void createCommandBuffers();
+    
+    // Record the command buffers
+    void recordCommandBuffers( uint32_t cmdBufIndex );
+    
+    // Update the uniform buffer
+    void updateUniformBuffer( uint32_t unfBufIndex );
+    
+    // Create the Semaphores and fences
+    void createSyncObjects();
+    
+    // Recreate swap chain
+    void recreateSwapChain();
+    
     // Create a buffer
     void createBuffer(
         VkDeviceSize size,
@@ -134,26 +179,38 @@ private:
         VkBuffer & buffer,
         VkDeviceMemory & bufferMemory );
     
+    // Create image
+    void createImage(
+        uint32_t width,
+        uint32_t height,
+        VkFormat format,
+        VkImageTiling tiling,
+        VkImageUsageFlags usage,
+        VkMemoryPropertyFlags properties,
+        VkImage & image,
+        VkDeviceMemory & imageMemory );
+    
     // Copy a buffer
     void copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size );
     
-    // Create the vertex buffer
-    void createVertexBuffer();
-    
-    // Create the index buffer
-    void createIndexBuffer();
-    
-    // Create the command buffers
-    void createCommandBuffers();
-    
-    // Create the Semaphores and fences
-    void createSyncObjects();
-    
-    // Recreate swap chain
-    void recreateSwapChain();
-    
     // Destroy the swap chain
     void destroySwapChain();
+    
+    // Copy buffer helper functions
+    VkCommandBuffer beginSingleTimeCommands();
+    void endSingleTimeCommands( VkCommandBuffer commandBuffer );
+    
+    // Transition image layout
+    void transitionImageLayout( VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout );
+    
+    // Copy a buffer to an image
+    void copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t width, uint32_t height );
+    
+    // Create the image view
+    VkImageView createImageView( VkImage image, VkFormat format );
+    
+    // Find supported format
+    VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );
     
     void tmpShaderSetup();
 
@@ -198,6 +255,9 @@ private:
     // Pipeline layout
     VkPipelineLayout m_pipelineLayout;
     
+    // Descriptor set layout
+    VkDescriptorSetLayout m_descriptorSetLayout;
+    
     // Render pass
     VkRenderPass m_renderPass;
     
@@ -216,8 +276,18 @@ private:
     VkBuffer m_indexBuffer;
     VkDeviceMemory m_indexBufferMemory;
     
+    // Uniform buffers
+    std::vector<VkBuffer> m_uniformBufVec;
+    std::vector<VkDeviceMemory> m_uniformBufMemVec;
+    
+    // Descriptor pool
+    VkDescriptorPool m_descriptorPool;
+    
+    // Descriptor Set
+    std::vector<VkDescriptorSet> m_descriptorSetVec;
+    
     // Command pool
-    std::vector<VkCommandBuffer> m_commandBufferVec;
+    std::vector<VkCommandBuffer> m_primaryCmdBufVec;
 
     // Map of gamepad pointers
     std::map<int, SDL_GameController *> m_pGamepadMap;
@@ -244,6 +314,17 @@ private:
     // Swap chain images
     std::vector<VkImageView> m_swapChainImageViewVec;
     
+    // Texture members
+    VkImage m_textureImage;
+    VkDeviceMemory m_textureImageMemory;
+    VkImageView m_textureImageView;
+    VkSampler m_textureSampler;
+    
+    // Depth buffer members
+    VkImage m_depthImage;
+    VkDeviceMemory m_depthImageMemory;
+    VkImageView m_depthImageView;
+    
     // Vulkan functions
     PFN_vkDestroySwapchainKHR vkDestroySwapchainKHR;
     PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
@@ -253,6 +334,8 @@ private:
     // temporary members
     VkShaderModule m_shaderModuleVert;
     VkShaderModule m_shaderModuleFrag;
+    
+    std::vector<VkCommandBuffer> m_squareCmdBufVec;
 };
 
 #endif  // __device_h__

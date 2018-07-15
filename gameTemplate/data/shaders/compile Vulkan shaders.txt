@@ -7,3 +7,5 @@ cd Development/SDL2-Vulkan-Game-Engine/gameTemplate/data/shaders/
 glslangValidator -V <shader text file>
 glslangValidator -V vulkanTriangle.vert
 
+generated file needs to be renamed
+
