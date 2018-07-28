@@ -183,6 +183,7 @@ private:
     void createImage(
         uint32_t width,
         uint32_t height,
+        uint32_t mipLevels,
         VkFormat format,
         VkImageTiling tiling,
         VkImageUsageFlags usage,
@@ -207,7 +208,7 @@ private:
     void copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t width, uint32_t height );
     
     // Create the image view
-    VkImageView createImageView( VkImage image, VkFormat format, VkImageAspectFlags aspectFlags );
+    VkImageView createImageView( VkImage image, VkFormat format, uint32_t mipLevels, VkImageAspectFlags aspectFlags );
     
     // Find supported format
     VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );
@@ -318,6 +319,7 @@ private:
     std::vector<VkImageView> m_swapChainImageViewVec;
     
     // Texture members
+    uint32_t m_mipLevels;
     VkImage m_textureImage;
     VkDeviceMemory m_textureImageMemory;
     VkImageView m_textureImageView;

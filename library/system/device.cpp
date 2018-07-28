@@ -141,6 +141,7 @@ CDevice::CDevice() :
     m_currentFrame(VK_NULL_HANDLE),
     m_maxConcurrentFrames(VK_NULL_HANDLE),
     m_lastResult(VK_SUCCESS),
+    m_mipLevels(1),
     m_textureImage(VK_NULL_HANDLE),
     m_textureImageMemory(VK_NULL_HANDLE),
     m_textureImageView(VK_NULL_HANDLE),
@@ -1261,6 +1262,8 @@ void CDevice::createTextureImage()
     if( pixels == nullptr )
         throw NExcept::CCriticalException( "SOIL Error!", "Error loading image!");
     
+    m_mipLevels = std::floor(std::log2(std::max(width, height))) + 1;
+    
     VkDeviceSize imageSize = width * height * SOIL_LOAD_RGBA;
     
     VkBuffer stagingBuffer;
@@ -1566,7 +1569,7 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex  )
         cmdBufInheritanceInfo.renderPass = m_renderPass;
 
         VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
-        cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT | VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
+        cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
         cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
         
 
@@ -1853,11 +1856,11 @@ VkFormat CDevice::findSupportedFormat( const std::vector<VkFormat> & candidates,
     {
         VkFormatProperties props;
         vkGetPhysicalDeviceFormatProperties( m_physicalDevice, format, &props );
-
-        if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features)
+        
+        if( tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features )
             return format;
 
-        else if (tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features)
+        else if( tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features )
             return format;
     }
     
@@ -1870,10 +1873,20 @@ VkFormat CDevice::findSupportedFormat( const std::vector<VkFormat> & candidates,
 ****************************************************************************/
 VkFormat CDevice::findDepthFormat()
 {
-    return findSupportedFormat(
-        {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
-        VK_IMAGE_TILING_OPTIMAL,
-        VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
+    std::vector<VkFormat> depthStencilFormatChoices;
+            
+    if( CSettings::Instance().getCreateStencilBuffer() )
+        depthStencilFormatChoices = {VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
+    else
+        depthStencilFormatChoices = {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
+        
+    VkFormat format = findSupportedFormat( depthStencilFormatChoices, VK_IMAGE_TILING_OPTIMAL, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
+    
+    // If an optimal one is not found, try for a linear one
+    if( format == VK_FORMAT_UNDEFINED )
+        format = findSupportedFormat( depthStencilFormatChoices, VK_IMAGE_TILING_LINEAR, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
+    
+    return format;
 }
 
 
@@ -1883,6 +1896,7 @@ VkFormat CDevice::findDepthFormat()
 void CDevice::createImage(
     uint32_t width,
     uint32_t height,
+    uint32_t mipLevels,
     VkFormat format,
     VkImageTiling tiling,
     VkImageUsageFlags usage,
@@ -1896,7 +1910,7 @@ void CDevice::createImage(
     imageInfo.extent.width = width;
     imageInfo.extent.height = height;
     imageInfo.extent.depth = 1;
-    imageInfo.mipLevels = 1;
+    imageInfo.mipLevels = mipLevels;
     imageInfo.arrayLayers = 1;
     imageInfo.format = format;
     imageInfo.tiling = tiling;
@@ -2117,7 +2131,7 @@ void CDevice::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t width,
 /***************************************************************************
 *   DESC:  Create the image view
 ****************************************************************************/
-VkImageView CDevice::createImageView( VkImage image, VkFormat format, VkImageAspectFlags aspectFlags )
+VkImageView CDevice::createImageView( VkImage image, VkFormat format, uint32_t mipLevels, VkImageAspectFlags aspectFlags )
 {
     VkImageViewCreateInfo viewInfo = {};
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
