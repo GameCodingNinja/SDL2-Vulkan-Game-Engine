@@ -948,7 +948,7 @@ void CDevice::createSwapChain()
     m_swapChainImageViewVec.reserve( swapChainImageCount );
     
     for( uint32_t i = 0; i < swapChainImageCount; ++i )
-        m_swapChainImageViewVec.push_back( createImageView( swapChainImage[i], m_swapchainInfo.imageFormat, VK_IMAGE_ASPECT_COLOR_BIT ) );
+        m_swapChainImageViewVec.push_back( createImageView( swapChainImage[i], m_swapchainInfo.imageFormat, 1, VK_IMAGE_ASPECT_COLOR_BIT ) );
 }
 
 
@@ -1207,6 +1207,7 @@ void CDevice::createDepthResources()
     createImage(
         m_swapchainInfo.imageExtent.width,
         m_swapchainInfo.imageExtent.height,
+        1,
         depthFormat,
         VK_IMAGE_TILING_OPTIMAL,
         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
@@ -1214,9 +1215,9 @@ void CDevice::createDepthResources()
         m_depthImage,
         m_depthImageMemory );
     
-    m_depthImageView = createImageView( m_depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT );
+    m_depthImageView = createImageView( m_depthImage, depthFormat, 1, VK_IMAGE_ASPECT_DEPTH_BIT );
 
-    transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL );
+    transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1 );
 }
 
 
@@ -1249,7 +1250,7 @@ void CDevice::createFrameBuffer()
 /***************************************************************************
 *   DESC:  Create texture image
 ****************************************************************************/
-void CDevice::createTextureImage()
+void CDevice::createTextureImage( bool mipMap )
 {
     int width(0), height(0), channels(0);
     unsigned char * pixels = SOIL_load_image( 
@@ -1261,8 +1262,6 @@ void CDevice::createTextureImage()
     
     if( pixels == nullptr )
         throw NExcept::CCriticalException( "SOIL Error!", "Error loading image!");
-    
-    m_mipLevels = std::floor(std::log2(std::max(width, height))) + 1;
     
     VkDeviceSize imageSize = width * height * SOIL_LOAD_RGBA;
     
@@ -1283,22 +1282,126 @@ void CDevice::createTextureImage()
     
     SOIL_free_image_data( pixels );
     
+    uint32_t imageUsageFlags( VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT );
+    
+    if( mipMap )
+    {
+        imageUsageFlags |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+        m_mipLevels = std::floor(std::log2(std::max(width, height))) + 1;
+    }
+    
     createImage(
         width,
         height,
+        m_mipLevels,
         VK_FORMAT_R8G8B8A8_UNORM,
         VK_IMAGE_TILING_OPTIMAL,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+        imageUsageFlags,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         m_textureImage,
         m_textureImageMemory );
     
-    transitionImageLayout( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+    transitionImageLayout( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, m_mipLevels );
     copyBufferToImage( stagingBuffer, m_textureImage, static_cast<uint32_t>(width), static_cast<uint32_t>(height) );
-    transitionImageLayout( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+    
+    if( mipMap )
+        generateMipmaps( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, width, height, m_mipLevels );
+    else
+        transitionImageLayout( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, m_mipLevels );
     
     vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
     vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
+}
+
+
+/***************************************************************************
+*   DESC:  Generate Mipmaps
+****************************************************************************/
+void CDevice::generateMipmaps( VkImage image, VkFormat imageFormat, int32_t width, int32_t height, uint32_t mipLevels )
+{
+    // Check if image format supports linear blitting
+    VkFormatProperties formatProperties;
+    vkGetPhysicalDeviceFormatProperties( m_physicalDevice, imageFormat, &formatProperties );
+
+    if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT))
+        throw NExcept::CCriticalException( "Vulkan Error!", "texture image format does not support linear blitting!" );
+
+    VkCommandBuffer commandBuffer = beginSingleTimeCommands();
+
+    VkImageMemoryBarrier barrier = {};
+    barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+    barrier.image = image;
+    barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    barrier.subresourceRange.baseArrayLayer = 0;
+    barrier.subresourceRange.layerCount = 1;
+    barrier.subresourceRange.levelCount = 1;
+
+    int32_t mipWidth = width;
+    int32_t mipHeight = height;
+
+    for (uint32_t i = 1; i < mipLevels; i++) {
+        barrier.subresourceRange.baseMipLevel = i - 1;
+        barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+        barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+        barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+        barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+
+        vkCmdPipelineBarrier(commandBuffer,
+            VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0,
+            0, nullptr,
+            0, nullptr,
+            1, &barrier);
+
+        VkImageBlit blit = {};
+        blit.srcOffsets[0] = {0, 0, 0};
+        blit.srcOffsets[1] = {mipWidth, mipHeight, 1};
+        blit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        blit.srcSubresource.mipLevel = i - 1;
+        blit.srcSubresource.baseArrayLayer = 0;
+        blit.srcSubresource.layerCount = 1;
+        blit.dstOffsets[0] = {0, 0, 0};
+        blit.dstOffsets[1] = { mipWidth > 1 ? mipWidth / 2 : 1, mipHeight > 1 ? mipHeight / 2 : 1, 1 };
+        blit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        blit.dstSubresource.mipLevel = i;
+        blit.dstSubresource.baseArrayLayer = 0;
+        blit.dstSubresource.layerCount = 1;
+
+        vkCmdBlitImage(commandBuffer,
+            image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+            image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            1, &blit,
+            VK_FILTER_LINEAR);
+
+        barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+        barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+        vkCmdPipelineBarrier(commandBuffer,
+            VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0,
+            0, nullptr,
+            0, nullptr,
+            1, &barrier);
+
+        if (mipWidth > 1) mipWidth /= 2;
+        if (mipHeight > 1) mipHeight /= 2;
+    }
+
+    barrier.subresourceRange.baseMipLevel = mipLevels - 1;
+    barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+    barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+    barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+    vkCmdPipelineBarrier(commandBuffer,
+        VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0,
+        0, nullptr,
+        0, nullptr,
+        1, &barrier);
+
+    endSingleTimeCommands(commandBuffer);
 }
 
 
@@ -1307,7 +1410,7 @@ void CDevice::createTextureImage()
 ****************************************************************************/
 void CDevice::createTextureImageView()
 {
-    m_textureImageView = createImageView( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_ASPECT_COLOR_BIT );
+    m_textureImageView = createImageView( m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, m_mipLevels, VK_IMAGE_ASPECT_COLOR_BIT );
 }
 
 
@@ -1332,7 +1435,7 @@ void CDevice::createTextureSampler()
     samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
     samplerInfo.mipLodBias = 0.0f;
     samplerInfo.minLod = 0.0f;
-    samplerInfo.maxLod = 0.0f;
+    samplerInfo.maxLod = ((m_mipLevels > 1) ? m_mipLevels : 0.f);
     
     if( (m_lastResult = vkCreateSampler( m_logicalDevice, &samplerInfo, nullptr, &m_textureSampler )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture sampler! %s") % getError() ) );
@@ -2028,7 +2131,7 @@ void CDevice::endSingleTimeCommands( VkCommandBuffer commandBuffer )
 /***************************************************************************
 *   DESC:  Transition image layout
 ****************************************************************************/
-void CDevice::transitionImageLayout( VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout )
+void CDevice::transitionImageLayout( VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t mipLevels )
 {
     VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
@@ -2040,7 +2143,7 @@ void CDevice::transitionImageLayout( VkImage image, VkFormat format, VkImageLayo
     barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
     barrier.image = image;
     barrier.subresourceRange.baseMipLevel = 0;
-    barrier.subresourceRange.levelCount = 1;
+    barrier.subresourceRange.levelCount = mipLevels;
     barrier.subresourceRange.baseArrayLayer = 0;
     barrier.subresourceRange.layerCount = 1;
 
@@ -2144,7 +2247,7 @@ VkImageView CDevice::createImageView( VkImage image, VkFormat format, uint32_t m
     // imageViewCreateInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
     viewInfo.subresourceRange.aspectMask = aspectFlags;
     viewInfo.subresourceRange.baseMipLevel = 0;
-    viewInfo.subresourceRange.levelCount = 1;
+    viewInfo.subresourceRange.levelCount = mipLevels;
     viewInfo.subresourceRange.baseArrayLayer = 0;
     viewInfo.subresourceRange.layerCount = 1;
 

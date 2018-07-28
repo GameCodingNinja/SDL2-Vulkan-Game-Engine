@@ -133,7 +133,7 @@ private:
     void createDepthResources();
     
     // Create texture image
-    void createTextureImage();
+    void createTextureImage( bool mipMap = false );
     
     // Create the image texture view
     void createTextureImageView();
@@ -202,13 +202,16 @@ private:
     void endSingleTimeCommands( VkCommandBuffer commandBuffer );
     
     // Transition image layout
-    void transitionImageLayout( VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout );
+    void transitionImageLayout( VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t mipLevels );
     
     // Copy a buffer to an image
     void copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t width, uint32_t height );
     
     // Create the image view
     VkImageView createImageView( VkImage image, VkFormat format, uint32_t mipLevels, VkImageAspectFlags aspectFlags );
+    
+    // Generate Mipmaps
+    void generateMipmaps( VkImage image, VkFormat imageFormat, int32_t width, int32_t height, uint32_t mipLevels );
     
     // Find supported format
     VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );
