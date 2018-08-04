@@ -1568,7 +1568,7 @@ void CDevice::createDescriptorSet()
 
     m_descriptorSetVec.resize(m_framebufferVec.size());
     
-    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, &m_descriptorSetVec[0] )) )
+    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, m_descriptorSetVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
     
     for( size_t i = 0; i < m_framebufferVec.size(); ++i )
