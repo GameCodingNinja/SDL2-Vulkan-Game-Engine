@@ -25,7 +25,6 @@
 #include <system/device.h>
 #include <objectdata/objectdatamanager.h>
 #include <managers/shadermanager.h>
-#include <managers/texturemanager.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/actionmanager.h>
 #include <managers/signalmanager.h>
@@ -109,9 +108,9 @@ void CLoadState::animate()
         SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
 
         // Unbind everything after a round of rendering
-        CShaderMgr::Instance().unbind();
-        CTextureMgr::Instance().unbind();
-        CVertBufMgr::Instance().unbind();
+        //CShaderMgr::Instance().unbind();
+        //CTextureMgr::Instance().unbind();
+        //CVertBufMgr::Instance().unbind();
 
         int dif = m_time / 83;
         m_time = m_time - (dif * 83);

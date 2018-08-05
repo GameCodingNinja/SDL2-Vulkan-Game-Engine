@@ -19,7 +19,6 @@
 #include <objectdata/objectvisualdata3d.h>
 #include <managers/shadermanager.h>
 #include <managers/vertexbuffermanager.h>
-#include <managers/texturemanager.h>
 #include <common/vertex3d.h>
 #include <common/shaderdata.h>
 #include <system/device.h>
@@ -106,7 +105,7 @@ void CVisualComponent3D::render( const CMatrix & matrix, const CMatrix & normalM
             // Bind the texture
             for( auto & txtIter : meshIter.m_textureVec )
             {
-                CTextureMgr::Instance().bind( txtIter.m_id );
+                //CTextureMgr::Instance().bind( txtIter.m_id );
                 glUniform1i( m_text0Location, (int)txtIter.m_type); // 0 = TEXTURE0
             }
 

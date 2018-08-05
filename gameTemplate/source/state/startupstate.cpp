@@ -21,7 +21,6 @@
 #include "titlescreenstate.h"
 
 // Game lib dependencies
-#include <managers/texturemanager.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/shadermanager.h>
 #include <managers/fontmanager.h>
@@ -143,9 +142,9 @@ void CStartUpState::fade(
         SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
 
         // Unbind everything after a round of rendering
-        CShaderMgr::Instance().unbind();
-        CTextureMgr::Instance().unbind();
-        CVertBufMgr::Instance().unbind();
+        //CShaderMgr::Instance().unbind();
+        //CTextureMgr::Instance().unbind();
+        //CVertBufMgr::Instance().unbind();
 
         std::this_thread::sleep_for( std::chrono::milliseconds( 2 ) );
     }

@@ -76,9 +76,6 @@ protected:
 
 protected:
 
-    // The window we'll be rendering to
-    SDL_Window * m_pWindow;
-
     // flag to indicate the game is running
     bool m_gameRunning;
 

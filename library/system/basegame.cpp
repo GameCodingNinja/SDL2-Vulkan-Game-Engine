@@ -22,7 +22,6 @@
 #include <utilities/statcounter.h>
 #include <system/device.h>
 #include <managers/shadermanager.h>
-#include <managers/texturemanager.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/meshmanager.h>
 #include <common/build_defs.h>
@@ -33,8 +32,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CBaseGame::CBaseGame()
-    : m_pWindow(nullptr),
+CBaseGame::CBaseGame() :
       m_gameRunning(false),
       m_clearBufferMask(0)
 {
@@ -71,7 +69,7 @@ void CBaseGame::create()
     CDevice::Instance().create();
 
     // Get local copies of the device handles
-    m_pWindow = CDevice::Instance().getWindow();
+    // m_pWindow = CDevice::Instance().getWindow();
     //m_context = CDevice::Instance().getContext();
 
     // Game start init
@@ -219,7 +217,7 @@ void CBaseGame::displayErrorMsg( const std::string & title, const std::string & 
 {
     printf("Error: %s, %s", title.c_str(), msg.c_str() );
 
-    SDL_ShowSimpleMessageBox( SDL_MESSAGEBOX_ERROR, title.c_str(), msg.c_str(), m_pWindow );
+    CDevice::Instance().displayErrorMsg( title, msg );
 }
 
 

@@ -18,7 +18,6 @@
 // Game lib dependencies
 #include <objectdata/objectvisualdata2d.h>
 #include <managers/shadermanager.h>
-#include <managers/texturemanager.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/fontmanager.h>
 #include <common/quad2d.h>
@@ -160,7 +159,7 @@ void CVisualComponent2D::render( const CMatrix & objMatrix, const CMatrix & matr
             const int8_t UV_OFFSET( sizeof(CPoint<float>) );
 
             // Bind the texture
-            CTextureMgr::Instance().bind( m_textureID );
+            //CTextureMgr::Instance().bind( m_textureID );
             glUniform1i( m_text0Location, 0); // 0 = TEXTURE0
 
             // Setup the UV attribute shade data

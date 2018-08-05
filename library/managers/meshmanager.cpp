@@ -18,13 +18,13 @@
 // Game lib dependencies
 #include <utilities/smartpointers.h>
 #include <utilities/exceptionhandling.h>
-#include <managers/texturemanager.h>
 #include <common/meshbinaryfileheader.h>
 #include <common/point.h>
 #include <common/normal.h>
 #include <common/uv.h>
 #include <common/texture.h>
 #include <common/vertex3d.h>
+#include <system/device.h>
 
 // SDL lib dependencies
 #include <SDL.h>
@@ -177,7 +177,7 @@ void CMeshMgr::loadFromFile(
         SDL_RWread( pFile, &btext, 1, sizeof( btext ) );
 
         // Load the texture
-        CTextureMgr::Instance().loadImageFor3D( group, btext.path );
+        CDevice::Instance().loadTexture( group, btext.path );
 
         // Record texture info for later
         textureVec.emplace_back();
@@ -294,11 +294,11 @@ void CMeshMgr::createFromData(
     for( auto & iter : textureVec )
     {
         // Load the texture
-        CTexture texture = CTextureMgr::Instance().createTextureFor3D( group, iter.m_textFilePath );
+        NVulkan::CTexture texture = CDevice::Instance().loadTexture( group, iter.m_textFilePath );
 
-        iter.m_id = texture.m_id;
+        //iter.m_id = texture.m_id;
         iter.m_size = texture.m_size;
-        iter.m_channels = texture.m_channels;
+        //iter.m_channels = texture.m_channels;
     }
 
     // Get the mesh vector

@@ -52,8 +52,8 @@ add_library(
         script/scriptscriptmanager.cpp
         script/scriptuicontrol.cpp
         system/basegame.cpp
+        system/devicevulkan.cpp
         system/device.cpp
-        system/vulkan_wrapper.cpp
         utilities/xmlparsehelper.cpp
         utilities/statcounter.cpp
         utilities/genfunc.cpp
@@ -65,7 +65,6 @@ add_library(
         utilities/threadpool.cpp
         utilities/xmlpreloader.cpp
         utilities/matrix.cpp
-        managers/texturemanager.cpp
         managers/soundmanager.cpp
         managers/managerbase.cpp
         managers/fontmanager.cpp

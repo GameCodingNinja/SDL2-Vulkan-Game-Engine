@@ -10,8 +10,8 @@
 // Game lib dependencies
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
-#include <managers/texturemanager.h>
 #include <common/texture.h>
+#include <system/device.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -43,7 +43,7 @@ CFont::~CFont()
 void CFont::load( const std::string & group )
 {
     // load the image
-    CTextureMgr::Instance().loadImageFor2D( group, m_filePath + ".png" );
+    CDevice::Instance().loadTexture( group, m_filePath + ".png" );
 
     // open this file and parse
     XMLNode mainNode = XMLNode::openFileHelper( (m_filePath + ".fnt").c_str(), "font" );
@@ -99,7 +99,7 @@ void CFont::load( const std::string & group )
  ************************************************************************/
 void CFont::createFromData( const std::string & group )
 {
-    m_texture = CTextureMgr::Instance().createTextureFor2D( group, m_filePath + ".png" );
+    //m_texture = CDevice::Instance().loadTexture( group, m_filePath + ".png" );
 }
 
 

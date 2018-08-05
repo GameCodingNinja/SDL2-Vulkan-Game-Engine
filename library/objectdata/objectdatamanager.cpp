@@ -16,9 +16,9 @@
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdata3d.h>
 #include <managers/vertexbuffermanager.h>
-#include <managers/texturemanager.h>
 #include <managers/meshmanager.h>
 #include <managers/spritesheetmanager.h>
+#include <system/device.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -191,7 +191,7 @@ void CObjectDataMgr::freeGroup2D( const std::string & group, const bool freeOpen
  ************************************************************************/
 void CObjectDataMgr::freeOpenGL2D( const std::string & group )
 {
-    CTextureMgr::Instance().deleteTextureGroupFor2D( group );
+    CDevice::Instance().deleteTextureGroup( group );
     CVertBufMgr::Instance().deleteBufferGroupFor2D( group );
 }
 
@@ -383,7 +383,7 @@ void CObjectDataMgr::freeGroup3D( const std::string & group, const bool freeOpen
  ************************************************************************/
 void CObjectDataMgr::freeOpenGL3D( const std::string & group )
 {
-    CTextureMgr::Instance().deleteTextureGroupFor3D( group );
+    CDevice::Instance().deleteTextureGroup( group );
     CMeshMgr::Instance().deleteBufferGroup( group );
 }
 

@@ -16,7 +16,7 @@
 #include <objectdata/objectvisualdata2d.h>
 
 // Game lib dependencies
-#include <managers/texturemanager.h>
+#include <system/device.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/spritesheetmanager.h>
 #include <utilities/xmlParser.h>
@@ -258,7 +258,7 @@ void CObjectVisualData2D::loadImage( const std::string & group )
                 if( !m_resExt.empty() )
                     NGenFunc::AddFileExt( file, filePath, m_resExt );
 
-                CTextureMgr::Instance().loadImageFor2D( group, filePath );
+                CDevice::Instance().loadTexture( group, filePath );
             }
         }
         else
@@ -269,7 +269,7 @@ void CObjectVisualData2D::loadImage( const std::string & group )
             if( !m_resExt.empty() )
                 NGenFunc::AddFileExt( m_textureFilePath, filePath, m_resExt );
 
-            CTextureMgr::Instance().loadImageFor2D( group, filePath );
+            CDevice::Instance().loadTexture( group, filePath );
         }
     }
 }
@@ -352,8 +352,8 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
                 if( !m_resExt.empty() )
                     NGenFunc::AddFileExt( file, filePath, m_resExt );
 
-                rTexture = CTextureMgr::Instance().createTextureFor2D( group, filePath, m_compressed );
-                m_textureIDVec.push_back( rTexture.getID() );
+                //rTexture = CTextureMgr::Instance().createTextureFor2D( group, filePath, m_compressed );
+                //m_textureIDVec.push_back( rTexture.getID() );
             }
         }
         else
@@ -364,8 +364,8 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
             if( !m_resExt.empty() )
                 NGenFunc::AddFileExt( m_textureFilePath, filePath, m_resExt );
 
-            rTexture = CTextureMgr::Instance().createTextureFor2D( group, filePath, m_compressed );
-            m_textureIDVec.push_back( rTexture.getID() );
+            //rTexture = CTextureMgr::Instance().createTextureFor2D( group, filePath, m_compressed );
+            //m_textureIDVec.push_back( rTexture.getID() );
         }
 
         // If the passed in size reference is empty, set it to the texture size

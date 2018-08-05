@@ -152,7 +152,7 @@ void CGame::shaderInitCallBack( const std::string & shaderId )
 void CGame::statStringCallBack( const std::string & statStr )
 {
     if( !CSettings::Instance().getFullScreen() )
-        SDL_SetWindowTitle( m_pWindow, statStr.c_str() );
+        CDevice::Instance().setWindowTitle( statStr );
 }
 
 
