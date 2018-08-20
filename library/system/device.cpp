@@ -53,9 +53,14 @@ void CDevice::create()
     
     // Get the render size of the window
     const CSize<int> size( CSettings::Instance().getSize() );
+    
+    uint32_t flags( SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN );
+    #if !(defined(__IOS__) || defined(__ANDROID__))
+    flags |= SDL_WINDOW_RESIZABLE;
+    #endif
 
     // Create window
-    m_pWindow = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.getW(), size.getH(), SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN );
+    m_pWindow = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.getW(), size.getH(), flags );
     if( m_pWindow == nullptr )
         throw NExcept::CCriticalException("Game window could not be created!", SDL_GetError() );
     
@@ -141,7 +146,6 @@ void CDevice::destroyAssets()
 void CDevice::render()
 {
     vkWaitForFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame], VK_TRUE, UINT64_MAX );
-    vkResetFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame] );
     
     uint32_t imageIndex(0);
     m_lastResult = vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
@@ -176,6 +180,8 @@ void CDevice::render()
     VkSemaphore signalSemaphores[] = {m_renderFinishedSemaphoreVec[m_currentFrame]};
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = signalSemaphores;
+    
+    vkResetFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame] );
     
     if( (m_lastResult = vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, m_frameFenceVec[m_currentFrame] )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not submit draw command buffer! %s") % getError() ) );

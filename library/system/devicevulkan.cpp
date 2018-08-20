@@ -221,11 +221,11 @@ void CDeviceVulkan::create(
     // Setup the swap chain to be created
     setupSwapChain();
     
-    // Create the swap chain
-    createSwapChain();
-    
     // Create the descriptor set layout
     createDescriptorSetLayout();
+    
+    // Create the swap chain
+    createSwapChain();
     
     // Create the render pass
     createRenderPass();
@@ -332,6 +332,12 @@ void CDeviceVulkan::destroy()
             m_commandPool = VK_NULL_HANDLE;
         }
         
+        if( m_descriptorSetLayout != VK_NULL_HANDLE )
+        {
+            vkDestroyDescriptorSetLayout( m_logicalDevice, m_descriptorSetLayout, nullptr );
+            m_descriptorSetLayout = VK_NULL_HANDLE;
+        }
+        
         destroyAssets();
         
         if( m_vertexBuffer != VK_NULL_HANDLE )
@@ -416,12 +422,6 @@ void CDeviceVulkan::destroySwapChain()
         {
             vkDestroyPipelineLayout( m_logicalDevice, m_pipelineLayout, nullptr );
             m_pipelineLayout = VK_NULL_HANDLE;
-        }
-        
-        if( m_descriptorSetLayout != VK_NULL_HANDLE )
-        {
-            vkDestroyDescriptorSetLayout( m_logicalDevice, m_descriptorSetLayout, nullptr );
-            m_descriptorSetLayout = VK_NULL_HANDLE;
         }
 
         if( m_depthImageView != VK_NULL_HANDLE )
@@ -764,12 +764,12 @@ void CDeviceVulkan::createSwapChain()
     // Set the extent of the render resolution
     VkExtent2D swapchainExtent;
     
+    // Get the render size of the window
+    const CSize<uint32_t> size( CSettings::Instance().getSize() );
+    
     // width and height are either both -1, or both not -1.
     if (m_surfCapabilities.currentExtent.width == (uint32_t)-1)
     {
-        // Get the render size of the window
-        const CSize<int> size( CSettings::Instance().getSize() );
-    
         // If the surface size is undefined, the size is set to
         // the size of the images requested.
         swapchainExtent.width = size.getW();
@@ -777,6 +777,17 @@ void CDeviceVulkan::createSwapChain()
     }
     else
     {
+        if( m_surfCapabilities.currentExtent.width != size.getW() ||
+            m_surfCapabilities.currentExtent.height != size.getH() )
+        {
+            CSettings::Instance().setSize(
+                CSize<float>(
+                    m_surfCapabilities.currentExtent.width,
+                    m_surfCapabilities.currentExtent.height) );
+            
+            CSettings::Instance().calcRatio();
+        }
+        
         // If the surface size is defined, the swap chain size must match
         swapchainExtent = m_surfCapabilities.currentExtent;
     }
@@ -1446,9 +1457,6 @@ void CDeviceVulkan::recreateSwapChain()
     
     // Create the swap chain
     createSwapChain();
-    
-    // Create the descriptor set layout
-    createDescriptorSetLayout();
     
     // Create the render pass
     createRenderPass();
