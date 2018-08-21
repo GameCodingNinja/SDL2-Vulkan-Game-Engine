@@ -215,9 +215,6 @@ protected:
     // Present queue handle
     VkQueue m_presentQueue;
     
-    // Surface capabilities
-    VkSurfaceCapabilitiesKHR m_surfCapabilities = {};
-    
     // Swap chain
     VkSwapchainKHR m_swapchain;
     

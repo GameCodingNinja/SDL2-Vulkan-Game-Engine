@@ -237,7 +237,9 @@ void CSettings::loadXML()
             const XMLNode backBufferNode = deviceNode.getChildNode("backbuffer");
             if( !backBufferNode.isEmpty() )
             {
+                #if !(defined(__IOS__) || defined(__ANDROID__))
                 m_tripleBuffering = ( std::strcmp( backBufferNode.getAttribute("tripleBuffering"), "true" ) == 0 );
+                #endif
                 m_vSync = ( std::strcmp( backBufferNode.getAttribute("VSync"), "true" ) == 0 );
             }
 

@@ -200,8 +200,8 @@ void CDeviceVulkan::create(
         throw NExcept::CCriticalException( "Vulkan Error!", "Could not initialize Vulkan library!" );
     #endif
 
-    // Set the maximum concurrent frames that can be rendered
-    m_maxConcurrentFrames = CSettings::Instance().getMaxConcurrentFrameRender();
+    // Determines how many frames are going through the pipeline simultaneously. Unrelated to buffering.
+    m_maxConcurrentFrames = CSettings::Instance().getMaxConcurrentFrameRender() + 1;
 
     // Create the vulkan instance
     createVulkanInstance( validationNameVec, instanceExtensionNameVec );
@@ -666,7 +666,8 @@ void CDeviceVulkan::setupSwapChain()
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR!" );
     
     // Get the device surface capabilities
-    if( (m_lastResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &m_surfCapabilities )) )
+    VkSurfaceCapabilitiesKHR surfCapabilities = {};
+    if( (m_lastResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &surfCapabilities )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface capabilities! %s") % getError() ) );
     
     // Get the best surface format
@@ -723,8 +724,8 @@ void CDeviceVulkan::setupSwapChain()
     }
 
     // Init the pre-transform
-    VkSurfaceTransformFlagBitsKHR preTransform = m_surfCapabilities.currentTransform;
-    if (m_surfCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
+    VkSurfaceTransformFlagBitsKHR preTransform = surfCapabilities.currentTransform;
+    if (surfCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
         preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
     
     m_swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -739,6 +740,61 @@ void CDeviceVulkan::setupSwapChain()
     m_swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
     m_swapchainInfo.presentMode = surfacePresMode;
     m_swapchainInfo.clipped = true;
+    
+    // Determine the number of VkImage's to use in the swap chain.
+    uint32_t minImageCount = surfCapabilities.minImageCount;
+    
+    if( CSettings::Instance().getTripleBuffering() )
+        ++minImageCount;
+    
+    // Application must settle for fewer images than desired
+    if ((surfCapabilities.maxImageCount > 0) && (minImageCount > surfCapabilities.maxImageCount))
+        minImageCount = surfCapabilities.maxImageCount;
+    
+    m_swapchainInfo.minImageCount = minImageCount;
+    
+    // Set the extent of the render resolution
+    VkExtent2D swapchainExtent;
+    
+    // Get the render size of the window
+    const CSize<uint32_t> size( CSettings::Instance().getSize() );
+    
+    // width and height are either both -1, or both not -1.
+    if (surfCapabilities.currentExtent.width == (uint32_t)-1)
+    {
+        // If the surface size is undefined, the size is set to
+        // the size of the images requested.
+        swapchainExtent.width = size.getW();
+        swapchainExtent.height = size.getH();
+    }
+    else
+    {
+        // If the sizes don't match, recalculate the ratio
+        if( surfCapabilities.currentExtent.width != size.getW() ||
+            surfCapabilities.currentExtent.height != size.getH() )
+        {
+            CSettings::Instance().setSize(
+                CSize<float>(
+                    surfCapabilities.currentExtent.width,
+                    surfCapabilities.currentExtent.height) );
+            
+            CSettings::Instance().calcRatio();
+        }
+        
+        // If the surface size is defined, the swap chain size must match
+        swapchainExtent = surfCapabilities.currentExtent;
+    }
+    
+    m_swapchainInfo.imageExtent = swapchainExtent;
+    
+    // In the event the graphics and present queue family doesn't match
+    std::vector<uint32_t> queueFamilyIndiceVec = {m_graphicsQueueFamilyIndex, m_presentQueueFamilyIndex};
+    if( m_graphicsQueueFamilyIndex != m_presentQueueFamilyIndex )
+    {
+        m_swapchainInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+        m_swapchainInfo.queueFamilyIndexCount = queueFamilyIndiceVec.size();
+        m_swapchainInfo.pQueueFamilyIndices = queueFamilyIndiceVec.data();
+    }
 }
 
 
@@ -750,59 +806,6 @@ void CDeviceVulkan::createSwapChain()
     PFN_vkCreateSwapchainKHR CreateSwapchain = nullptr;
     if( !(CreateSwapchain = (PFN_vkCreateSwapchainKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateSwapchainKHR")) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCreateSwapchainKHR!" );
-    
-    // Determine the number of VkImage's to use in the swap chain.
-    uint32_t minImageCount = m_surfCapabilities.minImageCount;
-    
-    if( CSettings::Instance().getTripleBuffering() )
-        ++minImageCount;
-    
-    // Application must settle for fewer images than desired
-    if ((m_surfCapabilities.maxImageCount > 0) && (minImageCount > m_surfCapabilities.maxImageCount))
-        minImageCount = m_surfCapabilities.maxImageCount;
-    
-    // Set the extent of the render resolution
-    VkExtent2D swapchainExtent;
-    
-    // Get the render size of the window
-    const CSize<uint32_t> size( CSettings::Instance().getSize() );
-    
-    // width and height are either both -1, or both not -1.
-    if (m_surfCapabilities.currentExtent.width == (uint32_t)-1)
-    {
-        // If the surface size is undefined, the size is set to
-        // the size of the images requested.
-        swapchainExtent.width = size.getW();
-        swapchainExtent.height = size.getH();
-    }
-    else
-    {
-        if( m_surfCapabilities.currentExtent.width != size.getW() ||
-            m_surfCapabilities.currentExtent.height != size.getH() )
-        {
-            CSettings::Instance().setSize(
-                CSize<float>(
-                    m_surfCapabilities.currentExtent.width,
-                    m_surfCapabilities.currentExtent.height) );
-            
-            CSettings::Instance().calcRatio();
-        }
-        
-        // If the surface size is defined, the swap chain size must match
-        swapchainExtent = m_surfCapabilities.currentExtent;
-    }
-    
-    m_swapchainInfo.minImageCount = minImageCount;
-    m_swapchainInfo.imageExtent = swapchainExtent;
-    
-    // In the event the graphics and present queue family doesn't match
-    std::vector<uint32_t> queueFamilyIndiceVec = {m_graphicsQueueFamilyIndex, m_presentQueueFamilyIndex};
-    if( m_graphicsQueueFamilyIndex != m_presentQueueFamilyIndex )
-    {
-        m_swapchainInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
-        m_swapchainInfo.queueFamilyIndexCount = queueFamilyIndiceVec.size();
-        m_swapchainInfo.pQueueFamilyIndices = queueFamilyIndiceVec.data();
-    }
     
     // Create the swap chain
     if( (m_lastResult = CreateSwapchain( m_logicalDevice, &m_swapchainInfo, nullptr, &m_swapchain)) )
@@ -819,8 +822,8 @@ void CDeviceVulkan::createSwapChain()
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not get swap chain images! %s") % getError() ) );
     
     // Print out info if the swap images don't match
-    if( minImageCount != swapChainImageCount )
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Swap chain image don't match! (%d / %d)") % minImageCount % swapChainImageCount ));
+    if( m_swapchainInfo.minImageCount != swapChainImageCount )
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Swap chain image don't match! (%d / %d)") % m_swapchainInfo.minImageCount % swapChainImageCount ));
     
     m_swapChainImageViewVec.reserve( swapChainImageCount );
     
