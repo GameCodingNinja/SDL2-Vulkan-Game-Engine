@@ -19,7 +19,7 @@
 #include <script/scriptcomponent.h>
 #include <common/dynamicoffset.h>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Boost lib dependencies

@@ -5,13 +5,6 @@
 *    DESCRIPTION:     Class for user interface scroll boxes
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <gui/uiscrollbox.h>
 
@@ -345,7 +338,7 @@ void CUIScrollBox::render( const CMatrix & matrix )
     CUISubControl::render( matrix );
 
     // Disable rendering to the color buffer
-    glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+    /*glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
 
     // Disable rendering to the depth mask
     glDepthMask( GL_FALSE );
@@ -378,7 +371,7 @@ void CUIScrollBox::render( const CMatrix & matrix )
 
 
     // Finished using stencil
-    glDisable( GL_STENCIL_TEST );
+    glDisable( GL_STENCIL_TEST );*/
 }
 
 

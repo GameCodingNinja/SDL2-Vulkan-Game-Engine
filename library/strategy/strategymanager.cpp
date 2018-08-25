@@ -17,7 +17,7 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 /************************************************************************

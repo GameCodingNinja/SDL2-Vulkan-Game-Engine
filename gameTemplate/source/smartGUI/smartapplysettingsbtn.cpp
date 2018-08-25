@@ -5,13 +5,6 @@
 *    DESCRIPTION:     Class CSmartExitBtn
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include "smartapplysettingsbtn.h"
 
@@ -144,7 +137,7 @@ void CSmartApplySettingsBtn::execute()
         CMenuMgr::Instance().resetDynamicOffset();
 
         // Need to reset the view port the changing the resolution
-        glViewport(0, 0, CSettings::Instance().getSize().getW(), CSettings::Instance().getSize().getH());
+        //glViewport(0, 0, CSettings::Instance().getSize().getW(), CSettings::Instance().getSize().getH());
     }
     else if( fullScreenChanged )
     {

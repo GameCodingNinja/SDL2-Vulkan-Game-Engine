@@ -24,7 +24,7 @@
 // Boost lib dependencies
 #include <boost/signals2.hpp>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Standard lib dependencies

@@ -20,7 +20,7 @@
 #include <managers/actionmanager.h>
 #include <managers/signalmanager.h>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Boost lib dependencies

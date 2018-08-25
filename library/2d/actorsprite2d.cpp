@@ -17,7 +17,7 @@
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Boost lib dependencies

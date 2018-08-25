@@ -5,13 +5,6 @@
 *    DESCRIPTION:     Class for user interface progress bar
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <gui/uiprogressbar.h>
 
@@ -20,11 +13,8 @@
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 
-// Boost lib dependencies
-
 // Standard lib dependencies
 #include <cstring>
-
 
 /************************************************************************
 *    DESC:  Constructor
@@ -172,7 +162,7 @@ void CUIProgressBar::transform( const CObject2D & object )
 ************************************************************************/
 void CUIProgressBar::render( const CMatrix & matrix )
 {
-    if( m_upStencilMaskSprite )
+    /*if( m_upStencilMaskSprite )
     {
         for( size_t i  = 0; i < m_spriteDeq.size(); ++i )
         {
@@ -216,7 +206,7 @@ void CUIProgressBar::render( const CMatrix & matrix )
     else
     {
         CUIControl::render( matrix );
-    }
+    }*/
 }
 
 

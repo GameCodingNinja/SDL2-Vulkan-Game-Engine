@@ -24,7 +24,7 @@
 // Boost lib dependencies
 #include <boost/bind.hpp>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 #if defined(__ANDROID__)

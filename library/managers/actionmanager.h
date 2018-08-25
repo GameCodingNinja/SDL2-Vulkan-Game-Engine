@@ -8,7 +8,7 @@
 #ifndef __action_manager_h__
 #define __action_manager_h__
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Game lib dependencies

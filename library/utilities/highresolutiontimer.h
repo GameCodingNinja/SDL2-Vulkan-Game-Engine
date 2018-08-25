@@ -7,7 +7,7 @@
 #ifndef __highresolutiontimer_h__
 #define __highresolutiontimer_h__
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 class CHighResTimer

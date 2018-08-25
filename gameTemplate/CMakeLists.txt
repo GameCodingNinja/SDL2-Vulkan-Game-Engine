@@ -29,7 +29,6 @@ PKG_SEARCH_MODULE(SDL2MIXER REQUIRED SDL2_mixer)
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
     # List all the include directories
     include_directories(
-        ${OPENGLES2_INCLUDE_DIR}
         ${SDL2_INCLUDE_DIRS}
         ${SDL2MIXER_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIRS}
@@ -40,14 +39,10 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
     	../angelscript/add_on )
 else()
     # Use the normal means to find the other packages
-    find_package(OpenGL REQUIRED)
-    find_package(GLEW REQUIRED)
     find_package(Vulkan REQUIRED)
 
     # List all the include directories
     include_directories(
-        ${OPENGL_INCLUDE_DIRS}
-        ${GLEW_INCLUDE_DIRS}
         ${SDL2_INCLUDE_DIRS}
         ${SDL2MIXER_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIRS}

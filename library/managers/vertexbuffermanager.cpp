@@ -5,13 +5,6 @@
 *    DESCRIPTION:     vertex buffer manager class singleton
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <managers/vertexbuffermanager.h>
 
@@ -40,7 +33,7 @@ CVertBufMgr::CVertBufMgr()
 CVertBufMgr::~CVertBufMgr()
 {
     // Free all vertex buffers in all groups
-    for( auto & mapMapIter : m_vertexBuf2DMapMap )
+    /*for( auto & mapMapIter : m_vertexBuf2DMapMap )
     {
         for( auto & mapIter : mapMapIter.second )
         {
@@ -55,7 +48,7 @@ CVertBufMgr::~CVertBufMgr()
         {
             glDeleteBuffers(1, &mapIter.second);
         }
-    }
+    }*/
 }
 
 
@@ -76,7 +69,7 @@ uint32_t CVertBufMgr::createVBO(
     auto mapIter = mapMapIter->second.find( name );
 
     // If it's not found, create the vertex buffer and add it to the list
-    if( mapIter == mapMapIter->second.end() )
+    /*if( mapIter == mapMapIter->second.end() )
     {
         uint32_t vboID = 0;
         glGenBuffers( 1, &vboID );
@@ -88,7 +81,7 @@ uint32_t CVertBufMgr::createVBO(
 
         // Insert the new vertex buffer info
         mapIter = mapMapIter->second.emplace( name, vboID ).first;
-    }
+    }*/
 
     return mapIter->second;
 }
@@ -108,7 +101,7 @@ uint32_t CVertBufMgr::createIBO( const std::string & group, const std::string & 
     auto mapIter = mapMapIter->second.find( name );
 
     // If it's not found, create the intex buffer and add it to the list
-    if( mapIter == mapMapIter->second.end() )
+    /*if( mapIter == mapMapIter->second.end() )
     {
         uint32_t iboID = 0;
         glGenBuffers( 1, &iboID );
@@ -120,7 +113,7 @@ uint32_t CVertBufMgr::createIBO( const std::string & group, const std::string & 
 
         // Insert the new intex buffer info
         mapIter = mapMapIter->second.emplace( name, iboID ).first;
-    }
+    }*/
 
     return mapIter->second;
 }
@@ -140,7 +133,7 @@ uint32_t CVertBufMgr::createDynamicFontIBO( const std::string & group, const std
     auto mapIter = mapMapIter->second.find( name );
 
     // If it's not found, create the intex buffer and add it to the list
-    if( mapIter == mapMapIter->second.end() )
+    /*if( mapIter == mapMapIter->second.end() )
     {
         uint32_t iboID = 0;
         glGenBuffers( 1, &iboID );
@@ -159,7 +152,7 @@ uint32_t CVertBufMgr::createDynamicFontIBO( const std::string & group, const std
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
         m_currentMaxFontIndices = maxIndicies;
-    }
+    }*/
 
     return mapIter->second;
 }
@@ -202,12 +195,12 @@ uint32_t CVertBufMgr::createScaledFrame(
             vertVecTmp.insert( vertVecTmp.end(), vertVec.begin(), vertVec.end() );
 
         uint32_t vboID = 0;
-        glGenBuffers( 1, &vboID );
+        /*glGenBuffers( 1, &vboID );
         glBindBuffer( GL_ARRAY_BUFFER, vboID );
         glBufferData( GL_ARRAY_BUFFER, sizeof(CVertex2D)*vertVecTmp.size(), vertVecTmp.data(), GL_STATIC_DRAW );
 
         // unbind the buffer
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ARRAY_BUFFER, 0 );*/
 
         // Insert the new vertex buffer info
         mapIter = mapMapIter->second.emplace( name, vboID ).first;
@@ -414,7 +407,7 @@ uint32_t CVertBufMgr::isVBO( const std::string & group, const std::string & name
 ************************************************************************/
 void CVertBufMgr::bind( uint32_t vboID, uint32_t iboID )
 {
-    if( m_currentVBOID != vboID )
+    /*if( m_currentVBOID != vboID )
     {
         // save the current binding
         m_currentVBOID = vboID;
@@ -430,7 +423,7 @@ void CVertBufMgr::bind( uint32_t vboID, uint32_t iboID )
 
         // Have OpenGL bind this buffer now
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iboID );
-    }
+    }*/
 }
 
 
@@ -441,8 +434,8 @@ void CVertBufMgr::unbind()
 {
     m_currentVBOID = 0;
     m_currentIBOID = 0;
-    glBindBuffer( GL_ARRAY_BUFFER, 0 );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+    //glBindBuffer( GL_ARRAY_BUFFER, 0 );
+    //glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
 
@@ -451,7 +444,7 @@ void CVertBufMgr::unbind()
 ************************************************************************/
 void CVertBufMgr::deleteBufferGroupFor2D( const std::string & group )
 {
-    {
+    /*{
         auto mapMapIter = m_vertexBuf2DMapMap.find( group );
         if( mapMapIter != m_vertexBuf2DMapMap.end() )
         {
@@ -479,7 +472,7 @@ void CVertBufMgr::deleteBufferGroupFor2D( const std::string & group )
             // Erase this group
             m_indexBuf2DMapMap.erase( mapMapIter );
         }
-    }
+    }*/
 }
 
 

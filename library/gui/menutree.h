@@ -8,7 +8,7 @@
 #ifndef __menu_tree_h__
 #define __menu_tree_h__
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Game lib dependencies

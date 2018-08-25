@@ -5,15 +5,6 @@
 *    DESCRIPTION:     Class template
 ************************************************************************/
 
-// SDL lib dependencies
-#include <SDL.h>
-
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include "loadstate.h"
 
@@ -37,6 +28,9 @@
 
 // Standard lib dependencies
 #include <thread>
+
+// SDL lib dependencies
+#include <SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -98,7 +92,7 @@ void CLoadState::animate()
     if( m_time > 83.f )
     {
         // Clear the screen
-        glClear( GL_COLOR_BUFFER_BIT );
+        //glClear( GL_COLOR_BUFFER_BIT );
 
         m_upSprite->setFrame( m_frame );
         m_frame = (m_frame + 1) % m_upSprite->getFrameCount();

@@ -5,13 +5,6 @@
 *    DESCRIPTION:     Class for handling the visual part of the sprite
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <2d/visualcomponent2d.h>
 
@@ -36,6 +29,11 @@
 
 // Standard lib dependencies
 #include <memory>
+
+#define GL_TRIANGLE_FAN 1
+#define GL_TRIANGLES 1
+#define GL_UNSIGNED_SHORT 1
+#define GL_UNSIGNED_BYTE 1
 
 /************************************************************************
 *    DESC:  Constructor
@@ -120,11 +118,11 @@ CVisualComponent2D::~CVisualComponent2D()
 void CVisualComponent2D::deleteFontVBO()
 {
     // Delete the VBO if this is a font
-    if( (GENERATION_TYPE == NDefs::EGT_FONT) && (m_vbo > 0) )
+    /*if( (GENERATION_TYPE == NDefs::EGT_FONT) && (m_vbo > 0) )
     {
         glDeleteBuffers(1, &m_vbo);
         m_vbo = 0;
-    }
+    }*/
 
     // The IBO for the font is managed by the vertex buffer manager.
     // Font IBO are all the same with the only difference being
@@ -137,7 +135,7 @@ void CVisualComponent2D::deleteFontVBO()
 ************************************************************************/
 void CVisualComponent2D::render( const CMatrix & objMatrix, const CMatrix & matrix )
 {
-    if( allowRender() )
+    /*if( allowRender() )
     {
         const int32_t VERTEX_BUF_SIZE( sizeof(CVertex2D) );
 
@@ -209,7 +207,7 @@ void CVisualComponent2D::render( const CMatrix & objMatrix, const CMatrix & matr
 
         // Render it
         glDrawElements( m_drawMode, m_iboCount, m_indiceType, nullptr );
-    }
+    }*/
 }
 
 
@@ -483,12 +481,12 @@ void CVisualComponent2D::createFontString( const std::string & fontString )
 
         // Save the data
         // If one doesn't exist, create the VBO and IBO for this font
-        if( m_vbo == 0 )
+        /*if( m_vbo == 0 )
             glGenBuffers( 1, &m_vbo );
 
         glBindBuffer( GL_ARRAY_BUFFER, m_vbo );
         glBufferData( GL_ARRAY_BUFFER, sizeof(CQuad2D) * charCount, upQuadBuf.get(), GL_STATIC_DRAW );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ARRAY_BUFFER, 0 );*/
 
         // All fonts share the same IBO because it's always the same and the only difference is it's length
         // This updates the current IBO if it exceeds the current max

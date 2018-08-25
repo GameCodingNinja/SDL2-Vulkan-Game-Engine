@@ -5,13 +5,6 @@
 *    DESCRIPTION:     shader class singleton
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <managers/shadermanager.h>
 
@@ -94,10 +87,10 @@ void CShaderMgr::createShader( const XMLNode & node )
     m_Iter = m_shaderMap.emplace( shaderStrId, CShaderData() ).first;
 
     // Create the vertex shader
-    createShader( GL_VERTEX_SHADER, vertexNode.getAttribute("file") );
+    //createShader( GL_VERTEX_SHADER, vertexNode.getAttribute("file") );
 
     // Create the vertex shader
-    createShader( GL_FRAGMENT_SHADER, fragmentNode.getAttribute("file") );
+    //createShader( GL_FRAGMENT_SHADER, fragmentNode.getAttribute("file") );
 
     // Link the shader
     createProgram();
@@ -122,7 +115,7 @@ void CShaderMgr::createShader( const XMLNode & node )
 void CShaderMgr::createShader( uint32_t shaderType, const std::string & filePath )
 {
     // Create the shader
-    uint32_t shaderID = glCreateShader( shaderType );
+    /*uint32_t shaderID = glCreateShader( shaderType );
     if( shaderID == 0 )
     {
         throw NExcept::CCriticalException("Create Shader Error!",
@@ -157,7 +150,7 @@ void CShaderMgr::createShader( uint32_t shaderType, const std::string & filePath
         throw NExcept::CCriticalException("Create Vertex Shader Error!",
             boost::str( boost::format("Error compiling vertex shader (%s).\n\n%s.\n\n%s\nLine: %s")
                 % filePath % upError.get() % __FUNCTION__ % __LINE__ ));
-    }
+    }*/
 }
 
 
@@ -167,7 +160,7 @@ void CShaderMgr::createShader( uint32_t shaderType, const std::string & filePath
 void CShaderMgr::createProgram()
 {
     // Create the program - OpenGL shaders are called programs
-    m_Iter->second.setProgramID( glCreateProgram() );
+    /*m_Iter->second.setProgramID( glCreateProgram() );
     if( m_Iter->second.getProgramID() == 0 )
     {
         throw NExcept::CCriticalException("Create Shader Error!",
@@ -177,7 +170,7 @@ void CShaderMgr::createProgram()
 
     // Attach shaders to the program
     glAttachShader( m_Iter->second.getProgramID(), m_Iter->second.getVertexID() );
-    glAttachShader( m_Iter->second.getProgramID(), m_Iter->second.getFragmentID() );
+    glAttachShader( m_Iter->second.getProgramID(), m_Iter->second.getFragmentID() );*/
 }
 
 
@@ -189,7 +182,7 @@ void CShaderMgr::createProgram()
 void CShaderMgr::bindAttributeLocation( const XMLNode & vertexNode )
 {
     // Get the location ID for the vertex variables
-    for( int i = 0; i < vertexNode.nChildNode(); ++i )
+    /*for( int i = 0; i < vertexNode.nChildNode(); ++i )
     {
         const XMLNode node = vertexNode.getChildNode(i);
 
@@ -210,7 +203,7 @@ void CShaderMgr::bindAttributeLocation( const XMLNode & vertexNode )
                     boost::str( boost::format("Error binding attribute (%s).\n\n%s\nLine: %s")
                         % attributeName % __FUNCTION__ % __LINE__ ));
         }
-    }
+    }*/
 }
 
 
@@ -220,7 +213,7 @@ void CShaderMgr::bindAttributeLocation( const XMLNode & vertexNode )
 void CShaderMgr::linkProgram()
 {
     // Link shader program
-    glLinkProgram( m_Iter->second.getProgramID() );
+    /*glLinkProgram( m_Iter->second.getProgramID() );
 
     // Check for errors
     int32_t success( GL_TRUE );
@@ -230,7 +223,7 @@ void CShaderMgr::linkProgram()
         throw NExcept::CCriticalException("Link Shader Error!",
             boost::str( boost::format("Error linking shader (%s).\n\n%s\nLine: %s")
                 % m_Iter->first % __FUNCTION__ % __LINE__ ));
-    }
+    }*/
 }
 
 
@@ -261,7 +254,7 @@ void CShaderMgr::locateShaderVariables(
 ************************************************************************/
 void CShaderMgr::getUniformLocation( const XMLNode & node )
 {
-    std::string name = node.getAttribute("name");
+    /*std::string name = node.getAttribute("name");
 
     int32_t location = glGetUniformLocation( m_Iter->second.getProgramID(), name.c_str() );
 
@@ -272,7 +265,7 @@ void CShaderMgr::getUniformLocation( const XMLNode & node )
         throw NExcept::CCriticalException("Shader Uniform Location Error!",
             boost::str( boost::format("Error Uniform Location (%s) not found (%s).\n\n%s\nLine: %s")
                 % name % m_Iter->first % __FUNCTION__ % __LINE__ ));
-    }
+    }*/
 }
 
 
@@ -302,7 +295,7 @@ CShaderData & CShaderMgr::getShaderData( const std::string & shaderId )
 ************************************************************************/
 void CShaderMgr::bind( CShaderData * pShaderData )
 {
-    if( m_pCurrentShaderData != pShaderData )
+    /*if( m_pCurrentShaderData != pShaderData )
     {
         if( m_pCurrentShaderData == nullptr )
         {
@@ -334,7 +327,7 @@ void CShaderMgr::bind( CShaderData * pShaderData )
 
         // Have OpenGL bind this shader now
         glUseProgram( pShaderData->getProgramID() );
-    }
+    }*/
 }
 
 
@@ -343,12 +336,12 @@ void CShaderMgr::bind( CShaderData * pShaderData )
 ************************************************************************/
 void CShaderMgr::unbind()
 {
-    for( size_t i = 0; i < m_currentVertexAttribCount; ++i )
+    /*for( size_t i = 0; i < m_currentVertexAttribCount; ++i )
         glDisableVertexAttribArray(i);
 
     m_pCurrentShaderData = nullptr;
     m_currentVertexAttribCount = 0;
-    glUseProgram( 0 );
+    glUseProgram( 0 );*/
 }
 
 
@@ -394,7 +387,7 @@ void CShaderMgr::setShaderColor( const std::string & shaderId, const std::string
 void CShaderMgr::setShaderColor( CShaderData & shaderData, const std::string & locationId, const CColor & color )
 {
     // Check for the shader location
-    if( shaderData.hasUniformLocation( locationId ) )
+    /*if( shaderData.hasUniformLocation( locationId ) )
     {
         // Get the location of the additive
         int32_t location = shaderData.getUniformLocation( locationId );
@@ -407,7 +400,7 @@ void CShaderMgr::setShaderColor( CShaderData & shaderData, const std::string & l
 
         // Unbind now that we are done
         unbind();
-    }
+    }*/
 }
 
 

@@ -5,13 +5,6 @@
  *    DESCRIPTION:     mesh manager class singleton
  ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <managers/meshmanager.h>
 
@@ -50,7 +43,7 @@ CMeshMgr::CMeshMgr()
 CMeshMgr::~CMeshMgr()
 {
     // Free the buffers in all groups
-    for( auto & mapMapIter : m_meshBufMapMap )
+    /*for( auto & mapMapIter : m_meshBufMapMap )
     {
         for( auto & mapIter : mapMapIter.second )
         {
@@ -60,7 +53,7 @@ CMeshMgr::~CMeshMgr()
                 glDeleteBuffers( 1, &iter.m_vbo );
             }
         }
-    }
+    }*/
 }
 
 
@@ -288,7 +281,7 @@ void CMeshMgr::createFromData(
     CMesh3D & mesh3d )
 {
     // Get the texture vector
-    auto & textureVec = mesh3d.getTextureVec();
+    /*auto & textureVec = mesh3d.getTextureVec();
 
     // Create the textures from data
     for( auto & iter : textureVec )
@@ -335,7 +328,7 @@ void CMeshMgr::createFromData(
     }
 
     // Clear out the allocated buffers
-    mesh3d.clearBuffers();
+    mesh3d.clearBuffers();*/
 }
 
 
@@ -395,7 +388,7 @@ void CMeshMgr::loadFromFile(
         }
 
         // Create the VBO
-        glGenBuffers( 1, &mesh3d.back().m_vbo );
+        /*glGenBuffers( 1, &mesh3d.back().m_vbo );
         glBindBuffer( GL_ARRAY_BUFFER, mesh3d.back().m_vbo );
         glBufferData( GL_ARRAY_BUFFER, sizeof(CVertex3D_no_txt)*mesh.m_faceGroup.vertexBufCount, mesh.m_spVBONoTxt.get(), GL_STATIC_DRAW );
 
@@ -408,7 +401,7 @@ void CMeshMgr::loadFromFile(
         glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * mesh.m_faceGroup.indexBufCount, mesh.m_spIndexBuf.get(), GL_STATIC_DRAW );
 
         // unbind the buffer
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );*/
 
         // Save the number of indexes in the IBO buffer - Will need this for the render call
         mesh3d.back().m_iboCount = mesh.m_faceGroup.indexBufCount;;
@@ -500,7 +493,7 @@ void CMeshMgr::tagCheck( SDL_RWops * file, const std::string & filePath )
  ************************************************************************/
 void CMeshMgr::deleteBufferGroup( const std::string & group )
 {
-    auto mapMapIter = m_meshBufMapMap.find( group );
+    /*auto mapMapIter = m_meshBufMapMap.find( group );
     if( mapMapIter != m_meshBufMapMap.end() )
     {
         // Delete all the buffers in this group
@@ -515,5 +508,5 @@ void CMeshMgr::deleteBufferGroup( const std::string & group )
 
         // Erase this group
         m_meshBufMapMap.erase( mapMapIter );
-    }
+    }*/
 }

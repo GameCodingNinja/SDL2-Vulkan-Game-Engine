@@ -5,15 +5,6 @@
 *    DESCRIPTION:     Class template
 ************************************************************************/
 
-// SDL lib dependencies
-#include <SDL.h>
-
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include "startupstate.h"
 
@@ -68,6 +59,9 @@
 // Standard lib dependencies
 #include <thread>
 #include <chrono>
+
+// SDL lib dependencies
+#include <SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -134,7 +128,7 @@ void CStartUpState::fade(
             current = finalColor;
 
         // Clear the screen
-        glClear( GL_COLOR_BUFFER_BIT );
+        //glClear( GL_COLOR_BUFFER_BIT );
 
         CShaderMgr::Instance().setShaderColor( "shader_2d", "additive", current );
         sprite.render( CCameraMgr::Instance().getDefaultProjMatrix() );

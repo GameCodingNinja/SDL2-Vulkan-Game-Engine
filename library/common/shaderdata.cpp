@@ -5,13 +5,6 @@
 *    DESCRIPTION:     shader data class
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <common/shaderdata.h>
 
@@ -20,7 +13,6 @@
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-
 
 /************************************************************************
 *    DESC:  Constructor
@@ -169,7 +161,7 @@ size_t CShaderData::getVertexAttribCount()
 void CShaderData::free()
 {
     // Detach the shaders
-    if( (m_vertexID > 0) && (m_fragmentID > 0) && (m_programID > 0) )
+    /*if( (m_vertexID > 0) && (m_fragmentID > 0) && (m_programID > 0) )
     {
         glDetachShader(m_programID, m_vertexID);
         glDetachShader(m_programID, m_fragmentID);
@@ -184,7 +176,7 @@ void CShaderData::free()
 
     // Delete the shader program
     if( m_programID > 0 )
-        glDeleteProgram(m_programID);
+        glDeleteProgram(m_programID);*/
 
     clear();
 }

@@ -5,13 +5,6 @@
 *    DESCRIPTION:     Class for handling the visual part of the sprite
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include <3d/visualcomponent3d.h>
 
@@ -82,7 +75,7 @@ CVisualComponent3D::~CVisualComponent3D()
 ************************************************************************/
 void CVisualComponent3D::render( const CMatrix & matrix, const CMatrix & normalMatrix )
 {
-    for( auto & meshIter : m_mesh3d.getMeshVec() )
+    /*for( auto & meshIter : m_mesh3d.getMeshVec() )
     {
         // Increment our stat counter to keep track of what is going on.
         CStatCounter::Instance().incDisplayCounter();
@@ -121,7 +114,7 @@ void CVisualComponent3D::render( const CMatrix & matrix, const CMatrix & normalM
 
         // Render it
         glDrawElements( GL_TRIANGLES, meshIter.m_iboCount, GL_UNSIGNED_SHORT, nullptr );
-    }
+    }*/
 }
 
 

@@ -16,7 +16,7 @@
 #include <gui/menu.h>
 #include <common/isprite.h>
 
-// SDL/OpenGL lib dependencies
+// SDL lib dependencies
 #include <SDL.h>
 
 // Boost lib dependencies
