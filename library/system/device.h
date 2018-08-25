@@ -11,14 +11,6 @@
 // Physical component dependency
 #include <system/devicevulkan.h>
 
-// Game lib dependencies
-
-// Game dependencies
-
-// Boost lib dependencies
-
-// Standard lib dependencies
-
 // Forward declaration(s)
 struct SDL_Window;
 struct _SDL_GameController;
