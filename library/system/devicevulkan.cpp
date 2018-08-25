@@ -193,7 +193,9 @@ CDeviceVulkan::~CDeviceVulkan()
 ****************************************************************************/
 void CDeviceVulkan::create(
     const std::vector<const char*> & validationNameVec,
-    const std::vector<const char*> & instanceExtensionNameVec )
+    const std::vector<const char*> & instanceExtensionNameVec,
+    const std::string & vertShader,
+    const std::string & fragShader )
 {
     #if defined(__ANDROID__)
     if( InitVulkan() == 0 )
@@ -215,8 +217,8 @@ void CDeviceVulkan::create(
     // Create the logical device
     createLogicalDevice( validationNameVec );
     
-    // Temp shader setup
-    tmpShaderSetup();
+    // Load the shaders
+    loadShaders( vertShader, fragShader );
     
     // Setup the swap chain to be created
     setupSwapChain();
@@ -623,13 +625,13 @@ void CDeviceVulkan::createLogicalDevice( const std::vector<const char*> & valida
 
 
 /***************************************************************************
-*   DESC:  Temp shader setup
+*   DESC:  Load the shaders
 ****************************************************************************/
-void CDeviceVulkan::tmpShaderSetup()
+void CDeviceVulkan::loadShaders( const std::string & vertShader, const std::string & fragShader )
 {
     // Load shaders  **** temporary code ****
-    std::vector<char> shaderVert = NGenFunc::FileToVec("data/shaders/vulkanTriangleVert4.spv");
-    std::vector<char> shaderFrag = NGenFunc::FileToVec("data/shaders/vulkanTriangleFrag1.spv");
+    std::vector<char> shaderVert = NGenFunc::FileToVec(vertShader);
+    std::vector<char> shaderFrag = NGenFunc::FileToVec(fragShader);
     
     VkShaderModuleCreateInfo shaderInfo = {};
     shaderInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;

@@ -15,6 +15,9 @@
 #include <string>
 #include <ctime>
 
+// SDL lib dependencies
+#include <SDL.h> // This needs to be here otherwise Android build will not run
+
 int main( int argc, char* args[] )
 {
     std::srand ( unsigned ( std::time(0) ) );

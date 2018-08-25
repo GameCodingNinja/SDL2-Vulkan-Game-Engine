@@ -8,9 +8,6 @@
 #ifndef __game_h__
 #define __game_h__
 
-// Physical component dependency
-#include <system/basegame.h>
-
 // Standard lib dependencies
 #include <memory>
 
@@ -20,8 +17,9 @@ class CUIControl;
 class iGameState;
 class CMenu;
 class iSprite;
+union SDL_Event;
 
-class CGame : public CBaseGame
+class CGame
 {
 public:
 
@@ -30,34 +28,41 @@ public:
 
     // Destructor
     virtual ~CGame();
-
-protected:
-
-    // Game start init
-    void init() override;
-
-    // Handle events
-    bool handleEvent( const SDL_Event & rEvent ) override;
-
-    // Handle the state change
-    void doStateChange() override;
     
-    // Handle any misc processing before the real work is started
-    void miscProcess() override;
+    // Create the game
+    void create();
+    
+    // Main game loop
+    bool gameLoop();
 
-    // Handle the physics
-    void physics() override;
+    // Display error massage
+    void displayErrorMsg( const std::string & title, const std::string & msg );
 
-    // Update animations, Move sprites, Check for collision
-    void update() override;
-
-    // Transform game objects
-    void transform() override;
-
-    // 2D/3D Render of game content
-    void render() override;
+    // Is the game running?
+    bool isGameRunning() const;
 
 private:
+
+    // Handle events
+    bool handleEvent( const SDL_Event & rEvent );
+
+    // Handle the state change
+    void doStateChange();
+    
+    // Handle any misc processing before the real work is started
+    void miscProcess();
+
+    // Handle the physics
+    void physics();
+
+    // Update animations, Move sprites, Check for collision
+    void update();
+
+    // Transform game objects
+    void transform();
+
+    // 2D/3D Render of game content
+    void render();
 
     // Callback for when a smart gui control is created
     void smartGuiControlCreateCallBack( CUIControl * pUIControl );
@@ -73,8 +78,20 @@ private:
     
     // Callback for the state string
     void statStringCallBack( const std::string & statStr );
+    
+    // Start the game
+    void startGame();
 
-protected:
+    // Stop the game
+    void stopGame();
+
+    // Poll for game events
+    void pollEvents();
+
+private:
+    
+    // flag to indicate the game is running
+    bool m_gameRunning;
 
     // scoped pointer Game State
     std::unique_ptr<iGameState> upGameState;

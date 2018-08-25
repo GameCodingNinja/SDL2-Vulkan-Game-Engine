@@ -5,13 +5,6 @@
 *    DESCRIPTION:     base game class
 ************************************************************************/
 
-/*#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif*/
-
 // Physical component dependency
 #include <system/basegame.h>
 
@@ -46,14 +39,6 @@ CBaseGame::~CBaseGame()
 {
     // Destroy the window and Vulkan instance
     CDevice::Instance().destroy();
-    
-    // Destroy the OpenGL context
-    //if( m_context != nullptr )
-    //    SDL_GL_DeleteContext( m_context );
-
-    // Destroy window
-    //if( m_pWindow != nullptr )
-    //    SDL_DestroyWindow( m_pWindow );
 
     // Quit SDL subsystems
     SDL_Quit();
@@ -67,10 +52,6 @@ void CBaseGame::create()
 {
     // Create the window and OpenGL context
     CDevice::Instance().create();
-
-    // Get local copies of the device handles
-    // m_pWindow = CDevice::Instance().getWindow();
-    //m_context = CDevice::Instance().getContext();
 
     // Game start init
     init();
@@ -143,7 +124,7 @@ void CBaseGame::pollEvents()
     while( SDL_PollEvent( &msgEvent ) )
     {
         // let the game handle the event
-        // turns true on quit
+        // returns true on quit
         if( handleEvent( msgEvent ) )
         {
             // Stop the game

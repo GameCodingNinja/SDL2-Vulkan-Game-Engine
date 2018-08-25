@@ -19,11 +19,10 @@
 
 // Standard lib dependencies
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Forward declaration(s)
-
+struct SDL_Window;
+struct _SDL_GameController;
+typedef _SDL_GameController SDL_GameController;
 
 class CDevice : public CDeviceVulkan
 {
@@ -37,7 +36,7 @@ public:
     }
     
     // Create the window and OpenGL context
-    void create();
+    void create( const std::string & vertShader, const std::string & fragShader );
     
     // Destroy the window and Vulkan instance
     void destroy();

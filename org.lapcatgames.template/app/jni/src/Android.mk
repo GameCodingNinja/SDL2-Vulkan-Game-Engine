@@ -27,9 +27,9 @@ LOCAL_SRC_FILES := \
     $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	$(subst $(LOCAL_PATH)/,, \
 	$(wildcard $(LOCAL_PATH)/source/game/*.cpp) \
-	$(wildcard $(LOCAL_PATH)/source/smartGUI/*.cpp) \
-	$(wildcard $(LOCAL_PATH)/source/state/*.cpp) \
-	$(wildcard $(LOCAL_PATH)/source/ai/*.cpp) \
+    $(wildcard $(LOCAL_PATH)/source/smartGUI/*.cpp) \
+    $(wildcard $(LOCAL_PATH)/source/state/*.cpp) \
+    $(wildcard $(LOCAL_PATH)/source/ai/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/gui/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/objectdata/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/system/*.cpp) \

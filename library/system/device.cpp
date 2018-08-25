@@ -19,6 +19,7 @@
 // Standard lib dependencies
 
 // SDL lib dependencies
+#include <SDL.h>
 #include <SDL_vulkan.h>
 
 
@@ -42,7 +43,7 @@ CDevice::~CDevice()
 /***************************************************************************
 *   DESC:  Create the window and Vulkan instance
 ****************************************************************************/
-void CDevice::create()
+void CDevice::create( const std::string & vertShader, const std::string & fragShader )
 {
     // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
     if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
@@ -85,7 +86,8 @@ void CDevice::create()
             NGenFunc::PostDebugMsg( "Instance Extension: " + std::string(iter));
     }
     
-    CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec );
+    // Create the Vulkan instance and graphics pipeline
+    CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, vertShader, fragShader );
     
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )

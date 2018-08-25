@@ -39,7 +39,9 @@ protected:
     // Create Vulkan instance
     void create(
         const std::vector<const char*> & validationNameVec,
-        const std::vector<const char*> & instanceExtensionNameVec );
+        const std::vector<const char*> & instanceExtensionNameVec,
+        const std::string & vertShader,
+        const std::string & fragShader );
     
     // Destroy the Vulkan instance
     void destroy();
@@ -73,6 +75,9 @@ protected:
     
     // Create the logical device
     void createLogicalDevice( const std::vector<const char*> & validationNameVec );
+    
+    // Load the shaders
+    void loadShaders( const std::string & vertShader, const std::string & fragShader );
     
     // Setup the swap chain to be created
     void setupSwapChain();
@@ -181,10 +186,6 @@ protected:
     
     // Find the depth format
     VkFormat findDepthFormat();
-    
-    
-    
-    void tmpShaderSetup();
     
     // Create texture image
     virtual void createTextureImage() = 0;

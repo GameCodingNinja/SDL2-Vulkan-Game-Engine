@@ -32,20 +32,21 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/statcounter.h>
-#include <common/isprite.h>
-#include <common/color.h>
+#include <utilities/highresolutiontimer.h>
 #include <common/build_defs.h>
-#include <objectdata/objectdatamanager.h>
-#include <slot/betmanager.h>
 
 // Boost lib dependencies
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
 
+// SDL lib dependencies
+#include <SDL.h>
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CGame::CGame()
+CGame::CGame() :
+    m_gameRunning(false)
 {
     CSignalMgr::Instance().connect_smartGui( boost::bind(&CGame::smartGuiControlCreateCallBack, this, _1) );
     CSignalMgr::Instance().connect_smartMenu( boost::bind(&CGame::smartMenuCreateCallBack, this, _1) );
@@ -62,24 +63,31 @@ CGame::CGame()
 ************************************************************************/
 CGame::~CGame()
 {
+    // Destroy the window and Vulkan instance
+    CDevice::Instance().destroy();
+
+    // Quit SDL subsystems
+    SDL_Quit();
 }
 
 
 /************************************************************************
-*    DESC:  Init the game
+*    DESC:  Create the game
 ************************************************************************/
-void CGame::init()
+void CGame::create()
 {
-    CBaseGame::init();
+    CDevice::Instance().create(
+        "data/shaders/vulkanTriangleVert4.spv",
+        "data/shaders/vulkanTriangleFrag1.spv" );
+    
+    // Show the window
+    CDevice::Instance().showWindow( true );
 
     // Setup the message filtering
     //SDL_SetEventFilter(FilterEvents, 0);
 
     // Handle some events on startup
     pollEvents();
-
-    // Init with the total amount of credits
-    CBetMgr::Instance().setCredits( 50000 );
 
     // Create the startup state
     //upGameState.reset( new CStartUpState );
@@ -275,6 +283,123 @@ void CGame::render()
 {
     upGameState->preRender();
     upGameState->postRender();
+}
+
+
+/***************************************************************************
+*   DESC:  Main game loop
+****************************************************************************/
+bool CGame::gameLoop()
+{
+    // Handle the state change
+    //doStateChange();
+
+    // Poll for game events
+    pollEvents();
+
+    // Get our elapsed time
+    CHighResTimer::Instance().calcElapsedTime();
+
+    if( m_gameRunning )
+    {
+        // Handle any misc processing before the real work is started
+        //miscProcess();
+
+        // Handle the physics
+        //physics();
+
+        // Update animations, Move sprites, Check for collision
+        //update();
+
+        // Transform game objects
+        //transform();
+
+        // Clear the buffers
+        //glClear( m_clearBufferMask );
+
+        // Do the rendering
+        CDevice::Instance().render();
+        //render();
+
+        // Do the back buffer swap
+        //SDL_GL_SwapWindow( m_pWindow );
+
+        // Unbind everything after a round of rendering
+        //CShaderMgr::Instance().unbind();
+        //CTextureMgr::Instance().unbind();
+        //CVertBufMgr::Instance().unbind();
+
+        // Inc the cycle
+        if( NBDefs::IsDebugMode() )
+            CStatCounter::Instance().incCycle();
+    }
+
+    return m_gameRunning;
+}
+
+
+/***************************************************************************
+*   DESC:  Poll for game events
+****************************************************************************/
+void CGame::pollEvents()
+{
+    // Event handler
+    SDL_Event msgEvent;
+
+    // Handle events on queue
+    while( SDL_PollEvent( &msgEvent ) )
+    {
+        // let the game handle the event
+        // turns true on quit
+        if( handleEvent( msgEvent ) )
+        {
+            // Stop the game
+            m_gameRunning = false;
+
+            // Hide the window to give the impression of a quick exit
+            CDevice::Instance().showWindow( false );
+
+            break;
+        }
+    }
+}
+
+
+/***************************************************************************
+*   DESC:  Display error massage
+****************************************************************************/
+void CGame::displayErrorMsg( const std::string & title, const std::string & msg )
+{
+    printf("Error: %s, %s", title.c_str(), msg.c_str() );
+
+    CDevice::Instance().displayErrorMsg( title, msg );
+}
+
+
+/***************************************************************************
+*   DESC:  Start the game
+****************************************************************************/
+void CGame::startGame()
+{
+    m_gameRunning = true;
+}
+
+
+/***************************************************************************
+*   DESC:  Stop the game
+****************************************************************************/
+void CGame::stopGame()
+{
+    m_gameRunning = false;
+}
+
+
+/***************************************************************************
+*  DESC:  Is the game running?
+****************************************************************************/
+bool CGame::isGameRunning() const
+{
+    return m_gameRunning;
 }
 
 

@@ -51,7 +51,6 @@ add_library(
         script/scriptfontmanager.cpp
         script/scriptscriptmanager.cpp
         script/scriptuicontrol.cpp
-        system/basegame.cpp
         system/devicevulkan.cpp
         system/device.cpp
         utilities/xmlparsehelper.cpp
