@@ -77,8 +77,8 @@ CGame::~CGame()
 void CGame::create()
 {
     CDevice::Instance().create(
-        "data/shaders/vulkanTriangleVert4.spv",
-        "data/shaders/vulkanTriangleFrag1.spv" );
+        "data/shaders/vulkanTriangleVert5.spv",
+        "data/shaders/vulkanTriangleFrag2.spv" );
     
     // Show the window
     CDevice::Instance().showWindow( true );

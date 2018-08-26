@@ -46,7 +46,7 @@ LOCAL_SRC_FILES := \
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer bulletPhysics Box2D angelscript
 
-LOCAL_LDLIBS := -ldl -lGLESv1_CM -lGLESv2 -llog -landroid
+LOCAL_LDLIBS := -ldl -llog -landroid
 
 include $(BUILD_SHARED_LIBRARY)
 

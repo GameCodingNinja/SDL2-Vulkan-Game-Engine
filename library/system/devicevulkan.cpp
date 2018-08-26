@@ -12,12 +12,12 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
-#include <common/size.h>
 #include <utilities/matrix.h>
+#include <common/size.h>
+#include <common/vertex.h>
 #include <soil/SOIL.h>
 
 // Standard lib dependencies
-#include <cstring>
 #include <fstream>
 #include <array>
 
@@ -42,63 +42,6 @@ VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayerCallback(
 
     return VK_FALSE;
 }
-
-struct vec2
-{
-    float x;
-    float y;
-};
-
-struct vec3
-{
-    float x;
-    float y;
-    float z;
-};
-
-struct Vertex {
-    vec3 pos;
-    vec3 color;
-    vec2 uv;
-
-    static VkVertexInputBindingDescription getBindingDescription() {
-        VkVertexInputBindingDescription bindingDescription = {};
-        bindingDescription.binding = 0;
-        bindingDescription.stride = sizeof(Vertex);
-        bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-
-        return bindingDescription;
-    }
-
-    static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions() {
-        std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions = {};
-
-        attributeDescriptions[0].binding = 0;
-        attributeDescriptions[0].location = 0;
-        attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescriptions[0].offset = offsetof(Vertex, pos);
-
-        attributeDescriptions[1].binding = 0;
-        attributeDescriptions[1].location = 1;
-        attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescriptions[1].offset = offsetof(Vertex, color);
-        
-        attributeDescriptions[2].binding = 0;
-        attributeDescriptions[2].location = 2;
-        attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
-        attributeDescriptions[2].offset = offsetof(Vertex, uv);
-
-        return attributeDescriptions;
-    }
-};
-
-const std::vector<Vertex> vertices =
-{
-    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
-    {{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-    {{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}},
-    {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}}
-};
 
 const std::vector<uint16_t> indices =
 {
@@ -134,8 +77,8 @@ CDeviceVulkan::CDeviceVulkan() :
     m_indexBuffer(VK_NULL_HANDLE),
     m_indexBufferMemory(VK_NULL_HANDLE),
     m_descriptorPool(VK_NULL_HANDLE),
-    m_currentFrame(VK_NULL_HANDLE),
-    m_maxConcurrentFrames(VK_NULL_HANDLE),
+    m_currentFrame(0),
+    m_maxConcurrentFrames(0),
     m_lastResult(VK_SUCCESS),
     m_textureImage(VK_NULL_HANDLE),
     m_textureImageMemory(VK_NULL_HANDLE),
@@ -205,6 +148,10 @@ void CDeviceVulkan::create(
     // Determines how many frames are going through the pipeline simultaneously. Unrelated to buffering.
     m_maxConcurrentFrames = CSettings::Instance().getMaxConcurrentFrameRender() + 1;
 
+    // Sanity check. This should never happen
+    if( m_maxConcurrentFrames == 0 )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Max concurrent frames can't be zero!" );
+
     // Create the vulkan instance
     createVulkanInstance( validationNameVec, instanceExtensionNameVec );
     
@@ -244,23 +191,12 @@ void CDeviceVulkan::create(
     // Create the frame buffer
     createFrameBuffer();
 
-    // Create texture image
-    createTextureImage();
-    
-    // Create vertex buffer
-    createVertexBuffer();
-    
-    // Create the index buffer
-    createIndexBuffer();
     
     // Create uniform buffers
     createUniformBuffer();
     
     // Create descriptor pool
     createDescriptorPool();
-    
-    // Create descriptor sets
-    createDescriptorSet();
     
     // Create the Semaphores and fences
     createSyncObjects();
@@ -341,30 +277,6 @@ void CDeviceVulkan::destroy()
         }
         
         destroyAssets();
-        
-        if( m_vertexBuffer != VK_NULL_HANDLE )
-        {
-            vkDestroyBuffer( m_logicalDevice, m_vertexBuffer, nullptr );
-            m_vertexBuffer = VK_NULL_HANDLE;
-        }
-        
-        if( m_vertexBufferMemory != VK_NULL_HANDLE )
-        {
-            vkFreeMemory( m_logicalDevice, m_vertexBufferMemory, nullptr);
-            m_vertexBufferMemory = VK_NULL_HANDLE;
-        }
-        
-        if( m_indexBuffer != VK_NULL_HANDLE )
-        {
-            vkDestroyBuffer( m_logicalDevice, m_indexBuffer, nullptr );
-            m_indexBuffer = VK_NULL_HANDLE;
-        }
-        
-        if( m_indexBufferMemory != VK_NULL_HANDLE )
-        {
-            vkFreeMemory( m_logicalDevice, m_indexBufferMemory, nullptr);
-            m_indexBufferMemory = VK_NULL_HANDLE;
-        }
 
         if( m_shaderModuleVert != VK_NULL_HANDLE )
         {
@@ -903,7 +815,6 @@ void CDeviceVulkan::createRenderPass()
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
     subpass.colorAttachmentCount = 1;
     subpass.pColorAttachments = &colorAttachmentRef;
-    subpass.pDepthStencilAttachment = &depthAttachmentRef;
     
     VkSubpassDependency dependency = {};
     dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
@@ -913,7 +824,14 @@ void CDeviceVulkan::createRenderPass()
     dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
     dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
     
-    std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
+    std::vector<VkAttachmentDescription> attachments = { colorAttachment };
+    
+    // Add the depth attachment if depth or stencil buffer is needed
+    if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+    {
+        subpass.pDepthStencilAttachment = &depthAttachmentRef;
+        attachments.push_back( depthAttachment );
+    }
     
     VkRenderPassCreateInfo renderPassInfo = {};
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
@@ -959,8 +877,8 @@ void CDeviceVulkan::createGraphicsPipeline()
     VkPipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
     
     // Bind the vertex buffer
-    auto bindingDescription = Vertex::getBindingDescription();
-    auto attributeDescriptions = Vertex::getAttributeDescriptions();
+    auto bindingDescription = CVertex::getBindingDescription();
+    auto attributeDescriptions = CVertex::getAttributeDescriptions();
     
     VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -1013,11 +931,11 @@ void CDeviceVulkan::createGraphicsPipeline()
     
     VkPipelineDepthStencilStateCreateInfo depthStencil = {};
     depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-    depthStencil.depthTestEnable = VK_FALSE;
-    depthStencil.depthWriteEnable = VK_FALSE;
+    depthStencil.depthTestEnable = CSettings::Instance().getEnableDepthBuffer();
+    depthStencil.depthWriteEnable = CSettings::Instance().getEnableDepthBuffer();
     depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
     depthStencil.depthBoundsTestEnable = VK_FALSE;
-    depthStencil.stencilTestEnable = VK_FALSE;
+    depthStencil.stencilTestEnable = CSettings::Instance().getEnableStencilBuffer();
     depthStencil.front = {}; // Optional
     depthStencil.back = {}; // Optional
     
@@ -1047,7 +965,6 @@ void CDeviceVulkan::createGraphicsPipeline()
     pipelineInfo.pViewportState = &viewportState;
     pipelineInfo.pRasterizationState = &rasterizer;
     pipelineInfo.pMultisampleState = &multisampling;
-    pipelineInfo.pDepthStencilState = &depthStencil;
     pipelineInfo.pColorBlendState = &colorBlending;
     pipelineInfo.pDynamicState = nullptr;
     pipelineInfo.layout = m_pipelineLayout;
@@ -1055,6 +972,10 @@ void CDeviceVulkan::createGraphicsPipeline()
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineInfo.basePipelineIndex = -1;
+
+    // Add the depthStencil if depth or stencil buffer is needed
+    if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+        pipelineInfo.pDepthStencilState = &depthStencil;
 
     if( (m_lastResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError() ) );
@@ -1081,6 +1002,8 @@ void CDeviceVulkan::createCommandPool()
 ****************************************************************************/
 void CDeviceVulkan::createDepthResources()
 {
+    if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+    {
     VkFormat depthFormat = findDepthFormat();
         
     if( depthFormat == VK_FORMAT_UNDEFINED )
@@ -1101,6 +1024,7 @@ void CDeviceVulkan::createDepthResources()
 
     transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1 );
 }
+}
 
 
 /***************************************************************************
@@ -1112,7 +1036,11 @@ void CDeviceVulkan::createFrameBuffer()
     
     for( size_t i = 0; i < m_swapChainImageViewVec.size(); ++i )
     {
-        std::array<VkImageView, 2> attachmentsAry = { m_swapChainImageViewVec[i], m_depthImageView };
+        std::vector<VkImageView> attachmentsAry = { m_swapChainImageViewVec[i] };
+
+        // Add the depth image if depth or stencil buffer is needed
+        if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+            attachmentsAry.push_back( m_depthImageView );
 
         VkFramebufferCreateInfo framebufferInfo = {};
         framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
@@ -1126,76 +1054,6 @@ void CDeviceVulkan::createFrameBuffer()
         if( (m_lastResult = vkCreateFramebuffer( m_logicalDevice, &framebufferInfo, nullptr, &m_framebufferVec[i] )) )
             throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create frame buffer! %s") % getError() ) );
     }
-}
-
-
-/***************************************************************************
-*   DESC:  Create the vertex buffer
-****************************************************************************/
-void CDeviceVulkan::createVertexBuffer()
-{    
-    VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
-
-    VkBuffer stagingBuffer;
-    VkDeviceMemory stagingBufferMemory;
-    createBuffer(
-        bufferSize,
-        VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-        stagingBuffer,
-        stagingBufferMemory );
-
-    void* data;
-    vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data );
-    memcpy( data, vertices.data(), (size_t) bufferSize );
-    vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
-
-    createBuffer(
-        bufferSize,
-        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
-        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        m_vertexBuffer,
-        m_vertexBufferMemory );
-    
-    copyBuffer( stagingBuffer, m_vertexBuffer, bufferSize );
-    
-    vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
-    vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
-}
-
-
-/***************************************************************************
-*   DESC:  Create the index buffer
-****************************************************************************/
-void CDeviceVulkan::createIndexBuffer()
-{
-    VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
-
-    VkBuffer stagingBuffer;
-    VkDeviceMemory stagingBufferMemory;
-    createBuffer(
-        bufferSize,
-        VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-        stagingBuffer,
-        stagingBufferMemory );
-
-    void* data;
-    vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data );
-    memcpy( data, indices.data(), (size_t) bufferSize );
-    vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
-
-    createBuffer(
-        bufferSize,
-        VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
-        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        m_indexBuffer,
-        m_indexBufferMemory );
-
-    copyBuffer( stagingBuffer, m_indexBuffer, bufferSize );
-
-    vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
-    vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
 }
 
 
@@ -1238,58 +1096,6 @@ void CDeviceVulkan::createDescriptorPool()
     
     if( (m_lastResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &m_descriptorPool )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
-}
-
-
-/***************************************************************************
-*   DESC:  Create descriptor sets
-****************************************************************************/
-void CDeviceVulkan::createDescriptorSet()
-{
-    std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), m_descriptorSetLayout );
-    VkDescriptorSetAllocateInfo allocInfo = {};
-    allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    allocInfo.descriptorPool = m_descriptorPool;
-    allocInfo.descriptorSetCount = m_framebufferVec.size();
-    allocInfo.pSetLayouts = layouts.data();
-
-    m_descriptorSetVec.resize(m_framebufferVec.size());
-    
-    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, m_descriptorSetVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
-    
-    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
-    {
-        VkDescriptorBufferInfo bufferInfo = {};
-        bufferInfo.buffer = m_uniformBufVec[i];
-        bufferInfo.offset = 0;
-        bufferInfo.range = sizeof(UniformBufferObject);
-        
-        VkDescriptorImageInfo imageInfo = {};
-        imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        imageInfo.imageView = m_textureImageView;
-        imageInfo.sampler = m_textureSampler;
-
-        std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
-
-        descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[0].dstSet = m_descriptorSetVec[i];
-        descriptorWrites[0].dstBinding = 0;
-        descriptorWrites[0].dstArrayElement = 0;
-        descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        descriptorWrites[0].descriptorCount = 1;
-        descriptorWrites[0].pBufferInfo = &bufferInfo;
-
-        descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[1].dstSet = m_descriptorSetVec[i];
-        descriptorWrites[1].dstBinding = 1;
-        descriptorWrites[1].dstArrayElement = 0;
-        descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        descriptorWrites[1].descriptorCount = 1;
-        descriptorWrites[1].pImageInfo = &imageInfo;
-
-        vkUpdateDescriptorSets( m_logicalDevice, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr );
-    }
 }
 
 
@@ -1441,7 +1247,7 @@ void CDeviceVulkan::updateUniformBuffer( uint32_t unfBufIndex )
     
     void* data;
     vkMapMemory( m_logicalDevice, m_uniformBufMemVec[unfBufIndex], 0, sizeof(ubo), 0, &data );
-    memcpy( data, &ubo, sizeof(ubo));
+    std::memcpy( data, &ubo, sizeof(ubo));
     vkUnmapMemory( m_logicalDevice, m_uniformBufMemVec[unfBufIndex] );
 }
 
@@ -1592,7 +1398,8 @@ VkFormat CDeviceVulkan::findDepthFormat()
 {
     std::vector<VkFormat> depthStencilFormatChoices;
             
-    if( CSettings::Instance().getCreateStencilBuffer() )
+    // Check only the formats that include the stencil buffer if stencil is needed
+    if( CSettings::Instance().getEnableStencilBuffer() )
         depthStencilFormatChoices = {VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
     else
         depthStencilFormatChoices = {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
@@ -1875,7 +1682,7 @@ void CDeviceVulkan::createTexture( NVulkan::CTexture & texture, const std::strin
     
     void* data;
     vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, imageSize, 0, &data );
-    memcpy( data, pixels, static_cast<size_t>(imageSize));
+    std::memcpy( data, pixels, static_cast<size_t>(imageSize));
     vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
     
     SOIL_free_image_data( pixels );
@@ -1915,6 +1722,9 @@ void CDeviceVulkan::createTexture( NVulkan::CTexture & texture, const std::strin
     
     // Create the texture sampler
     texture.m_textureSampler = createTextureSampler( texture.m_mipLevels );
+    
+    // Create the descriptor set for this texture
+    createDescriptorSet( texture );
 }
 
 
@@ -2066,6 +1876,58 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture image view! %s") % getError() ) );
 
     return imageView;
+}
+
+
+/***************************************************************************
+*   DESC:  Create descriptor sets
+****************************************************************************/
+void CDeviceVulkan::createDescriptorSet( NVulkan::CTexture & texture )
+{
+    std::vector<VkDescriptorSetLayout> layouts( m_swapchainInfo.minImageCount, m_descriptorSetLayout );
+    VkDescriptorSetAllocateInfo allocInfo = {};
+    allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    allocInfo.descriptorPool = m_descriptorPool;
+    allocInfo.descriptorSetCount = m_swapchainInfo.minImageCount;
+    allocInfo.pSetLayouts = layouts.data();
+
+    texture.m_descriptorSetVec.resize( m_swapchainInfo.minImageCount );
+    
+    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, texture.m_descriptorSetVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
+    
+    for( size_t i = 0; i < m_swapchainInfo.minImageCount; ++i )
+    {
+        VkDescriptorBufferInfo bufferInfo = {};
+        bufferInfo.buffer = m_uniformBufVec[i];
+        bufferInfo.offset = 0;
+        bufferInfo.range = sizeof(UniformBufferObject);
+        
+        VkDescriptorImageInfo imageInfo = {};
+        imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        imageInfo.imageView = texture.m_textureImageView;
+        imageInfo.sampler = texture.m_textureSampler;
+
+        std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
+
+        descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        descriptorWrites[0].dstSet = texture.m_descriptorSetVec[i];
+        descriptorWrites[0].dstBinding = 0;
+        descriptorWrites[0].dstArrayElement = 0;
+        descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        descriptorWrites[0].descriptorCount = 1;
+        descriptorWrites[0].pBufferInfo = &bufferInfo;
+
+        descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        descriptorWrites[1].dstSet = texture.m_descriptorSetVec[i];
+        descriptorWrites[1].dstBinding = 1;
+        descriptorWrites[1].dstArrayElement = 0;
+        descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        descriptorWrites[1].descriptorCount = 1;
+        descriptorWrites[1].pImageInfo = &imageInfo;
+
+        vkUpdateDescriptorSets( m_logicalDevice, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr );
+    }
 }
 
 

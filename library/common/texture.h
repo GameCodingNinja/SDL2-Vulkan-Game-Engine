@@ -11,6 +11,9 @@
 // Game lib dependencies
 #include <common/size.h>
 
+// Standard lib dependencies
+#include <vector>
+
 // Vulkan lib dependencies
 #if defined(__ANDROID__)
 #include <system/vulkan_wrapper.h>
@@ -60,7 +63,6 @@ namespace NVulkan
     class CTexture
     {
     public:
-        
         // Mip levels
         uint32_t m_mipLevels = 1;
         
@@ -75,6 +77,9 @@ namespace NVulkan
         
         // Texture shader sampler
         VkSampler m_textureSampler = VK_NULL_HANDLE;
+        
+        // Descriptor Set for this image
+        std::vector<VkDescriptorSet> m_descriptorSetVec;
 
         // Texture size - mostly needed for 2D
         CSize<int32_t> m_size;

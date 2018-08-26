@@ -12,8 +12,10 @@
 #include <utilities/matrix.h>
 #include <common/texture.h>
 #include <common/defs.h>
+#include <common/memorybuffer.h>
 
 // Standard lib dependencies
+#include <cstring>
 #include <string>
 #include <vector>
 #include <map>
@@ -46,11 +48,61 @@ protected:
     // Destroy the Vulkan instance
     void destroy();
     
-    // A controlled way to destroy the game created assets
-    virtual void destroyAssets() = 0;
+    // Recreate swap chain
+    void recreateSwapChain();
+    
+    // Record the command buffers
+    void recordCommandBuffers( uint32_t cmdBufIndex );
+    
+    // Update the uniform buffer
+    void updateUniformBuffer( uint32_t unfBufIndex );
+    
+    // Create texture
+    void createTexture( NVulkan::CTexture & texture, const std::string & filePath, bool mipMap );
     
     // Get Vulkan error
     const char * getError();
+    
+    // Load a buffer into video card memory
+    template <typename T>
+    void loadVKBuffer( std::vector<T> dataVec, CMemoryBuffer & memoryBuffer, VkBufferUsageFlagBits bufferUsageFlag )
+    {
+        VkDeviceSize bufferSize = sizeof(dataVec.back()) * dataVec.size();
+
+        VkBuffer stagingBuffer;
+        VkDeviceMemory stagingBufferMemory;
+        createBuffer(
+            bufferSize,
+            VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            stagingBuffer,
+            stagingBufferMemory );
+
+        void* data;
+        vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data );
+        std::memcpy( data, dataVec.data(), (size_t) bufferSize );
+        vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
+
+        createBuffer(
+            bufferSize,
+            VK_BUFFER_USAGE_TRANSFER_DST_BIT | bufferUsageFlag,
+            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+            memoryBuffer.m_buffer,
+            memoryBuffer.m_deviceMemory );
+
+        copyBuffer( stagingBuffer, memoryBuffer.m_buffer, bufferSize );
+
+        vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
+        vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
+    }
+    
+private:
+    
+    // A controlled way to destroy the game created assets
+    virtual void destroyAssets() = 0;
+    
+    // Create the Vulkan surface
+    virtual void createSurface() = 0;
     
     // Find the queue family index
     uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice, uint32_t queueMask );
@@ -66,9 +118,6 @@ protected:
     void createVulkanInstance(
         const std::vector<const char*> & validationNameVec,
         const std::vector<const char*> & instanceExtensionNameVec );
-    
-    // Create the Vulkan surface
-    virtual void createSurface() = 0;
     
     // Select a physical device (GPU)
     void selectPhysicalDevice();
@@ -103,41 +152,17 @@ protected:
     // Create depth resources
     void createDepthResources();
     
-    // Create texture
-    void createTexture( NVulkan::CTexture & texture, const std::string & filePath, bool mipMap );
-    
-    // Create texture sampler
-    VkSampler createTextureSampler( uint32_t mipLevels );
-    
-    // Create the vertex buffer
-    void createVertexBuffer();
-    
-    // Create the index buffer
-    void createIndexBuffer();
-    
     // Create uniform buffer
     void createUniformBuffer();
     
     // Create descriptor pool
     void createDescriptorPool();
     
-    // Create descriptor sets
-    void createDescriptorSet();
-    
     // Create the command buffers
     void createCommandBuffers();
     
-    // Record the command buffers
-    void recordCommandBuffers( uint32_t cmdBufIndex );
-    
-    // Update the uniform buffer
-    void updateUniformBuffer( uint32_t unfBufIndex );
-    
     // Create the Semaphores and fences
     void createSyncObjects();
-    
-    // Recreate swap chain
-    void recreateSwapChain();
     
     // Create a buffer
     void createBuffer(
@@ -181,14 +206,17 @@ protected:
     // Generate Mipmaps
     void generateMipmaps( VkImage image, VkFormat imageFormat, int32_t width, int32_t height, uint32_t mipLevels );
     
+    // Create texture sampler
+    VkSampler createTextureSampler( uint32_t mipLevels );
+    
+    // Create descriptor sets
+    void createDescriptorSet( NVulkan::CTexture & texture );
+    
     // Find supported format
     VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );
     
     // Find the depth format
     VkFormat findDepthFormat();
-    
-    // Create texture image
-    virtual void createTextureImage() = 0;
 
 protected:
     

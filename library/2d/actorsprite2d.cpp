@@ -17,11 +17,11 @@
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Boost lib dependencies
 #include <boost/format.hpp>
+
+// SDL lib dependencies
+#include <SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor

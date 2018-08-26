@@ -29,6 +29,9 @@
 #include <boost/format.hpp>
 #include <boost/bind.hpp>
 
+// SDL lib dependencies
+#include <SDL.h>
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/

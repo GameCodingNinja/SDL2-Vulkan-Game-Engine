@@ -19,9 +19,6 @@
 #include <script/scriptcomponent.h>
 #include <common/dynamicoffset.h>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
@@ -34,6 +31,7 @@
 
 // Forward declaration(s)
 class CSprite2D;
+union SDL_Event;
 
 class CMenu : public CObject2D, boost::noncopyable
 {

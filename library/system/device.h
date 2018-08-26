@@ -11,6 +11,13 @@
 // Physical component dependency
 #include <system/devicevulkan.h>
 
+// Game dependencies
+#include <common/memorybuffer.h>
+#include <common/vertex.h>
+
+// SDL lib dependencies
+#include <SDL.h>
+
 // Forward declaration(s)
 struct SDL_Window;
 struct _SDL_GameController;
@@ -72,6 +79,33 @@ public:
     
     // Get window
     SDL_Window * getWindow();
+    
+    // Load a buffer into video card memory
+    template <typename T>
+    CMemoryBuffer & loadBuffer( const std::string & group, const std::string & name, std::vector<T> dataVec, VkBufferUsageFlagBits bufferUsageFlag )
+    {
+        // Create the map group if it doesn't already exist
+        auto mapMapIter = m_bufferMapMap.find( group );
+        if( mapMapIter == m_bufferMapMap.end() )
+            mapMapIter = m_bufferMapMap.emplace( group, std::map<const std::string, CMemoryBuffer>() ).first;
+
+        // See if this texture has already been loaded
+        auto mapIter = mapMapIter->second.find( name );
+
+        // If it's not found, load the texture and add it to the list
+        if( mapIter == mapMapIter->second.end() )
+        {
+            CMemoryBuffer memoryBuffer;
+            
+            // Load buffer into video memory
+            loadVKBuffer( dataVec, memoryBuffer, bufferUsageFlag );
+
+            // Insert the new texture info
+            mapIter = mapMapIter->second.emplace( name, memoryBuffer ).first;
+        }
+
+        return mapIter->second;
+    }
 
 private:
     
@@ -86,12 +120,12 @@ private:
     
     // A controlled way to destroy the assets
     void destroyAssets() override;
-    
-    
-    
-    
+
     // Create texture image
-    void createTextureImage() override;
+    void createTextureImage();
+    
+    // Create the vertex buffer
+    void createVertexBuffer();
     
 private:
     
@@ -103,6 +137,9 @@ private:
     
     // Map containing a group of texture handles
     std::map< const std::string, std::map< const std::string, NVulkan::CTexture > > m_textureMapMap;
+    
+    // Map containing a group of memory handles
+    std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_bufferMapMap;
 
 };
 

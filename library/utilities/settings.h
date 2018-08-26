@@ -93,17 +93,11 @@ public:
     // Calculate the ratio
     void calcRatio();
 
-    // Do we create the depth stencil buffer
-    bool getCreateStencilBuffer() const;
-
-    // Get the bit size of the stencil buffer
-    int getStencilBufferBitSize() const;
-
-    // Do we clear the stencil buffer
-    bool getClearStencilBuffer() const;
-
     // Is the depth buffer enabled by default
     bool getEnableDepthBuffer() const;
+
+    // Is the stencil buffer enabled by default
+    bool getEnableStencilBuffer() const;
 
     // Do we clear the target buffer
     bool getClearTargetBuffer() const;
@@ -222,18 +216,12 @@ private:
     int m_mix_channels;
     int m_chunksize;
 
-    // Do we create the depth stencil buffer
-    bool m_createStencilBuffer;
-
-    // Number of bits in the stencil buffer
-    int m_stencilBufferBitSize;
-
-    // Do we clear the stencil buffer
-    bool m_clearStencilBuffer;
-
     // Do we enable the depth buffer
     bool m_enableDepthBuffer;
 
+    // Do we create the depth stencil buffer
+    bool m_enableStencilBuffer;
+    
     // Do we clear the target buffer
     bool m_clearTargetBuffer;
 

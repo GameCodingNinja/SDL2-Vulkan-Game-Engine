@@ -89,6 +89,9 @@ void CDevice::create( const std::string & vertShader, const std::string & fragSh
     // Create the Vulkan instance and graphics pipeline
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, vertShader, fragShader );
     
+    createTextureImage();
+    createVertexBuffer();
+    
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
         setFullScreen( CSettings::Instance().getFullScreen() );
@@ -138,6 +141,18 @@ void CDevice::destroyAssets()
         }
         
         m_textureMapMap.clear();
+
+        // Free all memory buffer groups
+        for( auto & mapMapIter : m_bufferMapMap )
+        {
+            for( auto & mapIter : mapMapIter.second )
+            {
+                vkDestroyBuffer( m_logicalDevice, mapIter.second.m_buffer, nullptr );
+                vkFreeMemory( m_logicalDevice, mapIter.second.m_deviceMemory, nullptr );
+            }
+        }
+        
+        m_bufferMapMap.clear();
     }
 }
 
@@ -412,4 +427,33 @@ void CDevice::createTextureImage()
     m_textureImageMemory = texture.m_textureImageMemory;
     m_textureImageView = texture.m_textureImageView;
     m_textureSampler = texture.m_textureSampler;
+    m_descriptorSetVec = texture.m_descriptorSetVec;
+}
+
+/***************************************************************************
+*   DESC:  Create texture image
+****************************************************************************/
+void CDevice::createVertexBuffer()
+{
+    const std::vector<CVertex> vertices =
+    {
+        {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}}
+    };
+
+    const std::vector<uint16_t> indices =
+    {
+        0, 1, 2, 2, 3, 0
+    };
+    
+    CMemoryBuffer vboBuffer = loadBuffer( "test", "vbo", vertices, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+    CMemoryBuffer iboBuffer = loadBuffer( "test", "ibo", indices, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
+    
+    // Vertex buffer
+    m_vertexBuffer = vboBuffer.m_buffer;
+    m_vertexBufferMemory = vboBuffer.m_deviceMemory;
+    m_indexBuffer = iboBuffer.m_buffer;
+    m_indexBufferMemory = iboBuffer.m_deviceMemory;
 }

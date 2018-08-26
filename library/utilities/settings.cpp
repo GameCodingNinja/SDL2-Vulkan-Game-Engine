@@ -41,10 +41,8 @@ CSettings::CSettings() :
     m_sound_channels(MIX_DEFAULT_CHANNELS),
     m_mix_channels(MIX_CHANNELS),
     m_chunksize(1024),
-    m_createStencilBuffer(false),
-    m_stencilBufferBitSize(0),
-    m_clearStencilBuffer(false),
     m_enableDepthBuffer(false),
+    m_enableStencilBuffer(false),
     m_clearTargetBuffer(true),
     m_minThreadCount(2),
     m_maxThreadCount(0),
@@ -267,17 +265,9 @@ void CSettings::loadXML()
                 if( depthStencilBufferNode.isAttributeSet("enableDepthBuffer") )
                     m_enableDepthBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableDepthBuffer"), "true" ) == 0 );
 
-                // Do we create the stencil buffer
-                if( depthStencilBufferNode.isAttributeSet("createStencilBuffer") )
-                    m_createStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("createStencilBuffer"), "true" ) == 0 );
-
-                // Do we clear the stencil buffer
-                if( depthStencilBufferNode.isAttributeSet("clearStencilBuffer") )
-                    m_clearStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("clearStencilBuffer"), "true") == 0 );
-
-                // Get the number of bits for the stencil buffer
-                if( depthStencilBufferNode.isAttributeSet( "stencilBufferBitSize" ) )
-                    m_stencilBufferBitSize = std::atoi( depthStencilBufferNode.getAttribute("stencilBufferBitSize") );
+                // Do we enable the stencil buffer
+                if( depthStencilBufferNode.isAttributeSet("enableStencilBuffer") )
+                    m_enableStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableStencilBuffer"), "true" ) == 0 );
             }
 
             // Get the sound settings
@@ -539,38 +529,20 @@ void CSettings::setFullScreen( bool value )
 
 
 /************************************************************************
-*    DESC:  Do we create the depth stencil buffer
-************************************************************************/
-bool CSettings::getCreateStencilBuffer() const
-{
-    return m_createStencilBuffer;
-}
-
-
-/************************************************************************
-*    DESC:  Get the bit size of the stencil buffer
-************************************************************************/
-int CSettings::getStencilBufferBitSize() const
-{
-    return m_stencilBufferBitSize;
-}
-
-
-/************************************************************************
-*    DESC:  Do we clear the stencil buffer
-************************************************************************/
-bool CSettings::getClearStencilBuffer() const
-{
-    return m_clearStencilBuffer;
-}
-
-
-/************************************************************************
 *    DESC:  Is the depth buffer enabled by default
 ************************************************************************/
 bool CSettings::getEnableDepthBuffer() const
 {
     return m_enableDepthBuffer;
+}
+
+
+/************************************************************************
+*    DESC:  Is the stencil buffer enabled by default
+************************************************************************/
+bool CSettings::getEnableStencilBuffer() const
+{
+    return m_enableStencilBuffer;
 }
 
 
