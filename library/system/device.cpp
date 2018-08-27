@@ -129,26 +129,32 @@ void CDevice::destroyAssets()
     if( m_logicalDevice != VK_NULL_HANDLE )
     {
         // Free all textures in all groups
-        for( auto & mapMapIter : m_textureMapMap )
+        for( auto & mapIter : m_textureMapMap )
         {
-            for( auto & mapIter : mapMapIter.second )
+            for( auto & iter : mapIter.second )
             {
-                vkDestroyImage( m_logicalDevice, mapIter.second.m_textureImage, nullptr );
-                vkFreeMemory( m_logicalDevice, mapIter.second.m_textureImageMemory, nullptr );
-                vkDestroyImageView( m_logicalDevice, mapIter.second.m_textureImageView, nullptr );
-                vkDestroySampler( m_logicalDevice, mapIter.second.m_textureSampler, nullptr );
+                vkDestroyImage( m_logicalDevice, iter.second.m_textureImage, nullptr );
+                vkFreeMemory( m_logicalDevice, iter.second.m_textureImageMemory, nullptr );
+                vkDestroyImageView( m_logicalDevice, iter.second.m_textureImageView, nullptr );
+                vkDestroySampler( m_logicalDevice, iter.second.m_textureSampler, nullptr );
             }
         }
         
         m_textureMapMap.clear();
+        
+        // Free all descriptor pool groups
+        for( auto & iter : m_descriptorPoolMap )
+            vkDestroyDescriptorPool( m_logicalDevice, iter.second, nullptr );
+
+        m_descriptorPoolMap.clear();
 
         // Free all memory buffer groups
-        for( auto & mapMapIter : m_bufferMapMap )
+        for( auto & mapIter : m_bufferMapMap )
         {
-            for( auto & mapIter : mapMapIter.second )
+            for( auto & iter : mapIter.second )
             {
-                vkDestroyBuffer( m_logicalDevice, mapIter.second.m_buffer, nullptr );
-                vkFreeMemory( m_logicalDevice, mapIter.second.m_deviceMemory, nullptr );
+                vkDestroyBuffer( m_logicalDevice, iter.second.m_buffer, nullptr );
+                vkFreeMemory( m_logicalDevice, iter.second.m_deviceMemory, nullptr );
             }
         }
         
@@ -251,29 +257,65 @@ void CDevice::showWindow( bool visible )
 /************************************************************************
 *    DESC:  Load the image from file path
 ************************************************************************/
-NVulkan::CTexture & CDevice::loadTexture( const std::string & group, const std::string & filePath, bool mipMap )
+CTexture & CDevice::loadTexture( const std::string & group, const std::string & filePath, bool mipMap )
 {
     // Create the map group if it doesn't already exist
-    auto mapMapIter = m_textureMapMap.find( group );
-    if( mapMapIter == m_textureMapMap.end() )
-        mapMapIter = m_textureMapMap.emplace( group, std::map<const std::string, NVulkan::CTexture>() ).first;
+    auto mapIter = m_textureMapMap.find( group );
+    if( mapIter == m_textureMapMap.end() )
+        mapIter = m_textureMapMap.emplace( group, std::map<const std::string, CTexture>() ).first;
 
     // See if this texture has already been loaded
-    auto mapIter = mapMapIter->second.find( filePath );
+    auto iter = mapIter->second.find( filePath );
 
     // If it's not found, load the texture and add it to the list
-    if( mapIter == mapMapIter->second.end() )
+    if( iter == mapIter->second.end() )
     {
-        NVulkan::CTexture texture;
+        CTexture texture;
 
         // Load the image from file path
-        createTexture( texture, filePath, mipMap );
+        CDeviceVulkan::createTexture( texture, filePath, mipMap );
 
         // Insert the new texture info
-        mapIter = mapMapIter->second.emplace( filePath, texture ).first;
+        iter = mapIter->second.emplace( filePath, texture ).first;
     }
     
-    return mapIter->second;
+    return iter->second;
+}
+
+
+/************************************************************************
+*    DESC:  Get the number of textures in this group
+************************************************************************/
+size_t CDevice::getTextureGroupCount( const std::string & group )
+{
+    // Make sure
+    auto mapIter = m_textureMapMap.find( group );
+    if( mapIter == m_textureMapMap.end() )
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Can't get count of texture group that does not exist! %s") % group ) );
+    
+    return mapIter->second.size();
+}
+
+
+/************************************************************************
+*    DESC:  Create the descriptor pool
+************************************************************************/
+VkDescriptorPool CDevice::createDescriptorPool( const std::string & group, size_t setCount )
+{
+    // Create the descriptor pool. It shouldn't have been already created
+    auto mapIter = m_descriptorPoolMap.find( group );
+    if( mapIter != m_descriptorPoolMap.end() )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool already created! %s") % group ) );
+    
+    // Create the descriptor pool for this group
+    VkDescriptorPool descriptorPool = CDeviceVulkan::createDescriptorPool( setCount );
+
+    // Insert the new texture info
+    m_descriptorPoolMap.emplace( group, descriptorPool );
+    
+    return descriptorPool;
 }
 
 
@@ -283,20 +325,20 @@ NVulkan::CTexture & CDevice::loadTexture( const std::string & group, const std::
 void CDevice::deleteTextureGroup( const std::string & group )
 {
     // Free the texture group if it exists
-    auto mapMapIter = m_textureMapMap.find( group );
-    if( mapMapIter != m_textureMapMap.end() )
+    auto mapIter = m_textureMapMap.find( group );
+    if( mapIter != m_textureMapMap.end() )
     {
         // Delete all the textures in this group
-        for( auto & mapIter : mapMapIter->second )
+        for( auto & iter : mapIter->second )
         {
-            vkDestroyImage( m_logicalDevice, mapIter.second.m_textureImage, nullptr );
-            vkFreeMemory( m_logicalDevice, mapIter.second.m_textureImageMemory, nullptr );
-            vkDestroyImageView( m_logicalDevice, mapIter.second.m_textureImageView, nullptr );
-            vkDestroySampler( m_logicalDevice, mapIter.second.m_textureSampler, nullptr );
+            vkDestroyImage( m_logicalDevice, iter.second.m_textureImage, nullptr );
+            vkFreeMemory( m_logicalDevice, iter.second.m_textureImageMemory, nullptr );
+            vkDestroyImageView( m_logicalDevice, iter.second.m_textureImageView, nullptr );
+            vkDestroySampler( m_logicalDevice, iter.second.m_textureSampler, nullptr );
         }
 
         // Erase this group
-        m_textureMapMap.erase( mapMapIter );
+        m_textureMapMap.erase( mapIter );
     }
 }
 
@@ -339,8 +381,6 @@ void CDevice::displayErrorMsg( const std::string & title, const std::string & ms
 }
 
 
-
-
 /***************************************************************************
 *   DESC:  Set window title
 ****************************************************************************/
@@ -357,8 +397,8 @@ void CDevice::setWindowTitle( const std::string & title )
 void CDevice::initStartupGamepads()
 {
     // May not need this anymore
-    //int newMappings = SDL_GameControllerAddMappingsFromFile("data/settings/gamecontrollerdb.txt");
-    //NGenFunc::PostDebugMsg( boost::str( boost::format("New controller mappings found: %d - Number of controllers found: %d") % newMappings % (int)SDL_NumJoysticks() ) );
+    int newMappings = SDL_GameControllerAddMappingsFromFile("data/settings/gamecontrollerdb.txt");
+    NGenFunc::PostDebugMsg( boost::str( boost::format("New controller mappings found: %d - Number of controllers found: %d") % newMappings % (int)SDL_NumJoysticks() ) );
 
     for( int i = 0; i < SDL_NumJoysticks(); ++i )
         addGamepad( i );
@@ -419,15 +459,24 @@ SDL_Window * CDevice::getWindow()
 ****************************************************************************/
 void CDevice::createTextureImage()
 {
-    NVulkan::CTexture texture;
+    CTexture texture;
     
     texture = loadTexture( "test", "data/textures/titleScreen/title_background.jpg" );
     
-    m_textureImage = texture.m_textureImage;
-    m_textureImageMemory = texture.m_textureImageMemory;
-    m_textureImageView = texture.m_textureImageView;
-    m_textureSampler = texture.m_textureSampler;
-    m_descriptorSetVec = texture.m_descriptorSetVec;
+    size_t textCount = getTextureGroupCount( "test" );
+    
+    VkDescriptorPool descriptorPool = createDescriptorPool( "test", textCount );
+    
+    // Create the map group if it doesn't already exist
+    auto mapIter = m_textureMapMap.find( "test" );
+    if( mapIter == m_textureMapMap.end() )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("No texture group by that name! %s") % "test"  ) );
+    
+    for( auto & iter : mapIter->second )
+    {
+        CDeviceVulkan::createDescriptorSet( iter.second, descriptorPool );
+        m_descriptorSetVec = iter.second.m_descriptorSetVec;
+    }
 }
 
 /***************************************************************************

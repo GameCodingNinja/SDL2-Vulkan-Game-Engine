@@ -41,7 +41,13 @@ public:
     void destroy();
     
     // Load the image from file path
-    NVulkan::CTexture & loadTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
+    CTexture & loadTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
+    
+    // Create the descriptor pool
+    VkDescriptorPool createDescriptorPool( const std::string & group, size_t setCount );
+    
+    // Get the number of textures in this group
+    size_t getTextureGroupCount( const std::string & group );
     
     // Delete a texture in a group
     void deleteTextureGroup( const std::string & group );
@@ -136,7 +142,10 @@ private:
     std::map<int, SDL_GameController *> m_pGamepadMap;
     
     // Map containing a group of texture handles
-    std::map< const std::string, std::map< const std::string, NVulkan::CTexture > > m_textureMapMap;
+    std::map< const std::string, std::map< const std::string, CTexture > > m_textureMapMap;
+    
+    // Map containing a group of descriptor pools
+    std::map< const std::string, VkDescriptorPool > m_descriptorPoolMap;
     
     // Map containing a group of memory handles
     std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_bufferMapMap;

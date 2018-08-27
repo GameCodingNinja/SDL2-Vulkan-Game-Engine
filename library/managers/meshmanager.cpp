@@ -287,7 +287,7 @@ void CMeshMgr::createFromData(
     for( auto & iter : textureVec )
     {
         // Load the texture
-        NVulkan::CTexture texture = CDevice::Instance().loadTexture( group, iter.m_textFilePath );
+        CTexture texture = CDevice::Instance().loadTexture( group, iter.m_textFilePath );
 
         //iter.m_id = texture.m_id;
         iter.m_size = texture.m_size;

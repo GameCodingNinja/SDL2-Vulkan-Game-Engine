@@ -76,14 +76,9 @@ CDeviceVulkan::CDeviceVulkan() :
     m_vertexBufferMemory(VK_NULL_HANDLE),
     m_indexBuffer(VK_NULL_HANDLE),
     m_indexBufferMemory(VK_NULL_HANDLE),
-    m_descriptorPool(VK_NULL_HANDLE),
     m_currentFrame(0),
     m_maxConcurrentFrames(0),
     m_lastResult(VK_SUCCESS),
-    m_textureImage(VK_NULL_HANDLE),
-    m_textureImageMemory(VK_NULL_HANDLE),
-    m_textureImageView(VK_NULL_HANDLE),
-    m_textureSampler(VK_NULL_HANDLE),
     m_depthImage(VK_NULL_HANDLE),
     m_depthImageMemory(VK_NULL_HANDLE),
     m_depthImageView(VK_NULL_HANDLE),
@@ -195,9 +190,6 @@ void CDeviceVulkan::create(
     // Create uniform buffers
     createUniformBuffer();
     
-    // Create descriptor pool
-    createDescriptorPool();
-    
     // Create the Semaphores and fences
     createSyncObjects();
     
@@ -241,12 +233,6 @@ void CDeviceVulkan::destroy()
         }
         
         destroySwapChain();
-
-        if( m_descriptorPool != VK_NULL_HANDLE )
-        {
-            vkDestroyDescriptorPool( m_logicalDevice, m_descriptorPool, nullptr );
-            m_descriptorPool = VK_NULL_HANDLE;
-        }
 
         if( !m_uniformBufVec.empty()  )
         {
@@ -1078,28 +1064,6 @@ void CDeviceVulkan::createUniformBuffer()
 
 
 /***************************************************************************
-*   DESC:  Create descriptor pool
-****************************************************************************/
-void CDeviceVulkan::createDescriptorPool()
-{
-    std::array<VkDescriptorPoolSize, 2> poolSize = {};
-    poolSize[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    poolSize[0].descriptorCount = m_framebufferVec.size();
-    poolSize[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    poolSize[1].descriptorCount = m_framebufferVec.size();
-
-    VkDescriptorPoolCreateInfo poolInfo = {};
-    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    poolInfo.poolSizeCount = poolSize.size();
-    poolInfo.pPoolSizes = poolSize.data();
-    poolInfo.maxSets = m_framebufferVec.size();
-    
-    if( (m_lastResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &m_descriptorPool )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
-}
-
-
-/***************************************************************************
 *   DESC:  Create the Semaphores and fences
 ****************************************************************************/
 void CDeviceVulkan::createSyncObjects()
@@ -1655,7 +1619,7 @@ void CDeviceVulkan::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t 
 /***************************************************************************
 *   DESC:  Create texture
 ****************************************************************************/
-void CDeviceVulkan::createTexture( NVulkan::CTexture & texture, const std::string & filePath, bool mipMap )
+void CDeviceVulkan::createTexture( CTexture & texture, const std::string & filePath, bool mipMap )
 {
     int channels(0);
     unsigned char * pixels = SOIL_load_image( 
@@ -1722,9 +1686,6 @@ void CDeviceVulkan::createTexture( NVulkan::CTexture & texture, const std::strin
     
     // Create the texture sampler
     texture.m_textureSampler = createTextureSampler( texture.m_mipLevels );
-    
-    // Create the descriptor set for this texture
-    createDescriptorSet( texture );
 }
 
 
@@ -1880,23 +1841,56 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 
 
 /***************************************************************************
+*   DESC:  Create descriptor pool
+****************************************************************************/
+VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
+{
+    const int DESC_TYPE_COUNT(2);
+    std::vector<VkDescriptorPoolSize> descriptorPoolVec( DESC_TYPE_COUNT * setCount );
+    
+    for( size_t i = 0; i < descriptorPoolVec.size(); ++i )
+    {
+        descriptorPoolVec[i].descriptorCount = m_framebufferVec.size();
+        
+        if( (i & 0x1) == 0 )
+            descriptorPoolVec[i].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        else
+            descriptorPoolVec[i].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    }
+
+    VkDescriptorPoolCreateInfo poolInfo = {};
+    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolInfo.poolSizeCount = descriptorPoolVec.size();
+    poolInfo.pPoolSizes = descriptorPoolVec.data();
+    poolInfo.maxSets = descriptorPoolVec.size();
+    
+    VkDescriptorPool descriptorPool;
+    
+    if( (m_lastResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &descriptorPool )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
+    
+    return descriptorPool;
+}
+
+
+/***************************************************************************
 *   DESC:  Create descriptor sets
 ****************************************************************************/
-void CDeviceVulkan::createDescriptorSet( NVulkan::CTexture & texture )
+void CDeviceVulkan::createDescriptorSet( CTexture & texture, VkDescriptorPool descriptorPool )
 {
-    std::vector<VkDescriptorSetLayout> layouts( m_swapchainInfo.minImageCount, m_descriptorSetLayout );
+    std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), m_descriptorSetLayout );
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    allocInfo.descriptorPool = m_descriptorPool;
-    allocInfo.descriptorSetCount = m_swapchainInfo.minImageCount;
+    allocInfo.descriptorPool = descriptorPool;
+    allocInfo.descriptorSetCount = m_framebufferVec.size();
     allocInfo.pSetLayouts = layouts.data();
 
-    texture.m_descriptorSetVec.resize( m_swapchainInfo.minImageCount );
+    texture.m_descriptorSetVec.resize( m_framebufferVec.size() );
     
     if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, texture.m_descriptorSetVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
     
-    for( size_t i = 0; i < m_swapchainInfo.minImageCount; ++i )
+    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
     {
         VkDescriptorBufferInfo bufferInfo = {};
         bufferInfo.buffer = m_uniformBufVec[i];

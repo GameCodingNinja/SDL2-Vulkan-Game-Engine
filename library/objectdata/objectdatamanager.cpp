@@ -42,7 +42,7 @@ CObjectDataMgr::~CObjectDataMgr()
 /************************************************************************
  *    DESC:  Load all of the meshes and materials of a specific data group
  ************************************************************************/
-void CObjectDataMgr::loadGroup2D( const std::string & group, const bool createFromData )
+void CObjectDataMgr::loadGroup2D( const std::string & group )
 {
     // Check for a hardware extension
     std::string ext;
@@ -64,7 +64,7 @@ void CObjectDataMgr::loadGroup2D( const std::string & group, const bool createFr
         m_objectData2DMapMap.emplace( group, std::map<const std::string, CObjectData2D>() );
 
         for( auto & iter : listTableIter->second )
-            load2D( group, iter, createFromData );
+            load2D( group, iter );
     }
     else
     {
@@ -81,7 +81,7 @@ void CObjectDataMgr::loadGroup2D( const std::string & group, const bool createFr
 /************************************************************************
  *    DESC:  Load all object information
  ************************************************************************/
-void CObjectDataMgr::load2D( const std::string & group, const std::string & filePath, const bool createFromData )
+void CObjectDataMgr::load2D( const std::string & group, const std::string & filePath )
 {
     // Open and parse the XML file:
     const XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str(), "objectDataList2D" );
@@ -134,29 +134,7 @@ void CObjectDataMgr::load2D( const std::string & group, const std::string & file
         iter.first->second.loadFromNode( objectNode, group, name );
 
         // Create it from the data
-        if( createFromData )
-            iter.first->second.createFromData( group );
-    }
-}
-
-
-/************************************************************************
- *    DESC:  Create the group's VBO, IBO, textures, etc
- ************************************************************************/
-void CObjectDataMgr::createFromData2D( const std::string & group )
-{
-    // Create it from the data
-    auto groupMapIter = m_objectData2DMapMap.find( group );
-    if( groupMapIter != m_objectData2DMapMap.end() )
-    {
-        for( auto & iter : groupMapIter->second )
-            iter.second.createFromData( group );
-    }
-    else
-    {
-        throw NExcept::CCriticalException("Object Create From Data Group Error!",
-            boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
-                % group % __FUNCTION__ % __LINE__ ));
+        iter.first->second.createFromData( group );
     }
 }
 
@@ -164,7 +142,7 @@ void CObjectDataMgr::createFromData2D( const std::string & group )
 /************************************************************************
  *    DESC:  Free all of the meshes materials and data of a specific group
  ************************************************************************/
-void CObjectDataMgr::freeGroup2D( const std::string & group, const bool freeOpenGLObjects )
+void CObjectDataMgr::freeGroup2D( const std::string & group )
 {
     // Make sure the group we are looking for exists
     auto listTableIter = m_listTableMap.find( group );
@@ -177,22 +155,12 @@ void CObjectDataMgr::freeGroup2D( const std::string & group, const bool freeOpen
     auto groupMapIter = m_objectData2DMapMap.find( group );
     if( groupMapIter != m_objectData2DMapMap.end() )
     {
-        if( freeOpenGLObjects )
-            freeOpenGL2D( group );
+        CDevice::Instance().deleteTextureGroup( group );
+        //CVertBufMgr::Instance().deleteBufferGroupFor2D( group );
 
         // Unload the group data
         m_objectData2DMapMap.erase( groupMapIter );
     }
-}
-
-
-/************************************************************************
- *    DESC:  Free all OpenGL objects created from these groups
- ************************************************************************/
-void CObjectDataMgr::freeOpenGL2D( const std::string & group )
-{
-    CDevice::Instance().deleteTextureGroup( group );
-    CVertBufMgr::Instance().deleteBufferGroupFor2D( group );
 }
 
 
@@ -242,7 +210,7 @@ const CObjectData2D & CObjectDataMgr::getData2D( const CSpriteData & spriteData 
 /************************************************************************
  *    DESC:  Load all of the meshes and materials of a specific data group
  ************************************************************************/
-void CObjectDataMgr::loadGroup3D( const std::string & group, const bool createFromData )
+void CObjectDataMgr::loadGroup3D( const std::string & group )
 {
     // Make sure the group we are looking has been defined in the list table file
     auto listTableIter = m_listTableMap.find( group );
@@ -258,7 +226,7 @@ void CObjectDataMgr::loadGroup3D( const std::string & group, const bool createFr
         m_objectData3DMapMap.emplace( group, std::map<const std::string, CObjectData3D>() );
 
         for( auto & iter : listTableIter->second )
-            load3D( group, iter, createFromData );
+            load3D( group, iter );
     }
     else
     {
@@ -270,30 +238,9 @@ void CObjectDataMgr::loadGroup3D( const std::string & group, const bool createFr
 
 
 /************************************************************************
- *    DESC:  Create the group's VBO, IBO, textures, etc
- ************************************************************************/
-void CObjectDataMgr::createFromData3D( const std::string & group )
-{
-    // Create it from the data
-    auto groupMapIter = m_objectData3DMapMap.find( group );
-    if( groupMapIter != m_objectData3DMapMap.end() )
-    {
-        for( auto & iter : groupMapIter->second )
-            iter.second.createFromData( group );
-    }
-    else
-    {
-        throw NExcept::CCriticalException("Object Create From Data Group Error!",
-            boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
-                % group % __FUNCTION__ % __LINE__ ));
-    }
-}
-
-
-/************************************************************************
  *    DESC:  Load all object information
  ************************************************************************/
-void CObjectDataMgr::load3D( const std::string & group, const std::string & filePath, const bool createFromData )
+void CObjectDataMgr::load3D( const std::string & group, const std::string & filePath )
 {
     // Open and parse the XML file:
     const XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str(), "objectDataList3D" );
@@ -345,8 +292,7 @@ void CObjectDataMgr::load3D( const std::string & group, const std::string & file
         iter.first->second.loadFromNode( objectNode, group, name );
 
         // Create it from the data
-        if( createFromData )
-            iter.first->second.createFromData( group );
+        iter.first->second.createFromData( group );
     }
 }
 
@@ -354,7 +300,7 @@ void CObjectDataMgr::load3D( const std::string & group, const std::string & file
 /************************************************************************
  *    DESC:  Free all of the meshes and materials of a specific data group
  ************************************************************************/
-void CObjectDataMgr::freeGroup3D( const std::string & group, const bool freeOpenGLObjects )
+void CObjectDataMgr::freeGroup3D( const std::string & group )
 {
     // Make sure the group we are looking for exists
     auto listTableIter = m_listTableMap.find( group );
@@ -369,22 +315,12 @@ void CObjectDataMgr::freeGroup3D( const std::string & group, const bool freeOpen
     auto groupMapIter = m_objectData3DMapMap.find( group );
     if( groupMapIter != m_objectData3DMapMap.end() )
     {
-        if( freeOpenGLObjects )
-            freeOpenGL3D( group );
+        CDevice::Instance().deleteTextureGroup( group );
+        //CMeshMgr::Instance().deleteBufferGroup( group );
 
         // Unload the group data
         m_objectData3DMapMap.erase( groupMapIter );
     }
-}
-
-
-/************************************************************************
- *    DESC:  Free all OpenGL objects created from these groups
- ************************************************************************/
-void CObjectDataMgr::freeOpenGL3D( const std::string & group )
-{
-    CDevice::Instance().deleteTextureGroup( group );
-    CMeshMgr::Instance().deleteBufferGroup( group );
 }
 
 

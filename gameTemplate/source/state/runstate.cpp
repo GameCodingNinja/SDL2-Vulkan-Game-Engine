@@ -129,13 +129,13 @@ namespace NRunState
     ****************************************************************************/
     void ObjectDataLoad()
     {
-        CObjectDataMgr::Instance().loadGroup2D( "(run)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
+        CObjectDataMgr::Instance().loadGroup2D( "(run)");
     }
 
     void CriticalLoad()
     {
         // Create the group's VBO, IBO, textures, etc
-        CObjectDataMgr::Instance().createFromData2D( "(run)" );
+        //CObjectDataMgr::Instance().createFromData2D( "(run)" );
     }
 
     void Load()

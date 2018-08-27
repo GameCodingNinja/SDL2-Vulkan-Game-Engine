@@ -231,44 +231,6 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode )
 
 
 /************************************************************************
-*    DESC:  Load the image data from file
-************************************************************************/
-void CObjectVisualData2D::loadImage( const std::string & group )
-{
-    if( !m_textureFilePath.empty() )
-    {
-        if( m_textureSequenceCount > 0 )
-        {
-            m_textureIDVec.reserve( m_textureSequenceCount );
-
-            for( int i = 0; i < m_textureSequenceCount; ++i )
-            {
-                const std::string file = boost::str( boost::format(m_textureFilePath) % i );
-
-                std::string filePath = file;
-
-                // Add in the resource swap file extension if needed
-                if( !m_resExt.empty() )
-                    NGenFunc::AddFileExt( file, filePath, m_resExt );
-
-                CDevice::Instance().loadTexture( group, filePath );
-            }
-        }
-        else
-        {
-            std::string filePath = m_textureFilePath;
-
-            // Add in the resource swap file extension if needed
-            if( !m_resExt.empty() )
-                NGenFunc::AddFileExt( m_textureFilePath, filePath, m_resExt );
-
-            CDevice::Instance().loadTexture( group, filePath );
-        }
-    }
-}
-
-
-/************************************************************************
 *    DESC:  Create the object from data
 ************************************************************************/
 void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> & rSize )
@@ -310,16 +272,16 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> 
 
             // Create the scaled frame using glyph info
             if( m_meshFilePath.empty() )
-                generateScaledFrame( group, texture.getSize(), rGlyph.getSize(), rSize, rGlyph.getUV() );
+                generateScaledFrame( group, texture.m_size, rGlyph.getSize(), rSize, rGlyph.getUV() );
             else
-                generateScaledFrameMeshFile( group, texture.getSize(), rGlyph.getSize(), rSize, rGlyph.getUV() );
+                generateScaledFrameMeshFile( group, texture.m_size, rGlyph.getSize(), rSize, rGlyph.getUV() );
         }
         // Generate a scaled frame
         else if( m_meshFilePath.empty() )
-            generateScaledFrame( group, texture.getSize(), texture.getSize(), rSize, CRect<float>() );
+            generateScaledFrame( group, texture.m_size, texture.m_size, rSize, CRect<float>() );
 
         else
-            generateScaledFrameMeshFile( group, texture.getSize(), texture.getSize(), rSize, CRect<float>() );
+            generateScaledFrameMeshFile( group, texture.m_size, texture.m_size, rSize, CRect<float>() );
     }
 }
 
@@ -333,7 +295,7 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
     {
         if( m_textureSequenceCount > 0 )
         {
-            m_textureIDVec.reserve( m_textureSequenceCount );
+            m_textureVec.reserve( m_textureSequenceCount );
 
             for( int i = 0; i < m_textureSequenceCount; ++i )
             {
@@ -345,8 +307,8 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
                 if( !m_resExt.empty() )
                     NGenFunc::AddFileExt( file, filePath, m_resExt );
 
-                //rTexture = CTextureMgr::Instance().createTextureFor2D( group, filePath, m_compressed );
-                //m_textureIDVec.push_back( rTexture.getID() );
+                rTexture = CDevice::Instance().loadTexture( group, filePath );
+                m_textureVec.emplace_back( rTexture );
             }
         }
         else
@@ -357,13 +319,13 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
             if( !m_resExt.empty() )
                 NGenFunc::AddFileExt( m_textureFilePath, filePath, m_resExt );
 
-            //rTexture = CTextureMgr::Instance().createTextureFor2D( group, filePath, m_compressed );
-            //m_textureIDVec.push_back( rTexture.getID() );
+            rTexture = CDevice::Instance().loadTexture( group, filePath );
+            m_textureVec.emplace_back( rTexture );
         }
 
         // If the passed in size reference is empty, set it to the texture size
         if( rSize.isEmpty() )
-            rSize = rTexture.getSize();
+            rSize = rTexture.m_size;
     }
 }
 
@@ -373,7 +335,7 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
 ************************************************************************/
 void CObjectVisualData2D::generateQuad( const std::string & group )
 {
-    uint8_t indexData[] = {0, 1, 2, 3};
+    /*uint8_t indexData[] = {0, 1, 2, 3};
 
     // VBO data
     // The order of the verts is counter clockwise
@@ -417,7 +379,7 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
     m_ibo = CVertBufMgr::Instance().createIBO( group, "quad_0123", indexData, sizeof(indexData) );
 
     // A quad has 4 ibos
-    m_iboCount = 4;
+    m_iboCount = 4;*/
 }
 
 
@@ -618,10 +580,12 @@ NDefs::EGenerationType CObjectVisualData2D::getGenerationType() const
 ************************************************************************/
 uint32_t CObjectVisualData2D::getTextureID( uint index ) const
 {
-    if( m_textureIDVec.empty() )
+    /*if( m_textureVec.empty() )
         return 0;
     else
-        return m_textureIDVec[index];
+        return m_textureVec[index];*/
+    
+    return 0;
 }
 
 
@@ -678,7 +642,7 @@ size_t CObjectVisualData2D::getFrameCount() const
     if( m_genType == NDefs::EGT_SPRITE_SHEET )
         return m_spriteSheet.getCount();
 
-    return m_textureIDVec.size();
+    return m_textureVec.size();
 }
 
 

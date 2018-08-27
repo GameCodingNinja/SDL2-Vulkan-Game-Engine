@@ -84,14 +84,14 @@ void CGame::create()
     CDevice::Instance().showWindow( true );
 
     // Setup the message filtering
-    //SDL_SetEventFilter(FilterEvents, 0);
+    SDL_SetEventFilter(FilterEvents, 0);
 
     // Handle some events on startup
     pollEvents();
 
     // Create the startup state
-    //upGameState.reset( new CStartUpState );
-    //upGameState->init();
+    upGameState.reset( new CStartUpState );
+    upGameState->init();
 
     // Let the games begin
     startGame();
@@ -281,8 +281,9 @@ void CGame::transform()
 ****************************************************************************/
 void CGame::render()
 {
-    upGameState->preRender();
-    upGameState->postRender();
+    upGameState->render();
+    
+    CDevice::Instance().render();
 }
 
 
@@ -292,7 +293,7 @@ void CGame::render()
 bool CGame::gameLoop()
 {
     // Handle the state change
-    //doStateChange();
+    doStateChange();
 
     // Poll for game events
     pollEvents();
@@ -303,31 +304,19 @@ bool CGame::gameLoop()
     if( m_gameRunning )
     {
         // Handle any misc processing before the real work is started
-        //miscProcess();
+        miscProcess();
 
         // Handle the physics
-        //physics();
+        physics();
 
         // Update animations, Move sprites, Check for collision
-        //update();
+        update();
 
         // Transform game objects
-        //transform();
-
-        // Clear the buffers
-        //glClear( m_clearBufferMask );
+        transform();
 
         // Do the rendering
-        CDevice::Instance().render();
-        //render();
-
-        // Do the back buffer swap
-        //SDL_GL_SwapWindow( m_pWindow );
-
-        // Unbind everything after a round of rendering
-        //CShaderMgr::Instance().unbind();
-        //CTextureMgr::Instance().unbind();
-        //CVertBufMgr::Instance().unbind();
+        render();
 
         // Inc the cycle
         if( NBDefs::IsDebugMode() )

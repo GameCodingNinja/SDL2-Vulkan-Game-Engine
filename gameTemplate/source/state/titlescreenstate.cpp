@@ -140,17 +140,17 @@ namespace NTitleScreenState
     ****************************************************************************/
     void ObjectDataLoad()
     {
-        CObjectDataMgr::Instance().loadGroup2D( "(title_screen)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
+        CObjectDataMgr::Instance().loadGroup2D( "(title_screen)" );
 
         //CObjectDataMgr::Instance().LoadGroup2D( "(actor)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
-        CObjectDataMgr::Instance().loadGroup3D( "(cube)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
+        CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     }
 
     void CriticalLoad()
     {
         // Create the group's VBO, IBO, textures, etc
-        CObjectDataMgr::Instance().createFromData2D( "(title_screen)" );
-        CObjectDataMgr::Instance().createFromData3D( "(cube)" );
+        //CObjectDataMgr::Instance().createFromData2D( "(title_screen)" );
+        //CObjectDataMgr::Instance().createFromData3D( "(cube)" );
     }
 
     void Load()

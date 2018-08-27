@@ -59,6 +59,7 @@ public:
     virtual void transform(){};
 
     // 2D/3D Render of game content
+    virtual void render(){};
     virtual void preRender(){};
     virtual void postRender(){};
 
@@ -66,7 +67,7 @@ public:
     virtual bool doStateChange()
     { return m_changeState; };
 
-    // Get the currect game state
+    // Get the correct game state
     NGameDefs::EGameState getState()
     { return m_gameState; }
 

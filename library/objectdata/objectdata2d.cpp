@@ -55,9 +55,6 @@ void CObjectData2D::loadFromNode( const XMLNode & node, const std::string & grou
     // Load the visual data
     m_visualData.loadFromNode( node );
 
-    // Load the image data from file
-    m_visualData.loadImage( group );
-
     // Load the physics data
     m_physicsData.loadFromNode( node );
 }

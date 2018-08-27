@@ -19,10 +19,6 @@ class CSpriteData;
 class CObjectDataMgr : public CManagerBase
 {
 public:
-    
-    // Flag that indicates the load group doesn't create the VBO, IBO, textures, etc
-    static const bool DONT_CREATE_FROM_DATA = false;
-    static const bool DONT_FREE_OPENGL_OBJECTS = false;
 
     // Get the instance of the singleton class
     static CObjectDataMgr & Instance()
@@ -37,20 +33,12 @@ public:
     const CObjectData3D & getData3D( const std::string & group, const std::string & name ) const;
 
     // Load all of the meshes and materials of a specific data group
-    void loadGroup2D( const std::string & group, const bool createFromData = true );
-    void loadGroup3D( const std::string & group, const bool createFromData = true );
-    
-    // Create the group's VBO, IBO, textures, etc
-    void createFromData2D( const std::string & group );
-    void createFromData3D( const std::string & group );
+    void loadGroup2D( const std::string & group );
+    void loadGroup3D( const std::string & group );
 
     // Free all of the meshes and materials of a specific data group
-    void freeGroup2D( const std::string & group, const bool freeOpenGLObjects = true );
-    void freeGroup3D( const std::string & group, const bool freeOpenGLObjects = true );
-    
-    // Free all OpenGL objects created from these groups
-    void freeOpenGL2D( const std::string & group );
-    void freeOpenGL3D( const std::string & group );
+    void freeGroup2D( const std::string & group );
+    void freeGroup3D( const std::string & group );
     
     // Is data part of 2d/3d
     bool isData2D( const std::string & group, const std::string & name ) const;
@@ -62,8 +50,8 @@ private:
     virtual ~CObjectDataMgr();
 
     // Load all object information from an xml
-    void load2D( const std::string & group, const std::string & filePath, const bool createFromData );
-    void load3D( const std::string & group, const std::string & filePath, const bool createFromData );
+    void load2D( const std::string & group, const std::string & filePath );
+    void load3D( const std::string & group, const std::string & filePath );
 
 private:
 

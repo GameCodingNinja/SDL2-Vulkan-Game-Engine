@@ -36,9 +36,6 @@ public:
 
     // Load thes object data from node
     void loadFromNode( const XMLNode & objectNode );
-    
-    // Load the image data from file
-    void loadImage( const std::string & group );
 
     // Create the object from data
     void createFromData( const std::string & group, CSize<int> & rSize );
@@ -120,7 +117,7 @@ private:
 private:
 
     // Loaded texture data
-    std::vector<uint32_t> m_textureIDVec;
+    std::vector<CTexture> m_textureVec;
 
     // VBO
     uint32_t m_vbo;

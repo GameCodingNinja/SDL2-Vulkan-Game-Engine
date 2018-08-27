@@ -58,7 +58,13 @@ protected:
     void updateUniformBuffer( uint32_t unfBufIndex );
     
     // Create texture
-    void createTexture( NVulkan::CTexture & texture, const std::string & filePath, bool mipMap );
+    void createTexture( CTexture & texture, const std::string & filePath, bool mipMap );
+    
+    // Create descriptor pool
+    VkDescriptorPool createDescriptorPool( size_t setCount );
+    
+    // Create descriptor sets
+    void createDescriptorSet( CTexture & texture, VkDescriptorPool descriptorPool );
     
     // Get Vulkan error
     const char * getError();
@@ -155,9 +161,6 @@ private:
     // Create uniform buffer
     void createUniformBuffer();
     
-    // Create descriptor pool
-    void createDescriptorPool();
-    
     // Create the command buffers
     void createCommandBuffers();
     
@@ -208,9 +211,6 @@ private:
     
     // Create texture sampler
     VkSampler createTextureSampler( uint32_t mipLevels );
-    
-    // Create descriptor sets
-    void createDescriptorSet( NVulkan::CTexture & texture );
     
     // Find supported format
     VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );
@@ -278,9 +278,6 @@ protected:
     std::vector<VkBuffer> m_uniformBufVec;
     std::vector<VkDeviceMemory> m_uniformBufMemVec;
     
-    // Descriptor pool
-    VkDescriptorPool m_descriptorPool;
-    
     // Descriptor Set
     std::vector<VkDescriptorSet> m_descriptorSetVec;
     
@@ -308,12 +305,6 @@ protected:
     
     // Swap chain images
     std::vector<VkImageView> m_swapChainImageViewVec;
-    
-    // Texture members
-    VkImage m_textureImage;
-    VkDeviceMemory m_textureImageMemory;
-    VkImageView m_textureImageView;
-    VkSampler m_textureSampler;
     
     // Depth buffer members
     VkImage m_depthImage;

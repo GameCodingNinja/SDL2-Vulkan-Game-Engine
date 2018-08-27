@@ -89,60 +89,57 @@ void CStartUpState::init()
     // Load the object data list table
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
 
-    // Load the shader
-    CShaderMgr::Instance().load( "data/shaders/shader.cfg" );
-
     // Load the start up animation group
-    CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
+    //CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
 
     // Allocate the sprite to fade in
-    m_upSpriteLogo.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
-    m_upSpriteLogo->transform();
+    //m_upSpriteLogo.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
+    //m_upSpriteLogo->transform();
 
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
 }
 
 
-/************************************************************************
-*    DESC:  Fade to color
-************************************************************************/
-void CStartUpState::fade(
-    CSprite2D & sprite,
-    float time,
-    const CColor & cur,
-    const CColor & finalColor )
+/***************************************************************************
+*    DESC:  Update objects that require them
+****************************************************************************/
+void CStartUpState::update()
 {
-    CColor inc = (finalColor - cur) / time;
-    CColor current = cur;
+    /*m_scriptComponent.update();
 
-    do
-    {
-        // Get the elapsed time
-        CHighResTimer::Instance().calcElapsedTime();
+    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
+    m_cube.incRot( rot, rot, 0 );*/
+}
 
-        time -= CHighResTimer::Instance().getElapsedTime();
-        current += inc * CHighResTimer::Instance().getElapsedTime();
 
-        if( time < 0 )
-            current = finalColor;
+/***************************************************************************
+*    DESC:  Transform the game objects
+****************************************************************************/
+void CStartUpState::transform()
+{
+    /*m_background.transform();
 
-        // Clear the screen
-        //glClear( GL_COLOR_BUFFER_BIT );
+    CCameraMgr::Instance().transform();
 
-        CShaderMgr::Instance().setShaderColor( "shader_2d", "additive", current );
-        sprite.render( CCameraMgr::Instance().getDefaultProjMatrix() );
+    //m_spriteSheetTest.Transform();
 
-        SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
+    m_cube.transform();*/
+}
 
-        // Unbind everything after a round of rendering
-        //CShaderMgr::Instance().unbind();
-        //CTextureMgr::Instance().unbind();
-        //CVertBufMgr::Instance().unbind();
 
-        std::this_thread::sleep_for( std::chrono::milliseconds( 2 ) );
-    }
-    while( time > 0 );
+/***************************************************************************
+*    DESC:  render of game content
+****************************************************************************/
+void CStartUpState::render()
+{
+    /*m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
+
+    //m_spriteSheetTest.Render( orthoMatrix );
+
+    auto & camera = CCameraMgr::Instance().getActiveCamera();
+
+    m_cube.render( camera.getFinalMatrix(), camera.getRotMatrix() );*/
 }
 
 
@@ -152,13 +149,7 @@ void CStartUpState::fade(
 void CStartUpState::assetLoad()
 {
     // Load in any fonts
-    CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
-
-    // Load the symbol set view data manager list table
-    //CSymbolSetViewMgr::Instance().LoadListTable( "data/objects/2d/slot/symbolSetListTable.lst" );
-
-    // Load the math data manager list table
-    //CSlotMathMgr::Instance().LoadListTable( "data/objects/2d/slot/mathListTable.lst" );
+    /*CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
 
     // Load 3D object data list table
     CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
@@ -215,7 +206,7 @@ void CStartUpState::assetLoad()
     NTitleScreenState::ObjectDataLoad();
     NTitleScreenState::CriticalLoad();
     NTitleScreenState::Load();
-    NTitleScreenState::CriticalInit();
+    NTitleScreenState::CriticalInit();*/
 }
 
 
@@ -225,7 +216,7 @@ void CStartUpState::assetLoad()
 bool CStartUpState::doStateChange()
 {
     // Do the fade in
-    fade( *m_upSpriteLogo.get(), 500.f, CColor(0,0,0,1), CColor(1,1,1,1) );
+    /*fade( *m_upSpriteLogo.get(), 500.f, CColor(0,0,0,1), CColor(1,1,1,1) );
 
     CHighResTimer::Instance().timerStart();
 
@@ -237,7 +228,49 @@ bool CStartUpState::doStateChange()
         std::this_thread::sleep_for( std::chrono::milliseconds( 2000 - time ) );
 
     // Do the fade out
-    fade( *m_upSpriteLogo.get(), 500.f, CColor(1,1,1,1), CColor(0,0,0,1) );
+    fade( *m_upSpriteLogo.get(), 500.f, CColor(1,1,1,1), CColor(0,0,0,1) );*/
 
-    return true;
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Fade to color
+************************************************************************/
+void CStartUpState::fade(
+    CSprite2D & sprite,
+    float time,
+    const CColor & cur,
+    const CColor & finalColor )
+{
+    CColor inc = (finalColor - cur) / time;
+    CColor current = cur;
+
+    do
+    {
+        // Get the elapsed time
+        CHighResTimer::Instance().calcElapsedTime();
+
+        time -= CHighResTimer::Instance().getElapsedTime();
+        current += inc * CHighResTimer::Instance().getElapsedTime();
+
+        if( time < 0 )
+            current = finalColor;
+
+        // Clear the screen
+        //glClear( GL_COLOR_BUFFER_BIT );
+
+        CShaderMgr::Instance().setShaderColor( "shader_2d", "additive", current );
+        sprite.render( CCameraMgr::Instance().getDefaultProjMatrix() );
+
+        SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
+
+        // Unbind everything after a round of rendering
+        //CShaderMgr::Instance().unbind();
+        //CTextureMgr::Instance().unbind();
+        //CVertBufMgr::Instance().unbind();
+
+        std::this_thread::sleep_for( std::chrono::milliseconds( 2 ) );
+    }
+    while( time > 0 );
 }

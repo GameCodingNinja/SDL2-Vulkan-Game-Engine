@@ -35,6 +35,15 @@ public:
 
     // Is the state done
     bool doStateChange() override;
+    
+    // Update objects that require them
+    void update() override;
+
+    // Transform the game objects
+    void transform() override;
+
+    // Render of game content
+    void render() override;
 
 private:
     
