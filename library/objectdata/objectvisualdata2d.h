@@ -18,6 +18,7 @@
 #include <common/scaledframe.h>
 #include <common/texture.h>
 #include <common/spritesheet.h>
+#include <common/memorybuffer.h>
 
 // Standard lib dependencies
 #include <string>
@@ -56,10 +57,10 @@ public:
     const CSize<float> & getVertexScale() const;
 
     // Get the VBO
-    uint32_t getVBO() const;
+    const CMemoryBuffer & getVBO() const;
 
     // Get the IBO
-    uint32_t getIBO() const;
+    const CMemoryBuffer & getIBO() const;
 
     // Get the ibo count
     int getIBOCount() const;
@@ -119,11 +120,11 @@ private:
     // Loaded texture data
     std::vector<CTexture> m_textureVec;
 
-    // VBO
-    uint32_t m_vbo;
+    // VBO buffer
+    CMemoryBuffer m_vboBuffer;
 
     // IBO
-    uint32_t m_ibo;
+    CMemoryBuffer m_iboBuffer;
 
     // VBO/IBO generation type
     NDefs::EGenerationType m_genType;

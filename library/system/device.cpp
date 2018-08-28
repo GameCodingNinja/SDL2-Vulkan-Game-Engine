@@ -300,22 +300,31 @@ size_t CDevice::getTextureGroupCount( const std::string & group )
 
 
 /************************************************************************
-*    DESC:  Create the descriptor pool
+*    DESC:  Create the descriptor sets for the textures
 ************************************************************************/
-VkDescriptorPool CDevice::createDescriptorPool( const std::string & group, size_t setCount )
+void CDevice::createDescriptorSetsForTextureGroup( const std::string & group )
 {
     // Create the descriptor pool. It shouldn't have been already created
-    auto mapIter = m_descriptorPoolMap.find( group );
-    if( mapIter != m_descriptorPoolMap.end() )
+    if( m_descriptorPoolMap.find( group ) != m_descriptorPoolMap.end() )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool already created! %s") % group ) );
     
-    // Create the descriptor pool for this group
-    VkDescriptorPool descriptorPool = CDeviceVulkan::createDescriptorPool( setCount );
+    // get the number of textures in this group
+    const size_t textCount = getTextureGroupCount( group );
+    
+    // Create the descriptor pool with enough allocations for this group
+    VkDescriptorPool descriptorPool = CDeviceVulkan::createDescriptorPool( textCount );
 
-    // Insert the new texture info
+    // Add the pool to the map
     m_descriptorPoolMap.emplace( group, descriptorPool );
     
-    return descriptorPool;
+    // Find the texture group the descriptor pool is for
+    auto mapIter = m_textureMapMap.find( group );
+    if( mapIter == m_textureMapMap.end() )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("No texture group can be found! %s") % group ) );
+    
+    // Have each texture allocate and apply it's descriptor set
+    for( auto & iter : mapIter->second )
+        CDeviceVulkan::createDescriptorSet( iter.second, descriptorPool );
 }
 
 
@@ -339,6 +348,16 @@ void CDevice::deleteTextureGroup( const std::string & group )
 
         // Erase this group
         m_textureMapMap.erase( mapIter );
+    }
+    
+    // Free the descriptor pool group if it exists
+    auto iter = m_descriptorPoolMap.find( group );
+    if( iter != m_descriptorPoolMap.end() )
+    {
+        vkDestroyDescriptorPool( m_logicalDevice, iter->second, nullptr );
+        
+        // Erase this group
+        m_descriptorPoolMap.erase( iter );
     }
 }
 
@@ -459,24 +478,11 @@ SDL_Window * CDevice::getWindow()
 ****************************************************************************/
 void CDevice::createTextureImage()
 {
-    CTexture texture;
+    CTexture & texture = loadTexture( "test", "data/textures/titleScreen/title_background.jpg" );
     
-    texture = loadTexture( "test", "data/textures/titleScreen/title_background.jpg" );
-    
-    size_t textCount = getTextureGroupCount( "test" );
-    
-    VkDescriptorPool descriptorPool = createDescriptorPool( "test", textCount );
-    
-    // Create the map group if it doesn't already exist
-    auto mapIter = m_textureMapMap.find( "test" );
-    if( mapIter == m_textureMapMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("No texture group by that name! %s") % "test"  ) );
-    
-    for( auto & iter : mapIter->second )
-    {
-        CDeviceVulkan::createDescriptorSet( iter.second, descriptorPool );
-        m_descriptorSetVec = iter.second.m_descriptorSetVec;
-    }
+    createDescriptorSetsForTextureGroup( "test" );
+
+    m_descriptorSetVec = texture.m_descriptorSetVec;
 }
 
 /***************************************************************************

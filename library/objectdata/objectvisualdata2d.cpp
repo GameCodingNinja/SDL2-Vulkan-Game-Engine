@@ -31,8 +31,6 @@
 *    DESC:  Constructor
 ************************************************************************/
 CObjectVisualData2D::CObjectVisualData2D() :
-    m_vbo(0),
-    m_ibo(0),
     m_genType(NDefs::EGT_NULL),
     m_textureSequenceCount(0),
     m_compressed(false),
@@ -335,6 +333,45 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
 ************************************************************************/
 void CObjectVisualData2D::generateQuad( const std::string & group )
 {
+    const std::vector<uint16_t> iboVec = { 0, 1, 2, 2, 3, 0 };
+    
+    std::vector<CVertex> vertVec =
+    {
+        {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}}
+    };
+    
+    std::string horzStr = "";
+    std::string vertStr = "";
+
+    if( (m_mirror == NDefs::EM_HORIZONTAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
+    {
+        horzStr = "_horz";
+
+        vertVec[0].uv.u = 0.0;
+        vertVec[1].uv.u = 1.0;
+        vertVec[2].uv.u = 1.0;
+        vertVec[3].uv.u = 0.0;
+    }
+
+    if( (m_mirror == NDefs::EM_VERTICAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
+    {
+        vertStr = "_vert";
+
+        vertVec[0].uv.v = 1.0;
+        vertVec[1].uv.v = 1.0;
+        vertVec[2].uv.v = 0.0;
+        vertVec[3].uv.v = 0.0;
+    }
+    
+    m_vboBuffer = CDevice::Instance().loadBuffer( group, "quad_vbo" + horzStr + vertStr, vertVec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+    m_iboBuffer = CDevice::Instance().loadBuffer( group, "quad_ibo", iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
+    
+    // Set the ibo count
+    m_iboCount = iboVec.size();
+    
     /*uint8_t indexData[] = {0, 1, 2, 3};
 
     // VBO data
@@ -393,7 +430,7 @@ void CObjectVisualData2D::generateScaledFrame(
     const CSize<int> & frameSize,
     const CRect<float> & textureOffset )
 {
-    std::string vboName = boost::str( boost::format("scaled_frame_%d_%d_%d_%d_%d_%d_%d_%d")
+    /*std::string vboName = boost::str( boost::format("scaled_frame_%d_%d_%d_%d_%d_%d_%d_%d")
         % frameSize.w % frameSize.h % m_scaledFrame.m_frame.w % m_scaledFrame.m_frame.h % textureSize.w % textureSize.h % glyphSize.w % glyphSize.h );
 
     m_vbo = CVertBufMgr::Instance().createScaledFrame(
@@ -423,7 +460,7 @@ void CObjectVisualData2D::generateScaledFrame(
 	m_iboCount += 6;
 
     else if( !m_scaledFrame.m_bottomFrame )
-	m_iboCount -= 6 * 3;
+	m_iboCount -= 6 * 3;*/
 }
 
 
@@ -438,7 +475,7 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
     const CRect<float> & textureOffset )
 {
     // Construct the name used for vbo and ibo
-    std::string name = "scaled_frame_mesh_" + m_meshFilePath;
+    /*std::string name = "scaled_frame_mesh_" + m_meshFilePath;
 
     std::vector<uint8_t> iboVec = {
         0,1,2,     0,3,1,
@@ -472,7 +509,7 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
 
     // Create the unique IBO buffer
     m_ibo = CVertBufMgr::Instance().createIBO( group, name, iboVec.data(), sizeof(uint8_t)*iboVec.size() );
-    m_iboCount = iboVec.size();
+    m_iboCount = iboVec.size();*/
 }
 
 
@@ -482,7 +519,7 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
 void CObjectVisualData2D::generateFromMeshFile(
     const std::string & group, const CSize<int> & textureSize, const CSize<int> & size )
 {
-    std::vector<uint8_t> iboVec;
+    /*std::vector<uint8_t> iboVec;
 
     // Construct the name used for vbo and ibo
     std::string name = "mesh_file_" + m_meshFilePath;
@@ -502,7 +539,7 @@ void CObjectVisualData2D::generateFromMeshFile(
 
     // Create the unique IBO buffer
     m_ibo = CVertBufMgr::Instance().createIBO( group, name, iboVec.data(), sizeof(uint8_t)*iboVec.size() );
-    m_iboCount = iboVec.size();
+    m_iboCount = iboVec.size();*/
 }
 
 
@@ -610,18 +647,18 @@ const CColor & CObjectVisualData2D::getColor() const
 /************************************************************************
 *    DESC:  Get the VBO
 ************************************************************************/
-uint32_t CObjectVisualData2D::getVBO() const
+const CMemoryBuffer & CObjectVisualData2D::getVBO() const
 {
-    return m_vbo;
+    return m_vboBuffer;
 }
 
 
 /************************************************************************
 *    DESC:  Get the IBO
 ************************************************************************/
-uint32_t CObjectVisualData2D::getIBO() const
+const CMemoryBuffer & CObjectVisualData2D::getIBO() const
 {
-    return m_ibo;
+    return m_iboBuffer;
 }
 
 

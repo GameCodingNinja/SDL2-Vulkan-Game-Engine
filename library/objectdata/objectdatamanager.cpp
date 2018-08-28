@@ -136,6 +136,9 @@ void CObjectDataMgr::load2D( const std::string & group, const std::string & file
         // Create it from the data
         iter.first->second.createFromData( group );
     }
+    
+    // Create the descriptor sets for the textures
+    CDevice::Instance().createDescriptorSetsForTextureGroup( group );
 }
 
 

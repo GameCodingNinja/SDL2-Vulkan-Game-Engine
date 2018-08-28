@@ -27,13 +27,12 @@
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
   
     <objectList>
-        <!--
-            <object name="logo">
-              <visual>
+        
+        <object name="logo">
+            <visual>
                 <texture file="data/textures/startup/logo.png"/>
-              </visual>
-            </object>
-        -->
+            </visual>
+        </object>
         
         <object name="waffles">
             <visual>

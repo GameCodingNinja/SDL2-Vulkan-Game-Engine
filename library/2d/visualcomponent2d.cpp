@@ -40,8 +40,8 @@
 ************************************************************************/
 CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData ) :
     m_pShaderData(nullptr),
-    m_vbo( visualData.getVBO() ),
-    m_ibo( visualData.getIBO() ),
+    //m_vbo( visualData.getVBO() ),
+    //m_ibo( visualData.getIBO() ),
     m_textureID( visualData.getTextureID() ),
     m_vertexLocation(-1),
     m_uvLocation(-1),

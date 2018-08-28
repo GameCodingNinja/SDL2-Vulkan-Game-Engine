@@ -43,11 +43,8 @@ public:
     // Load the image from file path
     CTexture & loadTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
     
-    // Create the descriptor pool
-    VkDescriptorPool createDescriptorPool( const std::string & group, size_t setCount );
-    
-    // Get the number of textures in this group
-    size_t getTextureGroupCount( const std::string & group );
+    // Create the descriptor sets for the textures
+    void createDescriptorSetsForTextureGroup( const std::string & group );
     
     // Delete a texture in a group
     void deleteTextureGroup( const std::string & group );
@@ -132,6 +129,9 @@ private:
     
     // Create the vertex buffer
     void createVertexBuffer();
+    
+    // Get the number of textures in this group
+    size_t getTextureGroupCount( const std::string & group );
     
 private:
     

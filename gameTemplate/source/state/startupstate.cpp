@@ -90,7 +90,7 @@ void CStartUpState::init()
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
 
     // Load the start up animation group
-    //CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
+    CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
 
     // Allocate the sprite to fade in
     //m_upSpriteLogo.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
