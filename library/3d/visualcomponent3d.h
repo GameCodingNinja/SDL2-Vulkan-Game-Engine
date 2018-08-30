@@ -44,19 +44,6 @@ public:
     // do the render
     void render( const CMatrix & matrix, const CMatrix & ropMatrix );
 
-    // Set/Get the color
-    void setColor( const CColor & color ) override;
-    void setColor( float r, float g, float b, float a ) override;
-    const CColor & getColor() const override;
-    void setDefaultColor() override;
-    const CColor & getDefaultColor() const override;
-
-    // Set/Get the alpha
-    void setAlpha( float alpha, bool allowToExceed = false ) override;
-    float getAlpha() const override;
-    void setDefaultAlpha() override;
-    float getDefaultAlpha() const override;
-
 private:
 
     // Reference to object visual data

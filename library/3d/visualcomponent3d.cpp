@@ -31,17 +31,17 @@
 *    DESC:  Constructor
 ************************************************************************/
 CVisualComponent3D::CVisualComponent3D( const CObjectVisualData3D & visualData ) :
-	m_rVisualData( visualData ),
-	m_pShaderData( nullptr ),
-	m_vertexLocation( -1 ),
-	m_uvLocation( -1 ),
-	m_text0Location( -1 ),
-	m_colorLocation( -1 ),
-	m_matrixLocation( -1 ),
-	m_normalMatrixLocation( -1 ),
-	m_mesh3d( visualData.getMesh3D() ),
-	m_color( visualData.getColor() ),
-        m_VERTEX_BUF_SIZE( visualData.getMesh3D().meshEmpty() || visualData.getMesh3D().textEmpty() ? sizeof(CVertex3D_no_txt) : sizeof(CVertex3D) )
+    iVisualComponent( visualData ),
+    m_rVisualData( visualData ),
+    m_pShaderData( nullptr ),
+    m_vertexLocation( -1 ),
+    m_uvLocation( -1 ),
+    m_text0Location( -1 ),
+    m_colorLocation( -1 ),
+    m_matrixLocation( -1 ),
+    m_normalMatrixLocation( -1 ),
+    m_mesh3d( visualData.getMesh3D() ),
+    m_VERTEX_BUF_SIZE( visualData.getMesh3D().meshEmpty() || visualData.getMesh3D().textEmpty() ? sizeof(CVertex3D_no_txt) : sizeof(CVertex3D) )
 {
     if( visualData.isActive() )
     {
@@ -117,69 +117,3 @@ void CVisualComponent3D::render( const CMatrix & matrix, const CMatrix & normalM
     }*/
 }
 
-
-/************************************************************************
-*    DESC:  Set/Get the color
-************************************************************************/
-void CVisualComponent3D::setColor( const CColor & color )
-{
-    m_color = color;
-}
-
-void CVisualComponent3D::setColor( float r, float g, float b, float a )
-{
-    // This function assumes values between 0.0 to 1.0.
-    m_color.set( r, g, b, a );
-}
-
-const CColor & CVisualComponent3D::getColor() const
-{
-    return m_color;
-}
-
-
-/************************************************************************
-*    DESC:  Set/Get the default color
-************************************************************************/
-void CVisualComponent3D::setDefaultColor()
-{
-    m_color = m_rVisualData.getColor();
-}
-
-const CColor & CVisualComponent3D::getDefaultColor() const
-{
-    return m_rVisualData.getColor();
-}
-
-
-/************************************************************************
-*    DESC:  Set/Get the alpha
-************************************************************************/
-void CVisualComponent3D::setAlpha( float alpha, bool allowToExceed )
-{
-    if( alpha > 1.5 )
-        alpha *= defs_RGB_TO_DEC;
-    
-    if( allowToExceed || (alpha < m_rVisualData.getColor().a) )
-        m_color.a = alpha;
-    else
-        m_color.a = m_rVisualData.getColor().a;
-}
-
-float CVisualComponent3D::getAlpha() const
-{
-    return m_color.a;
-}
-
-/************************************************************************
-*    DESC:  Set/Get the default alpha
-************************************************************************/
-void CVisualComponent3D::setDefaultAlpha()
-{
-    m_color.a = m_rVisualData.getColor().a;
-}
-
-float CVisualComponent3D::getDefaultAlpha() const
-{
-    return m_rVisualData.getColor().a;
-}

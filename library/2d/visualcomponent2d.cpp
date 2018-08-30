@@ -39,6 +39,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData ) :
+    iVisualComponent( visualData ),
     m_pShaderData(nullptr),
     //m_vbo( visualData.getVBO() ),
     //m_ibo( visualData.getIBO() ),
@@ -49,14 +50,11 @@ CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData )
     m_colorLocation(-1),
     m_matrixLocation(-1),
     m_glyphLocation(-1),
-    GENERATION_TYPE( visualData.getGenerationType() ),
     m_quadVertScale( visualData.getVertexScale() ),
-    m_rVisualData( visualData ),
-    m_color( visualData.getColor() ),
+    m_rVisualData(visualData),
     m_iboCount( visualData.getIBOCount() ),
     m_drawMode( (visualData.getGenerationType() == NDefs::EGT_QUAD || visualData.getGenerationType() == NDefs::EGT_SPRITE_SHEET) ? GL_TRIANGLE_FAN : GL_TRIANGLES ),
     m_indiceType( (visualData.getGenerationType() == NDefs::EGT_FONT) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_BYTE ),
-    m_frameIndex(0),
     m_pFontData(nullptr)
 {
     if( visualData.isActive() )
@@ -642,116 +640,12 @@ void CVisualComponent2D::setFontString( const std::string & fontString )
 
 
 /************************************************************************
-*    DESC:  Set/Get the color
-************************************************************************/
-void CVisualComponent2D::setColor( const CColor & color )
-{
-    m_color = color;
-}
-
-void CVisualComponent2D::setColor( float r, float g, float b, float a )
-{
-    // This function assumes values between 0.0 to 1.0.
-    m_color.set( r, g, b, a );
-}
-
-const CColor & CVisualComponent2D::getColor() const
-{
-    return m_color;
-}
-
-
-/************************************************************************
-*    DESC:  Set/Get the default color
-************************************************************************/
-void CVisualComponent2D::setDefaultColor()
-{
-    m_color = m_rVisualData.getColor();
-}
-
-const CColor & CVisualComponent2D::getDefaultColor() const
-{
-    return m_rVisualData.getColor();
-}
-
-
-/************************************************************************
-*    DESC:  Set/Get the alpha
-************************************************************************/
-void CVisualComponent2D::setAlpha( float alpha, bool allowToExceed )
-{
-    if( alpha > 1.5 )
-        alpha *= defs_RGB_TO_DEC;
-    
-    if( allowToExceed || (alpha < m_rVisualData.getColor().a) )
-        m_color.a = alpha;
-    else
-        m_color.a = m_rVisualData.getColor().a;
-}
-
-float CVisualComponent2D::getAlpha() const
-{
-    return m_color.a;
-}
-
-
-/************************************************************************
-*    DESC:  Set/Get the default alpha
-************************************************************************/
-void CVisualComponent2D::setDefaultAlpha()
-{
-    m_color.a = m_rVisualData.getColor().a;
-}
-
-float CVisualComponent2D::getDefaultAlpha() const
-{
-    return m_rVisualData.getColor().a;
-}
-
-
-/************************************************************************
-*    DESC:  Set the frame ID from index
-************************************************************************/
-void CVisualComponent2D::setFrame( uint index )
-{
-    if( GENERATION_TYPE == NDefs::EGT_SPRITE_SHEET )
-    {
-        auto rGlyph = m_rVisualData.getSpriteSheet().getGlyph( index );
-        m_glyphUV = rGlyph.getUV();
-        m_quadVertScale = rGlyph.getSize() * m_rVisualData.getDefaultUniformScale();
-    }
-    else
-        m_textureID = m_rVisualData.getTextureID( index );
-
-    m_frameIndex = index;
-}
-
-
-/************************************************************************
-*    DESC:  Get the current frame index
-************************************************************************/
-uint CVisualComponent2D::getCurrentFrame() const
-{
-    return m_frameIndex;
-}
-
-
-/************************************************************************
 *    DESC:  Is rendering allowed?
 ************************************************************************/
 bool CVisualComponent2D::allowRender()
 {
     return ((GENERATION_TYPE > NDefs::EGT_NULL) && (GENERATION_TYPE < NDefs::EGT_FONT)) ||
            ((GENERATION_TYPE == NDefs::EGT_FONT) && !m_pFontData->m_fontString.empty() && (m_vbo > 0));
-}
-
-
-/************************************************************************
-*    DESC:  Is this a font sprite
-************************************************************************/
-bool CVisualComponent2D::isFontSprite()
-{
-    return (GENERATION_TYPE == NDefs::EGT_FONT);
 }
 
 

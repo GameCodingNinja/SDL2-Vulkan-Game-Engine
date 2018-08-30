@@ -49,6 +49,8 @@
 #include <slot/slotmathmanager.h>
 #include <slot/symbolsetviewmanager.h>
 
+#include <sprite/sprite.h>
+
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
 #include <scriptarray/scriptarray.h>
@@ -91,6 +93,9 @@ void CStartUpState::init()
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
+    
+    // Set code for new sprite
+    CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
 
     // Allocate the sprite to fade in
     //m_upSpriteLogo.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );

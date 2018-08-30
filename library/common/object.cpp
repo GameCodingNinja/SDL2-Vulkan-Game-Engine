@@ -200,8 +200,6 @@ void CObject::incScale( float x, float y, float z )
 
 /************************************************************************
 *    DESC:  Get the object's scale
-*
-*    ret:	const CPoint & - sprite scale
 ************************************************************************/
 const CPoint<float> & CObject::getScale() const
 {
@@ -315,4 +313,13 @@ void CObject::loadTransFromNode( const XMLNode & node )
     CPoint<float> centerPos = NParseHelper::LoadCenterPos( node, loadedFlag );
     if( loadedFlag )
         setCenterPos( centerPos );
+}
+
+
+/************************************************************************
+*    DESC:  Get the parameters
+************************************************************************/
+CBitmask<int16_t> & CObject::getParameters()
+{
+    return m_parameters;
 }

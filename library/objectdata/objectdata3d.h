@@ -11,6 +11,7 @@
 #include <common/point.h>
 #include <objectdata/objectvisualdata3d.h>
 #include <objectdata/objectphysicsdata3d.h>
+#include <objectdata/iobjectdata.h>
 
 // Standard lib dependencies
 #include <string>
@@ -19,7 +20,7 @@
 // Forward Declarations
 struct XMLNode;
 
-class CObjectData3D
+class CObjectData3D : public iObjectData
 {
 public:
 
@@ -41,16 +42,16 @@ public:
     const CObjectPhysicsData3D & getPhysicsData() const;
 
     // Access functions for the data name
-    const std::string & getName() const;
+    const std::string & getName() const override;
 
     // Access functions for the data group
-    const std::string & getGroup() const;
+    const std::string & getGroup() const override;
 
     // Access functions for the radius
-    float getRadius() const;
+    float getRadius() const override;
 
     // Access functions for the radius squared
-    float getRadiusSquared() const;
+    float getRadiusSquared() const override;
 
 private:
 

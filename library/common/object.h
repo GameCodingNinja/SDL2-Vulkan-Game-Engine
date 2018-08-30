@@ -79,6 +79,9 @@ public:
     
     // Copy the transform to the passed in object
     void copyTransform( const CObject * pObject );
+    
+    // Get the parameters
+    CBitmask<int16_t> & getParameters();
 
 protected:
     

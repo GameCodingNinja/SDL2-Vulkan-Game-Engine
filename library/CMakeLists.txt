@@ -26,6 +26,7 @@ add_library(
         objectdata/objectphysicsdata3d.cpp
         objectdata/objectvisualdata2d.cpp
         objectdata/objectvisualdata3d.cpp
+        objectdata/iobjectdata.cpp
         script/scriptmanager.cpp
         script/scriptglobals.cpp
         script/scriptcolor.cpp
@@ -80,9 +81,11 @@ add_library(
         physics/physicsworld3d.cpp
         physics/physicscomponent2d.cpp
         physics/physicscomponent3d.cpp
+        sprite/sprite.cpp
         2d/font.cpp
         2d/sprite2d.cpp
         2d/visualcomponent2d.cpp
+        2d/visualcomponentquad.cpp
         2d/object2d.cpp
         2d/actorsprite2d.cpp
 	3d/sprite3d.cpp

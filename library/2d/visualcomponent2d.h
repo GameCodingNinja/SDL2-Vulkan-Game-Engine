@@ -13,7 +13,6 @@
 
 // Game lib dependencies
 #include <utilities/matrix.h>
-#include <common/color.h>
 #include <common/point.h>
 #include <common/defs.h>
 #include <common/rect.h>
@@ -48,16 +47,7 @@ public:
     void deleteFontVBO();
 
     // do the render
-    void render( const CMatrix & objMatrix, const CMatrix & matrix );
-
-    // Is this a font sprite
-    bool isFontSprite() override;
-
-    // Set the frame index
-    void setFrame( uint index );
-    
-    // Get the current frame index
-    uint getCurrentFrame() const;
+    void render( const CMatrix & objMatrix, const CMatrix & matrix ) override;
     
     // Set the font data
     void setFontData( const CFontData & fontData );
@@ -71,7 +61,7 @@ public:
     // NOTE: Interface overridden member functions
     
     // Set/Get the color
-    void setColor( const CColor & color ) override;
+    /*void setColor( const CColor & color ) override;
     void setColor( float r, float g, float b, float a ) override;
     const CColor & getColor() const override;
     void setDefaultColor() override;
@@ -81,7 +71,7 @@ public:
     void setAlpha( float alpha, bool allowToExceed = false ) override;
     float getAlpha() const override;
     void setDefaultAlpha() override;
-    float getDefaultAlpha() const override;
+    float getDefaultAlpha() const override;*/
     
     // Set the string to display
     void createFontString() override;
@@ -135,17 +125,11 @@ private:
     int32_t m_matrixLocation;
     int32_t m_glyphLocation;
 
-    // Generation type
-    const NDefs::EGenerationType GENERATION_TYPE;
-
     // The scale of the quad
     CSize<float> m_quadVertScale;
 
     // Reference to object visual data
     const CObjectVisualData2D & m_rVisualData;
-
-    // Color
-    CColor m_color;
 
     // IBO count
     uint16_t m_iboCount;
@@ -158,9 +142,6 @@ private:
     
     // Sprite sheet Glyph UV
     CRect<float> m_glyphUV;
-    
-    // Frame index
-    uint16_t m_frameIndex;
 
     ///////////////////////
     //  Font data types
