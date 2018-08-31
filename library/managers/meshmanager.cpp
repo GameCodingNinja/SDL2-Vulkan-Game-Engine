@@ -170,7 +170,7 @@ void CMeshMgr::loadFromFile(
         SDL_RWread( pFile, &btext, 1, sizeof( btext ) );
 
         // Load the texture
-        CDevice::Instance().loadTexture( group, btext.path );
+        CDevice::Instance().createTexture( group, btext.path );
 
         // Record texture info for later
         textureVec.emplace_back();

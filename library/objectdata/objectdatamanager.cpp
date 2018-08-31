@@ -137,8 +137,8 @@ void CObjectDataMgr::load2D( const std::string & group, const std::string & file
         iter.first->second.createFromData( group );
     }
     
-    // Create the descriptor sets for the textures
-    CDevice::Instance().createDescriptorSetsForTextureGroup( group );
+    // Create the descriptor pool group for the textures
+    CDevice::Instance().createDescriptorPoolGroup( group );
 }
 
 
@@ -159,7 +159,7 @@ void CObjectDataMgr::freeGroup2D( const std::string & group )
     if( groupMapIter != m_objectData2DMapMap.end() )
     {
         CDevice::Instance().deleteTextureGroup( group );
-        //CVertBufMgr::Instance().deleteBufferGroupFor2D( group );
+        CDevice::Instance().deleteBufferGroup( group );
 
         // Unload the group data
         m_objectData2DMapMap.erase( groupMapIter );

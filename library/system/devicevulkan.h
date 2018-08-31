@@ -48,11 +48,14 @@ protected:
     // Destroy the Vulkan instance
     void destroy();
     
+    // Create the command pool
+    VkCommandPool createCommandPool();
+    
+    // Create secondary command buffers
+    std::vector<VkCommandBuffer> createSecondaryCommandBuffers( VkCommandPool cmdPool );
+    
     // Recreate swap chain
     void recreateSwapChain();
-    
-    // Record the command buffers
-    void recordCommandBuffers( uint32_t cmdBufIndex );
     
     // Update the uniform buffer
     void updateUniformBuffer( uint32_t unfBufIndex );
@@ -152,8 +155,8 @@ private:
     // Create the frame buffer
     void createFrameBuffer();
     
-    // Create the command pool
-    void createCommandPool();
+    // Create the primary command pool
+    void createPrimaryCommandPool();
     
     // Create depth resources
     void createDepthResources();
@@ -161,8 +164,8 @@ private:
     // Create uniform buffer
     void createUniformBuffer();
     
-    // Create the command buffers
-    void createCommandBuffers();
+    // Create the primary command buffers
+    void createPrimaryCommandBuffers();
     
     // Create the Semaphores and fences
     void createSyncObjects();
@@ -265,14 +268,8 @@ protected:
     // Frame buffer
     std::vector<VkFramebuffer> m_framebufferVec;
     
-    // Command pool
-    VkCommandPool m_commandPool;
-    
-    // Vertex buffer
-    VkBuffer m_vertexBuffer;
-    VkDeviceMemory m_vertexBufferMemory;
-    VkBuffer m_indexBuffer;
-    VkDeviceMemory m_indexBufferMemory;
+    // Primary Command pool. Only use for primary command buffers
+    VkCommandPool m_primaryCmdPool;
     
     // Uniform buffers
     std::vector<VkBuffer> m_uniformBufVec;
@@ -320,6 +317,12 @@ protected:
     // temporary members
     VkShaderModule m_shaderModuleVert;
     VkShaderModule m_shaderModuleFrag;
+    
+    // Vertex buffer
+    VkBuffer m_vertexBuffer;
+    VkDeviceMemory m_vertexBufferMemory;
+    VkBuffer m_indexBuffer;
+    VkDeviceMemory m_indexBufferMemory;
     
     std::vector<VkCommandBuffer> m_squareCmdBufVec;
 };

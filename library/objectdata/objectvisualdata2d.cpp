@@ -305,7 +305,7 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
                 if( !m_resExt.empty() )
                     NGenFunc::AddFileExt( file, filePath, m_resExt );
 
-                rTexture = CDevice::Instance().loadTexture( group, filePath );
+                rTexture = CDevice::Instance().createTexture( group, filePath );
                 m_textureVec.emplace_back( rTexture );
             }
         }
@@ -317,7 +317,7 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
             if( !m_resExt.empty() )
                 NGenFunc::AddFileExt( m_textureFilePath, filePath, m_resExt );
 
-            rTexture = CDevice::Instance().loadTexture( group, filePath );
+            rTexture = CDevice::Instance().createTexture( group, filePath );
             m_textureVec.emplace_back( rTexture );
         }
 

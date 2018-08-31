@@ -89,8 +89,10 @@ void CDevice::create( const std::string & vertShader, const std::string & fragSh
     // Create the Vulkan instance and graphics pipeline
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, vertShader, fragShader );
     
+    // Test functions for now
     createTextureImage();
     createVertexBuffer();
+    createCommandPool();
     
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
@@ -128,6 +130,12 @@ void CDevice::destroyAssets()
 {
     if( m_logicalDevice != VK_NULL_HANDLE )
     {
+        // Free all command pool groups
+        for( auto & iter : m_commandPoolMap )
+            vkDestroyCommandPool( m_logicalDevice, iter.second, nullptr );
+
+        m_commandPoolMap.clear();
+        
         // Free all textures in all groups
         for( auto & mapIter : m_textureMapMap )
         {
@@ -159,6 +167,89 @@ void CDevice::destroyAssets()
         }
         
         m_bufferMapMap.clear();
+    }
+}
+
+
+/***************************************************************************
+*   DESC:  Record the command buffers
+****************************************************************************/
+void CDevice::recordCommandBuffers( uint32_t cmdBufIndex  )
+{
+    const std::vector<uint16_t> indices =
+    {
+        0, 1, 2, 2, 3, 0
+    };
+    
+    // Record the secondary command buffer
+    {
+        //vkResetCommandBuffer( m_squareCmdBufVec[cmdBufIndex], 0 );
+
+        VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
+        cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+        cmdBufInheritanceInfo.framebuffer = m_framebufferVec[cmdBufIndex];
+        cmdBufInheritanceInfo.renderPass = m_renderPass;
+
+        VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+        cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
+        cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
+        
+
+        vkBeginCommandBuffer(m_squareCmdBufVec[cmdBufIndex], &cmdBeginInfo);
+        vkCmdBindPipeline(m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline);
+
+        // Bind vertex buffer
+        VkBuffer vertexBuffers[] = {m_vertexBuffer};
+        VkDeviceSize offsets[] = {0};
+        vkCmdBindVertexBuffers( m_squareCmdBufVec[cmdBufIndex], 0, 1, vertexBuffers, offsets );
+
+        // Bind the index buffer
+        vkCmdBindIndexBuffer( m_squareCmdBufVec[cmdBufIndex], m_indexBuffer, 0, VK_INDEX_TYPE_UINT16 );
+        
+        vkCmdBindDescriptorSets( m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipelineLayout, 0, 1, &m_descriptorSetVec[cmdBufIndex], 0, nullptr);
+
+        vkCmdDrawIndexed( m_squareCmdBufVec[cmdBufIndex], indices.size(), 1, 0, 0, 0 );
+
+        vkEndCommandBuffer( m_squareCmdBufVec[cmdBufIndex]);
+    }
+
+    
+    // Record the primary command buffer
+    {
+        //vkResetCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], 0 );
+        
+        // Start command buffer recording
+        VkCommandBufferBeginInfo beginInfo = {};
+        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
+        
+        if( (m_lastResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
+        
+        std::array<VkClearValue, 2> clearValues = {};
+        clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
+        clearValues[1].depthStencil = {1.0f, 0};
+        
+        // Start a render pass
+        VkRenderPassBeginInfo renderPassInfo = {};
+        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        renderPassInfo.renderPass = m_renderPass;
+        renderPassInfo.framebuffer = m_framebufferVec[cmdBufIndex];
+        renderPassInfo.renderArea.offset = {0, 0};
+        renderPassInfo.renderArea.extent = m_swapchainInfo.imageExtent;
+        renderPassInfo.clearValueCount = clearValues.size();
+        renderPassInfo.pClearValues = clearValues.data();
+        
+        vkCmdBeginRenderPass( m_primaryCmdBufVec[cmdBufIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS );
+
+
+        vkCmdExecuteCommands( m_primaryCmdBufVec[cmdBufIndex], 1, &m_squareCmdBufVec[cmdBufIndex] );
+
+        
+        vkCmdEndRenderPass( m_primaryCmdBufVec[cmdBufIndex] );
+
+        if( (m_lastResult = vkEndCommandBuffer( m_primaryCmdBufVec[cmdBufIndex] )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not record command buffer! %s") % getError() ) );
     }
 }
 
@@ -254,11 +345,39 @@ void CDevice::showWindow( bool visible )
         SDL_HideWindow( m_pWindow );
 }
 
+
+/************************************************************************
+*    DESC:  Create the command pool group
+************************************************************************/
+VkCommandPool CDevice::createCommandPoolGroup( const std::string & group )
+{
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
+        
+    // Create the command pool. It shouldn't have been already created
+    if( m_commandPoolMap.find( group ) != m_commandPoolMap.end() )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool already created! %s") % group ) );
+    
+    // Create the command pool
+    VkCommandPool commandPool = CDeviceVulkan::createCommandPool();
+
+    // Add the pool to the map
+    m_commandPoolMap.emplace( group, commandPool );
+    
+    return commandPool;
+}
+
+
 /************************************************************************
 *    DESC:  Load the image from file path
 ************************************************************************/
-CTexture & CDevice::loadTexture( const std::string & group, const std::string & filePath, bool mipMap )
+CTexture & CDevice::createTexture( const std::string & group, const std::string & filePath, bool mipMap )
 {
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
+    
     // Create the map group if it doesn't already exist
     auto mapIter = m_textureMapMap.find( group );
     if( mapIter == m_textureMapMap.end() )
@@ -300,10 +419,14 @@ size_t CDevice::getTextureGroupCount( const std::string & group )
 
 
 /************************************************************************
-*    DESC:  Create the descriptor sets for the textures
+*    DESC:  Create the descriptor pool group for the textures
 ************************************************************************/
-void CDevice::createDescriptorSetsForTextureGroup( const std::string & group )
+void CDevice::createDescriptorPoolGroup( const std::string & group )
 {
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
+    
     // Create the descriptor pool. It shouldn't have been already created
     if( m_descriptorPoolMap.find( group ) != m_descriptorPoolMap.end() )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool already created! %s") % group ) );
@@ -329,10 +452,33 @@ void CDevice::createDescriptorSetsForTextureGroup( const std::string & group )
 
 
 /************************************************************************
+*    DESC:  Delete the command pool group
+************************************************************************/
+void CDevice::deleteCommandPoolGroup( const std::string & group )
+{
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
+    
+    // Free the command pool group if it exists
+    auto iter = m_commandPoolMap.find( group );
+    if( iter != m_commandPoolMap.end() )
+        vkDestroyCommandPool( m_logicalDevice, iter->second, nullptr );
+
+    // Erase this group
+    m_commandPoolMap.erase( iter );
+}
+
+
+/************************************************************************
 *    DESC:  Delete a texture in a group
 ************************************************************************/
 void CDevice::deleteTextureGroup( const std::string & group )
 {
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
+    
     // Free the texture group if it exists
     auto mapIter = m_textureMapMap.find( group );
     if( mapIter != m_textureMapMap.end() )
@@ -358,6 +504,32 @@ void CDevice::deleteTextureGroup( const std::string & group )
         
         // Erase this group
         m_descriptorPoolMap.erase( iter );
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Delete a buffer in a group
+************************************************************************/
+void CDevice::deleteBufferGroup( const std::string & group )
+{
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
+    
+    // Free the texture group if it exists
+    auto mapIter = m_bufferMapMap.find( group );
+    if( mapIter != m_bufferMapMap.end() )
+    {
+        // Delete all the textures in this group
+        for( auto & iter : mapIter->second )
+        {
+            vkDestroyBuffer( m_logicalDevice, iter.second.m_buffer, nullptr );
+            vkFreeMemory( m_logicalDevice, iter.second.m_deviceMemory, nullptr );
+        }
+
+        // Erase this group
+        m_bufferMapMap.erase( mapIter );
     }
 }
 
@@ -478,15 +650,15 @@ SDL_Window * CDevice::getWindow()
 ****************************************************************************/
 void CDevice::createTextureImage()
 {
-    CTexture & texture = loadTexture( "test", "data/textures/titleScreen/title_background.jpg" );
+    CTexture & texture = createTexture( "test", "data/textures/titleScreen/title_background.jpg" );
     
-    createDescriptorSetsForTextureGroup( "test" );
+    createDescriptorPoolGroup( "test" );
 
     m_descriptorSetVec = texture.m_descriptorSetVec;
 }
 
 /***************************************************************************
-*   DESC:  Create texture image
+*   DESC:  Create the vertex buffer
 ****************************************************************************/
 void CDevice::createVertexBuffer()
 {
@@ -511,4 +683,15 @@ void CDevice::createVertexBuffer()
     m_vertexBufferMemory = vboBuffer.m_deviceMemory;
     m_indexBuffer = iboBuffer.m_buffer;
     m_indexBufferMemory = iboBuffer.m_deviceMemory;
+}
+
+
+/***************************************************************************
+*   DESC:  Create texture image
+****************************************************************************/
+void CDevice::createCommandPool()
+{
+    VkCommandPool cmdPool = createCommandPoolGroup("test");
+    
+    m_squareCmdBufVec = createSecondaryCommandBuffers( cmdPool );
 }

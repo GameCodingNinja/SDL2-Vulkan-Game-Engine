@@ -43,11 +43,6 @@ VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayerCallback(
     return VK_FALSE;
 }
 
-const std::vector<uint16_t> indices =
-{
-    0, 1, 2, 2, 3, 0
-};
-
 struct UniformBufferObject {
     CMatrix model;
     CMatrix view;
@@ -71,11 +66,7 @@ CDeviceVulkan::CDeviceVulkan() :
     m_descriptorSetLayout(VK_NULL_HANDLE),
     m_renderPass(VK_NULL_HANDLE),
     m_graphicsPipeline(VK_NULL_HANDLE),
-    m_commandPool(VK_NULL_HANDLE),
-    m_vertexBuffer(VK_NULL_HANDLE),
-    m_vertexBufferMemory(VK_NULL_HANDLE),
-    m_indexBuffer(VK_NULL_HANDLE),
-    m_indexBufferMemory(VK_NULL_HANDLE),
+    m_primaryCmdPool(VK_NULL_HANDLE),
     m_currentFrame(0),
     m_maxConcurrentFrames(0),
     m_lastResult(VK_SUCCESS),
@@ -177,15 +168,14 @@ void CDeviceVulkan::create(
     // Create the graphics pipeline
     createGraphicsPipeline();
     
-    // Create the command pool
-    createCommandPool();
+    // Create the primary command pool
+    createPrimaryCommandPool();
     
     // Create depth resources
     createDepthResources();
     
     // Create the frame buffer
     createFrameBuffer();
-
     
     // Create uniform buffers
     createUniformBuffer();
@@ -193,8 +183,8 @@ void CDeviceVulkan::create(
     // Create the Semaphores and fences
     createSyncObjects();
     
-    // Create the command buffers
-    createCommandBuffers();
+    // Create the primary command buffers
+    createPrimaryCommandBuffers();
 }
 
 
@@ -250,10 +240,10 @@ void CDeviceVulkan::destroy()
             m_uniformBufMemVec.clear();
         }
 
-        if( m_commandPool != VK_NULL_HANDLE )
+        if( m_primaryCmdPool != VK_NULL_HANDLE )
         {
-            vkDestroyCommandPool( m_logicalDevice, m_commandPool, nullptr );
-            m_commandPool = VK_NULL_HANDLE;
+            vkDestroyCommandPool( m_logicalDevice, m_primaryCmdPool, nullptr );
+            m_primaryCmdPool = VK_NULL_HANDLE;
         }
         
         if( m_descriptorSetLayout != VK_NULL_HANDLE )
@@ -969,17 +959,11 @@ void CDeviceVulkan::createGraphicsPipeline()
 
 
 /***************************************************************************
-*   DESC:  Create the command pool
+*   DESC:  Create the primary command pool
 ****************************************************************************/
-void CDeviceVulkan::createCommandPool()
+void CDeviceVulkan::createPrimaryCommandPool()
 {
-    VkCommandPoolCreateInfo poolInfo = {};
-    poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    poolInfo.queueFamilyIndex = m_graphicsQueueFamilyIndex;
-    poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    
-    if( (m_lastResult = vkCreateCommandPool( m_logicalDevice, &poolInfo, nullptr, &m_commandPool )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create command pool! %s") % getError() ) );
+    m_primaryCmdPool = createCommandPool();
 }
 
 
@@ -1092,103 +1076,38 @@ void CDeviceVulkan::createSyncObjects()
 /***************************************************************************
 *   DESC:  Create the command buffers
 ****************************************************************************/
-void CDeviceVulkan::createCommandBuffers()
+void CDeviceVulkan::createPrimaryCommandBuffers()
 {
     m_primaryCmdBufVec.resize( m_framebufferVec.size() );
     
     VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
     commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    commandBufferAllocateInfo.commandPool = m_commandPool;
+    commandBufferAllocateInfo.commandPool = m_primaryCmdPool;
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     commandBufferAllocateInfo.commandBufferCount = (uint32_t) m_primaryCmdBufVec.size();
     
     if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, m_primaryCmdBufVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
-    
-    m_squareCmdBufVec.resize( m_framebufferVec.size() );
-    commandBufferAllocateInfo.commandPool = m_commandPool;
-    commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_SECONDARY;
-    
-    if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, m_squareCmdBufVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
 }
 
 
 /***************************************************************************
-*   DESC:  Record the command buffers
+*   DESC:  Create the command buffers
 ****************************************************************************/
-void CDeviceVulkan::recordCommandBuffers( uint32_t cmdBufIndex  )
+std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCommandPool cmdPool )
 {
-    // Record the secondary command buffer
-    {
-        //vkResetCommandBuffer( m_squareCmdBufVec[cmdBufIndex], 0 );
-
-        VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
-        cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
-        cmdBufInheritanceInfo.framebuffer = m_framebufferVec[cmdBufIndex];
-        cmdBufInheritanceInfo.renderPass = m_renderPass;
-
-        VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
-        cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
-        cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
-        
-
-        vkBeginCommandBuffer(m_squareCmdBufVec[cmdBufIndex], &cmdBeginInfo);
-        vkCmdBindPipeline(m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline);
-
-        // Bind vertex buffer
-        VkBuffer vertexBuffers[] = {m_vertexBuffer};
-        VkDeviceSize offsets[] = {0};
-        vkCmdBindVertexBuffers( m_squareCmdBufVec[cmdBufIndex], 0, 1, vertexBuffers, offsets );
-
-        // Bind the index buffer
-        vkCmdBindIndexBuffer( m_squareCmdBufVec[cmdBufIndex], m_indexBuffer, 0, VK_INDEX_TYPE_UINT16 );
-        
-        vkCmdBindDescriptorSets( m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipelineLayout, 0, 1, &m_descriptorSetVec[cmdBufIndex], 0, nullptr);
-
-        vkCmdDrawIndexed( m_squareCmdBufVec[cmdBufIndex], indices.size(), 1, 0, 0, 0 );
-
-        vkEndCommandBuffer( m_squareCmdBufVec[cmdBufIndex]);
-    }
-
+    std::vector<VkCommandBuffer>cmdBufVec( m_framebufferVec.size() );
     
-    // Record the primary command buffer
-    {
-        //vkResetCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], 0 );
-        
-        // Start command buffer recording
-        VkCommandBufferBeginInfo beginInfo = {};
-        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
-        
-        if( (m_lastResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
-        
-        std::array<VkClearValue, 2> clearValues = {};
-        clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
-        clearValues[1].depthStencil = {1.0f, 0};
-        
-        // Start a render pass
-        VkRenderPassBeginInfo renderPassInfo = {};
-        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        renderPassInfo.renderPass = m_renderPass;
-        renderPassInfo.framebuffer = m_framebufferVec[cmdBufIndex];
-        renderPassInfo.renderArea.offset = {0, 0};
-        renderPassInfo.renderArea.extent = m_swapchainInfo.imageExtent;
-        renderPassInfo.clearValueCount = clearValues.size();
-        renderPassInfo.pClearValues = clearValues.data();
-        
-        vkCmdBeginRenderPass( m_primaryCmdBufVec[cmdBufIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS );
-
-
-        vkCmdExecuteCommands( m_primaryCmdBufVec[cmdBufIndex], 1, &m_squareCmdBufVec[cmdBufIndex] );
-
-        
-        vkCmdEndRenderPass( m_primaryCmdBufVec[cmdBufIndex] );
-
-        if( (m_lastResult = vkEndCommandBuffer( m_primaryCmdBufVec[cmdBufIndex] )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not record command buffer! %s") % getError() ) );
-    }
+    VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
+    commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    commandBufferAllocateInfo.commandPool = cmdPool;
+    commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_SECONDARY;
+    commandBufferAllocateInfo.commandBufferCount = (uint32_t) cmdBufVec.size();
+    
+    if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, cmdBufVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
+    
+    return cmdBufVec;
 }
 
 
@@ -1482,7 +1401,7 @@ VkCommandBuffer CDeviceVulkan::beginSingleTimeCommands()
     VkCommandBufferAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocInfo.commandPool = m_commandPool;
+    allocInfo.commandPool = m_primaryCmdPool;
     allocInfo.commandBufferCount = 1;
 
     VkCommandBuffer commandBuffer;
@@ -1509,7 +1428,7 @@ void CDeviceVulkan::endSingleTimeCommands( VkCommandBuffer commandBuffer )
     vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE );
     vkQueueWaitIdle( m_graphicsQueue );
 
-    vkFreeCommandBuffers( m_logicalDevice, m_commandPool, 1, &commandBuffer);
+    vkFreeCommandBuffers( m_logicalDevice, m_primaryCmdPool, 1, &commandBuffer);
 }
 
 
@@ -1613,6 +1532,24 @@ void CDeviceVulkan::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t 
 
     vkCmdCopyBufferToImage( commandBuffer, buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region );
     endSingleTimeCommands( commandBuffer );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the command pool
+****************************************************************************/
+VkCommandPool CDeviceVulkan::createCommandPool()
+{
+    VkCommandPoolCreateInfo poolInfo = {};
+    poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    poolInfo.queueFamilyIndex = m_graphicsQueueFamilyIndex;
+    poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    
+    VkCommandPool commandPool;
+    if( (m_lastResult = vkCreateCommandPool( m_logicalDevice, &poolInfo, nullptr, &commandPool )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create command pool! %s") % getError() ) );
+    
+    return commandPool;
 }
 
 

@@ -43,7 +43,7 @@ CFont::~CFont()
 void CFont::load( const std::string & group )
 {
     // load the image
-    CDevice::Instance().loadTexture( group, m_filePath + ".png" );
+    CDevice::Instance().createTexture( group, m_filePath + ".png" );
 
     // open this file and parse
     XMLNode mainNode = XMLNode::openFileHelper( (m_filePath + ".fnt").c_str(), "font" );

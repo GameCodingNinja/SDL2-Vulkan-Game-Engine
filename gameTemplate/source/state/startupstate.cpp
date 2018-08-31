@@ -79,7 +79,6 @@ CStartUpState::CStartUpState() :
 ************************************************************************/
 CStartUpState::~CStartUpState()
 {
-    CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
 }
 
 

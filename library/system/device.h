@@ -40,48 +40,23 @@ public:
     // Destroy the window and Vulkan instance
     void destroy();
     
-    // Load the image from file path
-    CTexture & loadTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
-    
-    // Create the descriptor sets for the textures
-    void createDescriptorSetsForTextureGroup( const std::string & group );
-    
-    // Delete a texture in a group
-    void deleteTextureGroup( const std::string & group );
-    
-    // Show/Hide the Window
-    void showWindow( bool visible );
-    
-    // Set full screen or windowed mode
-    void setFullScreen( bool fullscreen );
-
-    // Enable/disable v-sync
-    void enableVSync( bool enable );
-    
     // Render the frame
     void render();
     
-    // Display error massage
-    void displayErrorMsg( const std::string & title, const std::string & msg );
+    // Create the command pool group
+    VkCommandPool createCommandPoolGroup( const std::string & group );
     
-    // Set window title
-    void setWindowTitle( const std::string & title );
+    // Delete the command pool group
+    void deleteCommandPoolGroup( const std::string & group );
     
-    // Close out the game pads
-    void closeGamepads();
+    // Load the image from file path
+    CTexture & createTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
     
-    // Init current gamepads plugged in at startup
-    void initStartupGamepads();
-
-    // Add/Remove the game pad
-    void addGamepad( int id );
-    void removeGamepad( int id );
+    // Create the descriptor pool group for the textures
+    void createDescriptorPoolGroup( const std::string & group );
     
-    // Get the gamepad count
-    size_t getGamepadCount();
-    
-    // Get window
-    SDL_Window * getWindow();
+    // Delete a texture in a group
+    void deleteTextureGroup( const std::string & group );
     
     // Load a buffer into video card memory
     template <typename T>
@@ -109,6 +84,40 @@ public:
 
         return mapIter->second;
     }
+    
+    // Delete a buffer in a group
+    void deleteBufferGroup( const std::string & group );
+    
+    // Show/Hide the Window
+    void showWindow( bool visible );
+    
+    // Set full screen or windowed mode
+    void setFullScreen( bool fullscreen );
+
+    // Enable/disable v-sync
+    void enableVSync( bool enable );
+    
+    // Display error massage
+    void displayErrorMsg( const std::string & title, const std::string & msg );
+    
+    // Set window title
+    void setWindowTitle( const std::string & title );
+    
+    // Close out the game pads
+    void closeGamepads();
+    
+    // Init current gamepads plugged in at startup
+    void initStartupGamepads();
+    
+    // Add/Remove the game pad
+    void addGamepad( int id );
+    void removeGamepad( int id );
+    
+    // Get the gamepad count
+    size_t getGamepadCount();
+    
+    // Get window
+    SDL_Window * getWindow();
 
 private:
     
@@ -121,14 +130,16 @@ private:
     // Create the surface
     void createSurface() override;
     
+    // Record the command buffers
+    void recordCommandBuffers( uint32_t cmdBufIndex );
+    
     // A controlled way to destroy the assets
     void destroyAssets() override;
 
-    // Create texture image
+    // Test functions
     void createTextureImage();
-    
-    // Create the vertex buffer
     void createVertexBuffer();
+    void createCommandPool();
     
     // Get the number of textures in this group
     size_t getTextureGroupCount( const std::string & group );
@@ -140,6 +151,9 @@ private:
     
     // Map of gamepad pointers
     std::map<int, SDL_GameController *> m_pGamepadMap;
+    
+    // Map containing a group of command pools
+    std::map< const std::string, VkCommandPool > m_commandPoolMap;
     
     // Map containing a group of texture handles
     std::map< const std::string, std::map< const std::string, CTexture > > m_textureMapMap;
