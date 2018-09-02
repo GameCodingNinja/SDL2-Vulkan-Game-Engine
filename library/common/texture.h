@@ -50,9 +50,6 @@ public:
     // Texture shader sampler
     VkSampler m_textureSampler = VK_NULL_HANDLE;
 
-    // Descriptor Set for this image
-    std::vector<VkDescriptorSet> m_descriptorSetVec;
-
     // Texture size - mostly needed for 2D
     CSize<int32_t> m_size;
     

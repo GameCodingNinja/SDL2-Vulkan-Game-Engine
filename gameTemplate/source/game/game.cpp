@@ -51,7 +51,7 @@ CGame::CGame() :
     CSignalMgr::Instance().connect_smartGui( boost::bind(&CGame::smartGuiControlCreateCallBack, this, _1) );
     CSignalMgr::Instance().connect_smartMenu( boost::bind(&CGame::smartMenuCreateCallBack, this, _1) );
     CSignalMgr::Instance().connect_aICreate( boost::bind(&CGame::aICreateCallBack, this, _1, _2) );
-    CShaderMgr::Instance().connect_initShader( boost::bind(&CGame::shaderInitCallBack, this, _1) );
+    //CShaderMgr::Instance().connect_initShader( boost::bind(&CGame::shaderInitCallBack, this, _1) );
 
     if( NBDefs::IsDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
@@ -77,6 +77,7 @@ CGame::~CGame()
 void CGame::create()
 {
     CDevice::Instance().create(
+        std::bind( &CGame::updateCommandBuffer, this, std::placeholders::_1),
         "data/shaders/vulkanTriangleVert5.spv",
         "data/shaders/vulkanTriangleFrag2.spv" );
     
@@ -277,13 +278,12 @@ void CGame::transform()
 
 
 /***************************************************************************
-*    decs:  Render of game content
+*    decs:  Update the command buffer vector in the device
+*           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CGame::render()
+void CGame::updateCommandBuffer( uint32_t cmdBufIndex )
 {
     upGameState->render();
-    
-    CDevice::Instance().render();
 }
 
 
@@ -316,7 +316,7 @@ bool CGame::gameLoop()
         transform();
 
         // Do the rendering
-        render();
+        CDevice::Instance().render();
 
         // Inc the cycle
         if( NBDefs::IsDebugMode() )

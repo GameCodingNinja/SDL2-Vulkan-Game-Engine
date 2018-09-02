@@ -11,6 +11,9 @@
 // Game dependencies
 #include "statemessage.h"
 
+// Game lib dependencies
+#include <common/defs.h>
+
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
@@ -62,6 +65,10 @@ public:
     virtual void render(){};
     virtual void preRender(){};
     virtual void postRender(){};
+    
+    // Update the command buffer vector in the device
+    // for all the sprite objects that are to be rendered
+    virtual void updateCommandBuffer( uint32_t cmdBufIndex ){};
 
     // Is the state done
     virtual bool doStateChange()

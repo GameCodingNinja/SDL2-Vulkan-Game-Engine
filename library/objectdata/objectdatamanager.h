@@ -26,7 +26,7 @@ public:
         static CObjectDataMgr objectDataMgr;
         return objectDataMgr;
     }
-
+    
     // Get a specific object's data
     const CObjectData2D & getData2D( const std::string & group, const std::string & name ) const;
     const CObjectData2D & getData2D( const CSpriteData & spriteData ) const;
@@ -54,7 +54,7 @@ private:
     void load3D( const std::string & group, const std::string & filePath );
 
 private:
-
+    
     // Map in a map of all the objects' data
     std::map<const std::string, std::map<const std::string, CObjectData2D> > m_objectData2DMapMap;
     std::map<const std::string, std::map<const std::string, CObjectData3D> > m_objectData3DMapMap;

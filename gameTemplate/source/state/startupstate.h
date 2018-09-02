@@ -42,8 +42,9 @@ public:
     // Transform the game objects
     void transform() override;
 
-    // Render of game content
-    void render() override;
+    // Update the command buffer vector in the device
+    // for all the sprite objects that are to be rendered
+    void updateCommandBuffer( uint32_t cmdBufIndex ) override;
 
 private:
     

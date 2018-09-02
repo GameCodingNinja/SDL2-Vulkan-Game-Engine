@@ -9,16 +9,16 @@
 #define __device_vulkan_h__
 
 // Game lib dependencies
-#include <utilities/matrix.h>
-#include <common/texture.h>
 #include <common/defs.h>
-#include <common/memorybuffer.h>
 
 // Standard lib dependencies
 #include <cstring>
 #include <string>
 #include <vector>
 #include <map>
+
+// Game lib dependencies
+#include <common/memorybuffer.h>
 
 // Vulkan lib dependencies
 #if defined(__ANDROID__)
@@ -27,6 +27,9 @@
 #include <vulkan/vulkan.h>
 #endif
 
+// Forward declaration(s)
+class CTexture;
+class CMemoryBuffer;
 
 class CDeviceVulkan
 {
@@ -48,6 +51,9 @@ protected:
     // Destroy the Vulkan instance
     void destroy();
     
+    // Create uniform buffer
+    std::vector<CMemoryBuffer> createUniformBuffer( VkDeviceSize sizeOfUniformBuf );
+    
     // Create the command pool
     VkCommandPool createCommandPool();
     
@@ -57,9 +63,6 @@ protected:
     // Recreate swap chain
     void recreateSwapChain();
     
-    // Update the uniform buffer
-    void updateUniformBuffer( uint32_t unfBufIndex );
-    
     // Create texture
     void createTexture( CTexture & texture, const std::string & filePath, bool mipMap );
     
@@ -67,7 +70,20 @@ protected:
     VkDescriptorPool createDescriptorPool( size_t setCount );
     
     // Create descriptor sets
-    void createDescriptorSet( CTexture & texture, VkDescriptorPool descriptorPool );
+    std::vector<VkDescriptorSet> createDescriptorSet(
+        CTexture & texture,
+        std::vector<CMemoryBuffer> & uniformBufVec,
+        VkDeviceSize sizeOfUniformBuf,
+        VkDescriptorPool descriptorPool );
+    
+    // Get the render pass
+    VkRenderPass getRenderPass();
+    
+    // Get the graphics pipeline
+    VkPipeline getGraphicsPipeline();
+    
+    // Get the pipeline layout
+    VkPipelineLayout getPipelinelayout();
     
     // Get Vulkan error
     const char * getError();
@@ -160,9 +176,6 @@ private:
     
     // Create depth resources
     void createDepthResources();
-    
-    // Create uniform buffer
-    void createUniformBuffer();
     
     // Create the primary command buffers
     void createPrimaryCommandBuffers();
@@ -271,10 +284,6 @@ protected:
     // Primary Command pool. Only use for primary command buffers
     VkCommandPool m_primaryCmdPool;
     
-    // Uniform buffers
-    std::vector<VkBuffer> m_uniformBufVec;
-    std::vector<VkDeviceMemory> m_uniformBufMemVec;
-    
     // Descriptor Set
     std::vector<VkDescriptorSet> m_descriptorSetVec;
     
@@ -317,14 +326,6 @@ protected:
     // temporary members
     VkShaderModule m_shaderModuleVert;
     VkShaderModule m_shaderModuleFrag;
-    
-    // Vertex buffer
-    VkBuffer m_vertexBuffer;
-    VkDeviceMemory m_vertexBufferMemory;
-    VkBuffer m_indexBuffer;
-    VkDeviceMemory m_indexBufferMemory;
-    
-    std::vector<VkCommandBuffer> m_squareCmdBufVec;
 };
 
 #endif  // __device_vulkan_h__

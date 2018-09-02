@@ -72,6 +72,9 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
             boost::str( boost::format("Object data list group has already been loaded (%s).\n\n%s\nLine: %s")
                 % group % __FUNCTION__ % __LINE__ ));
     }
+    
+    // Create group assets
+    CDevice::Instance().createGroupAssets( group );
 
     // Free the sprite sheet data because it's no longer needed
     CSpriteSheetMgr::Instance().clear();
@@ -136,9 +139,6 @@ void CObjectDataMgr::load2D( const std::string & group, const std::string & file
         // Create it from the data
         iter.first->second.createFromData( group );
     }
-    
-    // Create the descriptor pool group for the textures
-    CDevice::Instance().createDescriptorPoolGroup( group );
 }
 
 
@@ -158,8 +158,8 @@ void CObjectDataMgr::freeGroup2D( const std::string & group )
     auto groupMapIter = m_objectData2DMapMap.find( group );
     if( groupMapIter != m_objectData2DMapMap.end() )
     {
-        CDevice::Instance().deleteTextureGroup( group );
-        CDevice::Instance().deleteBufferGroup( group );
+        // Delete the group assets
+        CDevice::Instance().deleteGroupAssets( group );
 
         // Unload the group data
         m_objectData2DMapMap.erase( groupMapIter );
@@ -318,7 +318,8 @@ void CObjectDataMgr::freeGroup3D( const std::string & group )
     auto groupMapIter = m_objectData3DMapMap.find( group );
     if( groupMapIter != m_objectData3DMapMap.end() )
     {
-        CDevice::Instance().deleteTextureGroup( group );
+        // Delete the group assets
+        CDevice::Instance().deleteGroupAssets( group );
         //CMeshMgr::Instance().deleteBufferGroup( group );
 
         // Unload the group data

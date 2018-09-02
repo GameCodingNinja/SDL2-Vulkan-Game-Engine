@@ -12,7 +12,7 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
-#include <utilities/matrix.h>
+#include <common/texture.h>
 #include <common/size.h>
 #include <common/vertex.h>
 #include <soil/SOIL.h>
@@ -23,7 +23,6 @@
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-
 
 /************************************************************************
 *    DESC:  Validation layer callback
@@ -43,11 +42,6 @@ VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayerCallback(
     return VK_FALSE;
 }
 
-struct UniformBufferObject {
-    CMatrix model;
-    CMatrix view;
-    CMatrix proj;
-};
 
 /************************************************************************
 *    DESC:  Constructor
@@ -177,9 +171,6 @@ void CDeviceVulkan::create(
     // Create the frame buffer
     createFrameBuffer();
     
-    // Create uniform buffers
-    createUniformBuffer();
-    
     // Create the Semaphores and fences
     createSyncObjects();
     
@@ -223,22 +214,6 @@ void CDeviceVulkan::destroy()
         }
         
         destroySwapChain();
-
-        if( !m_uniformBufVec.empty()  )
-        {
-            for( auto iter : m_uniformBufVec )
-                vkDestroyBuffer( m_logicalDevice, iter, nullptr );
-            
-            m_uniformBufVec.clear();
-        }
-        
-        if( !m_uniformBufMemVec.empty()  )
-        {
-            for( auto iter : m_uniformBufMemVec )
-                vkFreeMemory( m_logicalDevice, iter, nullptr );
-            
-            m_uniformBufMemVec.clear();
-        }
 
         if( m_primaryCmdPool != VK_NULL_HANDLE )
         {
@@ -1030,20 +1005,19 @@ void CDeviceVulkan::createFrameBuffer()
 /***************************************************************************
 *   DESC:  Create the uniform buffer
 ****************************************************************************/
-void CDeviceVulkan::createUniformBuffer()
+std::vector<CMemoryBuffer> CDeviceVulkan::createUniformBuffer( VkDeviceSize sizeOfUniformBuf )
 {
-    VkDeviceSize bufferSize = sizeof(UniformBufferObject);
-
-    m_uniformBufVec.resize(m_framebufferVec.size());
-    m_uniformBufMemVec.resize(m_framebufferVec.size());
+    std::vector<CMemoryBuffer> uniformBufVec( m_framebufferVec.size() );
 
     for( size_t i = 0; i < m_framebufferVec.size(); ++i )
         createBuffer( 
-            bufferSize,
+            sizeOfUniformBuf,
             VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            m_uniformBufVec[i],
-            m_uniformBufMemVec[i]);
+            uniformBufVec[i].m_buffer,
+            uniformBufVec[i].m_deviceMemory );
+    
+    return uniformBufVec;
 }
 
 
@@ -1108,30 +1082,6 @@ std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCom
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
     
     return cmdBufVec;
-}
-
-
-/***************************************************************************
-*   DESC:  Update the uniform buffer
-****************************************************************************/
-void CDeviceVulkan::updateUniformBuffer( uint32_t unfBufIndex )
-{
-    UniformBufferObject ubo;
-    
-    ubo.proj.orthographicRH(
-        CSettings::Instance().getDefaultSize().w,
-        CSettings::Instance().getDefaultSize().h,
-        CSettings::Instance().getMinZdist(),
-        CSettings::Instance().getMaxZdist() );
-    
-    ubo.model.setScale( 1344.f, 756.f );
-    
-    ubo.view.translate( CPoint<float>(0.f, 0.f, -10.0f) );
-    
-    void* data;
-    vkMapMemory( m_logicalDevice, m_uniformBufMemVec[unfBufIndex], 0, sizeof(ubo), 0, &data );
-    std::memcpy( data, &ubo, sizeof(ubo));
-    vkUnmapMemory( m_logicalDevice, m_uniformBufMemVec[unfBufIndex] );
 }
 
 
@@ -1813,7 +1763,11 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
 /***************************************************************************
 *   DESC:  Create descriptor sets
 ****************************************************************************/
-void CDeviceVulkan::createDescriptorSet( CTexture & texture, VkDescriptorPool descriptorPool )
+std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSet(
+    CTexture & texture,
+    std::vector<CMemoryBuffer> & uniformBufVec,
+    VkDeviceSize sizeOfUniformBuf,
+    VkDescriptorPool descriptorPool )
 {
     std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), m_descriptorSetLayout );
     VkDescriptorSetAllocateInfo allocInfo = {};
@@ -1822,17 +1776,17 @@ void CDeviceVulkan::createDescriptorSet( CTexture & texture, VkDescriptorPool de
     allocInfo.descriptorSetCount = m_framebufferVec.size();
     allocInfo.pSetLayouts = layouts.data();
 
-    texture.m_descriptorSetVec.resize( m_framebufferVec.size() );
+    std::vector<VkDescriptorSet> descriptorSetVec( m_framebufferVec.size() );
     
-    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, texture.m_descriptorSetVec.data() )) )
+    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, descriptorSetVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
     
     for( size_t i = 0; i < m_framebufferVec.size(); ++i )
     {
         VkDescriptorBufferInfo bufferInfo = {};
-        bufferInfo.buffer = m_uniformBufVec[i];
+        bufferInfo.buffer = uniformBufVec[i].m_buffer;
         bufferInfo.offset = 0;
-        bufferInfo.range = sizeof(UniformBufferObject);
+        bufferInfo.range = sizeOfUniformBuf;
         
         VkDescriptorImageInfo imageInfo = {};
         imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -1842,7 +1796,7 @@ void CDeviceVulkan::createDescriptorSet( CTexture & texture, VkDescriptorPool de
         std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
 
         descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[0].dstSet = texture.m_descriptorSetVec[i];
+        descriptorWrites[0].dstSet = descriptorSetVec[i];
         descriptorWrites[0].dstBinding = 0;
         descriptorWrites[0].dstArrayElement = 0;
         descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -1850,7 +1804,7 @@ void CDeviceVulkan::createDescriptorSet( CTexture & texture, VkDescriptorPool de
         descriptorWrites[0].pBufferInfo = &bufferInfo;
 
         descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[1].dstSet = texture.m_descriptorSetVec[i];
+        descriptorWrites[1].dstSet = descriptorSetVec[i];
         descriptorWrites[1].dstBinding = 1;
         descriptorWrites[1].dstArrayElement = 0;
         descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
@@ -1859,6 +1813,8 @@ void CDeviceVulkan::createDescriptorSet( CTexture & texture, VkDescriptorPool de
 
         vkUpdateDescriptorSets( m_logicalDevice, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr );
     }
+    
+    return descriptorSetVec;
 }
 
 
@@ -1872,4 +1828,31 @@ const char * CDeviceVulkan::getError()
         return iter->second;
 
     return "Vulkan Unknown Error";
+}
+
+
+/***************************************************************************
+*   DESC:  Get the render pass
+****************************************************************************/
+VkRenderPass CDeviceVulkan::getRenderPass()
+{
+    return m_renderPass;
+}
+
+
+/***************************************************************************
+*   DESC:  Get the graphics pipeline
+****************************************************************************/
+VkPipeline CDeviceVulkan::getGraphicsPipeline()
+{
+    return m_graphicsPipeline;
+}
+
+
+/***************************************************************************
+*   DESC:  Get the pipeline layout
+****************************************************************************/
+VkPipelineLayout CDeviceVulkan::getPipelinelayout()
+{
+    return m_pipelineLayout;
 }

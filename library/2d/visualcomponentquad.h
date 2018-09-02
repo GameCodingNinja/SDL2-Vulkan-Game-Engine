@@ -19,8 +19,16 @@
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
+// Vulkan lib dependencies
+#if defined(__ANDROID__)
+#include <system/vulkan_wrapper.h>
+#else
+#include <vulkan/vulkan.h>
+#endif
+
 // Forward declaration(s)
 class CObjectVisualData2D;
+class CMemoryBuffer;
 
 class CVisualComponentQuad : public iVisualComponent, boost::noncopyable
 {
@@ -36,6 +44,12 @@ private:
     
     // Reference to object visual data
     const CObjectVisualData2D & m_rVisualData;
+    
+    // Descriptor Set for this image
+    std::vector<VkDescriptorSet> m_descriptorSetVec;
+    
+    // Uniform buffers
+    std::vector<CMemoryBuffer> m_uniformBufVec;
 
 };
 

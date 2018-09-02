@@ -36,6 +36,7 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(LOCAL_PATH)/library/managers/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/strategy/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/physics/*.cpp) \
+	$(wildcard $(LOCAL_PATH)/library/sprite/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/2d/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/3d/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/common/*.cpp) \

@@ -133,9 +133,10 @@ void CStartUpState::transform()
 
 
 /***************************************************************************
-*    DESC:  render of game content
+*    decs:  Update the command buffer vector in the device
+*           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CStartUpState::render()
+void CStartUpState::updateCommandBuffer( uint32_t cmdBufIndex )
 {
     /*m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
 
@@ -247,7 +248,7 @@ void CStartUpState::fade(
     const CColor & cur,
     const CColor & finalColor )
 {
-    CColor inc = (finalColor - cur) / time;
+    /*CColor inc = (finalColor - cur) / time;
     CColor current = cur;
 
     do
@@ -276,5 +277,5 @@ void CStartUpState::fade(
 
         std::this_thread::sleep_for( std::chrono::milliseconds( 2 ) );
     }
-    while( time > 0 );
+    while( time > 0 );*/
 }
