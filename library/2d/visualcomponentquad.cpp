@@ -13,17 +13,8 @@
 #include <objectdata/objectvisualdata2d.h>
 #include <utilities/settings.h>
 #include <common/quad2d.h>
+#include <common/uniformbufferobject.h>
 #include <system/device.h>
-
-
-struct UniformBufferObject {
-    CMatrix cameraViewMatrix;
-    CMatrix projectionMatrix;
-    CColor color;
-    CColor additive;
-    int renderType;
-};
-
 
 /************************************************************************
 *    desc:  Constructor

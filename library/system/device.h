@@ -11,13 +11,6 @@
 // Physical component dependency
 #include <system/devicevulkan.h>
 
-// Game dependencies
-#include <common/memorybuffer.h>
-#include <common/vertex.h>
-
-// SDL lib dependencies
-#include <SDL.h>
-
 // Standard lib dependencies
 #include <functional>
 
@@ -65,6 +58,9 @@ public:
     // Create group assets
     void createGroupAssets( const std::string & group );
     
+    // Create uniform buffer
+    std::vector<CMemoryBuffer> createUniformBuffer( VkDeviceSize sizeOfUniformBuf );
+    
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
     
@@ -108,6 +104,18 @@ public:
         vkUnmapMemory( m_logicalDevice, deviceMemory );
     }
     
+    // Get the frame buffer index
+    VkFramebuffer getFrameBuffer( uint32_t index );
+    
+    // Get the render pass
+    VkRenderPass getRenderPass();
+    
+    // Get the graphics pipeline
+    VkPipeline getGraphicsPipeline();
+    
+    // Get the pipeline layout
+    VkPipelineLayout getPipelinelayout();
+    
     // Show/Hide the Window
     void showWindow( bool visible );
     
@@ -138,7 +146,7 @@ public:
     
     // Get window
     SDL_Window * getWindow();
-    
+
     // Wait for Vulkan render to finish
     void waitForIdle();
 
@@ -180,14 +188,6 @@ private:
     // Get the number of textures in this group
     size_t getTextureGroupCount( const std::string & group );
     
-    
-    
-    // Test functions
-    void createTextureImage();
-    void createVertexBuffer();
-    void createCommandPool();
-    void recordTestCommandBuffers( uint32_t cmdBufIndex );
-    
 private:
     
     // Record ommand buffer call back function
@@ -213,20 +213,6 @@ private:
     
     // Command buffer of sprite objects to be rendered
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
-    
-    
-    // Test code members
-    std::vector<VkCommandBuffer> m_squareCmdBufVec;
-    VkBuffer m_vertexBuffer;
-    VkDeviceMemory m_vertexBufferMemory;
-    VkBuffer m_indexBuffer;
-    VkDeviceMemory m_indexBufferMemory;
-    int lastCmdIndex = -1;
-    // Descriptor Set for this image
-    std::vector<VkDescriptorSet> m_descriptorSetVec;
-    // Uniform buffers
-    std::vector<CMemoryBuffer> m_uniformBufVec;
-
 };
 
 #endif  // __device_h__

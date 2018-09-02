@@ -10,15 +10,13 @@
 
 // Game lib dependencies
 #include <common/defs.h>
+#include <common/memorybuffer.h>
 
 // Standard lib dependencies
 #include <cstring>
 #include <string>
 #include <vector>
 #include <map>
-
-// Game lib dependencies
-#include <common/memorybuffer.h>
 
 // Vulkan lib dependencies
 #if defined(__ANDROID__)
@@ -33,23 +31,6 @@ class CMemoryBuffer;
 
 class CDeviceVulkan
 {
-public:
-    
-    // Create uniform buffer
-    std::vector<CMemoryBuffer> createUniformBuffer( VkDeviceSize sizeOfUniformBuf );
-    
-    // Get the frame buffer index
-    VkFramebuffer getFrameBuffer( uint32_t index );
-    
-    // Get the render pass
-    VkRenderPass getRenderPass();
-    
-    // Get the graphics pipeline
-    VkPipeline getGraphicsPipeline();
-    
-    // Get the pipeline layout
-    VkPipelineLayout getPipelinelayout();
-    
 protected:
     
     // Constructor
@@ -126,6 +107,14 @@ protected:
         vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
     }
     
+    // Create a buffer
+    void createBuffer(
+        VkDeviceSize size,
+        VkBufferUsageFlags usage,
+        VkMemoryPropertyFlags properties,
+        VkBuffer & buffer,
+        VkDeviceMemory & bufferMemory );
+    
 private:
     
     // A controlled way to destroy the game created assets
@@ -187,14 +176,6 @@ private:
     
     // Create the Semaphores and fences
     void createSyncObjects();
-    
-    // Create a buffer
-    void createBuffer(
-        VkDeviceSize size,
-        VkBufferUsageFlags usage,
-        VkMemoryPropertyFlags properties,
-        VkBuffer & buffer,
-        VkDeviceMemory & bufferMemory );
     
     // Create image
     void createImage(
@@ -288,9 +269,6 @@ protected:
     
     // Primary Command pool. Only use for primary command buffers
     VkCommandPool m_primaryCmdPool;
-    
-    // Descriptor Set
-    std::vector<VkDescriptorSet> m_descriptorSetVec;
     
     // Command pool
     std::vector<VkCommandBuffer> m_primaryCmdBufVec;

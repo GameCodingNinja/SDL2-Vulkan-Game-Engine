@@ -19,6 +19,7 @@
 #include <utilities/genfunc.h>
 #include <common/build_defs.h>
 #include <common/defs.h>
+#include <common/vertex.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>

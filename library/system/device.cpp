@@ -15,33 +15,21 @@
 #include <utilities/matrix.h>
 #include <common/texture.h>
 #include <common/color.h>
+#include <common/memorybuffer.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-
-// Standard lib dependencies
 
 // SDL lib dependencies
 #include <SDL.h>
 #include <SDL_vulkan.h>
 
-
-struct UniformBufferObject {
-    CMatrix cameraViewMatrix;
-    CMatrix projectionMatrix;
-    CColor color;
-    CColor additive;
-    int renderType;
-};
-
-
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-CDevice::CDevice() :
-    m_pWindow(nullptr)
+CDevice::CDevice()
 {
-}   // constructor
+}
 
 
 /************************************************************************
@@ -49,7 +37,7 @@ CDevice::CDevice() :
 ************************************************************************/
 CDevice::~CDevice()
 {
-}   // destructor
+}
 
 
 /***************************************************************************
@@ -103,11 +91,6 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     
     // Create the Vulkan instance and graphics pipeline
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, vertShader, fragShader );
-    
-    // Test functions for now
-    //createTextureImage();
-    //createVertexBuffer();
-    //createCommandPool();
     
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
@@ -182,19 +165,6 @@ void CDevice::destroyAssets()
         }
         
         m_memoryBufferMapMap.clear();
-        
-        
-        // Temporary
-        if( !m_uniformBufVec.empty()  )
-        {
-            for( auto & iter : m_uniformBufVec )
-            {
-                vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
-                vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
-            }
-            
-            m_uniformBufVec.clear();
-        }
     }
 }
 
@@ -505,6 +475,25 @@ void CDevice::createCommandPoolGroup( const std::string & group )
 }
 
 
+/***************************************************************************
+*   DESC:  Create the uniform buffer
+****************************************************************************/
+std::vector<CMemoryBuffer> CDevice::createUniformBuffer( VkDeviceSize sizeOfUniformBuf )
+{
+    std::vector<CMemoryBuffer> uniformBufVec( m_framebufferVec.size() );
+
+    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
+        CDeviceVulkan::createBuffer( 
+            sizeOfUniformBuf,
+            VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            uniformBufVec[i].m_buffer,
+            uniformBufVec[i].m_deviceMemory );
+    
+    return uniformBufVec;
+}
+
+
 /************************************************************************
 *    DESC:  Delete group assets
 ************************************************************************/
@@ -747,126 +736,37 @@ void CDevice::waitForIdle()
 }
 
 
-
-
-
 /***************************************************************************
-*   DESC:  Create texture image
+*   DESC:  Get the frame buffer index
 ****************************************************************************/
-void CDevice::createTextureImage()
+VkFramebuffer CDevice::getFrameBuffer( uint32_t index )
 {
-    CTexture & texture = createTexture( "test", "data/textures/titleScreen/title_background.jpg" );
-    
-    createDescriptorPoolGroup( "test" );
-    
-    // Per object functions
-    m_uniformBufVec = CDeviceVulkan::createUniformBuffer( sizeof(UniformBufferObject) );
-    
-    m_descriptorSetVec = createDescriptorSet(
-        "test",
-        texture,
-        m_uniformBufVec,
-        sizeof(UniformBufferObject) );
-}
-
-/***************************************************************************
-*   DESC:  Create the vertex buffer
-****************************************************************************/
-void CDevice::createVertexBuffer()
-{
-    const std::vector<CVertex> vertices =
-    {
-        {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
-        {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}},
-        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}}
-    };
-
-    const std::vector<uint16_t> indices =
-    {
-        0, 1, 2, 2, 3, 0
-    };
-    
-    CMemoryBuffer vboBuffer = loadBuffer( "test", "vbo", vertices, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
-    CMemoryBuffer iboBuffer = loadBuffer( "test", "ibo", indices, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
-    
-    // Vertex buffer
-    m_vertexBuffer = vboBuffer.m_buffer;
-    m_vertexBufferMemory = vboBuffer.m_deviceMemory;
-    m_indexBuffer = iboBuffer.m_buffer;
-    m_indexBufferMemory = iboBuffer.m_deviceMemory;
+    return m_framebufferVec[index];
 }
 
 
 /***************************************************************************
-*   DESC:  Create texture image
+*   DESC:  Get the render pass
 ****************************************************************************/
-void CDevice::createCommandPool()
+VkRenderPass CDevice::getRenderPass()
 {
-    createCommandPoolGroup("test");
-    
-    m_squareCmdBufVec = createSecondaryCommandBuffers( "test" );
+    return m_renderPass;
 }
 
 
 /***************************************************************************
-*   DESC:  Record the test command buffers
+*   DESC:  Get the graphics pipeline
 ****************************************************************************/
-void CDevice::recordTestCommandBuffers( uint32_t cmdBufIndex )
+VkPipeline CDevice::getGraphicsPipeline()
 {
-    const std::vector<uint16_t> indices =
-    {
-        0, 1, 2, 2, 3, 0
-    };
-    
-    UniformBufferObject ubo;
-
-    ubo.projectionMatrix.orthographicRH(
-        CSettings::Instance().getDefaultSize().w,
-        CSettings::Instance().getDefaultSize().h,
-        CSettings::Instance().getMinZdist(),
-        CSettings::Instance().getMaxZdist() );
-
-    CMatrix objMatrix;
-    objMatrix.translate( CPoint<float>(0.f, 0.f, -10.0f) );
-
-    ubo.cameraViewMatrix.setScale( 1344.f, 756.f );
-    ubo.cameraViewMatrix *= objMatrix;
-    
-    //vkResetCommandBuffer( m_squareCmdBufVec[cmdBufIndex], 0 );
-
-    //if( lastCmdIndex < static_cast<int>(cmdBufIndex) )
-    {
-        // Update the uniform buffer
-        updateUniformBuffer( ubo, m_uniformBufVec[cmdBufIndex].m_deviceMemory );
-        
-        VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
-        cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
-        cmdBufInheritanceInfo.framebuffer = m_framebufferVec[cmdBufIndex];
-        cmdBufInheritanceInfo.renderPass = m_renderPass;
-
-        VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
-        cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
-        cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
-
-        vkBeginCommandBuffer( m_squareCmdBufVec[cmdBufIndex], &cmdBeginInfo);
-        vkCmdBindPipeline( m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline);
-
-        // Bind vertex buffer
-        VkBuffer vertexBuffers[] = {m_vertexBuffer};
-        VkDeviceSize offsets[] = {0};
-        vkCmdBindVertexBuffers( m_squareCmdBufVec[cmdBufIndex], 0, 1, vertexBuffers, offsets );
-
-        // Bind the index buffer
-        vkCmdBindIndexBuffer( m_squareCmdBufVec[cmdBufIndex], m_indexBuffer, 0, VK_INDEX_TYPE_UINT16 );
-
-        vkCmdBindDescriptorSets( m_squareCmdBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipelineLayout, 0, 1, &m_descriptorSetVec[cmdBufIndex], 0, nullptr);
-
-        vkCmdDrawIndexed( m_squareCmdBufVec[cmdBufIndex], indices.size(), 1, 0, 0, 0 );
-
-        vkEndCommandBuffer( m_squareCmdBufVec[cmdBufIndex] );
-    }
-    
-    updateCommandBuffer( m_squareCmdBufVec[cmdBufIndex] );
+    return m_graphicsPipeline;
 }
 
+
+/***************************************************************************
+*   DESC:  Get the pipeline layout
+****************************************************************************/
+VkPipelineLayout CDevice::getPipelinelayout()
+{
+    return m_pipelineLayout;
+}

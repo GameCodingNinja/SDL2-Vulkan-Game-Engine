@@ -1000,25 +1000,6 @@ void CDeviceVulkan::createFrameBuffer()
 
 
 /***************************************************************************
-*   DESC:  Create the uniform buffer
-****************************************************************************/
-std::vector<CMemoryBuffer> CDeviceVulkan::createUniformBuffer( VkDeviceSize sizeOfUniformBuf )
-{
-    std::vector<CMemoryBuffer> uniformBufVec( m_framebufferVec.size() );
-
-    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
-        createBuffer( 
-            sizeOfUniformBuf,
-            VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            uniformBufVec[i].m_buffer,
-            uniformBufVec[i].m_deviceMemory );
-    
-    return uniformBufVec;
-}
-
-
-/***************************************************************************
 *   DESC:  Create the Semaphores and fences
 ****************************************************************************/
 void CDeviceVulkan::createSyncObjects()
@@ -1825,40 +1806,4 @@ const char * CDeviceVulkan::getError()
         return iter->second;
 
     return "Vulkan Unknown Error";
-}
-
-
-/***************************************************************************
-*   DESC:  Get the frame buffer index
-****************************************************************************/
-VkFramebuffer CDeviceVulkan::getFrameBuffer( uint32_t index )
-{
-    return m_framebufferVec[index];
-}
-
-
-/***************************************************************************
-*   DESC:  Get the render pass
-****************************************************************************/
-VkRenderPass CDeviceVulkan::getRenderPass()
-{
-    return m_renderPass;
-}
-
-
-/***************************************************************************
-*   DESC:  Get the graphics pipeline
-****************************************************************************/
-VkPipeline CDeviceVulkan::getGraphicsPipeline()
-{
-    return m_graphicsPipeline;
-}
-
-
-/***************************************************************************
-*   DESC:  Get the pipeline layout
-****************************************************************************/
-VkPipelineLayout CDeviceVulkan::getPipelinelayout()
-{
-    return m_pipelineLayout;
 }
