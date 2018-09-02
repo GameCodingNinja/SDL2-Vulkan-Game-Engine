@@ -1728,6 +1728,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
     poolInfo.poolSizeCount = descriptorPoolVec.size();
     poolInfo.pPoolSizes = descriptorPoolVec.data();
     poolInfo.maxSets = descriptorPoolVec.size();
+    poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
     
     VkDescriptorPool descriptorPool;
     

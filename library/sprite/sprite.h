@@ -56,9 +56,9 @@ public:
     // Update the physics 
     void physicsUpdate();
 
-    // do the render
-    void render( const CCamera & camera );
-    void render( const CMatrix & matrix );
+    // Record the command buffers
+    void recordCommandBuffers( uint32_t cmdBufIndex, const CCamera & camera );
+    void recordCommandBuffers( uint32_t cmdBufIndex, const CMatrix & viewProj );
     
     // Init the script functions
     void initScriptFunctions( const XMLNode & node );

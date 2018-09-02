@@ -171,18 +171,18 @@ void CSprite::physicsUpdate()
 
 
 /************************************************************************
-*    DESC:  do the render                                                            
+*    DESC:  Record the command buffers                                                           
 ************************************************************************/
-void CSprite::render( const CMatrix & matrix )
+void CSprite::recordCommandBuffers( uint32_t cmdBufIndex, const CMatrix & viewProj )
 {
     if( m_upObject->isVisible() )
-        m_upVisualComponent->render( m_upObject->getMatrix(), matrix );
+        m_upVisualComponent->recordCommandBuffers( cmdBufIndex, m_upObject->getMatrix(), viewProj );
 }
 
-void CSprite::render( const CCamera & camera )
+void CSprite::recordCommandBuffers( uint32_t cmdBufIndex, const CCamera & camera )
 {
     if( m_upObject->isVisible() )
-        m_upVisualComponent->render( m_upObject->getMatrix(), camera.getFinalMatrix() );
+        m_upVisualComponent->recordCommandBuffers( cmdBufIndex, m_upObject->getMatrix(), camera.getFinalMatrix() );
 }
 
 

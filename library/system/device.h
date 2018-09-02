@@ -45,6 +45,12 @@ public:
     // Create secondary command buffers
     std::vector<VkCommandBuffer> createSecondaryCommandBuffers( const std::string & group );
     
+    // Delete a secondary command buffer of a specific group
+    void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
+    
+    // Delete a descriptor set of a specific group
+    void deleteDescriptorSet( const std::string & group, std::vector<VkDescriptorSet> & descriptorSetVec );
+    
     // Create descriptor sets
     std::vector<VkDescriptorSet> createDescriptorSet(
         const std::string & group,
@@ -64,8 +70,8 @@ public:
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
     
-    // Free memory buffer
-    void freeMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec );
+    // Delete memory buffer
+    void deleteMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec );
     
     // Load a buffer into video card memory
     template <typename T>

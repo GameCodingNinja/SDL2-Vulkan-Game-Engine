@@ -2,8 +2,8 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(binding = 0) uniform UniformBufferObject {
-    mat4 cameraViewMatrix;
-    mat4 projectionMatrix;
+    mat4 model;
+    mat4 viewProj;
     vec4 color;
     vec4 additive;
     int renderType;
@@ -22,7 +22,7 @@ out gl_PerVertex {
 };
 
 void main() {
-    gl_Position = ubo.projectionMatrix * ubo.cameraViewMatrix * vec4(inPosition, 1.0);
+    gl_Position = ubo.viewProj * ubo.model * vec4(inPosition, 1.0);
     fragTexCoord = inTexCoord;
     fragColor = ubo.color;
     fragAdditive = ubo.additive;

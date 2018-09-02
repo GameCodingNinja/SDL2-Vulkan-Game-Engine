@@ -34,7 +34,11 @@ public:
     virtual ~iVisualComponent() {}
     
     // Record the command buffers
-    virtual void recordCommandBuffers( uint32_t cmdBufIndex ) {}
+    virtual void recordCommandBuffers( uint32_t cmdBufIndex, const CMatrix & model, const CMatrix & viewProj ) {}
+    
+    // Delete the assets that are otherwise freed when deleting the group
+    // This is for when individual sprites are freed from the group
+    virtual void deleteGroupAssets() {}
 
     // do the render
     virtual void render( const CMatrix & objMatrix, const CMatrix & matrix ) {}

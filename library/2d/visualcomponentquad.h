@@ -41,12 +41,19 @@ public:
     virtual ~CVisualComponentQuad();
     
     // Record the command buffers
-    void recordCommandBuffers( uint32_t cmdBufIndex ) override;
+    void recordCommandBuffers( 
+        uint32_t cmdBufIndex,
+        const CMatrix & model,
+        const CMatrix & viewProj ) override;
+    
+    // Delete the assets that are otherwise freed when deleting the group
+    // This is for when individual sprites are freed from the group
+    void deleteGroupAssets() override;
     
 private:
     
     // Reference to object visual data
-    const CObjectVisualData2D & m_rVisualData;
+    const CObjectData2D & m_rObjectData;
     
     // Command buffer
     std::vector<VkCommandBuffer> m_commandBufVec;

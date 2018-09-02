@@ -170,9 +170,9 @@ void CDevice::destroyAssets()
 
 
 /***************************************************************************
-*   DESC:  Free memory buffer
+*   DESC:  Delete memory buffer
 ****************************************************************************/
-void CDevice::freeMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec )
+void CDevice::deleteMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec )
 {
     if( !uniformBufVec.empty()  )
     {
@@ -472,6 +472,36 @@ void CDevice::createCommandPoolGroup( const std::string & group )
 
     // Add the pool to the map
     m_commandPoolMap.emplace( group, commandPool );
+}
+
+
+/************************************************************************
+*    DESC:  Delete a secondary command buffer of a specific group
+************************************************************************/
+void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec )
+{
+    // A command pool shouldn't have been already created
+    auto iter = m_commandPoolMap.find( group );
+    if( iter == m_commandPoolMap.end() )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool has not been created! %s") % group ) );
+    
+    vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
+    commandBufVec.clear();
+}
+
+
+/************************************************************************
+*    DESC:  Delete a descriptor set of a specific group
+************************************************************************/
+void CDevice::deleteDescriptorSet( const std::string & group, std::vector<VkDescriptorSet> & descriptorSetVec )
+{
+    // A descriptor pool shouldn't have been already created
+    auto iter = m_descriptorPoolMap.find( group );
+    if( iter == m_descriptorPoolMap.end() )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool has not been created! %s") % group ) );
+    
+    vkFreeDescriptorSets( m_logicalDevice, iter->second, descriptorSetVec.size(), descriptorSetVec.data() );
+    descriptorSetVec.clear();
 }
 
 

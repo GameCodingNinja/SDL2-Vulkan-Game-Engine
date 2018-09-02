@@ -15,8 +15,8 @@ class UniformBufferObject
 {
 public:
     
-    CMatrix cameraViewMatrix;
-    CMatrix projectionMatrix;
+    CMatrix model;
+    CMatrix viewProj;
     CColor color;
     CColor additive;
     int renderType = 0;

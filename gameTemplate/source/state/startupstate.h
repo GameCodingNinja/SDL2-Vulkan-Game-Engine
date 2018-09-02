@@ -61,6 +61,7 @@ private:
     
     // Logo to fade in and out
     std::unique_ptr<CSprite> m_upSpriteLogo;
+    std::unique_ptr<CSprite> m_upSpriteWaffles;
 };
 
 #endif  // __start_up_state_h__
