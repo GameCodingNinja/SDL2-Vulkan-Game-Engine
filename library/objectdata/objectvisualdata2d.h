@@ -46,6 +46,7 @@ public:
 
     // Get the texture ID
     uint32_t getTextureID( uint index = 0 ) const;
+    const CTexture & getVulkanTexture( uint index = 0 ) const;
 
     // Get the name of the shader ID
     const std::string & getShaderID() const;

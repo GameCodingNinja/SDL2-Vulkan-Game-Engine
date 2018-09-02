@@ -14,6 +14,7 @@
 #include <utilities/genfunc.h>
 #include <utilities/matrix.h>
 #include <common/texture.h>
+#include <common/color.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -26,9 +27,11 @@
 
 
 struct UniformBufferObject {
-    CMatrix model;
-    CMatrix view;
-    CMatrix proj;
+    CMatrix cameraViewMatrix;
+    CMatrix projectionMatrix;
+    CColor color;
+    CColor additive;
+    int renderType;
 };
 
 
@@ -55,7 +58,7 @@ CDevice::~CDevice()
 void CDevice::create( std::function<void(uint32_t)> callback, const std::string & vertShader, const std::string & fragShader )
 {
     // Set the command buffer call back to be called from the game
-    gameCmdBufferUpdateCallback = callback;
+    RecordCommandBufferCallback = callback;
     
     // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
     if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
@@ -102,9 +105,9 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, vertShader, fragShader );
     
     // Test functions for now
-    createTextureImage();
-    createVertexBuffer();
-    createCommandPool();
+    //createTextureImage();
+    //createVertexBuffer();
+    //createCommandPool();
     
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
@@ -197,6 +200,24 @@ void CDevice::destroyAssets()
 
 
 /***************************************************************************
+*   DESC:  Free memory buffer
+****************************************************************************/
+void CDevice::freeMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec )
+{
+    if( !uniformBufVec.empty()  )
+    {
+        for( auto & iter : uniformBufVec )
+        {
+            vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
+            vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
+        }
+
+        uniformBufVec.clear();
+    }
+}
+
+
+/***************************************************************************
 *   DESC:  Update the command buffer vector
 ****************************************************************************/
 void CDevice::updateCommandBuffer( VkCommandBuffer cmdBuf )
@@ -240,10 +261,10 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
     m_secondaryCommandBufVec.clear();
 
 
-    recordTestCommandBuffers( cmdBufIndex ); // Test code
+    //recordTestCommandBuffers( cmdBufIndex ); // Test code
 
     // Have the game sprites that are to be rendered update the vector with their command buffer
-    gameCmdBufferUpdateCallback( cmdBufIndex );
+    RecordCommandBufferCallback( cmdBufIndex );
 
     // Execute the secondary command buffers
     if( !m_secondaryCommandBufVec.empty() )
@@ -322,30 +343,6 @@ void CDevice::render()
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
     
     m_currentFrame = (m_currentFrame + 1) % m_maxConcurrentFrames;
-}
-
-
-/***************************************************************************
-*   DESC:  Update the uniform buffer
-****************************************************************************/
-void CDevice::updateUniformBuffer( uint32_t unfBufIndex )
-{
-    UniformBufferObject ubo;
-    
-    ubo.proj.orthographicRH(
-        CSettings::Instance().getDefaultSize().w,
-        CSettings::Instance().getDefaultSize().h,
-        CSettings::Instance().getMinZdist(),
-        CSettings::Instance().getMaxZdist() );
-    
-    ubo.model.setScale( 1344.f, 756.f );
-    
-    ubo.view.translate( CPoint<float>(0.f, 0.f, -10.0f) );
-    
-    void* data;
-    vkMapMemory( m_logicalDevice, m_uniformBufVec[unfBufIndex].m_deviceMemory, 0, sizeof(ubo), 0, &data );
-    std::memcpy( data, &ubo, sizeof(ubo));
-    vkUnmapMemory( m_logicalDevice, m_uniformBufVec[unfBufIndex].m_deviceMemory );
 }
 
 
@@ -469,8 +466,8 @@ void CDevice::createDescriptorPoolGroup( const std::string & group )
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
     const std::string & group,
-    CTexture & texture,
-    std::vector<CMemoryBuffer> & uniformBufVec,
+    const CTexture & texture,
+    const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDeviceSize sizeOfUniformBuf )
 {
     // Sanity check
@@ -736,6 +733,19 @@ void CDevice::showWindow( bool visible )
 }
 
 
+/***************************************************************************
+*   DESC:  Wait for Vulkan render to finish
+****************************************************************************/
+void CDevice::waitForIdle()
+{
+    // Sanity check
+    if( m_logicalDevice == VK_NULL_HANDLE )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
+    
+    // Wait for the logical device to be idle before doing the clean up
+    vkDeviceWaitIdle( m_logicalDevice );
+}
+
 
 
 
@@ -749,6 +759,7 @@ void CDevice::createTextureImage()
     
     createDescriptorPoolGroup( "test" );
     
+    // Per object functions
     m_uniformBufVec = CDeviceVulkan::createUniformBuffer( sizeof(UniformBufferObject) );
     
     m_descriptorSetVec = createDescriptorSet(
@@ -808,14 +819,26 @@ void CDevice::recordTestCommandBuffers( uint32_t cmdBufIndex )
         0, 1, 2, 2, 3, 0
     };
     
+    UniformBufferObject ubo;
+
+    ubo.projectionMatrix.orthographicRH(
+        CSettings::Instance().getDefaultSize().w,
+        CSettings::Instance().getDefaultSize().h,
+        CSettings::Instance().getMinZdist(),
+        CSettings::Instance().getMaxZdist() );
+
+    CMatrix objMatrix;
+    objMatrix.translate( CPoint<float>(0.f, 0.f, -10.0f) );
+
+    ubo.cameraViewMatrix.setScale( 1344.f, 756.f );
+    ubo.cameraViewMatrix *= objMatrix;
+    
     //vkResetCommandBuffer( m_squareCmdBufVec[cmdBufIndex], 0 );
 
     //if( lastCmdIndex < static_cast<int>(cmdBufIndex) )
     {
-        //lastCmdIndex = static_cast<int>(cmdBufIndex);
-        
         // Update the uniform buffer
-        updateUniformBuffer( cmdBufIndex );
+        updateUniformBuffer( ubo, m_uniformBufVec[cmdBufIndex].m_deviceMemory );
         
         VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
         cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
@@ -846,3 +869,4 @@ void CDevice::recordTestCommandBuffers( uint32_t cmdBufIndex )
     
     updateCommandBuffer( m_squareCmdBufVec[cmdBufIndex] );
 }
+

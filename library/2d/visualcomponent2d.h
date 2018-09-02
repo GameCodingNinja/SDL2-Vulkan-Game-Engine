@@ -41,7 +41,7 @@ public:
     CVisualComponent2D( const CObjectVisualData2D & visualData );
 
     // Destructor
-    ~CVisualComponent2D();
+    virtual ~CVisualComponent2D();
     
     // Delete the custom VBO for this font
     void deleteFontVBO();

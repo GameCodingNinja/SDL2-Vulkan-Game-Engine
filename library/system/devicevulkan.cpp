@@ -186,9 +186,6 @@ void CDeviceVulkan::destroy()
 {
     if( m_logicalDevice != VK_NULL_HANDLE )
     {
-        // Wait for the logical device to be idle before doing the clean up
-        vkDeviceWaitIdle( m_logicalDevice );
-        
         if( !m_frameFenceVec.empty() )
         {
             for( auto iter : m_frameFenceVec )
@@ -1764,8 +1761,8 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
 *   DESC:  Create descriptor sets
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSet(
-    CTexture & texture,
-    std::vector<CMemoryBuffer> & uniformBufVec,
+    const CTexture & texture,
+    const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDeviceSize sizeOfUniformBuf,
     VkDescriptorPool descriptorPool )
 {
@@ -1828,6 +1825,15 @@ const char * CDeviceVulkan::getError()
         return iter->second;
 
     return "Vulkan Unknown Error";
+}
+
+
+/***************************************************************************
+*   DESC:  Get the frame buffer index
+****************************************************************************/
+VkFramebuffer CDeviceVulkan::getFrameBuffer( uint32_t index )
+{
+    return m_framebufferVec[index];
 }
 
 

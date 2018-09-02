@@ -11,14 +11,13 @@
 // Physical component dependenc
 #include "igamestate.h"
 
-// Game lib dependencies
-#include <2d/sprite2d.h>
-
 // Standard lib dependencies
 #include <memory>
 
 // Forward declaration(s)
 class CColor;
+class CSprite;
+class CSprite2D;
 
 class CStartUpState : public iGameState
 {
@@ -42,9 +41,9 @@ public:
     // Transform the game objects
     void transform() override;
 
-    // Update the command buffer vector in the device
+    // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void updateCommandBuffer( uint32_t cmdBufIndex ) override;
+    void recordCommandBuffer( uint32_t cmdBufIndex ) override;
 
 private:
     
@@ -61,7 +60,7 @@ private:
 private:
     
     // Logo to fade in and out
-    std::unique_ptr<CSprite2D> m_upSpriteLogo;
+    std::unique_ptr<CSprite> m_upSpriteLogo;
 };
 
 #endif  // __start_up_state_h__

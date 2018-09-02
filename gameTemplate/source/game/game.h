@@ -61,9 +61,9 @@ private:
     // Transform game objects
     void transform();
 
-    // Update the command buffer vector in the device
+    // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void updateCommandBuffer( uint32_t cmdBufIndex );
+    void recordCommandBuffer( uint32_t cmdBufIndex );
 
     // Callback for when a smart gui control is created
     void smartGuiControlCreateCallBack( CUIControl * pUIControl );

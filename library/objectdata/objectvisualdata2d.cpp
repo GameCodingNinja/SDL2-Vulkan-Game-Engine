@@ -626,6 +626,17 @@ uint32_t CObjectVisualData2D::getTextureID( uint index ) const
 }
 
 
+const CTexture & CObjectVisualData2D::getVulkanTexture( uint index ) const
+{
+    /*if( m_textureVec.empty() )
+        return 0;
+    else
+        return m_textureVec[index];*/
+    
+    return m_textureVec[index];
+}
+
+
 /************************************************************************
 *    DESC:  Get the name of the shader ID
 ************************************************************************/

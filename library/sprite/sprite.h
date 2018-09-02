@@ -42,7 +42,7 @@ public:
     CSprite( const CObjectData3D & objectData, int id = defs_SPRITE_DEFAULT_ID );
 
     // Destructor
-    ~CSprite();
+    virtual ~CSprite();
     
     // Init the physics
     void initPhysics();
@@ -70,7 +70,10 @@ public:
     void copyScriptFunctions( const std::map<std::string, std::string> & scriptFunctionMap );
     
     // Get the reference to the object
-    CObject2D & getObject();
+    CObject2D * getObject();
+    
+    // Get the visual component
+    iVisualComponent * getVisualComponent();
     
 private:
     

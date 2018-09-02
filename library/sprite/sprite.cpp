@@ -31,7 +31,7 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
     m_upObject( new CObject2D )
 {
     if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
-        m_upVisualComponent.reset( new CVisualComponentQuad( objectData.getVisualData() ) );
+        m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
     
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
@@ -186,13 +186,19 @@ void CSprite::render( const CCamera & camera )
 }
 
 
-
-
-
 /************************************************************************
 *    DESC:  Get the reference to the object
 ************************************************************************/
-CObject2D & CSprite::getObject()
+CObject2D * CSprite::getObject()
 {
-    return *m_upObject.get();
+    return m_upObject.get();
+}
+
+
+/************************************************************************
+*    DESC:  Get the visual component
+************************************************************************/
+iVisualComponent * CSprite::getVisualComponent()
+{
+    return m_upVisualComponent.get();
 }

@@ -66,9 +66,9 @@ public:
     virtual void preRender(){};
     virtual void postRender(){};
     
-    // Update the command buffer vector in the device
+    // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    virtual void updateCommandBuffer( uint32_t cmdBufIndex ){};
+    virtual void recordCommandBuffer( uint32_t cmdBufIndex ){};
 
     // Is the state done
     virtual bool doStateChange()

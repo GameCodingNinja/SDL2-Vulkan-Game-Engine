@@ -33,6 +33,23 @@ class CMemoryBuffer;
 
 class CDeviceVulkan
 {
+public:
+    
+    // Create uniform buffer
+    std::vector<CMemoryBuffer> createUniformBuffer( VkDeviceSize sizeOfUniformBuf );
+    
+    // Get the frame buffer index
+    VkFramebuffer getFrameBuffer( uint32_t index );
+    
+    // Get the render pass
+    VkRenderPass getRenderPass();
+    
+    // Get the graphics pipeline
+    VkPipeline getGraphicsPipeline();
+    
+    // Get the pipeline layout
+    VkPipelineLayout getPipelinelayout();
+    
 protected:
     
     // Constructor
@@ -51,9 +68,6 @@ protected:
     // Destroy the Vulkan instance
     void destroy();
     
-    // Create uniform buffer
-    std::vector<CMemoryBuffer> createUniformBuffer( VkDeviceSize sizeOfUniformBuf );
-    
     // Create the command pool
     VkCommandPool createCommandPool();
     
@@ -71,19 +85,10 @@ protected:
     
     // Create descriptor sets
     std::vector<VkDescriptorSet> createDescriptorSet(
-        CTexture & texture,
-        std::vector<CMemoryBuffer> & uniformBufVec,
+        const CTexture & texture,
+        const std::vector<CMemoryBuffer> & uniformBufVec,
         VkDeviceSize sizeOfUniformBuf,
         VkDescriptorPool descriptorPool );
-    
-    // Get the render pass
-    VkRenderPass getRenderPass();
-    
-    // Get the graphics pipeline
-    VkPipeline getGraphicsPipeline();
-    
-    // Get the pipeline layout
-    VkPipelineLayout getPipelinelayout();
     
     // Get Vulkan error
     const char * getError();

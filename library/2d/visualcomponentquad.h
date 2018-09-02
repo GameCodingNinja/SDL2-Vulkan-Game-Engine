@@ -27,7 +27,7 @@
 #endif
 
 // Forward declaration(s)
-class CObjectVisualData2D;
+class CObjectData2D;
 class CMemoryBuffer;
 
 class CVisualComponentQuad : public iVisualComponent, boost::noncopyable
@@ -35,15 +35,21 @@ class CVisualComponentQuad : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
-    CVisualComponentQuad( const CObjectVisualData2D & visualData );
+    CVisualComponentQuad( const CObjectData2D & objectData );
 
     // Destructor
     virtual ~CVisualComponentQuad();
+    
+    // Record the command buffers
+    void recordCommandBuffers( uint32_t cmdBufIndex ) override;
     
 private:
     
     // Reference to object visual data
     const CObjectVisualData2D & m_rVisualData;
+    
+    // Command buffer
+    std::vector<VkCommandBuffer> m_commandBufVec;
     
     // Descriptor Set for this image
     std::vector<VkDescriptorSet> m_descriptorSetVec;

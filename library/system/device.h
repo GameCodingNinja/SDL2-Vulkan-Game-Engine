@@ -55,8 +55,8 @@ public:
     // Create descriptor sets
     std::vector<VkDescriptorSet> createDescriptorSet(
         const std::string & group,
-        CTexture & texture,
-        std::vector<CMemoryBuffer> & uniformBufVec,
+        const CTexture & texture,
+        const std::vector<CMemoryBuffer> & uniformBufVec,
         VkDeviceSize sizeOfUniformBuf );
     
     // Load the image from file path
@@ -67,6 +67,9 @@ public:
     
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
+    
+    // Free memory buffer
+    void freeMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec );
     
     // Load a buffer into video card memory
     template <typename T>
@@ -93,6 +96,16 @@ public:
         }
 
         return iter->second;
+    }
+    
+    // Update the uniform buffer
+    template <typename T>
+    void updateUniformBuffer( T & ubo, VkDeviceMemory deviceMemory )
+    {
+        void* data;
+        vkMapMemory( m_logicalDevice, deviceMemory, 0, sizeof(ubo), 0, &data );
+        std::memcpy( data, &ubo, sizeof(ubo));
+        vkUnmapMemory( m_logicalDevice, deviceMemory );
     }
     
     // Show/Hide the Window
@@ -125,6 +138,9 @@ public:
     
     // Get window
     SDL_Window * getWindow();
+    
+    // Wait for Vulkan render to finish
+    void waitForIdle();
 
 private:
     
@@ -164,9 +180,6 @@ private:
     // Get the number of textures in this group
     size_t getTextureGroupCount( const std::string & group );
     
-    // Update the uniform buffer
-    void updateUniformBuffer( uint32_t unfBufIndex );
-    
     
     
     // Test functions
@@ -177,8 +190,8 @@ private:
     
 private:
     
-    // Command buffer call back function
-    std::function<void(uint32_t)> gameCmdBufferUpdateCallback;
+    // Record ommand buffer call back function
+    std::function<void(uint32_t)> RecordCommandBufferCallback;
     
     // The window we'll be rendering to
     SDL_Window * m_pWindow;

@@ -29,9 +29,15 @@ public:
     // Constructor
     iVisualComponent( const CObjectVisualData2D & visualData );
     iVisualComponent( const CObjectVisualData3D & visualData );
+    
+    // Destructor
+    virtual ~iVisualComponent() {}
+    
+    // Record the command buffers
+    virtual void recordCommandBuffers( uint32_t cmdBufIndex ) {}
 
     // do the render
-    virtual void render( const CMatrix & objMatrix, const CMatrix & matrix ) {};
+    virtual void render( const CMatrix & objMatrix, const CMatrix & matrix ) {}
     
     // Set/Get the color
     void setColor( const CColor & color );
@@ -39,7 +45,12 @@ public:
     const CColor & getColor() const;
     void setDefaultColor();
     const CColor & getDefaultColor() const;
-
+    
+    // Set/Get additive color
+    static void setAdditiveColor( const CColor & color );
+    static void setAdditiveColor( float r, float g, float b, float a );
+    static const CColor & getAdditiveColor();
+    
     // Set/Get the alpha
     void setAlpha( float alpha, bool allowToExceed = false );
     float getAlpha() const;
@@ -76,6 +87,9 @@ protected:
     
     // Color
     CColor m_color;
+    
+    // Additive Color
+    static CColor m_additive;
     
     // The default color
     const CColor & m_rDefaultColor;

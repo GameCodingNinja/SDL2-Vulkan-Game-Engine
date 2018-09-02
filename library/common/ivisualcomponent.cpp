@@ -15,8 +15,10 @@
 // Game lib dependencies
 #include <common/defs.h>
 
+// Init some statics
 std::string iVisualComponent::m_stringDummy;
 CSize<float> iVisualComponent::m_sizeDummy;
+CColor iVisualComponent::m_additive;
 
 /************************************************************************
 *    desc:  Constructor
@@ -56,6 +58,26 @@ void iVisualComponent::setColor( float r, float g, float b, float a )
 const CColor & iVisualComponent::getColor() const
 {
     return m_color;
+}
+
+
+/************************************************************************
+*    DESC:  Set/Get the additive color
+************************************************************************/
+void iVisualComponent::setAdditiveColor( const CColor & color )
+{
+    m_additive = color;
+}
+
+void iVisualComponent::setAdditiveColor( float r, float g, float b, float a )
+{
+    // This function assumes values between 0.0 to 1.0.
+    m_additive.set( r, g, b, a );
+}
+
+const CColor & iVisualComponent::getAdditiveColor()
+{
+    return m_additive;
 }
 
 

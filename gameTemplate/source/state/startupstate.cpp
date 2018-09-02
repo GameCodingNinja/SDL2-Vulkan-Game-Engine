@@ -36,6 +36,7 @@
 #include <script/scriptshadermanager.h>
 #include <script/scripthighresolutiontimer.h>
 #include <2d/sprite2d.h>
+#include <sprite/sprite.h>
 #include <system/device.h>
 #include <gui/menumanager.h>
 #include <gui/menu.h>
@@ -94,11 +95,10 @@ void CStartUpState::init()
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
     
     // Set code for new sprite
-    CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
+    //CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
 
     // Allocate the sprite to fade in
-    //m_upSpriteLogo.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
-    //m_upSpriteLogo->transform();
+    m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
 
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -122,6 +122,8 @@ void CStartUpState::update()
 ****************************************************************************/
 void CStartUpState::transform()
 {
+    m_upSpriteLogo->getObject()->transform();
+    
     /*m_background.transform();
 
     CCameraMgr::Instance().transform();
@@ -133,11 +135,13 @@ void CStartUpState::transform()
 
 
 /***************************************************************************
-*    decs:  Update the command buffer vector in the device
+*    decs:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CStartUpState::updateCommandBuffer( uint32_t cmdBufIndex )
+void CStartUpState::recordCommandBuffer( uint32_t cmdBufIndex )
 {
+    m_upSpriteLogo->getVisualComponent()->recordCommandBuffers( cmdBufIndex );
+    
     /*m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
 
     //m_spriteSheetTest.Render( orthoMatrix );

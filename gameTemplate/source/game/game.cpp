@@ -63,6 +63,12 @@ CGame::CGame() :
 ************************************************************************/
 CGame::~CGame()
 {
+    // Wait for all rendering to be finished
+    CDevice::Instance().waitForIdle();
+    
+    // Free all objects
+    upGameState.reset();
+    
     // Destroy the window and Vulkan instance
     CDevice::Instance().destroy();
 
@@ -77,9 +83,9 @@ CGame::~CGame()
 void CGame::create()
 {
     CDevice::Instance().create(
-        std::bind( &CGame::updateCommandBuffer, this, std::placeholders::_1),
-        "data/shaders/vulkanTriangleVert5.spv",
-        "data/shaders/vulkanTriangleFrag2.spv" );
+        std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1),
+        "data/shaders/vert.spv",
+        "data/shaders/frag.spv" );
     
     // Show the window
     CDevice::Instance().showWindow( true );
@@ -278,12 +284,12 @@ void CGame::transform()
 
 
 /***************************************************************************
-*    decs:  Update the command buffer vector in the device
+*    decs:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CGame::updateCommandBuffer( uint32_t cmdBufIndex )
+void CGame::recordCommandBuffer( uint32_t cmdBufIndex )
 {
-    upGameState->render();
+    upGameState->recordCommandBuffer( cmdBufIndex );
 }
 
 
