@@ -17,12 +17,11 @@
 #include <common/vertex.h>
 #include <soil/SOIL.h>
 
-// Standard lib dependencies
-#include <fstream>
-#include <array>
-
 // Boost lib dependencies
 #include <boost/format.hpp>
+
+// Standard lib dependencies
+#include <fstream>
 
 /************************************************************************
 *    DESC:  Validation layer callback
@@ -153,6 +152,9 @@ void CDeviceVulkan::create(
     // Create the descriptor set layout
     createDescriptorSetLayout();
     
+    // Create the pipeline layout
+    createPipelineLayout();
+    
     // Create the swap chain
     createSwapChain();
     
@@ -224,6 +226,12 @@ void CDeviceVulkan::destroy()
             m_descriptorSetLayout = VK_NULL_HANDLE;
         }
         
+        if( m_pipelineLayout != VK_NULL_HANDLE )
+        {
+            vkDestroyPipelineLayout( m_logicalDevice, m_pipelineLayout, nullptr );
+            m_pipelineLayout = VK_NULL_HANDLE;
+        }
+        
         destroyAssets();
 
         if( m_shaderModuleVert != VK_NULL_HANDLE )
@@ -278,12 +286,6 @@ void CDeviceVulkan::destroySwapChain()
         {
             vkDestroyRenderPass( m_logicalDevice, m_renderPass, nullptr );
             m_renderPass = VK_NULL_HANDLE;
-        }
-        
-        if( m_pipelineLayout != VK_NULL_HANDLE )
-        {
-            vkDestroyPipelineLayout( m_logicalDevice, m_pipelineLayout, nullptr );
-            m_pipelineLayout = VK_NULL_HANDLE;
         }
 
         if( m_depthImageView != VK_NULL_HANDLE )
@@ -713,7 +715,7 @@ void CDeviceVulkan::createDescriptorSetLayout()
     samplerLayoutBinding.pImmutableSamplers = nullptr;
     samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
-    std::array<VkDescriptorSetLayoutBinding, 2> bindings = {uboLayoutBinding, samplerLayoutBinding};
+    std::vector<VkDescriptorSetLayoutBinding> bindings = {uboLayoutBinding, samplerLayoutBinding};
 
     VkDescriptorSetLayoutCreateInfo layoutInfo = {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -722,6 +724,21 @@ void CDeviceVulkan::createDescriptorSetLayout()
     
     if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &m_descriptorSetLayout )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError() ) );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the pipeline layout
+****************************************************************************/
+void CDeviceVulkan::createPipelineLayout()
+{
+    VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
+    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipelineLayoutInfo.setLayoutCount = 1;
+    pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
+
+    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &m_pipelineLayout )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
 }
 
 
@@ -800,15 +817,6 @@ void CDeviceVulkan::createRenderPass()
 ****************************************************************************/
 void CDeviceVulkan::createGraphicsPipeline()
 {
-    // Create the pipeline layout
-    VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
-    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.setLayoutCount = 1;
-    pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
-
-    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &m_pipelineLayout )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
-    
     // Create the graphics pipeline
     VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -821,8 +829,6 @@ void CDeviceVulkan::createGraphicsPipeline()
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
     fragShaderStageInfo.module = m_shaderModuleFrag;
     fragShaderStageInfo.pName = "main";
-
-    VkPipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo, fragShaderStageInfo};
     
     // Bind the vertex buffer
     auto bindingDescription = CVertex::getBindingDescription();
@@ -877,6 +883,13 @@ void CDeviceVulkan::createGraphicsPipeline()
     multisampling.sampleShadingEnable = VK_FALSE;
     multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
     
+    /*std::vector<VkDynamicState> dynamicStateEnables = {VK_DYNAMIC_STATE_VIEWPORT,VK_DYNAMIC_STATE_SCISSOR};
+    
+    VkPipelineDynamicStateCreateInfo dynamicState = {};
+    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+    dynamicState.pDynamicStates = dynamicStateEnables.data();
+    dynamicState.dynamicStateCount = dynamicStateEnables.size();*/
+    
     VkPipelineDepthStencilStateCreateInfo depthStencil = {};
     depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
     depthStencil.depthTestEnable = CSettings::Instance().getEnableDepthBuffer();
@@ -903,18 +916,20 @@ void CDeviceVulkan::createGraphicsPipeline()
     colorBlending.logicOp = VK_LOGIC_OP_COPY;
     colorBlending.attachmentCount = 1;
     colorBlending.pAttachments = &colorBlendAttachment;
+    
+    std::vector<VkPipelineShaderStageCreateInfo> shaderStages = {vertShaderStageInfo, fragShaderStageInfo};
 
     VkGraphicsPipelineCreateInfo pipelineInfo = {};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-    pipelineInfo.stageCount = 2;
-    pipelineInfo.pStages = shaderStages;
+    pipelineInfo.stageCount = shaderStages.size();
+    pipelineInfo.pStages = shaderStages.data();
     pipelineInfo.pVertexInputState = &vertexInputInfo;
     pipelineInfo.pInputAssemblyState = &inputAssembly;
     pipelineInfo.pViewportState = &viewportState;
     pipelineInfo.pRasterizationState = &rasterizer;
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
-    pipelineInfo.pDynamicState = nullptr;
+    pipelineInfo.pDynamicState = nullptr;//&dynamicState;
     pipelineInfo.layout = m_pipelineLayout;
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;
@@ -1710,24 +1725,24 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 ****************************************************************************/
 VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
 {
-    const int DESC_TYPE_COUNT(2);
-    std::vector<VkDescriptorPoolSize> descriptorPoolVec( DESC_TYPE_COUNT * setCount );
+    std::vector<VkDescriptorPoolSize> descriptorPoolVec;
     
-    for( size_t i = 0; i < descriptorPoolVec.size(); ++i )
-    {
-        descriptorPoolVec[i].descriptorCount = m_framebufferVec.size();
-        
-        if( (i & 0x1) == 0 )
-            descriptorPoolVec[i].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        else
-            descriptorPoolVec[i].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    }
+    VkDescriptorPoolSize uniformBufferPoolSize = {};
+    uniformBufferPoolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    uniformBufferPoolSize.descriptorCount = m_framebufferVec.size();
+    
+    VkDescriptorPoolSize combinedImageSamplerPoolSize = {};
+    combinedImageSamplerPoolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    combinedImageSamplerPoolSize.descriptorCount = m_framebufferVec.size();
+    
+    descriptorPoolVec.push_back( uniformBufferPoolSize );
+    descriptorPoolVec.push_back( combinedImageSamplerPoolSize );
 
     VkDescriptorPoolCreateInfo poolInfo = {};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = descriptorPoolVec.size();
     poolInfo.pPoolSizes = descriptorPoolVec.data();
-    poolInfo.maxSets = descriptorPoolVec.size();
+    poolInfo.maxSets = descriptorPoolVec.size() * setCount;
     poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
     
     VkDescriptorPool descriptorPool;

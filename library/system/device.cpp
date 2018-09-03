@@ -211,7 +211,8 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
     if( (m_lastResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
 
-    std::array<VkClearValue, 2> clearValues = {};
+    // Accessed by attachment index. Current attachments are color and depth
+    std::vector<VkClearValue> clearValues(2);
     clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
     clearValues[1].depthStencil = {1.0f, 0};
 
@@ -230,16 +231,12 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
     // Clear out the vector for the next round of command buffers
     m_secondaryCommandBufVec.clear();
 
-
-    //recordTestCommandBuffers( cmdBufIndex ); // Test code
-
     // Have the game sprites that are to be rendered update the vector with their command buffer
     RecordCommandBufferCallback( cmdBufIndex );
 
     // Execute the secondary command buffers
     if( !m_secondaryCommandBufVec.empty() )
         vkCmdExecuteCommands( m_primaryCmdBufVec[cmdBufIndex], m_secondaryCommandBufVec.size(), m_secondaryCommandBufVec.data() );
-
 
     vkCmdEndRenderPass( m_primaryCmdBufVec[cmdBufIndex] );
 
@@ -331,10 +328,6 @@ void CDevice::createSurface()
 ************************************************************************/
 std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::string & group )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
-    
     // Find the command pool group
     auto iter = m_commandPoolMap.find( group );
     if( iter == m_commandPoolMap.end() )
@@ -349,10 +342,6 @@ std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::
 ************************************************************************/
 CTexture & CDevice::createTexture( const std::string & group, const std::string & filePath, bool mipMap )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
-    
     // Create the map group if it doesn't already exist
     auto mapIter = m_textureMapMap.find( group );
     if( mapIter == m_textureMapMap.end() )
@@ -412,10 +401,6 @@ void CDevice::createGroupAssets( const std::string & group )
 ************************************************************************/
 void CDevice::createDescriptorPoolGroup( const std::string & group )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
-    
     // Create the descriptor pool. It shouldn't have been already created
     if( m_descriptorPoolMap.find( group ) != m_descriptorPoolMap.end() )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool already created! %s") % group ) );
@@ -440,10 +425,6 @@ std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
     const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDeviceSize sizeOfUniformBuf )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
-    
     // Descriptor pool should have already been created
     auto iter = m_descriptorPoolMap.find( group );
     if( iter == m_descriptorPoolMap.end() )
@@ -459,10 +440,6 @@ std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
 ************************************************************************/
 void CDevice::createCommandPoolGroup( const std::string & group )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available for allocation!" );
-        
     // Create the command pool. It shouldn't have been already created
     if( m_commandPoolMap.find( group ) != m_commandPoolMap.end() )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool already created! %s") % group ) );
@@ -548,10 +525,6 @@ void CDevice::deleteGroupAssets( const std::string & group )
 ************************************************************************/
 void CDevice::deleteTextureGroup( const std::string & group )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
-    
     // Free the texture group if it exists
     auto mapIter = m_textureMapMap.find( group );
     if( mapIter != m_textureMapMap.end() )
@@ -576,10 +549,6 @@ void CDevice::deleteTextureGroup( const std::string & group )
 ************************************************************************/
 void CDevice::deleteCommandPoolGroup( const std::string & group )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
-    
     // Free the command pool group if it exists
     auto iter = m_commandPoolMap.find( group );
     if( iter != m_commandPoolMap.end() )
@@ -612,10 +581,6 @@ void CDevice::deleteDescriptorPoolGroup( const std::string & group )
 ************************************************************************/
 void CDevice::deleteMemoryBufferGroup( const std::string & group )
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
-    
     // Free the texture group if it exists
     auto mapIter = m_memoryBufferMapMap.find( group );
     if( mapIter != m_memoryBufferMapMap.end() )
@@ -757,10 +722,6 @@ void CDevice::showWindow( bool visible )
 ****************************************************************************/
 void CDevice::waitForIdle()
 {
-    // Sanity check
-    if( m_logicalDevice == VK_NULL_HANDLE )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Vulkan device not available to destroy assets!" );
-    
     // Wait for the logical device to be idle before doing the clean up
     vkDeviceWaitIdle( m_logicalDevice );
 }

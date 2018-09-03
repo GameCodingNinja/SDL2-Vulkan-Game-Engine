@@ -159,6 +159,9 @@ private:
     // Create the descriptor set layout
     void createDescriptorSetLayout();
     
+    // Create the pipeline layout
+    void createPipelineLayout();
+    
     // Create the graphics pipeline
     void createGraphicsPipeline();
     

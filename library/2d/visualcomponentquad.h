@@ -42,7 +42,7 @@ public:
     
     // Record the command buffers
     void recordCommandBuffers( 
-        uint32_t cmdBufIndex,
+        uint32_t index,
         const CMatrix & model,
         const CMatrix & viewProj ) override;
     

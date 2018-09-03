@@ -64,7 +64,7 @@ void CVisualComponentQuad::deleteGroupAssets()
 *   DESC:  Record the command buffers
 ****************************************************************************/
 void CVisualComponentQuad::recordCommandBuffers(
-    uint32_t cmdBufIndex,
+    uint32_t index,
     const CMatrix & model,
     const CMatrix & viewProj )
 {
@@ -78,34 +78,40 @@ void CVisualComponentQuad::recordCommandBuffers(
     ubo.viewProj = viewProj;
 
     // Update the uniform buffer
-    device.updateUniformBuffer( ubo, m_uniformBufVec[cmdBufIndex].m_deviceMemory );
+    device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 
     VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
     cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
-    cmdBufInheritanceInfo.framebuffer = device.getFrameBuffer( cmdBufIndex );
+    cmdBufInheritanceInfo.framebuffer = device.getFrameBuffer( index );
     cmdBufInheritanceInfo.renderPass = device.getRenderPass();
 
     VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
     cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
     cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
 
-    vkBeginCommandBuffer( m_commandBufVec[cmdBufIndex], &cmdBeginInfo);
-    vkCmdBindPipeline( m_commandBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getGraphicsPipeline());
+    vkBeginCommandBuffer( m_commandBufVec[index], &cmdBeginInfo);
+    vkCmdBindPipeline( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getGraphicsPipeline());
+    
+    /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
+    vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
+    
+    VkRect2D scissor = {{50, 50}, {1000, 500}};
+    vkCmdSetScissor( m_commandBufVec[index], 0, 1, &scissor );*/
 
     // Bind vertex buffer
     VkBuffer vertexBuffers[] = {rVisualData.getVBO().m_buffer};
     VkDeviceSize offsets[] = {0};
-    vkCmdBindVertexBuffers( m_commandBufVec[cmdBufIndex], 0, 1, vertexBuffers, offsets );
+    vkCmdBindVertexBuffers( m_commandBufVec[index], 0, 1, vertexBuffers, offsets );
 
     // Bind the index buffer
-    vkCmdBindIndexBuffer( m_commandBufVec[cmdBufIndex], rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
+    vkCmdBindIndexBuffer( m_commandBufVec[index], rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
 
-    vkCmdBindDescriptorSets( m_commandBufVec[cmdBufIndex], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getPipelinelayout(), 0, 1, &m_descriptorSetVec[cmdBufIndex], 0, nullptr);
+    vkCmdBindDescriptorSets( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getPipelinelayout(), 0, 1, &m_descriptorSetVec[index], 0, nullptr);
 
-    vkCmdDrawIndexed( m_commandBufVec[cmdBufIndex], rVisualData.getIBOCount(), 1, 0, 0, 0 );
+    vkCmdDrawIndexed( m_commandBufVec[index], rVisualData.getIBOCount(), 1, 0, 0, 0 );
 
-    vkEndCommandBuffer( m_commandBufVec[cmdBufIndex] );
+    vkEndCommandBuffer( m_commandBufVec[index] );
     
     
-    device.updateCommandBuffer( m_commandBufVec[cmdBufIndex] );
+    device.updateCommandBuffer( m_commandBufVec[index] );
 }
