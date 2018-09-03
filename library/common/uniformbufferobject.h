@@ -19,7 +19,6 @@ public:
     CMatrix viewProj;
     CColor color;
     CColor additive;
-    int renderType = 0;
 };
 
 #endif  // __uniform_buffer_object_h__

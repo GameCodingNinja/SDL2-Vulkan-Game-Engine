@@ -897,8 +897,16 @@ void CDeviceVulkan::createGraphicsPipeline()
     depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
     depthStencil.depthBoundsTestEnable = VK_FALSE;
     depthStencil.stencilTestEnable = CSettings::Instance().getEnableStencilBuffer();
-    depthStencil.front = {}; // Optional
-    depthStencil.back = {}; // Optional
+    depthStencil.back.compareOp = VK_COMPARE_OP_ALWAYS;
+    depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
+    depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
+    depthStencil.back.passOp = VK_STENCIL_OP_REPLACE;
+    depthStencil.back.compareMask = 0xff;
+    depthStencil.back.writeMask = 0xff;
+    depthStencil.back.reference = 1;
+    depthStencil.front = depthStencil.back;
+    //depthStencil.front = {}; // Optional
+    //depthStencil.back = {}; // Optional
     
     VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
     colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;

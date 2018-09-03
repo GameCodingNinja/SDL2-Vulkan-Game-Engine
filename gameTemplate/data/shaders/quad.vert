@@ -6,7 +6,6 @@ layout(binding = 0) uniform UniformBufferObject {
     mat4 viewProj;
     vec4 color;
     vec4 additive;
-    int renderType;
 } ubo;
 
 layout(location = 0) in vec3 inPosition;
