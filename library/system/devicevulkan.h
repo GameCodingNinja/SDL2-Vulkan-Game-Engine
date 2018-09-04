@@ -19,11 +19,7 @@
 #include <map>
 
 // Vulkan lib dependencies
-#if defined(__ANDROID__)
-#include <system/vulkan_wrapper.h>
-#else
-#include <vulkan/vulkan.h>
-#endif
+#include <system/vulkan.h>
 
 // Forward declaration(s)
 class CTexture;
@@ -42,9 +38,7 @@ protected:
     // Create Vulkan instance
     void create(
         const std::vector<const char*> & validationNameVec,
-        const std::vector<const char*> & instanceExtensionNameVec,
-        const std::string & vertShader,
-        const std::string & fragShader );
+        const std::vector<const char*> & instanceExtensionNameVec );
     
     // Destroy the Vulkan instance
     void destroy();
@@ -70,6 +64,12 @@ protected:
         const std::vector<CMemoryBuffer> & uniformBufVec,
         VkDeviceSize sizeOfUniformBuf,
         VkDescriptorPool descriptorPool );
+    
+    // Create the shader
+    VkShaderModule createShader( const std::string & filePath );
+    
+    // Create the graphics pipeline
+    void createGraphicsPipeline();
     
     // Get Vulkan error
     const char * getError();
@@ -144,9 +144,6 @@ private:
     // Create the logical device
     void createLogicalDevice( const std::vector<const char*> & validationNameVec );
     
-    // Load the shaders
-    void loadShaders( const std::string & vertShader, const std::string & fragShader );
-    
     // Setup the swap chain to be created
     void setupSwapChain();
     
@@ -161,9 +158,6 @@ private:
     
     // Create the pipeline layout
     void createPipelineLayout();
-    
-    // Create the graphics pipeline
-    void createGraphicsPipeline();
     
     // Create the frame buffer
     void createFrameBuffer();

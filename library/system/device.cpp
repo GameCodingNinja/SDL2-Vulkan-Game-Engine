@@ -16,6 +16,8 @@
 #include <common/texture.h>
 #include <common/color.h>
 #include <common/memorybuffer.h>
+#include <common/pipelinedata.h>
+#include <utilities/xmlParser.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -43,7 +45,7 @@ CDevice::~CDevice()
 /***************************************************************************
 *   DESC:  Create the window and Vulkan instance
 ****************************************************************************/
-void CDevice::create( std::function<void(uint32_t)> callback, const std::string & vertShader, const std::string & fragShader )
+void CDevice::create( std::function<void(uint32_t)> callback, const std::string & pipelineCfg )
 {
     // Set the command buffer call back to be called from the game
     RecordCommandBufferCallback = callback;
@@ -90,7 +92,10 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     }
     
     // Create the Vulkan instance and graphics pipeline
-    CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, vertShader, fragShader );
+    CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec );
+    
+    // Create the pipelines
+    createPipelines( pipelineCfg );
     
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
@@ -165,6 +170,12 @@ void CDevice::destroyAssets()
         }
         
         m_memoryBufferMapMap.clear();
+
+        // Free all the shader modules
+        for( auto & iter : m_shaderModuleMap )
+            vkDestroyShaderModule( m_logicalDevice, iter.second, nullptr );
+        
+        m_shaderModuleMap.clear();
     }
 }
 
@@ -449,6 +460,56 @@ void CDevice::createCommandPoolGroup( const std::string & group )
 
     // Add the pool to the map
     m_commandPoolMap.emplace( group, commandPool );
+}
+
+
+/************************************************************************
+*    DESC:  Create the pipelines from config file
+************************************************************************/
+void CDevice::createPipelines( const std::string & filePath )
+{
+    // Open and parse the XML file:
+    XMLNode node = XMLNode::openFileHelper( filePath.c_str(), "pipelineList" );
+    
+    for( int i = 0; i < node.nChildNode(); ++i )
+    {
+        const XMLNode pipelineNode = node.getChildNode("pipeline", i);
+        
+        if( !pipelineNode.isEmpty() )
+        {
+            CPipelineData pipelineData;
+            const std::string id = pipelineNode.getAttribute("Id");
+            
+            pipelineData.m_shaderVert = createShader( pipelineNode.getChildNode("vert").getAttribute("file") );
+            pipelineData.m_shaderFrag = createShader( pipelineNode.getChildNode("frag").getAttribute("file") );
+            
+            // temp
+            m_shaderModuleVert = pipelineData.m_shaderVert;
+            m_shaderModuleFrag = pipelineData.m_shaderFrag;
+            
+            m_pipelineDataMap.emplace( id, pipelineData );
+        }
+    }
+    
+    // Create the graphics pipeline
+    createGraphicsPipeline();
+}
+
+
+/***************************************************************************
+*   DESC:  Create the shader
+****************************************************************************/
+VkShaderModule CDevice::createShader( const std::string & filePath )
+{
+    // See if this shader has already been created
+    auto iter = m_shaderModuleMap.find( filePath );
+    if( iter == m_shaderModuleMap.end() )
+    {
+        VkShaderModule shader = CDeviceVulkan::createShader( filePath );
+        iter = m_shaderModuleMap.emplace(filePath, shader).first;
+    }
+    
+    return iter->second;
 }
 
 

@@ -84,8 +84,7 @@ void CGame::create()
 {
     CDevice::Instance().create(
         std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1),
-        "data/shaders/quad_vert.spv",
-        "data/shaders/quad_frag.spv" );
+        "data/shaders/pipeline.cfg" );
     
     // Show the window
     CDevice::Instance().showWindow( true );

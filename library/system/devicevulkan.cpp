@@ -115,9 +115,7 @@ CDeviceVulkan::~CDeviceVulkan()
 ****************************************************************************/
 void CDeviceVulkan::create(
     const std::vector<const char*> & validationNameVec,
-    const std::vector<const char*> & instanceExtensionNameVec,
-    const std::string & vertShader,
-    const std::string & fragShader )
+    const std::vector<const char*> & instanceExtensionNameVec )
 {
     #if defined(__ANDROID__)
     if( InitVulkan() == 0 )
@@ -143,9 +141,6 @@ void CDeviceVulkan::create(
     // Create the logical device
     createLogicalDevice( validationNameVec );
     
-    // Load the shaders
-    loadShaders( vertShader, fragShader );
-    
     // Setup the swap chain to be created
     setupSwapChain();
     
@@ -160,9 +155,6 @@ void CDeviceVulkan::create(
     
     // Create the render pass
     createRenderPass();
-    
-    // Create the graphics pipeline
-    createGraphicsPipeline();
     
     // Create the primary command pool
     createPrimaryCommandPool();
@@ -233,18 +225,6 @@ void CDeviceVulkan::destroy()
         }
         
         destroyAssets();
-
-        if( m_shaderModuleVert != VK_NULL_HANDLE )
-        {
-            vkDestroyShaderModule( m_logicalDevice, m_shaderModuleVert, nullptr );
-            m_shaderModuleVert = VK_NULL_HANDLE;
-        }
-        
-        if( m_shaderModuleFrag != VK_NULL_HANDLE )
-        {
-            vkDestroyShaderModule( m_logicalDevice, m_shaderModuleFrag, nullptr );
-            m_shaderModuleFrag = VK_NULL_HANDLE;
-        }
 
         vkDestroyDevice( m_logicalDevice, nullptr );
         m_logicalDevice = VK_NULL_HANDLE;
@@ -487,27 +467,22 @@ void CDeviceVulkan::createLogicalDevice( const std::vector<const char*> & valida
 
 
 /***************************************************************************
-*   DESC:  Load the shaders
+*   DESC:  Create the shader
 ****************************************************************************/
-void CDeviceVulkan::loadShaders( const std::string & vertShader, const std::string & fragShader )
+VkShaderModule CDeviceVulkan::createShader( const std::string & filePath )
 {
-    // Load shaders  **** temporary code ****
-    std::vector<char> shaderVert = NGenFunc::FileToVec(vertShader);
-    std::vector<char> shaderFrag = NGenFunc::FileToVec(fragShader);
+    std::vector<char> shaderVec = NGenFunc::FileToVec( filePath );
     
     VkShaderModuleCreateInfo shaderInfo = {};
     shaderInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    shaderInfo.codeSize = shaderVert.size();
-    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderVert.data());
+    shaderInfo.codeSize = shaderVec.size();
+    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderVec.data());
     
-    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &m_shaderModuleVert )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create vertex shader! %s") % getError() ) );
+    VkShaderModule shaderModule;
+    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &shaderModule )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create shader! %s-%s") % filePath % getError() ) );
     
-    shaderInfo.codeSize = shaderFrag.size();
-    shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderFrag.data());
-    
-    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &m_shaderModuleFrag )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create fragment shader! %s") % getError() ) );
+    return shaderModule;
 }
 
 

@@ -18,6 +18,7 @@
 struct SDL_Window;
 struct _SDL_GameController;
 typedef _SDL_GameController SDL_GameController;
+class CPipelineData;
 
 class CDevice : public CDeviceVulkan
 {
@@ -31,7 +32,7 @@ public:
     }
     
     // Create the window and Vulkan instance
-    void create( std::function<void(uint32_t)> callback, const std::string & vertShader, const std::string & fragShader );
+    void create( std::function<void(uint32_t)> callback, const std::string & pipelineCfg );
     
     // Destroy the window and Vulkan instance
     void destroy();
@@ -173,6 +174,12 @@ private:
     // Create the descriptor pool group for the textures
     void createDescriptorPoolGroup( const std::string & group );
     
+    // Create the pipelines from config file
+    void createPipelines( const std::string & filePath );
+    
+    // Create the shader
+    VkShaderModule createShader( const std::string & filePath );
+    
     // Delete a texture in a group
     void deleteTextureGroup( const std::string & group );
     
@@ -216,6 +223,12 @@ private:
     
     // Map containing a group of memory handles
     std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_memoryBufferMapMap;
+    
+    // Map containing loaded shader module
+    std::map< const std::string, VkShaderModule > m_shaderModuleMap;
+    
+    // Map containing data for creating the pipeline
+    std::map< const std::string, CPipelineData > m_pipelineDataMap;
     
     // Command buffer of sprite objects to be rendered
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
