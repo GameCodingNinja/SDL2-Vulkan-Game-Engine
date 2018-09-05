@@ -15,9 +15,9 @@ class CPipelineData
 {
 public:
 
-    VkShaderModule m_shaderVert;
-    VkShaderModule m_shaderFrag;
-    VkPipeline m_pipeline;
+    VkShaderModule m_shaderVert = VK_NULL_HANDLE;
+    VkShaderModule m_shaderFrag = VK_NULL_HANDLE;
+    VkPipeline m_pipeline = VK_NULL_HANDLE;
 };
 
 #endif  // __pipeline_data_h__

@@ -24,6 +24,7 @@
 // Forward declaration(s)
 class CTexture;
 class CMemoryBuffer;
+class CPipelineData;
 
 class CDeviceVulkan
 {
@@ -49,8 +50,14 @@ protected:
     // Create secondary command buffers
     std::vector<VkCommandBuffer> createSecondaryCommandBuffers( VkCommandPool cmdPool );
     
+    // Destroy the swap chain
+    virtual void destroySwapChain();
+    
     // Recreate swap chain
     void recreateSwapChain();
+    
+    // Recreate the pipeline
+    virtual void recreatePipelines() = 0;
     
     // Create texture
     void createTexture( CTexture & texture, const std::string & filePath, bool mipMap );
@@ -68,8 +75,8 @@ protected:
     // Create the shader
     VkShaderModule createShader( const std::string & filePath );
     
-    // Create the graphics pipeline
-    void createGraphicsPipeline();
+    // Create the pipeline
+    void createPipeline( CPipelineData & pipelineData );
     
     // Get Vulkan error
     const char * getError();
@@ -189,9 +196,6 @@ private:
     // Copy a buffer
     void copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size );
     
-    // Destroy the swap chain
-    void destroySwapChain();
-    
     // Copy buffer helper functions
     VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands( VkCommandBuffer commandBuffer );
@@ -258,9 +262,6 @@ protected:
     // Render pass
     VkRenderPass m_renderPass;
     
-    // Graphics pipeline
-    VkPipeline m_graphicsPipeline;
-    
     // Frame buffer
     std::vector<VkFramebuffer> m_framebufferVec;
     
@@ -302,10 +303,6 @@ protected:
     PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
     VkDebugReportCallbackEXT vkDebugReportCallbackEXT;
     PFN_vkDestroyDebugReportCallbackEXT vkDestroyDebugReportCallbackEXT;
-    
-    // temporary members
-    VkShaderModule m_shaderModuleVert;
-    VkShaderModule m_shaderModuleFrag;
 };
 
 #endif  // __device_vulkan_h__

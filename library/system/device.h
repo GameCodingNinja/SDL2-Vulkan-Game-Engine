@@ -117,8 +117,8 @@ public:
     // Get the render pass
     VkRenderPass getRenderPass();
     
-    // Get the graphics pipeline
-    VkPipeline getGraphicsPipeline();
+    // Get the pipeline
+    VkPipeline getPipeline( const std::string & id );
     
     // Get the pipeline layout
     VkPipelineLayout getPipelinelayout();
@@ -180,6 +180,9 @@ private:
     // Create the shader
     VkShaderModule createShader( const std::string & filePath );
     
+    // Recreate the pipeline
+    void recreatePipelines() override;
+    
     // Delete a texture in a group
     void deleteTextureGroup( const std::string & group );
     
@@ -197,6 +200,9 @@ private:
     
     // A controlled way to destroy the assets
     void destroyAssets() override;
+    
+    // Destroy the swap chain
+    void destroySwapChain() override;
     
     // Get the number of textures in this group
     size_t getTextureGroupCount( const std::string & group );

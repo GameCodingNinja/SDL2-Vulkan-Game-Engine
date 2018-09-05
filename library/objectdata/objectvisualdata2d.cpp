@@ -211,12 +211,10 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode )
         // Check for color
         m_color = NParseHelper::LoadColor( visualNode, m_color );
 
-        // The shader node determines which shader to use
-        const XMLNode shaderNode = visualNode.getChildNode( "shader" );
-        if( !shaderNode.isEmpty() )
-        {
-            m_shaderID = shaderNode.getAttribute( "id" );
-        }
+        // The pipeline node determines which pipeline to use
+        const XMLNode pipelineNode = visualNode.getChildNode( "pipeline" );
+        if( !pipelineNode.isEmpty() )
+            m_shaderID = pipelineNode.getAttribute( "id" );
 
         // Raise an exception if there's a genType but no shader
         if( (m_genType != NDefs::EGT_NULL) && m_shaderID.empty() )

@@ -15,6 +15,7 @@
 #include <common/texture.h>
 #include <common/size.h>
 #include <common/vertex.h>
+#include <common/pipelinedata.h>
 #include <soil/SOIL.h>
 
 // Boost lib dependencies
@@ -58,7 +59,6 @@ CDeviceVulkan::CDeviceVulkan() :
     m_pipelineLayout(VK_NULL_HANDLE),
     m_descriptorSetLayout(VK_NULL_HANDLE),
     m_renderPass(VK_NULL_HANDLE),
-    m_graphicsPipeline(VK_NULL_HANDLE),
     m_primaryCmdPool(VK_NULL_HANDLE),
     m_currentFrame(0),
     m_maxConcurrentFrames(0),
@@ -254,12 +254,6 @@ void CDeviceVulkan::destroySwapChain()
                 vkDestroyFramebuffer( m_logicalDevice, framebuffer, nullptr );
             
             m_framebufferVec.clear();
-        }
-        
-        if( m_graphicsPipeline != VK_NULL_HANDLE )
-        {
-            vkDestroyPipeline( m_logicalDevice, m_graphicsPipeline, nullptr );
-            m_graphicsPipeline = VK_NULL_HANDLE;
         }
         
         if( m_renderPass != VK_NULL_HANDLE )
@@ -788,21 +782,21 @@ void CDeviceVulkan::createRenderPass()
 
 
 /***************************************************************************
-*   DESC:  Create the graphics pipeline
+*   DESC:  Create the pipeline
 ****************************************************************************/
-void CDeviceVulkan::createGraphicsPipeline()
+void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
 {
     // Create the graphics pipeline
     VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-    vertShaderStageInfo.module = m_shaderModuleVert;
+    vertShaderStageInfo.module = pipelineData.m_shaderVert;
     vertShaderStageInfo.pName = "main";
     
     VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
     fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-    fragShaderStageInfo.module = m_shaderModuleFrag;
+    fragShaderStageInfo.module = pipelineData.m_shaderFrag;
     fragShaderStageInfo.pName = "main";
     
     // Bind the vertex buffer
@@ -923,7 +917,7 @@ void CDeviceVulkan::createGraphicsPipeline()
     if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
         pipelineInfo.pDepthStencilState = &depthStencil;
 
-    if( (m_lastResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline )) )
+    if( (m_lastResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineData.m_pipeline )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError() ) );
 }
 
@@ -1081,8 +1075,8 @@ void CDeviceVulkan::recreateSwapChain()
     // Create the render pass
     createRenderPass();
     
-    // Create the graphics pipeline
-    createGraphicsPipeline();
+    // Recreate the graphics pipeline
+    recreatePipelines();
     
     // Create depth resources
     createDepthResources();

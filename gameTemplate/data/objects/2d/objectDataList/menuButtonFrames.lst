@@ -9,7 +9,7 @@
                 <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
             </mesh>
             <color r="48" g="97" b="153" a="1"/>
-            <shader id="shader_2d"/>
+            <pipeline id="shader_2d"/>
         </visual>
     </default>
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->

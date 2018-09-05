@@ -9,7 +9,7 @@
                 <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
             </mesh>
             <color r="64" g="125" b="192" a="1"/>
-            <shader id="shader_2d"/>
+            <pipeline id="shader_2d"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
@@ -49,7 +49,7 @@
 
         <object name="275x55_button_solid">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="271" height="51"/>
@@ -57,7 +57,7 @@
 
         <object name="145x55_button_solid">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="141" height="51"/>
@@ -65,7 +65,7 @@
 
         <object name="125x55_button_solid">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="121" height="51"/>
@@ -73,7 +73,7 @@
 
         <object name="28x28_button_solid">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="26" height="26"/>
@@ -88,7 +88,7 @@
                     </spriteSheet>
                 </mesh>
                 <color r="48" g="97" b="153" a="1"/>
-                <shader id="shader_2d_spriteSheet"/>
+                <pipeline id="shader_2d_spriteSheet"/>
             </visual>
         </object>
         
@@ -100,13 +100,13 @@
                         <glyph id="arrow"/>
                     </spriteSheet>
                 </mesh>
-                <shader id="shader_2d_spriteSheet"/>
+                <pipeline id="shader_2d_spriteSheet"/>
             </visual>
         </object>
 
         <object name="arrow_button_solid">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="31" height="39"/>
@@ -114,7 +114,7 @@
         
         <object name="key_binding_button_solid">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="904" height="36"/>
@@ -122,7 +122,7 @@
 
         <object name="key_binding_scroll_box_mask">
             <visual>
-                <shader id="shader_solid_2d"/>
+                <pipeline id="shader_solid_2d"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="916" height="548"/>

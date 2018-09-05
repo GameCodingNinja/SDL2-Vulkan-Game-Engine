@@ -71,6 +71,8 @@ void CVisualComponentQuad::recordCommandBuffers(
     const auto & rVisualData( m_rObjectData.getVisualData() );
     auto & device( CDevice::Instance() );
     
+    VkPipeline pipeline = device.getPipeline( rVisualData.getShaderID() );
+    
     // Setup the uniform buffer object
     UniformBufferObject ubo;
     ubo.model.setScale( rVisualData.getVertexScale() );
@@ -90,7 +92,7 @@ void CVisualComponentQuad::recordCommandBuffers(
     cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
 
     vkBeginCommandBuffer( m_commandBufVec[index], &cmdBeginInfo);
-    vkCmdBindPipeline( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getGraphicsPipeline());
+    vkCmdBindPipeline( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline );
     
     /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
     vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
@@ -106,7 +108,7 @@ void CVisualComponentQuad::recordCommandBuffers(
     // Bind the index buffer
     vkCmdBindIndexBuffer( m_commandBufVec[index], rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
 
-    vkCmdBindDescriptorSets( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getPipelinelayout(), 0, 1, &m_descriptorSetVec[index], 0, nullptr);
+    vkCmdBindDescriptorSets( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, device.getPipelinelayout(), 0, 1, &m_descriptorSetVec[index], 0, nullptr );
 
     vkCmdDrawIndexed( m_commandBufVec[index], rVisualData.getIBOCount(), 1, 0, 0, 0 );
 

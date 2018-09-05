@@ -181,6 +181,23 @@ void CDevice::destroyAssets()
 
 
 /***************************************************************************
+*   DESC:  Destroy the swap chain
+****************************************************************************/
+void CDevice::destroySwapChain()
+{
+    CDeviceVulkan::destroySwapChain();
+            
+    if( m_logicalDevice != VK_NULL_HANDLE )
+    {
+        // Free all pipelines. DO NOT clear the map!
+        // Need the handles to the shaders to recreate the pipeline
+        for( auto & iter : m_pipelineDataMap )
+            vkDestroyPipeline( m_logicalDevice, iter.second.m_pipeline, nullptr );
+    }
+}
+
+
+/***************************************************************************
 *   DESC:  Delete memory buffer
 ****************************************************************************/
 void CDevice::deleteMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec )
@@ -483,16 +500,22 @@ void CDevice::createPipelines( const std::string & filePath )
             pipelineData.m_shaderVert = createShader( pipelineNode.getChildNode("vert").getAttribute("file") );
             pipelineData.m_shaderFrag = createShader( pipelineNode.getChildNode("frag").getAttribute("file") );
             
-            // temp
-            m_shaderModuleVert = pipelineData.m_shaderVert;
-            m_shaderModuleFrag = pipelineData.m_shaderFrag;
+            // Create the graphics pipeline
+            CDeviceVulkan::createPipeline( pipelineData );
             
             m_pipelineDataMap.emplace( id, pipelineData );
         }
     }
-    
-    // Create the graphics pipeline
-    createGraphicsPipeline();
+}
+
+
+/************************************************************************
+*    DESC:  Recreate the pipeline
+************************************************************************/
+void CDevice::recreatePipelines()
+{
+    for( auto & iter : m_pipelineDataMap )
+        CDeviceVulkan::createPipeline( iter.second );
 }
 
 
@@ -807,11 +830,15 @@ VkRenderPass CDevice::getRenderPass()
 
 
 /***************************************************************************
-*   DESC:  Get the graphics pipeline
+*   DESC:  Get the pipeline
 ****************************************************************************/
-VkPipeline CDevice::getGraphicsPipeline()
+VkPipeline CDevice::getPipeline( const std::string & id )
 {
-    return m_graphicsPipeline;
+    auto iter = m_pipelineDataMap.find( id );
+    if( iter == m_pipelineDataMap.end() )
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Pipeline Id does not exist: %s") % id ) );
+
+    return iter->second.m_pipeline;
 }
 
 
