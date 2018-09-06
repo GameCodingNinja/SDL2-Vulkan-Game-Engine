@@ -33,6 +33,7 @@
 ************************************************************************/
 CObjectVisualData2D::CObjectVisualData2D() :
     m_genType(NDefs::EGT_NULL),
+    m_pipelineIndex(-1),
     m_textureSequenceCount(0),
     m_compressed(false),
     m_iboCount(0),
@@ -214,10 +215,13 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode )
         // The pipeline node determines which pipeline to use
         const XMLNode pipelineNode = visualNode.getChildNode( "pipeline" );
         if( !pipelineNode.isEmpty() )
-            m_shaderID = pipelineNode.getAttribute( "id" );
+        {
+            std::string pipelineId = pipelineNode.getAttribute( "id" );
+            m_pipelineIndex = CDevice::Instance().getPipelineIndex( pipelineId );
+        }
 
-        // Raise an exception if there's a genType but no shader
-        if( (m_genType != NDefs::EGT_NULL) && m_shaderID.empty() )
+        // Raise an exception if there's a genType but no valid pipeline index
+        if( (m_genType != NDefs::EGT_NULL) && (m_pipelineIndex == -1) )
         {
             throw NExcept::CCriticalException("Shader effect or techique not set!",
                 boost::str( boost::format("Shader object data missing.\n\n%s\nLine: %s")
@@ -637,11 +641,11 @@ const CTexture & CObjectVisualData2D::getVulkanTexture( uint index ) const
 
 
 /************************************************************************
-*    DESC:  Get the name of the shader ID
+*    DESC:  Get the name of the pipeline index
 ************************************************************************/
-const std::string & CObjectVisualData2D::getShaderID() const
+int CObjectVisualData2D::getPipelineIndex() const
 {
-    return m_shaderID;
+    return m_pipelineIndex;
 }
 
 

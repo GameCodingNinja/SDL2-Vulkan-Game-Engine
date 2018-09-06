@@ -191,8 +191,8 @@ void CDevice::destroySwapChain()
     {
         // Free all pipelines. DO NOT clear the map!
         // Need the handles to the shaders to recreate the pipeline
-        for( auto & iter : m_pipelineDataMap )
-            vkDestroyPipeline( m_logicalDevice, iter.second.m_pipeline, nullptr );
+        for( auto & iter : m_pipelineDataVec )
+            vkDestroyPipeline( m_logicalDevice, iter.m_pipeline, nullptr );
     }
 }
 
@@ -503,7 +503,11 @@ void CDevice::createPipelines( const std::string & filePath )
             // Create the graphics pipeline
             CDeviceVulkan::createPipeline( pipelineData );
             
-            m_pipelineDataMap.emplace( id, pipelineData );
+            // Map for holding index of the pipeline in the vector
+            m_pipelineIndexMap.emplace( id, i );
+            
+            // Vector of pipeline data for quick access
+            m_pipelineDataVec.emplace_back( pipelineData );
         }
     }
 }
@@ -514,8 +518,8 @@ void CDevice::createPipelines( const std::string & filePath )
 ************************************************************************/
 void CDevice::recreatePipelines()
 {
-    for( auto & iter : m_pipelineDataMap )
-        CDeviceVulkan::createPipeline( iter.second );
+    for( auto & iter : m_pipelineDataVec )
+        CDeviceVulkan::createPipeline( iter );
 }
 
 
@@ -832,13 +836,22 @@ VkRenderPass CDevice::getRenderPass()
 /***************************************************************************
 *   DESC:  Get the pipeline
 ****************************************************************************/
-VkPipeline CDevice::getPipeline( const std::string & id )
+VkPipeline CDevice::getPipeline( int index )
 {
-    auto iter = m_pipelineDataMap.find( id );
-    if( iter == m_pipelineDataMap.end() )
+    return m_pipelineDataVec.at(index).m_pipeline;
+}
+
+
+/***************************************************************************
+*   DESC:  Get the pipeline index
+****************************************************************************/
+int CDevice::getPipelineIndex( const std::string & id )
+{
+    auto iter = m_pipelineIndexMap.find( id );
+    if( iter == m_pipelineIndexMap.end() )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Pipeline Id does not exist: %s") % id ) );
 
-    return iter->second.m_pipeline;
+    return iter->second;
 }
 
 

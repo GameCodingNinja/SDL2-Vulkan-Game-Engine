@@ -48,8 +48,8 @@ public:
     uint32_t getTextureID( uint index = 0 ) const;
     const CTexture & getVulkanTexture( uint index = 0 ) const;
 
-    // Get the name of the shader ID
-    const std::string & getShaderID() const;
+    // Get the name of the pipeline index
+    int getPipelineIndex() const;
 
     // Get the color
     const CColor & getColor() const;
@@ -130,8 +130,8 @@ private:
     // VBO/IBO generation type
     NDefs::EGenerationType m_genType;
 
-    // Name of the shader
-    std::string m_shaderID;
+    // Pipeline index
+    int m_pipelineIndex;
 
     // Initial color of the object
     CColor m_color;

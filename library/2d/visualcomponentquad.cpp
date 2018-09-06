@@ -71,7 +71,7 @@ void CVisualComponentQuad::recordCommandBuffers(
     const auto & rVisualData( m_rObjectData.getVisualData() );
     auto & device( CDevice::Instance() );
     
-    VkPipeline pipeline = device.getPipeline( rVisualData.getShaderID() );
+    VkPipeline pipeline = device.getPipeline( rVisualData.getPipelineIndex() );
     
     // Setup the uniform buffer object
     UniformBufferObject ubo;

@@ -57,7 +57,7 @@ CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData )
     m_indiceType( (visualData.getGenerationType() == NDefs::EGT_FONT) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_BYTE ),
     m_pFontData(nullptr)
 {
-    if( visualData.isActive() )
+    /*if( visualData.isActive() )
     {
         m_pShaderData = &CShaderMgr::Instance().getShaderData( visualData.getShaderID() );
 
@@ -86,7 +86,7 @@ CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData )
         // Using a normal pointer to keep the memory foot print as small as possible
         if( GENERATION_TYPE == NDefs::EGT_FONT )
             m_pFontData = new CFontData;
-    }
+    }*/
 }
 
 

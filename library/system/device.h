@@ -118,7 +118,10 @@ public:
     VkRenderPass getRenderPass();
     
     // Get the pipeline
-    VkPipeline getPipeline( const std::string & id );
+    VkPipeline getPipeline( int index );
+    
+    // Get the pipeline index
+    int getPipelineIndex( const std::string & id );
     
     // Get the pipeline layout
     VkPipelineLayout getPipelinelayout();
@@ -233,8 +236,11 @@ private:
     // Map containing loaded shader module
     std::map< const std::string, VkShaderModule > m_shaderModuleMap;
     
-    // Map containing data for creating the pipeline
-    std::map< const std::string, CPipelineData > m_pipelineDataMap;
+    // Vector containing data for creating the pipeline
+    std::vector< CPipelineData > m_pipelineDataVec;
+    
+    // Map containing index to pipeline in vector
+    std::map< const std::string, int > m_pipelineIndexMap;
     
     // Command buffer of sprite objects to be rendered
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
