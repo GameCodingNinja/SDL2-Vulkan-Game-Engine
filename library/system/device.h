@@ -55,6 +55,7 @@ public:
     // Create descriptor sets
     std::vector<VkDescriptorSet> createDescriptorSet(
         const std::string & group,
+        const CPipelineData & pipelineData,
         const CTexture & texture,
         const std::vector<CMemoryBuffer> & uniformBufVec,
         VkDeviceSize sizeOfUniformBuf );
@@ -117,14 +118,11 @@ public:
     // Get the render pass
     VkRenderPass getRenderPass();
     
-    // Get the pipeline
-    VkPipeline getPipeline( int index );
+    // Get the pipeline data
+    const CPipelineData & getPipelineData( int index ) const;
     
     // Get the pipeline index
     int getPipelineIndex( const std::string & id );
-    
-    // Get the pipeline layout
-    VkPipelineLayout getPipelinelayout();
     
     // Show/Hide the Window
     void showWindow( bool visible );

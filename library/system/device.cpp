@@ -176,6 +176,15 @@ void CDevice::destroyAssets()
             vkDestroyShaderModule( m_logicalDevice, iter.second, nullptr );
         
         m_shaderModuleMap.clear();
+        
+        // Free pipeline dependencies
+        for( auto & iter : m_pipelineDataVec )
+        {
+            vkDestroyPipelineLayout( m_logicalDevice, iter.m_pipelineLayout, nullptr );
+            vkDestroyDescriptorSetLayout( m_logicalDevice, iter.m_descriptorSetLayout, nullptr );
+        }
+        
+        m_pipelineDataVec.clear();
     }
 }
 
@@ -192,7 +201,10 @@ void CDevice::destroySwapChain()
         // Free all pipelines. DO NOT clear the map!
         // Need the handles to the shaders to recreate the pipeline
         for( auto & iter : m_pipelineDataVec )
+        {
             vkDestroyPipeline( m_logicalDevice, iter.m_pipeline, nullptr );
+            iter.m_pipeline = VK_NULL_HANDLE;
+        }
     }
 }
 
@@ -449,6 +461,7 @@ void CDevice::createDescriptorPoolGroup( const std::string & group )
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
     const std::string & group,
+    const CPipelineData & pipelineData,
     const CTexture & texture,
     const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDeviceSize sizeOfUniformBuf )
@@ -459,7 +472,7 @@ std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool hasn't been created! %s") % group ) );
     
     return CDeviceVulkan::createDescriptorSet(
-        texture, uniformBufVec, sizeOfUniformBuf, iter->second );
+        texture, pipelineData, uniformBufVec, sizeOfUniformBuf, iter->second );
 }
 
 
@@ -499,6 +512,12 @@ void CDevice::createPipelines( const std::string & filePath )
             
             pipelineData.m_shaderVert = createShader( pipelineNode.getChildNode("vert").getAttribute("file") );
             pipelineData.m_shaderFrag = createShader( pipelineNode.getChildNode("frag").getAttribute("file") );
+            
+            // Create the descriptor set layout
+            CDeviceVulkan::createDescriptorSetLayout( pipelineData );
+
+            // Create the pipeline layout
+            CDeviceVulkan::createPipelineLayout( pipelineData );
             
             // Create the graphics pipeline
             CDeviceVulkan::createPipeline( pipelineData );
@@ -836,9 +855,9 @@ VkRenderPass CDevice::getRenderPass()
 /***************************************************************************
 *   DESC:  Get the pipeline
 ****************************************************************************/
-VkPipeline CDevice::getPipeline( int index )
+const CPipelineData & CDevice::getPipelineData( int index ) const
 {
-    return m_pipelineDataVec.at(index).m_pipeline;
+    return m_pipelineDataVec.at(index);
 }
 
 
@@ -852,13 +871,4 @@ int CDevice::getPipelineIndex( const std::string & id )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Pipeline Id does not exist: %s") % id ) );
 
     return iter->second;
-}
-
-
-/***************************************************************************
-*   DESC:  Get the pipeline layout
-****************************************************************************/
-VkPipelineLayout CDevice::getPipelinelayout()
-{
-    return m_pipelineLayout;
 }

@@ -56,8 +56,6 @@ CDeviceVulkan::CDeviceVulkan() :
     m_graphicsQueue(VK_NULL_HANDLE),
     m_presentQueue(VK_NULL_HANDLE),
     m_swapchain(VK_NULL_HANDLE),
-    m_pipelineLayout(VK_NULL_HANDLE),
-    m_descriptorSetLayout(VK_NULL_HANDLE),
     m_renderPass(VK_NULL_HANDLE),
     m_primaryCmdPool(VK_NULL_HANDLE),
     m_currentFrame(0),
@@ -144,12 +142,6 @@ void CDeviceVulkan::create(
     // Setup the swap chain to be created
     setupSwapChain();
     
-    // Create the descriptor set layout
-    createDescriptorSetLayout();
-    
-    // Create the pipeline layout
-    createPipelineLayout();
-    
     // Create the swap chain
     createSwapChain();
     
@@ -210,18 +202,6 @@ void CDeviceVulkan::destroy()
         {
             vkDestroyCommandPool( m_logicalDevice, m_primaryCmdPool, nullptr );
             m_primaryCmdPool = VK_NULL_HANDLE;
-        }
-        
-        if( m_descriptorSetLayout != VK_NULL_HANDLE )
-        {
-            vkDestroyDescriptorSetLayout( m_logicalDevice, m_descriptorSetLayout, nullptr );
-            m_descriptorSetLayout = VK_NULL_HANDLE;
-        }
-        
-        if( m_pipelineLayout != VK_NULL_HANDLE )
-        {
-            vkDestroyPipelineLayout( m_logicalDevice, m_pipelineLayout, nullptr );
-            m_pipelineLayout = VK_NULL_HANDLE;
         }
         
         destroyAssets();
@@ -666,52 +646,6 @@ void CDeviceVulkan::createSwapChain()
 
 
 /***************************************************************************
-*   DESC:  Create the descriptor set layout
-****************************************************************************/
-void CDeviceVulkan::createDescriptorSetLayout()
-{
-    VkDescriptorSetLayoutBinding uboLayoutBinding = {};
-    uboLayoutBinding.binding = 0;
-    uboLayoutBinding.descriptorCount = 1;
-    uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    uboLayoutBinding.pImmutableSamplers = nullptr;
-    uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-    
-    VkDescriptorSetLayoutBinding samplerLayoutBinding = {};
-    samplerLayoutBinding.binding = 1;
-    samplerLayoutBinding.descriptorCount = 1;
-    samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    samplerLayoutBinding.pImmutableSamplers = nullptr;
-    samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
-
-    std::vector<VkDescriptorSetLayoutBinding> bindings = {uboLayoutBinding, samplerLayoutBinding};
-
-    VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-    layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutInfo.bindingCount = bindings.size();
-    layoutInfo.pBindings = bindings.data();
-    
-    if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &m_descriptorSetLayout )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError() ) );
-}
-
-
-/***************************************************************************
-*   DESC:  Create the pipeline layout
-****************************************************************************/
-void CDeviceVulkan::createPipelineLayout()
-{
-    VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
-    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.setLayoutCount = 1;
-    pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
-
-    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &m_pipelineLayout )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
-}
-
-
-/***************************************************************************
 *   DESC:  Create the render pass
 ****************************************************************************/
 void CDeviceVulkan::createRenderPass()
@@ -778,6 +712,52 @@ void CDeviceVulkan::createRenderPass()
     
     if( (m_lastResult = vkCreateRenderPass( m_logicalDevice, &renderPassInfo, nullptr, &m_renderPass )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError() ) );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the descriptor set layout
+****************************************************************************/
+void CDeviceVulkan::createDescriptorSetLayout( CPipelineData & pipelineData )
+{
+    VkDescriptorSetLayoutBinding uboLayoutBinding = {};
+    uboLayoutBinding.binding = 0;
+    uboLayoutBinding.descriptorCount = 1;
+    uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    uboLayoutBinding.pImmutableSamplers = nullptr;
+    uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    
+    VkDescriptorSetLayoutBinding samplerLayoutBinding = {};
+    samplerLayoutBinding.binding = 1;
+    samplerLayoutBinding.descriptorCount = 1;
+    samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    samplerLayoutBinding.pImmutableSamplers = nullptr;
+    samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+
+    std::vector<VkDescriptorSetLayoutBinding> bindings = {uboLayoutBinding, samplerLayoutBinding};
+
+    VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+    layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    layoutInfo.bindingCount = bindings.size();
+    layoutInfo.pBindings = bindings.data();
+    
+    if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &pipelineData.m_descriptorSetLayout )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError() ) );
+}
+
+
+/***************************************************************************
+*   DESC:  Create the pipeline layout
+****************************************************************************/
+void CDeviceVulkan::createPipelineLayout( CPipelineData & pipelineData )
+{
+    VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
+    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipelineLayoutInfo.setLayoutCount = 1;
+    pipelineLayoutInfo.pSetLayouts = &pipelineData.m_descriptorSetLayout;
+
+    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineData.m_pipelineLayout )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
 }
 
 
@@ -907,7 +887,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
     pipelineInfo.pDynamicState = nullptr;//&dynamicState;
-    pipelineInfo.layout = m_pipelineLayout;
+    pipelineInfo.layout = pipelineData.m_pipelineLayout;
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
@@ -1736,11 +1716,12 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSet(
     const CTexture & texture,
+    const CPipelineData & pipelineData,
     const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDeviceSize sizeOfUniformBuf,
     VkDescriptorPool descriptorPool )
 {
-    std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), m_descriptorSetLayout );
+    std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), pipelineData.m_descriptorSetLayout );
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = descriptorPool;

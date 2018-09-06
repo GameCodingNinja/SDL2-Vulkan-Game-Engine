@@ -68,12 +68,19 @@ protected:
     // Create descriptor sets
     std::vector<VkDescriptorSet> createDescriptorSet(
         const CTexture & texture,
+        const CPipelineData & pipelineData,
         const std::vector<CMemoryBuffer> & uniformBufVec,
         VkDeviceSize sizeOfUniformBuf,
         VkDescriptorPool descriptorPool );
     
     // Create the shader
     VkShaderModule createShader( const std::string & filePath );
+    
+    // Create the descriptor set layout
+    void createDescriptorSetLayout( CPipelineData & pipelineData );
+    
+    // Create the pipeline layout
+    void createPipelineLayout( CPipelineData & pipelineData );
     
     // Create the pipeline
     void createPipeline( CPipelineData & pipelineData );
@@ -159,12 +166,6 @@ private:
     
     // Create the render pass
     void createRenderPass();
-    
-    // Create the descriptor set layout
-    void createDescriptorSetLayout();
-    
-    // Create the pipeline layout
-    void createPipelineLayout();
     
     // Create the frame buffer
     void createFrameBuffer();
@@ -252,12 +253,6 @@ protected:
     
     // Swap chain info
     VkSwapchainCreateInfoKHR m_swapchainInfo = {};
-    
-    // Pipeline layout
-    VkPipelineLayout m_pipelineLayout;
-    
-    // Descriptor set layout
-    VkDescriptorSetLayout m_descriptorSetLayout;
     
     // Render pass
     VkRenderPass m_renderPass;
