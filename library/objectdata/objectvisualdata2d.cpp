@@ -338,7 +338,7 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
 {
     const std::vector<uint16_t> iboVec = { 0, 1, 2, 2, 3, 0 };
     
-    std::vector<CVertex> vertVec =
+    std::vector<NVertex::vert_uv_normal> vertVec =
     {
         {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
         {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},

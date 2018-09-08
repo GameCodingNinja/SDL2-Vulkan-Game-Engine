@@ -25,6 +25,7 @@
 class CTexture;
 class CMemoryBuffer;
 class CPipelineData;
+class CDescriptor;
 
 class CDeviceVulkan
 {
@@ -77,10 +78,10 @@ protected:
     VkShaderModule createShader( const std::string & filePath );
     
     // Create the descriptor set layout
-    void createDescriptorSetLayout( CPipelineData & pipelineData );
+    VkDescriptorSetLayout createDescriptorSetLayout( CDescriptor & descriptor );
     
     // Create the pipeline layout
-    void createPipelineLayout( CPipelineData & pipelineData );
+    VkPipelineLayout createPipelineLayout( VkDescriptorSetLayout descriptorSetLayout );
     
     // Create the pipeline
     void createPipeline( CPipelineData & pipelineData );

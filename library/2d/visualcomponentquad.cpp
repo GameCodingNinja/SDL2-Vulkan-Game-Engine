@@ -14,7 +14,7 @@
 #include <utilities/settings.h>
 #include <common/quad2d.h>
 #include <common/uniformbufferobject.h>
-#include <common/pipelinedata.h>
+#include <common/pipeline.h>
 #include <system/device.h>
 
 /************************************************************************
@@ -26,10 +26,10 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 {
     auto & device( CDevice::Instance() );
     
-    //make uniform buffer pipeline level
+    //make uniform buffer pipeline level but based on shader id
     
     // Create the uniform buffer
-    m_uniformBufVec = device.createUniformBuffer( sizeof(UniformBufferObject) );
+    m_uniformBufVec = device.createUniformBuffer( sizeof(NUBO::model_viewProj_color_additive) );
     
     const CPipelineData & rPipelineData = device.getPipelineData( objectData.getVisualData().getPipelineIndex() );
     
@@ -41,7 +41,7 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
         rPipelineData,
         objectData.getVisualData().getVulkanTexture(),
         m_uniformBufVec,
-        sizeof(UniformBufferObject) );
+        sizeof(NUBO::model_viewProj_color_additive) );
     
     // Create the command buffer vector
     m_commandBufVec = device.createSecondaryCommandBuffers( objectData.getGroup() );
@@ -83,7 +83,7 @@ void CVisualComponentQuad::recordCommandBuffers(
     const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
     
     // Setup the uniform buffer object
-    UniformBufferObject ubo;
+    NUBO::model_viewProj_color_additive ubo;
     ubo.model.setScale( rVisualData.getVertexScale() );
     ubo.model *= model;
     ubo.viewProj = viewProj;

@@ -16,7 +16,9 @@
 #include <common/texture.h>
 #include <common/color.h>
 #include <common/memorybuffer.h>
-#include <common/pipelinedata.h>
+#include <common/uniformbufferobject.h>
+#include <common/vertex.h>
+#include <common/pipeline.h>
 #include <utilities/xmlParser.h>
 
 // Boost lib dependencies
@@ -177,14 +179,18 @@ void CDevice::destroyAssets()
         
         m_shaderModuleMap.clear();
         
-        // Free pipeline dependencies
-        for( auto & iter : m_pipelineDataVec )
-        {
-            vkDestroyPipelineLayout( m_logicalDevice, iter.m_pipelineLayout, nullptr );
-            vkDestroyDescriptorSetLayout( m_logicalDevice, iter.m_descriptorSetLayout, nullptr );
-        }
-        
-        m_pipelineDataVec.clear();
+        // Free pipeline descriptor set layout
+        for( auto & iter : m_descriptorSetLayoutMap )
+            vkDestroyDescriptorSetLayout( m_logicalDevice, iter.second, nullptr );
+
+        m_descriptorSetLayoutMap.clear();
+
+        // Free pipeline descriptor set layout
+        for( auto & iter : m_pipelineLayoutMap )
+            vkDestroyPipelineLayout( m_logicalDevice, iter.second, nullptr );
+
+        m_pipelineLayoutMap.clear();
+
     }
 }
 
@@ -498,36 +504,142 @@ void CDevice::createCommandPoolGroup( const std::string & group )
 ************************************************************************/
 void CDevice::createPipelines( const std::string & filePath )
 {
-    // Open and parse the XML file:
-    XMLNode node = XMLNode::openFileHelper( filePath.c_str(), "pipelineList" );
+    // Map containing UBO information
+    std::map< const std::string, CUBO > uboMap;
     
-    for( int i = 0; i < node.nChildNode(); ++i )
+    // Map containing shader information
+    std::map< const std::string, CShader > shaderMap;
+    
+    // Open and parse the XML file:
+    XMLNode node = XMLNode::openFileHelper( filePath.c_str(), "pipelinemap" );
+    
+    
+    // Create the ubo list
+    const XMLNode uboLstNode = node.getChildNode("uboList");
+    
+    for( int i = 0; i < uboLstNode.nChildNode(); ++i )
     {
-        const XMLNode pipelineNode = node.getChildNode("pipeline", i);
+        const std::string id = uboLstNode.getChildNode("ubo", i).getAttribute("id");
         
-        if( !pipelineNode.isEmpty() )
+        uboMap.emplace( id, NUBO::GetUboSize(id) );
+    }
+    
+    
+    // Create the descriptor list
+    const XMLNode descriptorLstNode = node.getChildNode("descriptorList");
+    
+    for( int i = 0; i < descriptorLstNode.nChildNode(); ++i )
+    {
+        const XMLNode descriptorNode = descriptorLstNode.getChildNode(i);
+        
+        const std::string descId = descriptorNode.getAttribute("id");
+        
+        CDescriptor descriptor;
+        
+        // Populate with the descriptors with UBO info
+        for( int j = 0; j < descriptorNode.nChildNode("ubo"); ++j )
         {
-            CPipelineData pipelineData;
-            const std::string id = pipelineNode.getAttribute("Id");
+            const std::string id = descriptorNode.getChildNode("ubo", j).getAttribute("id");
             
-            pipelineData.m_shaderVert = createShader( pipelineNode.getChildNode("vert").getAttribute("file") );
-            pipelineData.m_shaderFrag = createShader( pipelineNode.getChildNode("frag").getAttribute("file") );
+            auto iter = uboMap.find( id );
+            if( iter == uboMap.end() )
+                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("UBO id not found! %s") % id ) );
             
-            // Create the descriptor set layout
-            CDeviceVulkan::createDescriptorSetLayout( pipelineData );
-
-            // Create the pipeline layout
-            CDeviceVulkan::createPipelineLayout( pipelineData );
-            
-            // Create the graphics pipeline
-            CDeviceVulkan::createPipeline( pipelineData );
-            
-            // Map for holding index of the pipeline in the vector
-            m_pipelineIndexMap.emplace( id, i );
-            
-            // Vector of pipeline data for quick access
-            m_pipelineDataVec.emplace_back( pipelineData );
+            descriptor.m_uboVec.push_back( iter->second );
         }
+        
+        // Populate with the descriptors with binding info
+        for( int j = 0; j < descriptorNode.nChildNode("binding"); ++j )
+        {
+            const std::string id = descriptorNode.getChildNode("binding", j).getAttribute("id");
+            
+            descriptor.m_descriptorIdVec.push_back( id );
+        }
+        
+        m_descriptorMap.emplace( descId, descriptor );
+    }
+    
+    
+    // Create the shaders
+    const XMLNode shaderLstNode = node.getChildNode("shaderList");
+    
+    for( int i = 0; i < shaderLstNode.nChildNode(); ++i )
+    {
+        const XMLNode shaderNode = shaderLstNode.getChildNode(i);
+        
+        const std::string id = shaderNode.getAttribute("id");
+        
+        CShader shader;
+        
+        shader.m_vert = createShader( shaderNode.getChildNode("vert").getAttribute("file") );
+        shader.m_frag = createShader( shaderNode.getChildNode("frag").getAttribute("file") );
+        
+        shaderMap.emplace( id, shader );
+    }
+    
+    
+    // Create the descriptor set and pipeline layout
+    for( auto & iter : m_descriptorMap )
+    {
+        // Create the descriptor set layout
+        VkDescriptorSetLayout descriptorSetLayout = CDeviceVulkan::createDescriptorSetLayout( iter.second );
+        m_descriptorSetLayoutMap.emplace( iter.first, descriptorSetLayout );
+        
+        // Create the pipeline layout
+        VkPipelineLayout pipelineLayout = CDeviceVulkan::createPipelineLayout( descriptorSetLayout );
+        m_pipelineLayoutMap.emplace( iter.first, pipelineLayout );
+    }
+    
+    
+    // Create the pipeline list
+    const XMLNode pipelineLstNode = node.getChildNode("pipelineList");
+    
+    for( int i = 0; i < pipelineLstNode.nChildNode(); ++i )
+    {
+        const XMLNode pipelineNode = pipelineLstNode.getChildNode(i);
+        
+        CPipelineData pipelineData;
+        
+        const std::string pipelineId = pipelineNode.getAttribute("id");
+        
+        // Get the shader
+        const std::string shaderId = pipelineNode.getAttribute("shaderId");
+        
+        auto shaderIter = shaderMap.find( shaderId );
+        if( shaderIter == shaderMap.end() )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Shader id not found! %s") % shaderId ) );
+        
+        pipelineData.m_shader = shaderIter->second;
+        
+        // Get the descriptor layout
+        const std::string descriptorId = pipelineNode.getAttribute("descriptorId");
+        
+        auto discrIter = m_descriptorSetLayoutMap.find( descriptorId );
+        if( discrIter == m_descriptorSetLayoutMap.end() )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor id not found! %s") % descriptorId ) );
+        
+        pipelineData.m_descriptorSetLayout = discrIter->second;
+        
+        // Get the pipeline layout. Same id as the descriptor
+        auto pipelineLayoutIter = m_pipelineLayoutMap.find( descriptorId );
+        if( pipelineLayoutIter == m_pipelineLayoutMap.end() )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Pipeline id not found! %s") % descriptorId ) );
+        
+        pipelineData.m_pipelineLayout = pipelineLayoutIter->second;
+        
+        // Get the vertex input descriptions
+        const std::string vertexInputDescrId = pipelineNode.getAttribute("vertexInputDescrId");
+        pipelineData.vertInputBindingDesc = NVertex::getBindingDesc( vertexInputDescrId );
+        pipelineData.vertInputAttrDescVec = NVertex::getAttributeDesc( vertexInputDescrId );
+        
+        // Create the graphics pipeline
+        CDeviceVulkan::createPipeline( pipelineData );
+        
+        // Map for holding index of the pipeline in the vector
+        m_pipelineIndexMap.emplace( pipelineId, i );
+
+        // Vector of pipeline data for quick access
+        m_pipelineDataVec.emplace_back( pipelineData );
     }
 }
 

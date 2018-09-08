@@ -118,6 +118,8 @@ add_library(
         common/fontproperties.cpp
         common/isprite.cpp
         common/ivisualcomponent.cpp
+        common/vertex.cpp
+        common/uniformbufferobject.cpp
         slot/symbol2d.cpp
         slot/symbolsetview.cpp
         slot/symbolsetviewmanager.cpp

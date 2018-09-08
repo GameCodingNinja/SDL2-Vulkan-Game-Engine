@@ -13,12 +13,16 @@
 
 // Standard lib dependencies
 #include <functional>
+#include <string>
+#include <vector>
+#include <map>
 
 // Forward declaration(s)
 struct SDL_Window;
 struct _SDL_GameController;
 typedef _SDL_GameController SDL_GameController;
 class CPipelineData;
+class CDescriptor;
 
 class CDevice : public CDeviceVulkan
 {
@@ -242,6 +246,15 @@ private:
     
     // Command buffer of sprite objects to be rendered
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
+    
+    // Map containing descriptor information for descriptor creation
+    std::map< const std::string, CDescriptor > m_descriptorMap;
+    
+    // Map containing descriptor set layouts
+    std::map< const std::string, VkDescriptorSetLayout > m_descriptorSetLayoutMap;
+    
+    // Map containing pipeline layouts
+    std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
 };
 
 #endif  // __device_h__

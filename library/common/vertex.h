@@ -13,55 +13,33 @@
 #include <common/normal.h>
 
 // Standard lib dependencies
-#include <array>
+#include <string>
+#include <vector>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
 
-class CVertex
+namespace NVertex
 {
-public:
-
-    // Verts
-    CPoint<float> vert;
-
-    // uv
-    CUV uv;
-    
-    // Vertex normal
-    CNormal<float> norm;
-    
-    static VkVertexInputBindingDescription getBindingDescription()
+    class vert_uv_normal
     {
-        VkVertexInputBindingDescription bindingDescription = {};
-        bindingDescription.binding = 0;
-        bindingDescription.stride = sizeof(CVertex);
-        bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+    public:
 
-        return bindingDescription;
-    }
+        // Verts
+        CPoint<float> vert;
 
-    static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions()
-    {
-        std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions = {};
+        // uv
+        CUV uv;
 
-        attributeDescriptions[0].binding = 0;
-        attributeDescriptions[0].location = 0;
-        attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescriptions[0].offset = offsetof(CVertex, vert);
-        
-        attributeDescriptions[1].binding = 0;
-        attributeDescriptions[1].location = 1;
-        attributeDescriptions[1].format = VK_FORMAT_R32G32_SFLOAT;
-        attributeDescriptions[1].offset = offsetof(CVertex, uv);
-        
-        attributeDescriptions[2].binding = 0;
-        attributeDescriptions[2].location = 2;
-        attributeDescriptions[2].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescriptions[2].offset = offsetof(CVertex, norm);
+        // Vertex normal
+        CNormal<float> norm;
+    };
 
-        return attributeDescriptions;
-    }
-};
+    // Get the vertex input binding binding description
+    VkVertexInputBindingDescription getBindingDesc( const std::string & bindingDes );
+
+    // Get the vertex input attribute description
+    std::vector<VkVertexInputAttributeDescription> getAttributeDesc( const std::string & vertAttrDes );
+}
 
 #endif  // __vertex_2d_h__

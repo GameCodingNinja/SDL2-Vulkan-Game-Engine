@@ -15,7 +15,7 @@
 #include <common/texture.h>
 #include <common/size.h>
 #include <common/vertex.h>
-#include <common/pipelinedata.h>
+#include <common/pipeline.h>
 #include <soil/SOIL.h>
 
 // Boost lib dependencies
@@ -718,46 +718,63 @@ void CDeviceVulkan::createRenderPass()
 /***************************************************************************
 *   DESC:  Create the descriptor set layout
 ****************************************************************************/
-void CDeviceVulkan::createDescriptorSetLayout( CPipelineData & pipelineData )
+VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptor & descriptor )
 {
-    VkDescriptorSetLayoutBinding uboLayoutBinding = {};
-    uboLayoutBinding.binding = 0;
-    uboLayoutBinding.descriptorCount = 1;
-    uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    uboLayoutBinding.pImmutableSamplers = nullptr;
-    uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    std::vector<VkDescriptorSetLayoutBinding> bindings;
     
-    VkDescriptorSetLayoutBinding samplerLayoutBinding = {};
-    samplerLayoutBinding.binding = 1;
-    samplerLayoutBinding.descriptorCount = 1;
-    samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    samplerLayoutBinding.pImmutableSamplers = nullptr;
-    samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
-
-    std::vector<VkDescriptorSetLayoutBinding> bindings = {uboLayoutBinding, samplerLayoutBinding};
+    for( size_t i = 0; i < descriptor.m_descriptorIdVec.size(); ++i )
+    {
+        VkDescriptorSetLayoutBinding binding = {};
+        binding.binding = i;
+        binding.descriptorCount = 1;
+        binding.pImmutableSamplers = nullptr;
+            
+        if( descriptor.m_descriptorIdVec[i] == "UNIFORM_BUFFER" )
+        {
+            binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+        }
+        else if( descriptor.m_descriptorIdVec[i] == "COMBINED_IMAGE_SAMPLER" )
+        {
+            binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+        }
+        else
+        {
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor binding not defined! %s") % descriptor.m_descriptorIdVec[i] ) );
+        }
+        
+        bindings.push_back( binding );
+    }
 
     VkDescriptorSetLayoutCreateInfo layoutInfo = {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     layoutInfo.bindingCount = bindings.size();
     layoutInfo.pBindings = bindings.data();
     
-    if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &pipelineData.m_descriptorSetLayout )) )
+    VkDescriptorSetLayout descriptorSetLayout;
+    if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &descriptorSetLayout)) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError() ) );
+    
+    return descriptorSetLayout;
 }
 
 
 /***************************************************************************
 *   DESC:  Create the pipeline layout
 ****************************************************************************/
-void CDeviceVulkan::createPipelineLayout( CPipelineData & pipelineData )
+VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout descriptorSetLayout )
 {
     VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.setLayoutCount = 1;
-    pipelineLayoutInfo.pSetLayouts = &pipelineData.m_descriptorSetLayout;
+    pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
 
-    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineData.m_pipelineLayout )) )
+    VkPipelineLayout pipelineLayout;
+    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineLayout )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
+    
+    return pipelineLayout;
 }
 
 
@@ -770,25 +787,23 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-    vertShaderStageInfo.module = pipelineData.m_shaderVert;
+    vertShaderStageInfo.module = pipelineData.m_shader.m_vert;
     vertShaderStageInfo.pName = "main";
     
     VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
     fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-    fragShaderStageInfo.module = pipelineData.m_shaderFrag;
+    fragShaderStageInfo.module = pipelineData.m_shader.m_frag;
     fragShaderStageInfo.pName = "main";
     
-    // Bind the vertex buffer
-    auto bindingDescription = CVertex::getBindingDescription();
-    auto attributeDescriptions = CVertex::getAttributeDescriptions();
+    std::vector<VkPipelineShaderStageCreateInfo> shaderStages = {vertShaderStageInfo, fragShaderStageInfo};
     
     VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputInfo.vertexBindingDescriptionCount = 1;
-    vertexInputInfo.vertexAttributeDescriptionCount = attributeDescriptions.size();
-    vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
-    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+    vertexInputInfo.vertexAttributeDescriptionCount = pipelineData.vertInputAttrDescVec.size();
+    vertexInputInfo.pVertexBindingDescriptions = &pipelineData.vertInputBindingDesc;
+    vertexInputInfo.pVertexAttributeDescriptions = pipelineData.vertInputAttrDescVec.data();
         
     VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
     inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -873,8 +888,6 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     colorBlending.logicOp = VK_LOGIC_OP_COPY;
     colorBlending.attachmentCount = 1;
     colorBlending.pAttachments = &colorBlendAttachment;
-    
-    std::vector<VkPipelineShaderStageCreateInfo> shaderStages = {vertShaderStageInfo, fragShaderStageInfo};
 
     VkGraphicsPipelineCreateInfo pipelineInfo = {};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -1745,7 +1758,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSet(
         imageInfo.imageView = texture.m_textureImageView;
         imageInfo.sampler = texture.m_textureSampler;
 
-        std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
+        std::vector<VkWriteDescriptorSet> descriptorWrites(2);
 
         descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
         descriptorWrites[0].dstSet = descriptorSetVec[i];
