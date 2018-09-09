@@ -20,6 +20,7 @@
 #include <common/build_defs.h>
 #include <common/defs.h>
 #include <common/vertex.h>
+#include <common/pipeline.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -337,7 +338,7 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
 void CObjectVisualData2D::generateQuad( const std::string & group )
 {
     const std::vector<uint16_t> iboVec = { 0, 1, 2, 2, 3, 0 };
-    
+
     std::vector<NVertex::vert_uv_normal> vertVec =
     {
         {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
@@ -345,7 +346,7 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
         {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}},
         {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}}
     };
-    
+
     std::string horzStr = "";
     std::string vertStr = "";
 
@@ -368,13 +369,13 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
         vertVec[2].uv.v = 0.0;
         vertVec[3].uv.v = 0.0;
     }
-    
+
     m_vboBuffer = CDevice::Instance().loadBuffer( group, "quad_vbo" + horzStr + vertStr, vertVec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
     m_iboBuffer = CDevice::Instance().loadBuffer( group, "quad_ibo", iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
-    
+
     // Set the ibo count
     m_iboCount = iboVec.size();
-    
+
     /*uint8_t indexData[] = {0, 1, 2, 3};
 
     // VBO data
@@ -624,7 +625,7 @@ uint32_t CObjectVisualData2D::getTextureID( uint index ) const
         return 0;
     else
         return m_textureVec[index];*/
-    
+
     return 0;
 }
 
@@ -635,7 +636,7 @@ const CTexture & CObjectVisualData2D::getVulkanTexture( uint index ) const
         return 0;
     else
         return m_textureVec[index];*/
-    
+
     return m_textureVec[index];
 }
 
@@ -730,4 +731,28 @@ const CSpriteSheet & CObjectVisualData2D::getSpriteSheet() const
 float CObjectVisualData2D::getDefaultUniformScale() const
 {
     return m_defaultUniformScale;
+}
+
+
+/************************************************************************
+*    DESC:  Create a unique descriptor / texture id to add to a set
+*           Adding it to a set allows us to get a count of the unique entries
+*           This is all it's used for
+************************************************************************/
+void CObjectVisualData2D::addToDescSet( const std::string & rDescriptorId, std::set<std::string> & descUniqueLst ) const
+{
+    const std::string descriptorId = CDevice::Instance().getPipelineData( m_pipelineIndex ).m_descriptorId;
+
+    if( rDescriptorId == descriptorId )
+    {
+        if( m_textureSequenceCount > 0 )
+        {
+            for( int i = 0; i < m_textureSequenceCount; ++i )
+                descUniqueLst.insert( descriptorId + boost::str( boost::format(m_textureFilePath) % i ) );
+        }
+        else
+        {
+            descUniqueLst.insert( descriptorId + m_textureFilePath );
+        }
+    }
 }

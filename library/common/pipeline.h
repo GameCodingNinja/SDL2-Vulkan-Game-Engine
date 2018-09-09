@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       pipelinedata.h
 *
-*    DESCRIPTION:     pipeline data class
+*    DESCRIPTION:     Set of classes for dynamic creration of pipelines
 ************************************************************************/
 
 #ifndef __pipeline_data_h__
@@ -24,7 +24,7 @@ public:
     int uboSize;
 };
 
-class CDescriptor
+class CDescriptorData
 {
 public:
     
@@ -47,8 +47,8 @@ public:
     CShader m_shader;
     VkDescriptorSetLayout m_descriptorSetLayout = VK_NULL_HANDLE;
     VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;
-    std::string m_vertexDescription;
     VkPipeline m_pipeline = VK_NULL_HANDLE;
+    std::string m_descriptorId;
     VkVertexInputBindingDescription vertInputBindingDesc = {};
     std::vector<VkVertexInputAttributeDescription> vertInputAttrDescVec;
 };

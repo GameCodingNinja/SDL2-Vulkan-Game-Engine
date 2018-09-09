@@ -23,6 +23,7 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
+#include <set>
 
 // Forward Declarations
 struct XMLNode;
@@ -77,6 +78,9 @@ public:
     
     // Access functions for the default uniform scale
     float getDefaultUniformScale() const;
+    
+    // Create a unique descriptor texture id to add to a list
+    void addToDescSet( const std::string & descriptorId, std::set<std::string> & descUniqueLst ) const;
 
 private:
     

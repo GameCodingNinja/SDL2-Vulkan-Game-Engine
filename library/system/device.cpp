@@ -37,7 +37,7 @@ CDevice::CDevice()
 
 
 /************************************************************************
-*    desc:  destructor                                                             
+*    desc:  destructor
 ************************************************************************/
 CDevice::~CDevice()
 {
@@ -51,17 +51,17 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
 {
     // Set the command buffer call back to be called from the game
     RecordCommandBufferCallback = callback;
-    
+
     // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
     if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
         throw NExcept::CCriticalException("SDL could not initialize!", SDL_GetError() );
 
     // All file I/O is handled by SDL and SDL_Init must be called before doing any I/O.
     CSettings::Instance().loadXML();
-    
+
     // Get the render size of the window
     const CSize<int> size( CSettings::Instance().getSize() );
-    
+
     uint32_t flags( SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN );
     #if !(defined(__IOS__) || defined(__ANDROID__))
     flags |= SDL_WINDOW_RESIZABLE;
@@ -71,14 +71,14 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     m_pWindow = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.getW(), size.getH(), flags );
     if( m_pWindow == nullptr )
         throw NExcept::CCriticalException("Game window could not be created!", SDL_GetError() );
-    
+
     uint32_t instanceExtensionCount(0);
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, nullptr) || (instanceExtensionCount == 0) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension count!", SDL_GetError() );
 
     std::vector<const char*> instanceExtensionNameVec(instanceExtensionCount);
     std::vector<const char*> validationNameVec;
-        
+
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, instanceExtensionNameVec.data()) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension names!", SDL_GetError() );
 
@@ -87,18 +87,18 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     {
         validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
         instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
-        
+
         // Print out extension list for validation layers
         for( auto iter : instanceExtensionNameVec )
             NGenFunc::PostDebugMsg( "Instance Extension: " + std::string(iter));
     }
-    
+
     // Create the Vulkan instance and graphics pipeline
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec );
-    
+
     // Create the pipelines
     createPipelines( pipelineCfg );
-    
+
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
         setFullScreen( CSettings::Instance().getFullScreen() );
@@ -140,7 +140,7 @@ void CDevice::destroyAssets()
             vkDestroyCommandPool( m_logicalDevice, iter.second, nullptr );
 
         m_commandPoolMap.clear();
-        
+
         // Free all textures in all groups
         for( auto & mapIter : m_textureMapMap )
         {
@@ -152,14 +152,15 @@ void CDevice::destroyAssets()
                 vkDestroySampler( m_logicalDevice, iter.second.m_textureSampler, nullptr );
             }
         }
-        
-        m_textureMapMap.clear();
-        
-        // Free all descriptor pool groups
-        for( auto & iter : m_descriptorPoolMap )
-            vkDestroyDescriptorPool( m_logicalDevice, iter.second, nullptr );
 
-        m_descriptorPoolMap.clear();
+        m_textureMapMap.clear();
+
+        // Free all descriptor pool groups
+        for( auto & mapIter : m_descriptorPoolMapMap )
+            for( auto & iter : mapIter.second )
+                vkDestroyDescriptorPool( m_logicalDevice, iter.second, nullptr );
+
+        m_descriptorPoolMapMap.clear();
 
         // Free all memory buffer groups
         for( auto & mapIter : m_memoryBufferMapMap )
@@ -170,15 +171,15 @@ void CDevice::destroyAssets()
                 vkFreeMemory( m_logicalDevice, iter.second.m_deviceMemory, nullptr );
             }
         }
-        
+
         m_memoryBufferMapMap.clear();
 
         // Free all the shader modules
         for( auto & iter : m_shaderModuleMap )
             vkDestroyShaderModule( m_logicalDevice, iter.second, nullptr );
-        
+
         m_shaderModuleMap.clear();
-        
+
         // Free pipeline descriptor set layout
         for( auto & iter : m_descriptorSetLayoutMap )
             vkDestroyDescriptorSetLayout( m_logicalDevice, iter.second, nullptr );
@@ -201,7 +202,7 @@ void CDevice::destroyAssets()
 void CDevice::destroySwapChain()
 {
     CDeviceVulkan::destroySwapChain();
-            
+
     if( m_logicalDevice != VK_NULL_HANDLE )
     {
         // Free all pipelines. DO NOT clear the map!
@@ -255,7 +256,9 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
 
     if( (m_lastResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
 
     // Accessed by attachment index. Current attachments are color and depth
     std::vector<VkClearValue> clearValues(2);
@@ -287,17 +290,19 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
     vkCmdEndRenderPass( m_primaryCmdBufVec[cmdBufIndex] );
 
     if( (m_lastResult = vkEndCommandBuffer( m_primaryCmdBufVec[cmdBufIndex] )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not record command buffer! %s") % getError() ) );
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Could not record command buffer! %s") % getError() ) );
 }
 
 
 /***************************************************************************
-*   DESC:  Render the frame 
+*   DESC:  Render the frame
 ****************************************************************************/
 void CDevice::render()
 {
     vkWaitForFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame], VK_TRUE, UINT64_MAX );
-    
+
     uint32_t imageIndex(0);
     m_lastResult = vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
     if( (m_lastResult == VK_ERROR_OUT_OF_DATE_KHR) || (m_lastResult == VK_SUBOPTIMAL_KHR) )
@@ -309,11 +314,13 @@ void CDevice::render()
         createSurface();
 
     else if( m_lastResult != VK_SUCCESS )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
-    
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
+
     // Record the command buffers
     recordCommandBuffers( imageIndex );
-    
+
     VkSubmitInfo submitInfo = {};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
@@ -324,37 +331,41 @@ void CDevice::render()
     submitInfo.pWaitDstStageMask = waitStages;
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers = &m_primaryCmdBufVec[imageIndex];
-    
+
     VkSemaphore signalSemaphores[] = {m_renderFinishedSemaphoreVec[m_currentFrame]};
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = signalSemaphores;
-    
+
     vkResetFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame] );
-    
+
     if( (m_lastResult = vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, m_frameFenceVec[m_currentFrame] )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not submit draw command buffer! %s") % getError() ) );
-    
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Could not submit draw command buffer! %s") % getError() ) );
+
     VkPresentInfoKHR presentInfo = {};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pWaitSemaphores = signalSemaphores;
-    
+
     VkSwapchainKHR swapChains[] = {m_swapchain};
     presentInfo.swapchainCount = 1;
     presentInfo.pSwapchains = swapChains;
     presentInfo.pImageIndices = &imageIndex;
-    
+
     // Present the swap chain
     m_lastResult = vkQueuePresentKHR( m_presentQueue, &presentInfo );
     if( (m_lastResult == VK_ERROR_OUT_OF_DATE_KHR) || (m_lastResult == VK_SUBOPTIMAL_KHR) )
         recreateSwapChain();
-    
+
     else if( m_lastResult == VK_ERROR_SURFACE_LOST_KHR )
         createSurface();
-    
+
     else if( m_lastResult != VK_SUCCESS )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
-    
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
+
     m_currentFrame = (m_currentFrame + 1) % m_maxConcurrentFrames;
 }
 
@@ -377,8 +388,10 @@ std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::
     // Find the command pool group
     auto iter = m_commandPoolMap.find( group );
     if( iter == m_commandPoolMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool group not found! %s") % group ) );
-    
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Command pool group not found! %s") % group ) );
+
     return CDeviceVulkan::createSecondaryCommandBuffers( iter->second );
 }
 
@@ -400,65 +413,42 @@ CTexture & CDevice::createTexture( const std::string & group, const std::string 
     if( iter == mapIter->second.end() )
     {
         CTexture texture;
+        texture.m_textFilePath = filePath;
 
         // Load the image from file path
-        CDeviceVulkan::createTexture( texture, filePath, mipMap );
+        CDeviceVulkan::createTexture( texture, mipMap );
 
         // Insert the new texture info
         iter = mapIter->second.emplace( filePath, texture ).first;
     }
-    
+
     return iter->second;
-}
-
-
-/************************************************************************
-*    DESC:  Get the number of textures in this group
-************************************************************************/
-size_t CDevice::getTextureGroupCount( const std::string & group )
-{
-    // Make sure
-    auto mapIter = m_textureMapMap.find( group );
-    if( mapIter == m_textureMapMap.end() )
-        throw NExcept::CCriticalException(
-            "Vulkan Error!",
-            boost::str( boost::format("Can't get count of texture group that does not exist! %s") % group ) );
-    
-    return mapIter->second.size();
-}
-
-
-/************************************************************************
-*    DESC:  Create group assets
-************************************************************************/
-void CDevice::createGroupAssets( const std::string & group )
-{
-    // Create the descriptor pool group. All textures loaded in this
-    // group use this pool to create a descriptor set for each texture
-    createDescriptorPoolGroup( group );
-    
-    // Create the command pool group for command buffer generation
-    createCommandPoolGroup( group );
 }
 
 
 /************************************************************************
 *    DESC:  Create the descriptor pool group for the textures
 ************************************************************************/
-void CDevice::createDescriptorPoolGroup( const std::string & group )
+void CDevice::createDescriptorPoolGroup(
+    const std::string & group, const std::string & descrId, const CDescriptorData & descData, size_t count )
 {
-    // Create the descriptor pool. It shouldn't have been already created
-    if( m_descriptorPoolMap.find( group ) != m_descriptorPoolMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool already created! %s") % group ) );
-    
-    // get the number of textures in this group
-    const size_t textCount = getTextureGroupCount( group );
-    
-    // Create the descriptor pool with enough allocations for this group
-    VkDescriptorPool descriptorPool = CDeviceVulkan::createDescriptorPool( textCount );
+    // Create the map group if it doesn't already exist
+    auto mapIter = m_descriptorPoolMapMap.find( group );
+    if( mapIter == m_descriptorPoolMapMap.end() )
+        mapIter = m_descriptorPoolMapMap.emplace( group, std::map< const std::string, VkDescriptorPool >() ).first;
 
-    // Add the pool to the map
-    m_descriptorPoolMap.emplace( group, descriptorPool );
+    // See if this texture has already been loaded
+    auto iter = mapIter->second.find( descrId );
+
+    // If it's not found, create the descriptor pool
+    if( iter == mapIter->second.end() )
+    {
+        // Create the descriptor pool with enough allocations for this group of specific descriptors
+        VkDescriptorPool descriptorPool = CDeviceVulkan::createDescriptorPool( descData, count );
+
+        // Add the pool to the map
+        mapIter->second.emplace( descrId, descriptorPool );
+    }
 }
 
 
@@ -467,18 +457,45 @@ void CDevice::createDescriptorPoolGroup( const std::string & group )
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
     const std::string & group,
-    const CPipelineData & pipelineData,
+    int pipelineIndex,
     const CTexture & texture,
-    const std::vector<CMemoryBuffer> & uniformBufVec,
-    VkDeviceSize sizeOfUniformBuf )
+    const std::vector<CMemoryBuffer> & uniformBufVec )
 {
-    // Descriptor pool should have already been created
-    auto iter = m_descriptorPoolMap.find( group );
-    if( iter == m_descriptorPoolMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool hasn't been created! %s") % group ) );
+    // Create the map group if it doesn't already exist
+    auto descrSetMapIter = m_descriptorSetMapMap.find( group );
+    if( descrSetMapIter == m_descriptorSetMapMap.end() )
+        descrSetMapIter = m_descriptorSetMapMap.emplace( group, std::map< const std::string, std::vector<VkDescriptorSet> >() ).first;
     
-    return CDeviceVulkan::createDescriptorSet(
-        texture, pipelineData, uniformBufVec, sizeOfUniformBuf, iter->second );
+    auto & rPipelineData = getPipelineData( pipelineIndex );
+
+    // See if this descriptor set has already been created. The key is the descriptor Id and the texture path
+    auto descrSetIter = descrSetMapIter->second.find( rPipelineData.m_descriptorId + texture.m_textFilePath );
+    if( descrSetIter == descrSetMapIter->second.end() )
+    {
+        // Fetch the descriptor pool. It's needed for allocating a new descriptor set
+        // Descriptor pool should have already been created by this point
+        auto descrPoolMapIter = m_descriptorPoolMapMap.find( group );
+        if( descrPoolMapIter == m_descriptorPoolMapMap.end() )
+            throw NExcept::CCriticalException(
+                "Vulkan Error!", boost::str( boost::format("Descriptor pool group hasn't been created! %s") % group ) );
+        
+        auto descrPoolIter = descrPoolMapIter->second.find( rPipelineData.m_descriptorId );
+        if( descrPoolIter == descrPoolMapIter->second.end() )
+            throw NExcept::CCriticalException(
+                "Vulkan Error!", boost::str( boost::format("Descriptor pool hasn't been created! %s") % group ) );
+        
+        // Get the descriptor data
+        auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+        
+        // Create the descriptor set
+        auto descrSetVec = CDeviceVulkan::createDescriptorSet(
+            texture, rDescData, rPipelineData, uniformBufVec, descrPoolIter->second );
+        
+        // Add the descriptor set to the map
+        descrSetIter = descrSetMapIter->second.emplace( rPipelineData.m_descriptorId + texture.m_textFilePath, descrSetVec ).first;
+    }
+
+    return descrSetIter->second;
 }
 
 
@@ -489,8 +506,10 @@ void CDevice::createCommandPoolGroup( const std::string & group )
 {
     // Create the command pool. It shouldn't have been already created
     if( m_commandPoolMap.find( group ) != m_commandPoolMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool already created! %s") % group ) );
-    
+        throw NExcept::CCriticalException(
+            "Vulkan Error!",
+            boost::str( boost::format("Command pool already created! %s") % group ) );
+
     // Create the command pool
     VkCommandPool commandPool = CDeviceVulkan::createCommandPool();
 
@@ -506,135 +525,143 @@ void CDevice::createPipelines( const std::string & filePath )
 {
     // Map containing UBO information
     std::map< const std::string, CUBO > uboMap;
-    
+
     // Map containing shader information
     std::map< const std::string, CShader > shaderMap;
-    
+
     // Open and parse the XML file:
     XMLNode node = XMLNode::openFileHelper( filePath.c_str(), "pipelinemap" );
-    
-    
+
+
     // Create the ubo list
     const XMLNode uboLstNode = node.getChildNode("uboList");
-    
+
     for( int i = 0; i < uboLstNode.nChildNode(); ++i )
     {
         const std::string id = uboLstNode.getChildNode("ubo", i).getAttribute("id");
-        
+
         uboMap.emplace( id, NUBO::GetUboSize(id) );
     }
-    
-    
+
+
     // Create the descriptor list
     const XMLNode descriptorLstNode = node.getChildNode("descriptorList");
-    
+
     for( int i = 0; i < descriptorLstNode.nChildNode(); ++i )
     {
         const XMLNode descriptorNode = descriptorLstNode.getChildNode(i);
-        
+
         const std::string descId = descriptorNode.getAttribute("id");
-        
-        CDescriptor descriptor;
-        
+
+        CDescriptorData descriptorData;
+
         // Populate with the descriptors with UBO info
         for( int j = 0; j < descriptorNode.nChildNode("ubo"); ++j )
         {
             const std::string id = descriptorNode.getChildNode("ubo", j).getAttribute("id");
-            
+
             auto iter = uboMap.find( id );
             if( iter == uboMap.end() )
-                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("UBO id not found! %s") % id ) );
-            
-            descriptor.m_uboVec.push_back( iter->second );
+                throw NExcept::CCriticalException(
+                    "Vulkan Error!",
+                    boost::str( boost::format("UBO id not found! %s") % id ) );
+
+            descriptorData.m_uboVec.push_back( iter->second );
         }
-        
+
         // Populate with the descriptors with binding info
         for( int j = 0; j < descriptorNode.nChildNode("binding"); ++j )
         {
             const std::string id = descriptorNode.getChildNode("binding", j).getAttribute("id");
-            
-            descriptor.m_descriptorIdVec.push_back( id );
+
+            descriptorData.m_descriptorIdVec.push_back( id );
         }
-        
-        m_descriptorMap.emplace( descId, descriptor );
+
+        m_descriptorDataMap.emplace( descId, descriptorData );
     }
-    
-    
+
+
     // Create the shaders
     const XMLNode shaderLstNode = node.getChildNode("shaderList");
-    
+
     for( int i = 0; i < shaderLstNode.nChildNode(); ++i )
     {
         const XMLNode shaderNode = shaderLstNode.getChildNode(i);
-        
+
         const std::string id = shaderNode.getAttribute("id");
-        
+
         CShader shader;
-        
+
         shader.m_vert = createShader( shaderNode.getChildNode("vert").getAttribute("file") );
         shader.m_frag = createShader( shaderNode.getChildNode("frag").getAttribute("file") );
-        
+
         shaderMap.emplace( id, shader );
     }
-    
-    
+
+
     // Create the descriptor set and pipeline layout
-    for( auto & iter : m_descriptorMap )
+    for( auto & iter : m_descriptorDataMap )
     {
         // Create the descriptor set layout
         VkDescriptorSetLayout descriptorSetLayout = CDeviceVulkan::createDescriptorSetLayout( iter.second );
         m_descriptorSetLayoutMap.emplace( iter.first, descriptorSetLayout );
-        
+
         // Create the pipeline layout
         VkPipelineLayout pipelineLayout = CDeviceVulkan::createPipelineLayout( descriptorSetLayout );
         m_pipelineLayoutMap.emplace( iter.first, pipelineLayout );
     }
-    
-    
+
+
     // Create the pipeline list
     const XMLNode pipelineLstNode = node.getChildNode("pipelineList");
-    
+
     for( int i = 0; i < pipelineLstNode.nChildNode(); ++i )
     {
         const XMLNode pipelineNode = pipelineLstNode.getChildNode(i);
-        
+
         CPipelineData pipelineData;
-        
+
         const std::string pipelineId = pipelineNode.getAttribute("id");
-        
+
         // Get the shader
         const std::string shaderId = pipelineNode.getAttribute("shaderId");
-        
+
         auto shaderIter = shaderMap.find( shaderId );
         if( shaderIter == shaderMap.end() )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Shader id not found! %s") % shaderId ) );
-        
+            throw NExcept::CCriticalException(
+                "Vulkan Error!",
+                boost::str( boost::format("Shader id not found! %s") % shaderId ) );
+
         pipelineData.m_shader = shaderIter->second;
-        
+
         // Get the descriptor layout
-        const std::string descriptorId = pipelineNode.getAttribute("descriptorId");
-        
-        auto discrIter = m_descriptorSetLayoutMap.find( descriptorId );
+        pipelineData.m_descriptorId = pipelineNode.getAttribute("descriptorId");
+
+        auto discrIter = m_descriptorSetLayoutMap.find( pipelineData.m_descriptorId );
         if( discrIter == m_descriptorSetLayoutMap.end() )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor id not found! %s") % descriptorId ) );
-        
+            throw NExcept::CCriticalException(
+                "Vulkan Error!",
+                boost::str( boost::format("Descriptor id not found! %s") % pipelineData.m_descriptorId ) );
+
         pipelineData.m_descriptorSetLayout = discrIter->second;
-        
+
         // Get the pipeline layout. Same id as the descriptor
-        auto pipelineLayoutIter = m_pipelineLayoutMap.find( descriptorId );
+        auto pipelineLayoutIter = m_pipelineLayoutMap.find( pipelineData.m_descriptorId );
         if( pipelineLayoutIter == m_pipelineLayoutMap.end() )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Pipeline id not found! %s") % descriptorId ) );
-        
+            throw NExcept::CCriticalException(
+                "Vulkan Error!",
+                boost::str( boost::format("Pipeline id not found! %s") % pipelineData.m_descriptorId ) );
+
         pipelineData.m_pipelineLayout = pipelineLayoutIter->second;
-        
+
         // Get the vertex input descriptions
         const std::string vertexInputDescrId = pipelineNode.getAttribute("vertexInputDescrId");
         pipelineData.vertInputBindingDesc = NVertex::getBindingDesc( vertexInputDescrId );
         pipelineData.vertInputAttrDescVec = NVertex::getAttributeDesc( vertexInputDescrId );
-        
+
         // Create the graphics pipeline
         CDeviceVulkan::createPipeline( pipelineData );
-        
+
         // Map for holding index of the pipeline in the vector
         m_pipelineIndexMap.emplace( pipelineId, i );
 
@@ -666,7 +693,7 @@ VkShaderModule CDevice::createShader( const std::string & filePath )
         VkShaderModule shader = CDeviceVulkan::createShader( filePath );
         iter = m_shaderModuleMap.emplace(filePath, shader).first;
     }
-    
+
     return iter->second;
 }
 
@@ -680,24 +707,9 @@ void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkComm
     auto iter = m_commandPoolMap.find( group );
     if( iter == m_commandPoolMap.end() )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool has not been created! %s") % group ) );
-    
+
     vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
     commandBufVec.clear();
-}
-
-
-/************************************************************************
-*    DESC:  Delete a descriptor set of a specific group
-************************************************************************/
-void CDevice::deleteDescriptorSet( const std::string & group, std::vector<VkDescriptorSet> & descriptorSetVec )
-{
-    // A descriptor pool shouldn't have been already created
-    auto iter = m_descriptorPoolMap.find( group );
-    if( iter == m_descriptorPoolMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool has not been created! %s") % group ) );
-    
-    vkFreeDescriptorSets( m_logicalDevice, iter->second, descriptorSetVec.size(), descriptorSetVec.data() );
-    descriptorSetVec.clear();
 }
 
 
@@ -709,13 +721,13 @@ std::vector<CMemoryBuffer> CDevice::createUniformBuffer( VkDeviceSize sizeOfUnif
     std::vector<CMemoryBuffer> uniformBufVec( m_framebufferVec.size() );
 
     for( size_t i = 0; i < m_framebufferVec.size(); ++i )
-        CDeviceVulkan::createBuffer( 
+        CDeviceVulkan::createBuffer(
             sizeOfUniformBuf,
             VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             uniformBufVec[i].m_buffer,
             uniformBufVec[i].m_deviceMemory );
-    
+
     return uniformBufVec;
 }
 
@@ -727,13 +739,13 @@ void CDevice::deleteGroupAssets( const std::string & group )
 {
     // Delete all textures and related assets
     deleteTextureGroup( group );
-    
+
     // This also deletes all the descriptor sets
     deleteDescriptorPoolGroup( group );
-    
+
     // Delete the memory buffers
     deleteMemoryBufferGroup( group );
-    
+
     // This also deletes all the command buffers
     deleteCommandPoolGroup( group );
 }
@@ -784,13 +796,14 @@ void CDevice::deleteCommandPoolGroup( const std::string & group )
 void CDevice::deleteDescriptorPoolGroup( const std::string & group )
 {
     // Free the descriptor pool group if it exists
-    auto iter = m_descriptorPoolMap.find( group );
-    if( iter != m_descriptorPoolMap.end() )
+    auto mapIter = m_descriptorPoolMapMap.find( group );
+    if( mapIter != m_descriptorPoolMapMap.end() )
     {
-        vkDestroyDescriptorPool( m_logicalDevice, iter->second, nullptr );
-        
+        for( auto & iter : mapIter->second )
+            vkDestroyDescriptorPool( m_logicalDevice, iter.second, nullptr );
+
         // Erase this group
-        m_descriptorPoolMap.erase( iter );
+        m_descriptorPoolMapMap.erase( mapIter );
     }
 }
 
@@ -982,5 +995,27 @@ int CDevice::getPipelineIndex( const std::string & id )
     if( iter == m_pipelineIndexMap.end() )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Pipeline Id does not exist: %s") % id ) );
 
+    return iter->second;
+}
+
+
+/***************************************************************************
+*   DESC:  Get descriptor data map
+****************************************************************************/
+const std::map< const std::string, CDescriptorData > & CDevice::getDescriptorDataMap() const
+{
+    return m_descriptorDataMap;
+}
+
+
+/***************************************************************************
+*   DESC:  Get descriptor data
+****************************************************************************/
+const CDescriptorData & CDevice::getDescriptorData( const std::string & id ) const
+{
+    auto iter = m_descriptorDataMap.find( id );
+    if( iter == m_descriptorDataMap.end() )
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Descriptor data Id does not exist: %s") % id ) );
+    
     return iter->second;
 }

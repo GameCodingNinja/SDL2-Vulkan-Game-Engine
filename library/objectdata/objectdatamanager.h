@@ -52,6 +52,10 @@ private:
     // Load all object information from an xml
     void load2D( const std::string & group, const std::string & filePath );
     void load3D( const std::string & group, const std::string & filePath );
+    
+    // Create the group's VBO, IBO, textures, etc
+    void createFromData2D( const std::string & group );
+    void createFromData3D( const std::string & group );
 
 private:
     

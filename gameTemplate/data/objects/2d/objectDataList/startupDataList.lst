@@ -39,6 +39,18 @@
                 <texture file="data/textures/startup/waffles.png"/>
             </visual>
         </object>
+        
+        <object name="waffles2">
+            <visual>
+                <texture file="data/textures/startup/waffles.png"/>
+            </visual>
+        </object>
+        
+        <object name="logo2">
+            <visual>
+                <texture file="data/textures/startup/logo.png"/>
+            </visual>
+        </object>
 
     </objectList>
 

@@ -31,17 +31,12 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
     // Create the uniform buffer
     m_uniformBufVec = device.createUniformBuffer( sizeof(NUBO::model_viewProj_color_additive) );
     
-    const CPipelineData & rPipelineData = device.getPipelineData( objectData.getVisualData().getPipelineIndex() );
-    
-    //make descriptor object data level
-    
     // Create the descriptor set
     m_descriptorSetVec = device.createDescriptorSet(
         objectData.getGroup(),
-        rPipelineData,
+        objectData.getVisualData().getPipelineIndex(),
         objectData.getVisualData().getVulkanTexture(),
-        m_uniformBufVec,
-        sizeof(NUBO::model_viewProj_color_additive) );
+        m_uniformBufVec );
     
     // Create the command buffer vector
     m_commandBufVec = device.createSecondaryCommandBuffers( objectData.getGroup() );
@@ -64,7 +59,6 @@ CVisualComponentQuad::~CVisualComponentQuad()
 void CVisualComponentQuad::deleteGroupAssets()
 {
     CDevice::Instance().deleteCommandBuffer( m_rObjectData.getGroup(), m_commandBufVec );
-    CDevice::Instance().deleteDescriptorSet( m_rObjectData.getGroup(), m_descriptorSetVec );
 }
 
 

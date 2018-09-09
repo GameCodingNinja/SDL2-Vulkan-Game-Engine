@@ -11,6 +11,7 @@
 // Game lib dependencies
 #include <common/build_defs.h>
 #include <common/spritedata.h>
+#include <common/pipeline.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <objectdata/objectdata2d.h>
@@ -19,6 +20,9 @@
 #include <managers/meshmanager.h>
 #include <managers/spritesheetmanager.h>
 #include <system/device.h>
+
+// Standard lib dependencies
+#include <set>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -73,8 +77,27 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
                 % group % __FUNCTION__ % __LINE__ ));
     }
     
-    // Create group assets
-    CDevice::Instance().createGroupAssets( group );
+    // Get the descriptor data map to find out how many unique descriptors need to be allocated
+    auto & rDescDataMap = CDevice::Instance().getDescriptorDataMap();
+    
+    auto objDataIter = m_objectData2DMapMap.find(group);
+    
+    for( auto & descIter : rDescDataMap )
+    {
+        std::set<std::string> descUniqueSet;
+        
+        for( auto & objIter : objDataIter->second )
+            objIter.second.getVisualData().addToDescSet( descIter.first, descUniqueSet );
+        
+        if( !descUniqueSet.empty() )
+            CDevice::Instance().createDescriptorPoolGroup( group, descIter.first, descIter.second, descUniqueSet.size() );
+    }
+
+    // Create the assets from data
+    createFromData2D( group );
+    
+    // Create the command pool group for command buffer generation
+    CDevice::Instance().createCommandPoolGroup( group );
 
     // Free the sprite sheet data because it's no longer needed
     CSpriteSheetMgr::Instance().clear();
@@ -135,9 +158,27 @@ void CObjectDataMgr::load2D( const std::string & group, const std::string & file
 
         // Load in the object data
         iter.first->second.loadFromNode( objectNode, group, name );
+    }
+}
 
-        // Create it from the data
-        iter.first->second.createFromData( group );
+
+/************************************************************************
+ *    DESC:  Create the group's VBO, IBO, textures, etc
+ ************************************************************************/
+void CObjectDataMgr::createFromData2D( const std::string & group )
+{
+    // Create it from the data
+    auto groupMapIter = m_objectData2DMapMap.find( group );
+    if( groupMapIter != m_objectData2DMapMap.end() )
+    {
+        for( auto & iter : groupMapIter->second )
+            iter.second.createFromData( group );
+    }
+    else
+    {
+        throw NExcept::CCriticalException("Object Create From Data Group Error!",
+            boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
+                % group % __FUNCTION__ % __LINE__ ));
     }
 }
 
@@ -148,21 +189,20 @@ void CObjectDataMgr::load2D( const std::string & group, const std::string & file
 void CObjectDataMgr::freeGroup2D( const std::string & group )
 {
     // Make sure the group we are looking for exists
-    auto listTableIter = m_listTableMap.find( group );
-    if( listTableIter == m_listTableMap.end() )
+    if( m_listTableMap.find( group ) == m_listTableMap.end() )
         throw NExcept::CCriticalException("Obj Data List 2D Free Group Data Error!",
             boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
                 % group % __FUNCTION__ % __LINE__ ));
 
     // See if this group is still loaded
-    auto groupMapIter = m_objectData2DMapMap.find( group );
-    if( groupMapIter != m_objectData2DMapMap.end() )
+    auto mapIter = m_objectData2DMapMap.find( group );
+    if( mapIter != m_objectData2DMapMap.end() )
     {
         // Delete the group assets
         CDevice::Instance().deleteGroupAssets( group );
 
         // Unload the group data
-        m_objectData2DMapMap.erase( groupMapIter );
+        m_objectData2DMapMap.erase( mapIter );
     }
 }
 
@@ -172,11 +212,11 @@ void CObjectDataMgr::freeGroup2D( const std::string & group )
  ************************************************************************/
 bool CObjectDataMgr::isData2D( const std::string & group, const std::string & name ) const
 {
-    auto groupMapIter = m_objectData2DMapMap.find( group );
-    if( groupMapIter != m_objectData2DMapMap.end() )
+    auto mapIter = m_objectData2DMapMap.find( group );
+    if( mapIter != m_objectData2DMapMap.end() )
     {
-        auto dataMapIter = groupMapIter->second.find( name );
-        if( dataMapIter != groupMapIter->second.end() )
+        auto iter = mapIter->second.find( name );
+        if( iter != mapIter->second.end() )
             return true;
     }
 
@@ -189,19 +229,19 @@ bool CObjectDataMgr::isData2D( const std::string & group, const std::string & na
  ************************************************************************/
 const CObjectData2D & CObjectDataMgr::getData2D( const std::string & group, const std::string & name ) const
 {
-    auto groupMapIter = m_objectData2DMapMap.find( group );
-    if( groupMapIter == m_objectData2DMapMap.end() )
+    auto mapIter = m_objectData2DMapMap.find( group );
+    if( mapIter == m_objectData2DMapMap.end() )
         throw NExcept::CCriticalException("Obj Data List 2D Get Data Error!",
             boost::str( boost::format("Object data list group can't be found (%s).\n\n%s\nLine: %s")
                 % group % __FUNCTION__ % __LINE__ ));
 
-    auto dataMapIter = groupMapIter->second.find( name );
-    if( dataMapIter == groupMapIter->second.end() )
+    auto iter = mapIter->second.find( name );
+    if( iter == mapIter->second.end() )
         throw NExcept::CCriticalException("Obj Data List 2D Get Data Error!",
             boost::str( boost::format("Object data list name can't be found (%s).\n\n%s\nLine: (%s - %s)")
                 % group % name % __FUNCTION__ % __LINE__ ));
 
-    return dataMapIter->second;
+    return iter->second;
 }
 
 const CObjectData2D & CObjectDataMgr::getData2D( const CSpriteData & spriteData ) const
@@ -237,6 +277,9 @@ void CObjectDataMgr::loadGroup3D( const std::string & group )
             boost::str( boost::format( "Object data list group has alread been loaded (%s).\n\n%s\nLine: %s" )
                 % group % __FUNCTION__ % __LINE__ ) );
     }
+    
+    // Create the command pool group for command buffer generation
+    CDevice::Instance().createCommandPoolGroup( group );
 }
 
 
@@ -293,9 +336,29 @@ void CObjectDataMgr::load3D( const std::string & group, const std::string & file
 
         // Load in the object data
         iter.first->second.loadFromNode( objectNode, group, name );
+    }
+    
+    createFromData3D( group );
+}
 
-        // Create it from the data
-        iter.first->second.createFromData( group );
+
+/************************************************************************
+ *    DESC:  Create the group's VBO, IBO, textures, etc
+ ************************************************************************/
+void CObjectDataMgr::createFromData3D( const std::string & group )
+{
+    // Create it from the data
+    auto groupMapIter = m_objectData3DMapMap.find( group );
+    if( groupMapIter != m_objectData3DMapMap.end() )
+    {
+        for( auto & iter : groupMapIter->second )
+            iter.second.createFromData( group );
+    }
+    else
+    {
+        throw NExcept::CCriticalException("Object Create From Data Group Error!",
+            boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
+                % group % __FUNCTION__ % __LINE__ ));
     }
 }
 
@@ -306,8 +369,7 @@ void CObjectDataMgr::load3D( const std::string & group, const std::string & file
 void CObjectDataMgr::freeGroup3D( const std::string & group )
 {
     // Make sure the group we are looking for exists
-    auto listTableIter = m_listTableMap.find( group );
-    if( listTableIter == m_listTableMap.end() )
+    if( m_listTableMap.find( group ) == m_listTableMap.end() )
     {
         throw NExcept::CCriticalException( "Obj Data List 3D Load Group Data Error!",
             boost::str( boost::format( "Object data list group name can't be found (%s).\n\n%s\nLine: %s" )
@@ -333,19 +395,19 @@ void CObjectDataMgr::freeGroup3D( const std::string & group )
  ************************************************************************/
 const CObjectData3D & CObjectDataMgr::getData3D( const std::string & group, const std::string & name ) const
 {
-    auto groupMapIter = m_objectData3DMapMap.find( group );
-    if( groupMapIter == m_objectData3DMapMap.end() )
+    auto mapIter = m_objectData3DMapMap.find( group );
+    if( mapIter == m_objectData3DMapMap.end() )
         throw NExcept::CCriticalException( "Obj Data List 3D Get Data Error!",
             boost::str( boost::format( "Object data list group can't be found (%s).\n\n%s\nLine: %s" )
                 % group % __FUNCTION__ % __LINE__ ) );
 
-    auto dataMapIter = groupMapIter->second.find( name );
-    if( dataMapIter == groupMapIter->second.end() )
+    auto iter = mapIter->second.find( name );
+    if( iter == mapIter->second.end() )
         throw NExcept::CCriticalException( "Obj Data List 3D Get Data Error!",
             boost::str( boost::format( "Object data list name can't be found (%s).\n\n%s\nLine: (%s - %s)" )
                 % group % name % __FUNCTION__ % __LINE__ ) );
 
-    return dataMapIter->second;
+    return iter->second;
 }
 
 
@@ -354,11 +416,10 @@ const CObjectData3D & CObjectDataMgr::getData3D( const std::string & group, cons
  ************************************************************************/
 bool CObjectDataMgr::isData3D( const std::string & group, const std::string & name ) const
 {
-    auto groupMapIter = m_objectData3DMapMap.find( group );
-    if( groupMapIter != m_objectData3DMapMap.end() )
+    auto mapIter = m_objectData3DMapMap.find( group );
+    if( mapIter != m_objectData3DMapMap.end() )
     {
-        auto dataMapIter = groupMapIter->second.find( name );
-        if( dataMapIter != groupMapIter->second.end() )
+        if( mapIter->second.find( name ) != mapIter->second.end() )
             return true;
     }
 

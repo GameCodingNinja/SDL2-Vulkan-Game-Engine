@@ -25,7 +25,7 @@
 class CTexture;
 class CMemoryBuffer;
 class CPipelineData;
-class CDescriptor;
+class CDescriptorData;
 
 class CDeviceVulkan
 {
@@ -61,24 +61,24 @@ protected:
     virtual void recreatePipelines() = 0;
     
     // Create texture
-    void createTexture( CTexture & texture, const std::string & filePath, bool mipMap );
+    void createTexture( CTexture & texture, bool mipMap );
     
     // Create descriptor pool
-    VkDescriptorPool createDescriptorPool( size_t setCount );
+    VkDescriptorPool createDescriptorPool( const CDescriptorData & descData, size_t setCount );
     
     // Create descriptor sets
     std::vector<VkDescriptorSet> createDescriptorSet(
         const CTexture & texture,
+        const CDescriptorData & descData,
         const CPipelineData & pipelineData,
         const std::vector<CMemoryBuffer> & uniformBufVec,
-        VkDeviceSize sizeOfUniformBuf,
         VkDescriptorPool descriptorPool );
     
     // Create the shader
     VkShaderModule createShader( const std::string & filePath );
     
     // Create the descriptor set layout
-    VkDescriptorSetLayout createDescriptorSetLayout( CDescriptor & descriptor );
+    VkDescriptorSetLayout createDescriptorSetLayout( CDescriptorData & descData );
     
     // Create the pipeline layout
     VkPipelineLayout createPipelineLayout( VkDescriptorSetLayout descriptorSetLayout );

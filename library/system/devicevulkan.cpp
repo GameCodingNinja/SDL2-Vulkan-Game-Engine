@@ -718,33 +718,43 @@ void CDeviceVulkan::createRenderPass()
 /***************************************************************************
 *   DESC:  Create the descriptor set layout
 ****************************************************************************/
-VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptor & descriptor )
+VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData & descData )
 {
+    int bindingOffset = 0;
     std::vector<VkDescriptorSetLayoutBinding> bindings;
     
-    for( size_t i = 0; i < descriptor.m_descriptorIdVec.size(); ++i )
+    for( auto & descIdIter : descData.m_descriptorIdVec )
     {
-        VkDescriptorSetLayoutBinding binding = {};
-        binding.binding = i;
-        binding.descriptorCount = 1;
-        binding.pImmutableSamplers = nullptr;
-            
-        if( descriptor.m_descriptorIdVec[i] == "UNIFORM_BUFFER" )
+        if( descIdIter == "UNIFORM_BUFFER" )
         {
-            binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-            binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+            // There can be multiple uniform buffers
+            for( size_t i = 0; i < descData.m_uboVec.size(); ++i )
+            {
+                VkDescriptorSetLayoutBinding binding = {};
+                binding.binding = bindingOffset++;
+                binding.descriptorCount = 1;
+                binding.pImmutableSamplers = nullptr;
+                binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                binding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+                bindings.push_back( binding );
+            }
         }
-        else if( descriptor.m_descriptorIdVec[i] == "COMBINED_IMAGE_SAMPLER" )
+        else if( descIdIter == "COMBINED_IMAGE_SAMPLER" )
         {
+            VkDescriptorSetLayoutBinding binding = {};
+            binding.binding = bindingOffset++;
+            binding.descriptorCount = 1;
+            binding.pImmutableSamplers = nullptr;
             binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+            
+            bindings.push_back( binding );
         }
         else
         {
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor binding not defined! %s") % descriptor.m_descriptorIdVec[i] ) );
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor binding not defined! %s") % descIdIter ) );
         }
-        
-        bindings.push_back( binding );
     }
 
     VkDescriptorSetLayoutCreateInfo layoutInfo = {};
@@ -1469,11 +1479,11 @@ VkCommandPool CDeviceVulkan::createCommandPool()
 /***************************************************************************
 *   DESC:  Create texture
 ****************************************************************************/
-void CDeviceVulkan::createTexture( CTexture & texture, const std::string & filePath, bool mipMap )
+void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
 {
     int channels(0);
     unsigned char * pixels = SOIL_load_image( 
-        filePath.c_str(),
+        texture.m_textFilePath.c_str(),
         &texture.m_size.w,
         &texture.m_size.h,
         &channels,
@@ -1693,21 +1703,38 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 /***************************************************************************
 *   DESC:  Create descriptor pool
 ****************************************************************************/
-VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
+VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData, size_t setCount )
 {
     std::vector<VkDescriptorPoolSize> descriptorPoolVec;
     
-    VkDescriptorPoolSize uniformBufferPoolSize = {};
-    uniformBufferPoolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    uniformBufferPoolSize.descriptorCount = m_framebufferVec.size();
-    
-    VkDescriptorPoolSize combinedImageSamplerPoolSize = {};
-    combinedImageSamplerPoolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    combinedImageSamplerPoolSize.descriptorCount = m_framebufferVec.size();
-    
-    descriptorPoolVec.push_back( uniformBufferPoolSize );
-    descriptorPoolVec.push_back( combinedImageSamplerPoolSize );
+    for( auto & descIdIter : descData.m_descriptorIdVec )
+    {
+        if( descIdIter == "UNIFORM_BUFFER" )
+        {
+            // There can be multiple uniform buffers
+            for( size_t i = 0; i < descData.m_uboVec.size(); ++i )
+            {
+                VkDescriptorPoolSize uniformBufferPoolSize = {};
+                uniformBufferPoolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                uniformBufferPoolSize.descriptorCount = m_framebufferVec.size();
 
+                descriptorPoolVec.push_back( uniformBufferPoolSize );
+            }
+        }
+        else if( descIdIter == "COMBINED_IMAGE_SAMPLER" )
+        {
+            VkDescriptorPoolSize combinedImageSamplerPoolSize = {};
+            combinedImageSamplerPoolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            combinedImageSamplerPoolSize.descriptorCount = m_framebufferVec.size();
+            
+            descriptorPoolVec.push_back( combinedImageSamplerPoolSize );
+        }
+        else
+        {
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool binding not defined! %s") % descIdIter ) );
+        }
+    }
+    
     VkDescriptorPoolCreateInfo poolInfo = {};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = descriptorPoolVec.size();
@@ -1729,12 +1756,13 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( size_t setCount )
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSet(
     const CTexture & texture,
+    const CDescriptorData & descData,
     const CPipelineData & pipelineData,
     const std::vector<CMemoryBuffer> & uniformBufVec,
-    VkDeviceSize sizeOfUniformBuf,
     VkDescriptorPool descriptorPool )
 {
     std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), pipelineData.m_descriptorSetLayout );
+    
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = descriptorPool;
@@ -1746,37 +1774,69 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSet(
     if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, descriptorSetVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
     
-    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
+    for( size_t i = 0; i < descriptorSetVec.size(); ++i )
     {
-        VkDescriptorBufferInfo bufferInfo = {};
-        bufferInfo.buffer = uniformBufVec[i].m_buffer;
-        bufferInfo.offset = 0;
-        bufferInfo.range = sizeOfUniformBuf;
+        std::vector<VkWriteDescriptorSet> writeDescriptorSetVec;
         
-        VkDescriptorImageInfo imageInfo = {};
-        imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        imageInfo.imageView = texture.m_textureImageView;
-        imageInfo.sampler = texture.m_textureSampler;
+        // Keep the data alive until the call to vkUpdateDescriptorSets
+        std::vector<VkDescriptorBufferInfo> descriptorBufferInfoVec;
+        std::vector<VkDescriptorImageInfo> descriptorImageInfoVec;
+        
+        int bindingOffset = 0;
 
-        std::vector<VkWriteDescriptorSet> descriptorWrites(2);
+        for( auto & descIdIter : descData.m_descriptorIdVec )
+        {
+            if( descIdIter == "UNIFORM_BUFFER" )
+            {
+                // There can be multiple uniform buffers
+                for( auto & uboIter : descData.m_uboVec )
+                {
+                    VkDescriptorBufferInfo bufferInfo = {};
+                    bufferInfo.buffer = uniformBufVec[i].m_buffer;
+                    bufferInfo.offset = 0;
+                    bufferInfo.range = uboIter.uboSize;
+                    
+                    descriptorBufferInfoVec.emplace_back( bufferInfo );
 
-        descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[0].dstSet = descriptorSetVec[i];
-        descriptorWrites[0].dstBinding = 0;
-        descriptorWrites[0].dstArrayElement = 0;
-        descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        descriptorWrites[0].descriptorCount = 1;
-        descriptorWrites[0].pBufferInfo = &bufferInfo;
+                    VkWriteDescriptorSet writeDescriptorSet = {};
+                    writeDescriptorSet.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                    writeDescriptorSet.dstSet = descriptorSetVec[i];
+                    writeDescriptorSet.dstBinding = bindingOffset++;
+                    writeDescriptorSet.dstArrayElement = 0;
+                    writeDescriptorSet.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    writeDescriptorSet.descriptorCount = 1;
+                    writeDescriptorSet.pBufferInfo = &descriptorBufferInfoVec.back();
+                    
+                    writeDescriptorSetVec.push_back( writeDescriptorSet );
+                }
+            }
+            else if( descIdIter == "COMBINED_IMAGE_SAMPLER" )
+            {
+                VkDescriptorImageInfo imageInfo = {};
+                imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo.imageView = texture.m_textureImageView;
+                imageInfo.sampler = texture.m_textureSampler;
+                
+                descriptorImageInfoVec.emplace_back( imageInfo );
 
-        descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[1].dstSet = descriptorSetVec[i];
-        descriptorWrites[1].dstBinding = 1;
-        descriptorWrites[1].dstArrayElement = 0;
-        descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        descriptorWrites[1].descriptorCount = 1;
-        descriptorWrites[1].pImageInfo = &imageInfo;
+                VkWriteDescriptorSet writeDescriptorSet = {};
+                writeDescriptorSet.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                writeDescriptorSet.dstSet = descriptorSetVec[i];
+                writeDescriptorSet.dstBinding = bindingOffset++;
+                writeDescriptorSet.dstArrayElement = 0;
+                writeDescriptorSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+                writeDescriptorSet.descriptorCount = 1;
+                writeDescriptorSet.pImageInfo = &descriptorImageInfoVec.back();
+                
+                writeDescriptorSetVec.push_back( writeDescriptorSet );
+            }
+            else
+            {
+                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Create Descriptor Set binding not defined! %s") % descIdIter ) );
+            }
+        }
 
-        vkUpdateDescriptorSets( m_logicalDevice, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr );
+        vkUpdateDescriptorSets( m_logicalDevice, writeDescriptorSetVec.size(), writeDescriptorSetVec.data(), 0, nullptr );
     }
     
     return descriptorSetVec;

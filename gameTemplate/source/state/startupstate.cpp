@@ -103,6 +103,8 @@ void CStartUpState::init()
     
     m_upSpriteLogo->getObject()->setPos( -200, 0, -10 );
     m_upSpriteWaffles->getObject()->setPos( 200, 0, -10 );
+    
+    
 
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -129,6 +131,9 @@ void CStartUpState::transform()
     m_upSpriteLogo->getObject()->transform();
     m_upSpriteWaffles->getObject()->transform();
     
+    
+    
+    
     /*m_background.transform();
 
     CCameraMgr::Instance().transform();
@@ -147,6 +152,9 @@ void CStartUpState::recordCommandBuffer( uint32_t cmdBufIndex )
 {
     m_upSpriteLogo->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
     m_upSpriteWaffles->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
+    
+    
+    
     
     /*m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
 

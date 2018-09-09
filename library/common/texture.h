@@ -31,6 +31,7 @@ enum ETextureType
 class CTexture
 {
 public:
+    
     // Mip levels
     uint32_t m_mipLevels = 1;
 
