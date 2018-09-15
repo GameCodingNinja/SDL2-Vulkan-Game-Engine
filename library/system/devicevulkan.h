@@ -60,6 +60,9 @@ protected:
     // Recreate the pipeline
     virtual void recreatePipelines() = 0;
     
+    // Create the uniform buffer Vec for ubo buffer writes
+    std::vector<CMemoryBuffer> createUniformBufferVec( VkDeviceSize sizeOfUniformBuf );
+    
     // Create texture
     void createTexture( CTexture & texture, bool mipMap );
     
@@ -67,7 +70,7 @@ protected:
     VkDescriptorPool createDescriptorPool( const CDescriptorData & descData, size_t setCount );
     
     // Create descriptor sets
-    std::vector<VkDescriptorSet> createDescriptorSet(
+    std::vector<VkDescriptorSet> createDescriptorSetVec(
         const CTexture & texture,
         const CDescriptorData & descData,
         const CPipelineData & pipelineData,
@@ -121,14 +124,6 @@ protected:
         vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
         vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
     }
-    
-    // Create a buffer
-    void createBuffer(
-        VkDeviceSize size,
-        VkBufferUsageFlags usage,
-        VkMemoryPropertyFlags properties,
-        VkBuffer & buffer,
-        VkDeviceMemory & bufferMemory );
     
 private:
     
@@ -194,6 +189,14 @@ private:
         VkMemoryPropertyFlags properties,
         VkImage & image,
         VkDeviceMemory & imageMemory );
+    
+    // Create a buffer
+    void createBuffer(
+        VkDeviceSize size,
+        VkBufferUsageFlags usage,
+        VkMemoryPropertyFlags properties,
+        VkBuffer & buffer,
+        VkDeviceMemory & bufferMemory );
     
     // Copy a buffer
     void copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size );

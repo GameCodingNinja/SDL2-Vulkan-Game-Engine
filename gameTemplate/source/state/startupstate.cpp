@@ -99,10 +99,10 @@ void CStartUpState::init()
 
     // Allocate the sprite to fade in
     m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
+    //m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
     
-    m_upSpriteLogo->getObject()->setPos( -200, 0, -10 );
-    m_upSpriteWaffles->getObject()->setPos( 200, 0, -10 );
+    m_upSpriteLogo->getObject()->setPos( 200, 0, -10 );
+    //m_upSpriteWaffles->getObject()->setPos( -200, 0, -10 );
     
     
 
@@ -129,7 +129,7 @@ void CStartUpState::update()
 void CStartUpState::transform()
 {
     m_upSpriteLogo->getObject()->transform();
-    m_upSpriteWaffles->getObject()->transform();
+    //m_upSpriteWaffles->getObject()->transform();
     
     
     
@@ -151,7 +151,7 @@ void CStartUpState::transform()
 void CStartUpState::recordCommandBuffer( uint32_t cmdBufIndex )
 {
     m_upSpriteLogo->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
-    m_upSpriteWaffles->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
+    //m_upSpriteWaffles->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
     
     
     

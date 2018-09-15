@@ -26,13 +26,11 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 {
     auto & device( CDevice::Instance() );
     
-    //make uniform buffer pipeline level but based on shader id
-    
     // Create the uniform buffer
-    m_uniformBufVec = device.createUniformBuffer( sizeof(NUBO::model_viewProj_color_additive) );
+    m_uniformBufVec = device.createUniformBufferVec( objectData.getGroup(), "model_viewProj_color_additive" );
     
     // Create the descriptor set
-    m_descriptorSetVec = device.createDescriptorSet(
+    m_descriptorSetVec = device.createDescriptorSetVec(
         objectData.getGroup(),
         objectData.getVisualData().getPipelineIndex(),
         objectData.getVisualData().getVulkanTexture(),
@@ -48,7 +46,6 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 ************************************************************************/
 CVisualComponentQuad::~CVisualComponentQuad()
 {
-    CDevice::Instance().deleteMemoryBuffer( m_uniformBufVec );
 }
 
 
@@ -93,6 +90,7 @@ void CVisualComponentQuad::recordCommandBuffers(
     VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
     cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
     cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
+    
 
     vkBeginCommandBuffer( m_commandBufVec[index], &cmdBeginInfo);
     vkCmdBindPipeline( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );

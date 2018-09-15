@@ -15,21 +15,28 @@
 #include <string>
 #include <vector>
 
-class CUBO
+class CUboData
 {
 public:
     
-    CUBO( int size ) : uboSize(size)
+    CUboData(){}
+    CUboData( int size ) : uboSize(size)
     {}
-    int uboSize;
+    int uboSize = 0;
 };
-
+    
 class CDescriptorData
 {
 public:
     
-    std::vector<CUBO> m_uboVec;
-    std::vector<std::string> m_descriptorIdVec;
+    class CDescriptor
+    {
+    public:
+        CUboData m_ubo;
+        std::string m_descrId;
+    };
+
+    std::vector<CDescriptor> m_descriptorVec;
 };
 
 class CShader

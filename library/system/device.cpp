@@ -174,6 +174,21 @@ void CDevice::destroyAssets()
 
         m_memoryBufferMapMap.clear();
 
+        // Free all ubo vector groups
+        for( auto & mapIter : m_uboVecMapMap )
+        {
+            for( auto & vecIter : mapIter.second )
+            {
+                for( auto & iter : vecIter.second )
+                {
+                    vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
+                    vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
+                }
+            }
+        }
+
+        m_uboVecMapMap.clear();
+
         // Free all the shader modules
         for( auto & iter : m_shaderModuleMap )
             vkDestroyShaderModule( m_logicalDevice, iter.second, nullptr );
@@ -191,7 +206,6 @@ void CDevice::destroyAssets()
             vkDestroyPipelineLayout( m_logicalDevice, iter.second, nullptr );
 
         m_pipelineLayoutMap.clear();
-
     }
 }
 
@@ -212,24 +226,6 @@ void CDevice::destroySwapChain()
             vkDestroyPipeline( m_logicalDevice, iter.m_pipeline, nullptr );
             iter.m_pipeline = VK_NULL_HANDLE;
         }
-    }
-}
-
-
-/***************************************************************************
-*   DESC:  Delete memory buffer
-****************************************************************************/
-void CDevice::deleteMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec )
-{
-    if( !uniformBufVec.empty()  )
-    {
-        for( auto & iter : uniformBufVec )
-        {
-            vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
-            vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
-        }
-
-        uniformBufVec.clear();
     }
 }
 
@@ -453,9 +449,38 @@ void CDevice::createDescriptorPoolGroup(
 
 
 /***************************************************************************
+*   DESC:  Create the uniform buffer
+****************************************************************************/
+std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( const std::string & group, const std::string & uboId )
+{
+    // Create the map group if it doesn't already exist
+    auto mapIter = m_uboVecMapMap.find( group );
+    if( mapIter == m_uboVecMapMap.end() )
+        mapIter = m_uboVecMapMap.emplace( group, std::map< const std::string, std::vector<CMemoryBuffer> >() ).first;
+
+    // See if this ubo buffer has already been created
+    auto iter = mapIter->second.find( uboId );
+    if( iter == mapIter->second.end() )
+    {
+        auto uboDataIter = m_uboDataMap.find( uboId );
+        if( uboDataIter == m_uboDataMap.end() )
+            throw NExcept::CCriticalException(
+                "Vulkan Error!", boost::str( boost::format("Ubo Id not found! %s") % uboId ) );
+        
+        auto uboVec = CDeviceVulkan::createUniformBufferVec( uboDataIter->second.uboSize );
+
+        // Insert the new texture info
+        iter = mapIter->second.emplace( uboId, uboVec ).first;
+    }
+
+    return iter->second;
+}
+
+
+/***************************************************************************
 *   DESC:  Create descriptor sets
 ****************************************************************************/
-std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
+std::vector<VkDescriptorSet> CDevice::createDescriptorSetVec(
     const std::string & group,
     int pipelineIndex,
     const CTexture & texture,
@@ -488,7 +513,7 @@ std::vector<VkDescriptorSet> CDevice::createDescriptorSet(
         auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
         
         // Create the descriptor set
-        auto descrSetVec = CDeviceVulkan::createDescriptorSet(
+        auto descrSetVec = CDeviceVulkan::createDescriptorSetVec(
             texture, rDescData, rPipelineData, uniformBufVec, descrPoolIter->second );
         
         // Add the descriptor set to the map
@@ -523,9 +548,6 @@ void CDevice::createCommandPoolGroup( const std::string & group )
 ************************************************************************/
 void CDevice::createPipelines( const std::string & filePath )
 {
-    // Map containing UBO information
-    std::map< const std::string, CUBO > uboMap;
-
     // Map containing shader information
     std::map< const std::string, CShader > shaderMap;
 
@@ -540,7 +562,7 @@ void CDevice::createPipelines( const std::string & filePath )
     {
         const std::string id = uboLstNode.getChildNode("ubo", i).getAttribute("id");
 
-        uboMap.emplace( id, NUBO::GetUboSize(id) );
+        m_uboDataMap.emplace( id, NUBO::GetUboSize(id) );
     }
 
 
@@ -550,31 +572,32 @@ void CDevice::createPipelines( const std::string & filePath )
     for( int i = 0; i < descriptorLstNode.nChildNode(); ++i )
     {
         const XMLNode descriptorNode = descriptorLstNode.getChildNode(i);
-
         const std::string descId = descriptorNode.getAttribute("id");
 
         CDescriptorData descriptorData;
 
-        // Populate with the descriptors with UBO info
-        for( int j = 0; j < descriptorNode.nChildNode("ubo"); ++j )
-        {
-            const std::string id = descriptorNode.getChildNode("ubo", j).getAttribute("id");
-
-            auto iter = uboMap.find( id );
-            if( iter == uboMap.end() )
-                throw NExcept::CCriticalException(
-                    "Vulkan Error!",
-                    boost::str( boost::format("UBO id not found! %s") % id ) );
-
-            descriptorData.m_uboVec.push_back( iter->second );
-        }
-
         // Populate with the descriptors with binding info
         for( int j = 0; j < descriptorNode.nChildNode("binding"); ++j )
         {
-            const std::string id = descriptorNode.getChildNode("binding", j).getAttribute("id");
+            CDescriptorData::CDescriptor descriptor;
+            
+            const XMLNode bindNode = descriptorNode.getChildNode(j);
+            
+            descriptor.m_descrId = bindNode.getAttribute("id");
+            
+            if( bindNode.isAttributeSet("uboId") )
+            {
+                const std::string uboId = bindNode.getAttribute("uboId");
+                
+                auto iter = m_uboDataMap.find( uboId );
+                if( iter == m_uboDataMap.end() )
+                    throw NExcept::CCriticalException(
+                        "Vulkan Error!", boost::str( boost::format("UBO id not found! %s") % uboId ) );
+                
+                descriptor.m_ubo = iter->second;
+            }
 
-            descriptorData.m_descriptorIdVec.push_back( id );
+            descriptorData.m_descriptorVec.push_back( descriptor );
         }
 
         m_descriptorDataMap.emplace( descId, descriptorData );
@@ -713,25 +736,6 @@ void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkComm
 }
 
 
-/***************************************************************************
-*   DESC:  Create the uniform buffer
-****************************************************************************/
-std::vector<CMemoryBuffer> CDevice::createUniformBuffer( VkDeviceSize sizeOfUniformBuf )
-{
-    std::vector<CMemoryBuffer> uniformBufVec( m_framebufferVec.size() );
-
-    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
-        CDeviceVulkan::createBuffer(
-            sizeOfUniformBuf,
-            VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            uniformBufVec[i].m_buffer,
-            uniformBufVec[i].m_deviceMemory );
-
-    return uniformBufVec;
-}
-
-
 /************************************************************************
 *    DESC:  Delete group assets
 ************************************************************************/
@@ -776,6 +780,30 @@ void CDevice::deleteTextureGroup( const std::string & group )
 
 
 /************************************************************************
+*    DESC:  Delete the UBO vector group
+************************************************************************/
+void CDevice::deleteUboVecGroup( const std::string & group )
+{
+    // Free the texture group if it exists
+    auto mapIter = m_uboVecMapMap.find( group );
+    if( mapIter != m_uboVecMapMap.end() )
+    {
+        for( auto & vecIter : mapIter->second )
+        {
+            for( auto & iter : vecIter.second )
+            {
+                vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
+                vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
+            }
+        }
+
+        // Erase this group
+        m_uboVecMapMap.erase( mapIter );
+    }
+}
+
+
+/************************************************************************
 *    DESC:  Delete the command pool group
 ************************************************************************/
 void CDevice::deleteCommandPoolGroup( const std::string & group )
@@ -813,11 +841,10 @@ void CDevice::deleteDescriptorPoolGroup( const std::string & group )
 ************************************************************************/
 void CDevice::deleteMemoryBufferGroup( const std::string & group )
 {
-    // Free the texture group if it exists
+    // Free the memory buffer group if it exists
     auto mapIter = m_memoryBufferMapMap.find( group );
     if( mapIter != m_memoryBufferMapMap.end() )
     {
-        // Delete all the textures in this group
         for( auto & iter : mapIter->second )
         {
             vkDestroyBuffer( m_logicalDevice, iter.second.m_buffer, nullptr );

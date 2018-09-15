@@ -23,6 +23,7 @@ struct _SDL_GameController;
 typedef _SDL_GameController SDL_GameController;
 class CPipelineData;
 class CDescriptorData;
+class CUboData;
 
 class CDevice : public CDeviceVulkan
 {
@@ -54,7 +55,7 @@ public:
     void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
 
     // Create descriptor sets
-    std::vector<VkDescriptorSet> createDescriptorSet(
+    std::vector<VkDescriptorSet> createDescriptorSetVec(
         const std::string & group,
         int pipelineIndex,
         const CTexture & texture,
@@ -70,13 +71,10 @@ public:
     void createDescriptorPoolGroup( const std::string & group, const std::string & descrId, const CDescriptorData & descData, size_t count );
 
     // Create uniform buffer
-    std::vector<CMemoryBuffer> createUniformBuffer( VkDeviceSize sizeOfUniformBuf );
+    std::vector<CMemoryBuffer> createUniformBufferVec( const std::string & group, const std::string & uboId );
 
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
-
-    // Delete memory buffer
-    void deleteMemoryBuffer( std::vector<CMemoryBuffer> & uniformBufVec );
 
     // Load a buffer into video card memory
     template <typename T>
@@ -198,6 +196,9 @@ private:
 
     // Delete the command pool group
     void deleteCommandPoolGroup( const std::string & group );
+    
+    // Delete the UBO vector group
+    void deleteUboVecGroup( const std::string & group );
 
     // Record the command buffers
     void recordCommandBuffers( uint32_t cmdBufIndex );
@@ -231,8 +232,11 @@ private:
     // Map containing a group of descriptor sets
     std::map< const std::string, std::map< const std::string, std::vector<VkDescriptorSet> > > m_descriptorSetMapMap;
 
-    // Map containing a group of memory handles
+    // Map containing a group of memory buffer handles
     std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_memoryBufferMapMap;
+
+    // Map containing a group of uniform buffer handles
+    std::map< const std::string, std::map< const std::string, std::vector<CMemoryBuffer> > > m_uboVecMapMap;
 
     // Map containing loaded shader module
     std::map< const std::string, VkShaderModule > m_shaderModuleMap;
@@ -245,6 +249,9 @@ private:
 
     // Command buffer of sprite objects to be rendered
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
+    
+    // Map containing ubo information
+    std::map< const std::string, CUboData > m_uboDataMap;
 
     // Map containing descriptor information for descriptor creation
     std::map< const std::string, CDescriptorData > m_descriptorDataMap;
