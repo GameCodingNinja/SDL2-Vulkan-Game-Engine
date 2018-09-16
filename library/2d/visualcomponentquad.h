@@ -15,12 +15,10 @@
 #include <utilities/matrix.h>
 #include <common/color.h>
 #include <common/size.h>
+#include <common/pushdescriptorset.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
-
-// Vulkan lib dependencies
-#include <system/vulkan.h>
 
 // Forward declaration(s)
 class CObjectData2D;
@@ -42,9 +40,12 @@ public:
         const CMatrix & model,
         const CMatrix & viewProj ) override;
     
-    // Delete the assets that are otherwise freed when deleting the group
-    // This is for when individual sprites are freed from the group
-    void deleteGroupAssets() override;
+    // Record the command buffers
+    void recordCommandBuffers( 
+        uint32_t index,
+        VkCommandBuffer cmdBuffer,
+        const CMatrix & model,
+        const CMatrix & viewProj ) override;
     
 private:
     
@@ -54,11 +55,11 @@ private:
     // Command buffer
     std::vector<VkCommandBuffer> m_commandBufVec;
     
-    // Descriptor Set for this image
-    std::vector<VkDescriptorSet> m_descriptorSetVec;
-    
     // Uniform buffers
     std::vector<CMemoryBuffer> m_uniformBufVec;
+    
+    // Push Descriptor set
+    CPushDescriptorSet m_pushDescSet;
 
 };
 

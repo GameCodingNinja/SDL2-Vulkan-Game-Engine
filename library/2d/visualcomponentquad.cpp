@@ -12,10 +12,14 @@
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectvisualdata2d.h>
 #include <utilities/settings.h>
+#include <utilities/exceptionhandling.h>
 #include <common/quad2d.h>
 #include <common/uniformbufferobject.h>
 #include <common/pipeline.h>
 #include <system/device.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
 
 /************************************************************************
 *    desc:  Constructor
@@ -25,19 +29,18 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
     m_rObjectData( objectData )
 {
     auto & device( CDevice::Instance() );
-    
+    const uint32_t pipelineIndex( objectData.getVisualData().getPipelineIndex() );
+
     // Create the uniform buffer
-    m_uniformBufVec = device.createUniformBufferVec( objectData.getGroup(), "model_viewProj_color_additive" );
+    m_uniformBufVec = device.createUniformBufferVec( pipelineIndex );
     
-    // Create the descriptor set
-    m_descriptorSetVec = device.createDescriptorSetVec(
-        objectData.getGroup(),
-        objectData.getVisualData().getPipelineIndex(),
+    // Create the push descriptor set
+    // This is just data and doesn't need to be freed
+    device.createPushDescriptorSet(
+        pipelineIndex,
         objectData.getVisualData().getVulkanTexture(),
-        m_uniformBufVec );
-    
-    // Create the command buffer vector
-    m_commandBufVec = device.createSecondaryCommandBuffers( objectData.getGroup() );
+        m_uniformBufVec,
+        m_pushDescSet );
 }
 
 
@@ -46,24 +49,55 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 ************************************************************************/
 CVisualComponentQuad::~CVisualComponentQuad()
 {
-}
-
-
-/***************************************************************************
-*   DESC:  Delete the assets that are otherwise freed when deleting the group
-*          This is for when individual sprites are freed from the group
-****************************************************************************/
-void CVisualComponentQuad::deleteGroupAssets()
-{
-    CDevice::Instance().deleteCommandBuffer( m_rObjectData.getGroup(), m_commandBufVec );
+    if( !m_commandBufVec.empty() )
+        CDevice::Instance().deleteCommandBuffer( m_rObjectData.getGroup(), m_commandBufVec );
+    
+    CDevice::Instance().deleteUniformBufferVec( m_uniformBufVec );
 }
 
 
 /***************************************************************************
 *   DESC:  Record the command buffers
+*          NOTE: this function is mainly for one off testing. Command buffers
+*                should be created by the group and passed in normally
 ****************************************************************************/
 void CVisualComponentQuad::recordCommandBuffers(
     uint32_t index,
+    const CMatrix & model,
+    const CMatrix & viewProj )
+{
+    auto & device( CDevice::Instance() );
+    
+    // Create the command buffer vector if it is empty
+    if( m_commandBufVec.empty() )
+        m_commandBufVec = device.createSecondaryCommandBuffers( objectData.getGroup() );
+    
+    // Setup to begine recording the command buffer
+    VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
+    cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+    cmdBufInheritanceInfo.framebuffer = device.getFrameBuffer( index );
+    cmdBufInheritanceInfo.renderPass = device.getRenderPass();
+
+    VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+    cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
+    cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
+    
+    // Start recording the command buffer
+    vkBeginCommandBuffer( m_commandBufVec[index], &cmdBeginInfo);
+    
+    // Record the command buffer
+    recordCommandBuffers( index, m_commandBufVec[index], model, viewProj );
+    
+    // Stop recording the command buffer
+    vkEndCommandBuffer( m_commandBufVec[index] );
+    
+    // Pass the command buffer to the queue
+    device.updateCommandBuffer( m_commandBufVec[index] );
+}
+
+void CVisualComponentQuad::recordCommandBuffers(
+    uint32_t index,
+    VkCommandBuffer cmdBuffer,
     const CMatrix & model,
     const CMatrix & viewProj )
 {
@@ -81,20 +115,10 @@ void CVisualComponentQuad::recordCommandBuffers(
 
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
-
-    VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
-    cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
-    cmdBufInheritanceInfo.framebuffer = device.getFrameBuffer( index );
-    cmdBufInheritanceInfo.renderPass = device.getRenderPass();
-
-    VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
-    cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
-    cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
+    
+    vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
     
 
-    vkBeginCommandBuffer( m_commandBufVec[index], &cmdBeginInfo);
-    vkCmdBindPipeline( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
-    
     /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
     vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
     
@@ -104,17 +128,14 @@ void CVisualComponentQuad::recordCommandBuffers(
     // Bind vertex buffer
     VkBuffer vertexBuffers[] = {rVisualData.getVBO().m_buffer};
     VkDeviceSize offsets[] = {0};
-    vkCmdBindVertexBuffers( m_commandBufVec[index], 0, 1, vertexBuffers, offsets );
+    vkCmdBindVertexBuffers( cmdBuffer, 0, 1, vertexBuffers, offsets );
 
     // Bind the index buffer
-    vkCmdBindIndexBuffer( m_commandBufVec[index], rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
-
-    vkCmdBindDescriptorSets( m_commandBufVec[index], VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipelineLayout, 0, 1, &m_descriptorSetVec[index], 0, nullptr );
-
-    vkCmdDrawIndexed( m_commandBufVec[index], rVisualData.getIBOCount(), 1, 0, 0, 0 );
-
-    vkEndCommandBuffer( m_commandBufVec[index] );
+    vkCmdBindIndexBuffer( cmdBuffer, rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
     
+    // Use the push descriptors
+    m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
     
-    device.updateCommandBuffer( m_commandBufVec[index] );
+
+    vkCmdDrawIndexed( cmdBuffer, rVisualData.getIBOCount(), 1, 0, 0, 0 );
 }

@@ -20,8 +20,9 @@ class CUboData
 public:
     
     CUboData(){}
-    CUboData( int size ) : uboSize(size)
+    CUboData( const std::string & uboId, int size ) : m_uboId(uboId), uboSize(size)
     {}
+    std::string m_uboId;
     int uboSize = 0;
 };
     

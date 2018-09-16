@@ -19,6 +19,7 @@
 #include <common/uniformbufferobject.h>
 #include <common/vertex.h>
 #include <common/pipeline.h>
+#include <common/pushdescriptorset.h>
 #include <utilities/xmlParser.h>
 
 // Boost lib dependencies
@@ -76,6 +77,7 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, nullptr) || (instanceExtensionCount == 0) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension count!", SDL_GetError() );
 
+    std::vector<const char*> physicalDeviceExtensionNameVec = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     std::vector<const char*> instanceExtensionNameVec(instanceExtensionCount);
     std::vector<const char*> validationNameVec;
 
@@ -92,9 +94,13 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
         for( auto iter : instanceExtensionNameVec )
             NGenFunc::PostDebugMsg( "Instance Extension: " + std::string(iter));
     }
+    
+    // Enable extension required for push descriptors
+    instanceExtensionNameVec.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
+    physicalDeviceExtensionNameVec.push_back(VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME);
 
     // Create the Vulkan instance and graphics pipeline
-    CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec );
+    CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, physicalDeviceExtensionNameVec );
 
     // Create the pipelines
     createPipelines( pipelineCfg );
@@ -175,7 +181,7 @@ void CDevice::destroyAssets()
         m_memoryBufferMapMap.clear();
 
         // Free all ubo vector groups
-        for( auto & mapIter : m_uboVecMapMap )
+        /*for( auto & mapIter : m_uboVecMapMap )
         {
             for( auto & vecIter : mapIter.second )
             {
@@ -187,7 +193,7 @@ void CDevice::destroyAssets()
             }
         }
 
-        m_uboVecMapMap.clear();
+        m_uboVecMapMap.clear();*/
 
         // Free all the shader modules
         for( auto & iter : m_shaderModuleMap )
@@ -451,7 +457,17 @@ void CDevice::createDescriptorPoolGroup(
 /***************************************************************************
 *   DESC:  Create the uniform buffer
 ****************************************************************************/
-std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( const std::string & group, const std::string & uboId )
+std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( uint32_t pipelineIndex )
+{
+    // Get the descriptor data from the pipeline id
+    const CPipelineData & rPipelineData = getPipelineData( pipelineIndex );
+    const CDescriptorData & rDescriptorData = getDescriptorData( rPipelineData.m_descriptorId );
+    
+    // Create the uniform buffer
+    return CDeviceVulkan::createUniformBufferVec( rDescriptorData.m_descriptorVec.front().m_ubo.uboSize );
+}
+
+/*std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( const std::string & group, const std::string & uboId )
 {
     // Create the map group if it doesn't already exist
     auto mapIter = m_uboVecMapMap.find( group );
@@ -474,13 +490,13 @@ std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( const std::string & 
     }
 
     return iter->second;
-}
+}*/
 
 
 /***************************************************************************
 *   DESC:  Create descriptor sets
 ****************************************************************************/
-std::vector<VkDescriptorSet> CDevice::createDescriptorSetVec(
+/*std::vector<VkDescriptorSet> CDevice::createDescriptorSetVec(
     const std::string & group,
     int pipelineIndex,
     const CTexture & texture,
@@ -521,6 +537,78 @@ std::vector<VkDescriptorSet> CDevice::createDescriptorSetVec(
     }
 
     return descrSetIter->second;
+}*/
+
+
+/***************************************************************************
+*   DESC:  Create push descriptor set
+****************************************************************************/
+void CDevice::createPushDescriptorSet(
+    uint32_t pipelineIndex,
+    const CTexture & texture,
+    const std::vector<CMemoryBuffer> & uniformBufVec,
+    CPushDescriptorSet & pushDescSet )
+{
+    // Get the descriptor data
+    auto & rPipelineData = getPipelineData( pipelineIndex );
+    auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+    
+    // Copy over the function call
+    pushDescSet.vkCmdPushDescriptorSetKHR = vkCmdPushDescriptorSetKHR;
+        
+    for( auto & uboIter : uniformBufVec )
+    {
+        std::vector<VkWriteDescriptorSet> writeDescriptorSetVec;
+        int bindingOffset = 0;
+
+        for( auto & descIdIter : rDescData.m_descriptorVec )
+        {
+            if( descIdIter.m_descrId == "UNIFORM_BUFFER" )
+            {
+                // Make sure this UBO has a size
+                if( descIdIter.m_ubo.uboSize == 0 )
+                    throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Uniform Buffer UBO size is 0! %s") % descIdIter.m_descrId ) );
+
+                VkDescriptorBufferInfo bufferInfo = {};
+                bufferInfo.buffer = uboIter.m_buffer;
+                bufferInfo.range = descIdIter.m_ubo.uboSize;
+
+                pushDescSet.m_descriptorBufferInfoDeq.push_back( bufferInfo );
+
+                VkWriteDescriptorSet writeDescriptorSet = {};
+                writeDescriptorSet.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                writeDescriptorSet.dstBinding = bindingOffset++;
+                writeDescriptorSet.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                writeDescriptorSet.descriptorCount = 1;
+                writeDescriptorSet.pBufferInfo = &pushDescSet.m_descriptorBufferInfoDeq.back();
+
+                writeDescriptorSetVec.push_back( writeDescriptorSet );
+            }
+            else if( descIdIter.m_descrId == "COMBINED_IMAGE_SAMPLER" )
+            {
+                VkDescriptorImageInfo imageInfo = {};
+                imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo.imageView = texture.m_textureImageView;
+                imageInfo.sampler = texture.m_textureSampler;
+
+                pushDescSet.m_descriptorImageInfoDeq.push_back( imageInfo );
+
+                VkWriteDescriptorSet writeDescriptorSet = {};
+                writeDescriptorSet.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                writeDescriptorSet.dstBinding = bindingOffset++;
+                writeDescriptorSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+                writeDescriptorSet.descriptorCount = 1;
+                writeDescriptorSet.pImageInfo = &pushDescSet.m_descriptorImageInfoDeq.back();
+
+                writeDescriptorSetVec.push_back( writeDescriptorSet );
+            }
+            else
+            {
+                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Create Descriptor Set binding not defined! %s") % descIdIter.m_descrId ) );
+            }
+        }
+        pushDescSet.m_pushDescriptorSetVec.push_back(writeDescriptorSetVec);
+    }
 }
 
 
@@ -562,9 +650,9 @@ void CDevice::createPipelines( const std::string & filePath )
     {
         const std::string id = uboLstNode.getChildNode("ubo", i).getAttribute("id");
 
-        m_uboDataMap.emplace( id, NUBO::GetUboSize(id) );
+        m_uboDataMap.emplace( std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(id, NUBO::GetUboSize(id)) );
     }
-
+    
 
     // Create the descriptor list
     const XMLNode descriptorLstNode = node.getChildNode("descriptorList");
@@ -726,13 +814,30 @@ VkShaderModule CDevice::createShader( const std::string & filePath )
 ************************************************************************/
 void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec )
 {
-    // A command pool shouldn't have been already created
+    // Only free if a command pool is still available.
+    // Deleting the command pool frees all command buffers so there's no point
+    // in trying to delete it if it's not there
     auto iter = m_commandPoolMap.find( group );
-    if( iter == m_commandPoolMap.end() )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Command pool has not been created! %s") % group ) );
-
-    vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
+    if( iter != m_commandPoolMap.end() )
+        vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
+    
     commandBufVec.clear();
+}
+
+
+/************************************************************************
+*    DESC:  Delete a uniform buffer vec
+************************************************************************/
+void CDevice::deleteUniformBufferVec( std::vector<CMemoryBuffer> & commandBufVec )
+{
+    for( auto & iter : commandBufVec )
+    {
+        vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
+        vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
+        
+        iter.m_buffer = VK_NULL_HANDLE;
+        iter.m_deviceMemory = VK_NULL_HANDLE;
+    }
 }
 
 
@@ -782,7 +887,7 @@ void CDevice::deleteTextureGroup( const std::string & group )
 /************************************************************************
 *    DESC:  Delete the UBO vector group
 ************************************************************************/
-void CDevice::deleteUboVecGroup( const std::string & group )
+/*void CDevice::deleteUboVecGroup( const std::string & group )
 {
     // Free the texture group if it exists
     auto mapIter = m_uboVecMapMap.find( group );
@@ -800,7 +905,7 @@ void CDevice::deleteUboVecGroup( const std::string & group )
         // Erase this group
         m_uboVecMapMap.erase( mapIter );
     }
-}
+}*/
 
 
 /************************************************************************
@@ -982,7 +1087,8 @@ void CDevice::showWindow( bool visible )
 void CDevice::waitForIdle()
 {
     // Wait for the logical device to be idle before doing the clean up
-    vkDeviceWaitIdle( m_logicalDevice );
+    if( m_logicalDevice != VK_NULL_HANDLE )
+        vkDeviceWaitIdle( m_logicalDevice );
 }
 
 

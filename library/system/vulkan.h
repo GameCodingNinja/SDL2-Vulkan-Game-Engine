@@ -6,4 +6,5 @@
 #include <vulkan/vulkan.h>
 #endif
 
+#include <cstdint>
 

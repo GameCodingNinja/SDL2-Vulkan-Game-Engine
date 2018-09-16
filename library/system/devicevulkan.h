@@ -40,7 +40,8 @@ protected:
     // Create Vulkan instance
     void create(
         const std::vector<const char*> & validationNameVec,
-        const std::vector<const char*> & instanceExtensionNameVec );
+        const std::vector<const char*> & instanceExtensionNameVec,
+        const std::vector<const char*> & physicalDeviceExtensionNameVec );
     
     // Destroy the Vulkan instance
     void destroy();
@@ -152,7 +153,9 @@ private:
     void selectPhysicalDevice();
     
     // Create the logical device
-    void createLogicalDevice( const std::vector<const char*> & validationNameVec );
+    void createLogicalDevice(
+        const std::vector<const char*> & validationNameVec,
+        const std::vector<const char*> & physicalDeviceExtensionNameVec );
     
     // Setup the swap chain to be created
     void setupSwapChain();
@@ -302,6 +305,7 @@ protected:
     PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
     VkDebugReportCallbackEXT vkDebugReportCallbackEXT;
     PFN_vkDestroyDebugReportCallbackEXT vkDestroyDebugReportCallbackEXT;
+    PFN_vkCmdPushDescriptorSetKHR vkCmdPushDescriptorSetKHR;
 };
 
 #endif  // __device_vulkan_h__

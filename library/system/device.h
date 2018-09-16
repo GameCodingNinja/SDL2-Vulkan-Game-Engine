@@ -24,6 +24,7 @@ typedef _SDL_GameController SDL_GameController;
 class CPipelineData;
 class CDescriptorData;
 class CUboData;
+class CPushDescriptorSet;
 
 class CDevice : public CDeviceVulkan
 {
@@ -55,11 +56,18 @@ public:
     void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
 
     // Create descriptor sets
-    std::vector<VkDescriptorSet> createDescriptorSetVec(
+    /*std::vector<VkDescriptorSet> createDescriptorSetVec(
         const std::string & group,
         int pipelineIndex,
         const CTexture & texture,
-        const std::vector<CMemoryBuffer> & uniformBufVec );
+        const std::vector<CMemoryBuffer> & uniformBufVec );*/
+    
+    // Create push descriptor set
+    void createPushDescriptorSet(
+        uint32_t pipelineIndex,
+        const CTexture & texture,
+        const std::vector<CMemoryBuffer> & uniformBufVec,
+        CPushDescriptorSet & pushDescSet );
 
     // Load the image from file path
     CTexture & createTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
@@ -71,7 +79,8 @@ public:
     void createDescriptorPoolGroup( const std::string & group, const std::string & descrId, const CDescriptorData & descData, size_t count );
 
     // Create uniform buffer
-    std::vector<CMemoryBuffer> createUniformBufferVec( const std::string & group, const std::string & uboId );
+    std::vector<CMemoryBuffer> createUniformBufferVec( uint32_t pipelineIndex );
+    //std::vector<CMemoryBuffer> createUniformBufferVec( const std::string & group, const std::string & uboId );
 
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
@@ -164,6 +173,9 @@ public:
     
     // Get descriptor data map
     const CDescriptorData & getDescriptorData( const std::string & id ) const;
+    
+    // Delete a uniform buffer vec
+    void deleteUniformBufferVec( std::vector<CMemoryBuffer> & commandBufVec );
 
 private:
 
@@ -198,7 +210,7 @@ private:
     void deleteCommandPoolGroup( const std::string & group );
     
     // Delete the UBO vector group
-    void deleteUboVecGroup( const std::string & group );
+    //void deleteUboVecGroup( const std::string & group );
 
     // Record the command buffers
     void recordCommandBuffers( uint32_t cmdBufIndex );
@@ -230,13 +242,13 @@ private:
     std::map< const std::string, std::map< const std::string, VkDescriptorPool > > m_descriptorPoolMapMap;
 
     // Map containing a group of descriptor sets
-    std::map< const std::string, std::map< const std::string, std::vector<VkDescriptorSet> > > m_descriptorSetMapMap;
+    //std::map< const std::string, std::map< const std::string, std::vector<VkDescriptorSet> > > m_descriptorSetMapMap;
 
     // Map containing a group of memory buffer handles
     std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_memoryBufferMapMap;
 
     // Map containing a group of uniform buffer handles
-    std::map< const std::string, std::map< const std::string, std::vector<CMemoryBuffer> > > m_uboVecMapMap;
+    //std::map< const std::string, std::map< const std::string, std::vector<CMemoryBuffer> > > m_uboVecMapMap;
 
     // Map containing loaded shader module
     std::map< const std::string, VkShaderModule > m_shaderModuleMap;

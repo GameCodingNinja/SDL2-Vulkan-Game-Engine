@@ -113,7 +113,8 @@ CDeviceVulkan::~CDeviceVulkan()
 ****************************************************************************/
 void CDeviceVulkan::create(
     const std::vector<const char*> & validationNameVec,
-    const std::vector<const char*> & instanceExtensionNameVec )
+    const std::vector<const char*> & instanceExtensionNameVec,
+    const std::vector<const char*> & physicalDeviceExtensionNameVec )
 {
     #if defined(__ANDROID__)
     if( InitVulkan() == 0 )
@@ -137,7 +138,7 @@ void CDeviceVulkan::create(
     selectPhysicalDevice();
     
     // Create the logical device
-    createLogicalDevice( validationNameVec );
+    createLogicalDevice( validationNameVec, physicalDeviceExtensionNameVec );
     
     // Setup the swap chain to be created
     setupSwapChain();
@@ -308,7 +309,6 @@ void CDeviceVulkan::createVulkanInstance(
     // Get a function pointer to the vulkan vkGetSwapchainImagesKHR
     if( !(vkGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetSwapchainImagesKHR" )) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkGetSwapchainImagesKHR!" );
-
     
     ///////////////////////////////////////////////////
     // Setup validation layers() call back
@@ -387,13 +387,13 @@ void CDeviceVulkan::selectPhysicalDevice()
 /***************************************************************************
 *   DESC:  Create the logical device
 ****************************************************************************/
-void CDeviceVulkan::createLogicalDevice( const std::vector<const char*> & validationNameVec )
+void CDeviceVulkan::createLogicalDevice(
+    const std::vector<const char*> & validationNameVec,
+    const std::vector<const char*> & physicalDeviceExtensionNameVec )
 {
     // Make sure we have a swap chain
     if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
         throw NExcept::CCriticalException( "Vulkan Error!", "No swap chain support!" );
-    
-    std::vector<const char*> physicalDeviceExtensionNameVec = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     
     float queuePriority = 1.0f;
     VkDeviceQueueCreateInfo deviceQueueInfo = {};
@@ -425,6 +425,9 @@ void CDeviceVulkan::createLogicalDevice( const std::vector<const char*> & valida
     // Create the logical device
     if( (m_lastResult = vkCreateDevice( m_physicalDevice, &createInfo, nullptr, &m_logicalDevice )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create logical device! %s") % getError() ) );
+    
+    if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCmdPushDescriptorSetKHR!" );
     
     // Get a handle to the graphics and present queue family - Could be different but most likely in the same queue family
     // Get a handle to the graphics queue
@@ -756,6 +759,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
 
     VkDescriptorSetLayoutCreateInfo layoutInfo = {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    layoutInfo.flags = VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR;
     layoutInfo.bindingCount = bindings.size();
     layoutInfo.pBindings = bindings.data();
     

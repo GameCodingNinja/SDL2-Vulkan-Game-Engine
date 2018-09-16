@@ -16,6 +16,9 @@
 // Standard lib dependencies
 #include <string>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward declaration(s)
 class CColor;
 class CMatrix;
@@ -34,11 +37,16 @@ public:
     virtual ~iVisualComponent() {}
     
     // Record the command buffers
-    virtual void recordCommandBuffers( uint32_t cmdBufIndex, const CMatrix & model, const CMatrix & viewProj ) {}
+    virtual void recordCommandBuffers(
+        uint32_t cmdBufIndex,
+        const CMatrix & model,
+        const CMatrix & viewProj ) {}
     
-    // Delete the assets that are otherwise freed when deleting the group
-    // This is for when individual sprites are freed from the group
-    virtual void deleteGroupAssets() {}
+    virtual void recordCommandBuffers( 
+        uint32_t index,
+        VkCommandBuffer cmdBuffer,
+        const CMatrix & model,
+        const CMatrix & viewProj ) {}
 
     // do the render
     virtual void render( const CMatrix & objMatrix, const CMatrix & matrix ) {}

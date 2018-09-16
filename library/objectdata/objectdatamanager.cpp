@@ -78,7 +78,7 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
     }
     
     // Get the descriptor data map to find out how many unique descriptors need to be allocated
-    auto & rDescDataMap = CDevice::Instance().getDescriptorDataMap();
+    /*auto & rDescDataMap = CDevice::Instance().getDescriptorDataMap();
     
     auto objDataIter = m_objectData2DMapMap.find(group);
     
@@ -91,7 +91,7 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
         
         if( !descUniqueSet.empty() )
             CDevice::Instance().createDescriptorPoolGroup( group, descIter.first, descIter.second, descUniqueSet.size() );
-    }
+    }*/
 
     // Create the assets from data
     createFromData2D( group );
