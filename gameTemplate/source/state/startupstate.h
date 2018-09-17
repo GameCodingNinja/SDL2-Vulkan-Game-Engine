@@ -8,11 +8,15 @@
 #ifndef __start_up_state_h__
 #define __start_up_state_h__
 
-// Physical component dependenc
+// Physical component dependency
 #include "igamestate.h"
 
 // Standard lib dependencies
 #include <memory>
+#include <vector>
+
+// Vulkan lib dependencies
+#include <system/vulkan.h>
 
 // Forward declaration(s)
 class CColor;
@@ -43,7 +47,7 @@ public:
 
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t cmdBufIndex ) override;
+    void recordCommandBuffer( uint32_t index ) override;
 
 private:
     
@@ -62,6 +66,9 @@ private:
     // Logo to fade in and out
     std::unique_ptr<CSprite> m_upSpriteLogo;
     std::unique_ptr<CSprite> m_upSpriteWaffles;
+    
+    // Command buffer
+    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif  // __start_up_state_h__

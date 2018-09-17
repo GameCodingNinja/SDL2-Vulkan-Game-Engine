@@ -37,11 +37,6 @@ public:
     virtual ~iVisualComponent() {}
     
     // Record the command buffers
-    virtual void recordCommandBuffers(
-        uint32_t cmdBufIndex,
-        const CMatrix & model,
-        const CMatrix & viewProj ) {}
-    
     virtual void recordCommandBuffers( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,

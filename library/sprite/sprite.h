@@ -20,6 +20,9 @@
 #include <map>
 #include <memory>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward declaration(s)
 class CObject2D;
 class iObjectData;
@@ -57,8 +60,8 @@ public:
     void physicsUpdate();
 
     // Record the command buffers
-    void recordCommandBuffers( uint32_t cmdBufIndex, const CCamera & camera );
-    void recordCommandBuffers( uint32_t cmdBufIndex, const CMatrix & viewProj );
+    void recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
+    void recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
     
     // Init the script functions
     void initScriptFunctions( const XMLNode & node );

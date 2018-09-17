@@ -387,12 +387,16 @@ void CDevice::createSurface()
 ************************************************************************/
 std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::string & group )
 {
-    // Find the command pool group
+    // Find the command pool group or create it if it doesn't exist
     auto iter = m_commandPoolMap.find( group );
     if( iter == m_commandPoolMap.end() )
-        throw NExcept::CCriticalException(
-            "Vulkan Error!",
-            boost::str( boost::format("Command pool group not found! %s") % group ) );
+    {
+        // Create the command pool
+        VkCommandPool commandPool = CDeviceVulkan::createCommandPool();
+
+        // Add the pool to the map
+        iter = m_commandPoolMap.emplace( group, commandPool ).first;
+    }
 
     return CDeviceVulkan::createSecondaryCommandBuffers( iter->second );
 }
@@ -613,25 +617,6 @@ void CDevice::createPushDescriptorSet(
 
 
 /************************************************************************
-*    DESC:  Create the command pool group for command buffer generation
-************************************************************************/
-void CDevice::createCommandPoolGroup( const std::string & group )
-{
-    // Create the command pool. It shouldn't have been already created
-    if( m_commandPoolMap.find( group ) != m_commandPoolMap.end() )
-        throw NExcept::CCriticalException(
-            "Vulkan Error!",
-            boost::str( boost::format("Command pool already created! %s") % group ) );
-
-    // Create the command pool
-    VkCommandPool commandPool = CDeviceVulkan::createCommandPool();
-
-    // Add the pool to the map
-    m_commandPoolMap.emplace( group, commandPool );
-}
-
-
-/************************************************************************
 *    DESC:  Create the pipelines from config file
 ************************************************************************/
 void CDevice::createPipelines( const std::string & filePath )
@@ -806,22 +791,6 @@ VkShaderModule CDevice::createShader( const std::string & filePath )
     }
 
     return iter->second;
-}
-
-
-/************************************************************************
-*    DESC:  Delete a secondary command buffer of a specific group
-************************************************************************/
-void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec )
-{
-    // Only free if a command pool is still available.
-    // Deleting the command pool frees all command buffers so there's no point
-    // in trying to delete it if it's not there
-    auto iter = m_commandPoolMap.find( group );
-    if( iter != m_commandPoolMap.end() )
-        vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
-    
-    commandBufVec.clear();
 }
 
 
@@ -1093,24 +1062,6 @@ void CDevice::waitForIdle()
 
 
 /***************************************************************************
-*   DESC:  Get the frame buffer index
-****************************************************************************/
-VkFramebuffer CDevice::getFrameBuffer( uint32_t index )
-{
-    return m_framebufferVec[index];
-}
-
-
-/***************************************************************************
-*   DESC:  Get the render pass
-****************************************************************************/
-VkRenderPass CDevice::getRenderPass()
-{
-    return m_renderPass;
-}
-
-
-/***************************************************************************
 *   DESC:  Get the pipeline
 ****************************************************************************/
 const CPipelineData & CDevice::getPipelineData( int index ) const
@@ -1151,4 +1102,37 @@ const CDescriptorData & CDevice::getDescriptorData( const std::string & id ) con
         NGenFunc::PostDebugMsg( boost::str( boost::format("Descriptor data Id does not exist: %s") % id ) );
     
     return iter->second;
+}
+
+
+/***************************************************************************
+*   DESC:  Begin the recording of the command buffer
+****************************************************************************/
+void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer )
+{
+    // Setup to begine recording the command buffer
+    VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
+    cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+    cmdBufInheritanceInfo.framebuffer = m_framebufferVec[index];
+    cmdBufInheritanceInfo.renderPass = m_renderPass;
+
+    VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+    cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
+    cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
+    
+    // Start recording the command buffer
+    vkBeginCommandBuffer( cmdBuffer, &cmdBeginInfo );
+}
+
+
+/***************************************************************************
+*   DESC:  End the recording of the command buffer
+****************************************************************************/
+void CDevice::endCommandBuffer( VkCommandBuffer cmdBuffer )
+{
+    // Stop recording the command buffer
+    vkEndCommandBuffer( cmdBuffer );
+    
+    // Pass the command buffer to the queue
+    updateCommandBuffer( cmdBuffer );
 }

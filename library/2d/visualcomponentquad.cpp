@@ -49,9 +49,6 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 ************************************************************************/
 CVisualComponentQuad::~CVisualComponentQuad()
 {
-    if( !m_commandBufVec.empty() )
-        CDevice::Instance().deleteCommandBuffer( m_rObjectData.getGroup(), m_commandBufVec );
-    
     CDevice::Instance().deleteUniformBufferVec( m_uniformBufVec );
 }
 
@@ -61,40 +58,6 @@ CVisualComponentQuad::~CVisualComponentQuad()
 *          NOTE: this function is mainly for one off testing. Command buffers
 *                should be created by the group and passed in normally
 ****************************************************************************/
-void CVisualComponentQuad::recordCommandBuffers(
-    uint32_t index,
-    const CMatrix & model,
-    const CMatrix & viewProj )
-{
-    auto & device( CDevice::Instance() );
-    
-    // Create the command buffer vector if it is empty
-    if( m_commandBufVec.empty() )
-        m_commandBufVec = device.createSecondaryCommandBuffers( objectData.getGroup() );
-    
-    // Setup to begine recording the command buffer
-    VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
-    cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
-    cmdBufInheritanceInfo.framebuffer = device.getFrameBuffer( index );
-    cmdBufInheritanceInfo.renderPass = device.getRenderPass();
-
-    VkCommandBufferBeginInfo cmdBeginInfo = { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };  // VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
-    cmdBeginInfo.flags =  VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT | VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
-    cmdBeginInfo.pInheritanceInfo = &cmdBufInheritanceInfo;
-    
-    // Start recording the command buffer
-    vkBeginCommandBuffer( m_commandBufVec[index], &cmdBeginInfo);
-    
-    // Record the command buffer
-    recordCommandBuffers( index, m_commandBufVec[index], model, viewProj );
-    
-    // Stop recording the command buffer
-    vkEndCommandBuffer( m_commandBufVec[index] );
-    
-    // Pass the command buffer to the queue
-    device.updateCommandBuffer( m_commandBufVec[index] );
-}
-
 void CVisualComponentQuad::recordCommandBuffers(
     uint32_t index,
     VkCommandBuffer cmdBuffer,

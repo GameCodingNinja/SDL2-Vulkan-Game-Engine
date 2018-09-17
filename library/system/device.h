@@ -52,9 +52,6 @@ public:
     // Create secondary command buffers
     std::vector<VkCommandBuffer> createSecondaryCommandBuffers( const std::string & group );
 
-    // Delete a secondary command buffer of a specific group
-    void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
-
     // Create descriptor sets
     /*std::vector<VkDescriptorSet> createDescriptorSetVec(
         const std::string & group,
@@ -72,9 +69,6 @@ public:
     // Load the image from file path
     CTexture & createTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
 
-    // Create the command pool group for command buffer generation
-    void createCommandPoolGroup( const std::string & group );
-
     // Create the descriptor pool group for the textures
     void createDescriptorPoolGroup( const std::string & group, const std::string & descrId, const CDescriptorData & descData, size_t count );
 
@@ -84,6 +78,9 @@ public:
 
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
+    
+    // Delete the command pool group
+    void deleteCommandPoolGroup( const std::string & group );
 
     // Load a buffer into video card memory
     template <typename T>
@@ -121,12 +118,6 @@ public:
         std::memcpy( data, &ubo, sizeof(ubo));
         vkUnmapMemory( m_logicalDevice, deviceMemory );
     }
-
-    // Get the frame buffer index
-    VkFramebuffer getFrameBuffer( uint32_t index );
-
-    // Get the render pass
-    VkRenderPass getRenderPass();
 
     // Get the pipeline data
     const CPipelineData & getPipelineData( int index ) const;
@@ -176,6 +167,12 @@ public:
     
     // Delete a uniform buffer vec
     void deleteUniformBufferVec( std::vector<CMemoryBuffer> & commandBufVec );
+    
+    // Begin the recording of the command buffer
+    void beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer );
+    
+    // End the recording of the command buffer
+    void endCommandBuffer( VkCommandBuffer cmdBuffer );
 
 private:
 
@@ -205,9 +202,6 @@ private:
 
     // Delete a buffer in a group
     void deleteMemoryBufferGroup( const std::string & group );
-
-    // Delete the command pool group
-    void deleteCommandPoolGroup( const std::string & group );
     
     // Delete the UBO vector group
     //void deleteUboVecGroup( const std::string & group );

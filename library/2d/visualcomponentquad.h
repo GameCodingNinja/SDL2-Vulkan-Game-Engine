@@ -37,12 +37,6 @@ public:
     // Record the command buffers
     void recordCommandBuffers( 
         uint32_t index,
-        const CMatrix & model,
-        const CMatrix & viewProj ) override;
-    
-    // Record the command buffers
-    void recordCommandBuffers( 
-        uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,
         const CMatrix & viewProj ) override;
@@ -51,9 +45,6 @@ private:
     
     // Reference to object visual data
     const CObjectData2D & m_rObjectData;
-    
-    // Command buffer
-    std::vector<VkCommandBuffer> m_commandBufVec;
     
     // Uniform buffers
     std::vector<CMemoryBuffer> m_uniformBufVec;

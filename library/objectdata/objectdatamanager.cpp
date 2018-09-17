@@ -95,9 +95,6 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
 
     // Create the assets from data
     createFromData2D( group );
-    
-    // Create the command pool group for command buffer generation
-    CDevice::Instance().createCommandPoolGroup( group );
 
     // Free the sprite sheet data because it's no longer needed
     CSpriteSheetMgr::Instance().clear();
@@ -277,9 +274,6 @@ void CObjectDataMgr::loadGroup3D( const std::string & group )
             boost::str( boost::format( "Object data list group has alread been loaded (%s).\n\n%s\nLine: %s" )
                 % group % __FUNCTION__ % __LINE__ ) );
     }
-    
-    // Create the command pool group for command buffer generation
-    CDevice::Instance().createCommandPoolGroup( group );
 }
 
 

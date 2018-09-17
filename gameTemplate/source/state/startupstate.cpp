@@ -80,6 +80,7 @@ CStartUpState::CStartUpState() :
 ************************************************************************/
 CStartUpState::~CStartUpState()
 {
+    CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
 }
 
 
@@ -93,6 +94,9 @@ void CStartUpState::init()
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
+    
+    // Create the group command buffers
+    m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
     
     // Set code for new sprite
     //CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
@@ -116,6 +120,12 @@ void CStartUpState::init()
 ****************************************************************************/
 void CStartUpState::update()
 {
+    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
+    
+    m_upSpriteLogo->getObject()->incRot( 0, 0, -rot );
+    m_upSpriteWaffles->getObject()->incRot( 0, 0, rot );
+    
+    
     /*m_scriptComponent.update();
 
     float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
@@ -148,12 +158,16 @@ void CStartUpState::transform()
 *    decs:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CStartUpState::recordCommandBuffer( uint32_t cmdBufIndex )
+void CStartUpState::recordCommandBuffer( uint32_t index )
 {
-    m_upSpriteLogo->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
-    m_upSpriteWaffles->recordCommandBuffers( cmdBufIndex, CCameraMgr::Instance().getDefaultProjMatrix() );
+    auto cmdBuf( m_commandBufVec[index] );
     
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
     
+    m_upSpriteLogo->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
+    m_upSpriteWaffles->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
+    
+    CDevice::Instance().endCommandBuffer( cmdBuf );
     
     
     /*m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
