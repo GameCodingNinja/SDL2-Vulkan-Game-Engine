@@ -29,6 +29,9 @@ namespace NUBO
     {
         if( ubo == "model_viewProj_color_additive" )
             return sizeof(model_viewProj_color_additive);
+        
+        else if( ubo == "model_viewProj_color_additive_glyph" )
+            return sizeof(model_viewProj_color_additive_glyph);
 
         else
             throw NExcept::CCriticalException(

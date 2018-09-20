@@ -20,7 +20,6 @@
 #include <system/vulkan.h>
 
 // Forward declaration(s)
-class CColor;
 class CMatrix;
 class CObjectVisualData2D;
 class CObjectVisualData3D;
@@ -75,14 +74,20 @@ public:
     virtual void createFontString( const std::string & fontString ){}
 
     // Get the displayed font string
-    virtual const std::string & getFontString() { return m_stringDummy; };
+    virtual const std::string & getFontString() { return m_null_string; };
     virtual void setFontString( const std::string & fontString ){}
     
     // Get the font size
-    virtual const CSize<float> & getFontSize() const { return m_sizeDummy; };
+    virtual const CSize<float> & getFontSize() const;
     
     // Is this a font sprite
     bool isFontSprite() const;
+    
+    // Get the generation type
+    NDefs::EGenerationType getGenerationType() const;
+    
+    // Get the crop offset
+    virtual const CSize<int> & getCropOffset( uint index = 0 ) const;
     
 protected:
 
@@ -104,9 +109,10 @@ protected:
     // Frame index
     uint32_t m_frameIndex;
     
-    // String dummy
-    static std::string m_stringDummy;
-    static CSize<float> m_sizeDummy;
+    // Static null data members
+    static std::string m_null_string;
+    static CSize<float> m_null_float_size;
+    static CSize<int> m_null_int_size;
 };
 
 #endif

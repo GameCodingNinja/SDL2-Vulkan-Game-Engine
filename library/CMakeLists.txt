@@ -86,6 +86,7 @@ add_library(
         2d/sprite2d.cpp
         2d/visualcomponent2d.cpp
         2d/visualcomponentquad.cpp
+        2d/visualcomponentspritesheet.cpp
         2d/object2d.cpp
         2d/actorsprite2d.cpp
 	3d/sprite3d.cpp

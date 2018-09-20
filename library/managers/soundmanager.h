@@ -104,9 +104,9 @@ private:
     // max mix channels
     int m_maxMixChannels;
     
-    // dummys
-    CPlayList m_dummyPlayLst;
-    CSound m_dummySound;
+    // Null members
+    CPlayList m_null_playLst;
+    CSound m_null_sound;
 
 };
 

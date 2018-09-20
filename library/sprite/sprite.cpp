@@ -13,6 +13,7 @@
 #include <objectdata/objectdata3d.h>
 #include <2d/object2d.h>
 #include <2d/visualcomponentquad.h>
+#include <2d/visualcomponentspritesheet.h>
 #include <3d/object3d.h>
 #include <3d/visualcomponent3d.h>
 #include <physics/physicscomponent2d.h>
@@ -32,6 +33,9 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
 {
     if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
         m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
+    
+    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SPRITE_SHEET )
+        m_upVisualComponent.reset( new CVisualComponentSpriteSheet( objectData ) );
     
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
@@ -201,4 +205,19 @@ CObject2D * CSprite::getObject()
 iVisualComponent * CSprite::getVisualComponent()
 {
     return m_upVisualComponent.get();
+}
+
+
+/************************************************************************
+*    DESC:  Set the texture ID from index
+************************************************************************/
+void CSprite::setFrame( uint index )
+{
+    if( m_upVisualComponent->getCurrentFrame() != index )
+    {
+        m_upVisualComponent->setFrame( index );
+        
+        if( m_upVisualComponent->getGenerationType() == NDefs::EGT_SPRITE_SHEET )
+            m_upObject->setCropOffset( m_upVisualComponent->getCropOffset( index ) );
+    }
 }

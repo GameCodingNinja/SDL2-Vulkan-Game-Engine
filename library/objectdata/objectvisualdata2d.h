@@ -124,6 +124,7 @@ private:
 
     // Loaded texture data
     std::vector<CTexture> m_textureVec;
+    static CTexture m_null_texture;
 
     // VBO buffer
     CMemoryBuffer m_vboBuffer;

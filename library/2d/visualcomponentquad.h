@@ -12,9 +12,6 @@
 #include <common/ivisualcomponent.h>
 
 // Game lib dependencies
-#include <utilities/matrix.h>
-#include <common/color.h>
-#include <common/size.h>
 #include <common/pushdescriptorset.h>
 
 // Boost lib dependencies
@@ -23,6 +20,7 @@
 // Forward declaration(s)
 class CObjectData2D;
 class CMemoryBuffer;
+class CDevice;
 
 class CVisualComponentQuad : public iVisualComponent, boost::noncopyable
 {
@@ -43,17 +41,27 @@ public:
     
 private:
     
-    // Reference to object visual data
-    const CObjectData2D & m_rObjectData;
+    // Update the UBO buffer
+    virtual void updateUBO(
+        uint32_t index,
+        CDevice & device,
+        const CObjectVisualData2D & rVisualData,
+        const CMatrix & model,
+        const CMatrix & viewProj );
+    
+protected:
     
     // Uniform buffers
     std::vector<CMemoryBuffer> m_uniformBufVec;
     
+    // Reference to object visual data
+    const CObjectData2D & m_rObjectData;
+    
+private:
+
     // Push Descriptor set
     CPushDescriptorSet m_pushDescSet;
 
 };
 
 #endif  // __visual_component_quad_h__
-
-

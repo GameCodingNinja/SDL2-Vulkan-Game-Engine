@@ -222,14 +222,14 @@ CSound & CSoundMgr::getSound( const std::string & group, const std::string & sou
     if( soundMapIter == m_soundMapMap.end() )
     {
         NGenFunc::PostDebugMsg( boost::str( boost::format("Sound group can't be found (%s).") % group ) );
-        return m_dummySound;
+        return m_null_sound;
     }
 
     auto iter = soundMapIter->second.find( soundID );
     if( iter == soundMapIter->second.end() )
     {
         NGenFunc::PostDebugMsg( boost::str( boost::format("Sound ID can't be found (%s - %s).") % group % soundID ) );
-        return m_dummySound;
+        return m_null_sound;
     }
 
     return iter->second;
@@ -249,7 +249,7 @@ CPlayList & CSoundMgr::getPlayList( const std::string & group, const std::string
             return iter->second;
     }
 
-    return m_dummyPlayLst;
+    return m_null_playLst;
 }
 
 

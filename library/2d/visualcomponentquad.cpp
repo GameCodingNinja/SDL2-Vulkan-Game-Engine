@@ -13,7 +13,7 @@
 #include <objectdata/objectvisualdata2d.h>
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
-#include <common/quad2d.h>
+#include <utilities/matrix.h>
 #include <common/uniformbufferobject.h>
 #include <common/pipeline.h>
 #include <system/device.h>
@@ -67,18 +67,13 @@ void CVisualComponentQuad::recordCommandBuffers(
     const auto & rVisualData( m_rObjectData.getVisualData() );
     auto & device( CDevice::Instance() );
     
-    //VkPipeline pipeline = device.getPipeline( rVisualData.getPipelineIndex() );
+    // Get the pipeline data
     const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
     
-    // Setup the uniform buffer object
-    NUBO::model_viewProj_color_additive ubo;
-    ubo.model.setScale( rVisualData.getVertexScale() );
-    ubo.model *= model;
-    ubo.viewProj = viewProj;
-
-    // Update the uniform buffer
-    device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
+    // Update the UBO buffer
+    updateUBO( index, device, rVisualData, model, viewProj );
     
+    // Bind the pipeline
     vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
     
 
@@ -99,6 +94,29 @@ void CVisualComponentQuad::recordCommandBuffers(
     // Use the push descriptors
     m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
     
-
+    // Do the draw
     vkCmdDrawIndexed( cmdBuffer, rVisualData.getIBOCount(), 1, 0, 0, 0 );
+}
+
+
+/************************************************************************
+*    DESC:  Update the UBO buffer
+************************************************************************/
+void CVisualComponentQuad::updateUBO(
+    uint32_t index,
+    CDevice & device,
+    const CObjectVisualData2D & rVisualData,
+    const CMatrix & model,
+    const CMatrix & viewProj )
+{
+    // Setup the uniform buffer object
+    NUBO::model_viewProj_color_additive ubo;
+    ubo.model.setScale( rVisualData.getVertexScale() );
+    ubo.model *= model;
+    ubo.viewProj = viewProj;
+    ubo.color = m_color;
+    ubo.additive = m_additive;
+
+    // Update the uniform buffer
+    device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }

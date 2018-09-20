@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <cstring>
 
-CSound CPlayList::m_DummySound;
+CSound CPlayList::m_null_Sound;
 
 /************************************************************************
 *    DESC:  Constructor
@@ -114,7 +114,7 @@ CSound & CPlayList::getSound()
         return m_soundVec[m_current];
     }
     
-    return m_DummySound;
+    return m_null_Sound;
 }
 
 
@@ -179,7 +179,7 @@ int CPlayList::getVolume()
     if( !m_soundVec.empty() )
         return m_soundVec[m_current].getVolume();
     
-    return m_DummySound.getVolume();
+    return m_null_Sound.getVolume();
 }
 
 
@@ -191,7 +191,7 @@ bool CPlayList::isPlaying()
     if( !m_soundVec.empty() )
         return m_soundVec[m_current].isPlaying();
     
-    return m_DummySound.isPlaying();
+    return m_null_Sound.isPlaying();
 }
 
 
@@ -203,7 +203,7 @@ bool CPlayList::isPaused()
     if( !m_soundVec.empty() )
         return m_soundVec[m_current].isPaused();
     
-    return m_DummySound.isPaused();
+    return m_null_Sound.isPaused();
 }
 
 

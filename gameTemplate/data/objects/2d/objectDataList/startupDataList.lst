@@ -40,16 +40,12 @@
             </visual>
         </object>
         
-        <object name="waffles2">
+        <object name="solid">
             <visual>
-                <texture file="data/textures/startup/waffles.png"/>
+                <pipeline id="2d_solid"/>
+                <color r="0" g="0" b="1" a="1"/>
             </visual>
-        </object>
-        
-        <object name="logo2">
-            <visual>
-                <texture file="data/textures/startup/logo.png"/>
-            </visual>
+            <size width="400" height="200"/>
         </object>
 
     </objectList>

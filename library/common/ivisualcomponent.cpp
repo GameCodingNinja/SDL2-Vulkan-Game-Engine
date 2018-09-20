@@ -15,9 +15,10 @@
 // Game lib dependencies
 #include <common/defs.h>
 
-// Init some statics
-std::string iVisualComponent::m_stringDummy;
-CSize<float> iVisualComponent::m_sizeDummy;
+// Declare some statics
+std::string iVisualComponent::m_null_string;
+CSize<float> iVisualComponent::m_null_float_size;
+CSize<int> iVisualComponent::m_null_int_size;
 CColor iVisualComponent::m_additive;
 
 /************************************************************************
@@ -149,4 +150,31 @@ uint iVisualComponent::getCurrentFrame() const
 bool iVisualComponent::isFontSprite() const
 {
     return (GENERATION_TYPE == NDefs::EGT_FONT);
+}
+
+
+/************************************************************************
+*    DESC:  Get the font size
+************************************************************************/
+const CSize<float> & iVisualComponent::getFontSize() const
+{
+    return m_null_float_size;
+}
+
+
+/************************************************************************
+*    DESC:  Get the generation type
+************************************************************************/
+NDefs::EGenerationType iVisualComponent::getGenerationType() const
+{
+    return GENERATION_TYPE;
+}
+
+
+/************************************************************************
+*    DESC:  Get the crop offset
+************************************************************************/
+const CSize<int> & iVisualComponent::getCropOffset( uint index ) const
+{
+    return m_null_int_size;
 }

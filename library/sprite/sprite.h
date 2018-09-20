@@ -78,6 +78,9 @@ public:
     // Get the visual component
     iVisualComponent * getVisualComponent();
     
+    // Set the texture ID from index
+    void setFrame( uint index );
+    
 private:
     
     // Unique Id number

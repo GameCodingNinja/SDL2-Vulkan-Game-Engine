@@ -29,6 +29,9 @@
 #include <iostream>
 #include <cstring>
 
+// Declare some static
+CTexture CObjectVisualData2D::m_null_texture;
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -632,10 +635,8 @@ uint32_t CObjectVisualData2D::getTextureID( uint index ) const
 
 const CTexture & CObjectVisualData2D::getVulkanTexture( uint index ) const
 {
-    /*if( m_textureVec.empty() )
-        return 0;
-    else
-        return m_textureVec[index];*/
+    if( m_textureVec.empty() )
+        return m_null_texture;
 
     return m_textureVec[index];
 }

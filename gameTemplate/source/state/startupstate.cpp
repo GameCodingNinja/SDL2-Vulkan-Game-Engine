@@ -102,8 +102,8 @@ void CStartUpState::init()
     //CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
 
     // Allocate the sprite to fade in
+    m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
     m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
     
     m_upSpriteLogo->getObject()->setPos( 200, 0, -10 );
     m_upSpriteWaffles->getObject()->setPos( -200, 0, -10 );

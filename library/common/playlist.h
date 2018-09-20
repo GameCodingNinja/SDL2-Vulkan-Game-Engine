@@ -90,8 +90,8 @@ private:
     // vector of sounds
     std::vector<CSound> m_soundVec;
     
-    // Dummy sound
-    static CSound m_DummySound;
+    // null sound
+    static CSound m_null_Sound;
 
 };
 
