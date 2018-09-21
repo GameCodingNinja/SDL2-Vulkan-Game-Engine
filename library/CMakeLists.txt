@@ -87,6 +87,7 @@ add_library(
         2d/visualcomponent2d.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp
+        2d/visualcomponentscaledframe.cpp
         2d/object2d.cpp
         2d/actorsprite2d.cpp
 	3d/sprite3d.cpp
@@ -121,6 +122,7 @@ add_library(
         common/ivisualcomponent.cpp
         common/vertex.cpp
         common/uniformbufferobject.cpp
+        common/pushdescriptorset.cpp
         slot/symbol2d.cpp
         slot/symbolsetview.cpp
         slot/symbolsetviewmanager.cpp

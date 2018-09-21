@@ -378,52 +378,6 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
 
     // Set the ibo count
     m_iboCount = iboVec.size();
-
-    /*uint8_t indexData[] = {0, 1, 2, 3};
-
-    // VBO data
-    // The order of the verts is counter clockwise
-    // 1----0
-    // |   /|
-    // |  / |
-    // | /  |
-    // 2----3
-    std::vector<CVertex2D> vertVec =
-    {
-        {{ 0.5f,  0.5f, 0.0},  {1.0, 0.0}},
-        {{-0.5f,  0.5f, 0.0},  {0.0, 0.0}},
-        {{-0.5f, -0.5f, 0.0},  {0.0, 1.0}},
-        {{ 0.5f, -0.5f, 0.0},  {1.0, 1.0}}
-    };
-
-    std::string horzStr = "";
-    std::string vertStr = "";
-
-    if( (m_mirror == NDefs::EM_HORIZONTAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
-    {
-        horzStr = "_horz";
-
-        vertVec[0].uv.u = 0.0;
-        vertVec[1].uv.u = 1.0;
-        vertVec[2].uv.u = 1.0;
-        vertVec[3].uv.u = 0.0;
-    }
-
-    if( (m_mirror == NDefs::EM_VERTICAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
-    {
-        vertStr = "_vert";
-
-        vertVec[0].uv.v = 1.0;
-        vertVec[1].uv.v = 1.0;
-        vertVec[2].uv.v = 0.0;
-        vertVec[3].uv.v = 0.0;
-    }
-
-    m_vbo = CVertBufMgr::Instance().createVBO( group, "quad_0011" + horzStr + vertStr, vertVec );
-    m_ibo = CVertBufMgr::Instance().createIBO( group, "quad_0123", indexData, sizeof(indexData) );
-
-    // A quad has 4 ibos
-    m_iboCount = 4;*/
 }
 
 

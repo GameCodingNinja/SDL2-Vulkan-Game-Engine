@@ -9,9 +9,13 @@
 
 // Standard lib dependencies
 #include <deque>
+#include <vector>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
+
+// Forward declaration(s)
+class CTexture;
 
 class CPushDescriptorSet
 {
@@ -21,16 +25,10 @@ public:
     void cmdPushDescriptorSet(
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        VkPipelineLayout layout )
-    {
-        vkCmdPushDescriptorSetKHR( 
-            cmdBuffer,
-            VK_PIPELINE_BIND_POINT_GRAPHICS,
-            layout,
-            0,
-            m_pushDescriptorSetVec[index].size(),
-            m_pushDescriptorSetVec[index].data() );
-    }
+        VkPipelineLayout layout );
+    
+    // Update the texture in the descriptor set
+    void updateTexture( const CTexture & texture );
     
     // Push descriptor set function call
     PFN_vkCmdPushDescriptorSetKHR vkCmdPushDescriptorSetKHR;

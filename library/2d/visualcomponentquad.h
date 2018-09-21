@@ -39,6 +39,9 @@ public:
         const CMatrix & model,
         const CMatrix & viewProj ) override;
     
+    // Set the frame index
+    virtual void setFrame( uint index ) override;
+    
 private:
     
     // Update the UBO buffer

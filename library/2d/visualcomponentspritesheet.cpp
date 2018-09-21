@@ -10,6 +10,7 @@
 
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
+#include <objectdata/objectvisualdata2d.h>
 #include <common/uniformbufferobject.h>
 #include <system/device.h>
 
@@ -64,4 +65,19 @@ void CVisualComponentSpriteSheet::updateUBO(
 const CSize<int> & CVisualComponentSpriteSheet::getCropOffset( uint index ) const
 {
     return m_rObjectData.getVisualData().getSpriteSheet().getGlyph( index ).getCropOffset();
+}
+
+
+/************************************************************************
+*    DESC:  Set the frame ID from index
+************************************************************************/
+void CVisualComponentSpriteSheet::setFrame( uint index )
+{
+    iVisualComponent::setFrame( index );
+    
+    const auto & rVisualData( m_rObjectData.getVisualData() );
+    
+    auto & rGlyph = rVisualData.getSpriteSheet().getGlyph( index );
+    m_glyphUV = rGlyph.getUV();
+    m_quadVertScale = rGlyph.getSize() * rVisualData.getDefaultUniformScale();
 }

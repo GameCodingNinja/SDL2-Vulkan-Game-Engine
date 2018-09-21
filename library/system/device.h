@@ -25,6 +25,7 @@ class CPipelineData;
 class CDescriptorData;
 class CUboData;
 class CPushDescriptorSet;
+class CTexture;
 
 class CDevice : public CDeviceVulkan
 {

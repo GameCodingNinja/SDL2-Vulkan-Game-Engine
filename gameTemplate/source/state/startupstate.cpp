@@ -120,10 +120,10 @@ void CStartUpState::init()
 ****************************************************************************/
 void CStartUpState::update()
 {
-    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
+    /*float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
     
     m_upSpriteLogo->getObject()->incRot( 0, 0, -rot );
-    m_upSpriteWaffles->getObject()->incRot( 0, 0, rot );
+    m_upSpriteWaffles->getObject()->incRot( 0, 0, rot );*/
     
     
     /*m_scriptComponent.update();

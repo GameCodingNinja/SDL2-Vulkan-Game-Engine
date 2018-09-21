@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       visualcomponentspritesheet.h
+*    FILE NAME:       visualcomponentscaledframe.h
 *
 *    DESCRIPTION:     Class for handling the visual part of 2d quad
 ************************************************************************/
 
-#ifndef __visual_component_spritesheet_h__
-#define __visual_component_spritesheet_h__
+#ifndef __visual_component_scaledframe_h__
+#define __visual_component_scaledframe_h__
 
 // Physical component dependency
 #include <2d/visualcomponentquad.h>
@@ -14,18 +14,15 @@
 // Game lib dependencies
 #include <common/rect.h>
 
-class CVisualComponentSpriteSheet : public CVisualComponentQuad
+class CVisualComponentScaledFrame : public CVisualComponentQuad
 {
 public:
 
     // Constructor
-    CVisualComponentSpriteSheet( const CObjectData2D & objectData );
+    CVisualComponentScaledFrame( const CObjectData2D & objectData );
 
     // Destructor
-    virtual ~CVisualComponentSpriteSheet();
-    
-    // Set the frame index
-    void setFrame( uint index ) override;
+    virtual ~CVisualComponentScaledFrame();
     
 private:
     
@@ -36,16 +33,8 @@ private:
         const CObjectVisualData2D & rVisualData,
         const CMatrix & model,
         const CMatrix & viewProj ) override;
-    
-    // Get the crop offset
-    const CSize<int> & getCropOffset( uint index = 0 ) const override;
-    
-private:
-    
-    // Sprite sheet Glyph UV
-    CRect<float> m_glyphUV;
 };
 
-#endif  // __visual_component_spritesheet_h__
+#endif  // __visual_component_scaledframe_h__
 
 

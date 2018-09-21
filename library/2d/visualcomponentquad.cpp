@@ -120,3 +120,15 @@ void CVisualComponentQuad::updateUBO(
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
+
+
+/************************************************************************
+*    DESC:  Set the frame ID from index
+************************************************************************/
+void CVisualComponentQuad::setFrame( uint index )
+{
+    iVisualComponent::setFrame( index );
+    
+    // Update the texture
+    m_pushDescSet.updateTexture( m_rObjectData.getVisualData().getVulkanTexture( index ) );
+}
