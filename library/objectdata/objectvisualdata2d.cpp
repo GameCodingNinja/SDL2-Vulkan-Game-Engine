@@ -19,8 +19,9 @@
 #include <utilities/genfunc.h>
 #include <common/build_defs.h>
 #include <common/defs.h>
-#include <common/vertex.h>
 #include <common/pipeline.h>
+#include <common/quad2d.h>
+#include <common/scaledframe.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -292,6 +293,71 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> 
 
 
 /************************************************************************
+*    DESC:  Generate a quad
+************************************************************************/
+void CObjectVisualData2D::generateQuad( const std::string & group )
+{
+    const std::vector<uint16_t> iboVec = { 0, 1, 2, 2, 3, 0 };
+    
+    // The order of the verts is counter clockwise
+    // 1----0
+    // |   /|
+    // |  / |
+    // | /  |
+    // 2----3
+    std::vector<NVertex::vert_uv> vert_uv_vec =
+    {
+        {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}},
+        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}}
+    };
+    
+    std::vector<NVertex::vert> vert_vec =
+    {
+        {{ 0.5f, -0.5f, 0.0f}},
+        {{-0.5f, -0.5f, 0.0f}},
+        {{-0.5f,  0.5f, 0.0f}},
+        {{ 0.5f,  0.5f, 0.0f}}
+    };
+
+
+    std::string horzStr = "";
+    std::string vertStr = "";
+
+    if( (m_mirror == NDefs::EM_HORIZONTAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
+    {
+        horzStr = "_horz";
+
+        vert_uv_vec[0].uv.u = 0.0;
+        vert_uv_vec[1].uv.u = 1.0;
+        vert_uv_vec[2].uv.u = 1.0;
+        vert_uv_vec[3].uv.u = 0.0;
+    }
+
+    if( (m_mirror == NDefs::EM_VERTICAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
+    {
+        vertStr = "_vert";
+
+        vert_uv_vec[0].uv.v = 1.0;
+        vert_uv_vec[1].uv.v = 1.0;
+        vert_uv_vec[2].uv.v = 0.0;
+        vert_uv_vec[3].uv.v = 0.0;
+    }
+
+    if( m_textureFilePath.empty() )
+        m_vboBuffer = CDevice::Instance().creatMemoryBuffer( group, "quad_solid_vbo" + horzStr + vertStr, vert_vec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+    else
+        m_vboBuffer = CDevice::Instance().creatMemoryBuffer( group, "quad_uv_vbo" + horzStr + vertStr, vert_uv_vec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+    
+    m_iboBuffer = CDevice::Instance().creatMemoryBuffer( group, "quad_ibo", iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
+
+    // Set the ibo count
+    m_iboCount = iboVec.size();
+}
+
+
+/************************************************************************
 *    DESC:  Create the texture from loaded image data
 ************************************************************************/
 void CObjectVisualData2D::createTexture( const std::string & group, CTexture & rTexture, CSize<int> & rSize )
@@ -336,52 +402,6 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
 
 
 /************************************************************************
-*    DESC:  Generate a quad
-************************************************************************/
-void CObjectVisualData2D::generateQuad( const std::string & group )
-{
-    const std::vector<uint16_t> iboVec = { 0, 1, 2, 2, 3, 0 };
-
-    std::vector<NVertex::vert_uv_normal> vertVec =
-    {
-        {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
-        {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}},
-        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}}
-    };
-
-    std::string horzStr = "";
-    std::string vertStr = "";
-
-    if( (m_mirror == NDefs::EM_HORIZONTAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
-    {
-        horzStr = "_horz";
-
-        vertVec[0].uv.u = 0.0;
-        vertVec[1].uv.u = 1.0;
-        vertVec[2].uv.u = 1.0;
-        vertVec[3].uv.u = 0.0;
-    }
-
-    if( (m_mirror == NDefs::EM_VERTICAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
-    {
-        vertStr = "_vert";
-
-        vertVec[0].uv.v = 1.0;
-        vertVec[1].uv.v = 1.0;
-        vertVec[2].uv.v = 0.0;
-        vertVec[3].uv.v = 0.0;
-    }
-
-    m_vboBuffer = CDevice::Instance().loadBuffer( group, "quad_vbo" + horzStr + vertStr, vertVec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
-    m_iboBuffer = CDevice::Instance().loadBuffer( group, "quad_ibo", iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
-
-    // Set the ibo count
-    m_iboCount = iboVec.size();
-}
-
-
-/************************************************************************
 *    DESC:  Generate a scaled frame
 ************************************************************************/
 void CObjectVisualData2D::generateScaledFrame(
@@ -391,25 +411,41 @@ void CObjectVisualData2D::generateScaledFrame(
     const CSize<int> & frameSize,
     const CRect<float> & textureOffset )
 {
-    /*std::string vboName = boost::str( boost::format("scaled_frame_%d_%d_%d_%d_%d_%d_%d_%d")
-        % frameSize.w % frameSize.h % m_scaledFrame.m_frame.w % m_scaledFrame.m_frame.h % textureSize.w % textureSize.h % glyphSize.w % glyphSize.h );
+    std::string vboName = boost::str( boost::format("scaled_frame_%d_%d_%d_%d_%d_%d_%d_%d")
+        % frameSize.w
+        % frameSize.h
+        % m_scaledFrame.m_frame.w
+        % m_scaledFrame.m_frame.h
+        % textureSize.w
+        % textureSize.h
+        % glyphSize.w
+        % glyphSize.h );
 
-    m_vbo = CVertBufMgr::Instance().createScaledFrame(
-        group, vboName, m_scaledFrame, textureSize, glyphSize, frameSize, textureOffset, std::vector<CVertex2D>() );
+    createScaledFrame(
+        group,
+        vboName,
+        m_scaledFrame,
+        textureSize,
+        glyphSize,
+        frameSize,
+        textureOffset,
+        std::vector<NVertex::vert_uv>() );
 
-    uint8_t indexData[] = {
-        0,1,2,     0,3,1,
-        2,4,5,     2,1,4,
-        1,6,4,     1,7,6,
-        7,8,6,     7,9,8,
+    const std::vector<uint16_t> iboVec = {
+        0,1,2,     2,3,0,
+        4,5,1,     1,0,4,
+        6,4,0,     0,7,6,
+        8,6,7,     7,9,8,
         10,9,7,    10,11,9,
-        12,11,10,  12,13,11,
-        14,10,3,   14,12,10,
-        15,3,0,    15,14,3,
-        3,7,1,     3,10,7 };
+        11,10,12,  12,13,11,
+        10,3,14,   14,12,10,
+        
+        3,2,15,    15,14,3,
+        
+        7,0,3,     3,10,7 };
 
     // Create the reusable IBO buffer
-    m_ibo = CVertBufMgr::Instance().createIBO( group, "scaled_frame", indexData, sizeof(indexData) );
+    m_iboBuffer = CDevice::Instance().creatMemoryBuffer( group, "scaled_frame", iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
 
     // Set the ibo count depending on the number of quads being rendered
     // If the center quad is not used, just adjust the ibo count because
@@ -421,7 +457,217 @@ void CObjectVisualData2D::generateScaledFrame(
 	m_iboCount += 6;
 
     else if( !m_scaledFrame.m_bottomFrame )
-	m_iboCount -= 6 * 3;*/
+	m_iboCount -= 6 * 3;
+}
+
+
+/************************************************************************
+*    DESC:  Create a scaled frame
+*    NOTE: This is a bit of a brute force implementation but writing an
+*          algorithm that takes into account an index buffer is difficult
+************************************************************************/
+void CObjectVisualData2D::createScaledFrame(
+    const std::string & group,
+    const std::string & id,
+    const CScaledFrame & scaledFrame,
+    const CSize<int> & textureSize,
+    const CSize<int> & glyphSize,
+    const CSize<int> & frameSize,
+    const CRect<float> & spriteSheetOffset,
+    const std::vector<NVertex::vert_uv> & extraVertVec )
+{
+    // See if it already exists before loading the mesh file
+    m_vboBuffer = CDevice::Instance().getMemoryBuffer( group, id );
+
+    // If it's not found, create the vertex buffer and add it to the list
+    if( m_vboBuffer.isEmpty() )
+    {
+        std::vector<NVertex::vert_uv> vertVec( extraVertVec );
+
+        // Offsets to center the mesh
+        const CPoint<float> center((frameSize.w / 2.f), (frameSize.h / 2.f));
+        const CSize<float> frameLgth( (float)frameSize.w - ((float)scaledFrame.m_frame.w * 2.f), (float)frameSize.h - ((float)scaledFrame.m_frame.h * 2.f) );
+        const CSize<float> uvLgth( glyphSize.w - ((float)scaledFrame.m_frame.w * 2.f), glyphSize.h - ((float)scaledFrame.m_frame.h * 2.f) );
+
+        CQuad2D quadBuf[8];
+
+        // Left frame
+        createQuad( CPoint<float>(-center.x, center.y-(float)scaledFrame.m_frame.h),
+                    CSize<float>((float)scaledFrame.m_frame.w, frameLgth.h),
+                    CUV(0, (float)scaledFrame.m_frame.h),
+                    CSize<float>((float)scaledFrame.m_frame.w, uvLgth.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[0] );
+
+        // top left
+        createQuad( CPoint<float>(-center.x, center.y),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    CUV(0, 0),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[1] );
+
+        // top
+        createQuad( CPoint<float>(-(center.x-(float)scaledFrame.m_frame.w), center.y),
+                    CSize<float>(frameLgth.w, (float)scaledFrame.m_frame.h),
+                    CUV((float)scaledFrame.m_frame.w, 0),
+                    CSize<float>(uvLgth.w, (float)scaledFrame.m_frame.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[2] );
+
+        // top right
+        createQuad( CPoint<float>(center.x-(float)scaledFrame.m_frame.w, center.y),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    CUV((float)scaledFrame.m_frame.w + uvLgth.w,0),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[3] );
+
+        // right frame
+        createQuad( CPoint<float>(center.x-scaledFrame.m_frame.w, center.y-scaledFrame.m_frame.h),
+                    CSize<float>(scaledFrame.m_frame.w, frameLgth.h),
+                    CUV(scaledFrame.m_frame.w + uvLgth.w, scaledFrame.m_frame.h),
+                    CSize<float>(scaledFrame.m_frame.w, uvLgth.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[4] );
+
+        // bottom right
+        createQuad( CPoint<float>(center.x-(float)scaledFrame.m_frame.w, -(center.y-(float)scaledFrame.m_frame.h)),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    CUV((float)scaledFrame.m_frame.w + uvLgth.w, (float)scaledFrame.m_frame.h + uvLgth.h),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[5] );
+
+        // bottom frame
+        createQuad( CPoint<float>(-(center.x-(float)scaledFrame.m_frame.w), -(center.y-(float)scaledFrame.m_frame.h)),
+                    CSize<float>(frameLgth.w, (float)scaledFrame.m_frame.h),
+                    CUV((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h + uvLgth.h),
+                    CSize<float>(uvLgth.w, (float)scaledFrame.m_frame.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[6] );
+
+        // bottom left
+        createQuad( CPoint<float>(-center.x, -(center.y-(float)scaledFrame.m_frame.h)),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    CUV(0, (float)scaledFrame.m_frame.h + uvLgth.h),
+                    CSize<float>((float)scaledFrame.m_frame.w, (float)scaledFrame.m_frame.h),
+                    textureSize,
+                    frameSize,
+                    spriteSheetOffset,
+                    quadBuf[7] );
+
+        // 5----4----6----8
+        // |   /|   /|   /|
+        // |  / |  / |  / |
+        // | /  | /  | /  |
+        // 1----0----7----9
+        // |   /|   /|   /|
+        // |  / |  / |  / |
+        // | /  | /  | /  |
+        // 2----3---10---11
+        // |   /|   /|   /|
+        // |  / |  / |  / |
+        // | /  | /  | /  |
+        // 15--14---12---13
+        
+        // Piece together the needed unique verts
+        vertVec.push_back( quadBuf[0].vert[0] );
+        vertVec.push_back( quadBuf[0].vert[1] );
+        vertVec.push_back( quadBuf[0].vert[2] );
+        vertVec.push_back( quadBuf[0].vert[3] );
+        vertVec.push_back( quadBuf[1].vert[0] );
+        vertVec.push_back( quadBuf[1].vert[1] );
+        vertVec.push_back( quadBuf[2].vert[0] );
+        vertVec.push_back( quadBuf[2].vert[3] );
+        vertVec.push_back( quadBuf[3].vert[0] );
+        vertVec.push_back( quadBuf[3].vert[3] );
+        vertVec.push_back( quadBuf[4].vert[2] );
+        vertVec.push_back( quadBuf[4].vert[3] );
+        vertVec.push_back( quadBuf[5].vert[2] );
+        vertVec.push_back( quadBuf[5].vert[3] );
+        vertVec.push_back( quadBuf[6].vert[2] );
+        vertVec.push_back( quadBuf[7].vert[2] );
+        
+        m_vboBuffer = CDevice::Instance().creatMemoryBuffer( group, id, vertVec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Create a quad
+************************************************************************/
+void CObjectVisualData2D::createQuad(
+    const CPoint<float> & vert,
+    const CSize<float> & vSize,
+    const CUV & uv,
+    const CSize<float> & uvSize,
+    const CSize<float> & textureSize,
+    const CSize<float> & frameSize,
+    const CRect<float> & spriteSheetOffset,
+    CQuad2D & quadBuf )
+{
+    // For OpenGL pixel perfect rendering is an even size graphic,
+    // for DirectX, it's an odd size graphic.
+
+    // Check if the width or height is odd. If so, we offset
+    // by 0.5 for proper orthographic rendering
+    float additionalOffsetX = 0;
+    if( (int)frameSize.w % 2 != 0 )
+        additionalOffsetX = 0.5f;
+
+    float additionalOffsetY = 0;
+    if( (int)frameSize.h % 2 != 0 )
+        additionalOffsetY = 0.5f;
+    
+    // The order of the verts is counter clockwise
+    // 1----0
+    // |   /|
+    // |  / |
+    // | /  |
+    // 2----3
+    //{{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+    //{{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+    //{{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}},
+    //{{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}}
+    
+    // Calculate the second vertex of the first face
+    quadBuf.vert[1].vert.x = vert.x + additionalOffsetX;
+    quadBuf.vert[1].vert.y = -(vert.y + additionalOffsetY);
+    quadBuf.vert[1].uv.u = spriteSheetOffset.x1 + (uv.u / textureSize.w);
+    quadBuf.vert[1].uv.v = spriteSheetOffset.y1 + (uv.v / textureSize.h);
+    
+    // Calculate the second vertex of the second face
+    quadBuf.vert[3].vert.x = vert.x + additionalOffsetX + vSize.w;
+    quadBuf.vert[3].vert.y = vSize.h - vert.y + additionalOffsetY;
+    quadBuf.vert[3].uv.u = spriteSheetOffset.x1 + ((uv.u + uvSize.w) / textureSize.w);
+    quadBuf.vert[3].uv.v = spriteSheetOffset.y1 + ((uv.v + uvSize.h) / textureSize.h);
+    
+    // Calculate the first vertex of the first face
+    quadBuf.vert[0].vert.x = quadBuf.vert[3].vert.x;
+    quadBuf.vert[0].vert.y = quadBuf.vert[1].vert.y;
+    quadBuf.vert[0].uv.u = quadBuf.vert[3].uv.u;
+    quadBuf.vert[0].uv.v = quadBuf.vert[1].uv.v;
+
+    // Calculate the third vertex of the first face
+    quadBuf.vert[2].vert.x = quadBuf.vert[1].vert.x;
+    quadBuf.vert[2].vert.y = quadBuf.vert[3].vert.y;
+    quadBuf.vert[2].uv.u = quadBuf.vert[1].uv.u;
+    quadBuf.vert[2].uv.v = quadBuf.vert[3].uv.v;
 }
 
 
@@ -436,9 +682,9 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
     const CRect<float> & textureOffset )
 {
     // Construct the name used for vbo and ibo
-    /*std::string name = "scaled_frame_mesh_" + m_meshFilePath;
+    std::string id = "scaled_frame_mesh_" + m_meshFilePath;
 
-    std::vector<uint8_t> iboVec = {
+    std::vector<uint16_t> iboVec = {
         0,1,2,     0,3,1,
         2,4,5,     2,1,4,
         1,6,4,     1,7,6,
@@ -450,27 +696,27 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
 
     if( m_scaledFrame.m_centerQuad )
     {
-        std::vector<uint8_t> exraVec = { 3,7,1, 3,10,7 };
+        std::vector<uint16_t> exraVec = { 3,7,1, 3,10,7 };
         iboVec.insert( iboVec.end(), exraVec.begin(), exraVec.end() );
     }
 
     // See if it already exists before loading the mesh file
-    m_vbo = CVertBufMgr::Instance().isVBO( group, name );
-    if( m_vbo == 0 )
+    m_vboBuffer = CDevice::Instance().getMemoryBuffer( group, id );
+    if( m_vboBuffer.isEmpty() )
     {
-        std::vector<CVertex2D> vertVec;
+        std::vector<NVertex::vert_uv> loadedVertVec;
 
         // Load a mesh from XML file
-        loadMeshFromXML( group, textureSize, frameSize, textureOffset, 16, vertVec, iboVec );
+        loadMeshFromXML( group, textureSize, frameSize, textureOffset, 16, loadedVertVec, iboVec );
 
         // create the vbo
-        m_vbo = CVertBufMgr::Instance().createScaledFrame(
-            group, name, m_scaledFrame, textureSize, glyphSize, frameSize, textureOffset, vertVec );
+        createScaledFrame(
+            group, id, m_scaledFrame, textureSize, glyphSize, frameSize, textureOffset, loadedVertVec );
     }
 
     // Create the unique IBO buffer
-    m_ibo = CVertBufMgr::Instance().createIBO( group, name, iboVec.data(), sizeof(uint8_t)*iboVec.size() );
-    m_iboCount = iboVec.size();*/
+    m_iboBuffer = CDevice::Instance().creatMemoryBuffer( group, id, iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
+    m_iboCount = iboVec.size();
 }
 
 
@@ -480,27 +726,27 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
 void CObjectVisualData2D::generateFromMeshFile(
     const std::string & group, const CSize<int> & textureSize, const CSize<int> & size )
 {
-    /*std::vector<uint8_t> iboVec;
+    std::vector<uint16_t> iboVec;
 
     // Construct the name used for vbo and ibo
-    std::string name = "mesh_file_" + m_meshFilePath;
+    std::string id = "mesh_file_" + m_meshFilePath;
 
     // See if it already exists before loading the mesh file
-    m_vbo = CVertBufMgr::Instance().isVBO( group, name );
-    if( m_vbo == 0 )
+    m_vboBuffer = CDevice::Instance().getMemoryBuffer( group, id );
+    if( m_vboBuffer.isEmpty() )
     {
-        std::vector<CVertex2D> vertVec;
+        std::vector<NVertex::vert_uv> loadedVertVec;
 
         // Load a mesh from XML file
-        loadMeshFromXML( group, textureSize, size, CRect<float>(), 16, vertVec, iboVec );
+        loadMeshFromXML( group, textureSize, size, CRect<float>(), 16, loadedVertVec, iboVec );
 
         // create the vbo
-        m_vbo = CVertBufMgr::Instance().createVBO( group, name, vertVec );
+        m_vboBuffer = CDevice::Instance().creatMemoryBuffer( group, id, loadedVertVec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
     }
 
     // Create the unique IBO buffer
-    m_ibo = CVertBufMgr::Instance().createIBO( group, name, iboVec.data(), sizeof(uint8_t)*iboVec.size() );
-    m_iboCount = iboVec.size();*/
+    m_iboBuffer = CDevice::Instance().creatMemoryBuffer( group, id, iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
+    m_iboCount = iboVec.size();
 }
 
 
@@ -513,8 +759,8 @@ void CObjectVisualData2D::loadMeshFromXML(
     const CSize<int> & size,
     const CRect<float> & textureOffset,
     int iboOffset,
-    std::vector<CVertex2D> & rVertVec,
-    std::vector<uint8_t> & rIboVec )
+    std::vector<NVertex::vert_uv> & rVertVec,
+    std::vector<uint16_t> & rIboVec )
 {
     float additionalOffsetX = 0;
     if( (int)size.getW() % 2 != 0 )
@@ -532,14 +778,14 @@ void CObjectVisualData2D::loadMeshFromXML(
     const XMLNode vboNode = mainNode.getChildNode( "vbo" );
     if( !vboNode.isEmpty() )
     {
-        CVertex2D vert;
+        NVertex::vert_uv vert;
 
         rVertVec.reserve( vboNode.nChildNode() );
 
         for( int i = 0; i < vboNode.nChildNode(); ++i )
         {
             // Load the 2D vert
-            vert = NParseHelper::LoadVertex2d( vboNode.getChildNode( "vert", i ) );
+            vert = NParseHelper::Load_vert_uv( vboNode.getChildNode( "vert", i ) );
 
             // This converts the data to a center aligned vertex buffer
             vert.vert.x = centerAlignSize.w + vert.vert.x + additionalOffsetX;

@@ -95,7 +95,7 @@ protected:
     
     // Load a buffer into video card memory
     template <typename T>
-    void loadVKBuffer( std::vector<T> dataVec, CMemoryBuffer & memoryBuffer, VkBufferUsageFlagBits bufferUsageFlag )
+    void creatMemoryBuffer( std::vector<T> dataVec, CMemoryBuffer & memoryBuffer, VkBufferUsageFlagBits bufferUsageFlag )
     {
         VkDeviceSize bufferSize = sizeof(dataVec.back()) * dataVec.size();
 

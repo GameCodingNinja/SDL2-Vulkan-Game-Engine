@@ -10,7 +10,7 @@
 #define __quad_2d_h__
 
 // Game lib dependencies
-#include <common/vertex2d.h>
+#include <common/vertex.h>
 
 class CQuad2D
 {
@@ -23,7 +23,7 @@ public:
     }
 
     // Verts
-    CVertex2D vert[4];
+    NVertex::vert_uv vert[4];
 
 };
 

@@ -21,6 +21,25 @@
 
 namespace NVertex
 {
+    class vert
+    {
+    public:
+
+        // Verts
+        CPoint<float> vert;
+    };
+    
+    class vert_uv
+    {
+    public:
+
+        // Verts
+        CPoint<float> vert;
+
+        // uv
+        CUV uv;
+    };
+    
     class vert_uv_normal
     {
     public:

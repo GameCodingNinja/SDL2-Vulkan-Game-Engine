@@ -264,7 +264,7 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 
     // Accessed by attachment index. Current attachments are color and depth
     std::vector<VkClearValue> clearValues(2);
-    clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
+    clearValues[0].color = {1.0f, 0.0f, 1.0f, 1.0f};
     clearValues[1].depthStencil = {1.0f, 0};
 
     // Start a render pass
@@ -1135,4 +1135,23 @@ void CDevice::endCommandBuffer( VkCommandBuffer cmdBuffer )
     
     // Pass the command buffer to the queue
     updateCommandBuffer( cmdBuffer );
+}
+
+
+/************************************************************************
+*    DESC: Get the memory buffer if it exists
+************************************************************************/
+CMemoryBuffer CDevice::getMemoryBuffer( const std::string & group, const std::string & id )
+{
+    // See if the group exists
+    auto mapMapIter = m_memoryBufferMapMap.find( group );
+    if( mapMapIter == m_memoryBufferMapMap.end() )
+        return CMemoryBuffer();
+
+    // See if this vertex buffer ID has already been created
+    auto mapIter = mapMapIter->second.find( id );
+    if( mapIter == mapMapIter->second.end() )
+        return CMemoryBuffer();
+
+    return mapIter->second;
 }

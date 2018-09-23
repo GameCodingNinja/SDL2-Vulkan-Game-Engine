@@ -311,7 +311,7 @@ void CVertBufMgr::generateScaledFrame(
                 quadBuf[7] );
 
     // Piece together the needed unique verts
-    vertVec.push_back( quadBuf[0].vert[0] );
+    /*vertVec.push_back( quadBuf[0].vert[0] );
     vertVec.push_back( quadBuf[0].vert[1] );
     vertVec.push_back( quadBuf[0].vert[2] );
     vertVec.push_back( quadBuf[0].vert[3] );
@@ -326,7 +326,7 @@ void CVertBufMgr::generateScaledFrame(
     vertVec.push_back( quadBuf[5].vert[0] );
     vertVec.push_back( quadBuf[5].vert[3] );
     vertVec.push_back( quadBuf[6].vert[0] );
-    vertVec.push_back( quadBuf[7].vert[0] );
+    vertVec.push_back( quadBuf[7].vert[0] );*/
 }
 
 

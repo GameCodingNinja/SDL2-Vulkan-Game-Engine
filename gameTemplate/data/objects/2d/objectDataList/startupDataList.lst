@@ -28,6 +28,31 @@
   
     <objectList>
         
+        <object name="scaled_frame">
+            <visual>
+                <texture file="data/textures/menu/menu_bg.png"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="30" thicknessHeight="30"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="217"/>
+            </visual>
+            <size width="500" height="500"/>
+        </object>
+        
+        <object name="scaled_frame2">
+            <visual>
+                <texture file="data/textures/menu/menu_spriteSheet.png"/>
+                <mesh genType="scaled_frame">
+                    <spriteSheet file="data/objects/2d/mesh/menu/menu.xml">
+                        <glyph id="menu_bg"/>
+                    </spriteSheet>
+                    <scaledFrame thicknessWidth="30" thicknessHeight="30"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="217"/>
+            </visual>
+            <size width="500" height="500"/>
+        </object>
+        
         <object name="logo">
             <visual>
                 <texture file="data/textures/startup/logo.png"/>
@@ -40,6 +65,12 @@
             </visual>
         </object>
         
+        <object name="bk">
+            <visual>
+                <texture file="data/textures/titleScreen/title_background.png"/>
+            </visual>
+        </object>
+        
         <object name="solid">
             <visual>
                 <pipeline id="2d_solid"/>
@@ -48,13 +79,14 @@
             <size width="400" height="200"/>
         </object>
         
-        <object name="pause_menu_bg">
+        <object name="spriteSheetTest4">
             <visual>
-                <texture file="data/textures/menu/menu_bg.png"/>
-                <mesh genType="scaled_frame"/>
-                <color r="48" g="97" b="153" a="1"/>
+                <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="9" glyphCount="22" columns="4"/>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
-            <size width="355" height="395"/>
         </object>
 
     </objectList>

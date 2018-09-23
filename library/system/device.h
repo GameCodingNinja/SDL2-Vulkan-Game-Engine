@@ -85,26 +85,26 @@ public:
 
     // Load a buffer into video card memory
     template <typename T>
-    CMemoryBuffer & loadBuffer( const std::string & group, const std::string & name, std::vector<T> dataVec, VkBufferUsageFlagBits bufferUsageFlag )
+    CMemoryBuffer & creatMemoryBuffer( const std::string & group, const std::string & id, std::vector<T> dataVec, VkBufferUsageFlagBits bufferUsageFlag )
     {
         // Create the map group if it doesn't already exist
         auto mapIter = m_memoryBufferMapMap.find( group );
         if( mapIter == m_memoryBufferMapMap.end() )
             mapIter = m_memoryBufferMapMap.emplace( group, std::map<const std::string, CMemoryBuffer>() ).first;
 
-        // See if this texture has already been loaded
-        auto iter = mapIter->second.find( name );
+        // See if this memory buffer has already been loaded
+        auto iter = mapIter->second.find( id );
 
-        // If it's not found, load the texture and add it to the list
+        // If it's not found, create the memory buffer and add it to the list
         if( iter == mapIter->second.end() )
         {
             CMemoryBuffer memoryBuffer;
 
             // Load buffer into video memory
-            loadVKBuffer( dataVec, memoryBuffer, bufferUsageFlag );
+            CDeviceVulkan::creatMemoryBuffer( dataVec, memoryBuffer, bufferUsageFlag );
 
             // Insert the new texture info
-            iter = mapIter->second.emplace( name, memoryBuffer ).first;
+            iter = mapIter->second.emplace( id, memoryBuffer ).first;
         }
 
         return iter->second;
@@ -119,6 +119,9 @@ public:
         std::memcpy( data, &ubo, sizeof(ubo));
         vkUnmapMemory( m_logicalDevice, deviceMemory );
     }
+    
+    // Get the memory buffer if it exists
+    CMemoryBuffer getMemoryBuffer( const std::string & group, const std::string & id );
 
     // Get the pipeline data
     const CPipelineData & getPipelineData( int index ) const;

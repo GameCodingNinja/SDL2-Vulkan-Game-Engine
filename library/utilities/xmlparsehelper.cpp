@@ -11,8 +11,6 @@ namespace NParseHelper
 {
     /************************************************************************
     *    DESC:  Load the 2d vertex
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CVertex2D LoadVertex2d( const XMLNode & node )
     {
@@ -37,14 +35,40 @@ namespace NParseHelper
         }
 
         return vert2D;
+    }
+    
+    
+    /************************************************************************
+    *    DESC:  Load the vert uv
+    ************************************************************************/
+    NVertex::vert_uv Load_vert_uv( const XMLNode & node )
+    {
+        NVertex::vert_uv vert2D;
 
-    }	// LoadVertex2d
+        if( !node.isEmpty() )
+        {
+            if( node.isAttributeSet( "x" ) )
+                vert2D.vert.x = std::atof( node.getAttribute( "x" ) );
+
+            if( node.isAttributeSet( "y" ) )
+                vert2D.vert.y = std::atof( node.getAttribute( "y" ) );
+
+            if( node.isAttributeSet( "z" ) )
+                vert2D.vert.z = std::atof( node.getAttribute( "z" ) );
+
+            if( node.isAttributeSet( "u" ) )
+                vert2D.uv.u = std::atof( node.getAttribute( "u" ) );
+
+            if( node.isAttributeSet( "v" ) )
+                vert2D.uv.v = std::atof( node.getAttribute( "v" ) );
+        }
+
+        return vert2D;
+    }
 
 
     /************************************************************************
     *    DESC:  Load the position
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CPoint<CWorldValue> LoadPosition( const XMLNode & node, bool & loaded )
     {
@@ -84,8 +108,7 @@ namespace NParseHelper
         }
 
         return point;
-
-    }	// LoadPosition
+    }
 
     CPoint<CWorldValue> LoadPosition( const XMLNode & node )
     {
@@ -96,8 +119,6 @@ namespace NParseHelper
 
     /************************************************************************
     *    DESC:  Load the rotation
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CPoint<float> LoadRotation( const XMLNode & node, bool & loaded )
     {
@@ -122,8 +143,7 @@ namespace NParseHelper
         }
 
         return point;
-
-    }	// LoadPosition
+    }
 
     CPoint<float> LoadRotation( const XMLNode & node )
     {
@@ -134,8 +154,6 @@ namespace NParseHelper
 
     /************************************************************************
     *    DESC:  Load the scale
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CPoint<float> LoadScale( const XMLNode & node, bool & loaded )
     {
@@ -165,15 +183,13 @@ namespace NParseHelper
         }
 
         return point;
-
-    }	// LoadScale
+    }
 
     CPoint<float> LoadScale( const XMLNode & node )
     {
         bool dummy;
         return LoadScale( node, dummy );
-
-    }   // LoadScale
+    }
 
 
     /************************************************************************
@@ -202,8 +218,7 @@ namespace NParseHelper
         }
 
         return point;
-
-    }	// LoadCenterPos
+    }
 
     CPoint<float> LoadCenterPos( const XMLNode & node )
     {
@@ -214,8 +229,6 @@ namespace NParseHelper
 
     /************************************************************************
     *    DESC:  Load the generic x, y, z values
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CPoint<float> LoadXYZ( const XMLNode & node )
     {
@@ -231,14 +244,11 @@ namespace NParseHelper
                 point.z = std::atof( node.getAttribute( "z" ) );
 
         return point;
-
-    }   // LoadScale
+    }
 
 
     /************************************************************************
     *    DESC:  Load the color
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CColor LoadColor( const XMLNode & node, const CColor & currentColor )
     {
@@ -264,14 +274,11 @@ namespace NParseHelper
         }
 
         return color;
-
-    }	// LoadScale
+    }
 
 
     /************************************************************************
     *    DESC:  Load the size
-    *
-    *    param: node - passed in node
     ************************************************************************/
     CSize<int> LoadSize( const XMLNode & node )
     {
@@ -280,8 +287,7 @@ namespace NParseHelper
             return LoadSizeFromChild( sizeNode);
 
         return CSize<int>();
-
-    }	// LoadSize
+    }
     
     CSize<int> LoadSizeFromChild( const XMLNode & node )
     {
@@ -294,8 +300,7 @@ namespace NParseHelper
             size.h = std::atoi(node.getAttribute( "height" ));
 
         return size;
-
-    }	// LoadSizeFromChild
+    }
 
 
     /************************************************************************
@@ -310,8 +315,7 @@ namespace NParseHelper
             return LoadRectFromChild( rectNode );
 
         return CRect<int>();
-
-    }	// LoadRect
+    }
     
     CRect<int> LoadRectFromChild( const XMLNode & node )
     {
@@ -330,15 +334,11 @@ namespace NParseHelper
             rect.y2 = std::atoi(node.getAttribute( "y2" ));
 
         return rect;
-
-    }	// LoadRect
+    }
 
 
     /************************************************************************
     *    DESC:  Load the horizontal alignment
-    *
-    *    param: node - passed in node
-    *           horzAlignment - passed in default alignment
     ************************************************************************/
     NDefs::EHorzAlignment LoadHorzAlignment( const XMLNode & node, NDefs::EHorzAlignment horzAlignment )
     {
@@ -358,15 +358,11 @@ namespace NParseHelper
         }
 
         return horzAlign;
-
-    }	// LoadHorzAlignment
+    }
 
 
     /************************************************************************
     *    DESC:  Load the vertical alignment
-    *
-    *    param: node - passed in node
-    *           horzAlignment - passed in default alignment
     ************************************************************************/
     NDefs::EVertAlignment LoadVertAlignment( const XMLNode & node, NDefs::EVertAlignment vertAlignment )
     {
@@ -386,16 +382,11 @@ namespace NParseHelper
         }
 
         return vertAlign;
-
-    }	// LoadVertAlignment
+    }
 
 
     /************************************************************************
     *    DESC:  Load the dynamic offset
-    *
-    *    param: node - passed in node
-    *           dynamicOffset - bitmask to set
-    *           dynamicOffsetPt - point to set
     ************************************************************************/
     CDynamicOffset LoadDynamicOffset( const XMLNode & node )
     {
@@ -440,7 +431,6 @@ namespace NParseHelper
         }
 
         return dynamicOffset;
+    }
 
-    }	// LoadDynamicOffset
-
-}   // NGenFunc
+}

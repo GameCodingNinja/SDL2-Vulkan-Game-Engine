@@ -19,6 +19,7 @@
 #include <common/texture.h>
 #include <common/spritesheet.h>
 #include <common/memorybuffer.h>
+#include <common/vertex.h>
 
 // Standard lib dependencies
 #include <string>
@@ -27,6 +28,7 @@
 
 // Forward Declarations
 struct XMLNode;
+class CQuad2D;
 
 class CObjectVisualData2D
 {
@@ -117,8 +119,29 @@ private:
         const CSize<int> & size,
         const CRect<float> & textureOffset,
         int iboOffset,
-        std::vector<CVertex2D> & rVertVec,
-        std::vector<uint8_t> & rIboVec );
+        std::vector<NVertex::vert_uv> & rVertVec,
+        std::vector<uint16_t> & rIboVec );
+    
+    // Create a scaled frame
+    void createScaledFrame( 
+        const std::string & group,
+        const std::string & id,
+        const CScaledFrame & scaledFrame,
+        const CSize<int> & textureSize,
+        const CSize<int> & glyphSize,
+        const CSize<int> & frameSize,
+        const CRect<float> & spriteSheetOffset,
+        const std::vector<NVertex::vert_uv> & extraVertVec );
+
+    void createQuad(
+        const CPoint<float> & vert,
+        const CSize<float> & vSize,
+        const CUV & uv,
+        const CSize<float> & uvSize,
+        const CSize<float> & textureSize,
+        const CSize<float> & frameSize,
+        const CRect<float> & spriteSheetOffset,
+        CQuad2D & quadBuf );
     
 private:
 

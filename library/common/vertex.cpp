@@ -29,6 +29,16 @@ namespace NVertex
             bindingDescription.stride = sizeof(vert_uv_normal);
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
         }
+        else if( bindingDes == "vert_uv" )
+        {
+            bindingDescription.stride = sizeof(vert_uv);
+            bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+        }
+        else if( bindingDes == "vert" )
+        {
+            bindingDescription.stride = sizeof(vert);
+            bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+        }
         else
         {
             throw NExcept::CCriticalException(
@@ -74,6 +84,35 @@ namespace NVertex
                 attrDesc.offset = offsetof(vert_uv_normal, norm);
                 attrDescVec.push_back( attrDesc );
             }
+        }
+        else if( vertAttrDes == "vert_uv" )
+        {
+            {
+                VkVertexInputAttributeDescription attrDesc = {};
+                attrDesc.binding = 0;
+                attrDesc.location = 0;
+                attrDesc.format = VK_FORMAT_R32G32B32_SFLOAT;
+                attrDesc.offset = offsetof(vert_uv, vert);
+                attrDescVec.push_back( attrDesc );
+            }
+
+            {
+                VkVertexInputAttributeDescription attrDesc = {};
+                attrDesc.binding = 0;
+                attrDesc.location = 1;
+                attrDesc.format = VK_FORMAT_R32G32_SFLOAT;
+                attrDesc.offset = offsetof(vert_uv, uv);
+                attrDescVec.push_back( attrDesc );
+            }
+        }
+        else if( vertAttrDes == "vert" )
+        {
+            VkVertexInputAttributeDescription attrDesc = {};
+            attrDesc.binding = 0;
+            attrDesc.location = 0;
+            attrDesc.format = VK_FORMAT_R32G32B32_SFLOAT;
+            attrDesc.offset = offsetof(vert, vert);
+            attrDescVec.push_back( attrDesc );
         }
         else
         {

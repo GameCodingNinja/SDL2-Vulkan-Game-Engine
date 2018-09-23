@@ -16,6 +16,14 @@ public:
 
     VkBuffer m_buffer = VK_NULL_HANDLE;
     VkDeviceMemory m_deviceMemory = VK_NULL_HANDLE;
+    
+    bool isEmpty()
+    {
+        if( m_buffer == VK_NULL_HANDLE && m_deviceMemory == VK_NULL_HANDLE )
+            return true;
+        
+        return true;
+    }
 };
 
 #endif  // __memory_buffer_h__
