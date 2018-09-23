@@ -22,30 +22,11 @@ namespace NScriptFontManager
     /************************************************************************
     *    DESC:  Load the data list table
     ************************************************************************/
-    void Load( const std::string & filePath, const bool createFromData, CFontMgr & rFontMgr )
+    void Load( const std::string & filePath, CFontMgr & rFontMgr )
     {
         try
         {
-            rFontMgr.load( filePath, createFromData );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-    }
-    
-    /************************************************************************
-    *    DESC:  Create font from data
-    ************************************************************************/
-    void CreateFromData( CFontMgr & rFontMgr )
-    {
-        try
-        {
-            rFontMgr.createFromData();
+            rFontMgr.load( filePath );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -69,8 +50,7 @@ namespace NScriptFontManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CFontMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("CFontMgr", "void load(string &in, bool createFromData = true)", asFUNCTION(Load), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CFontMgr", "void CreateFromData()", asFUNCTION(CreateFromData), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CFontMgr", "void load(string &in)", asFUNCTION(Load), asCALL_CDECL_OBJLAST) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CFontMgr FontMgr", &CFontMgr::Instance()) );

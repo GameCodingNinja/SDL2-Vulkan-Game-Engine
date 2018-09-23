@@ -60,8 +60,10 @@ CObjectVisualData2D::~CObjectVisualData2D()
 /************************************************************************
 *    DESC:  Load the object data from node
 ************************************************************************/
-void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode )
+void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::string & name )
 {
+    m_name = name;
+    
     const XMLNode visualNode = objectNode.getChildNode( "visual" );
     if( !visualNode.isEmpty() )
     {
@@ -411,6 +413,11 @@ void CObjectVisualData2D::generateScaledFrame(
     const CSize<int> & frameSize,
     const CRect<float> & textureOffset )
 {
+    if( m_scaledFrame.m_frame.w == 0 || m_scaledFrame.m_frame.h == 0 )
+        throw NExcept::CCriticalException("Scaled frame value not set!",
+            boost::str( boost::format("Frame does not have a value (%s-%s).\n\n%s\nLine: %s")
+                % group % m_name % __FUNCTION__ % __LINE__ ));
+    
     std::string vboName = boost::str( boost::format("scaled_frame_%d_%d_%d_%d_%d_%d_%d_%d")
         % frameSize.w
         % frameSize.h

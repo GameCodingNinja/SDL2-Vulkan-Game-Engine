@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       visualcomponentspritesheet.h
 *
-*    DESCRIPTION:     Class for handling the visual part of 2d quad
+*    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
 #ifndef __visual_component_spritesheet_h__

@@ -42,9 +42,6 @@ public:
 
     // Load from XML file
     void load( const std::string & group );
-    
-    // Create the font texture from data
-    void createFromData( const std::string & group );
 
     // Get the data for this character
     const CCharData & getCharData( char id ) const;
@@ -66,7 +63,7 @@ public:
 
     // Get the texture ID
     uint32_t getTextureID() const;
-
+    
 private:
 
     // font file path

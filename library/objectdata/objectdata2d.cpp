@@ -53,7 +53,7 @@ void CObjectData2D::loadFromNode( const XMLNode & node, const std::string & grou
     m_size = NParseHelper::LoadSize( node );
 
     // Load the visual data
-    m_visualData.loadFromNode( node );
+    m_visualData.loadFromNode( node, name );
 
     // Load the physics data
     m_physicsData.loadFromNode( node );

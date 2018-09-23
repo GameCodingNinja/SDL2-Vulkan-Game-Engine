@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       visualcomponentscaledframe.cpp
 *
-*    DESCRIPTION:     Class for handling the visual part of 2d quad
+*    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
 // Physical component dependency

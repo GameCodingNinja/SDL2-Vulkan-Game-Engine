@@ -65,7 +65,7 @@
             </visual>
         </object>
         
-        <object name="bk">
+        <object name="background">
             <visual>
                 <texture file="data/textures/titleScreen/title_background.png"/>
             </visual>

@@ -91,15 +91,8 @@ void CFont::load( const std::string & group )
         // Add the character to our list
         m_charDataMap.emplace( id, charData );
     }
-}
-
-
-/************************************************************************
- *    DESC:  Create the font texture from data
- ************************************************************************/
-void CFont::createFromData( const std::string & group )
-{
-    //m_texture = CDevice::Instance().loadTexture( group, m_filePath + ".png" );
+    
+    m_texture = CDevice::Instance().createTexture( group, m_filePath + ".png" );
 }
 
 

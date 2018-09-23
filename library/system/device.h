@@ -177,6 +177,10 @@ public:
     
     // End the recording of the command buffer
     void endCommandBuffer( VkCommandBuffer cmdBuffer );
+    
+    // Set/Get last pipeline used
+    void setLastPipeline( VkPipeline lastPipeline );
+    VkPipeline getLastPipeline();
 
 private:
 
@@ -271,6 +275,9 @@ private:
 
     // Map containing pipeline layouts
     std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
+    
+    // Keep track of the last pipeline used
+    VkPipeline m_lastPipeline = VK_NULL_HANDLE;
 };
 
 #endif  // __device_h__

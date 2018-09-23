@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       visualcomponentquad.cpp
 *
-*    DESCRIPTION:     Class for handling the visual part of 2d quad
+*    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
 // Physical component dependency
@@ -36,11 +36,12 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
     
     // Create the push descriptor set
     // This is just data and doesn't need to be freed
-    device.createPushDescriptorSet(
-        pipelineIndex,
-        objectData.getVisualData().getVulkanTexture(),
-        m_uniformBufVec,
-        m_pushDescSet );
+    if( GENERATION_TYPE != NDefs::EGT_FONT )
+        device.createPushDescriptorSet(
+            pipelineIndex,
+            objectData.getVisualData().getVulkanTexture(),
+            m_uniformBufVec,
+            m_pushDescSet );
 }
 
 
@@ -74,7 +75,11 @@ void CVisualComponentQuad::recordCommandBuffers(
     updateUBO( index, device, rVisualData, model, viewProj );
     
     // Bind the pipeline
-    vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
+    if( device.getLastPipeline() != rPipelineData.m_pipeline )
+    {
+        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
+        device.setLastPipeline( rPipelineData.m_pipeline );
+    }
     
 
     /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
@@ -131,4 +136,13 @@ void CVisualComponentQuad::setFrame( uint index )
     
     // Update the texture
     m_pushDescSet.updateTexture( m_rObjectData.getVisualData().getVulkanTexture( index ) );
+}
+
+
+/************************************************************************
+*    DESC:  Is recording the command buffer allowed?
+************************************************************************/
+bool CVisualComponentQuad::allowCommandRecording()
+{
+    return ((GENERATION_TYPE > NDefs::EGT_NULL) && (GENERATION_TYPE < NDefs::EGT_FONT));
 }

@@ -15,6 +15,7 @@
 #include <2d/visualcomponentquad.h>
 #include <2d/visualcomponentspritesheet.h>
 #include <2d/visualcomponentscaledframe.h>
+#include <2d/visualcomponentfont.h>
 #include <3d/object3d.h>
 #include <3d/visualcomponent3d.h>
 #include <physics/physicscomponent2d.h>
@@ -40,6 +41,9 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
     
     else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SCALED_FRAME )
         m_upVisualComponent.reset( new CVisualComponentScaledFrame( objectData ) );
+    
+    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
+        m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
     
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );

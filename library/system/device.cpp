@@ -250,7 +250,7 @@ void CDevice::updateCommandBuffer( VkCommandBuffer cmdBuf )
 ****************************************************************************/
 void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 {
-    //vkResetCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], 0 );
+    // vkResetCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], 0 );
 
     // Start command buffer recording
     VkCommandBufferBeginInfo beginInfo = {};
@@ -264,7 +264,7 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 
     // Accessed by attachment index. Current attachments are color and depth
     std::vector<VkClearValue> clearValues(2);
-    clearValues[0].color = {1.0f, 0.0f, 1.0f, 1.0f};
+    clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
     clearValues[1].depthStencil = {1.0f, 0};
 
     // Start a render pass
@@ -279,15 +279,16 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 
     vkCmdBeginRenderPass( m_primaryCmdBufVec[cmdBufIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS );
 
-    // Clear out the vector for the next round of command buffers
-    m_secondaryCommandBufVec.clear();
-
     // Have the game sprites that are to be rendered update the vector with their command buffer
     RecordCommandBufferCallback( cmdBufIndex );
 
     // Execute the secondary command buffers
     if( !m_secondaryCommandBufVec.empty() )
         vkCmdExecuteCommands( m_primaryCmdBufVec[cmdBufIndex], m_secondaryCommandBufVec.size(), m_secondaryCommandBufVec.data() );
+    
+    // Clear out the vector for the next round of command buffers
+    m_secondaryCommandBufVec.clear();
+    m_lastPipeline = VK_NULL_HANDLE;
 
     vkCmdEndRenderPass( m_primaryCmdBufVec[cmdBufIndex] );
 
@@ -1154,4 +1155,18 @@ CMemoryBuffer CDevice::getMemoryBuffer( const std::string & group, const std::st
         return CMemoryBuffer();
 
     return mapIter->second;
+}
+
+
+/***************************************************************************
+*   DESC:  Set/Get last pipeline used
+****************************************************************************/
+void CDevice::setLastPipeline( VkPipeline lastPipeline )
+{
+    m_lastPipeline = lastPipeline;
+}
+
+VkPipeline CDevice::getLastPipeline()
+{
+    return m_lastPipeline;
 }

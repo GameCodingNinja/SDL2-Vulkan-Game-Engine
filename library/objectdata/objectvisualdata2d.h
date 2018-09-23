@@ -39,7 +39,7 @@ public:
     ~CObjectVisualData2D();
 
     // Load thes object data from node
-    void loadFromNode( const XMLNode & objectNode );
+    void loadFromNode( const XMLNode & objectNode, const std::string & name );
 
     // Create the object from data
     void createFromData( const std::string & group, CSize<int> & rSize );
@@ -144,6 +144,9 @@ private:
         CQuad2D & quadBuf );
     
 private:
+    
+    // Name of this object data
+    std::string m_name;
 
     // Loaded texture data
     std::vector<CTexture> m_textureVec;

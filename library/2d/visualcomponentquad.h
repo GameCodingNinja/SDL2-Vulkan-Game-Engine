@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       visualcomponentquad.h
 *
-*    DESCRIPTION:     Class for handling the visual part of 2d quad
+*    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
 #ifndef __visual_component_quad_h__
@@ -42,6 +42,11 @@ public:
     // Set the frame index
     virtual void setFrame( uint index ) override;
     
+protected:
+    
+    // Is recording the command buffer allowed?
+    virtual bool allowCommandRecording();
+    
 private:
     
     // Update the UBO buffer
@@ -51,7 +56,7 @@ private:
         const CObjectVisualData2D & rVisualData,
         const CMatrix & model,
         const CMatrix & viewProj );
-    
+
 protected:
     
     // Uniform buffers
