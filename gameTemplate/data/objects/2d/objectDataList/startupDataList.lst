@@ -88,6 +88,12 @@
                 <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
+        
+        <object name="test_font">
+            <visual>
+                <mesh genType="font"/>
+            </visual>
+        </object>
 
     </objectList>
 

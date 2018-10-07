@@ -42,6 +42,8 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
             objectData.getVisualData().getVulkanTexture(),
             m_uniformBufVec,
             m_pushDescSet );
+    
+    //m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
 }
 
 
@@ -51,13 +53,12 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 CVisualComponentQuad::~CVisualComponentQuad()
 {
     CDevice::Instance().deleteUniformBufferVec( m_uniformBufVec );
+    //CDevice::Instance().deleteCommandBuffer( m_rObjectData.getGroup(), m_commandBufVec );
 }
 
 
 /***************************************************************************
 *   DESC:  Record the command buffers
-*          NOTE: this function is mainly for one off testing. Command buffers
-*                should be created by the group and passed in normally
 ****************************************************************************/
 void CVisualComponentQuad::recordCommandBuffers(
     uint32_t index,
@@ -65,42 +66,48 @@ void CVisualComponentQuad::recordCommandBuffers(
     const CMatrix & model,
     const CMatrix & viewProj )
 {
-    const auto & rVisualData( m_rObjectData.getVisualData() );
-    auto & device( CDevice::Instance() );
-    
-    // Get the pipeline data
-    const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
-    
-    // Update the UBO buffer
-    updateUBO( index, device, rVisualData, model, viewProj );
-    
-    // Bind the pipeline
-    if( device.getLastPipeline() != rPipelineData.m_pipeline )
+    if( allowCommandRecording() )
     {
-        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
-        device.setLastPipeline( rPipelineData.m_pipeline );
+        const auto & rVisualData( m_rObjectData.getVisualData() );
+        auto & device( CDevice::Instance() );
+
+        // Get the pipeline data
+        const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
+
+        // Update the UBO buffer
+        updateUBO( index, device, rVisualData, model, viewProj );
+
+        //CDevice::Instance().beginCommandBuffer( index, m_commandBufVec[index] );
+
+        // Bind the pipeline
+        if( device.getLastPipeline() != rPipelineData.m_pipeline )
+        {
+            vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
+            device.setLastPipeline( rPipelineData.m_pipeline );
+        }
+
+        /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
+        vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
+
+        VkRect2D scissor = {{50, 50}, {1000, 500}};
+        vkCmdSetScissor( m_commandBufVec[index], 0, 1, &scissor );*/
+
+        // Bind vertex buffer
+        VkBuffer vertexBuffers[] = {rVisualData.getVBO().m_buffer};
+        VkDeviceSize offsets[] = {0};
+        vkCmdBindVertexBuffers( cmdBuffer, 0, 1, vertexBuffers, offsets );
+
+        // Bind the index buffer
+        vkCmdBindIndexBuffer( cmdBuffer, rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
+
+        // Use the push descriptors
+        m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+
+        // Do the draw
+        vkCmdDrawIndexed( cmdBuffer, rVisualData.getIBOCount(), 1, 0, 0, 0 );
     }
     
-
-    /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
-    vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
-    
-    VkRect2D scissor = {{50, 50}, {1000, 500}};
-    vkCmdSetScissor( m_commandBufVec[index], 0, 1, &scissor );*/
-
-    // Bind vertex buffer
-    VkBuffer vertexBuffers[] = {rVisualData.getVBO().m_buffer};
-    VkDeviceSize offsets[] = {0};
-    vkCmdBindVertexBuffers( cmdBuffer, 0, 1, vertexBuffers, offsets );
-
-    // Bind the index buffer
-    vkCmdBindIndexBuffer( cmdBuffer, rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
-    
-    // Use the push descriptors
-    m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
-    
-    // Do the draw
-    vkCmdDrawIndexed( cmdBuffer, rVisualData.getIBOCount(), 1, 0, 0, 0 );
+    //CDevice::Instance().endCommandBuffer( m_commandBufVec[index] );
 }
 
 

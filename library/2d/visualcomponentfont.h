@@ -35,7 +35,7 @@ public:
     void loadFontPropFromNode( const XMLNode & node );
 
     // Set the font properties
-    void setFontProperties( const CFontProperties & fontProp );
+    void setFontProperties( const CFontProperties & fontProp ) override;
     
     // Set the string to display
     void createFontString() override;
@@ -47,6 +47,13 @@ public:
     
     // Get the font size
     const CSize<float> & getFontSize() const override;
+    
+    // Record the command buffers
+    void recordCommandBuffers( 
+        uint32_t index,
+        VkCommandBuffer cmdBuffer,
+        const CMatrix & model,
+        const CMatrix & viewProj ) override;
     
 private:
     
@@ -84,7 +91,7 @@ private:
     CMemoryBuffer m_vboBuffer;
     
     // ibo count
-    int m_iboCount;
+    size_t m_iboCount;
 };
 
 #endif  // __visual_component_font_h__

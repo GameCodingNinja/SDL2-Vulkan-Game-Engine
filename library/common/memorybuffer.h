@@ -22,7 +22,7 @@ public:
         if( m_buffer == VK_NULL_HANDLE && m_deviceMemory == VK_NULL_HANDLE )
             return true;
         
-        return true;
+        return false;
     }
 };
 

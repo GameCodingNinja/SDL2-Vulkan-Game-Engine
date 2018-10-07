@@ -13,6 +13,7 @@
 #include <objectdata/objectvisualdata2d.h>
 #include <common/uniformbufferobject.h>
 #include <common/quad2d.h>
+#include <common/pipeline.h>
 #include <system/device.h>
 #include <managers/fontmanager.h>
 #include <utilities/genfunc.h>
@@ -34,6 +35,7 @@ CVisualComponentFont::CVisualComponentFont( const CObjectData2D & objectData ) :
 ************************************************************************/
 CVisualComponentFont::~CVisualComponentFont()
 {
+    CDevice::Instance().freeMemoryBuffer( m_vboBuffer );
 }
 
 /************************************************************************
@@ -55,6 +57,61 @@ void CVisualComponentFont::updateUBO(
 
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
+}
+
+
+/***************************************************************************
+*   DESC:  Record the command buffers
+****************************************************************************/
+void CVisualComponentFont::recordCommandBuffers(
+    uint32_t index,
+    VkCommandBuffer cmdBuffer,
+    const CMatrix & model,
+    const CMatrix & viewProj )
+{
+    if( allowCommandRecording() )
+    {
+        const auto & rVisualData( m_rObjectData.getVisualData() );
+        auto & device( CDevice::Instance() );
+
+        // Get the pipeline data
+        const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
+
+        // Update the UBO buffer
+        updateUBO( index, device, rVisualData, model, viewProj );
+
+        //CDevice::Instance().beginCommandBuffer( index, m_commandBufVec[index] );
+
+        // Bind the pipeline
+        if( device.getLastPipeline() != rPipelineData.m_pipeline )
+        {
+            vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
+            device.setLastPipeline( rPipelineData.m_pipeline );
+        }
+
+
+        /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
+        vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
+
+        VkRect2D scissor = {{50, 50}, {1000, 500}};
+        vkCmdSetScissor( m_commandBufVec[index], 0, 1, &scissor );*/
+
+        // Bind vertex buffer
+        VkBuffer vertexBuffers[] = {m_vboBuffer.m_buffer};
+        VkDeviceSize offsets[] = {0};
+        vkCmdBindVertexBuffers( cmdBuffer, 0, 1, vertexBuffers, offsets );
+
+        // Bind the index buffer
+        vkCmdBindIndexBuffer( cmdBuffer, device.getSharedFontIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
+
+        // Use the push descriptors
+        m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+
+        // Do the draw
+        vkCmdDrawIndexed( cmdBuffer, m_iboCount, 1, 0, 0, 0 );
+    }
+    
+    //CDevice::Instance().endCommandBuffer( m_commandBufVec[index] );
 }
 
 
@@ -108,10 +165,9 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
     {
         m_fontData.m_fontStrSize.clear();
         float lastCharDif(0.f);
+        auto & device( CDevice::Instance() );
 
         const CFont & font = CFontMgr::Instance().getFont( m_fontData.m_fontProp.m_fontName );
-
-        //m_textureID = font.getTextureID();
 
         m_fontData.m_fontString = fontString;
 
@@ -122,21 +178,17 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
         const int barCharCount = NGenFunc::CountStrOccurrence( m_fontData.m_fontString, "|" );
 
         // Size of the allocation
-        int charCount = m_fontData.m_fontString.size() - spaceCharCount - barCharCount;
+        size_t charCount = m_fontData.m_fontString.size() - spaceCharCount - barCharCount;
         m_iboCount = charCount * 6;
 
         // Set a flag to indicate if the IBO should be built
-        const bool BUILD_FONT_IBO = true;//(m_iboCount > CVertBufMgr::Instance().getCurrentMaxFontIndices());
+        const bool BUILD_FONT_IBO = (m_iboCount > device.getSharedFontIBOMaxIndiceCount());
 
         // Allocate the quad array
-        std::unique_ptr<CQuad2D[]> upQuadBuf( new CQuad2D[charCount] );
+        std::vector<CQuad2D> quadVec( charCount );
 
         // Create a buffer to hold the indices
-        std::unique_ptr<uint16_t[]> upIndxBuf;
-
-        // Should we build or rebuild the font IBO
-        if( BUILD_FONT_IBO )
-            upIndxBuf.reset( new uint16_t[m_iboCount] );
+        std::vector<uint16_t> iboVec( m_iboCount );
 
         float xOffset = 0.f;
         float width = 0.f;
@@ -159,14 +211,14 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
 
         // Handle the vertical alignment
         if( m_fontData.m_fontProp.m_vAlign == NDefs::EVA_VERT_TOP )
-            lineHeightOffset = -initialHeightOffset;
+            lineHeightOffset = initialHeightOffset - font.getBaselineOffset();
 
         if( m_fontData.m_fontProp.m_vAlign == NDefs::EVA_VERT_CENTER )
         {
             lineHeightOffset = -(initialHeightOffset - ((font.getBaselineOffset()-lineSpace) / 2.f) - font.getVertPadding());
 
             if( lineWidthOffsetVec.size() > 1 )
-                lineHeightOffset = ((lineHeightWrap * lineWidthOffsetVec.size()) / 2.f) - font.getBaselineOffset();
+                lineHeightOffset = -((lineHeightWrap * lineWidthOffsetVec.size()) / 2.f);
         }
 
         else if( m_fontData.m_fontProp.m_vAlign == NDefs::EVA_VERT_BOTTOM )
@@ -174,7 +226,7 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
             lineHeightOffset = -(initialHeightOffset - font.getBaselineOffset() - font.getVertPadding());
 
             if( lineWidthOffsetVec.size() > 1 )
-                lineHeightOffset += (lineHeightWrap * (lineWidthOffsetVec.size()-1));
+                lineHeightOffset += -((lineHeightWrap * (lineWidthOffsetVec.size()-1)) + font.getBaselineOffset());
         }
 
         // Remove any fractional component of the line height offset
@@ -191,7 +243,7 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
                 xOffset = lineWidthOffsetVec[lineCount];
                 width = 0.f;
 
-                lineHeightOffset += -lineHeightWrap;
+                lineHeightOffset += lineHeightWrap;
                 ++lineCount;
             }
             else
@@ -204,7 +256,7 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
                 {
                     CRect<float> rect = charData.rect;
 
-                    float yOffset = (font.getLineHeight() - rect.y2 - charData.offset.h) + lineHeightOffset;
+                    float yOffset = lineHeightOffset + charData.offset.h;
 
                     // Check if the width or height is odd. If so, we offset
                     // by 0.5 for proper orthographic rendering
@@ -216,31 +268,31 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
                     if( (int)rect.y2 % 2 != 0 )
                         additionalOffsetY = 0.5f;
 
-                    auto & quadBuf = upQuadBuf[counter];
-
-                    // Calculate the first vertex of the first face
-                    quadBuf.vert[0].vert.x = xOffset + charData.offset.w + additionalOffsetX;
-                    quadBuf.vert[0].vert.y = yOffset + additionalOffsetY;
-                    quadBuf.vert[0].uv.u = rect.x1 / textureSize.w;
-                    quadBuf.vert[0].uv.v = (rect.y1 + rect.y2) / textureSize.h;
+                    auto & quadBuf = quadVec[counter];
 
                     // Calculate the second vertex of the first face
-                    quadBuf.vert[1].vert.x = xOffset + rect.x2 + charData.offset.w + additionalOffsetX;
-                    quadBuf.vert[1].vert.y = yOffset + rect.y2 + additionalOffsetY;
-                    quadBuf.vert[1].uv.u = (rect.x1 + rect.x2) / textureSize.w;
+                    quadBuf.vert[1].vert.x = xOffset + charData.offset.w + additionalOffsetX;
+                    quadBuf.vert[1].vert.y = yOffset + additionalOffsetY;
+                    quadBuf.vert[1].uv.u = rect.x1 / textureSize.w;
                     quadBuf.vert[1].uv.v = rect.y1 / textureSize.h;
+                    
+                    // Calculate the forth vertex of the first face
+                    quadBuf.vert[3].vert.x = xOffset + rect.x2 + charData.offset.w + additionalOffsetX;
+                    quadBuf.vert[3].vert.y = yOffset + rect.y2 + additionalOffsetY;
+                    quadBuf.vert[3].uv.u = (rect.x1 + rect.x2) / textureSize.w;
+                    quadBuf.vert[3].uv.v = (rect.y1 + rect.y2) / textureSize.h;
+                    
+                    // Calculate the first vertex of the first face
+                    quadBuf.vert[0].vert.x = quadBuf.vert[3].vert.x;
+                    quadBuf.vert[0].vert.y = quadBuf.vert[1].vert.y;
+                    quadBuf.vert[0].uv.u = quadBuf.vert[3].uv.u;
+                    quadBuf.vert[0].uv.v = quadBuf.vert[1].uv.v;
 
-                    // Calculate the third vertex of the first face
-                    quadBuf.vert[2].vert.x = quadBuf.vert[0].vert.x;
-                    quadBuf.vert[2].vert.y = quadBuf.vert[1].vert.y;
-                    quadBuf.vert[2].uv.u = quadBuf.vert[0].uv.u;
-                    quadBuf.vert[2].uv.v = quadBuf.vert[1].uv.v;
-
-                    // Calculate the second vertex of the second face
-                    quadBuf.vert[3].vert.x = quadBuf.vert[1].vert.x;
-                    quadBuf.vert[3].vert.y = quadBuf.vert[0].vert.y;
-                    quadBuf.vert[3].uv.u = quadBuf.vert[1].uv.u;
-                    quadBuf.vert[3].uv.v = quadBuf.vert[0].uv.v;
+                    // Calculate the third vertex of the second face
+                    quadBuf.vert[2].vert.x = quadBuf.vert[1].vert.x;
+                    quadBuf.vert[2].vert.y = quadBuf.vert[3].vert.y;
+                    quadBuf.vert[2].uv.u = quadBuf.vert[1].uv.u;
+                    quadBuf.vert[2].uv.v = quadBuf.vert[3].uv.v;
 
                     // Should we build or rebuild the font IBO
                     if( BUILD_FONT_IBO )
@@ -249,13 +301,13 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
                         int arrayIndex = counter * 6;
                         int vertIndex = counter * 4;
 
-                        upIndxBuf[arrayIndex]   = vertIndex;
-                        upIndxBuf[arrayIndex+1] = vertIndex+1;
-                        upIndxBuf[arrayIndex+2] = vertIndex+2;
+                        iboVec[arrayIndex]   = vertIndex;
+                        iboVec[arrayIndex+1] = vertIndex+1;
+                        iboVec[arrayIndex+2] = vertIndex+2;
 
-                        upIndxBuf[arrayIndex+3] = vertIndex;
-                        upIndxBuf[arrayIndex+4] = vertIndex+3;
-                        upIndxBuf[arrayIndex+5] = vertIndex+1;
+                        iboVec[arrayIndex+3] = vertIndex+2;
+                        iboVec[arrayIndex+4] = vertIndex+3;
+                        iboVec[arrayIndex+5] = vertIndex;
                     }
 
                     ++counter;
@@ -320,6 +372,28 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
         // Subtract the extra space after the last character
         m_fontData.m_fontStrSize.w -= lastCharDif;
         m_fontData.m_fontStrSize.h = font.getLineHeight();
+        
+        // Free the previous memory buffer
+        device.freeMemoryBuffer( m_vboBuffer );
+        
+        // Create the font vertex buffer
+        device.creatMemoryBuffer( quadVec, m_vboBuffer, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+        
+        // Create the font IBO vector
+        // All fonts share the same IBO because it's always the same and the only difference is it's length
+        // This updates the current IBO if it exceeds the current max
+        if( BUILD_FONT_IBO )
+            device.createSharedFontIBO( iboVec );
+        
+        const uint32_t pipelineIndex( m_rObjectData.getVisualData().getPipelineIndex() );
+        
+        device.createPushDescriptorSet(
+            pipelineIndex,
+            font.getTexture(),
+            m_uniformBufVec,
+            m_pushDescSet );
+        
+        //m_textureID = font.getTextureID();
 
         // Save the data
         // If one doesn't exist, create the VBO and IBO for this font

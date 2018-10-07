@@ -64,6 +64,9 @@ public:
     // Get the texture ID
     uint32_t getTextureID() const;
     
+    // Get the texture
+    const CTexture & getTexture() const;
+    
 private:
 
     // font file path

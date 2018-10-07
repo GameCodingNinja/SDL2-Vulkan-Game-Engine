@@ -53,13 +53,16 @@ public:
     // Create secondary command buffers
     std::vector<VkCommandBuffer> createSecondaryCommandBuffers( const std::string & group );
 
+    // Delete a secondary command buffer of a specific group
+    void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
+
     // Create descriptor sets
     /*std::vector<VkDescriptorSet> createDescriptorSetVec(
         const std::string & group,
         int pipelineIndex,
         const CTexture & texture,
         const std::vector<CMemoryBuffer> & uniformBufVec );*/
-    
+
     // Create push descriptor set
     void createPushDescriptorSet(
         uint32_t pipelineIndex,
@@ -79,7 +82,7 @@ public:
 
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
-    
+
     // Delete the command pool group
     void deleteCommandPoolGroup( const std::string & group );
 
@@ -109,6 +112,13 @@ public:
 
         return iter->second;
     }
+    
+    template <typename T>
+    void creatMemoryBuffer( std::vector<T> dataVec, CMemoryBuffer & memoryBuffer, VkBufferUsageFlagBits bufferUsageFlag )
+    {
+        // Load buffer into video memory
+        CDeviceVulkan::creatMemoryBuffer( dataVec, memoryBuffer, bufferUsageFlag );
+    }
 
     // Update the uniform buffer
     template <typename T>
@@ -119,7 +129,7 @@ public:
         std::memcpy( data, &ubo, sizeof(ubo));
         vkUnmapMemory( m_logicalDevice, deviceMemory );
     }
-    
+
     // Get the memory buffer if it exists
     CMemoryBuffer getMemoryBuffer( const std::string & group, const std::string & id );
 
@@ -165,22 +175,34 @@ public:
 
     // Get descriptor data map
     const std::map< const std::string, CDescriptorData > & getDescriptorDataMap() const;
-    
+
     // Get descriptor data map
     const CDescriptorData & getDescriptorData( const std::string & id ) const;
-    
+
     // Delete a uniform buffer vec
     void deleteUniformBufferVec( std::vector<CMemoryBuffer> & commandBufVec );
-    
+
     // Begin the recording of the command buffer
     void beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer );
-    
+
     // End the recording of the command buffer
     void endCommandBuffer( VkCommandBuffer cmdBuffer );
-    
+
     // Set/Get last pipeline used
     void setLastPipeline( VkPipeline lastPipeline );
     VkPipeline getLastPipeline();
+
+    // Create the shared font IBO buffer
+    void createSharedFontIBO( std::vector<uint16_t> & iboVec );
+
+    // Get the shared font ibo buffer
+    CMemoryBuffer & getSharedFontIBO();
+    
+    // Get the shared font ibo max indice count
+    size_t getSharedFontIBOMaxIndiceCount();
+    
+    // Free the memory buffer
+    void freeMemoryBuffer( CMemoryBuffer & memoryBuffer );
 
 private:
 
@@ -210,7 +232,7 @@ private:
 
     // Delete a buffer in a group
     void deleteMemoryBufferGroup( const std::string & group );
-    
+
     // Delete the UBO vector group
     //void deleteUboVecGroup( const std::string & group );
 
@@ -263,7 +285,7 @@ private:
 
     // Command buffer of sprite objects to be rendered
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
-    
+
     // Map containing ubo information
     std::map< const std::string, CUboData > m_uboDataMap;
 
@@ -275,9 +297,15 @@ private:
 
     // Map containing pipeline layouts
     std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
-    
+
     // Keep track of the last pipeline used
     VkPipeline m_lastPipeline = VK_NULL_HANDLE;
+
+    // Current dynamic font IBO indices size
+    size_t m_currentMaxFontIndices = 0;
+
+    // Shared font IBO
+    CMemoryBuffer m_sharedFontIbo;
 };
 
 #endif  // __device_h__

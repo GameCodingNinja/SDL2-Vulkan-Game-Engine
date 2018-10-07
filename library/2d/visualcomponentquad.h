@@ -33,7 +33,7 @@ public:
     virtual ~CVisualComponentQuad();
     
     // Record the command buffers
-    void recordCommandBuffers( 
+    virtual void recordCommandBuffers( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,
@@ -64,11 +64,12 @@ protected:
     
     // Reference to object visual data
     const CObjectData2D & m_rObjectData;
-    
-private:
 
     // Push Descriptor set
     CPushDescriptorSet m_pushDescSet;
+    
+    // Command buffer
+    //std::vector<VkCommandBuffer> m_commandBufVec;
 
 };
 

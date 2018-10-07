@@ -95,6 +95,8 @@ void CStartUpState::init()
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
     
+    CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
+    
     // Create the group command buffers
     m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
     
@@ -102,11 +104,14 @@ void CStartUpState::init()
     //CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
 
     // Allocate the sprite to fade in
-    m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) ) );
-    m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+    m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "background" ) ) );
+    m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "test_font" ) ) );
     
-    m_upSpriteWaffles->getObject()->setPos( 200, 0, -10 );
-    m_upSpriteLogo->getObject()->setPos( -200, 0, -10 );
+    m_upSpriteLogo->getVisualComponent()->setFontProperties( CFontProperties("dejavu_sans_bold_70") );
+    m_upSpriteLogo->getVisualComponent()->createFontString("This is a test|of the emergency|broadcast system!!");
+    
+    m_upSpriteWaffles->getObject()->setPos( 0, 0, -10 );
+    m_upSpriteLogo->getObject()->setPos( 0, 0, -10 );
     
     
     

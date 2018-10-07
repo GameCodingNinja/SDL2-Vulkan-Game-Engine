@@ -23,6 +23,9 @@
 class CMatrix;
 class CObjectVisualData2D;
 class CObjectVisualData3D;
+class CFontProperties;
+class CFontData;
+struct XMLNode;
 
 class iVisualComponent
 {
@@ -68,6 +71,15 @@ public:
     
     // Get the current frame index
     virtual uint getCurrentFrame() const;
+    
+    // Load the font properties from XML node
+    virtual void loadFontPropFromNode( const XMLNode & node ){}
+    
+    // Set the font data
+    virtual void setFontData( const CFontData & fontData ){}
+    
+    // Set the font properties
+    virtual void setFontProperties( const CFontProperties & fontProp ){}
 
     // Set the string to display
     virtual void createFontString(){}

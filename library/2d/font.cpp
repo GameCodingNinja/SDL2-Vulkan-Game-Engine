@@ -165,3 +165,12 @@ uint32_t CFont::getTextureID() const
 {
     return 0;
 }
+
+
+/************************************************************************
+*    DESC:  Get the texture
+************************************************************************/
+const CTexture & CFont::getTexture() const
+{
+    return m_texture;
+}
