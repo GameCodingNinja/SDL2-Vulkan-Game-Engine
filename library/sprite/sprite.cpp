@@ -217,6 +217,15 @@ iVisualComponent * CSprite::getVisualComponent()
 
 
 /************************************************************************
+*    DESC:  Get the script component
+************************************************************************/
+CScriptComponent & CSprite::getScriptComponent()
+{
+    return m_scriptComponent;
+}
+
+
+/************************************************************************
 *    DESC:  Set the texture ID from index
 ************************************************************************/
 void CSprite::setFrame( uint index )

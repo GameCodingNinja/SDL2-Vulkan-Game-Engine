@@ -34,12 +34,11 @@ add_library(
         script/scriptcomponent.cpp
         script/scriptpoint.cpp
         script/scriptactorsprite2d.cpp
-        script/scriptisprite.cpp
+        script/scriptsprite.cpp
         script/scriptsound.cpp
         script/scriptplaylist.cpp
         script/scriptsoundmanager.cpp
         script/scriptmenu.cpp
-        script/scriptshadermanager.cpp
         script/scriptobjectdatamanager.cpp
         script/scriptstrategymanager.cpp
         script/scriptistrategy.cpp

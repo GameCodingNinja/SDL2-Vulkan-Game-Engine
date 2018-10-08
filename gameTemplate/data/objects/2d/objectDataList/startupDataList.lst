@@ -28,7 +28,7 @@
   
     <objectList>
         
-        <object name="scaled_frame">
+        <!--<object name="scaled_frame">
             <visual>
                 <texture file="data/textures/menu/menu_bg.png"/>
                 <mesh genType="scaled_frame">
@@ -51,7 +51,7 @@
                 <color r="48" g="97" b="153" a="217"/>
             </visual>
             <size width="500" height="500"/>
-        </object>
+        </object>-->
         
         <object name="logo">
             <visual>
@@ -59,7 +59,7 @@
             </visual>
         </object>
         
-        <object name="waffles">
+        <!--<object name="waffles">
             <visual>
                 <texture file="data/textures/startup/waffles.png"/>
             </visual>
@@ -93,7 +93,7 @@
             <visual>
                 <mesh genType="font"/>
             </visual>
-        </object>
+        </object>-->
 
     </objectList>
 

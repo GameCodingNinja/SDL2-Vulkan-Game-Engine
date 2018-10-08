@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptsoundmanager.h>
+#include <script/scripthighresolutiontimer.h>
 
 // Game lib dependencies
 #include <utilities/highresolutiontimer.h>

@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptshadermanager.h>
+#include <script/scriptfontmanager.h>
 
 // Game lib dependencies
 #include <managers/fontmanager.h>

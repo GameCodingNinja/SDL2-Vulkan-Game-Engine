@@ -65,7 +65,6 @@ private:
     
     // Logo to fade in and out
     std::unique_ptr<CSprite> m_upSpriteLogo;
-    std::unique_ptr<CSprite> m_upSpriteWaffles;
     
     // Command buffer
     std::vector<VkCommandBuffer> m_commandBufVec;

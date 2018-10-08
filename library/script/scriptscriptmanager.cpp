@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptsoundmanager.h>
+#include <script/scriptscriptmanager.h>
 
 // Game lib dependencies
 #include <script/scriptmanager.h>

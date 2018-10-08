@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptisprite.h>
+#include <script/scriptcamera.h>
 
 // Game lib dependencies
 #include <common/camera.h>

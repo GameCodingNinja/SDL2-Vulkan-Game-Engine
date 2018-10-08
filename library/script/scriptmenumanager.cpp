@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptshadermanager.h>
+#include <script/scriptmenumanager.h>
 
 // Game lib dependencies
 #include <gui/menumanager.h>

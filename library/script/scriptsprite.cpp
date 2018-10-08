@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptisprite.h>
+#include <script/scriptsprite.h>
 
 // Game lib dependencies
 #include <common/isprite.h>

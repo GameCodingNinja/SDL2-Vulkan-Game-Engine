@@ -29,11 +29,10 @@
 #include <script/scriptpoint.h>
 #include <script/scriptsize.h>
 #include <script/scriptglobals.h>
-#include <script/scriptisprite.h>
+#include <script/scriptsprite.h>
 #include <script/scriptsoundmanager.h>
 #include <script/scriptuicontrol.h>
 #include <script/scriptmenu.h>
-#include <script/scriptshadermanager.h>
 #include <script/scripthighresolutiontimer.h>
 #include <2d/sprite2d.h>
 #include <sprite/sprite.h>
@@ -91,31 +90,29 @@ void CStartUpState::init()
 {
     // Load the object data list table
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
+    
+    // Load the script list table
+    CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
+    
+    // Register the script items
+    RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
+    RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), false );
+    NScriptGlobals::Register();
+    NScriptColor::Register();
+    
+    // Load group specific script items
+    CScriptMgr::Instance().loadGroup("(startup)");
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
     
-    CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
-    
     // Create the group command buffers
     m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-    
-    // Set code for new sprite
-    //CSprite sprite( CObjectDataMgr::Instance().getData2D( "(startup)", "waffles" ) );
 
     // Allocate the sprite to fade in
-    m_upSpriteWaffles.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "background" ) ) );
-    m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "test_font" ) ) );
-    
-    m_upSpriteLogo->getVisualComponent()->setFontProperties( CFontProperties("dejavu_sans_bold_70") );
-    m_upSpriteLogo->getVisualComponent()->createFontString("This is a test|of the emergency|broadcast system!!");
-    
-    m_upSpriteWaffles->getObject()->setPos( 0, 0, -10 );
+    m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
     m_upSpriteLogo->getObject()->setPos( 0, 0, -10 );
     
-    
-    
-
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
 }
@@ -126,16 +123,7 @@ void CStartUpState::init()
 ****************************************************************************/
 void CStartUpState::update()
 {
-    /*float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
-    
-    m_upSpriteLogo->getObject()->incRot( 0, 0, -rot );
-    m_upSpriteWaffles->getObject()->incRot( 0, 0, rot );*/
-    
-    
-    /*m_scriptComponent.update();
-
-    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
-    m_cube.incRot( rot, rot, 0 );*/
+    m_upSpriteLogo->update();
 }
 
 
@@ -145,18 +133,6 @@ void CStartUpState::update()
 void CStartUpState::transform()
 {
     m_upSpriteLogo->getObject()->transform();
-    m_upSpriteWaffles->getObject()->transform();
-    
-    
-    
-    
-    /*m_background.transform();
-
-    CCameraMgr::Instance().transform();
-
-    //m_spriteSheetTest.Transform();
-
-    m_cube.transform();*/
 }
 
 
@@ -170,22 +146,9 @@ void CStartUpState::recordCommandBuffer( uint32_t index )
     
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
     
-    m_upSpriteWaffles->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
     m_upSpriteLogo->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
     
-    
-    
-    
     CDevice::Instance().endCommandBuffer( cmdBuf );
-    
-    
-    /*m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
-
-    //m_spriteSheetTest.Render( orthoMatrix );
-
-    auto & camera = CCameraMgr::Instance().getActiveCamera();
-
-    m_cube.render( camera.getFinalMatrix(), camera.getRotMatrix() );*/
 }
 
 
@@ -215,19 +178,11 @@ void CStartUpState::assetLoad()
     // Load sound resources for the menu
     CSoundMgr::Instance().loadListTable( "data/sound/soundListTable.lst" );
     CSoundMgr::Instance().loadGroup("(menu)");
-    //CSoundMgr::Instance().LoadGroup("(effects)");
-
-    // Load the script list table
-    CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
 
     // Load the physics list table
     CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
 
     // Register the script items
-    RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
-    RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), false );
-    NScriptGlobals::Register();
-    NScriptColor::Register();
     NScriptPoint::Register();
     NScriptSize::Register();
     NScriptiSprite::Register();

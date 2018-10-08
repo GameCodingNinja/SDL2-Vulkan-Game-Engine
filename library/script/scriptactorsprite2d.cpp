@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <script/scriptisprite.h>
+#include <script/scriptactorsprite2d.h>
 
 // Game lib dependencies
 #include <2d/actorsprite2d.h>
