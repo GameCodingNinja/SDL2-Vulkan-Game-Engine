@@ -9,18 +9,18 @@
 #include "runstate.h"
 
 // Game lib dependencies
-#include <gui/menumanager.h>
+//#include <gui/menumanager.h>
 #include <utilities/highresolutiontimer.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
 #include <system/device.h>
-#include <physics/physicsworldmanager2d.h>
-#include <physics/physicsworld2d.h>
-#include <physics/physicscomponent2d.h>
+//#include <physics/physicsworldmanager2d.h>
+//#include <physics/physicsworld2d.h>
+//#include <physics/physicscomponent2d.h>
 #include <managers/cameramanager.h>
-#include <strategy/basicstagestrategy.h>
-#include <strategy/basicspritestrategy.h>
-#include <strategy/strategymanager.h>
+//#include <strategy/basicstagestrategy.h>
+//#include <strategy/basicspritestrategy.h>
+//#include <strategy/strategymanager.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -29,8 +29,8 @@
 *    DESC:  Constructor
 ************************************************************************/
 CRunState::CRunState() :
-    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD ),
-        m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
+    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD )//,
+        //m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
 {
 }
 
@@ -41,11 +41,11 @@ CRunState::CRunState() :
 void CRunState::init()
 {
     // Unblock the menu messaging and activate needed trees
-    CMenuMgr::Instance().allow();
-    CMenuMgr::Instance().activateTree("pause_tree");
+    //CMenuMgr::Instance().allow();
+    //CMenuMgr::Instance().activateTree("pause_tree");
 
     // Prepare the script to fade in the screen
-    m_scriptComponent.prepare( "(menu)", "Screen_FadeIn" );
+    //m_scriptComponent.prepare( "(menu)", "Screen_FadeIn" );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -60,12 +60,12 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
     CCommonState::handleEvent( rEvent );
 
     // Check for the "change state" message
-    if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
+    /*if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
     {
         // Prepare the script to fade in the screen. The script will send the end message
         if( rEvent.user.code == NMenu::ETC_BEGIN )
             m_scriptComponent.prepare( "(menu)", "Screen_FadeOut" );
-    }
+    }*/
 }
 
 
@@ -74,10 +74,10 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
 ****************************************************************************/
 void CRunState::physics()
 {
-    if( !CMenuMgr::Instance().isActive() )
+    /*if( !CMenuMgr::Instance().isActive() )
     {
         m_rPhysicsWorld.fixedTimeStep();
-    }
+    }*/
 }
 
 
@@ -88,10 +88,10 @@ void CRunState::update()
 {
     CCommonState::update();
 
-    m_scriptComponent.update();
+    //m_scriptComponent.update();
 
-    if( !CMenuMgr::Instance().isActive() )
-        CStrategyMgr::Instance().update();
+    /*if( !CMenuMgr::Instance().isActive() )
+        CStrategyMgr::Instance().update();*/
 }
 
 
@@ -102,8 +102,8 @@ void CRunState::transform()
 {
     CCommonState::transform();
 
-    if( !CMenuMgr::Instance().isActive() )
-        CStrategyMgr::Instance().transform();
+    /*if( !CMenuMgr::Instance().isActive() )
+        CStrategyMgr::Instance().transform();*/
 }
 
 
@@ -114,7 +114,7 @@ void CRunState::preRender()
 {
     CCommonState::preRender();
 
-    CStrategyMgr::Instance().render( CCameraMgr::Instance().getDefaultProjMatrix() );
+    //CStrategyMgr::Instance().render( CCameraMgr::Instance().getDefaultProjMatrix() );
 }
 
 
@@ -129,7 +129,7 @@ namespace NRunState
     ****************************************************************************/
     void ObjectDataLoad()
     {
-        CObjectDataMgr::Instance().loadGroup2D( "(run)");
+        //CObjectDataMgr::Instance().loadGroup2D( "(run)");
     }
 
     void CriticalLoad()
@@ -141,17 +141,17 @@ namespace NRunState
     void Load()
     {
 	// All physics entities are destroyed and all heap memory is released.
-        CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
-        CStrategyMgr::Instance().addStrategy( "(stage1)", new CBasicStageStrategy );
-        CStrategyMgr::Instance().addStrategy( "(sprite)", new CBasicSpriteStrategy );
+        //CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
+        //CStrategyMgr::Instance().addStrategy( "(stage1)", new CBasicStageStrategy );
+        //CStrategyMgr::Instance().addStrategy( "(sprite)", new CBasicSpriteStrategy );
     }
 
     void CriticalInit()
     {
-        const char* shapes[] = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
+        /*const char* shapes[] = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
 
         for( int i = 0; i < 24; ++i )
-            CStrategyMgr::Instance().create( "(sprite)", shapes[i % 6] );
+            CStrategyMgr::Instance().create( "(sprite)", shapes[i % 6] );*/
     }
 
 
@@ -161,13 +161,13 @@ namespace NRunState
     ****************************************************************************/
     void CriticalUnload()
     {
-        CStrategyMgr::Instance().cleanUp();
-        CObjectDataMgr::Instance().freeGroup2D( "(run)" );
+        //CStrategyMgr::Instance().cleanUp();
+        //CObjectDataMgr::Instance().freeGroup2D( "(run)" );
     }
 
     void Unload()
     {
-        CStrategyMgr::Instance().clear();
-        CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
+        //CStrategyMgr::Instance().clear();
+        //CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
     }
 }

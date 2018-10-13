@@ -9,6 +9,7 @@
 #include <3d/visualcomponent3d.h>
 
 // Game lib dependencies
+#include <objectdata/objectdata3d.h>
 #include <objectdata/objectvisualdata3d.h>
 #include <managers/shadermanager.h>
 #include <managers/vertexbuffermanager.h>
@@ -30,9 +31,9 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CVisualComponent3D::CVisualComponent3D( const CObjectVisualData3D & visualData ) :
-    iVisualComponent( visualData ),
-    m_rVisualData( visualData ),
+CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
+    iVisualComponent( objectData.getVisualData() ),
+    m_rObjectData( objectData ),
     m_pShaderData( nullptr ),
     m_vertexLocation( -1 ),
     m_uvLocation( -1 ),
@@ -40,10 +41,10 @@ CVisualComponent3D::CVisualComponent3D( const CObjectVisualData3D & visualData )
     m_colorLocation( -1 ),
     m_matrixLocation( -1 ),
     m_normalMatrixLocation( -1 ),
-    m_mesh3d( visualData.getMesh3D() ),
-    m_VERTEX_BUF_SIZE( visualData.getMesh3D().meshEmpty() || visualData.getMesh3D().textEmpty() ? sizeof(CVertex3D_no_txt) : sizeof(CVertex3D) )
+    //m_mesh3d( visualData.getMesh3D() ),
+    //m_VERTEX_BUF_SIZE( visualData.getMesh3D().meshEmpty() || visualData.getMesh3D().textEmpty() ? sizeof(CVertex3D_no_txt) : sizeof(CVertex3D) )
 {
-    if( visualData.isActive() )
+    /*if( visualData.isActive() )
     {
         m_pShaderData = &CShaderMgr::Instance().getShaderData( visualData.getShaderID() );
 
@@ -58,7 +59,7 @@ CVisualComponent3D::CVisualComponent3D( const CObjectVisualData3D & visualData )
             m_uvLocation = m_pShaderData->getAttributeLocation( "in_uv" );
             m_text0Location = m_pShaderData->getUniformLocation( "text0" );
         }
-    }
+    }*/
 }
 
 

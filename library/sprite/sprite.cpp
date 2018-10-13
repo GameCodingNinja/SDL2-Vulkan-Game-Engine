@@ -52,8 +52,8 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
 CSprite::CSprite( const CObjectData3D & objectData, int id ) :
     m_id( id ),
     m_rObjectData( objectData ),
-    m_upObject( new CObject3D ),
-    m_upVisualComponent( new CVisualComponent3D( objectData.getVisualData() ) )
+    m_upObject( new CObject3D )
+    //m_upVisualComponent( new CVisualComponent3D( objectData.getVisualData() ) )
 {
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
@@ -217,6 +217,15 @@ iVisualComponent * CSprite::getVisualComponent()
 
 
 /************************************************************************
+*    DESC:  Get the physics component
+************************************************************************/
+iPhysicsComponent * CSprite::getPhysicsComponent()
+{
+    return m_upPhysicsComponent.get();
+}
+
+
+/************************************************************************
 *    DESC:  Get the script component
 ************************************************************************/
 CScriptComponent & CSprite::getScriptComponent()
@@ -237,4 +246,29 @@ void CSprite::setFrame( uint index )
         if( m_upVisualComponent->getGenerationType() == NDefs::EGT_SPRITE_SHEET )
             m_upObject->setCropOffset( m_upVisualComponent->getCropOffset( index ) );
     }
+}
+
+/************************************************************************
+*    DESC:  Get the frame count
+************************************************************************/
+uint CSprite::getFrameCount() const 
+{
+    return m_rObjectData.getVisualData().getFrameCount();
+}
+
+/************************************************************************
+*    DESC:  Get the current frame
+************************************************************************/
+uint CSprite::getCurrentFrame() const 
+{
+    return m_upVisualComponent->getCurrentFrame();
+}
+
+
+/************************************************************************
+*    DESC:  Get the unique id number
+************************************************************************/
+int CSprite::getId() const
+{
+    return m_id;
 }

@@ -15,12 +15,12 @@
 // Game lib dependencies
 #include <system/device.h>
 #include <objectdata/objectdatamanager.h>
-#include <managers/shadermanager.h>
-#include <managers/vertexbuffermanager.h>
+//#include <managers/shadermanager.h>
+//#include <managers/vertexbuffermanager.h>
 #include <managers/actionmanager.h>
-#include <managers/signalmanager.h>
+//#include <managers/signalmanager.h>
 #include <managers/cameramanager.h>
-#include <2d/sprite2d.h>
+//#include <2d/sprite2d.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
@@ -62,17 +62,17 @@ void CLoadState::init()
     CObjectDataMgr::Instance().loadGroup2D( "(loadingScreen)" );
 
     // Allocate the sprite to fade in
-    m_upSprite.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(loadingScreen)", "loadAnim" ) ) );
+    //m_upSprite.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( "(loadingScreen)", "loadAnim" ) ) );
 
     // Get the position, scale and half the screen size
-    CSize<float> scrnHalf = CSettings::Instance().getDefaultSizeHalf();
+    //CSize<float> scrnHalf = CSettings::Instance().getDefaultSizeHalf();
 
     // Set the position
-    m_upSprite->setPos( CPoint<float>(scrnHalf.w, -scrnHalf.h) + CPoint<float>(-150, 150) );
-    m_upSprite->transform();
+    //m_upSprite->setPos( CPoint<float>(scrnHalf.w, -scrnHalf.h) + CPoint<float>(-150, 150) );
+    //m_upSprite->transform();
 
     // Setup the fade in
-    CShaderMgr::Instance().setShaderColor( "shader_2d_spriteSheet", "additive", CColor(1,1,1,1) );
+    //CShaderMgr::Instance().setShaderColor( "shader_2d_spriteSheet", "additive", CColor(1,1,1,1) );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -94,12 +94,12 @@ void CLoadState::animate()
         // Clear the screen
         //glClear( GL_COLOR_BUFFER_BIT );
 
-        m_upSprite->setFrame( m_frame );
-        m_frame = (m_frame + 1) % m_upSprite->getFrameCount();
+        //m_upSprite->setFrame( m_frame );
+        //m_frame = (m_frame + 1) % m_upSprite->getFrameCount();
 
-        m_upSprite->render( CCameraMgr::Instance().getDefaultProjMatrix() );
+        //m_upSprite->render( CCameraMgr::Instance().getDefaultProjMatrix() );
 
-        SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
+        //SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
 
         // Unbind everything after a round of rendering
         //CShaderMgr::Instance().unbind();

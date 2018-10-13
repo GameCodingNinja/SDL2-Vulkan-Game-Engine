@@ -9,7 +9,7 @@
 #include "commonstate.h"
 
 // Game lib dependencies
-#include <gui/menumanager.h>
+//#include <gui/menumanager.h>
 #include <managers/cameramanager.h>
 #include <utilities/exceptionhandling.h>
 
@@ -44,7 +44,7 @@ CCommonState::~CCommonState()
 void CCommonState::handleEvent( const SDL_Event & rEvent )
 {
     // Have the menu manager handle events
-    CMenuMgr::Instance().handleEvent( rEvent );
+    /*CMenuMgr::Instance().handleEvent( rEvent );
 
     // Check for the "game change state" message
     if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
@@ -65,7 +65,7 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
             // Set the flag to change the state
             m_changeState = true;
         }
-    }
+    }*/
 }
 
 
@@ -75,7 +75,7 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
 void CCommonState::update()
 {
     // Update the menus
-    CMenuMgr::Instance().update();
+    //CMenuMgr::Instance().update();
 }
 
 
@@ -85,7 +85,7 @@ void CCommonState::update()
 void CCommonState::transform()
 {
     // Transform the menus
-    CMenuMgr::Instance().transformMenu();
+    //CMenuMgr::Instance().transformMenu();
 }
 
 
@@ -94,7 +94,7 @@ void CCommonState::transform()
 ****************************************************************************/
 void CCommonState::preRender()
 {
-    CMenuMgr::Instance().renderInterface( CCameraMgr::Instance().getDefaultProjMatrix() );
+    //CMenuMgr::Instance().renderInterface( CCameraMgr::Instance().getDefaultProjMatrix() );
 }
 
 
@@ -103,7 +103,7 @@ void CCommonState::preRender()
 ****************************************************************************/
 void CCommonState::postRender()
 {
-    CMenuMgr::Instance().renderMenu( CCameraMgr::Instance().getDefaultProjMatrix() );
+    //CMenuMgr::Instance().renderMenu( CCameraMgr::Instance().getDefaultProjMatrix() );
 }
 
 

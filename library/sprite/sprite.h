@@ -78,11 +78,23 @@ public:
     // Get the visual component
     iVisualComponent * getVisualComponent();
     
+    // Get the physics component
+    iPhysicsComponent * getPhysicsComponent();
+    
     // Get the script component
     CScriptComponent & getScriptComponent();
     
     // Set the texture ID from index
     void setFrame( uint index );
+    
+    // Get the frame count
+    uint getFrameCount() const;
+    
+    // Get the current frame
+    uint getCurrentFrame() const;
+    
+    // Get the unique id number
+    int getId() const;
     
 private:
     

@@ -52,7 +52,7 @@ private:
 private:
     
     // Load animation
-    std::unique_ptr<CSprite2D> m_upSprite;
+    //std::unique_ptr<CSprite2D> m_upSprite;
     
     // Flag to indicate the thread load is finished
     bool m_threadActive;

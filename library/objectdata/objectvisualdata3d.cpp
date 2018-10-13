@@ -14,7 +14,7 @@
 #include <objectdata/objectvisualdata3d.h>
 
 // Game lib dependencies
-#include <managers/meshmanager.h>
+//#include <managers/meshmanager.h>
 #include <utilities/xmlparsehelper.h>
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
@@ -73,8 +73,8 @@ void CObjectVisualData3D::loadFromNode( const XMLNode & objectNode )
 void CObjectVisualData3D::loadMeshData( const std::string & group )
 {
     // Temporary implementation to just get cube on screen - remove
-    if( !m_meshFile.empty() )
-        CMeshMgr::Instance().loadFromFile( group, m_meshFile );
+    //if( !m_meshFile.empty() )
+    //    CMeshMgr::Instance().loadFromFile( group, m_meshFile );
 }
 
 /************************************************************************
@@ -83,8 +83,8 @@ void CObjectVisualData3D::loadMeshData( const std::string & group )
 void CObjectVisualData3D::createFromData( const std::string & group )
 {
     // Temporary implementation to just get cube on screen - remove
-    if( !m_meshFile.empty() )
-        CMeshMgr::Instance().createFromData( group, m_meshFile, m_mesh3d );
+    //if( !m_meshFile.empty() )
+    //    CMeshMgr::Instance().createFromData( group, m_meshFile, m_mesh3d );
 }
 
 /************************************************************************

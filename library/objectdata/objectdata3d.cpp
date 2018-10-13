@@ -74,7 +74,7 @@ void CObjectData3D::createFromData( const std::string & group )
 /************************************************************************
 *    DESC:  Access functions for the visual data
 ************************************************************************/
-const CObjectVisualData3D & CObjectData3D::getVisualData() const
+const iObjectVisualData & CObjectData3D::getVisualData() const
 {
     return m_visualData;
 }

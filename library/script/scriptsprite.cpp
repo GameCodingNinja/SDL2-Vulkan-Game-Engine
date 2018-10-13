@@ -1,16 +1,18 @@
 
 /************************************************************************
-*    FILE NAME:       scriptisprite.cpp
+*    FILE NAME:       scriptsprite.cpp
 *
-*    DESCRIPTION:     iSprite script object registration
+*    DESCRIPTION:     Sprite script object registration
 ************************************************************************/
 
 // Physical component dependency
 #include <script/scriptsprite.h>
 
 // Game lib dependencies
-#include <common/isprite.h>
+#include <2d/object2d.h>
+#include <sprite/sprite.h>
 #include <common/ivisualcomponent.h>
+#include <common/point.h>
 #include <physics/iphysicscomponent.h>
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
@@ -18,182 +20,182 @@
 // AngelScript lib dependencies
 #include <angelscript.h>
 
-namespace NScriptiSprite
+namespace NScriptSprite
 {
     CPoint<float> point;
 
     /************************************************************************
     *    DESC:  Wrapper function due to virtual inheritance
     ************************************************************************/
-    void SetVisible(bool value, iSprite & sprite)
+    void SetVisible(bool value, CSprite & sprite)
     {
-        sprite.setVisible(value);
+        sprite.getObject()->setVisible(value);
     }
 
-    bool IsVisible(iSprite & sprite)
+    bool IsVisible(CSprite & sprite)
     {
-        return sprite.isVisible();
+        return sprite.getObject()->isVisible();
     }
 
-    void SetPos1(const CPoint<float> & pos, iSprite & sprite)
+    void SetPos1(const CPoint<float> & pos, CSprite & sprite)
     {
-        sprite.setPos(pos);
+        sprite.getObject()->setPos(pos);
     }
 
-    void SetPos2(float x, float y, float z, iSprite & sprite)
+    void SetPos2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.setPos(x,y,z);
+        sprite.getObject()->setPos(x,y,z);
     }
 
-    void IncPos1(const CPoint<float> & pos, iSprite & sprite)
+    void IncPos1(const CPoint<float> & pos, CSprite & sprite)
     {
-        sprite.incPos(pos);
+        sprite.getObject()->incPos(pos);
     }
 
-    void IncPos2(float x, float y, float z, iSprite & sprite)
+    void IncPos2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.incPos(x,y,z);
+        sprite.getObject()->incPos(x,y,z);
     }
 
-    const CPoint<float> & GetPos(iSprite & sprite)
+    const CPoint<float> & GetPos(CSprite & sprite)
     {
-        point = sprite.getPos();
+        point = sprite.getObject()->getPos();
         return point;
     }
 
-    void SetRot1(const CPoint<float> & rot, bool convertToRadians, iSprite & sprite)
+    void SetRot1(const CPoint<float> & rot, bool convertToRadians, CSprite & sprite)
     {
-        sprite.setRot(rot, convertToRadians);
+        sprite.getObject()->setRot(rot, convertToRadians);
     }
 
-    void SetRot2(float x, float y, float z, bool convertToRadians, iSprite & sprite)
+    void SetRot2(float x, float y, float z, bool convertToRadians, CSprite & sprite)
     {
-        sprite.setRot(x,y,z, convertToRadians);
+        sprite.getObject()->setRot(x,y,z, convertToRadians);
     }
 
-    void IncRot1(const CPoint<float> & rot, bool convertToRadians, iSprite & sprite)
+    void IncRot1(const CPoint<float> & rot, bool convertToRadians, CSprite & sprite)
     {
-        sprite.incRot(rot, convertToRadians);
+        sprite.getObject()->incRot(rot, convertToRadians);
     }
 
-    void IncRot2(float x, float y, float z, bool convertToRadians, iSprite & sprite)
+    void IncRot2(float x, float y, float z, bool convertToRadians, CSprite & sprite)
     {
-        sprite.incRot(x,y,z, convertToRadians);
+        sprite.getObject()->incRot(x,y,z, convertToRadians);
     }
 
-    const CPoint<float> & GetRot(iSprite & sprite)
+    const CPoint<float> & GetRot(CSprite & sprite)
     {
-        return sprite.getRot();
+        return sprite.getObject()->getRot();
     }
 
-    void SetScale1(const CPoint<float> & rot, iSprite & sprite)
+    void SetScale1(const CPoint<float> & rot, CSprite & sprite)
     {
-        sprite.setScale(rot);
+        sprite.getObject()->setScale(rot);
     }
 
-    void SetScale2(float x, float y, float z, iSprite & sprite)
+    void SetScale2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.setScale(x,y,z);
+        sprite.getObject()->setScale(x,y,z);
     }
 
-    void IncScale1(const CPoint<float> & rot, iSprite & sprite)
+    void IncScale1(const CPoint<float> & rot, CSprite & sprite)
     {
-        sprite.incScale(rot);
+        sprite.getObject()->incScale(rot);
     }
 
-    void IncScale2(float x, float y, float z, iSprite & sprite)
+    void IncScale2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.incScale(x,y,z);
+        sprite.getObject()->incScale(x,y,z);
     }
 
-    const CPoint<float> & GetScale(iSprite & sprite)
+    const CPoint<float> & GetScale(CSprite & sprite)
     {
-        return sprite.getScale();
+        return sprite.getObject()->getScale();
     }
 
-    void SetColor1(const CColor & color, iSprite & sprite)
+    void SetColor1(const CColor & color, CSprite & sprite)
     {
-        sprite.getVisualInterface()->setColor( color );
+        sprite.getVisualComponent()->setColor( color );
     }
     
-    void SetColor2(const CColor & color, iSprite & sprite)
+    void SetColor2(const CColor & color, CSprite & sprite)
     {
-        sprite.getVisualInterface()->setColor( color );
+        sprite.getVisualComponent()->setColor( color );
     }
     
-    const CColor & GetColor(iSprite & sprite)
+    const CColor & GetColor(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->getColor();
+        return sprite.getVisualComponent()->getColor();
     }
     
-    void SetDefaultColor(iSprite & sprite)
+    void SetDefaultColor(CSprite & sprite)
     {
-        sprite.getVisualInterface()->setDefaultColor();
+        sprite.getVisualComponent()->setDefaultColor();
     }
     
-    const CColor & GetDefaultColor(iSprite & sprite)
+    const CColor & GetDefaultColor(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->getDefaultColor();
+        return sprite.getVisualComponent()->getDefaultColor();
     }
     
-    void SetAlpha(float alpha, bool allowToExceed, iSprite & sprite)
+    void SetAlpha(float alpha, bool allowToExceed, CSprite & sprite)
     {
-        sprite.getVisualInterface()->setAlpha( alpha, allowToExceed );
+        sprite.getVisualComponent()->setAlpha( alpha, allowToExceed );
     }
     
-    float GetAlpha(iSprite & sprite)
+    float GetAlpha(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->getAlpha();
+        return sprite.getVisualComponent()->getAlpha();
     }
 
-    void SetDefaultAlpha(iSprite & sprite)
+    void SetDefaultAlpha(CSprite & sprite)
     {
-        sprite.getVisualInterface()->setDefaultAlpha();
+        sprite.getVisualComponent()->setDefaultAlpha();
     }
 
-    float GetDefaultAlpha(iSprite & sprite)
+    float GetDefaultAlpha(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->getDefaultAlpha();
+        return sprite.getVisualComponent()->getDefaultAlpha();
     }
 
-    void CreateFontString(const std::string & fontStr, iSprite & sprite)
+    void CreateFontString(const std::string & fontStr, CSprite & sprite)
     {
-        sprite.getVisualInterface()->createFontString(fontStr);
+        sprite.getVisualComponent()->createFontString(fontStr);
     }
 
-    const std::string & GetFontString(iSprite & sprite)
+    const std::string & GetFontString(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->getFontString();
+        return sprite.getVisualComponent()->getFontString();
     }
     
-    const CSize<float> & GetFontSize(iSprite & sprite)
+    const CSize<float> & GetFontSize(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->getFontSize();
+        return sprite.getVisualComponent()->getFontSize();
     }
 
-    bool IsFontSprite(iSprite & sprite)
+    bool IsFontSprite(CSprite & sprite)
     {
-        return sprite.getVisualInterface()->isFontSprite();
+        return sprite.getVisualComponent()->isFontSprite();
     }
 
-    void SetTransform(float x, float y, float angle, bool resetVelocity, iSprite & sprite)
+    void SetTransform(float x, float y, float angle, bool resetVelocity, CSprite & sprite)
     {
-        sprite.getPhysicsInterface()->setTransform( x, y, angle, resetVelocity );
+        sprite.getPhysicsComponent()->setTransform( x, y, angle, resetVelocity );
     }
 
-    void SetLinearVelocity(float x, float y, iSprite & sprite)
+    void SetLinearVelocity(float x, float y, CSprite & sprite)
     {
-        sprite.getPhysicsInterface()->setLinearVelocity( x, y );
+        sprite.getPhysicsComponent()->setLinearVelocity( x, y );
     }
     
-    void SetAngularVelocity(float angle, iSprite & sprite)
+    void SetAngularVelocity(float angle, CSprite & sprite)
     {
-        sprite.getPhysicsInterface()->setAngularVelocity( angle );
+        sprite.getPhysicsComponent()->setAngularVelocity( angle );
     }
     
-    void ApplyAngularImpulse(float value, bool wake, iSprite & sprite)
+    void ApplyAngularImpulse(float value, bool wake, CSprite & sprite)
     {
-        sprite.getPhysicsInterface()->applyAngularImpulse( value, wake );
+        sprite.getPhysicsComponent()->applyAngularImpulse( value, wake );
     }
     
     /************************************************************************
@@ -206,64 +208,64 @@ namespace NScriptiSprite
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
 
         // Register type
-        Throw( pEngine->RegisterObjectType(  "iSprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
+        Throw( pEngine->RegisterObjectType(  "Sprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
         // Visual component functions
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setColor(const CColor &in)",           asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setColor(float, float, float, float)", asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const CColor & getColor()",                 asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setDefaultColor()",                    asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const CColor & getDefaultColor()",          asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setAlpha(float, bool allowToExceed = false)", asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "float getAlpha()",                                 asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setDefaultAlpha()",                           asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "float getDefaultAlpha()",                          asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void createFontString(string &in)",       asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const string & getFontString()",          asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const CSize & getFontSize()",    asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "bool isFontSprite()",            asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(const CColor &in)",                  asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(float, float, float, float)",        asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getColor()",                        asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultColor()",                           asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getDefaultColor()",                 asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAlpha(float, bool allowToExceed = false)", asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "float getAlpha()",                                 asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultAlpha()",                           asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "float getDefaultAlpha()",                          asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void createFontString(string &in)",                asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const string & getFontString()",                   asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CSize & getFontSize()",                      asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "bool isFontSprite()",                              asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
         
         // Physics component functions
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", asFUNCTION(SetTransform), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setLinearVelocity(float, float)", asFUNCTION(SetLinearVelocity), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setAngularVelocity(float)",       asFUNCTION(SetAngularVelocity), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void applyAngularImpulse(float, bool wake = false)",      asFUNCTION(ApplyAngularImpulse), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", asFUNCTION(SetTransform), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setLinearVelocity(float, float)", asFUNCTION(SetLinearVelocity), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAngularVelocity(float)",       asFUNCTION(SetAngularVelocity), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void applyAngularImpulse(float, bool wake = false)",      asFUNCTION(ApplyAngularImpulse), asCALL_CDECL_OBJLAST) );
 
         // Sprite specific functions
-        Throw( pEngine->RegisterObjectMethod("iSprite", "uint getFrameCount()",                               asMETHOD(iSprite, getFrameCount),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setFrame(uint)",                                asMETHOD(iSprite, setFrame),             asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "uint getCurrentFrame()",                             asMETHOD(iSprite, getCurrentFrame),      asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "uint getFrameCount()",                               asMETHOD(CSprite, getFrameCount),        asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setFrame(uint)",                                asMETHOD(CSprite, setFrame),             asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "uint getCurrentFrame()",                             asMETHOD(CSprite, getCurrentFrame),      asCALL_THISCALL) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "int getId()",                                        asMETHOD(iSprite,   getId),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "int getId()",                                        asMETHOD(CSprite,   getId),            asCALL_THISCALL) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setVisible(bool)",                              asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "bool isVisible()",                                   asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setVisible(bool)",                              asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "bool isVisible()",                                   asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setPos(CPoint &in)",                             asFUNCTION(SetPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(SetPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setPos(CPoint &in)",                             asFUNCTION(SetPos1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(SetPos2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void incPos(CPoint & in)",                            asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void incPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void incPos(CPoint & in)",                            asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void incPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const CPoint & getPos()",                             asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CPoint & getPos()",                             asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const CPoint & getRot()",                               asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CPoint & getRot()",                               asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("iSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("iSprite", "const CPoint & getScale()",     asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CPoint & getScale()",     asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, iSprite @)", asMETHOD(CScriptMgr, prepareSpawnVoid), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
-        Throw( pEngine->RegisterGlobalFunction("void LocalSpawn(string &in, iSprite @)", asMETHOD(CScriptMgr, prepareLocalSpawnVoid), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
+        //Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, Sprite @)", asMETHOD(CScriptMgr, prepareSpawnVoid), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
+        //Throw( pEngine->RegisterGlobalFunction("void LocalSpawn(string &in, Sprite @)", asMETHOD(CScriptMgr, prepareLocalSpawnVoid), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
     }
 }

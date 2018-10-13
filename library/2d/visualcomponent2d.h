@@ -18,6 +18,7 @@
 #include <common/rect.h>
 #include <common/size.h>
 #include <utilities/xmlParser.h>
+#include <objectdata/objectvisualdata2d.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -27,7 +28,6 @@
 #include <memory>
 
 // Forward declaration(s)
-class CObjectVisualData2D;
 class CFont;
 class CShaderData;
 class CFontData;
@@ -38,6 +38,7 @@ class CVisualComponent2D : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
+    CVisualComponent2D(){}
     CVisualComponent2D( const CObjectVisualData2D & visualData );
 
     // Destructor
@@ -129,7 +130,7 @@ private:
     CSize<float> m_quadVertScale;
 
     // Reference to object visual data
-    const CObjectVisualData2D & m_rVisualData;
+    CObjectVisualData2D m_rVisualData;
 
     // IBO count
     uint16_t m_iboCount;

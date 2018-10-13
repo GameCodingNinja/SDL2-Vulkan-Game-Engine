@@ -12,14 +12,14 @@
 #include "titlescreenstate.h"
 
 // Game lib dependencies
-#include <managers/vertexbuffermanager.h>
-#include <managers/shadermanager.h>
+//#include <managers/vertexbuffermanager.h>
+//#include <managers/shadermanager.h>
 #include <managers/fontmanager.h>
 #include <managers/soundmanager.h>
 #include <managers/actionmanager.h>
 #include <managers/spritesheetmanager.h>
 #include <managers/cameramanager.h>
-#include <strategy/strategymanager.h>
+//#include <strategy/strategymanager.h>
 #include <objectdata/objectdatamanager.h>
 #include <common/color.h>
 #include <script/scriptmanager.h>
@@ -31,25 +31,23 @@
 #include <script/scriptglobals.h>
 #include <script/scriptsprite.h>
 #include <script/scriptsoundmanager.h>
-#include <script/scriptuicontrol.h>
-#include <script/scriptmenu.h>
+//#include <script/scriptuicontrol.h>
+//#include <script/scriptmenu.h>
 #include <script/scripthighresolutiontimer.h>
-#include <2d/sprite2d.h>
+//#include <2d/sprite2d.h>
 #include <sprite/sprite.h>
 #include <system/device.h>
-#include <gui/menumanager.h>
-#include <gui/menu.h>
-#include <gui/uicontrol.h>
+//#include <gui/menumanager.h>
+//#include <gui/menu.h>
+//#include <gui/uicontrol.h>
 #include <utilities/genfunc.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/xmlParser.h>
 #include <physics/physicsworldmanager2d.h>
-#include <slot/slotmathmanager.h>
-#include <slot/symbolsetviewmanager.h>
-
-#include <sprite/sprite.h>
+//#include <slot/slotmathmanager.h>
+//#include <slot/symbolsetviewmanager.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -92,7 +90,7 @@ void CStartUpState::init()
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
     
     // Load the script list table
-    CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
+    /*CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
     
     // Register the script items
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
@@ -101,7 +99,7 @@ void CStartUpState::init()
     NScriptColor::Register();
     
     // Load group specific script items
-    CScriptMgr::Instance().loadGroup("(startup)");
+    CScriptMgr::Instance().loadGroup("(startup)");*/
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );

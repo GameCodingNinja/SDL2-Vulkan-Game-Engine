@@ -7,11 +7,13 @@
 #ifndef __object_data_2d_h__
 #define __object_data_2d_h__
 
+// Physical component dependency
+#include <objectdata/iobjectdata.h>
+
 // Game lib dependencies
 #include <common/point.h>
 #include <objectdata/objectvisualdata2d.h>
 #include <objectdata/objectphysicsdata2d.h>
-#include <objectdata/iobjectdata.h>
 
 // Standard lib dependencies
 #include <string>
@@ -36,7 +38,7 @@ public:
     void createFromData( const std::string & group );
 
     // Access functions for the visual data
-    const CObjectVisualData2D & getVisualData() const;
+    const iObjectVisualData & getVisualData() const override;
 
     // Access functions for the physics data
     const CObjectPhysicsData2D & getPhysicsData() const;

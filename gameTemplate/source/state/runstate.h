@@ -12,10 +12,10 @@
 #include "commonstate.h"
 
 // Game lib dependencies
-#include <2d/sprite2d.h>
+//#include <2d/sprite2d.h>
 
 // Forward declaration(s)
-class CPhysicsWorld2D;
+//class CPhysicsWorld2D;
 
 class CRunState : public CCommonState
 {
@@ -48,10 +48,10 @@ public:
 private:
     
     // The script conponent
-    CScriptComponent m_scriptComponent;
+    //CScriptComponent m_scriptComponent;
     
     // Physics world
-    CPhysicsWorld2D & m_rPhysicsWorld;
+    //CPhysicsWorld2D & m_rPhysicsWorld;
 };
 
 

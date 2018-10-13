@@ -19,6 +19,7 @@
 
 // Forward declaration(s)
 class CObjectData2D;
+class iObjectVisualData;
 class CMemoryBuffer;
 class CDevice;
 
@@ -53,7 +54,7 @@ private:
     virtual void updateUBO(
         uint32_t index,
         CDevice & device,
-        const CObjectVisualData2D & rVisualData,
+        const iObjectVisualData & rVisualData,
         const CMatrix & model,
         const CMatrix & viewProj );
 

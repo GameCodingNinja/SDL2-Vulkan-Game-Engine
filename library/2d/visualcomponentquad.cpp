@@ -10,7 +10,7 @@
 
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
-#include <objectdata/objectvisualdata2d.h>
+#include <objectdata/iobjectvisualdata.h>
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/matrix.h>
@@ -25,7 +25,7 @@
 *    desc:  Constructor
 ************************************************************************/
 CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
-    iVisualComponent( objectData.getVisualData() ),
+    iVisualComponent( objectData ),
     m_rObjectData( objectData )
 {
     auto & device( CDevice::Instance() );
@@ -39,7 +39,7 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
     if( GENERATION_TYPE != NDefs::EGT_FONT )
         device.createPushDescriptorSet(
             pipelineIndex,
-            objectData.getVisualData().getVulkanTexture(),
+            objectData.getVisualData().getTexture(),
             m_uniformBufVec,
             m_pushDescSet );
     
@@ -117,7 +117,7 @@ void CVisualComponentQuad::recordCommandBuffers(
 void CVisualComponentQuad::updateUBO(
     uint32_t index,
     CDevice & device,
-    const CObjectVisualData2D & rVisualData,
+    const iObjectVisualData & rVisualData,
     const CMatrix & model,
     const CMatrix & viewProj )
 {
@@ -142,7 +142,7 @@ void CVisualComponentQuad::setFrame( uint index )
     iVisualComponent::setFrame( index );
     
     // Update the texture
-    m_pushDescSet.updateTexture( m_rObjectData.getVisualData().getVulkanTexture( index ) );
+    m_pushDescSet.updateTexture( m_rObjectData.getVisualData().getTexture( index ) );
 }
 
 

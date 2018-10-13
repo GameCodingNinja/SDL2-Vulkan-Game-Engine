@@ -9,7 +9,6 @@
 #include <2d/visualcomponent2d.h>
 
 // Game lib dependencies
-#include <objectdata/objectvisualdata2d.h>
 #include <managers/shadermanager.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/fontmanager.h>

@@ -21,8 +21,8 @@
 
 // Forward declaration(s)
 class CMatrix;
-class CObjectVisualData2D;
-class CObjectVisualData3D;
+class CObjectData2D;
+class CObjectData3D;
 class CFontProperties;
 class CFontData;
 struct XMLNode;
@@ -32,8 +32,8 @@ class iVisualComponent
 public:
     
     // Constructor
-    iVisualComponent( const CObjectVisualData2D & visualData );
-    iVisualComponent( const CObjectVisualData3D & visualData );
+    iVisualComponent( const CObjectData2D & objectData );
+    iVisualComponent( const CObjectData3D & objectData );
     
     // Destructor
     virtual ~iVisualComponent() {}
@@ -116,7 +116,7 @@ protected:
     static CColor m_additive;
     
     // The default color
-    const CColor & m_rDefaultColor;
+    const CColor m_rDefaultColor;
     
     // Frame index
     uint32_t m_frameIndex;

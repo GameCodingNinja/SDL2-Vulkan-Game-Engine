@@ -13,9 +13,9 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/xmlpreloader.h>
 #include <managers/cameramanager.h>
-#include <gui/menumanager.h>
-#include <gui/uibutton.h>
-#include <gui/uimeter.h>
+//#include <gui/menumanager.h>
+//#include <gui/uibutton.h>
+//#include <gui/uimeter.h>
 
 // SDL lib dependencies
 #include <SDL.h>
@@ -24,10 +24,10 @@
 *    DESC:  Constructor
 ************************************************************************/
 CTitleScreenState::CTitleScreenState() :
-    CCommonState( NGameDefs::EGS_TITLE_SCREEN, NGameDefs::EGS_GAME_LOAD ),
-        m_background( CObjectDataMgr::Instance().getData2D( "(title_screen)", "background" ) ),
+    CCommonState( NGameDefs::EGS_TITLE_SCREEN, NGameDefs::EGS_GAME_LOAD )
+        //m_background( CObjectDataMgr::Instance().getData2D( "(title_screen)", "background" ) ),
         //m_spriteSheetTest( CObjectDataMgr::Instance().GetData2D( "(title_screen)", "spriteSheetTest2" ) ),
-        m_cube( CObjectDataMgr::Instance().getData3D( "(cube)", "cube" ) )
+        //m_cube( CObjectDataMgr::Instance().getData3D( "(cube)", "cube" ) )
 {
 }
 
@@ -38,7 +38,7 @@ CTitleScreenState::CTitleScreenState() :
 void CTitleScreenState::init()
 {
     // Unblock the menu messaging and activate needed trees
-    CMenuMgr::Instance().allow();
+    /*CMenuMgr::Instance().allow();
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
 
     m_cube.setScale( 3, 3, 3 );
@@ -48,7 +48,7 @@ void CTitleScreenState::init()
     CCameraMgr::Instance().setActiveCameraRot( 10, 0, 0 );
 
     // Prepare the script to fade in the screen
-    m_scriptComponent.prepare( "(menu)", "Screen_FadeIn" );
+    m_scriptComponent.prepare( "(menu)", "Screen_FadeIn" );*/
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -63,12 +63,12 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
     CCommonState::handleEvent( rEvent );
 
     // Check for the "change state" message
-    if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
+    /*if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
     {
         // Prepare the script to fade in the screen. The script will send the end message
         if( rEvent.user.code == NMenu::ETC_BEGIN )
             m_scriptComponent.prepare( "(menu)", "Screen_FadeOut" );
-    }
+    }*/
 }
 
 
@@ -90,8 +90,8 @@ void CTitleScreenState::update()
 
     m_scriptComponent.update();
 
-    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
-    m_cube.incRot( rot, rot, 0 );
+    //float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
+    //m_cube.incRot( rot, rot, 0 );
 }
 
 
@@ -102,13 +102,13 @@ void CTitleScreenState::transform()
 {
     CCommonState::transform();
 
-    m_background.transform();
+    //m_background.transform();
 
     CCameraMgr::Instance().transform();
 
     //m_spriteSheetTest.Transform();
 
-    m_cube.transform();
+    //m_cube.transform();
 }
 
 
@@ -117,15 +117,15 @@ void CTitleScreenState::transform()
 ****************************************************************************/
 void CTitleScreenState::preRender()
 {
-    m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
+    //m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
 
     //m_spriteSheetTest.Render( orthoMatrix );
 
     CCommonState::preRender();
 
-    auto & camera = CCameraMgr::Instance().getActiveCamera();
+    //auto & camera = CCameraMgr::Instance().getActiveCamera();
 
-    m_cube.render( camera.getFinalMatrix(), camera.getRotMatrix() );
+    //m_cube.render( camera.getFinalMatrix(), camera.getRotMatrix() );
 }
 
 
@@ -140,10 +140,10 @@ namespace NTitleScreenState
     ****************************************************************************/
     void ObjectDataLoad()
     {
-        CObjectDataMgr::Instance().loadGroup2D( "(title_screen)" );
+        //CObjectDataMgr::Instance().loadGroup2D( "(title_screen)" );
 
         //CObjectDataMgr::Instance().LoadGroup2D( "(actor)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
-        CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
+        //CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     }
 
     void CriticalLoad()
@@ -170,8 +170,8 @@ namespace NTitleScreenState
     ****************************************************************************/
     void CriticalUnload()
     {
-        CObjectDataMgr::Instance().freeGroup2D( "(title_screen)" );
-        CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
+        //CObjectDataMgr::Instance().freeGroup2D( "(title_screen)" );
+        //CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
     }
 
     void Unload()

@@ -14,9 +14,16 @@
 // Standard lib dependencies
 #include <string>
 
+// Forward Declarations
+class iObjectVisualData;
+
 class iObjectData
 {
 public:
+    
+    // Access functions for the visual data
+    virtual const iObjectVisualData & getVisualData() const
+    { return m_null_objectVisualData; }
 
     // Access functions for the data name
     virtual const std::string & getName() const
@@ -44,6 +51,7 @@ public:
     
 private:
     
+    static iObjectVisualData m_null_objectVisualData;
     static CSize<int> m_null_size;
     static std::string m_null_string;
 };

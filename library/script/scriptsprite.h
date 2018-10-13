@@ -1,14 +1,14 @@
 
 /************************************************************************
-*    FILE NAME:       scriptisprite.h
+*    FILE NAME:       scriptsprite.h
 *
-*    DESCRIPTION:     iSprite2D/3D script object registration
+*    DESCRIPTION:     Sprite script object registration
 ************************************************************************/
 
-#ifndef __script_isprite_h__
-#define __script_isprite_h__
+#ifndef __script_sprite_h__
+#define __script_sprite_h__
 
-namespace NScriptiSprite
+namespace NScriptSprite
 {
     // Register Script Object
     void Register();

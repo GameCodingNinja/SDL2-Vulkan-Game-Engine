@@ -12,8 +12,8 @@
 #include "commonstate.h"
 
 // Game lib dependencies
-#include <2d/sprite2d.h>
-#include <3d/sprite3d.h>
+//#include <2d/sprite2d.h>
+//#include <3d/sprite3d.h>
 #include <slot/slotgame.h>
 #include <script/scriptcomponent.h>
 
@@ -57,11 +57,11 @@ private:
     CScriptComponent m_scriptComponent;
     
     // title screen background
-    CSprite2D m_background;
+    //CSprite2D m_background;
     
     //CSprite2D m_spriteSheetTest;
     
-    CSprite3D m_cube;
+    //CSprite3D m_cube;
 };
 
 

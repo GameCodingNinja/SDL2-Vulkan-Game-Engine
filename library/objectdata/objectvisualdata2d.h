@@ -8,6 +8,9 @@
 #ifndef __object_visual_data_2d_h__
 #define __object_visual_data_2d_h__
 
+// Physical component dependency
+#include <objectdata/iobjectvisualdata.h>
+
 // Game lib dependencies
 #include <common/size.h>
 #include <common/color.h>
@@ -30,7 +33,7 @@
 struct XMLNode;
 class CQuad2D;
 
-class CObjectVisualData2D
+class CObjectVisualData2D : public iObjectVisualData
 {
 public:
 
@@ -39,50 +42,49 @@ public:
     ~CObjectVisualData2D();
 
     // Load thes object data from node
-    void loadFromNode( const XMLNode & objectNode, const std::string & name );
+    void loadFromNode( const XMLNode & objectNode, const std::string & name ) override;
 
     // Create the object from data
-    void createFromData( const std::string & group, CSize<int> & rSize );
+    void createFromData( const std::string & group, CSize<int> & rSize ) override;
 
     // Get the gne type
-    NDefs::EGenerationType getGenerationType() const;
+    NDefs::EGenerationType getGenerationType() const override;
 
-    // Get the texture ID
-    uint32_t getTextureID( uint index = 0 ) const;
-    const CTexture & getVulkanTexture( uint index = 0 ) const;
+    // Get the texture
+    const CTexture & getTexture( uint index = 0 ) const override;
 
     // Get the name of the pipeline index
-    int getPipelineIndex() const;
+    int getPipelineIndex() const override;
 
     // Get the color
-    const CColor & getColor() const;
+    const CColor & getColor() const override;
 
     // Get the vertex scale
-    const CSize<float> & getVertexScale() const;
+    const CSize<float> & getVertexScale() const override;
 
     // Get the VBO
-    const CMemoryBuffer & getVBO() const;
+    const CMemoryBuffer & getVBO() const override;
 
     // Get the IBO
-    const CMemoryBuffer & getIBO() const;
+    const CMemoryBuffer & getIBO() const override;
 
     // Get the ibo count
-    int getIBOCount() const;
+    int getIBOCount() const override;
 
     // Get the frame count
-    size_t getFrameCount() const;
+    size_t getFrameCount() const override;
 
     // Whether or not the visual tag was specified
-    bool isActive() const;
+    bool isActive() const override;
     
     // Get the sprite sheet
-    const CSpriteSheet & getSpriteSheet() const;
+    const CSpriteSheet & getSpriteSheet() const override;
     
     // Access functions for the default uniform scale
-    float getDefaultUniformScale() const;
+    float getDefaultUniformScale() const override;
     
     // Create a unique descriptor texture id to add to a list
-    void addToDescSet( const std::string & descriptorId, std::set<std::string> & descUniqueLst ) const;
+    void addToDescSet( const std::string & descriptorId, std::set<std::string> & descUniqueLst ) const override;
 
 private:
     

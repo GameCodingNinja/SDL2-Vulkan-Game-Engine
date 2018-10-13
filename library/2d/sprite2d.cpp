@@ -23,9 +23,9 @@
 ************************************************************************/
 CSprite2D::CSprite2D( const CObjectData2D & objectData, int id ) :
     iSprite(id),
-    m_rObjectData(objectData),
-    m_visualComponent(objectData.getVisualData()),
-    m_physicsComponent(objectData.getPhysicsData())
+    m_rObjectData(objectData)
+    //m_visualComponent(objectData.getVisualData())
+    //m_physicsComponent(objectData.getPhysicsData())
 {
     // If there's no visual data, set the hide flag
     setVisible( objectData.getVisualData().isActive() );
@@ -55,8 +55,8 @@ void CSprite2D::load( const XMLNode & node )
     initScriptFunctions( node );
     
     // Load the font properties from XML node
-    if( m_visualComponent.isFontSprite() )
-        m_visualComponent.loadFontPropFromNode( node );
+    //if( m_visualComponent.isFontSprite() )
+     //   m_visualComponent.loadFontPropFromNode( node );
 }
 
 void CSprite2D::load( const CSpriteData & spriteData )
@@ -68,8 +68,8 @@ void CSprite2D::load( const CSpriteData & spriteData )
     copyScriptFunctions( spriteData.getScriptFunctions() );
     
     // See if this sprite is used for rendering a font string
-    if( m_visualComponent.isFontSprite() && (spriteData.getFontData() != nullptr) )
-        m_visualComponent.setFontData( *spriteData.getFontData() );
+    //if( m_visualComponent.isFontSprite() && (spriteData.getFontData() != nullptr) )
+    //    m_visualComponent.setFontData( *spriteData.getFontData() );
 }
 
 
@@ -79,8 +79,8 @@ void CSprite2D::load( const CSpriteData & spriteData )
 ************************************************************************/
 void CSprite2D::init()
 {
-    if( m_visualComponent.isFontSprite() )
-        m_visualComponent.createFontString();
+    //if( m_visualComponent.isFontSprite() )
+    //    m_visualComponent.createFontString();
     
     prepareFuncId( "init", true );
 }
@@ -93,12 +93,12 @@ void CSprite2D::init()
 void CSprite2D::cleanUp()
 {
     // This is handled in the destructor but it doesn't hurt to handle it here as well.
-    if( m_visualComponent.isFontSprite() )
-        m_visualComponent.deleteFontVBO();
+    //if( m_visualComponent.isFontSprite() )
+    //    m_visualComponent.deleteFontVBO();
     
     // Deleting the physics always needs to be done externally and
     // under the right conditions
-    m_physicsComponent.destroyBody();
+    //m_physicsComponent.destroyBody();
 }
 
 
@@ -189,7 +189,7 @@ void CSprite2D::prepare(
 ************************************************************************/
 void CSprite2D::initPhysics()
 {
-    m_physicsComponent.init(*this);
+    //m_physicsComponent.init(*this);
 }
 
 
@@ -223,7 +223,7 @@ void CSprite2D::update()
 ************************************************************************/
 void CSprite2D::physicsUpdate()
 {
-    m_physicsComponent.update( this );
+    //m_physicsComponent.update( this );
 }
 
 
@@ -232,14 +232,14 @@ void CSprite2D::physicsUpdate()
 ************************************************************************/
 void CSprite2D::render( const CMatrix & matrix )
 {
-    if( isVisible() )
-        m_visualComponent.render( m_matrix, matrix );
+    //if( isVisible() )
+    //    m_visualComponent.render( m_matrix, matrix );
 }
 
 void CSprite2D::render( const CCamera & camera )
 {
-    if( isVisible() )
-        m_visualComponent.render( m_matrix, camera.getFinalMatrix() );
+    //if( isVisible() )
+    //    m_visualComponent.render( m_matrix, camera.getFinalMatrix() );
 }
 
 
@@ -315,7 +315,7 @@ uint CSprite2D::getFrameCount() const
 ************************************************************************/
 uint CSprite2D::getCurrentFrame() const 
 {
-    return m_visualComponent.getCurrentFrame();
+    return 0;
 }
 
 
@@ -324,11 +324,11 @@ uint CSprite2D::getCurrentFrame() const
 ************************************************************************/
 void CSprite2D::setFrame( uint index )
 {
-    if( m_visualComponent.getCurrentFrame() != index )
+    /*if( m_visualComponent.getCurrentFrame() != index )
     {
         m_visualComponent.setFrame( index );
         
         if( m_rObjectData.getVisualData().getGenerationType() == NDefs::EGT_SPRITE_SHEET )
             setCropOffset( m_rObjectData.getVisualData().getSpriteSheet().getGlyph(index).getCropOffset() );
-    }
+    }*/
 }

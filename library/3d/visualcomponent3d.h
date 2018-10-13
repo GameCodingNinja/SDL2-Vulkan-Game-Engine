@@ -27,8 +27,7 @@
 #include <string>
 
 // Forward declaration(s)
-class CObjectVisualData3D;
-class CFont;
+class CObjectData3D;
 class CShaderData;
 
 class CVisualComponent3D : public iVisualComponent, boost::noncopyable
@@ -36,7 +35,7 @@ class CVisualComponent3D : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
-    CVisualComponent3D( const CObjectVisualData3D & visualData );
+    CVisualComponent3D( const CObjectData3D & objectData );
 
     // Destructor
     ~CVisualComponent3D();
@@ -46,8 +45,10 @@ public:
 
 private:
 
+    const CObjectData3D & m_rObjectData;
+    
     // Reference to object visual data
-    const CObjectVisualData3D & m_rVisualData;
+    //const CObjectVisualData3D & m_rVisualData;
     
     // Shader data pointer - We DON'T own this pointer, don't free
     CShaderData * m_pShaderData;
@@ -62,7 +63,7 @@ private:
     int32_t m_normalMatrixLocation;
 
     // Copy of 3D mesh data
-    const CMesh3D & m_mesh3d;
+    //const CMesh3D & m_mesh3d;
 
     // Color
     CColor m_color;

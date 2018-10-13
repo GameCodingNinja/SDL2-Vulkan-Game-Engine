@@ -36,7 +36,7 @@ public:
     void createFromData( const std::string & group );
 
     // Access functions for the visual data
-    const CObjectVisualData3D & getVisualData() const;
+    const iObjectVisualData & getVisualData() const override;
 
     // Access functions for the physics data
     const CObjectPhysicsData3D & getPhysicsData() const;

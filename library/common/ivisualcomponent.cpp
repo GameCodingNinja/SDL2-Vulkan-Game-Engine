@@ -9,8 +9,8 @@
 #include <common/ivisualcomponent.h>
 
 // Game lib dependencies
-#include <objectdata/objectvisualdata2d.h>
-#include <objectdata/objectvisualdata3d.h>
+#include <objectdata/objectdata2d.h>
+#include <objectdata/objectdata3d.h>
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -24,19 +24,19 @@ CColor iVisualComponent::m_additive;
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-iVisualComponent::iVisualComponent( const CObjectVisualData2D & visualData ) :
-    GENERATION_TYPE( visualData.getGenerationType() ),
-    m_quadVertScale( visualData.getVertexScale() ),
-    m_color( visualData.getColor() ),
-    m_rDefaultColor( visualData.getColor() ),
+iVisualComponent::iVisualComponent( const CObjectData2D & objectData ) :
+    GENERATION_TYPE( objectData.getVisualData().getGenerationType() ),
+    m_quadVertScale( objectData.getVisualData().getVertexScale() ),
+    m_color( objectData.getVisualData().getColor() ),
+    m_rDefaultColor( objectData.getVisualData().getColor() ),
     m_frameIndex(0)
 {
 }
 
-iVisualComponent::iVisualComponent( const CObjectVisualData3D & visualData ) :
+iVisualComponent::iVisualComponent( const CObjectData3D & objectData ) :
     GENERATION_TYPE( NDefs::EGT_NULL ),
-    m_color( visualData.getColor() ),
-    m_rDefaultColor( visualData.getColor() ),
+    m_color( objectData.getVisualData().getColor() ),
+    m_rDefaultColor( objectData.getVisualData().getColor() ),
     m_frameIndex(0)
 {
 }

@@ -818,7 +818,7 @@ void CObjectVisualData2D::loadMeshFromXML(
 
 
 /************************************************************************
-*    DESC:  Get the gne type
+*    DESC:  Get the generation type
 ************************************************************************/
 NDefs::EGenerationType CObjectVisualData2D::getGenerationType() const
 {
@@ -827,20 +827,9 @@ NDefs::EGenerationType CObjectVisualData2D::getGenerationType() const
 
 
 /************************************************************************
-*    DESC:  Get the texture ID
+*    DESC:  Get the texture
 ************************************************************************/
-uint32_t CObjectVisualData2D::getTextureID( uint index ) const
-{
-    /*if( m_textureVec.empty() )
-        return 0;
-    else
-        return m_textureVec[index];*/
-
-    return 0;
-}
-
-
-const CTexture & CObjectVisualData2D::getVulkanTexture( uint index ) const
+const CTexture & CObjectVisualData2D::getTexture( uint index ) const
 {
     if( m_textureVec.empty() )
         return m_null_texture;

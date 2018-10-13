@@ -10,6 +10,7 @@
 
 // Game lib dependencies
 #include <utilities/xmlparsehelper.h>
+#include <objectdata/iobjectvisualdata.h>
 
 // Standard lib dependencies
 #include <math.h>
@@ -77,7 +78,7 @@ void CObjectData2D::createFromData( const std::string & group )
 /************************************************************************
 *    DESC:  Access functions for the visual data
 ************************************************************************/
-const CObjectVisualData2D & CObjectData2D::getVisualData() const
+const iObjectVisualData & CObjectData2D::getVisualData() const
 {
     return m_visualData;
 }

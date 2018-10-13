@@ -10,7 +10,7 @@
 
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
-#include <objectdata/objectvisualdata2d.h>
+#include <objectdata/iobjectvisualdata.h>
 #include <common/uniformbufferobject.h>
 #include <common/quad2d.h>
 #include <common/pipeline.h>
@@ -44,7 +44,7 @@ CVisualComponentFont::~CVisualComponentFont()
 void CVisualComponentFont::updateUBO(
     uint32_t index,
     CDevice & device,
-    const CObjectVisualData2D & rVisualData,
+    const iObjectVisualData & rVisualData,
     const CMatrix & model,
     const CMatrix & viewProj )
 {

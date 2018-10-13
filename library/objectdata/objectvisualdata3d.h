@@ -8,6 +8,9 @@
 #ifndef __object_visual_data_3d_h__
 #define __object_visual_data_3d_h__
 
+// Physical component dependency
+#include <objectdata/iobjectvisualdata.h>
+
 // Game lib dependencies
 #include <common/size.h>
 #include <common/color.h>
@@ -26,7 +29,7 @@
 // Forward Declarations
 struct XMLNode;
 
-class CObjectVisualData3D
+class CObjectVisualData3D : public iObjectVisualData
 {
 public:
 
@@ -47,10 +50,10 @@ public:
     const std::string & getShaderID() const;
 
     // Get the color
-    const CColor & getColor() const;
+    const CColor & getColor() const override;
 
     // Whether or not the visual tag was specified
-    bool isActive() const;
+    bool isActive() const override;
 
     // Get the mesh3d vector
     const CMesh3D & getMesh3D() const;
