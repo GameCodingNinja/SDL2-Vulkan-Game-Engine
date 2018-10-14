@@ -19,7 +19,7 @@
 #include <map>
 
 // Forward Declarations
-class iSprite;
+class CSprite;
 class CCamera;
 
 class CSector : public CObject3D, boost::noncopyable
@@ -60,10 +60,10 @@ public:
     bool inView();
     
     // Find if the sprite exists
-    bool find( iSprite * piSprite );
+    bool find( CSprite * pSprite );
     
     // Get the pointer to the sprite
-    iSprite * get( const std::string & spriteName );
+    CSprite * get( const std::string & spriteName );
     
 private:
     
@@ -76,10 +76,10 @@ private:
 private:
     
     // sprite allocation vector
-    std::vector<iSprite *> m_pSpriteVec;
+    std::vector<CSprite *> m_pSpriteVec;
     
     // sprites with names
-    std::map<const std::string, iSprite *> m_pSpriteMap;
+    std::map<const std::string, CSprite *> m_pSpriteMap;
     
     // The projection type
     NDefs::EProjectionType m_projectionType;

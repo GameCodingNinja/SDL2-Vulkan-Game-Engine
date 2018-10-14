@@ -41,7 +41,7 @@ public:
     const iObjectVisualData & getVisualData() const override;
 
     // Access functions for the physics data
-    const CObjectPhysicsData2D & getPhysicsData() const;
+    const iObjectPhysicsData & getPhysicsData() const override;
 
     // Access functions for the data name
     const std::string & getName() const override;

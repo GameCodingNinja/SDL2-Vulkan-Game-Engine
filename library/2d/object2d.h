@@ -40,6 +40,9 @@ public:
     
     // Get the object's translated position
     const CPoint<float> & getTransPos() const;
+    
+    // Use a point to set a column
+    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){}
 
 protected:
 

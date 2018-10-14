@@ -90,16 +90,20 @@ void CStartUpState::init()
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
     
     // Load the script list table
-    /*CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
+    CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
     
     // Register the script items
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
     RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), false );
     NScriptGlobals::Register();
     NScriptColor::Register();
+    NScriptPoint::Register();
+    NScriptSize::Register();
+    NScriptHighResolutionTimer::Register();
+    NScriptSprite::Register();
     
     // Load group specific script items
-    CScriptMgr::Instance().loadGroup("(startup)");*/
+    CScriptMgr::Instance().loadGroup("(startup)");
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );

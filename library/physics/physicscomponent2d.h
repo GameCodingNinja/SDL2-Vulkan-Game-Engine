@@ -24,8 +24,8 @@
 #include <vector>
 
 // Forward declaration(s)
-class CObjectPhysicsData2D;
-class CSprite2D;
+class CObjectData2D;
+class CSprite;
 class CPhysicsWorld2D;
 class b2Body;
 class CFixture;
@@ -35,8 +35,7 @@ class CPhysicsComponent2D : public iPhysicsComponent, boost::noncopyable
 public:
 
     // Constructor
-    CPhysicsComponent2D();
-    CPhysicsComponent2D( const CObjectPhysicsData2D & physicsData );
+    CPhysicsComponent2D( const CObjectData2D & objectData );
 
     // Destructor
     ~CPhysicsComponent2D();
@@ -44,21 +43,16 @@ public:
     // Init the physics by creating the body and fixture
     // NOTE: Function must be called externally at the right time
     //       when the sprite has been setup with it's initial offsets
-    void init( const CSprite2D & sprite );
-
-    // Destry the body - will only work if this is the parent sprite
-    void destroyBody();
+    void init( const CSprite & sprite ) override;
 
     // Update the physics
-    void update( CSprite2D * pSprite );
+    void update( CSprite * pSprite ) override;
     
     // Get the body
-    b2Body * getBody();
-    
-    // NOTE: Interface overridden member functions
+    b2Body * getBody() override;
 
     // Is this component active?
-    bool isActive();
+    bool isActive() override;
     
     // Set the physics position and rotation
     void setTransform( float x, float y, float angle = 0, bool resetVelocity = true ) override;
@@ -75,22 +69,22 @@ public:
 private:
 
     // Create the body
-    void createBody( const CSprite2D & sprite );
+    void createBody( const CSprite & sprite );
 
     // Create the fixture
-    void createFixture( const CSprite2D & sprite );
+    void createFixture( const CSprite & sprite );
 
     // Create the circular shape fixture
-    void createCircularShapeFixture( const CSprite2D & sprite, const CFixture & fixture );
+    void createCircularShapeFixture( const CSprite & sprite, const CFixture & fixture );
 
     // Create the edge shape fixture
-    void createEdgeShapeFixture( const CSprite2D & sprite, const CFixture & fixture );
+    void createEdgeShapeFixture( const CSprite & sprite, const CFixture & fixture );
 
     // Create the polygon shape fixture
-    void createPolygonShapeFixture( const CSprite2D & sprite, const CFixture & fixture );
+    void createPolygonShapeFixture( const CSprite & sprite, const CFixture & fixture );
 
     // Create the chain shape fixture
-    void createChainShapeFixture( const CSprite2D & sprite, const CFixture & fixture );
+    void createChainShapeFixture( const CSprite & sprite, const CFixture & fixture );
     
     // Convert the points to world location in meters
     void convertPoints(

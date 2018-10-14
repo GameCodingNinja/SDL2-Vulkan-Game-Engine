@@ -9,9 +9,7 @@
 #include <strategy/sector.h>
 
 // Game lib dependencies
-#include <common/isprite.h>
-#include <2d/sprite2d.h>
-#include <2d/actorsprite2d.h>
+#include <sprite/sprite.h>
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
 #include <objectdata/objectdatamanager.h>
@@ -79,10 +77,10 @@ void CSector::loadFromNode( const XMLNode & node )
             {
                 // Allocate the sprite
                 CSpriteData data( spriteNode, defGroup, defObjName, defAIName, defId );
-                m_pSpriteVec.push_back( new CSprite2D( CObjectDataMgr::Instance().getData2D( data ), data.getId() ) );
+                m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( data ), data.getId() ) );
 
                 // Load the rest from sprite data
-                dynamic_cast<CSprite2D *>(m_pSpriteVec.back())->load( data );
+                m_pSpriteVec.back()->load( data );
 
                 aiName = data.getAIName();
                 spriteName = data.getName();
@@ -125,18 +123,6 @@ void CSector::init()
 
 
 /************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CSector::cleanUp()
-{
-    // Free the font VBO
-    // This allows for early VBO delete so that the font can be freed from the load screen
-    for( auto iter : m_pSpriteVec )
-        iter->cleanUp();
-}
-
-
-/************************************************************************
 *    DESC:  Destroy this sector
 ************************************************************************/
 void CSector::destroy()
@@ -163,7 +149,7 @@ void CSector::transform()
     CObject2D::transform();
 
     for( auto iter : m_pSpriteVec )
-        iter->transform( getMatrix(), wasWorldPosTranformed() );
+        iter->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 void CSector::transform( const CObject2D & object )
@@ -171,7 +157,7 @@ void CSector::transform( const CObject2D & object )
     CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
 
     for( auto iter : m_pSpriteVec )
-        iter->transform( getMatrix(), wasWorldPosTranformed() );
+        iter->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
@@ -183,8 +169,8 @@ void CSector::render( const CCamera & camera )
     // Render in reverse order
     if( inView() )
     {
-        for( auto it = m_pSpriteVec.rbegin(); it != m_pSpriteVec.rend(); ++it )
-            (*it)->render( camera.getFinalMatrix(), camera.getRotMatrix() );
+        //for( auto it = m_pSpriteVec.rbegin(); it != m_pSpriteVec.rend(); ++it )
+        //    (*it)->render( camera.getFinalMatrix(), camera.getRotMatrix() );
     }
 }
 
@@ -193,8 +179,8 @@ void CSector::render( const CMatrix & matrix )
     // Render in reverse order
     if( inView() )
     {
-        for( auto it = m_pSpriteVec.rbegin(); it != m_pSpriteVec.rend(); ++it )
-            (*it)->render( matrix );
+        //for( auto it = m_pSpriteVec.rbegin(); it != m_pSpriteVec.rend(); ++it )
+        //    (*it)->render( matrix );
     }
 }
 
@@ -203,8 +189,8 @@ void CSector::render( const CMatrix & matrix, const CMatrix & rotMatrix )
     // Render in reverse order
     if( inView() )
     {
-        for( auto it = m_pSpriteVec.rbegin(); it != m_pSpriteVec.rend(); ++it )
-            (*it)->render( matrix, rotMatrix );
+        //for( auto it = m_pSpriteVec.rbegin(); it != m_pSpriteVec.rend(); ++it )
+        //    (*it)->render( matrix, rotMatrix );
     }
 }
 
@@ -267,11 +253,11 @@ bool CSector::inPerspectiveView()
 /************************************************************************
  *    DESC:  Find if the sprite exists
  ************************************************************************/
-bool CSector::find( iSprite * piSprite )
+bool CSector::find( CSprite * pSprite )
 {
     for( auto iter : m_pSpriteVec )
     {
-        if( iter == piSprite )
+        if( iter == pSprite )
             return true;
     }
 
@@ -282,7 +268,7 @@ bool CSector::find( iSprite * piSprite )
 /************************************************************************
 *    DESC:  Get the pointer to the sprite
 ************************************************************************/
-iSprite * CSector::get( const std::string & spriteName )
+CSprite * CSector::get( const std::string & spriteName )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pSpriteMap.find( spriteName );

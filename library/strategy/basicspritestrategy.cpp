@@ -10,10 +10,7 @@
 
 // Game lib dependencies
 #include <common/spritedata.h>
-#include <common/actordata.h>
-#include <2d/sprite2d.h>
-#include <3d/sprite3d.h>
-#include <2d/actorsprite2d.h>
+#include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <utilities/deletefuncs.h>
@@ -90,11 +87,11 @@ void CBasicSpriteStrategy::loadFromFile( const std::string & file )
                     std::forward_as_tuple(name),
                     std::forward_as_tuple(new CSpriteData(spriteNode, defGroup, defObjName, defAIName), NDefs::EOT_SPRITE3D) ).second;
 
-            else if( tag == "actor2d" )
+            /*else if( tag == "actor2d" )
                 duplicate = !m_dataMap.emplace(
                     std::piecewise_construct,
                     std::forward_as_tuple(name),
-                    std::forward_as_tuple(new CActorData(spriteNode, defGroup, defObjName, defAIName), NDefs::EOT_OBJECT_NODE) ).second;
+                    std::forward_as_tuple(new CActorData(spriteNode, defGroup, defObjName, defAIName), NDefs::EOT_OBJECT_NODE) ).second;*/
 
             else
                 throw NExcept::CCriticalException("Sprite Load Error!",
@@ -132,7 +129,7 @@ CSpriteDataContainer & CBasicSpriteStrategy::getData( const std::string & name )
 *    DESC:  create the sprite sprite
 *           NOTE: Function assumes radians
 ************************************************************************/
-iSprite * CBasicSpriteStrategy::create(
+CSprite * CBasicSpriteStrategy::create(
     const std::string & dataName,
     const CPoint<CWorldValue> & pos,
     const CPoint<float> & rot,
@@ -144,7 +141,7 @@ iSprite * CBasicSpriteStrategy::create(
     // If the sprite defined a unique id then use that
     int spriteId( ((m_spriteInc++) + m_idOffset) * m_idDir );
 
-    std::pair<std::map<const int, iSprite *>::iterator, bool> iter;
+    std::pair<std::map<const int, CSprite *>::iterator, bool> iter;
 
     // Create the sprite
     if( rSpriteDataContainer.getType() == NDefs::EOT_SPRITE2D )
@@ -154,14 +151,14 @@ iSprite * CBasicSpriteStrategy::create(
             spriteId = rData.getId();
 
         // Allocate the sprite
-        iter = m_spriteMap.emplace( spriteId, new CSprite2D( CObjectDataMgr::Instance().getData2D( rData ), spriteId ) );
+        iter = m_spriteMap.emplace( spriteId, new CSprite( CObjectDataMgr::Instance().getData2D( rData ), spriteId ) );
 
         // Load the rest from sprite data
-        dynamic_cast<CSprite2D *>(iter.first->second)->load( rData );
+        iter.first->second->load( rData );
 
         aiName = rData.getAIName();
     }
-    else if( rSpriteDataContainer.getType() == NDefs::EOT_OBJECT_NODE )
+    /*else if( rSpriteDataContainer.getType() == NDefs::EOT_OBJECT_NODE )
     {
         const auto & rData = rSpriteDataContainer.get<CActorData>();
         if( rData.getId() != defs_SPRITE_DEFAULT_ID )
@@ -171,7 +168,7 @@ iSprite * CBasicSpriteStrategy::create(
         iter = m_spriteMap.emplace( spriteId, new CActorSprite2D( rData, spriteId ) );
 
         aiName = rData.getAIName();
-    }
+    }*/
 
     // Check for duplicate id's
     if( !iter.second )
@@ -183,13 +180,13 @@ iSprite * CBasicSpriteStrategy::create(
 
     // Use passed in transforms if specified
     if( !pos.isEmpty() )
-        iter.first->second->setPos(pos);
+        iter.first->second->getObject()->setPos(pos);
 
     if( !rot.isEmpty() )
-        iter.first->second->setRot(rot, false);
+        iter.first->second->getObject()->setRot(rot, false);
 
     if( scale != CPoint<float>(1,1,1) )
-        iter.first->second->setScale(scale);
+        iter.first->second->getObject()->setScale(scale);
 
     // Init the physics
     iter.first->second->initPhysics();
@@ -207,7 +204,7 @@ iSprite * CBasicSpriteStrategy::create(
     return iter.first->second;
 }
 
-iSprite * CBasicSpriteStrategy::create(
+CSprite * CBasicSpriteStrategy::create(
     const std::string & dataName )
 {
     std::string aiName;
@@ -216,7 +213,7 @@ iSprite * CBasicSpriteStrategy::create(
     // If the sprite defined a unique id then use that
     int spriteId( ((m_spriteInc++) + m_idOffset) * m_idDir );
 
-    std::pair<std::map<const int, iSprite *>::iterator, bool> iter;
+    std::pair<std::map<const int, CSprite *>::iterator, bool> iter;
 
     // Create the sprite
     if( rSpriteDataContainer.getType() == NDefs::EOT_SPRITE2D )
@@ -226,14 +223,14 @@ iSprite * CBasicSpriteStrategy::create(
             spriteId = rData.getId();
 
         // Allocate the sprite
-        iter = m_spriteMap.emplace( spriteId, new CSprite2D( CObjectDataMgr::Instance().getData2D( rData ), spriteId ) );
+        iter = m_spriteMap.emplace( spriteId, new CSprite( CObjectDataMgr::Instance().getData2D( rData ), spriteId ) );
 
         // Load the rest from sprite data
-        dynamic_cast<CSprite2D *>(iter.first->second)->load( rData );
+        iter.first->second->load( rData );
 
         aiName = rData.getAIName();
     }
-    else if( rSpriteDataContainer.getType() == NDefs::EOT_OBJECT_NODE )
+    /*else if( rSpriteDataContainer.getType() == NDefs::EOT_OBJECT_NODE )
     {
         const auto & rData = rSpriteDataContainer.get<CActorData>();
         if( rData.getId() != defs_SPRITE_DEFAULT_ID )
@@ -243,7 +240,7 @@ iSprite * CBasicSpriteStrategy::create(
         iter = m_spriteMap.emplace( spriteId, new CActorSprite2D( rData, spriteId ) );
 
         aiName = rData.getAIName();
-    }
+    }*/
 
     // Init the physics
     iter.first->second->initPhysics();
@@ -269,7 +266,7 @@ iSprite * CBasicSpriteStrategy::create(
     return iter.first->second;
 }
 
-iSprite * CBasicSpriteStrategy::create(
+CSprite * CBasicSpriteStrategy::create(
     const std::string & group,
     const std::string & name,
     const CPoint<CWorldValue> & pos,
@@ -279,19 +276,19 @@ iSprite * CBasicSpriteStrategy::create(
     // If the sprite defined a unique id then use that
     int spriteId( ((m_spriteInc++) + m_idOffset) * m_idDir );
 
-    std::pair<std::map<const int, iSprite *>::iterator, bool> iter;
+    std::pair<std::map<const int, CSprite *>::iterator, bool> iter;
 
     // Allocate the sprite
     if( CObjectDataMgr::Instance().isData2D( group, name ) )
     {
         auto & objData = CObjectDataMgr::Instance().getData2D( group, name );
-        iter = m_spriteMap.emplace( spriteId, new CSprite2D( objData, spriteId ) );
+        iter = m_spriteMap.emplace( spriteId, new CSprite( objData, spriteId ) );
     }
-    else if( CObjectDataMgr::Instance().isData3D( group, name ) )
+    /*else if( CObjectDataMgr::Instance().isData3D( group, name ) )
     {
         auto & objData = CObjectDataMgr::Instance().getData3D( group, name );
         iter = m_spriteMap.emplace( spriteId, new CSprite3D( objData, spriteId ) );
-    }
+    }*/
 
     // Check for duplicate id's
     if( !iter.second )
@@ -303,13 +300,13 @@ iSprite * CBasicSpriteStrategy::create(
 
     // Use passed in transforms if specified
     if( !pos.isEmpty() )
-        iter.first->second->setPos(pos);
+        iter.first->second->getObject()->setPos(pos);
 
     if( !rot.isEmpty() )
-        iter.first->second->setRot(rot, false);
+        iter.first->second->getObject()->setRot(rot, false);
 
     if( scale != CPoint<float>(1,1,1) )
-        iter.first->second->setScale(scale);
+        iter.first->second->getObject()->setScale(scale);
 
     // Init the physics
     iter.first->second->initPhysics();
@@ -323,26 +320,26 @@ iSprite * CBasicSpriteStrategy::create(
     return iter.first->second;
 }
 
-iSprite * CBasicSpriteStrategy::create(
+CSprite * CBasicSpriteStrategy::create(
     const std::string & group,
     const std::string & name )
 {
     // If the sprite defined a unique id then use that
     int spriteId( ((m_spriteInc++) + m_idOffset) * m_idDir );
 
-    std::pair<std::map<const int, iSprite *>::iterator, bool> iter;
+    std::pair<std::map<const int, CSprite *>::iterator, bool> iter;
 
     // Allocate the sprite
     if( CObjectDataMgr::Instance().isData2D( group, name ) )
     {
         auto & objData = CObjectDataMgr::Instance().getData2D( group, name );
-        iter = m_spriteMap.emplace( spriteId, new CSprite2D( objData, spriteId ) );
+        iter = m_spriteMap.emplace( spriteId, new CSprite( objData, spriteId ) );
     }
-    else if( CObjectDataMgr::Instance().isData3D( group, name ) )
+    /*else if( CObjectDataMgr::Instance().isData3D( group, name ) )
     {
         auto & objData = CObjectDataMgr::Instance().getData3D( group, name );
         iter = m_spriteMap.emplace( spriteId, new CSprite3D( objData, spriteId ) );
-    }
+    }*/
 
     // Check for duplicate id's
     if( !iter.second )
@@ -384,11 +381,6 @@ void CBasicSpriteStrategy::deleteObj( int index )
     const auto iter = m_spriteMap.find( index );
     if( iter != m_spriteMap.end() )
     {
-        // specifically delete the physics body before deleting the sprite
-        // Deleting the physics always needs to be done externally and
-        // under the right conditions. NEVER call from destructor
-        iter->second->cleanUp();
-
         auto spriteIter = std::find( m_pSpriteVec.begin(), m_pSpriteVec.end(), iter->second );
         if( spriteIter != m_pSpriteVec.end() )
             m_pSpriteVec.erase( spriteIter );
@@ -401,16 +393,6 @@ void CBasicSpriteStrategy::deleteObj( int index )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Sprite index can't be found (%s).\n\n%s\nLine: %s")
             % index % __FUNCTION__ % __LINE__ ) );
     }
-}
-
-
-/************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CBasicSpriteStrategy::cleanUp()
-{
-    for( auto iter : m_pSpriteVec )
-        iter->cleanUp();
 }
 
 
@@ -433,7 +415,7 @@ void CBasicSpriteStrategy::update()
 void CBasicSpriteStrategy::transform()
 {
     for( auto iter : m_pSpriteVec )
-        iter->transform();
+        iter->getObject()->transform();
 }
 
 
@@ -442,29 +424,29 @@ void CBasicSpriteStrategy::transform()
 ****************************************************************************/
 void CBasicSpriteStrategy::render( const CMatrix & matrix )
 {
-    for( auto iter : m_pSpriteVec )
-        iter->render( matrix );
+    //for( auto iter : m_pSpriteVec )
+    //    iter->render( matrix );
 }
 
 void CBasicSpriteStrategy::render( const CMatrix & matrix, const CMatrix & rotMatrix )
 {
-    for( auto iter : m_pSpriteVec )
-        iter->render( matrix, rotMatrix );
+    //for( auto iter : m_pSpriteVec )
+    //    iter->render( matrix, rotMatrix );
 }
 
 void CBasicSpriteStrategy::render()
 {
-    const auto & camera = CCameraMgr::Instance().getCamera( m_cameraId );
+    //const auto & camera = CCameraMgr::Instance().getCamera( m_cameraId );
 
-    for( auto iter : m_pSpriteVec )
-        iter->render( camera );
+    //for( auto iter : m_pSpriteVec )
+    //    iter->render( camera );
 }
 
 
 /************************************************************************
 *    DESC:  Get the pointer to the sprite
 ************************************************************************/
-iSprite * CBasicSpriteStrategy::getSprite( const int id )
+CSprite * CBasicSpriteStrategy::getSprite( const int id )
 {
     // See if this sprite has already been created
     auto iter = m_spriteMap.find( id );
@@ -480,11 +462,11 @@ iSprite * CBasicSpriteStrategy::getSprite( const int id )
 /************************************************************************
  *    DESC:  Find if the sprite exists
  ************************************************************************/
-bool CBasicSpriteStrategy::find( iSprite * piSprite )
+bool CBasicSpriteStrategy::find( CSprite * pSprite )
 {
     // See if this sprite has already been created
-    auto iter = m_spriteMap.find( piSprite->getId() );
-    if( iter != m_spriteMap.end() && (iter->second == piSprite) )
+    auto iter = m_spriteMap.find( pSprite->getId() );
+    if( iter != m_spriteMap.end() && (iter->second == pSprite) )
         return true;
 
     return false;

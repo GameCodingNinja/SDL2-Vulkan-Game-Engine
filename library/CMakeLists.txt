@@ -11,6 +11,7 @@ add_library(
         objectdata/objectvisualdata3d.cpp
         objectdata/iobjectdata.cpp
         objectdata/iobjectvisualdata.cpp
+        objectdata/iobjectphysicsdata.cpp
         script/scriptmanager.cpp
         script/scriptglobals.cpp
         script/scriptcolor.cpp
@@ -28,6 +29,8 @@ add_library(
         script/scriptsize.cpp
         script/scripthighresolutiontimer.cpp
         script/scriptfontmanager.cpp
+        script/scriptstrategymanager.cpp
+        script/scriptistrategy.cpp
         system/devicevulkan.cpp
         system/device.cpp
         utilities/xmlparsehelper.cpp
@@ -47,6 +50,13 @@ add_library(
         managers/actionmanager.cpp
         managers/spritesheetmanager.cpp
         managers/cameramanager.cpp
+        managers/signalmanager.cpp
+        physics/physicsworldmanager2d.cpp
+        physics/physicsworldmanager3d.cpp
+        physics/physicsworld2d.cpp
+        physics/physicsworld3d.cpp
+        physics/physicscomponent2d.cpp
+        physics/physicscomponent3d.cpp
         sprite/sprite.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
@@ -57,6 +67,13 @@ add_library(
         3d/object3d.cpp
         3d/light.cpp
         3d/lightlist.cpp
+        3d/visualcomponent3d.cpp
+        strategy/sector.cpp
+        strategy/basicspritestrategy.cpp
+        strategy/basicstagestrategy.cpp
+        strategy/strategymanager.cpp
+        strategy/istrategy.cpp
+        strategy/basestrategy.cpp
         common/sound.cpp
         common/playlist.cpp
         common/worldvalue.cpp
@@ -71,6 +88,7 @@ add_library(
         common/uniformbufferobject.cpp
         common/pushdescriptorset.cpp
         common/spritedata.cpp
+        common/spritedatacontainer.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c
@@ -80,6 +98,7 @@ include_directories(
     objectdata
     script
     system
+    strategy
     utilities
     managers
     physics

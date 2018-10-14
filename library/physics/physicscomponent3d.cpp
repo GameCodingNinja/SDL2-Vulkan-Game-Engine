@@ -14,9 +14,10 @@
 #include <objectdata/objectphysicsdata3d.h>
 #include <physics/physicsworldmanager3d.h>
 #include <physics/physicsworld3d.h>
-#include <3d/sprite3d.h>
+#include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/matrix.h>
+#include <3d/object3d.h>
 
 // Bullet Physics lib dependencies
 #include <btBulletCollisionCommon.h>
@@ -27,16 +28,11 @@
 /************************************************************************
  *    DESC:  Constructor
  ************************************************************************/
-CPhysicsComponent3D::CPhysicsComponent3D() :
-    m_pWorld( nullptr )
-{
-}
-
-CPhysicsComponent3D::CPhysicsComponent3D( const CObjectPhysicsData3D & physicsData ) :
+CPhysicsComponent3D::CPhysicsComponent3D( const CObjectData3D & objectData ) :
     m_pWorld(nullptr)
 {
-    if( physicsData.isActive() )
-        m_pWorld = &CPhysicsWorldManager3D::Instance().getWorld( physicsData.getWorld() );
+    if( objectData.getPhysicsData().isActive() )
+        m_pWorld = &CPhysicsWorldManager3D::Instance().getWorld( objectData.getPhysicsData().getWorld() );
 }
 
 /************************************************************************
@@ -52,11 +48,11 @@ CPhysicsComponent3D::~CPhysicsComponent3D()
  *           NOTE: Function must be called externally at the right time
  *                 when the sprite has been setup with it's initial offsets
  ************************************************************************/
-void CPhysicsComponent3D::init( const CSprite3D & sprite )
+void CPhysicsComponent3D::init( const CSprite & sprite )
 {
     if( sprite.getObjectData().getPhysicsData().isActive() )
     {
-        const CObjectPhysicsData3D & rPhysicsData = sprite.getObjectData().getPhysicsData();
+        const iObjectPhysicsData & rPhysicsData = sprite.getObjectData().getPhysicsData();
         std::string bodyShape = rPhysicsData.getBodyShape();
         btCollisionShape * pColShape( nullptr );
 
@@ -68,9 +64,9 @@ void CPhysicsComponent3D::init( const CSprite3D & sprite )
         float raduis( 1 );
         float diameter( 1 );
 
-        const CPoint<float> scale( sprite.getScale() );
-        const CPoint<float> pos( sprite.getPos() );
-        const CPoint<float> rot( sprite.getRot() );
+        const CPoint<float> scale( sprite.getObject()->getScale() );
+        const CPoint<float> pos( sprite.getObject()->getPos() );
+        const CPoint<float> rot( sprite.getObject()->getRot() );
 
         const float mass( rPhysicsData.getMass() );
 
@@ -135,16 +131,38 @@ void CPhysicsComponent3D::init( const CSprite3D & sprite )
 /************************************************************************
  *    DESC:  Update the physics
  ************************************************************************/
-void CPhysicsComponent3D::update( CSprite3D * pSprite )
+void CPhysicsComponent3D::update( CSprite * pSprite )
 {
     if( isActive() && m_upRigidBody->isActive() )
     {
         // Get the transform
         btTransform trans;
         m_upRigidBody->getMotionState()->getWorldTransform(trans);
+        
+        pSprite->getObject()->getParameters().add( NDefs::ROTATE | NDefs::PHYSICS_TRANSFORM );
+    
+        // Set the position
+        const btVector3 & btVec = trans.getOrigin();
+        pSprite->getObject()->setPos( btVec.x(), btVec.y(), btVec.z() );
 
-        // transform the sprite based on the physics
-        pSprite->setTransform( trans );
+        // Set the rotation
+        const btMatrix3x3 & btMat = trans.getBasis();
+        for( int i = 0; i < 3; ++i )
+        {
+            const btVector3 & vec = btMat.getRow(i);
+            pSprite->getObject()->setRotMatrixColumn( i, vec.x(), vec.y(), vec.z() );
+        }
+        
+        // This is an example of how to get the rotation out of bullet physics
+        // but it's a lot of extra work to only do the rotation calculation all over again.
+
+        // Get the rotation
+        //const btMatrix3x3 & btMat = trans.getBasis();
+        //btScalar z, y, x;
+        //btMat.getEulerYPR( z, y, x );
+
+        // Set the rotation
+        //SetRotXYZ( x, y, z, false );
     }
 }
 

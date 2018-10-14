@@ -8,8 +8,8 @@
 #ifndef __object_physics_data_2d_h__
 #define __object_physics_data_2d_h__
 
-// Box2D lib dependencies
-#include <Box2D/Box2D.h>
+// Physical component dependency
+#include <objectdata/iobjectphysicsdata.h>
 
 // Standard lib dependencies
 #include <string>
@@ -18,42 +18,7 @@
 // Forward Declarations
 struct XMLNode;
 
-class CFixture
-{
-public:
-
-    // Shape of the fixture
-    b2Shape::Type m_shape = b2Shape::Type(-1);
-
-    // Radius if shape is a circle
-    float m_radius = 0.0f;
-
-    // The friction is how much drag this object has on another object  
-    float m_friction = 0.2f;
-
-    // The density is how much the object resists movement  
-    float m_density = 0.2f;
-
-    // The percetange of velocity retained upon colliding with this object
-    float m_restitution = 0.2f;
-
-    // Amount to adjust the top, bottom, left, and right side size of the mesh
-    float m_topMod = 0, m_bottomMod = 0, m_leftMod = 0, m_rightMod = 0;
-    
-    // Flag to define if chain shape is a loop
-    bool m_chainLoop = false;
-    
-    // Flag to indicate if fixture is a sensor. Reports collision but doesn't react to it
-    bool m_sensor = false;
-    
-    // Collision filter
-    b2Filter m_filter;
-
-    // Polygon point vector
-    std::vector<b2Vec2> m_vertVec;
-};
-
-class CObjectPhysicsData2D
+class CObjectPhysicsData2D : public iObjectPhysicsData
 {
 public:
 
@@ -62,26 +27,26 @@ public:
     ~CObjectPhysicsData2D();
 
     // Load thes object data from node
-    void loadFromNode( const XMLNode & objectNode );
+    void loadFromNode( const XMLNode & objectNode ) override;
     
     // Get the name of the physics world
-    const std::string & getWorld() const;
+    const std::string & getWorld() const override;
 
     // Get the body type
-    b2BodyType getBodyType() const;
+    b2BodyType getBodyType() const override;
     
     // Get the damping
-    float getLinearDamping() const;
-    float getAngularDamping() const;
+    float getLinearDamping() const override;
+    float getAngularDamping() const override;
 
     // Is the rotation fixed
-    bool isRotationFixed() const;
+    bool isRotationFixed() const override;
     
     // Get the fixture data
-    const std::vector<CFixture> & getFixtureVec() const;
+    const std::vector<CFixture> & getFixtureVec() const override;
 
     // Specify if physics is active
-    bool isActive() const;
+    bool isActive() const override;
 
 private:
 

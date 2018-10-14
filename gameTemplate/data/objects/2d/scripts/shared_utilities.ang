@@ -10,7 +10,7 @@
 /************************************************************************
 *    desc:  Color to the final color in time
 ************************************************************************/
-shared void ColorTo( float time, CColor &in final, iSprite & sprite )
+shared void ColorTo( float time, CColor &in final, Sprite & sprite )
 {
     CColor current = sprite.getColor();
     CColor inc = (final - current) / time;
@@ -32,43 +32,13 @@ shared void ColorTo( float time, CColor &in final, iSprite & sprite )
         Suspend();
     }
     while( time > 0 );
-
-}   // ColorTo
-
-
-/************************************************************************
-*    desc:  Shader color to the final color in time
-************************************************************************/
-shared void ShaderColorTo( float time, CColor current, CColor &in final, const string &in shaderMember )
-{
-    CColor inc = (final - current) / time;
-
-    do
-    {
-        time -= HighResTimer.getElapsedTime();
-        
-        if( time < 0 )
-        {
-            ShaderMgr.setAllShaderColor( shaderMember, final );
-        }
-        else
-        {
-            current += inc * HighResTimer.getElapsedTime();
-            
-            ShaderMgr.setAllShaderColor( shaderMember, current );
-        }
-
-        Suspend();
-    }
-    while( time > 0 );
-
-}   // ShaderColorTo
+}
 
 
 /************************************************************************
 *    desc:  Alpha to the final alpha
 ************************************************************************/
-shared void AlphaTo( float time, float final, iSprite & sprite )
+shared void AlphaTo( float time, float final, Sprite & sprite )
 {
     // Convert from RGB value to normalized value
     if( final > 1.5 )
@@ -94,10 +64,9 @@ shared void AlphaTo( float time, float final, iSprite & sprite )
         Suspend();
     }
     while( time > 0 );
+}
 
-}   // AlphaTo
-
-shared void AlphaTo( float time, float final, CMenu & menu )
+/*shared void AlphaTo( float time, float final, CMenu & menu )
 {
     // Convert from RGB value to normalized value
     if( final > 1.5 )
@@ -123,14 +92,13 @@ shared void AlphaTo( float time, float final, CMenu & menu )
         Suspend();
     }
     while( time > 0 );
-
-}   // AlphaTo
+}*/
 
 
 /************************************************************************
 *    desc:  Volume to the final volume
 ************************************************************************/
-shared void VolumeTo( float time, int final, CSound & sound )
+/*shared void VolumeTo( float time, int final, CSound & sound )
 {
     float current = sound.getVolume();
     float inc = (float(final) - current) / time;
@@ -158,14 +126,13 @@ shared void VolumeTo( float time, int final, CSound & sound )
         Suspend();
     }
     while( time > 0 );
-
-}   // VolumeTo
+}*/
 
 
 /************************************************************************
 *    desc:  Play the animation
 ************************************************************************/
-shared void Play( int fps, iSprite & sprite, bool loop = false )
+/*shared void Play( int fps, Sprite & sprite, bool loop = false )
 {
     float time = 1000.0 / fps;
     uint frameCount = sprite.getFrameCount();
@@ -180,8 +147,7 @@ shared void Play( int fps, iSprite & sprite, bool loop = false )
         }
     }
     while( loop );
-
-}   // Play
+}*/
 
 
 /************************************************************************
@@ -196,5 +162,4 @@ shared void Hold( float time )
         Suspend();
     }
     while( time > 0 );
-
-}   // Hold
+}

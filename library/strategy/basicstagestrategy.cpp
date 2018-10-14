@@ -77,16 +77,6 @@ void CBasicStageStrategy::init()
 }
 
 
-/************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CBasicStageStrategy::cleanUp()
-{
-    for( auto & iter : m_sectorDeq )
-        iter.cleanUp();
-}
-
-
 /***************************************************************************
 *    DESC:  Update the sector
 ****************************************************************************/
@@ -149,11 +139,11 @@ CObject & CBasicStageStrategy::getDefaultCameraPos()
 /************************************************************************
  *    DESC:  Find if the sprite exists
  ************************************************************************/
-bool CBasicStageStrategy::find( iSprite * piSprite )
+bool CBasicStageStrategy::find( CSprite * pSprite )
 {
     for( auto & iter : m_sectorDeq )
     {
-        if( iter.find( piSprite ) )
+        if( iter.find( pSprite ) )
             return true;
     }
 

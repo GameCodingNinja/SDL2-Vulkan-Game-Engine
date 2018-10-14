@@ -69,7 +69,7 @@ private:
     CColor m_color;
     
     // Vertex buffer sizes
-    const int8_t m_VERTEX_BUF_SIZE;
+    int8_t m_VERTEX_BUF_SIZE;
 };
 
 #endif  // __visual_component_3d_h__

@@ -24,6 +24,7 @@
 #include <utilities/matrix.h>
 #include <common/iaibase.h>
 #include <common/camera.h>
+#include <common/spritedata.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -33,6 +34,7 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
     m_rObjectData( objectData ),
     m_upObject( new CObject2D )
 {
+    // Create the visual component
     if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
         m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
     
@@ -45,6 +47,10 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
     else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
         m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
     
+    // Create the physics component
+    if( objectData.getPhysicsData().isActive() )
+        m_upPhysicsComponent.reset( new CPhysicsComponent2D( objectData ) );
+    
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
 }
@@ -53,8 +59,15 @@ CSprite::CSprite( const CObjectData3D & objectData, int id ) :
     m_id( id ),
     m_rObjectData( objectData ),
     m_upObject( new CObject3D )
-    //m_upVisualComponent( new CVisualComponent3D( objectData.getVisualData() ) )
 {
+    // Create the visual component
+    if( objectData.getVisualData().isActive() )
+        m_upVisualComponent.reset( new CVisualComponent3D( objectData ) );
+    
+    // Create the physics component
+    if( objectData.getPhysicsData().isActive() )
+        m_upPhysicsComponent.reset( new CPhysicsComponent3D( objectData ) );
+        
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
 }
@@ -65,6 +78,49 @@ CSprite::CSprite( const CObjectData3D & objectData, int id ) :
 ************************************************************************/
 CSprite::~CSprite()
 {
+}
+
+
+/************************************************************************
+*    DESC:  Load the sprite data
+************************************************************************/
+void CSprite::load( const XMLNode & node )
+{
+    // Load the transform data
+    m_upObject->loadTransFromNode( node );
+
+    // Init the script functions
+    initScriptFunctions( node );
+    
+    // Load the font properties from XML node
+    if( m_upVisualComponent->isFontSprite() )
+        m_upVisualComponent->loadFontPropFromNode( node );
+}
+
+void CSprite::load( const CSpriteData & spriteData )
+{
+    // Copy over the transform
+    m_upObject->copyTransform( &spriteData );
+    
+    // Copy over the script functions
+    copyScriptFunctions( spriteData.getScriptFunctions() );
+    
+    // See if this sprite is used for rendering a font string
+    if( m_upVisualComponent->isFontSprite() && (spriteData.getFontData() != nullptr) )
+        m_upVisualComponent->setFontData( *spriteData.getFontData() );
+}
+
+
+/************************************************************************
+*    DESC:  Init the sprite
+*           NOTE: Do not call from a constructor!
+************************************************************************/
+void CSprite::init()
+{
+    if( m_upVisualComponent->isFontSprite() )
+        m_upVisualComponent->createFontString();
+    
+    prepare( "init", true );
 }
 
 
@@ -142,8 +198,8 @@ void CSprite::copyScriptFunctions( const std::map<std::string, std::string> & sc
 ************************************************************************/
 void CSprite::initPhysics()
 {
-    //if( m_upPhysicsComponent )
-        //m_upPhysicsComponent->init(*this);
+    if( m_upPhysicsComponent )
+        m_upPhysicsComponent->init(*this);
 }
 
 
@@ -177,8 +233,8 @@ void CSprite::update()
 ************************************************************************/
 void CSprite::physicsUpdate()
 {
-    //if( m_upPhysicsComponent )
-    //    m_upPhysicsComponent->update( this );
+    if( m_upPhysicsComponent )
+        m_upPhysicsComponent->update( this );
 }
 
 
@@ -202,6 +258,11 @@ void CSprite::recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, c
 *    DESC:  Get the reference to the object
 ************************************************************************/
 CObject2D * CSprite::getObject()
+{
+    return m_upObject.get();
+}
+
+const CObject2D * CSprite::getObject() const
 {
     return m_upObject.get();
 }
@@ -271,4 +332,13 @@ uint CSprite::getCurrentFrame() const
 int CSprite::getId() const
 {
     return m_id;
+}
+
+
+/************************************************************************
+*    DESC:  Get the object data                                                            
+************************************************************************/
+const iObjectData & CSprite::getObjectData() const
+{
+    return m_rObjectData;
 }

@@ -160,7 +160,7 @@ namespace NScriptStrategyManager
     /************************************************************************
     *    DESC:  Create a basic stage strategy                                                            
     ************************************************************************/
-    iSprite * CreateSprite1( const std::string & strategyId, const std::string & group, const std::string & name, CStrategyMgr & rStrategyMgr )
+    CSprite * CreateSprite1( const std::string & strategyId, const std::string & group, const std::string & name, CStrategyMgr & rStrategyMgr )
     {
         try
         {
@@ -178,7 +178,7 @@ namespace NScriptStrategyManager
         return nullptr;
     }
     
-    iSprite * CreateSprite2( const std::string & strategyId, const std::string & name, CStrategyMgr & rStrategyMgr )
+    CSprite * CreateSprite2( const std::string & strategyId, const std::string & name, CStrategyMgr & rStrategyMgr )
     {
         try
         {

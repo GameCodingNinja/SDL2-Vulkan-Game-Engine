@@ -21,7 +21,7 @@
 #include <vector>
 
 // Forward Declarations
-class iSprite;
+class CSprite;
 class iStrategy;
 union SDL_Event;
 
@@ -46,14 +46,14 @@ public:
     void deleteSprite( const std::string & strategyId, int spriteId );
     
     // create the sprite and provide a unique id number for each one
-    iSprite * create(
+    CSprite * create(
         const std::string & strategyId,
         const std::string & dataName,
         const CPoint<CWorldValue> & pos,
         const CPoint<float> & rot = CPoint<float>(),
         const CPoint<float> & scale = CPoint<float>(1,1,1) );
     
-    iSprite * create(
+    CSprite * create(
         const std::string & strategyId,
         const std::string & group,
         const std::string & name,
@@ -61,11 +61,11 @@ public:
         const CPoint<float> & rot = CPoint<float>(),
         const CPoint<float> & scale = CPoint<float>(1,1,1) );
     
-    iSprite * create(
+    CSprite * create(
         const std::string & strategyId,
         const std::string & dataName );
     
-    iSprite * create(
+    CSprite * create(
         const std::string & strategyId,
         const std::string & group,
         const std::string & name );
@@ -109,7 +109,7 @@ public:
     
     // Get a pointer to the strategy based on if the sprite can be found
     template <typename target>
-    target & find( iSprite * piSprite )
+    target & find( CSprite * pSprite )
     {
         target * pStrategy = nullptr;
         
@@ -117,7 +117,7 @@ public:
         {
             pStrategy = dynamic_cast<target *>(iter);
             
-            if( (pStrategy != nullptr) && pStrategy->Find(piSprite) )
+            if( (pStrategy != nullptr) && pStrategy->Find(pSprite) )
                 return *pStrategy;
             
             pStrategy = nullptr;
@@ -203,7 +203,7 @@ private:
     std::vector<iStrategy *> m_pStrategyVec;
     
     // Temporary vector to hold the return ids
-    std::vector<iSprite *> m_incReturn;
+    std::vector<CSprite *> m_incReturn;
 
 };
 

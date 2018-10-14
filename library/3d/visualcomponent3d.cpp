@@ -32,7 +32,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
-    iVisualComponent( objectData.getVisualData() ),
+    iVisualComponent( objectData ),
     m_rObjectData( objectData ),
     m_pShaderData( nullptr ),
     m_vertexLocation( -1 ),
@@ -40,7 +40,7 @@ CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
     m_text0Location( -1 ),
     m_colorLocation( -1 ),
     m_matrixLocation( -1 ),
-    m_normalMatrixLocation( -1 ),
+    m_normalMatrixLocation( -1 )
     //m_mesh3d( visualData.getMesh3D() ),
     //m_VERTEX_BUF_SIZE( visualData.getMesh3D().meshEmpty() || visualData.getMesh3D().textEmpty() ? sizeof(CVertex3D_no_txt) : sizeof(CVertex3D) )
 {

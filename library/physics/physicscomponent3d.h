@@ -21,8 +21,8 @@
 #include <memory>
 
 // Forward declaration(s)
-class CObjectPhysicsData3D;
-class CSprite3D;
+class CObjectData3D;
+class CSprite;
 class CPhysicsWorld3D;
 class btRigidBody;
 class asIScriptEngine;
@@ -32,8 +32,7 @@ class CPhysicsComponent3D : public iPhysicsComponent, boost::noncopyable
 public:
 
     // Constructor
-    CPhysicsComponent3D();
-    CPhysicsComponent3D( const CObjectPhysicsData3D & physicsData );
+    CPhysicsComponent3D( const CObjectData3D & objectData );
 
     // Destructor
     ~CPhysicsComponent3D();
@@ -46,28 +45,28 @@ public:
     // Init the physics by creating the body and fixture
     // NOTE: Function must be called externally at the right time
     //       when the sprite has been setup with it's initial offsets
-    void init(const CSprite3D & sprite);
+    void init(const CSprite & sprite) override;
 
     // Remove the body
-    void removeBody();
+    void removeBody() override;
 
     // Add the body
-    void addBody();
+    void addBody() override;
 
     // Set the linear velocity
-    void setLinearVelocity(const CPoint<float> & vec);
+    void setLinearVelocity(const CPoint<float> & vec) override;
 
     // Set the angular velocity
-    void setAngularVelocity(const CPoint<float> & vec);
+    void setAngularVelocity(const CPoint<float> & vec) override;
 
     // Set the restitution
-    void setRestitution(const float rest);
+    void setRestitution(const float rest) override;
 
     // Update the physics
-    void update(CSprite3D * pSprite);
+    void update(CSprite * pSprite) override;
 
     // Is this component active?
-    bool isActive();
+    bool isActive() override;
 
 private:
 

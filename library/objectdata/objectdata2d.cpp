@@ -87,7 +87,7 @@ const iObjectVisualData & CObjectData2D::getVisualData() const
 /************************************************************************
 *    DESC:  Access functions for the physics data
 ************************************************************************/
-const CObjectPhysicsData2D & CObjectData2D::getPhysicsData() const
+const iObjectPhysicsData & CObjectData2D::getPhysicsData() const
 {
     return m_physicsData;
 }

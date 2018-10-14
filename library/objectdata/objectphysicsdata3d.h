@@ -8,6 +8,9 @@
 #ifndef __object_physics_data_3d_h__
 #define __object_physics_data_3d_h__
 
+// Physical component dependency
+#include <objectdata/iobjectphysicsdata.h>
+
 // Game lib dependencies
 #include <common/point.h>
 
@@ -17,7 +20,7 @@
 // Forward Declarations
 struct XMLNode;
 
-class CObjectPhysicsData3D
+class CObjectPhysicsData3D : public iObjectPhysicsData
 {
 public:
 
@@ -26,39 +29,39 @@ public:
     ~CObjectPhysicsData3D();
 
     // Load thes object data from node
-    void loadFromNode( const XMLNode & objectNode );
+    void loadFromNode( const XMLNode & objectNode ) override;
     
     // Get the name of the physics world
-    const std::string & getWorld() const;
+    const std::string & getWorld() const override;
 
     // Get the body type
-    const std::string & getBodyShape() const;
+    const std::string & getBodyShape() const override;
 
     // Get the mass of physics body
-    float getMass() const;
+    float getMass() const override;
 
     // Get the damping
-    float getLinearDamping() const;
-    float getAngularDamping() const;
+    float getLinearDamping() const override;
+    float getAngularDamping() const override;
 
     // Get the friction
-    float getFriction() const;
-    float getRollingFriction() const;
+    float getFriction() const override;
+    float getRollingFriction() const override;
 
     // Get the restitution - the amount of bounce
-    float getRestitution() const;
+    float getRestitution() const override;
 
     // Get the collision filter
-    short getCollisionGroup() const;
+    short getCollisionGroup() const override;
 
     // Get the collision mask
-    short getCollisionMask() const;
+    short getCollisionMask() const override;
 
     // Get the plane normal
-    const CPoint<float> & getPlaneNormal() const;
+    const CPoint<float> & getPlaneNormal() const override;
 
     // Specify if physics is active
-    bool isActive() const;
+    bool isActive() const override;
 
 private:
 

@@ -31,8 +31,11 @@ class iPhysicsComponent;
 class iAIBase;
 class CObjectData2D;
 class CObjectData3D;
+class SpriteData;
 class CCamera;
 class CMatrix;
+class CSpriteData;
+class btTransform;
 struct XMLNode;
 union SDL_Event;
 
@@ -46,6 +49,13 @@ public:
 
     // Destructor
     virtual ~CSprite();
+    
+    // Load the sprite data
+    void load( const XMLNode & node );
+    void load( const CSpriteData & spriteData );
+    
+    // Init the sprite
+    void init();
     
     // Init the physics
     void initPhysics();
@@ -74,6 +84,10 @@ public:
     
     // Get the reference to the object
     CObject2D * getObject();
+    const CObject2D * getObject() const;
+    
+    // Get the object data
+    const iObjectData & getObjectData() const;
     
     // Get the visual component
     iVisualComponent * getVisualComponent();

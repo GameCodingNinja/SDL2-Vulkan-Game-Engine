@@ -62,3 +62,12 @@ const CMatrix & CObject3D::getRotMatrix() const
 {
     return m_rotMatrix;
 }
+
+
+/************************************************************************
+*    DESC:  Use a point to set a column
+************************************************************************/
+void CObject3D::setRotMatrixColumn( const int col, const float x, const float y, const float z )
+{
+    m_rotMatrix.setColumn( col, x, y, z );
+}

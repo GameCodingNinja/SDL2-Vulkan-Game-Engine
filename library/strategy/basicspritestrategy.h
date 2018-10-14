@@ -26,8 +26,7 @@
 #include <map>
 
 // Forward Declarations
-class iSprite;
-class CSpriteDataContainer;
+class CSprite;
 class CMatrix;
 
 class CBasicSpriteStrategy : public CBaseStrategy, boost::noncopyable
@@ -44,27 +43,25 @@ public:
     void loadFromFile( const std::string & file ) override;
 
     // Create the sprite
-    virtual iSprite * create(
+    virtual CSprite * create(
         const std::string & dataName,
         const CPoint<CWorldValue> & pos,
         const CPoint<float> & rot,
         const CPoint<float> & scale ) override;
     
-    virtual iSprite * create(
+    virtual CSprite * create(
         const std::string & group,
         const std::string & name,
         const CPoint<CWorldValue> & pos,
         const CPoint<float> & rot,
         const CPoint<float> & scale ) override;
     
-    virtual iSprite * create(
+    virtual CSprite * create(
         const std::string & dataName ) override;
     
-    virtual iSprite * create(
+    virtual CSprite * create(
         const std::string & group,
         const std::string & name ) override;
-    
-    void cleanUp() override;
 
     // Update the sprites
     void update() override;
@@ -85,7 +82,7 @@ public:
     }
     
     // Find if the sprite exists
-    bool find( iSprite * piSprite );
+    bool find( CSprite * piSprite );
     
     // Get the sprite data by name
     CSpriteDataContainer & getData( const std::string & name );
@@ -99,7 +96,7 @@ protected:
     void createObj( const std::string & name ) override;
     
     // Get the pointer to the sprite
-    iSprite * getSprite( const int id );
+    CSprite * getSprite( const int id );
 
 protected:
     
@@ -107,10 +104,10 @@ protected:
     std::map<const std::string, CSpriteDataContainer> m_dataMap;
 
     // Map of all the sprites
-    std::map<const int, iSprite *> m_spriteMap;
+    std::map<const int, CSprite *> m_spriteMap;
     
     // Vector of iSprite pointers
-    std::vector<iSprite *> m_pSpriteVec;
+    std::vector<CSprite *> m_pSpriteVec;
 };
 
 #endif  // __basic_sprite_strategy_h__

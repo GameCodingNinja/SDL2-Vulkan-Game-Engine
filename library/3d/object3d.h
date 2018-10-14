@@ -28,6 +28,9 @@ public:
     // Get the object's rotation matrix
     const CMatrix & getRotMatrix() const;
     
+    // Use a point to set a column
+    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z );
+    
 protected:
     
     // Apply the rotation

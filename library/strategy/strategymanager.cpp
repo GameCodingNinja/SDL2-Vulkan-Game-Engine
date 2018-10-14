@@ -101,7 +101,7 @@ void CStrategyMgr::deleteSprite( const std::string & strategyId, int spriteId )
 /************************************************************************
 *    DESC:  create the sprite and provide a unique id number for each one
 ************************************************************************/
-iSprite * CStrategyMgr::create(
+CSprite * CStrategyMgr::create(
     const std::string & strategyId,
     const std::string & dataName,
     const CPoint<CWorldValue> & pos,
@@ -118,7 +118,7 @@ iSprite * CStrategyMgr::create(
     return mapIter->second->create( dataName, pos, rot, scale );
 }
 
-iSprite * CStrategyMgr::create(
+CSprite * CStrategyMgr::create(
     const std::string & strategyId,
     const std::string & group,
     const std::string & name,
@@ -136,7 +136,7 @@ iSprite * CStrategyMgr::create(
     return mapIter->second->create( group, name, pos, rot, scale );
 }
 
-iSprite * CStrategyMgr::create(
+CSprite * CStrategyMgr::create(
     const std::string & strategyId,
     const std::string & dataName )
 {
@@ -150,7 +150,7 @@ iSprite * CStrategyMgr::create(
     return mapIter->second->create( dataName );
 }
 
-iSprite * CStrategyMgr::create(
+CSprite * CStrategyMgr::create(
     const std::string & strategyId,
     const std::string & group,
     const std::string & name )

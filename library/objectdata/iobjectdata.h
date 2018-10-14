@@ -16,6 +16,7 @@
 
 // Forward Declarations
 class iObjectVisualData;
+class iObjectPhysicsData;
 
 class iObjectData
 {
@@ -24,6 +25,10 @@ public:
     // Access functions for the visual data
     virtual const iObjectVisualData & getVisualData() const
     { return m_null_objectVisualData; }
+    
+    // Access functions for the physics data
+    virtual const iObjectPhysicsData & getPhysicsData() const
+    { return m_null_objectPhysicsData; }
 
     // Access functions for the data name
     virtual const std::string & getName() const
@@ -52,6 +57,7 @@ public:
 private:
     
     static iObjectVisualData m_null_objectVisualData;
+    static iObjectPhysicsData m_null_objectPhysicsData;
     static CSize<int> m_null_size;
     static std::string m_null_string;
 };

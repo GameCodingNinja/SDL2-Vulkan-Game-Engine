@@ -22,7 +22,7 @@ namespace NScriptiStrategy
     /************************************************************************
     *    DESC:  Create a basic stage strategy                                                            
     ************************************************************************/
-    iSprite * CreateSprite1( const std::string & group, const std::string & name, iStrategy & rStrategy )
+    CSprite * CreateSprite1( const std::string & group, const std::string & name, iStrategy & rStrategy )
     {
         try
         {
@@ -40,7 +40,7 @@ namespace NScriptiStrategy
         return nullptr;
     }
     
-    iSprite * CreateSprite2( const std::string & strategyId, const std::string & name, iStrategy & rStrategy )
+    CSprite * CreateSprite2( const std::string & strategyId, const std::string & name, iStrategy & rStrategy )
     {
         try
         {

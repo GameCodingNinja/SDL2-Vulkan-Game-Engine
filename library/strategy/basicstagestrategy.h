@@ -40,9 +40,6 @@ public:
     
     // Do any pre-game loop init's
     virtual void init() override;
-    
-    // Do some cleanup
-    virtual void cleanUp() override;
 
     // Update the actors
     virtual void update() override;
@@ -57,7 +54,7 @@ public:
     void render( const CMatrix & matrix, const CMatrix & rotMatrix ) override;
     
     // Find if the sprite exists
-    bool find( iSprite * piSprite );
+    bool find( CSprite * pSprite );
     
     // Get the default camera position
     CObject & getDefaultCameraPos();
