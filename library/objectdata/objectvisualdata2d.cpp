@@ -10,7 +10,6 @@
 
 // Game lib dependencies
 #include <system/device.h>
-#include <managers/vertexbuffermanager.h>
 #include <managers/spritesheetmanager.h>
 #include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>

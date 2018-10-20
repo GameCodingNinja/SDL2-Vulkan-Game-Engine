@@ -11,8 +11,6 @@
 // Game lib dependencies
 #include <objectdata/objectdata3d.h>
 #include <objectdata/objectvisualdata3d.h>
-#include <managers/shadermanager.h>
-#include <managers/vertexbuffermanager.h>
 #include <common/vertex3d.h>
 #include <common/shaderdata.h>
 #include <system/device.h>

@@ -15,7 +15,7 @@
 #include <common/point.h>
 #include <common/defs.h>
 #include <common/worldvalue.h>
-#include <common/spritedatacontainer.h>
+#include <sprite/spritedata.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -85,7 +85,7 @@ public:
     bool find( CSprite * piSprite );
     
     // Get the sprite data by name
-    CSpriteDataContainer & getData( const std::string & name );
+    CSpriteData & getData( const std::string & name );
 
 protected:
     
@@ -101,7 +101,7 @@ protected:
 protected:
     
     // Map of the sprite data
-    std::map<const std::string, CSpriteDataContainer> m_dataMap;
+    std::map<const std::string, CSpriteData> m_dataMap;
 
     // Map of all the sprites
     std::map<const int, CSprite *> m_spriteMap;

@@ -12,13 +12,13 @@ project(gametemplate)
 set(gametemplate_VERSION_MAJOR 1)
 set(gametemplate_VERSION_MINOR 0)
 
-# Check for C++11, -Wall = show warnings; -Wextra = more warnings
+# Check for C++14, -Wall = show warnings; -Wextra = more warnings
 include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++11 -Wall -pthread")
+CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
+if(COMPILER_SUPPORTS_CXX14)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++14 -Wall -pthread")
 else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++14 support. Please use a different C++ compiler.")
 endif()
 
 # Need to do this to find SDL2 libraries
@@ -54,7 +54,7 @@ else()
 endif()
 
 # List the directories in the order they are to be built
-# This doesn't execute the build but more like cue's them up in thie below order
+# This doesn't execute the build but more like queue's them up in the below order
 add_subdirectory( ../bulletPhysics ${CMAKE_CURRENT_BINARY_DIR}/bulletPhysics )
 add_subdirectory( ../angelscript ${CMAKE_CURRENT_BINARY_DIR}/angelscript )
 add_subdirectory( ../Box2D ${CMAKE_CURRENT_BINARY_DIR}/Box2D )

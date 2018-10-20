@@ -13,8 +13,8 @@
 #include <common/size.h>
 #include <common/color.h>
 #include <common/memorybuffer.h>
-#include <common/spritesheet.h>
 #include <common/texture.h>
+#include <sprite/spritesheet.h>
 
 // Standard lib dependencies
 #include <string>

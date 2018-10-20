@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/spritesheet.h>
+#include <sprite/spritesheet.h>
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>

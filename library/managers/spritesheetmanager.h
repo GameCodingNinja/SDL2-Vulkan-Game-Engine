@@ -10,7 +10,7 @@
 #define __sprite_sheet_manager_h__
 
 // Game lib dependencies
-#include <common/spritesheet.h>
+#include <sprite/spritesheet.h>
 
 // Standard lib dependencies
 #include <string>

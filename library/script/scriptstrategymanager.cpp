@@ -15,7 +15,6 @@
 #include <strategy/basicstagestrategy.h>
 #include <strategy/basicspritestrategy.h>
 #include <strategy/menustrategy.h>
-#include <common/isprite.h>
 #include <utilities/exceptionhandling.h>
 
 // AngelScript lib dependencies

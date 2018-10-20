@@ -24,7 +24,7 @@
 #include <utilities/matrix.h>
 #include <common/iaibase.h>
 #include <common/camera.h>
-#include <common/spritedata.h>
+#include <sprite/spritedata.h>
 
 /************************************************************************
 *    DESC:  Constructor

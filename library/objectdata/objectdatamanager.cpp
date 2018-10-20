@@ -10,14 +10,12 @@
 
 // Game lib dependencies
 #include <common/build_defs.h>
-#include <common/spritedata.h>
 #include <common/pipeline.h>
+#include <sprite/spritedata.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdata3d.h>
-#include <managers/vertexbuffermanager.h>
-#include <managers/meshmanager.h>
 #include <managers/spritesheetmanager.h>
 #include <system/device.h>
 

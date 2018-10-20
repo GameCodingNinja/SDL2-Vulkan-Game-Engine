@@ -12,7 +12,7 @@
 #include <2d/object2d.h>
 
 // Game lib dependencies
-#include <common/spritedata.h>
+#include <sprite/spritedata.h>
 #include <common/defs.h>
 
 // Standard lib dependencies

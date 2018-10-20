@@ -45,6 +45,7 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/xmlParser.h>
+#include <sprite/spritenode.h>
 #include <physics/physicsworldmanager2d.h>
 //#include <slot/slotmathmanager.h>
 //#include <slot/symbolsetviewmanager.h>
@@ -117,6 +118,11 @@ void CStartUpState::init()
     
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
+    
+    CSpriteNode node( 5, 20, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) );
+    //node.addNode( new CSpriteNode( 10, 20, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+    node.getData();
+    //node.get<CSpriteNode>();
 }
 
 

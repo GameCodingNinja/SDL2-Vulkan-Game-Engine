@@ -20,9 +20,9 @@
 #include <common/face2d.h>
 #include <common/scaledframe.h>
 #include <common/texture.h>
-#include <common/spritesheet.h>
 #include <common/memorybuffer.h>
 #include <common/vertex.h>
+#include <sprite/spritesheet.h>
 
 // Standard lib dependencies
 #include <string>

@@ -15,9 +15,8 @@
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 #include <managers/signalmanager.h>
-#include <common/spritedata.h>
-#include <common/actordata.h>
 #include <common/camera.h>
+#include <sprite/spritedata.h>
 
 /************************************************************************
 *    DESC:  Constructor

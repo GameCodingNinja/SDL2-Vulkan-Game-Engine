@@ -9,7 +9,7 @@
 #include <strategy/basicspritestrategy.h>
 
 // Game lib dependencies
-#include <common/spritedata.h>
+#include <sprite/spritedata.h>
 #include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
@@ -70,33 +70,13 @@ void CBasicSpriteStrategy::loadFromFile( const std::string & file )
             // Get the sprite name
             const std::string name = spriteNode.getAttribute( "name" );
 
-            const std::string tag( spriteNode.getName() );
-
             bool duplicate(false);
 
             // Load the sprite data into the map
-            if( tag == "sprite2d" )
-                duplicate = !m_dataMap.emplace(
-                    std::piecewise_construct,
+            duplicate = !m_dataMap.emplace(
+                std::piecewise_construct,
                     std::forward_as_tuple(name),
-                    std::forward_as_tuple(new CSpriteData(spriteNode, defGroup, defObjName, defAIName), NDefs::EOT_SPRITE2D) ).second;
-
-            else if( tag == "sprite3d" )
-                duplicate = !m_dataMap.emplace(
-                    std::piecewise_construct,
-                    std::forward_as_tuple(name),
-                    std::forward_as_tuple(new CSpriteData(spriteNode, defGroup, defObjName, defAIName), NDefs::EOT_SPRITE3D) ).second;
-
-            /*else if( tag == "actor2d" )
-                duplicate = !m_dataMap.emplace(
-                    std::piecewise_construct,
-                    std::forward_as_tuple(name),
-                    std::forward_as_tuple(new CActorData(spriteNode, defGroup, defObjName, defAIName), NDefs::EOT_OBJECT_NODE) ).second;*/
-
-            else
-                throw NExcept::CCriticalException("Sprite Load Error!",
-                    boost::str( boost::format("Undefined sprite tag (%s).\n\n%s\nLine: %s")
-                        % name % __FUNCTION__ % __LINE__ ));
+                    std::forward_as_tuple(spriteNode, defGroup, defObjName, defAIName) ).second;
 
             // Check for duplicate names
             if( duplicate )
@@ -113,7 +93,7 @@ void CBasicSpriteStrategy::loadFromFile( const std::string & file )
 /************************************************************************
  *    DESC:  Get the sprite data container by name
  ************************************************************************/
-CSpriteDataContainer & CBasicSpriteStrategy::getData( const std::string & name )
+CSpriteData & CBasicSpriteStrategy::getData( const std::string & name )
 {
     auto iter = m_dataMap.find( name );
     if( iter == m_dataMap.end() )
@@ -136,7 +116,7 @@ CSprite * CBasicSpriteStrategy::create(
     const CPoint<float> & scale )
 {
     std::string aiName;
-    const CSpriteDataContainer & rSpriteDataContainer = getData( dataName );
+    const CSpriteData & rSpriteData = getData( dataName );
 
     // If the sprite defined a unique id then use that
     int spriteId( ((m_spriteInc++) + m_idOffset) * m_idDir );
@@ -144,31 +124,16 @@ CSprite * CBasicSpriteStrategy::create(
     std::pair<std::map<const int, CSprite *>::iterator, bool> iter;
 
     // Create the sprite
-    if( rSpriteDataContainer.getType() == NDefs::EOT_SPRITE2D )
-    {
-        const auto & rData = rSpriteDataContainer.get<CSpriteData>();
-        if( rData.getId() != defs_SPRITE_DEFAULT_ID )
-            spriteId = rData.getId();
+    if( rSpriteData.getId() != defs_SPRITE_DEFAULT_ID )
+        spriteId = rSpriteData.getId();
 
-        // Allocate the sprite
-        iter = m_spriteMap.emplace( spriteId, new CSprite( CObjectDataMgr::Instance().getData2D( rData ), spriteId ) );
+    // Allocate the sprite
+    iter = m_spriteMap.emplace( spriteId, new CSprite( CObjectDataMgr::Instance().getData2D( rSpriteData ), spriteId ) );
 
-        // Load the rest from sprite data
-        iter.first->second->load( rData );
+    // Load the rest from sprite data
+    iter.first->second->load( rSpriteData );
 
-        aiName = rData.getAIName();
-    }
-    /*else if( rSpriteDataContainer.getType() == NDefs::EOT_OBJECT_NODE )
-    {
-        const auto & rData = rSpriteDataContainer.get<CActorData>();
-        if( rData.getId() != defs_SPRITE_DEFAULT_ID )
-            spriteId = rData.getId();
-
-        // Allocate the actor sprite
-        iter = m_spriteMap.emplace( spriteId, new CActorSprite2D( rData, spriteId ) );
-
-        aiName = rData.getAIName();
-    }*/
+    aiName = rSpriteData.getAIName();
 
     // Check for duplicate id's
     if( !iter.second )
@@ -208,7 +173,7 @@ CSprite * CBasicSpriteStrategy::create(
     const std::string & dataName )
 {
     std::string aiName;
-    const CSpriteDataContainer & rSpriteDataContainer = getData( dataName );
+    const CSpriteData & rSpriteData = getData( dataName );
 
     // If the sprite defined a unique id then use that
     int spriteId( ((m_spriteInc++) + m_idOffset) * m_idDir );
@@ -216,31 +181,16 @@ CSprite * CBasicSpriteStrategy::create(
     std::pair<std::map<const int, CSprite *>::iterator, bool> iter;
 
     // Create the sprite
-    if( rSpriteDataContainer.getType() == NDefs::EOT_SPRITE2D )
-    {
-        const auto & rData = rSpriteDataContainer.get<CSpriteData>();
-        if( rData.getId() != defs_SPRITE_DEFAULT_ID )
-            spriteId = rData.getId();
+    if( rSpriteData.getId() != defs_SPRITE_DEFAULT_ID )
+        spriteId = rSpriteData.getId();
 
-        // Allocate the sprite
-        iter = m_spriteMap.emplace( spriteId, new CSprite( CObjectDataMgr::Instance().getData2D( rData ), spriteId ) );
+    // Allocate the sprite
+    iter = m_spriteMap.emplace( spriteId, new CSprite( CObjectDataMgr::Instance().getData2D( rSpriteData ), spriteId ) );
 
-        // Load the rest from sprite data
-        iter.first->second->load( rData );
+    // Load the rest from sprite data
+    iter.first->second->load( rSpriteData );
 
-        aiName = rData.getAIName();
-    }
-    /*else if( rSpriteDataContainer.getType() == NDefs::EOT_OBJECT_NODE )
-    {
-        const auto & rData = rSpriteDataContainer.get<CActorData>();
-        if( rData.getId() != defs_SPRITE_DEFAULT_ID )
-            spriteId = rData.getId();
-
-        // Allocate the actor sprite
-        iter = m_spriteMap.emplace( spriteId, new CActorSprite2D( rData, spriteId ) );
-
-        aiName = rData.getAIName();
-    }*/
+    aiName = rSpriteData.getAIName();
 
     // Init the physics
     iter.first->second->initPhysics();

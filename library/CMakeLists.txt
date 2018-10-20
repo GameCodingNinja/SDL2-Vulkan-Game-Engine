@@ -58,6 +58,8 @@ add_library(
         physics/physicscomponent2d.cpp
         physics/physicscomponent3d.cpp
         sprite/sprite.cpp
+        sprite/spritesheet.cpp
+        sprite/spritedata.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp
@@ -79,7 +81,6 @@ add_library(
         common/worldvalue.cpp
         common/camera.cpp
         common/object.cpp
-        common/spritesheet.cpp
         common/build_defs.cpp
         common/fontdata.cpp
         common/fontproperties.cpp
@@ -87,8 +88,6 @@ add_library(
         common/vertex.cpp
         common/uniformbufferobject.cpp
         common/pushdescriptorset.cpp
-        common/spritedata.cpp
-        common/spritedatacontainer.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c

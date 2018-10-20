@@ -153,6 +153,12 @@ namespace NDefs
         EM_VERTICAL,
         EM_HORIZONTAL_VERTICAL
     };
+    
+    enum ENodeType
+    {
+        ENT_NULL = 0,
+        ENT_SPRITE,
+    };
 
 }   // NDefs
 

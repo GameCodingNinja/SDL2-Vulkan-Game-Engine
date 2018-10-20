@@ -9,7 +9,7 @@
 #include <common/spritedatacontainer.h>
 
 // Game lib dependencies
-#include <common/spritedata.h>
+#include <sprite/spritedata.h>
 #include <common/actordata.h>
 #include <utilities/deletefuncs.h>
 

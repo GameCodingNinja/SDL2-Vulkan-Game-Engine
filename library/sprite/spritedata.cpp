@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/spritedata.h>
+#include <sprite/spritedata.h>
 
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>

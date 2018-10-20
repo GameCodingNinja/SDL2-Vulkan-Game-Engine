@@ -9,7 +9,7 @@
 #define __sprite_sheet_h__
 
 // Game lib dependencies
-#include <common/spritesheetglyph.h>
+#include <sprite/spritesheetglyph.h>
 #include <common/defs.h>
 
 // Standard lib dependencies
