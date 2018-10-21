@@ -29,7 +29,10 @@ CSpriteData::CSpriteData(
         m_group(defGroup),
         m_objectName(defObjName),
         m_aiName(defAIName),
-        m_id(defId)
+        m_id(defId),
+        m_nodeId(-1),
+        m_parenNodetId(-1),
+        m_type(NDefs::EOT_NULL)
 {
     // Get the name of this specific sprite instance
     if( node.isAttributeSet( "name" ) )
@@ -77,7 +80,10 @@ CSpriteData::CSpriteData( const CSpriteData & data ) :
     m_group( data.m_group ),
     m_objectName( data.m_objectName ),
     m_aiName( data.m_aiName ),
-    m_id( data.m_id )
+    m_id( data.m_id ),
+    m_nodeId( data.m_nodeId ),
+    m_parenNodetId( data.m_parenNodetId ),
+    m_type( data.m_type )
 {
 }
 
@@ -127,15 +133,6 @@ const std::string & CSpriteData::getAIName() const
 
 
 /************************************************************************
-*    DESC:  Get the unique id number
-************************************************************************/
-int CSpriteData::getId() const
-{
-    return m_id;
-}
-
-
-/************************************************************************
 *    DESC:  Get the font data
 ************************************************************************/
 const CFontData * CSpriteData::getFontData() const
@@ -176,4 +173,40 @@ void CSpriteData::loadScriptFunctions( const XMLNode & node )
                 m_scriptFunctionMap.emplace( attrName, attrValue );
         }
     }
+}
+
+
+/************************************************************************
+*    DESC:  Get the type
+************************************************************************/
+NDefs::EObjectType CSpriteData::getType() const
+{
+    return m_type;
+}
+
+
+/************************************************************************
+*    DESC:  Get the unique id number
+************************************************************************/
+int CSpriteData::getId() const
+{
+    return m_id;
+}
+
+
+/************************************************************************
+*    DESC:  Get the node id
+************************************************************************/
+int CSpriteData::getNodeId() const
+{
+    return m_nodeId;
+}
+
+
+/************************************************************************
+*    DESC:  Get the parent node id
+************************************************************************/
+int CSpriteData::getParentNodeId() const
+{
+    return m_parenNodetId;
 }

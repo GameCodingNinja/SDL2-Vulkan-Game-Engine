@@ -95,9 +95,8 @@ namespace NDefs
     
     enum EObjectType
     {
-        EOT_NONE,
+        EOT_NULL,
         EOT_OBJECT,
-        EOT_OBJECT_NODE,
         EOT_CAMERA,
         EOT_LIGHT,
         EOT_SPRITE2D,
@@ -160,6 +159,6 @@ namespace NDefs
         ENT_SPRITE,
     };
 
-}   // NDefs
+}
 
-#endif // __defs_h__
+#endif

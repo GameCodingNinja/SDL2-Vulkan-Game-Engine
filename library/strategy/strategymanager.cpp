@@ -99,9 +99,9 @@ void CStrategyMgr::deleteSprite( const std::string & strategyId, int spriteId )
 
 
 /************************************************************************
-*    DESC:  create the sprite and provide a unique id number for each one
+*    DESC:  create the iNode and provide a unique id number for each one
 ************************************************************************/
-CSprite * CStrategyMgr::create(
+iNode * CStrategyMgr::create(
     const std::string & strategyId,
     const std::string & dataName,
     const CPoint<CWorldValue> & pos,
@@ -118,25 +118,7 @@ CSprite * CStrategyMgr::create(
     return mapIter->second->create( dataName, pos, rot, scale );
 }
 
-CSprite * CStrategyMgr::create(
-    const std::string & strategyId,
-    const std::string & group,
-    const std::string & name,
-    const CPoint<CWorldValue> & pos,
-    const CPoint<float> & rot,
-    const CPoint<float> & scale )
-{
-    // Make sure the strategy we are looking for is available
-    auto mapIter = m_pStrategyMap.find( strategyId );
-    if( mapIter == m_pStrategyMap.end() )
-        throw NExcept::CCriticalException("Sprite Manager Strategy Group Find Error!",
-            boost::str( boost::format("Sprite Manager strategy id can't be found (%s).\n\n%s\nLine: %s")
-                % strategyId % __FUNCTION__ % __LINE__ ));
-
-    return mapIter->second->create( group, name, pos, rot, scale );
-}
-
-CSprite * CStrategyMgr::create(
+iNode * CStrategyMgr::create(
     const std::string & strategyId,
     const std::string & dataName )
 {
@@ -148,21 +130,6 @@ CSprite * CStrategyMgr::create(
                 % strategyId % dataName % __FUNCTION__ % __LINE__ ));
 
     return mapIter->second->create( dataName );
-}
-
-CSprite * CStrategyMgr::create(
-    const std::string & strategyId,
-    const std::string & group,
-    const std::string & name )
-{
-    // Make sure the strategy we are looking for is available
-    auto mapIter = m_pStrategyMap.find( strategyId );
-    if( mapIter == m_pStrategyMap.end() )
-        throw NExcept::CCriticalException("Sprite Manager Strategy Group Find Error!",
-            boost::str( boost::format("Sprite Manager strategy id can't be found (%s).\n\n%s\nLine: %s")
-                % strategyId % __FUNCTION__ % __LINE__ ));
-
-    return mapIter->second->create( group, name );
 }
 
 

@@ -19,7 +19,7 @@
 #include <managers/actionmanager.h>
 #include <managers/spritesheetmanager.h>
 #include <managers/cameramanager.h>
-//#include <strategy/strategymanager.h>
+#include <strategy/strategymanager.h>
 #include <objectdata/objectdatamanager.h>
 #include <common/color.h>
 #include <script/scriptmanager.h>
@@ -34,7 +34,6 @@
 //#include <script/scriptuicontrol.h>
 //#include <script/scriptmenu.h>
 #include <script/scripthighresolutiontimer.h>
-//#include <2d/sprite2d.h>
 #include <sprite/sprite.h>
 #include <system/device.h>
 //#include <gui/menumanager.h>
@@ -45,7 +44,6 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/xmlParser.h>
-#include <sprite/spritenode.h>
 #include <physics/physicsworldmanager2d.h>
 //#include <slot/slotmathmanager.h>
 //#include <slot/symbolsetviewmanager.h>
@@ -63,6 +61,9 @@
 
 // SDL lib dependencies
 #include <SDL.h>
+
+
+#include <sprite/spritenode.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -119,10 +120,11 @@ void CStartUpState::init()
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
     
-    CSpriteNode node( 5, 20, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) );
-    //node.addNode( new CSpriteNode( 10, 20, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    node.getData();
-    //node.get<CSpriteNode>();
+    CSpriteHeadNode node( 1, 0, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) );
+    node.addNode( new CSpriteNode( 2, 1, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+    node.addNode( new CSpriteNode( 3, 2, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+    node.addNode( new CSpriteNode( 4, 3, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+
 }
 
 

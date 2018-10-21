@@ -21,7 +21,7 @@
 #include <vector>
 
 // Forward Declarations
-class CSprite;
+class iNode;
 class iStrategy;
 union SDL_Event;
 
@@ -45,30 +45,17 @@ public:
     // Delete sprite
     void deleteSprite( const std::string & strategyId, int spriteId );
     
-    // create the sprite and provide a unique id number for each one
-    CSprite * create(
+    // create the iNode and provide a unique id number for each one
+    iNode * create(
         const std::string & strategyId,
         const std::string & dataName,
         const CPoint<CWorldValue> & pos,
         const CPoint<float> & rot = CPoint<float>(),
         const CPoint<float> & scale = CPoint<float>(1,1,1) );
     
-    CSprite * create(
-        const std::string & strategyId,
-        const std::string & group,
-        const std::string & name,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot = CPoint<float>(),
-        const CPoint<float> & scale = CPoint<float>(1,1,1) );
-    
-    CSprite * create(
+    iNode * create(
         const std::string & strategyId,
         const std::string & dataName );
-    
-    CSprite * create(
-        const std::string & strategyId,
-        const std::string & group,
-        const std::string & name );
 
     // Delete all the sprites
     void clear();
@@ -108,7 +95,7 @@ public:
     }
     
     // Get a pointer to the strategy based on if the sprite can be found
-    template <typename target>
+    /*template <typename target>
     target & find( CSprite * pSprite )
     {
         target * pStrategy = nullptr;
@@ -124,7 +111,7 @@ public:
         }
         
         return *pStrategy;
-    }
+    }*/
     
     // Get a pointer to the strategy based on a string find
     template <typename target>
@@ -144,47 +131,6 @@ public:
         
         return *pStrategy;
     }
-    
-    // Create templates
-    template <typename target>
-    target * createSprite(
-        const std::string & strategyId,
-        const std::string & name,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot = CPoint<float>(),
-        const CPoint<float> & scale = CPoint<float>(1,1,1) )
-    {
-        return dynamic_cast<target *>(create( strategyId, name, pos, rot, scale ));
-    }
-    
-    template <typename target>
-    target * createSprite(
-        const std::string & strategyId,
-        const std::string & group,
-        const std::string & name,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot = CPoint<float>(),
-        const CPoint<float> & scale = CPoint<float>(1,1,1) )
-    {
-        return dynamic_cast<target *>(create( strategyId, group, name, pos, rot, scale ));
-    }
-    
-    template <typename target>
-    target * createSprite(
-        const std::string & strategyId,
-        const std::string & name )
-    {
-        return dynamic_cast<target *>(create( strategyId, name ));
-    }
-    
-    template <typename target>
-    target * createSprite(
-        const std::string & strategyId,
-        const std::string & group,
-        const std::string & name )
-    {
-        return dynamic_cast<target *>(create( strategyId, group, name ));
-    }
 
 private:
 
@@ -201,10 +147,6 @@ private:
     
     // Vector of strategy pointers
     std::vector<iStrategy *> m_pStrategyVec;
-    
-    // Temporary vector to hold the return ids
-    std::vector<CSprite *> m_incReturn;
-
 };
 
 #endif  // __sprite_strategy_manager_h__

@@ -18,7 +18,7 @@
 class CObjectData2D;
 class CObjectData3D;
 
-class CSpriteNode : public iNode<CSprite>
+class CSpriteNode : public iNode
 {
 public:
 
@@ -28,7 +28,7 @@ public:
         int parentId,
         const CObjectData2D & objectData,
         int spriteId = defs_SPRITE_DEFAULT_ID ) :
-            iNode<CSprite>(nodeId, parentId),
+            iNode(nodeId, parentId),
             m_sprite(objectData, spriteId)
     {
         m_type = NDefs::ENT_SPRITE;
@@ -39,24 +39,51 @@ public:
         int parentId,
         const CObjectData3D & objectData,
         int spriteId = defs_SPRITE_DEFAULT_ID ) :
-            iNode<CSprite>(nodeId, parentId),
+            iNode(nodeId, parentId),
             m_sprite(objectData, spriteId)
     {
         m_type = NDefs::ENT_SPRITE;
     }
 
+    // Destructor
     virtual ~CSpriteNode(){}
-
-    // Get the data
-    CSprite & getData() override
-    {
-        return m_sprite;
-    }
-
-private:
 
     // Node data
     CSprite m_sprite;
+};
+
+class CSpriteHeadNode : public CSpriteNode
+{
+public:
+    
+    // Constructor
+    CSpriteHeadNode(
+        int nodeId,
+        int parentId,
+        const CObjectData2D & objectData,
+        int spriteId = defs_SPRITE_DEFAULT_ID );
+
+    CSpriteHeadNode(
+        int nodeId,
+        int parentId,
+        const CObjectData3D & objectData,
+        int spriteId = defs_SPRITE_DEFAULT_ID );
+
+    // Destructor
+    virtual ~CSpriteHeadNode();
+    
+    // Add a node
+    bool addNode( iNode * pNode ) override;
+    
+private:
+    
+    // Reset the iterators
+    void resetIterators();
+    
+private:
+    
+    // List of all nodes.
+    std::vector<iNode *> m_allNodesVec;
 };
 
 #endif

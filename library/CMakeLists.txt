@@ -60,6 +60,7 @@ add_library(
         sprite/sprite.cpp
         sprite/spritesheet.cpp
         sprite/spritedata.cpp
+        sprite/spritenode.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp
@@ -88,6 +89,7 @@ add_library(
         common/vertex.cpp
         common/uniformbufferobject.cpp
         common/pushdescriptorset.cpp
+        common/inode.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c

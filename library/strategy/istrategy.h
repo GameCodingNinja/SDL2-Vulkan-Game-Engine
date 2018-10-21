@@ -16,7 +16,7 @@
 #include <string>
 
 // Forward Declarations
-class CSprite;
+class iNode;
 union SDL_Event;
 
 class iStrategy
@@ -42,24 +42,13 @@ public:
     void setCameraId( const std::string & cameraId );
     
     // Create the sprite
-    virtual CSprite * create(
-        const std::string & name,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale ){ return nullptr; }
-    
-    virtual CSprite * create(
-        const std::string & group,
+    virtual iNode * create(
         const std::string & name,
         const CPoint<CWorldValue> & pos,
         const CPoint<float> & rot,
         const CPoint<float> & scale ){ return nullptr; }
 
-    virtual CSprite * create(
-        const std::string & name ){ return nullptr; }
-    
-    virtual CSprite * create(
-        const std::string & group,
+    virtual iNode * create(
         const std::string & name ){ return nullptr; }
     
     // Do any pre-loop init

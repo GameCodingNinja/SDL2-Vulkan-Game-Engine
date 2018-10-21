@@ -13,130 +13,46 @@
 
 // Game lib dependencies
 #include <common/defs.h>
-#include <utilities/deletefuncs.h>
 
 // Standard lib dependencies
 #include <vector>
 
-template <typename type>
 class iNode
 {
 public:
 
     // Constructor
-    iNode( int id, int parentId ) : m_id(id), m_parentId(parentId)
-    {
-        reset();
-    }
+    iNode( int id, int parentId );
 
     // Destructor
-    virtual ~iNode()
-    {
-        NDelFunc::DeleteVectorPointers( m_nodeVec );
-    }
+    virtual ~iNode();
 
-    /************************************************************************
-    *    DESC:  Get the next node
-    ************************************************************************/
-    iNode * next()
-    {
-        iNode * pResult = nullptr;
+    // Get the next node
+    iNode * next();
 
-        // Get the next node
-        if( nodeIter != m_nodeVec.end() )
-        {
-            pResult = *nodeIter;
-            ++nodeIter;
-        }
+    // Add a node
+    virtual bool addNode( iNode * pNode );
 
-        return pResult;
-    }
+    // Find the parent
+    // NOTE: This is a recursive function
+    iNode * findParent( iNode * pSearchNode );
 
-    /************************************************************************
-    *    DESC:  Add a node
-    ************************************************************************/
-    bool addNode( iNode * pNode, iNode * pHeadNode )
-    {
-        // Call a recursive function to find the parent node
-        iNode * pParentNode = FindParent( pNode, pHeadNode );
-
-        // Add the node
-        if( pParentNode != nullptr )
-            pParentNode->m_nodeVec.push_back(pNode);
-        else
-            return false;
-
-        return true;
-    }
-
-    /************************************************************************
-    *    DESC:  Find the parent
-    ************************************************************************/
-    iNode * FindParent( iNode * pSearchNode )
-    {
-        iNode * pResult = nullptr;
-
-        if( pSearchNode != nullptr )
-        {
-            if( m_parentId == pSearchNode->m_id )
-            {
-                pResult = pSearchNode;
-            }
-            else
-            {
-                iNode * pNextNode;
-
-                do
-                {
-                    // get the next node
-                    pNextNode = pSearchNode->next();
-
-                    if( pNextNode != nullptr )
-                    {
-                        // Call a recursive function to find the parent node
-                        pResult = FindParent( pNextNode );
-                    }
-                }
-                while( pNextNode != nullptr );
-            }
-        }
-
-        return pResult;
-    }
+    // Get the node type
+    NDefs::ENodeType getType() const;
     
-    /************************************************************************
-    *    DESC:  Get the node type
-    ************************************************************************/
-    void reset()
-    {
-        nodeIter = m_nodeVec.begin();
-    }
-
-    /************************************************************************
-    *    DESC:  Get the node type
-    ************************************************************************/
-    NDefs::ENodeType getType() const
-    {
-        return m_type;
-    }
-
-    /************************************************************************
-    *    DESC:  Get the data
-    ************************************************************************/
-    virtual type & getData() = 0;
+    // Reset the iterator
+    void reset();
 
 protected:
 
     // Node type
     NDefs::ENodeType m_type = NDefs::ENT_NULL;
 
-private:
-
-    // node vector
+    // node vector. Do NOT free. Head node will free
     std::vector<iNode *> m_nodeVec;
 
     // next node iterator
-    typename std::vector<iNode *>::iterator nodeIter;
+    std::vector<iNode *>::iterator nodeIter;
 
     // node id
     int m_id;

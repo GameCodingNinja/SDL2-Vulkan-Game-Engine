@@ -159,11 +159,11 @@ namespace NScriptStrategyManager
     /************************************************************************
     *    DESC:  Create a basic stage strategy                                                            
     ************************************************************************/
-    CSprite * CreateSprite1( const std::string & strategyId, const std::string & group, const std::string & name, CStrategyMgr & rStrategyMgr )
+    /*CSprite * CreateSprite( const std::string & strategyId, const std::string & dataName, CStrategyMgr & rStrategyMgr )
     {
         try
         {
-            return rStrategyMgr.create( strategyId, group, name );
+            return rStrategyMgr.create( strategyId, dataName );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -175,25 +175,7 @@ namespace NScriptStrategyManager
         }
         
         return nullptr;
-    }
-    
-    CSprite * CreateSprite2( const std::string & strategyId, const std::string & name, CStrategyMgr & rStrategyMgr )
-    {
-        try
-        {
-            return rStrategyMgr.create( strategyId, name );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return nullptr;
-    }
+    }*/
 
     /************************************************************************
     *    DESC:  Register global functions
@@ -212,10 +194,9 @@ namespace NScriptStrategyManager
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createMenuStrategy(string &in)",           asFUNCTION(CreateMenuStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",                  asFUNCTION(GetStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & findStrategy(string &in)",                 asFUNCTION(FindStrategy), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",                            asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteSprite(string &in, int)",                         asMETHOD(CStrategyMgr, deleteSprite),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iSprite & createSprite(string &in, string &in, string &in)", asFUNCTION(CreateSprite1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iSprite & createSprite(string &in, string &in)",             asFUNCTION(CreateSprite2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",                      asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteSprite(string &in, int)",                   asMETHOD(CStrategyMgr, deleteSprite),   asCALL_THISCALL) );
+        //Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iSprite & createSprite(string &in, string &in)",       asFUNCTION(CreateSprite), asCALL_CDECL_OBJLAST) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );

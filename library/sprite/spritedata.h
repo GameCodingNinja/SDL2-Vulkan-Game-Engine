@@ -11,6 +11,7 @@
 // Physical component dependency
 #include <common/object.h>
 #include <common/color.h>
+#include <common/defs.h>
 
 // Standard lib dependencies
 #include <string>
@@ -56,11 +57,20 @@ public:
     // Get the AI name
     const std::string & getAIName() const;
     
+    // Get the font data
+    const CFontData * getFontData() const;
+    
+    // Get the type
+    NDefs::EObjectType getType() const;
+    
     // Get the unique id number
     int getId() const;
     
-    // Get the font data
-    const CFontData * getFontData() const;
+    // Get the node id
+    int getNodeId() const;
+    
+    // Get the parent node id
+    int getParentNodeId() const;
 
 private:
 
@@ -69,8 +79,11 @@ private:
     std::string m_objectName;
     std::string m_aiName;
     std::map<std::string, std::string> m_scriptFunctionMap;
-    int m_id;
     std::unique_ptr<CFontData> m_upFontData;
+    int m_id;
+    int m_nodeId;
+    int m_parenNodetId;
+    NDefs::EObjectType m_type;
 };
 
 #endif  // __sprite_data_h__
