@@ -9,7 +9,7 @@
 #define __sprite_node_h__
 
 // Physical component dependency
-#include <common/inode.h>
+#include <node/inode.h>
 
 // Game lib dependencies
 #include <sprite/sprite.h>
@@ -17,6 +17,7 @@
 // Forward declaration(s)
 class CObjectData2D;
 class CObjectData3D;
+class CMatrix;
 
 class CSpriteNode : public iNode
 {
@@ -24,9 +25,9 @@ public:
 
     // Constructor
     CSpriteNode(
-        int nodeId,
-        int parentId,
         const CObjectData2D & objectData,
+        int nodeId = -1,
+        int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID ) :
             iNode(nodeId, parentId),
             m_sprite(objectData, spriteId)
@@ -35,9 +36,9 @@ public:
     }
 
     CSpriteNode(
-        int nodeId,
-        int parentId,
         const CObjectData3D & objectData,
+        int nodeId = -1,
+        int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID ) :
             iNode(nodeId, parentId),
             m_sprite(objectData, spriteId)
@@ -47,7 +48,13 @@ public:
 
     // Destructor
     virtual ~CSpriteNode(){}
+    
+    // Get the sprite
+    CSprite & getSprite()
+    { return m_sprite; }
 
+protected:
+    
     // Node data
     CSprite m_sprite;
 };
@@ -58,32 +65,56 @@ public:
     
     // Constructor
     CSpriteHeadNode(
-        int nodeId,
-        int parentId,
+        int id,
         const CObjectData2D & objectData,
+        int nodeId = -1,
+        int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID );
 
     CSpriteHeadNode(
-        int nodeId,
-        int parentId,
+        int id,
         const CObjectData3D & objectData,
+        int nodeId = -1,
+        int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID );
 
     // Destructor
     virtual ~CSpriteHeadNode();
     
+    // Update the nodes
+    void update() override;
+    
+    // Transform the nodes
+    void transform() override;
+    
+    // Record the command buffer vector in the device
+    // for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
+    
     // Add a node
     bool addNode( iNode * pNode ) override;
     
+    // Reset the iterators
+    void resetIterators() override;
+    
+    // Get the unique head node id number
+    int getId() const override;
+    
 private:
     
-    // Reset the iterators
-    void resetIterators();
+    // Update the nodes recursive function
+    void transform( iNode * pNode );
+    
+    // Record command buffer recursive function
+    void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
     
 private:
     
     // List of all nodes.
-    std::vector<iNode *> m_allNodesVec;
+    std::vector<CSpriteNode *> m_nodeVec;
+    
+    // head node id
+    int m_id;
 };
 
 #endif

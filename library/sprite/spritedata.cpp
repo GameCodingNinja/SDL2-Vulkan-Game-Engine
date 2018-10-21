@@ -9,7 +9,6 @@
 #include <sprite/spritedata.h>
 
 // Game lib dependencies
-#include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <common/fontdata.h>
 
@@ -29,10 +28,8 @@ CSpriteData::CSpriteData(
         m_group(defGroup),
         m_objectName(defObjName),
         m_aiName(defAIName),
-        m_id(defId),
-        m_nodeId(-1),
-        m_parenNodetId(-1),
-        m_type(NDefs::EOT_NULL)
+        m_spriteId(defId),
+        m_spriteType(NDefs::EST_NULL)
 {
     // Get the name of this specific sprite instance
     if( node.isAttributeSet( "name" ) )
@@ -52,11 +49,25 @@ CSpriteData::CSpriteData(
     
     // Get the sprite's unique id number
     if( node.isAttributeSet( "id" ) )
-        m_id = std::atoi(node.getAttribute( "id" ));
+        m_spriteId = std::atoi(node.getAttribute( "id" ));
     
     // Get if the sprite is visible
     if( node.isAttributeSet( "visible" ) )
         setVisible( std::strcmp( node.getAttribute("visible"), "true" ) == 0 );
+    
+    // Get the node type
+    const std::string nodeName( node.getName() );
+    if( nodeName == "object2d" )
+        m_spriteType = NDefs::EST_OBJECT2D;
+    
+    else if( nodeName == "object3d" )
+        m_spriteType = NDefs::EST_OBJECT2D;
+    
+    else if( nodeName == "sprite2d" )
+        m_spriteType = NDefs::EST_SPRITE2D;
+    
+    else if( nodeName == "sprite3d" )
+        m_spriteType = NDefs::EST_SPRITE3D;
     
     // See if any font data is specified
     const XMLNode fontNode = node.getChildNode("font");
@@ -71,7 +82,6 @@ CSpriteData::CSpriteData(
     
     // Load any script functions
     loadScriptFunctions( node );
-    
 }
 
 CSpriteData::CSpriteData( const CSpriteData & data ) :
@@ -80,10 +90,10 @@ CSpriteData::CSpriteData( const CSpriteData & data ) :
     m_group( data.m_group ),
     m_objectName( data.m_objectName ),
     m_aiName( data.m_aiName ),
-    m_id( data.m_id ),
-    m_nodeId( data.m_nodeId ),
-    m_parenNodetId( data.m_parenNodetId ),
-    m_type( data.m_type )
+    m_scriptFunctionMap( data.m_scriptFunctionMap ),
+    m_upFontData( data.m_upFontData ),
+    m_spriteId( data.m_spriteId ),
+    m_spriteType( data.m_spriteType )
 {
 }
 
@@ -177,36 +187,18 @@ void CSpriteData::loadScriptFunctions( const XMLNode & node )
 
 
 /************************************************************************
-*    DESC:  Get the type
-************************************************************************/
-NDefs::EObjectType CSpriteData::getType() const
-{
-    return m_type;
-}
-
-
-/************************************************************************
 *    DESC:  Get the unique id number
 ************************************************************************/
-int CSpriteData::getId() const
+int CSpriteData::getSpriteId() const
 {
-    return m_id;
+    return m_spriteId;
 }
 
 
 /************************************************************************
-*    DESC:  Get the node id
+*    DESC:  Get the sprite type
 ************************************************************************/
-int CSpriteData::getNodeId() const
+NDefs::ESpriteType CSpriteData::getSpriteType() const
 {
-    return m_nodeId;
-}
-
-
-/************************************************************************
-*    DESC:  Get the parent node id
-************************************************************************/
-int CSpriteData::getParentNodeId() const
-{
-    return m_parenNodetId;
+    return m_spriteType;
 }

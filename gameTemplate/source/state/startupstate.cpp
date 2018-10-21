@@ -62,8 +62,7 @@
 // SDL lib dependencies
 #include <SDL.h>
 
-
-#include <sprite/spritenode.h>
+#include <strategy/nodestrategy.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -120,10 +119,8 @@ void CStartUpState::init()
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
     
-    CSpriteHeadNode node( 1, 0, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) );
-    node.addNode( new CSpriteNode( 2, 1, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    node.addNode( new CSpriteNode( 3, 2, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    node.addNode( new CSpriteNode( 4, 3, CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+    CNodeStrategy nodeStrategy;
+    nodeStrategy.loadFromFile( "data/objects/2d/spritestrategy/nodeList.lst" );
 
 }
 
@@ -147,7 +144,7 @@ void CStartUpState::transform()
 
 
 /***************************************************************************
-*    decs:  Record the command buffer vector in the device
+*    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
 void CStartUpState::recordCommandBuffer( uint32_t index )

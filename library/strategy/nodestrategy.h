@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       basicspritestrategy.h
+*    FILE NAME:       nodestrategy.h
 *
-*    DESCRIPTION:     Basic sprite strategy class
+*    DESCRIPTION:     Node strategy class
 ************************************************************************/
 
-#ifndef __basic_sprite_strategy_h__
-#define __basic_sprite_strategy_h__
+#ifndef __node_strategy_h__
+#define __node_strategy_h__
 
 // Physical component dependency
 #include <strategy/basestrategy.h>
@@ -15,8 +15,6 @@
 #include <common/point.h>
 #include <common/defs.h>
 #include <common/worldvalue.h>
-#include <common/inode.h>
-#include <sprite/spritedata.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -26,25 +24,30 @@
 #include <vector>
 #include <map>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward Declarations
+class CNodeDataList;
+class CSpriteData;
 class CSprite;
 class CMatrix;
 class iNode;
 
-class CBasicSpriteStrategy : public CBaseStrategy, boost::noncopyable
+class CNodeStrategy : public CBaseStrategy, boost::noncopyable
 {
 public:
 
     // Constructor
-    CBasicSpriteStrategy();
+    CNodeStrategy();
 
     // Destructor
-    virtual ~CBasicSpriteStrategy();
+    virtual ~CNodeStrategy();
 
-    // Load the sprite data from file
+    // Load the node data from file
     void loadFromFile( const std::string & file ) override;
 
-    // Create the sprite
+    // Create the node
     virtual iNode * create(
         const std::string & dataName,
         const CPoint<CWorldValue> & pos,
@@ -54,41 +57,40 @@ public:
     virtual iNode * create(
         const std::string & dataName ) override;
 
-    // Update the sprites
+    // Update the nodes
     void update() override;
 
-    // Transform the sprite
+    // Transform the node
     void transform() override;
 
-    // Render the sprites
-    void render() override;
-    void render( const CMatrix & matrix ) override;
-    void render( const CMatrix & matrix, const CMatrix & rotMatrix ) override;
+    // Record the command buffer vector in the device
+    // for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
 
-    // Get the reference to the sprite
+    // Get the reference to the node
     /*template<typename target>
     target & get( const int id )
     {
         return *dynamic_cast<target *>(getSprite( id ));
     }
 
-    // Find if the sprite exists
+    // Find if the node exists
     bool find( CSprite * piSprite );*/
 
-    // Get the sprite data by name
-    CSpriteData & getData( const std::string & name );
+    // Get the node data by name
+    CNodeDataList & getData( const std::string & name );
 
 protected:
     
-    // Load the sprite
+    // Load the node
     void loadSprite(
         CSprite & sprite,
         const CSpriteData & rSpriteData,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale );
+        const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
+        const CPoint<float> & rot = CPoint<float>(),
+        const CPoint<float> & scale = CPoint<float>(1,1,1) );
 
-    // Handle the deleting of any sprites
+    // Handle the deleting of any nodes
     void deleteObj( int index ) override;
 
     // Handle the creating of any object by name
@@ -99,16 +101,13 @@ protected:
 
 protected:
 
-    // Map of the sprite data
-    std::map<const std::string, CSpriteData> m_dataMap;
-
-    // Map of all the iNode pointers
-    std::map<const int, iNode *> m_pNodeMap;
+    // Map of the node data
+    std::map<const std::string, CNodeDataList> m_dataMap;
 
     // Vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;
 };
 
-#endif  // __basic_sprite_strategy_h__
+#endif
 
 

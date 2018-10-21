@@ -60,7 +60,10 @@ add_library(
         sprite/sprite.cpp
         sprite/spritesheet.cpp
         sprite/spritedata.cpp
-        sprite/spritenode.cpp
+        node/inode.cpp
+        node/spritenode.cpp
+        node/nodedata.cpp
+        node/nodedatalist.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp
@@ -72,7 +75,7 @@ add_library(
         3d/lightlist.cpp
         3d/visualcomponent3d.cpp
         strategy/sector.cpp
-        strategy/basicspritestrategy.cpp
+        strategy/nodestrategy.cpp
         strategy/basicstagestrategy.cpp
         strategy/strategymanager.cpp
         strategy/istrategy.cpp
@@ -89,7 +92,6 @@ add_library(
         common/vertex.cpp
         common/uniformbufferobject.cpp
         common/pushdescriptorset.cpp
-        common/inode.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c
@@ -99,11 +101,16 @@ include_directories(
     objectdata
     script
     system
+    sprite
+    node
     strategy
     utilities
     managers
     physics
     2d
+    3d
+    gui
+    slot
     common
     soil )
 

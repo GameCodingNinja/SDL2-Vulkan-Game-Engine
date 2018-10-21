@@ -97,8 +97,8 @@ protected:
     // camera id
     std::string m_cameraId;
     
-    // Sprite Id incrementor
-    static int m_spriteInc;
+    // Id increment member
+    static int m_idInc;
 };
 
 #endif  // __i_sprite_strategy_h__

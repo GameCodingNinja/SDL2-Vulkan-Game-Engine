@@ -76,7 +76,7 @@ void CSector::loadFromNode( const XMLNode & node )
             {
                 // Allocate the sprite
                 CSpriteData data( spriteNode, defGroup, defObjName, defAIName, defId );
-                m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( data ), data.getId() ) );
+                m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( data ), data.getSpriteId() ) );
 
                 // Load the rest from sprite data
                 m_pSpriteVec.back()->load( data );

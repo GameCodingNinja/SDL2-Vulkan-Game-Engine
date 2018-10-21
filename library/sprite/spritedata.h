@@ -10,6 +10,8 @@
 
 // Physical component dependency
 #include <common/object.h>
+
+// Game lib dependencies
 #include <common/color.h>
 #include <common/defs.h>
 
@@ -37,7 +39,7 @@ public:
     CSpriteData( const CSpriteData & data );
     
     // Destructor
-    ~CSpriteData();
+    virtual ~CSpriteData();
     
     // Init the script functions and add them to the map
     void loadScriptFunctions( const XMLNode & node );
@@ -60,32 +62,39 @@ public:
     // Get the font data
     const CFontData * getFontData() const;
     
-    // Get the type
-    NDefs::EObjectType getType() const;
-    
     // Get the unique id number
-    int getId() const;
+    int getSpriteId() const;
     
-    // Get the node id
-    int getNodeId() const;
-    
-    // Get the parent node id
-    int getParentNodeId() const;
+    // Get the sprite type
+    NDefs::ESpriteType getSpriteType() const;
 
 private:
 
+    // Sprite name
     std::string m_name;
+    
+    // Group Name
     std::string m_group;
+    
+    // Object name
     std::string m_objectName;
+    
+    // AI name
     std::string m_aiName;
+    
+    // Script function map
     std::map<std::string, std::string> m_scriptFunctionMap;
-    std::unique_ptr<CFontData> m_upFontData;
-    int m_id;
-    int m_nodeId;
-    int m_parenNodetId;
-    NDefs::EObjectType m_type;
+    
+    // Font data
+    std::shared_ptr<CFontData> m_upFontData;
+    
+    // Sprite Id
+    int m_spriteId;
+    
+    // Sprite type
+    NDefs::ESpriteType m_spriteType;
 };
 
-#endif  // __sprite_data_h__
+#endif
 
 

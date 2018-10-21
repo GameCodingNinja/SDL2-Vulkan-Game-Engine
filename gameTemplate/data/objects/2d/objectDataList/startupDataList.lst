@@ -59,7 +59,7 @@
             </visual>
         </object>
         
-        <!--<object name="waffles">
+        <object name="waffles">
             <visual>
                 <texture file="data/textures/startup/waffles.png"/>
             </visual>
@@ -71,7 +71,7 @@
             </visual>
         </object>
         
-        <object name="solid">
+        <!--<object name="solid">
             <visual>
                 <pipeline id="2d_solid"/>
                 <color r="0" g="0" b="1" a="1"/>

@@ -17,6 +17,12 @@
 // Standard lib dependencies
 #include <vector>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
+// Forward declaration(s)
+class CMatrix;
+
 class iNode
 {
 public:
@@ -42,6 +48,22 @@ public:
     
     // Reset the iterator
     void reset();
+    
+    // Reset the iterators
+    virtual void resetIterators(){}
+    
+    // Get the unique head node id number
+    virtual int getId() const
+    { return 0; }
+    
+    // Update the nodes
+    virtual void update(){}
+    
+    // Transform the nodes
+    virtual void transform(){}
+    
+    // Record the command buffer
+    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ){}
 
 protected:
 
@@ -52,7 +74,7 @@ protected:
     std::vector<iNode *> m_nodeVec;
 
     // next node iterator
-    std::vector<iNode *>::iterator nodeIter;
+    std::vector<iNode *>::iterator m_Iter;
 
     // node id
     int m_id;

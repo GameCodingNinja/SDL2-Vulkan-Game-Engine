@@ -13,7 +13,7 @@
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
 #include <strategy/basicstagestrategy.h>
-#include <strategy/basicspritestrategy.h>
+#include <strategy/nodestrategy.h>
 #include <strategy/menustrategy.h>
 #include <utilities/exceptionhandling.h>
 
@@ -25,13 +25,13 @@ namespace NScriptStrategyManager
     /************************************************************************
     *    DESC:  Create a basic sprite strategy                                                            
     ************************************************************************/
-    iStrategy * CreateBasicSpriteStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
+    iStrategy * CreateNodeStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
     {
         iStrategy * pStrategy = nullptr;
         
         try
         {
-            pStrategy = rStrategyMgr.addStrategy( strategyId, new CBasicSpriteStrategy );
+            pStrategy = rStrategyMgr.addStrategy( strategyId, new CNodeStrategy );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -189,7 +189,7 @@ namespace NScriptStrategyManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createBasicSpriteStrategy(string &in)",    asFUNCTION(CreateBasicSpriteStrategy), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createNodeStrategy(string &in)",           asFUNCTION(CreateNodeStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createBasicStageStrategy(string &in)",     asFUNCTION(CreateBasicStageStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createMenuStrategy(string &in)",           asFUNCTION(CreateMenuStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",                  asFUNCTION(GetStrategy), asCALL_CDECL_OBJLAST) );

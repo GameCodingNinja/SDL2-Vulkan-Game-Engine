@@ -8,7 +8,7 @@
 // Physical component dependency
 #include <strategy/istrategy.h>
 
-int iStrategy::m_spriteInc = 0;
+int iStrategy::m_idInc = 0;
 
 /************************************************************************
 *    DESC:  Constructor
@@ -34,7 +34,7 @@ void iStrategy::setCameraId( const std::string & cameraId )
 ************************************************************************/
 void iStrategy::clearSpriteCounter()
 {
-    m_spriteInc = 0;
+    m_idInc = 0;
 }
 
 

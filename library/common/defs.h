@@ -93,14 +93,13 @@ namespace NDefs
         SCRIPT_UPDATE       = 0x200,
     };
     
-    enum EObjectType
+    enum ESpriteType
     {
-        EOT_NULL,
-        EOT_OBJECT,
-        EOT_CAMERA,
-        EOT_LIGHT,
-        EOT_SPRITE2D,
-        EOT_SPRITE3D,
+        EST_NULL,
+        EST_OBJECT2D,
+        EST_OBJECT3D,
+        EST_SPRITE2D,
+        EST_SPRITE3D,
     };
     
     enum EAspectRatio

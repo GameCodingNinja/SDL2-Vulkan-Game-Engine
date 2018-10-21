@@ -9,14 +9,13 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/inode.h>
+#include <node/inode.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-iNode::iNode( int id, int parentId ) : nodeIter(nullptr), m_id(id), m_parentId(parentId)
+iNode::iNode( int id, int parentId ) : m_Iter(nullptr), m_id(id), m_parentId(parentId)
 {
-    //nodeIter = m_nodeVec.begin();
 }
 
 
@@ -36,10 +35,10 @@ iNode * iNode::next()
     iNode * pResult = nullptr;
 
     // Get the next node
-    if( nodeIter != m_nodeVec.end() )
+    if( m_Iter != m_nodeVec.end() )
     {
-        pResult = *nodeIter;
-        ++nodeIter;
+        pResult = *m_Iter;
+        ++m_Iter;
     }
 
     return pResult;
@@ -117,5 +116,5 @@ NDefs::ENodeType iNode::getType() const
 void iNode::reset()
 {
     if( !m_nodeVec.empty() )
-        nodeIter = m_nodeVec.begin();
+        m_Iter = m_nodeVec.begin();
 }
