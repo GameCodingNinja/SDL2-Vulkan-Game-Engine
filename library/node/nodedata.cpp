@@ -37,6 +37,9 @@ CNodeData::CNodeData(
     const std::string nodeName( node.getName() );
     if( nodeName == "spriteNode" )
         m_nodeType = NDefs::ENT_SPRITE;
+    
+    else if( nodeName == "spriteNodeMultiList" )
+        m_nodeType = NDefs::ENT_SPRITE_MULTI_LIST;
 }
 
 CNodeData::CNodeData( const CNodeData & data ) :

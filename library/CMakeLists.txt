@@ -60,8 +60,8 @@ add_library(
         sprite/sprite.cpp
         sprite/spritesheet.cpp
         sprite/spritedata.cpp
-        node/inode.cpp
-        node/spritenode.cpp
+        node/node.cpp
+        node/spritenodemultilist.cpp
         node/nodedata.cpp
         node/nodedatalist.cpp
         2d/font.cpp

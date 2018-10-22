@@ -156,6 +156,7 @@ namespace NDefs
     {
         ENT_NULL = 0,
         ENT_SPRITE,
+        ENT_SPRITE_MULTI_LIST,
     };
 
 }

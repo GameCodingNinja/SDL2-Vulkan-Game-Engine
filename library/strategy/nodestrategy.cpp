@@ -18,7 +18,7 @@
 #include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
-#include <node/spritenode.h>
+#include <node/spritenodemultilist.h>
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
@@ -111,18 +111,20 @@ iNode * CNodeStrategy::create(
     {
         if( iter.getNodeType() == NDefs::ENT_SPRITE )
         {
+            
+        }
+        else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
+        {
             if( pHeadNode == nullptr )
             {
-                auto * pSpriteNode = new CSpriteHeadNode( nodeId, CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), iter.getNodeId() );
+                auto * pSpriteNode = new CSpriteHeadNodeMultiLst( nodeId, CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), iter.getNodeId() );
                 pHeadNode = pSpriteNode;
-
                 loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
             }
             else
             {
-                auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), iter.getNodeId(), iter.getParentNodeId() );
+                auto * pSpriteNode = new CSpriteNodeMultiLst( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), iter.getNodeId(), iter.getParentNodeId() );
                 pHeadNode->addNode( pSpriteNode );
-
                 loadSprite( pSpriteNode->getSprite(), iter );
             }
         }

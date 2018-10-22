@@ -1,15 +1,15 @@
 
 /************************************************************************
-*    FILE NAME:       spritenode.h
+*    FILE NAME:       spritenodemultilist.h
 *
-*    DESCRIPTION:     Sprite node class
+*    DESCRIPTION:     Sprite node multi link list class
 ************************************************************************/
 
-#ifndef __sprite_node_h__
-#define __sprite_node_h__
+#ifndef __sprite_node_multi_list_h__
+#define __sprite_node_multi_list_h__
 
 // Physical component dependency
-#include <node/inode.h>
+#include <node/node.h>
 
 // Game lib dependencies
 #include <sprite/sprite.h>
@@ -19,35 +19,35 @@ class CObjectData2D;
 class CObjectData3D;
 class CMatrix;
 
-class CSpriteNode : public iNode
+class CSpriteNodeMultiLst : public CNode
 {
 public:
 
     // Constructor
-    CSpriteNode(
+    CSpriteNodeMultiLst(
         const CObjectData2D & objectData,
         int nodeId = -1,
         int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID ) :
-            iNode(nodeId, parentId),
+            CNode(nodeId, parentId),
             m_sprite(objectData, spriteId)
     {
         m_type = NDefs::ENT_SPRITE;
     }
 
-    CSpriteNode(
+    CSpriteNodeMultiLst(
         const CObjectData3D & objectData,
         int nodeId = -1,
         int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID ) :
-            iNode(nodeId, parentId),
+            CNode(nodeId, parentId),
             m_sprite(objectData, spriteId)
     {
         m_type = NDefs::ENT_SPRITE;
     }
 
     // Destructor
-    virtual ~CSpriteNode(){}
+    virtual ~CSpriteNodeMultiLst(){}
     
     // Get the sprite
     CSprite & getSprite()
@@ -59,19 +59,19 @@ protected:
     CSprite m_sprite;
 };
 
-class CSpriteHeadNode : public CSpriteNode
+class CSpriteHeadNodeMultiLst : public CSpriteNodeMultiLst
 {
 public:
     
     // Constructor
-    CSpriteHeadNode(
+    CSpriteHeadNodeMultiLst(
         int id,
         const CObjectData2D & objectData,
         int nodeId = -1,
         int parentId = -1,
         int spriteId = defs_SPRITE_DEFAULT_ID );
 
-    CSpriteHeadNode(
+    CSpriteHeadNodeMultiLst(
         int id,
         const CObjectData3D & objectData,
         int nodeId = -1,
@@ -79,7 +79,7 @@ public:
         int spriteId = defs_SPRITE_DEFAULT_ID );
 
     // Destructor
-    virtual ~CSpriteHeadNode();
+    virtual ~CSpriteHeadNodeMultiLst();
     
     // Update the nodes
     void update() override;
@@ -111,7 +111,7 @@ private:
 private:
     
     // List of all nodes.
-    std::vector<CSpriteNode *> m_nodeVec;
+    std::vector<CSpriteNodeMultiLst *> m_nodeVec;
     
     // head node id
     int m_id;

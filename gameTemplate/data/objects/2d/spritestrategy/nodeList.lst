@@ -1,22 +1,32 @@
 <nodeStrategy>
 
-    <nodeList id="node" defaultGroup="(startup)">
+    <nodeList id="multiListNode" defaultGroup="(startup)">
+
+        <spriteNodeMultiList nodeId="0">
+            <sprite2d name="background" objectName="background">
+                <position x="0" y="0" z="-10"/>
+            </sprite2d>
+        </spriteNodeMultiList>
+
+        <spriteNodeMultiList nodeId="1" parentId="0">
+            <sprite2d name="logo" objectName="logo">
+                <position x="-300" y="0" z="-10"/>
+            </sprite2d>
+        </spriteNodeMultiList>
+
+        <spriteNodeMultiList nodeId="2" parentId="0">
+            <sprite2d name="waffles" objectName="waffles">
+                <position x="300" y="0" z="-10"/>
+            </sprite2d>
+        </spriteNodeMultiList>
+
+    </nodeList>
+    
+    <nodeList id="spriteNode" defaultGroup="(startup)">
 
         <spriteNode nodeId="0">
             <sprite2d name="background" objectName="background">
                 <position x="0" y="0" z="-10"/>
-            </sprite2d>
-        </spriteNode>
-
-        <spriteNode nodeId="1" parentId="0">
-            <sprite2d name="logo" objectName="logo">
-                <position x="-300" y="0" z="-10"/>
-            </sprite2d>
-        </spriteNode>
-
-        <spriteNode nodeId="2" parentId="0">
-            <sprite2d name="waffles" objectName="waffles">
-                <position x="300" y="0" z="-10"/>
             </sprite2d>
         </spriteNode>
 

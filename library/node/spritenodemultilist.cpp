@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       spritedata.cpp
+*    FILE NAME:       spritenodemultilist.cpp
 *
-*    DESCRIPTION:     Sprite Data Class
+*    DESCRIPTION:     Sprite node multi link list class
 ************************************************************************/
 
 // Physical component dependency
-#include <node/spritenode.h>
+#include <node/spritenodemultilist.h>
 
 // Game lib dependencies
 #include <utilities/deletefuncs.h>
@@ -16,24 +16,24 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteHeadNode::CSpriteHeadNode(
+CSpriteHeadNodeMultiLst::CSpriteHeadNodeMultiLst(
     int id,
     const CObjectData2D & objectData,
     int nodeId,
     int parentId,
     int spriteId ) :
-        CSpriteNode(objectData, nodeId, parentId, spriteId),
+        CSpriteNodeMultiLst(objectData, nodeId, parentId, spriteId),
         m_id(id)
 {
 }
 
-CSpriteHeadNode::CSpriteHeadNode(
+CSpriteHeadNodeMultiLst::CSpriteHeadNodeMultiLst(
     int id,
     const CObjectData3D & objectData,
     int nodeId,
     int parentId,
     int spriteId ) :
-        CSpriteNode(objectData, nodeId, parentId, spriteId),
+        CSpriteNodeMultiLst(objectData, nodeId, parentId, spriteId),
         m_id(id)
 {
 }
@@ -42,7 +42,7 @@ CSpriteHeadNode::CSpriteHeadNode(
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CSpriteHeadNode::~CSpriteHeadNode()
+CSpriteHeadNodeMultiLst::~CSpriteHeadNodeMultiLst()
 {
     NDelFunc::DeleteVectorPointers( m_nodeVec );
 }
@@ -51,7 +51,7 @@ CSpriteHeadNode::~CSpriteHeadNode()
 /***************************************************************************
 *    DESC:  Update the nodes.
 ****************************************************************************/
-void CSpriteHeadNode::update()
+void CSpriteHeadNodeMultiLst::update()
 {
     for( auto iter : m_nodeVec )
     {
@@ -64,14 +64,14 @@ void CSpriteHeadNode::update()
 /***************************************************************************
 *    DESC:  Update the nodes
 ****************************************************************************/
-void CSpriteHeadNode::transform()
+void CSpriteHeadNodeMultiLst::transform()
 {
     m_sprite.getObject()->transform();
 
     transform( this );
 }
 
-void CSpriteHeadNode::transform( iNode * pNode )
+void CSpriteHeadNodeMultiLst::transform( iNode * pNode )
 {
     if( pNode != nullptr )
     {
@@ -85,8 +85,8 @@ void CSpriteHeadNode::transform( iNode * pNode )
             if( pNextNode != nullptr )
             {
                 // Cast the parent and child nodes
-                auto * pParentNode = dynamic_cast<CSpriteNode *>(pNode);
-                auto * pChildNode = dynamic_cast<CSpriteNode *>(pNextNode);
+                auto * pParentNode = dynamic_cast<CSpriteNodeMultiLst *>(pNode);
+                auto * pChildNode = dynamic_cast<CSpriteNodeMultiLst *>(pNextNode);
 
                 // Transform the child node
                 pChildNode->getSprite().getObject()->transform(
@@ -106,14 +106,14 @@ void CSpriteHeadNode::transform( iNode * pNode )
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CSpriteHeadNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteHeadNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     m_sprite.recordCommandBuffers( index, cmdBuffer, viewProj );
     
     recordCommandBuffer( this, index, cmdBuffer, viewProj );
 }
 
-void CSpriteHeadNode::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteHeadNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     if( pNode != nullptr )
     {
@@ -127,7 +127,7 @@ void CSpriteHeadNode::recordCommandBuffer( iNode * pNode, uint32_t index, VkComm
             if( pNextNode != nullptr )
             {
                 // Cast the child node
-                auto * pChildNode = dynamic_cast<CSpriteNode *>(pNextNode);
+                auto * pChildNode = dynamic_cast<CSpriteNodeMultiLst *>(pNextNode);
                 
                 // Record the command buffer
                 pChildNode->getSprite().recordCommandBuffers( index, cmdBuffer, viewProj );
@@ -144,11 +144,11 @@ void CSpriteHeadNode::recordCommandBuffer( iNode * pNode, uint32_t index, VkComm
 /************************************************************************
 *    DESC:  Add a node
 ************************************************************************/
-bool CSpriteHeadNode::addNode( iNode * pNode )
+bool CSpriteHeadNodeMultiLst::addNode( iNode * pNode )
 {
-    m_nodeVec.push_back( dynamic_cast<CSpriteNode *>(pNode) );
+    m_nodeVec.push_back( dynamic_cast<CSpriteNodeMultiLst *>(pNode) );
 
-    bool result = CSpriteNode::addNode( pNode );
+    bool result = CSpriteNodeMultiLst::addNode( pNode );
 
     resetIterators();
 
@@ -159,7 +159,7 @@ bool CSpriteHeadNode::addNode( iNode * pNode )
 /************************************************************************
 *    DESC:  Reset the iterators
 ************************************************************************/
-void CSpriteHeadNode::resetIterators()
+void CSpriteHeadNodeMultiLst::resetIterators()
 {
     reset();
 
@@ -171,7 +171,7 @@ void CSpriteHeadNode::resetIterators()
 /************************************************************************
 *    DESC:  Get the unique head node id number
 ************************************************************************/
-int CSpriteHeadNode::getId() const
+int CSpriteHeadNodeMultiLst::getId() const
 {
     return m_id;
 }
