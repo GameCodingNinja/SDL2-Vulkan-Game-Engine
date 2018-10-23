@@ -18,7 +18,8 @@
 #include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
-#include <node/spritenodemultilist.h>
+#include <node/spriteheadnodemultilist.h>
+#include <node/spritenode.h>
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
@@ -101,6 +102,18 @@ iNode * CNodeStrategy::create(
 {
     // If the node defined a unique id then use that
     const int nodeId( ((m_idInc++) + m_idOffset) * m_idDir );
+    
+    const auto iter = std::find_if(
+        m_pNodeVec.begin(),
+        m_pNodeVec.end(),
+        [nodeId](const iNode * pNode){ return pNode->getId() == nodeId; });
+
+    if( iter != m_pNodeVec.end() )
+    {
+        throw NExcept::CCriticalException("Node Create Error!",
+            boost::str( boost::format("Duplicate node id (%s - %d).\n\n%s\nLine: %s")
+                % dataName % nodeId % __FUNCTION__ % __LINE__ ));
+    }
 
     const auto & rNodeDataList = getData( dataName ).getData();
 
@@ -111,20 +124,36 @@ iNode * CNodeStrategy::create(
     {
         if( iter.getNodeType() == NDefs::ENT_SPRITE )
         {
-            
+            auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), nodeId );
+                
+            pHeadNode = pSpriteNode;
+            loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
         }
         else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
         {
             if( pHeadNode == nullptr )
             {
-                auto * pSpriteNode = new CSpriteHeadNodeMultiLst( nodeId, CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), iter.getNodeId() );
+                auto * pSpriteNode = new CSpriteHeadNodeMultiLst(
+                    CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ),
+                    nodeId,
+                    iter.getNodeId() );
+                
                 pHeadNode = pSpriteNode;
                 loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
             }
             else
             {
-                auto * pSpriteNode = new CSpriteNodeMultiLst( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), iter.getNodeId(), iter.getParentNodeId() );
-                pHeadNode->addNode( pSpriteNode );
+                auto * pSpriteNode = new CSpriteNodeMultiLst(
+                    CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ),
+                    iter.getSpriteId(),
+                    iter.getNodeId(),
+                    iter.getParentNodeId() );
+                
+                if( !pHeadNode->addNode( pSpriteNode ) )
+                    throw NExcept::CCriticalException("Node Create Error!",
+                        boost::str( boost::format("Parent node not found when adding child node (%s).\n\n%s\nLine: %s")
+                            % dataName % __FUNCTION__ % __LINE__ ));
+                
                 loadSprite( pSpriteNode->getSprite(), iter );
             }
         }
@@ -138,18 +167,6 @@ iNode * CNodeStrategy::create(
 
     // Add the node pointer to the vector for rendering
     m_pNodeVec.push_back( pHeadNode );
-
-    const auto iter = std::find_if(
-        m_pNodeVec.begin(),
-        m_pNodeVec.end(),
-        [nodeId](const iNode * pNode){ return pNode->getId() == nodeId; });
-
-    if( iter != m_pNodeVec.end() )
-    {
-        throw NExcept::CCriticalException("Node Create Error!",
-            boost::str( boost::format("Duplicate node id (%s - %d).\n\n%s\nLine: %s")
-                % dataName % nodeId % __FUNCTION__ % __LINE__ ));
-    }
 
     return pHeadNode;
 }

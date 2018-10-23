@@ -40,11 +40,14 @@ public:
     // NOTE: This is a recursive function
     iNode * findParent( iNode * pSearchNode ) override;
     
-    // Reset the iterator
-    void reset();
-    
     // Get the parent id
     int getParentId() const override;
+    
+    // Push back node into vector
+    void pushBackNode( iNode * pNode ) override;
+    
+    // Reset the iterator
+    void reset();
 
 protected:
 

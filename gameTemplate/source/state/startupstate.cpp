@@ -62,8 +62,6 @@
 // SDL lib dependencies
 #include <SDL.h>
 
-#include <strategy/nodestrategy.h>
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -113,14 +111,14 @@ void CStartUpState::init()
     m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
 
     // Allocate the sprite to fade in
-    m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    m_upSpriteLogo->getObject()->setPos( 0, 0, -10 );
+    //m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
+    //m_upSpriteLogo->getObject()->setPos( 0, 0, -10 );
     
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
     
-    CNodeStrategy nodeStrategy;
     nodeStrategy.loadFromFile( "data/objects/2d/spritestrategy/nodeList.lst" );
+    nodeStrategy.create( "spriteNode" );
 
 }
 
@@ -130,7 +128,7 @@ void CStartUpState::init()
 ****************************************************************************/
 void CStartUpState::update()
 {
-    m_upSpriteLogo->update();
+    //m_upSpriteLogo->update();
 }
 
 
@@ -139,7 +137,8 @@ void CStartUpState::update()
 ****************************************************************************/
 void CStartUpState::transform()
 {
-    m_upSpriteLogo->getObject()->transform();
+    //m_upSpriteLogo->getObject()->transform();
+    nodeStrategy.transform();
 }
 
 
@@ -153,7 +152,8 @@ void CStartUpState::recordCommandBuffer( uint32_t index )
     
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
     
-    m_upSpriteLogo->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
+    //m_upSpriteLogo->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
+    nodeStrategy.recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
     
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }

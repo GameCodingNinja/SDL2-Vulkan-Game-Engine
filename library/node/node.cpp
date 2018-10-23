@@ -54,16 +54,25 @@ iNode * CNode::next()
 bool CNode::addNode( iNode * pNode )
 {
     // Call a recursive function to find the parent node
-    CNode * pParentNode = dynamic_cast<CNode *>(findParent( pNode ));
+    iNode * pParentNode = findParent( pNode );
 
     // Add the node
     if( pParentNode != nullptr )
-        pParentNode->m_nodeVec.push_back( pNode );
+        pParentNode->pushBackNode( pNode );
 
     else
         return false;
 
     return true;
+}
+
+
+/************************************************************************
+*    DESC:  Push back node into vector
+************************************************************************/
+void CNode::pushBackNode( iNode * pNode )
+{
+    m_nodeVec.push_back( pNode );
 }
 
 

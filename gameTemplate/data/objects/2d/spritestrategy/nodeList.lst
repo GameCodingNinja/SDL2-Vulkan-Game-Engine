@@ -14,8 +14,14 @@
             </sprite2d>
         </spriteNodeMultiList>
 
-        <spriteNodeMultiList nodeId="2" parentId="0">
+        <spriteNodeMultiList nodeId="2" parentId="1">
             <sprite2d name="waffles" objectName="waffles">
+                <position x="300" y="0" z="-10"/>
+            </sprite2d>
+        </spriteNodeMultiList>
+        
+        <spriteNodeMultiList nodeId="3" parentId="2">
+            <sprite2d name="logo" objectName="logo">
                 <position x="300" y="0" z="-10"/>
             </sprite2d>
         </spriteNodeMultiList>
@@ -25,7 +31,7 @@
     <nodeList id="spriteNode" defaultGroup="(startup)">
 
         <spriteNode nodeId="0">
-            <sprite2d name="background" objectName="background">
+            <sprite2d name="logo" objectName="logo">
                 <position x="0" y="0" z="-10"/>
             </sprite2d>
         </spriteNode>

@@ -41,18 +41,14 @@ public:
     // Add a node
     virtual bool addNode( iNode * pNode )
     { return false; }
+    
+    // Push back node into vector
+    virtual void pushBackNode( iNode * pNode ){}
 
     // Find the parent
     // NOTE: This is a recursive function
     virtual iNode * findParent( iNode * pSearchNode )
     { return nullptr; }
-
-    // Get the node type
-    NDefs::ENodeType getType() const
-    { return m_type; }
-
-    // Reset the iterators
-    virtual void resetIterators(){}
 
     // Get the unique head node id number
     virtual int getId() const
@@ -70,6 +66,10 @@ public:
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ){}
+    
+    // Get the node type
+    NDefs::ENodeType getType() const
+    { return m_type; }
 
 protected:
 
