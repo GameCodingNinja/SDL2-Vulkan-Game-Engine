@@ -16,29 +16,23 @@
 ************************************************************************/
 CNodeData::CNodeData( 
     const XMLNode & node,
+    int nodeId,
+    int parenNodetId,
     const std::string & defGroup,
     const std::string & defObjName,
     const std::string & defAIName,
     int defId ) :
         CSpriteData( node.getChildNode(), defGroup, defObjName, defAIName, defId ),
-        m_nodeId(-1),
-        m_parenNodetId(-1),
+        m_nodeId(nodeId),
+        m_parenNodetId(parenNodetId),
         m_nodeType(NDefs::ENT_NULL)
 {
-    // Get the node Id
-    if( node.isAttributeSet( "nodeId" ) )
-        m_nodeId = std::atoi(node.getAttribute( "nodeId" ));
-    
-    // Get the parent Id
-    if( node.isAttributeSet( "parentId" ) )
-        m_parenNodetId = std::atoi(node.getAttribute( "parentId" ));
-    
     // Get the node type
-    const std::string nodeName( node.getName() );
-    if( nodeName == "spriteNode" )
+    const std::string nodeType( node.getAttribute( "type" ) );
+    if( nodeType == "spriteNode" )
         m_nodeType = NDefs::ENT_SPRITE;
     
-    else if( nodeName == "spriteNodeMultiList" )
+    else if( nodeType == "spriteNodeMultiList" )
         m_nodeType = NDefs::ENT_SPRITE_MULTI_LIST;
 }
 

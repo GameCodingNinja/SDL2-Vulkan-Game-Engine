@@ -55,7 +55,7 @@ void CNodeStrategy::loadFromFile( const std::string & file )
     {
         for( int i = 0; i < node.nChildNode(); ++i )
         {
-            const XMLNode nodeLst = node.getChildNode( i );
+            const XMLNode nodeLst = node.getChildNode( "node", i );
 
             // Get the node list id
             const std::string id = nodeLst.getAttribute( "id" );

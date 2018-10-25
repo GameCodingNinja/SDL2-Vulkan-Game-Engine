@@ -138,9 +138,6 @@ iNode * CStrategyMgr::create(
 ************************************************************************/
 void CStrategyMgr::clear()
 {
-    // Do the pre-delete cleanup
-    cleanUp();
-
     NDelFunc::DeleteMapPointers(m_pStrategyMap);
     m_pStrategyMap.clear();
     m_pStrategyVec.clear();
@@ -155,16 +152,6 @@ void CStrategyMgr::init()
 {
     for( auto iter : m_pStrategyVec )
         iter->init();
-}
-
-
-/************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CStrategyMgr::cleanUp()
-{
-    for( auto iter : m_pStrategyVec )
-        iter->cleanUp();
 }
 
 

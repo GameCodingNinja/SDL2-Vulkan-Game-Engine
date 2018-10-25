@@ -63,9 +63,6 @@ public:
     // Do any pre-game loop init's
     void init();
     
-    // Do some cleanup
-    void cleanUp();
-    
     // Handle any misc processing before the real work is started.
     void miscProcess();
     

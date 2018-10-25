@@ -18,6 +18,8 @@ public:
     // Constructor
     CNodeData(
         const XMLNode & node,
+        int nodeId,
+        int parenNodetId,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
         const std::string & defAIName = std::string(),

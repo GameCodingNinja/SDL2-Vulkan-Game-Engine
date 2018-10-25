@@ -71,6 +71,24 @@
             </visual>
         </object>
         
+        <object name="circle_green">
+            <visual>
+                <texture file="data/textures/run/circle_green.png"/>
+            </visual>
+        </object>
+        
+        <object name="square_red">
+            <visual>
+                <texture file="data/textures/run/square_red.png"/>
+            </visual>
+        </object>
+        
+        <object name="triangle_blue">
+            <visual>
+                <texture file="data/textures/run/triangle_blue.png"/>
+            </visual>
+        </object>
+        
         <!--<object name="solid">
             <visual>
                 <pipeline id="2d_solid"/>

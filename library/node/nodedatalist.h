@@ -10,6 +10,7 @@
 
 // Standard lib dependencies
 #include <vector>
+#include <string>
 
 // Forward declaration(s)
 struct XMLNode;
@@ -28,6 +29,17 @@ public:
     // Get the node data
     const std::vector<CNodeData> & getData() const;
 
+private:
+    
+    // Load the node data recursively
+    void loadNode(
+        const XMLNode & xmlNode,
+        CNodeData & nodeData,
+        int & idCounter,
+        const std::string & defGroup,
+        const std::string & defObjName,
+        const std::string & defAIName );
+    
 private:
     
     // Map of the node data
