@@ -12,7 +12,7 @@
 #include "igamestate.h"
 
 // Game lib dependencies
-#include <strategy/nodestrategy.h>
+#include <strategy/actorstrategy.h>
 
 // Standard lib dependencies
 #include <memory>
@@ -68,7 +68,7 @@ private:
     
     // Logo to fade in and out
     //std::unique_ptr<CSprite> m_upSpriteLogo;
-    CNodeStrategy nodeStrategy;
+    CActorStrategy nodeStrategy;
     
     // Command buffer
     std::vector<VkCommandBuffer> m_commandBufVec;

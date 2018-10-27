@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       nodestrategy.h
+*    FILE NAME:       actorstrategy.h
 *
-*    DESCRIPTION:     Node strategy class
+*    DESCRIPTION:     Actor strategy class
 ************************************************************************/
 
-#ifndef __node_strategy_h__
-#define __node_strategy_h__
+#ifndef __actor_strategy_h__
+#define __actor_strategy_h__
 
 // Physical component dependency
 #include <strategy/basestrategy.h>
@@ -34,15 +34,15 @@ class CSprite;
 class CMatrix;
 class iNode;
 
-class CNodeStrategy : public CBaseStrategy, boost::noncopyable
+class CActorStrategy : public CBaseStrategy, boost::noncopyable
 {
 public:
 
     // Constructor
-    CNodeStrategy();
+    CActorStrategy();
 
     // Destructor
-    virtual ~CNodeStrategy();
+    virtual ~CActorStrategy();
 
     // Load the node data from file
     void loadFromFile( const std::string & file ) override;

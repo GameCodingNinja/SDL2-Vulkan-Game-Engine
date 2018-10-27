@@ -76,7 +76,7 @@ add_library(
         3d/lightlist.cpp
         3d/visualcomponent3d.cpp
         strategy/sector.cpp
-        strategy/nodestrategy.cpp
+        strategy/actorstrategy.cpp
         strategy/basicstagestrategy.cpp
         strategy/strategymanager.cpp
         strategy/istrategy.cpp

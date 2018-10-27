@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       nodestrategy.cpp
+*    FILE NAME:       actorstrategy.cpp
 *
-*    DESCRIPTION:     Node strategy 2d class
+*    DESCRIPTION:     Actor strategy 2d class
 ************************************************************************/
 
 // Physical component dependency
-#include <strategy/nodestrategy.h>
+#include <strategy/actorstrategy.h>
 
 // Game lib dependencies
 #include <sprite/sprite.h>
@@ -30,7 +30,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CNodeStrategy::CNodeStrategy()
+CActorStrategy::CActorStrategy()
 {
 }
 
@@ -38,7 +38,7 @@ CNodeStrategy::CNodeStrategy()
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CNodeStrategy::~CNodeStrategy()
+CActorStrategy::~CActorStrategy()
 {
     NDelFunc::DeleteVectorPointers( m_pNodeVec );
 }
@@ -47,7 +47,7 @@ CNodeStrategy::~CNodeStrategy()
 /************************************************************************
  *    DESC:  Load the node data from node
  ************************************************************************/
-void CNodeStrategy::loadFromFile( const std::string & file )
+void CActorStrategy::loadFromFile( const std::string & file )
 {
     // open and parse the XML file:
     XMLNode node = XMLNode::openFileHelper( file.c_str(), "nodeStrategy" );
@@ -78,7 +78,7 @@ void CNodeStrategy::loadFromFile( const std::string & file )
 /************************************************************************
  *    DESC:  Get the node data container by name
  ************************************************************************/
-CNodeDataList & CNodeStrategy::getData( const std::string & name )
+CNodeDataList & CActorStrategy::getData( const std::string & name )
 {
     auto iter = m_dataMap.find( name );
     if( iter == m_dataMap.end() )
@@ -94,7 +94,7 @@ CNodeDataList & CNodeStrategy::getData( const std::string & name )
 *    DESC:  create the node
 *           NOTE: Function assumes radians
 ************************************************************************/
-iNode * CNodeStrategy::create(
+iNode * CActorStrategy::create(
     const std::string & dataName,
     const CPoint<CWorldValue> & pos,
     const CPoint<float> & rot,
@@ -163,7 +163,7 @@ iNode * CNodeStrategy::create(
     return pHeadNode;
 }
 
-iNode * CNodeStrategy::create(
+iNode * CActorStrategy::create(
     const std::string & dataName )
 {
     return create( dataName, CPoint<CWorldValue>(), CPoint<float>(), CPoint<float>(1,1,1) );
@@ -173,7 +173,7 @@ iNode * CNodeStrategy::create(
 /***************************************************************************
 *    DESC:  Load the node
 ****************************************************************************/
-void CNodeStrategy::loadSprite(
+void CActorStrategy::loadSprite(
     CSprite & sprite,
     const CSpriteData & rSpriteData,
     const CPoint<CWorldValue> & pos,
@@ -208,7 +208,7 @@ void CNodeStrategy::loadSprite(
 /***************************************************************************
 *    DESC:  Handle the deleting of any nodes
 ****************************************************************************/
-void CNodeStrategy::createObj( const std::string & name )
+void CActorStrategy::createObj( const std::string & name )
 {
     create( name, CPoint<float>(), CPoint<float>(), CPoint<float>(1,1,1) );
 }
@@ -218,7 +218,7 @@ void CNodeStrategy::createObj( const std::string & name )
 *    DESC:  Handle the deleting of any nodes
 *           NOTE: Do not call from a destructor!
 ****************************************************************************/
-void CNodeStrategy::deleteObj( int id )
+void CActorStrategy::deleteObj( int id )
 {
     const auto iter = std::find_if(
         m_pNodeVec.begin(),
@@ -241,7 +241,7 @@ void CNodeStrategy::deleteObj( int id )
 /***************************************************************************
 *    DESC:  Update the nodes
 ****************************************************************************/
-void CNodeStrategy::update()
+void CActorStrategy::update()
 {
     for( auto iter : m_pNodeVec )
         iter->update();
@@ -251,7 +251,7 @@ void CNodeStrategy::update()
 /************************************************************************
 *    DESC:  Transform the nodes
 ************************************************************************/
-void CNodeStrategy::transform()
+void CActorStrategy::transform()
 {
     for( auto iter : m_pNodeVec )
         iter->transform();
@@ -262,7 +262,7 @@ void CNodeStrategy::transform()
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CNodeStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CActorStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     for( auto iter : m_pNodeVec )
         iter->recordCommandBuffer( index, cmdBuffer, viewProj );
@@ -272,7 +272,7 @@ void CNodeStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuff
 /************************************************************************
 *    DESC:  Get the pointer to the node
 ************************************************************************/
-iNode * CNodeStrategy::getNode( const int id )
+iNode * CActorStrategy::getNode( const int id )
 {
     const auto iter = std::find_if(
         m_pNodeVec.begin(),
@@ -293,7 +293,7 @@ iNode * CNodeStrategy::getNode( const int id )
 /************************************************************************
  *    DESC:  Find if the node exists
  ************************************************************************/
-bool CNodeStrategy::find( const int id )
+bool CActorStrategy::find( const int id )
 {
     // See if this node has already been created
     const auto iter = std::find_if(
