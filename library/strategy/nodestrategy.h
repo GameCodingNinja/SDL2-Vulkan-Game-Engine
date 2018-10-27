@@ -68,14 +68,14 @@ public:
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
 
     // Get the reference to the node
-    /*template<typename target>
-    target & get( const int id )
+    template<typename target>
+    target * get( const int id )
     {
-        return *dynamic_cast<target *>(getSprite( id ));
+        return dynamic_cast<target *>(getNode( id ));
     }
 
     // Find if the node exists
-    bool find( CSprite * piSprite );*/
+    bool find( const int id );
 
     // Get the node data by name
     CNodeDataList & getData( const std::string & name );
@@ -91,13 +91,13 @@ protected:
         const CPoint<float> & scale = CPoint<float>(1,1,1) );
 
     // Handle the deleting of any nodes
-    void deleteObj( int index ) override;
+    void deleteObj( const int id ) override;
 
     // Handle the creating of any object by name
     void createObj( const std::string & name ) override;
 
     // Get the pointer to the sprite
-    //CSprite * getSprite( const int id );
+    iNode * getNode( const int id );
 
 protected:
 

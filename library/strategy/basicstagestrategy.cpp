@@ -40,7 +40,7 @@ void CBasicStageStrategy::loadFromFile( const std::string & file )
     if( !cameraNode.isEmpty() )
         m_defaultCameraPos.loadTransFromNode( cameraNode );
 
-    // Load thes sector data from node
+    // Load these sector data from node
     loadFromNode( node );
 }
 
@@ -108,22 +108,22 @@ void CBasicStageStrategy::transform( const CObject2D & object )
 ****************************************************************************/
 void CBasicStageStrategy::render( const CMatrix & matrix )
 {
-    for( auto & iter : m_sectorDeq )
-        iter.render( matrix );
+    //for( auto & iter : m_sectorDeq )
+    //    iter.render( matrix );
 }
 
 void CBasicStageStrategy::render( const CMatrix & matrix, const CMatrix & rotMatrix )
 {
-    for( auto & iter : m_sectorDeq )
-        iter.render( matrix, rotMatrix );
+    //for( auto & iter : m_sectorDeq )
+    //    iter.render( matrix, rotMatrix );
 }
 
 void CBasicStageStrategy::render()
 {
-    const auto & camera = CCameraMgr::Instance().getCamera( m_cameraId );
+    //const auto & camera = CCameraMgr::Instance().getCamera( m_cameraId );
 
-    for( auto & iter : m_sectorDeq )
-        iter.render( camera );
+    //for( auto & iter : m_sectorDeq )
+    //    iter.render( camera );
 }
 
 

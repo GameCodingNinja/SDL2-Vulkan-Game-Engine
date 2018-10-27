@@ -118,7 +118,7 @@ void CStartUpState::init()
     CHighResTimer::Instance().calcElapsedTime();
     
     nodeStrategy.loadFromFile( "data/objects/2d/spritestrategy/nodeList.lst" );
-    nodeStrategy.create( "multiListNode" );
+    nodeStrategy.create( "spriteNode" );
 
 }
 

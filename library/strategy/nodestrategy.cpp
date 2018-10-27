@@ -18,7 +18,7 @@
 #include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
-#include <node/spriteheadnodemultilist.h>
+#include <node/spritenodemultilist.h>
 #include <node/spritenode.h>
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
@@ -125,37 +125,29 @@ iNode * CNodeStrategy::create(
         if( iter.getNodeType() == NDefs::ENT_SPRITE )
         {
             auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), nodeId );
-                
-            pHeadNode = pSpriteNode;
+
             loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
+            
+            if( pHeadNode == nullptr )
+                pHeadNode = pSpriteNode;
         }
         else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
         {
-            if( pHeadNode == nullptr )
-            {
-                auto * pSpriteNode = new CSpriteHeadNodeMultiLst(
+            auto * pSpriteNode = new CSpriteNodeMultiLst(
                     CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ),
                     nodeId,
-                    iter.getNodeId() );
-                
-                pHeadNode = pSpriteNode;
-                loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
-            }
-            else
-            {
-                auto * pSpriteNode = new CSpriteNodeMultiLst(
-                    CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ),
-                    iter.getSpriteId(),
                     iter.getNodeId(),
                     iter.getParentNodeId() );
                 
-                if( !pHeadNode->addNode( pSpriteNode ) )
-                    throw NExcept::CCriticalException("Node Create Error!",
-                        boost::str( boost::format("Parent node not found when adding child node (%s).\n\n%s\nLine: %s")
-                            % dataName % __FUNCTION__ % __LINE__ ));
-                
-                loadSprite( pSpriteNode->getSprite(), iter );
-            }
+            loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
+            
+            if( pHeadNode == nullptr )
+                pHeadNode = pSpriteNode;
+            
+            else if( !pHeadNode->addNode( pSpriteNode ) )
+                throw NExcept::CCriticalException("Node Create Error!",
+                    boost::str( boost::format("Parent node not found when adding child node (%s).\n\n%s\nLine: %s")
+                        % dataName % __FUNCTION__ % __LINE__ ));
         }
         else
         {
@@ -226,12 +218,12 @@ void CNodeStrategy::createObj( const std::string & name )
 *    DESC:  Handle the deleting of any nodes
 *           NOTE: Do not call from a destructor!
 ****************************************************************************/
-void CNodeStrategy::deleteObj( int index )
+void CNodeStrategy::deleteObj( int id )
 {
     const auto iter = std::find_if(
         m_pNodeVec.begin(),
         m_pNodeVec.end(),
-        [index](const iNode * pNode) { return pNode->getId() == index;} );
+        [id](const iNode * pNode) { return pNode->getId() == id;} );
 
     if( iter != m_pNodeVec.end() )
     {
@@ -241,7 +233,7 @@ void CNodeStrategy::deleteObj( int index )
     else
     {
         NGenFunc::PostDebugMsg( boost::str( boost::format("Node index can't be found (%s).\n\n%s\nLine: %s")
-            % index % __FUNCTION__ % __LINE__ ) );
+            % id % __FUNCTION__ % __LINE__ ) );
     }
 }
 
@@ -280,28 +272,37 @@ void CNodeStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuff
 /************************************************************************
 *    DESC:  Get the pointer to the node
 ************************************************************************/
-/*CSprite * CBasicSpriteStrategy::getSprite( const int id )
+iNode * CNodeStrategy::getNode( const int id )
 {
-    // See if this node has already been created
-    auto iter = m_pNodeMap.find( id );
-    if( iter == m_pNodeMap.end() )
-        throw NExcept::CCriticalException("Sprite Request Error!",
-            boost::str( boost::format("Requested node has not been created! (%d).\n\n%s\nLine: %s")
-                % id % __FUNCTION__ % __LINE__ ));
+    const auto iter = std::find_if(
+        m_pNodeVec.begin(),
+        m_pNodeVec.end(),
+        [id](const iNode * pNode) { return pNode->getId() == id; } );
 
-    return iter->second;
-}*/
+    if( iter != m_pNodeVec.end() )
+        return *iter;
+
+    else
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
+            % id % __FUNCTION__ % __LINE__ ) );
+
+    return nullptr;
+}
 
 
 /************************************************************************
  *    DESC:  Find if the node exists
  ************************************************************************/
-/*bool CBasicSpriteStrategy::find( CSprite * pSprite )
+bool CNodeStrategy::find( const int id )
 {
     // See if this node has already been created
-    auto iter = m_pNodeMap.find( pSprite->getId() );
-    if( iter != m_pNodeMap.end() && (iter->second == pSprite) )
+    const auto iter = std::find_if(
+        m_pNodeVec.begin(),
+        m_pNodeVec.end(),
+        [id](const iNode * pNode) { return pNode->getId() == id; } );
+
+    if( iter != m_pNodeVec.end() )
         return true;
 
     return false;
-}*/
+}

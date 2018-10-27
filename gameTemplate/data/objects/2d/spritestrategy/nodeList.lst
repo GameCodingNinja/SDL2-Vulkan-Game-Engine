@@ -11,12 +11,28 @@
             <sprite2d name="logo" objectName="logo">
                 <position x="-500" y="0" z="-10"/>
             </sprite2d>
+            
+            <node type="spriteNodeMultiList">
+                    
+                <sprite2d name="square_red" objectName="square_red">
+                    <position x="100" y="100" z="-10"/>
+                </sprite2d>
+
+            </node>
 
             <node type="spriteNodeMultiList">
                 
                 <sprite2d name="waffles" objectName="waffles">
                     <position x="300" y="0" z="-10"/>
                 </sprite2d>
+                
+                <node type="spriteNodeMultiList">
+                    
+                    <sprite2d name="square_red" objectName="square_red">
+                        <position x="120" y="-100" z="-10"/>
+                    </sprite2d>
+
+                </node>
 
                 <node type="spriteNodeMultiList">
                     
@@ -60,23 +76,11 @@
         </node>
     </node>
     
-    <node id="spriteNode" type="spriteNodeMultiList" defaultGroup="(startup)">
-
-        <sprite2d name="background" objectName="background">
+    <node id="spriteNode" type="spriteNode" defaultGroup="(startup)">
+        
+        <sprite2d name="waffles" objectName="waffles">
             <position x="0" y="0" z="-10"/>
         </sprite2d>
-        
-        <node type="spriteNodeMultiList">
-            <sprite2d name="logo" objectName="logo">
-                <position x="-300" y="0" z="-10"/>
-            </sprite2d>
-        </node>
-        
-        <node type="spriteNodeMultiList">
-            <sprite2d name="waffles" objectName="waffles">
-                <position x="300" y="0" z="-10"/>
-            </sprite2d>
-        </node>
 
     </node>
 

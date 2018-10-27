@@ -26,7 +26,7 @@ public:
     virtual ~CBaseStrategy(){}
     
     // Set to Destroy the sprite
-    void setToDestroy( int spriteIndex ) override;
+    void setToDestroy( const int spriteIndex ) override;
     
     // Set to create the sprite
     void setToCreate( const std::string & name ) override;
@@ -40,7 +40,7 @@ protected:
     virtual void handleDelete() override;
     
     // Handle the deleting of any object by Id
-    virtual void deleteObj( int index );
+    virtual void deleteObj( const int id );
     
     // Handle the creating of new sprite objects by name
     virtual void handleCreate();

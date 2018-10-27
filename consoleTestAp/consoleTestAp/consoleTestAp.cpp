@@ -32,7 +32,7 @@ int main()
     return 0;
 }*/
 
-#include <iostream>
+/*#include <iostream>
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
 #include <script/scripthighresolutiontimer.h>
@@ -56,7 +56,7 @@ int main()
     CScriptMgr::Instance().update();
     
     return 0;
-}
+}*/
 
 /*#include <iostream>
 #include <thread>
@@ -184,7 +184,7 @@ int main()
     return 0;
 }*/
 
-/*#include <iostream>
+#include <iostream>
 #include <limits>
 #include <cstdint>
 #include <string>
@@ -195,41 +195,38 @@ int main()
 #include <queue>
 #include <memory>
 
-#include <2d/visualcomponent2d.h>
 #include <physics/physicscomponent2d.h>
+#include <physics/physicscomponent3d.h>
 #include <script/scriptcomponent.h>
-#include <2d/sprite2d.h>
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
 #include <2d/object2d.h>
-#include <gui/uicontrol.h>
 
 int main()
 {
-    int visSize = sizeof(CVisualComponent2D);  // 188 112 108
-    int scrSize = sizeof(CScriptComponent);    // 64, 36, 12
-    int phySize = sizeof(CPhysicsComponent2D); // 20
-    int objSize = sizeof(CObject);             // 72
-    int objSize2D = sizeof(CObject2D);         // 224, 160, 148
+    int scrSize = sizeof(CScriptComponent);    // 24
+    int phySize2d = sizeof(CPhysicsComponent2D); // 40
+    int phySize3d = sizeof(CPhysicsComponent3D); // 24
+    int objSize = sizeof(CObject);             // 80
+    int objSize2D = sizeof(CObject2D);         // 152
     
-    int sprSize = sizeof(CSprite2D);           // 532, 468, 456, 428, 324
+    int sprSize = sizeof(CSprite);             // 128
     
-    int crlSize = sizeof(CUIControl);          // 496
+    int strSize = sizeof(std::string);         // 32
+    int mapSize = sizeof(std::map<std::string, std::string>); // 48
+    int vecSizeInt = sizeof(std::vector<int>);    // 24
+    int vecSizePtr = sizeof(std::vector<int *>);    // 24
+    int lstSize = sizeof(std::list<int>);      // 24
+    int queSize = sizeof(std::queue<int>);     // 80
+    int deqSize = sizeof(std::deque<int>);     // 80
     
-    int strSize = sizeof(std::string);         // 24
-    int mapSize = sizeof(std::map<std::string, std::string>); // 24
-    int vecSize = sizeof(std::vector<int>);    // 12
-    int lstSize = sizeof(std::list<int>);      // 12
-    int queSize = sizeof(std::queue<int>);     // 40
-    int deqSize = sizeof(std::deque<int>);     // 40
-    
-    int unqSize = sizeof(std::unique_ptr<int>);  // 40
-    int shrSize = sizeof(std::shared_ptr<int>);  // 40
+    int unqSize = sizeof(std::unique_ptr<int>);  // 8
+    int shrSize = sizeof(std::shared_ptr<int>);  // 16
     
     int max = std::numeric_limits<int8_t>::max();
     int min = std::numeric_limits<int8_t>::min();
 
     return 0;
-}*/
+}
 
 /*#include <iostream>
 

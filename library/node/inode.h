@@ -68,7 +68,7 @@ public:
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ){}
     
     // Get the node type
-    NDefs::ENodeType getType() const
+    virtual NDefs::ENodeType getType() const
     { return m_type; }
 
 protected:

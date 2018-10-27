@@ -6,56 +6,85 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <node/spriteheadnodemultilist.h>
+#include <node/spritenodemultilist.h>
 
 // Game lib dependencies
 #include <utilities/deletefuncs.h>
 #include <2d/object2d.h>
 
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteHeadNodeMultiLst::CSpriteHeadNodeMultiLst(
+CSpriteNodeMultiLst::CSpriteNodeMultiLst(
     const CObjectData2D & objectData,
     int spriteId,
     int nodeId,
     int parentId ) :
-        CSpriteNodeMultiLst(objectData, spriteId, nodeId, parentId)
+        CNode(nodeId, parentId),
+        m_sprite(objectData, spriteId)
 {
+    m_type = NDefs::ENT_SPRITE;
 }
 
-CSpriteHeadNodeMultiLst::CSpriteHeadNodeMultiLst(
+CSpriteNodeMultiLst::CSpriteNodeMultiLst(
     const CObjectData3D & objectData,
     int spriteId,
     int nodeId,
     int parentId ) :
-        CSpriteNodeMultiLst(objectData, spriteId, nodeId, parentId)
+        CNode(nodeId, parentId),
+        m_sprite(objectData, spriteId)
 {
+    m_type = NDefs::ENT_SPRITE;
 }
 
 
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CSpriteHeadNodeMultiLst::~CSpriteHeadNodeMultiLst()
+CSpriteNodeMultiLst::~CSpriteNodeMultiLst()
 {
-    NDelFunc::DeleteVectorPointers( m_nodeVec );
+    NDelFunc::DeleteVectorPointers( m_allNodeVec );
 }
 
 
 /***************************************************************************
 *    DESC:  Update the nodes.
 ****************************************************************************/
-void CSpriteHeadNodeMultiLst::update()
+void CSpriteNodeMultiLst::update()
 {
     m_sprite.update();
     m_sprite.physicsUpdate();
         
-    for( auto iter : m_nodeVec )
+    update( this );
+    
+    resetIterators();
+}
+
+void CSpriteNodeMultiLst::update( iNode * pNode )
     {
-        iter->getSprite().update();
-        iter->getSprite().physicsUpdate();
+    if( pNode != nullptr )
+    {
+        iNode * pNextNode;
+
+        do
+        {
+            // get the next node
+            pNextNode = pNode->next();
+
+            if( pNextNode != nullptr )
+            {
+                // Cast the child node
+                auto * pChildNode = dynamic_cast<CSpriteNodeMultiLst *>(pNextNode);
+                
+                // Update the children
+                pChildNode->getSprite().update();
+                pChildNode->getSprite().physicsUpdate();
+                
+                // Call a recursive function again
+                update( pNextNode );
+            }
+        }
+        while( pNextNode != nullptr );
     }
 }
 
@@ -63,7 +92,7 @@ void CSpriteHeadNodeMultiLst::update()
 /***************************************************************************
 *    DESC:  Update the nodes
 ****************************************************************************/
-void CSpriteHeadNodeMultiLst::transform()
+void CSpriteNodeMultiLst::transform()
 {
     m_sprite.getObject()->transform();
 
@@ -72,7 +101,7 @@ void CSpriteHeadNodeMultiLst::transform()
     resetIterators();
 }
 
-void CSpriteHeadNodeMultiLst::transform( iNode * pNode )
+void CSpriteNodeMultiLst::transform( iNode * pNode )
 {
     if( pNode != nullptr )
     {
@@ -107,7 +136,7 @@ void CSpriteHeadNodeMultiLst::transform( iNode * pNode )
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CSpriteHeadNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     m_sprite.recordCommandBuffers( index, cmdBuffer, viewProj );
     
@@ -116,7 +145,7 @@ void CSpriteHeadNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuff
     resetIterators();
 }
 
-void CSpriteHeadNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     if( pNode != nullptr )
     {
@@ -147,11 +176,11 @@ void CSpriteHeadNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index
 /************************************************************************
 *    DESC:  Add a node
 ************************************************************************/
-bool CSpriteHeadNodeMultiLst::addNode( iNode * pNode )
+bool CSpriteNodeMultiLst::addNode( iNode * pNode )
 {
-    m_nodeVec.push_back( dynamic_cast<CSpriteNodeMultiLst *>(pNode) );
+    m_allNodeVec.push_back( dynamic_cast<CSpriteNodeMultiLst *>(pNode) );
 
-    bool result = CSpriteNodeMultiLst::addNode( pNode );
+    const bool result = CNode::addNode( pNode );
 
     resetIterators();
 
@@ -162,10 +191,28 @@ bool CSpriteHeadNodeMultiLst::addNode( iNode * pNode )
 /************************************************************************
 *    DESC:  Reset the iterators
 ************************************************************************/
-void CSpriteHeadNodeMultiLst::resetIterators()
+void CSpriteNodeMultiLst::resetIterators()
 {
     reset();
 
-    for( auto iter : m_nodeVec )
+    for( auto iter : m_allNodeVec )
         iter->reset();
+}
+
+
+/************************************************************************
+*    DESC:  Get the sprite
+************************************************************************/
+CSprite & CSpriteNodeMultiLst::getSprite()
+{
+    return m_sprite;
+}
+
+
+/************************************************************************
+*    DESC:  Get the sprite id number
+************************************************************************/
+int CSpriteNodeMultiLst::getId() const
+{
+    return m_sprite.getId();
 }

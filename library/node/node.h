@@ -34,7 +34,7 @@ public:
     iNode * next() override;
 
     // Add a node
-    virtual bool addNode( iNode * pNode ) override;
+    bool addNode( iNode * pNode ) override;
 
     // Find the parent
     // NOTE: This is a recursive function

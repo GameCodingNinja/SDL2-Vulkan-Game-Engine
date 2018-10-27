@@ -23,7 +23,7 @@ CBaseStrategy::CBaseStrategy()
 /************************************************************************
  *    DESC:  Set to Destroy the sprite
  ************************************************************************/
-void CBaseStrategy::setToDestroy( int spriteIndex )
+void CBaseStrategy::setToDestroy( const int spriteIndex )
 {
     m_deleteSet.insert( spriteIndex );
 }
@@ -67,7 +67,7 @@ void CBaseStrategy::handleDelete()
 /***************************************************************************
 *    DESC:  Handle the deleting of any object by Id
 ****************************************************************************/
-void CBaseStrategy::deleteObj( int index )
+void CBaseStrategy::deleteObj( const int id )
 {
     // Virtual function meant to be over written by inherited class
 }
