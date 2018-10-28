@@ -54,9 +54,6 @@ public:
     // Init a menu group
     void initGroup( const std::string & group );
     
-    // Clean up a menu group
-    void cleanUpGroup( const std::string & group );
-    
     // Activate a menu
     void activateMenu( const std::string & group, const std::string & treeStr, const std::string & menuName );
     void activateMenu( const std::string & treeStr, const std::string & menuName );
@@ -87,9 +84,9 @@ public:
     void transformInterface( const CObject2D & object );
 
     // Render menus
-    void renderMenu( const CMatrix & matrix ); 
-    void renderInterface( const CMatrix & matrix );
-    void render( const CMatrix & matrix );
+    //void renderMenu( const CMatrix & matrix ); 
+    //void renderInterface( const CMatrix & matrix );
+    //void render( const CMatrix & matrix );
 
     // Get reference to the menu in questionn
     CMenu & getMenu( const std::string & nameStr );
@@ -235,5 +232,4 @@ Target * CMenuMgr::getPtrToActiveControl( const std::string & menuName )
     return pControl;
 }
 
-#endif  // __menu_manager_h__
-
+#endif

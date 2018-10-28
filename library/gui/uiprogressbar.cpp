@@ -9,9 +9,10 @@
 #include <gui/uiprogressbar.h>
 
 // Game lib dependencies
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
+#include <utilities/xmlParser.h>
 
 // Standard lib dependencies
 #include <cstring>
@@ -116,19 +117,19 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
 
         if( !objectName.empty() )
         {
-            m_upStencilMaskSprite.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( getGroup(), objectName ) ) );
+            m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData2D( getGroup(), objectName ) ) );
 
             // Load the transform data
-            m_upStencilMaskSprite->loadTransFromNode( stencilMaskNode );
+            m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
 
             // Get the size
             m_size = m_upStencilMaskSprite->getObjectData().getSize();
 
             // Get the initial position
-            m_pos = m_upStencilMaskSprite->getPos();
+            m_pos = m_upStencilMaskSprite->getObject()->getPos();
 
             // Get the initial scale
-            m_scale = m_upStencilMaskSprite->getScale();
+            m_scale = m_upStencilMaskSprite->getObject()->getScale();
         }
         else
         {
@@ -136,10 +137,10 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
             m_size = m_spriteDeq.at(m_spriteApplyIndex).getObjectData().getSize();
 
             // Get the initial position
-            m_pos = m_spriteDeq.at(m_spriteApplyIndex).getPos();
+            m_pos = m_spriteDeq.at(m_spriteApplyIndex).getObject()->getPos();
 
             // Get the initial scale
-            m_scale = m_spriteDeq.at(m_spriteApplyIndex).getScale();
+            m_scale = m_spriteDeq.at(m_spriteApplyIndex).getObject()->getScale();
         }
     }
 }
@@ -153,16 +154,16 @@ void CUIProgressBar::transform( const CObject2D & object )
     CUIControl::transform( object );
 
     if( m_upStencilMaskSprite )
-        m_upStencilMaskSprite->transform( getMatrix(), wasWorldPosTranformed() );
+        m_upStencilMaskSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
 /************************************************************************
 *    DESC:  do the render
 ************************************************************************/
-void CUIProgressBar::render( const CMatrix & matrix )
+/*void CUIProgressBar::render( const CMatrix & matrix )
 {
-    /*if( m_upStencilMaskSprite )
+    if( m_upStencilMaskSprite )
     {
         for( size_t i  = 0; i < m_spriteDeq.size(); ++i )
         {
@@ -206,8 +207,8 @@ void CUIProgressBar::render( const CMatrix & matrix )
     else
     {
         CUIControl::render( matrix );
-    }*/
-}
+    }
+}*/
 
 
 /************************************************************************
@@ -246,13 +247,13 @@ void CUIProgressBar::setSizePos()
 
     if( m_upStencilMaskSprite )
     {
-        m_upStencilMaskSprite->setScale( scale );
-        m_upStencilMaskSprite->setPos( pos );
+        m_upStencilMaskSprite->getObject()->setScale( scale );
+        m_upStencilMaskSprite->getObject()->setPos( pos );
     }
     else
     {
-        m_spriteDeq.at(m_spriteApplyIndex).setScale( scale );
-        m_spriteDeq.at(m_spriteApplyIndex).setPos( pos );
+        m_spriteDeq.at(m_spriteApplyIndex).getObject()->setScale( scale );
+        m_spriteDeq.at(m_spriteApplyIndex).getObject()->setPos( pos );
     }
 }
 

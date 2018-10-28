@@ -14,12 +14,11 @@
 // Game lib dependencies
 #include <gui/menudefs.h>
 #include <gui/scrollparam.h>
-#include "gui/messagecracker.h"
+#include <gui/messagecracker.h>
 #include <common/size.h>
 #include <common/quad.h>
 #include <common/rect.h>
 #include <script/scriptcomponent.h>
-#include <2d/sprite2d.h>
 
 // Boost lib dependencies
 #include <boost/signals2.hpp>
@@ -35,6 +34,7 @@
 // Forward declaration(s)
 class CSmartGuiControl;
 class CObject2D;
+class CSprite;
 
 class CUIControl : public CControlBase
 {
@@ -53,9 +53,6 @@ public:
     
     // Init control
     virtual void init();
-    
-    // Do some cleanup. Currently only for font usage
-    virtual void cleanUp();
 
     // Update the control
     virtual void update();
@@ -64,7 +61,7 @@ public:
     virtual void transform( const CObject2D & object ) override;
 
     // do the render
-    virtual void render( const CMatrix & matrix );
+    //virtual void render( const CMatrix & matrix );
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent );
@@ -232,8 +229,8 @@ private:
     
 protected:
     
-    // sprite vector
-    std::deque<CSprite2D> m_spriteDeq;
+    // sprite deque
+    std::deque<CSprite> m_spriteDeq;
 
 private:
 
@@ -282,6 +279,4 @@ private:
     ExecutionActionSignal m_executionActionSignal;
 };
 
-#endif  // __ui_control_h__
-
-
+#endif

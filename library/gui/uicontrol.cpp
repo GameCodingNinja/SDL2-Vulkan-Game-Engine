@@ -22,6 +22,8 @@
 #include <system/device.h>
 #include <managers/actionmanager.h>
 #include <common/fontproperties.h>
+#include <common/ivisualcomponent.h>
+#include <sprite/sprite.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -183,19 +185,19 @@ void CUIControl::loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCo
     rSprite.load( node );
 
     // See if this sprite is used for rendering a font string
-    if( rSprite.getVisualComponent().isFontSprite() )
+    if( rSprite.getVisualComponent()->isFontSprite() )
     {
         // Set the font string to be created later
         if( !m_stringVec.empty() && (fontSpriteCount < m_stringVec.size()) )
-            rSprite.getVisualComponent().setFontString( m_stringVec.at(fontSpriteCount) );
+            rSprite.getVisualComponent()->setFontString( m_stringVec.at(fontSpriteCount) );
 
         ++fontSpriteCount;
     }
     else
     {
         // Find the largest size width and height of the different sprites for the controls size
-        const float width( rSprite.getObjectData().getSize().w + std::fabs( rSprite.getPos().x ) );
-        const float height( rSprite.getObjectData().getSize().h + std::fabs( rSprite.getPos().y ) );
+        const float width( rSprite.getObjectData().getSize().w + std::fabs( rSprite.getObject()->getPos().x ) );
+        const float height( rSprite.getObjectData().getSize().h + std::fabs( rSprite.getObject()->getPos().y ) );
 
         if( width > m_size.w )
             m_size.w = width;
@@ -226,7 +228,7 @@ void CUIControl::transform( const CObject2D & object )
     CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
 
     for( auto & iter : m_spriteDeq )
-        iter.transform( getMatrix(), wasWorldPosTranformed() );
+        iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 
     transformCollision();
 }
@@ -284,11 +286,11 @@ void CUIControl::transformCollision()
 /************************************************************************
 *    DESC:  do the render
 ************************************************************************/
-void CUIControl::render( const CMatrix & matrix )
+/*void CUIControl::render( const CMatrix & matrix )
 {
     for( auto & iter : m_spriteDeq )
         iter.render( matrix );
-}
+}*/
 
 
 /************************************************************************
@@ -588,18 +590,6 @@ void CUIControl::init()
 
 
 /************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CUIControl::cleanUp()
-{
-    // Free the font VBO
-    // This allows for early VBO delete so that the menu manager can be freed from the load screen
-    for( auto & iter : m_spriteDeq )
-        iter.cleanUp();
-}
-
-
-/************************************************************************
 *    DESC:  Prepare the sprite script function
 ************************************************************************/
 void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlState )
@@ -648,7 +638,7 @@ void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlS
 void CUIControl::callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate )
 {
     for( auto & iter : m_spriteDeq )
-        iter.prepareFuncId( scriptFuncMapKey, forceUpdate );
+        iter.prepare( scriptFuncMapKey, forceUpdate );
 }
 
 
@@ -845,11 +835,11 @@ void CUIControl::createFontString( const std::string & fontString, int spriteInd
 
     for( auto & iter : m_spriteDeq )
     {
-        if( iter.getVisualComponent().isFontSprite() )
+        if( iter.getVisualComponent()->isFontSprite() )
         {
             if( fontSpriteCounter == spriteIndex )
             {
-                iter.getVisualComponent().createFontString( fontString );
+                iter.getVisualComponent()->createFontString( fontString );
                 break;
             }
 
@@ -874,11 +864,11 @@ void CUIControl::setFontString( const std::string & fontString, int spriteIndex 
 
     for( auto & iter : m_spriteDeq )
     {
-        if( iter.getVisualComponent().isFontSprite() )
+        if( iter.getVisualComponent()->isFontSprite() )
         {
             if( fontSpriteCounter == spriteIndex )
             {
-                iter.getVisualComponent().setFontString( fontString );
+                iter.getVisualComponent()->setFontString( fontString );
                 break;
             }
 
@@ -1064,7 +1054,7 @@ void CUIControl::connect_executionAction( const ExecutionActionSignal::slot_type
 void CUIControl::setAlpha( float alpha )
 {
     for( auto & iter : m_spriteDeq )
-        iter.getVisualComponent().setAlpha( alpha );
+        iter.getVisualComponent()->setAlpha( alpha );
 
     m_alpha = alpha;
 }

@@ -154,27 +154,6 @@ void CMenuMgr::initGroup( const std::string & group )
 
 
 /************************************************************************
- *    DESC:  Clean up a menu group
- *           This allows certain actions to be done after the group load
- ************************************************************************/
-void CMenuMgr::cleanUpGroup( const std::string & group )
-{
-    auto menuMapIter = m_menuMapMap.find( group );
-    if( menuMapIter != m_menuMapMap.end() )
-    {
-        for( auto & iter : menuMapIter->second )
-            iter.second.cleanUp();
-    }
-    else
-    {
-        throw NExcept::CCriticalException("Menu Init Group Error!",
-            boost::str( boost::format("Menu group name can't be found to init (%s).\n\n%s\nLine: %s")
-                % group % __FUNCTION__ % __LINE__ ));
-    }
-}
-
-
-/************************************************************************
 *    DESC:  Load the menu/tree info from file
 ************************************************************************/
 void CMenuMgr::load( const std::string & group, const std::string & filePath )
@@ -874,7 +853,7 @@ void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec, const 
 /************************************************************************
 *    DESC:  Render menus
 ************************************************************************/
-void CMenuMgr::renderMenu( const CMatrix & matrix )
+/*void CMenuMgr::renderMenu( const CMatrix & matrix )
 {
     if( m_active )
     {
@@ -906,7 +885,7 @@ void CMenuMgr::render( const CMatrix & matrix )
             if( iter->isActive() )
                 iter->render( matrix );
     }
-}
+}*/
 
 
 /************************************************************************

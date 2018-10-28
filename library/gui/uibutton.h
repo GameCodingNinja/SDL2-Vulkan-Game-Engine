@@ -19,7 +19,6 @@ public:
 
     // Destructor
     virtual ~CUIButton();
-
 };
 
-#endif  // __ui_label_h__
+#endif

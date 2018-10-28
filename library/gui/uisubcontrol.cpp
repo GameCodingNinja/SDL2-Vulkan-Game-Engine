@@ -117,19 +117,6 @@ void CUISubControl::init()
 
 
 /************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CUISubControl::cleanUp()
-{
-    CUIControl::cleanUp();
-
-    // Init all controls
-    for( auto iter : m_pSubControlVec )
-        iter->cleanUp();
-}
-
-
-/************************************************************************
 *    DESC:  Find the reference nodes
 ************************************************************************/
 void CUISubControl::findNodes(
@@ -207,14 +194,14 @@ void CUISubControl::transform( const CObject2D & object )
 /************************************************************************
 *    DESC:  Render the sub control
 ************************************************************************/
-void CUISubControl::render( const CMatrix & matrix )
+/*void CUISubControl::render( const CMatrix & matrix )
 {
     // Call the parent
     CUIControl::render( matrix );
 
     for( auto iter : m_pSubControlVec )
         iter->render( matrix );
-}
+}*/
 
 
 /************************************************************************

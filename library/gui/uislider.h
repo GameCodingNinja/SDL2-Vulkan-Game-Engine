@@ -121,9 +121,6 @@ private:
 
     // The current press type
     NDefs::EActionPress m_pressType;
-
 };
 
-#endif  // __ui_slider_h__
-
-
+#endif

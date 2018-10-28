@@ -21,7 +21,7 @@
 #include <map>
 
 // Forward declaration(s)
-class CSprite2D;
+class CSprite;
 
 class CUIMeter : public CUIControl
 {
@@ -142,7 +142,7 @@ private:
     
     // Sprite pointer
     // We DO NOT own this pointer. Don't free it!
-    CSprite2D * m_pSprite;
+    CSprite * m_pSprite;
     
     // Bang range value
     std::vector<CBangRange> m_bangRangeVec;
@@ -157,4 +157,4 @@ private:
     EScaleType m_scaleType;
 };
 
-#endif  // __ui_label_h__
+#endif

@@ -9,7 +9,7 @@
 #include <gui/uicheckbox.h>
 
 // Game lib dependencies
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -66,11 +66,11 @@ void CUICheckBox::onSelectExecute( const SDL_Event & rEvent )
 /************************************************************************
 *    DESC:  Render the control
 ************************************************************************/
-void CUICheckBox::render( const CMatrix & matrix )
+/*void CUICheckBox::render( const CMatrix & matrix )
 {
     for( size_t i = 0; i < m_spriteDeq.size()-1; ++i )
         m_spriteDeq[i].render( matrix );
 
     if( m_toggleState == NUIControl::TOGGLE_STATE_ON )
         m_spriteDeq.back().render( matrix );
-}
+}*/

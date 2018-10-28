@@ -51,6 +51,4 @@ private:
     int m_msg;
 };
 
-#endif  // __scroll_param_h__
-
-
+#endif

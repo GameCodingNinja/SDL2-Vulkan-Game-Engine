@@ -26,8 +26,8 @@ class CSignalMgr
 public:
 
     // Define the boost signals
-    //typedef boost::signals2::signal<void (CUIControl *)> SmartGuiControlSignal;
-    //typedef boost::signals2::signal<void (CMenu *)> SmartMenuSignal;
+    typedef boost::signals2::signal<void (CUIControl *)> SmartGuiControlSignal;
+    typedef boost::signals2::signal<void (CMenu *)> SmartMenuSignal;
     typedef boost::signals2::signal<void (const std::string &, CSprite *)> AICreateSignal;
     typedef boost::signals2::signal<void ()> BasicFunction;
 
@@ -45,12 +45,12 @@ public:
     ////////////////////////////////////////////////////////
 
     // Connect/Disconnect to the smart gui signal
-    //void connect_smartGui( const SmartGuiControlSignal::slot_type & slot );
-    //void disconnect_smartGui();
+    void connect_smartGui( const SmartGuiControlSignal::slot_type & slot );
+    void disconnect_smartGui();
 
     // Connect to the smart menu signal
-    //void connect_smartMenu( const SmartMenuSignal::slot_type & slot );
-    //void disconnect_smartMenu();
+    void connect_smartMenu( const SmartMenuSignal::slot_type & slot );
+    void disconnect_smartMenu();
     
     // Connect to the Ai Sprite create signal
     void connect_aICreate( const AICreateSignal::slot_type & slot );
@@ -65,10 +65,10 @@ public:
     void disconnect_resolutionChange();
 
     // Broadcast smart gui control signal
-    //void broadcast( CUIControl * pControl );
+    void broadcast( CUIControl * pControl );
 
     // Broadcast smart menu signal
-    //void broadcast( CMenu * pMenu );
+    void broadcast( CMenu * pMenu );
     
     // Broadcast AI Sprite create signal
     void broadcast( const std::string & aiName, CSprite * pSprite );
@@ -90,14 +90,11 @@ private:
 private:
 
     // Boost signals
-    //SmartGuiControlSignal m_smartGuiControlSignal;
-    //SmartMenuSignal m_smartMenuSignal;
+    SmartGuiControlSignal m_smartGuiControlSignal;
+    SmartMenuSignal m_smartMenuSignal;
     AICreateSignal m_aiCreateSignal;
     BasicFunction m_loadSignal;
     BasicFunction m_resolutionChange;
-
 };
 
-#endif  // __message_manager_h__
-
-
+#endif

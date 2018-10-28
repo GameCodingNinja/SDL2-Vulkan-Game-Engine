@@ -19,7 +19,6 @@ public:
 
     // Destructor
     virtual ~CUILabel();
-
 };
 
-#endif  // __ui_label_h__
+#endif

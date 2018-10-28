@@ -15,14 +15,13 @@
 #include <common/point.h>
 #include <common/defs.h>
 #include <utilities/bitmask.h>
-#include <2d/sprite2d.h>
 
 // Standard lib dependencies
 #include <vector>
 #include <memory>
 
 // Forward declaration(s)
-class CSprite2D;
+class CSprite;
 
 class CUIScrollBox : public CUISubControl
 {
@@ -39,9 +38,6 @@ public:
     
     // Init control
     void init() override;
-    
-    // Do some cleanup
-    void cleanUp() override;
 
     // Update the control
     void update() override;
@@ -53,7 +49,7 @@ public:
     void transform( const CObject2D & object ) override;
 
     // Render the control
-    void render( const CMatrix & matrix ) override;
+    //void render( const CMatrix & matrix ) override;
 
     // Set the first inactive control to be active
     bool activateFirstInactiveControl() override;
@@ -186,7 +182,7 @@ private:
     float m_maxMoveAmount;
 
     // stencil mask sprite
-    std::unique_ptr<CSprite2D> m_upStencilMaskSprite;
+    std::unique_ptr<CSprite> m_upStencilMaskSprite;
     
     // Active scroll control index in this control
     int m_activeScrollCtrl;
@@ -222,9 +218,6 @@ private:
     
     // Flag to allow for end scroll selection
     bool m_endScrollSelection;
-
 };
 
-#endif  // __ui_scroll_box_h__
-
-
+#endif

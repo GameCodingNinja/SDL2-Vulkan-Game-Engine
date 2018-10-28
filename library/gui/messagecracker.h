@@ -83,7 +83,4 @@ private:
     } m_unionValue;
 };
 
-
-#endif  // __message_cracker_h__
-
-
+#endif

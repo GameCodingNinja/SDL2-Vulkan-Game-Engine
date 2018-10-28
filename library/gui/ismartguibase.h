@@ -70,6 +70,4 @@ protected:
     CUIControl * m_pUIControl;
 };
 
-#endif  // __smart_gui_base_h__
-
-
+#endif

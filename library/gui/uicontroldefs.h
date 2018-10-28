@@ -64,4 +64,4 @@ namespace NUIControl
     };
 }
 
-#endif  // __ui_control_defs_h__
+#endif

@@ -39,11 +39,11 @@ public:
 
     // Get the visual component
     CVisualComponent3D & getVisualComponent();
-    iVisualComponent * getVisualInterface() override;
+    iVisualComponent * getVisualInterface();
 
     // Get the physics component
     CPhysicsComponent3D & getPhysicsComponent();
-    iPhysicsComponent * getPhysicsInterface() override;
+    iPhysicsComponent * getPhysicsInterface();
 
     // Get the scripting component
     CScriptComponent & getScriptComponent();

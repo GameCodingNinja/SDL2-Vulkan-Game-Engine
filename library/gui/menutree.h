@@ -59,7 +59,7 @@ public:
     void transform( const CObject2D & object );
 
     // do the render
-    void render( const CMatrix & matrix );
+    //void render( const CMatrix & matrix );
 
     // Is a menu active
     bool isActive();
@@ -127,9 +127,6 @@ private:
 
     // menu tree state
     NMenu::EMenuTreeState m_state;
-
 };
 
-#endif  // __menu_tree_h__
-
-
+#endif

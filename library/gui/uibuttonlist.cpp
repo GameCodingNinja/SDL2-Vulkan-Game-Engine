@@ -11,12 +11,14 @@
 // Game lib dependencies
 #include <gui/menudefs.h>
 #include <gui/uicontroldefs.h>
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
 #include <utilities/genfunc.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectvisualdata2d.h>
 #include <utilities/exceptionhandling.h>
+#include <utilities/xmlParser.h>
 #include <common/defs.h>
+#include <common/ivisualcomponent.h>
 
 // Standard lib dependencies
 #include <cstring>
@@ -242,7 +244,7 @@ void CUIButtonList::updateDisplay( int index )
     createFontString( m_activeIndex );
 
     if( m_imageLstIndex > -1 )
-        m_spriteDeq.at(m_imageLstIndex).getVisualComponent().setFrame( m_activeIndex );
+        m_spriteDeq.at(m_imageLstIndex).getVisualComponent()->setFrame( m_activeIndex );
 }
 
 

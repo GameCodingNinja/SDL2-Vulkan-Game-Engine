@@ -91,9 +91,6 @@ protected:
     
     // menu alpha value
     float m_alpha;
-
 };
 
-#endif  // __ui_control_base_h__
-
-
+#endif

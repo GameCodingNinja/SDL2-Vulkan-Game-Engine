@@ -13,12 +13,12 @@
 
 // Game lib dependencies
 #include <utilities/matrix.h>
+#include <common/color.h>
 #include <common/point.h>
 #include <common/defs.h>
 #include <common/rect.h>
 #include <common/size.h>
 #include <utilities/xmlParser.h>
-#include <objectdata/objectvisualdata2d.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -28,6 +28,7 @@
 #include <memory>
 
 // Forward declaration(s)
+class CObjectVisualData2D;
 class CFont;
 class CShaderData;
 class CFontData;
@@ -38,17 +39,25 @@ class CVisualComponent2D : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
-    CVisualComponent2D(){}
     CVisualComponent2D( const CObjectVisualData2D & visualData );
 
     // Destructor
-    virtual ~CVisualComponent2D();
+    ~CVisualComponent2D();
     
     // Delete the custom VBO for this font
     void deleteFontVBO();
 
     // do the render
-    void render( const CMatrix & objMatrix, const CMatrix & matrix ) override;
+    void render( const CMatrix & objMatrix, const CMatrix & matrix );
+
+    // Is this a font sprite
+    bool isFontSprite();
+
+    // Set the frame index
+    void setFrame( uint index );
+    
+    // Get the current frame index
+    uint getCurrentFrame() const;
     
     // Set the font data
     void setFontData( const CFontData & fontData );
@@ -62,7 +71,7 @@ public:
     // NOTE: Interface overridden member functions
     
     // Set/Get the color
-    /*void setColor( const CColor & color ) override;
+    void setColor( const CColor & color ) override;
     void setColor( float r, float g, float b, float a ) override;
     const CColor & getColor() const override;
     void setDefaultColor() override;
@@ -72,7 +81,7 @@ public:
     void setAlpha( float alpha, bool allowToExceed = false ) override;
     float getAlpha() const override;
     void setDefaultAlpha() override;
-    float getDefaultAlpha() const override;*/
+    float getDefaultAlpha() const override;
     
     // Set the string to display
     void createFontString() override;
@@ -126,11 +135,17 @@ private:
     int32_t m_matrixLocation;
     int32_t m_glyphLocation;
 
+    // Generation type
+    const NDefs::EGenerationType GENERATION_TYPE;
+
     // The scale of the quad
     CSize<float> m_quadVertScale;
 
     // Reference to object visual data
-    CObjectVisualData2D m_rVisualData;
+    const CObjectVisualData2D & m_rVisualData;
+
+    // Color
+    CColor m_color;
 
     // IBO count
     uint16_t m_iboCount;
@@ -143,6 +158,9 @@ private:
     
     // Sprite sheet Glyph UV
     CRect<float> m_glyphUV;
+    
+    // Frame index
+    uint16_t m_frameIndex;
 
     ///////////////////////
     //  Font data types

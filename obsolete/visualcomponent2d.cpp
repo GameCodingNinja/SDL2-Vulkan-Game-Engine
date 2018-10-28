@@ -5,11 +5,20 @@
 *    DESCRIPTION:     Class for handling the visual part of the sprite
 ************************************************************************/
 
+#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
+#include "SDL_opengles2.h"
+#else
+#include <GL/glew.h>     // Glew dependencies (have to be defined first)
+#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
+#endif
+
 // Physical component dependency
 #include <2d/visualcomponent2d.h>
 
 // Game lib dependencies
+#include <objectdata/objectvisualdata2d.h>
 #include <managers/shadermanager.h>
+#include <managers/texturemanager.h>
 #include <managers/vertexbuffermanager.h>
 #include <managers/fontmanager.h>
 #include <common/quad2d.h>
@@ -29,19 +38,13 @@
 // Standard lib dependencies
 #include <memory>
 
-#define GL_TRIANGLE_FAN 1
-#define GL_TRIANGLES 1
-#define GL_UNSIGNED_SHORT 1
-#define GL_UNSIGNED_BYTE 1
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
 CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData ) :
-    iVisualComponent( visualData ),
     m_pShaderData(nullptr),
-    //m_vbo( visualData.getVBO() ),
-    //m_ibo( visualData.getIBO() ),
+    m_vbo( visualData.getVBO() ),
+    m_ibo( visualData.getIBO() ),
     m_textureID( visualData.getTextureID() ),
     m_vertexLocation(-1),
     m_uvLocation(-1),
@@ -49,14 +52,17 @@ CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData )
     m_colorLocation(-1),
     m_matrixLocation(-1),
     m_glyphLocation(-1),
+    GENERATION_TYPE( visualData.getGenerationType() ),
     m_quadVertScale( visualData.getVertexScale() ),
-    m_rVisualData(visualData),
+    m_rVisualData( visualData ),
+    m_color( visualData.getColor() ),
     m_iboCount( visualData.getIBOCount() ),
     m_drawMode( (visualData.getGenerationType() == NDefs::EGT_QUAD || visualData.getGenerationType() == NDefs::EGT_SPRITE_SHEET) ? GL_TRIANGLE_FAN : GL_TRIANGLES ),
     m_indiceType( (visualData.getGenerationType() == NDefs::EGT_FONT) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_BYTE ),
+    m_frameIndex(0),
     m_pFontData(nullptr)
 {
-    /*if( visualData.isActive() )
+    if( visualData.isActive() )
     {
         m_pShaderData = &CShaderMgr::Instance().getShaderData( visualData.getShaderID() );
 
@@ -85,7 +91,7 @@ CVisualComponent2D::CVisualComponent2D( const CObjectVisualData2D & visualData )
         // Using a normal pointer to keep the memory foot print as small as possible
         if( GENERATION_TYPE == NDefs::EGT_FONT )
             m_pFontData = new CFontData;
-    }*/
+    }
 }
 
 
@@ -115,11 +121,11 @@ CVisualComponent2D::~CVisualComponent2D()
 void CVisualComponent2D::deleteFontVBO()
 {
     // Delete the VBO if this is a font
-    /*if( (GENERATION_TYPE == NDefs::EGT_FONT) && (m_vbo > 0) )
+    if( (GENERATION_TYPE == NDefs::EGT_FONT) && (m_vbo > 0) )
     {
         glDeleteBuffers(1, &m_vbo);
         m_vbo = 0;
-    }*/
+    }
 
     // The IBO for the font is managed by the vertex buffer manager.
     // Font IBO are all the same with the only difference being
@@ -132,7 +138,7 @@ void CVisualComponent2D::deleteFontVBO()
 ************************************************************************/
 void CVisualComponent2D::render( const CMatrix & objMatrix, const CMatrix & matrix )
 {
-    /*if( allowRender() )
+    if( allowRender() )
     {
         const int32_t VERTEX_BUF_SIZE( sizeof(CVertex2D) );
 
@@ -154,7 +160,7 @@ void CVisualComponent2D::render( const CMatrix & objMatrix, const CMatrix & matr
             const int8_t UV_OFFSET( sizeof(CPoint<float>) );
 
             // Bind the texture
-            //CTextureMgr::Instance().bind( m_textureID );
+            CTextureMgr::Instance().bind( m_textureID );
             glUniform1i( m_text0Location, 0); // 0 = TEXTURE0
 
             // Setup the UV attribute shade data
@@ -204,7 +210,7 @@ void CVisualComponent2D::render( const CMatrix & objMatrix, const CMatrix & matr
 
         // Render it
         glDrawElements( m_drawMode, m_iboCount, m_indiceType, nullptr );
-    }*/
+    }
 }
 
 
@@ -478,12 +484,12 @@ void CVisualComponent2D::createFontString( const std::string & fontString )
 
         // Save the data
         // If one doesn't exist, create the VBO and IBO for this font
-        /*if( m_vbo == 0 )
+        if( m_vbo == 0 )
             glGenBuffers( 1, &m_vbo );
 
         glBindBuffer( GL_ARRAY_BUFFER, m_vbo );
         glBufferData( GL_ARRAY_BUFFER, sizeof(CQuad2D) * charCount, upQuadBuf.get(), GL_STATIC_DRAW );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );*/
+        glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
         // All fonts share the same IBO because it's always the same and the only difference is it's length
         // This updates the current IBO if it exceeds the current max
@@ -639,12 +645,116 @@ void CVisualComponent2D::setFontString( const std::string & fontString )
 
 
 /************************************************************************
+*    DESC:  Set/Get the color
+************************************************************************/
+void CVisualComponent2D::setColor( const CColor & color )
+{
+    m_color = color;
+}
+
+void CVisualComponent2D::setColor( float r, float g, float b, float a )
+{
+    // This function assumes values between 0.0 to 1.0.
+    m_color.set( r, g, b, a );
+}
+
+const CColor & CVisualComponent2D::getColor() const
+{
+    return m_color;
+}
+
+
+/************************************************************************
+*    DESC:  Set/Get the default color
+************************************************************************/
+void CVisualComponent2D::setDefaultColor()
+{
+    m_color = m_rVisualData.getColor();
+}
+
+const CColor & CVisualComponent2D::getDefaultColor() const
+{
+    return m_rVisualData.getColor();
+}
+
+
+/************************************************************************
+*    DESC:  Set/Get the alpha
+************************************************************************/
+void CVisualComponent2D::setAlpha( float alpha, bool allowToExceed )
+{
+    if( alpha > 1.5 )
+        alpha *= defs_RGB_TO_DEC;
+    
+    if( allowToExceed || (alpha < m_rVisualData.getColor().a) )
+        m_color.a = alpha;
+    else
+        m_color.a = m_rVisualData.getColor().a;
+}
+
+float CVisualComponent2D::getAlpha() const
+{
+    return m_color.a;
+}
+
+
+/************************************************************************
+*    DESC:  Set/Get the default alpha
+************************************************************************/
+void CVisualComponent2D::setDefaultAlpha()
+{
+    m_color.a = m_rVisualData.getColor().a;
+}
+
+float CVisualComponent2D::getDefaultAlpha() const
+{
+    return m_rVisualData.getColor().a;
+}
+
+
+/************************************************************************
+*    DESC:  Set the frame ID from index
+************************************************************************/
+void CVisualComponent2D::setFrame( uint index )
+{
+    if( GENERATION_TYPE == NDefs::EGT_SPRITE_SHEET )
+    {
+        auto rGlyph = m_rVisualData.getSpriteSheet().getGlyph( index );
+        m_glyphUV = rGlyph.getUV();
+        m_quadVertScale = rGlyph.getSize() * m_rVisualData.getDefaultUniformScale();
+    }
+    else
+        m_textureID = m_rVisualData.getTextureID( index );
+
+    m_frameIndex = index;
+}
+
+
+/************************************************************************
+*    DESC:  Get the current frame index
+************************************************************************/
+uint CVisualComponent2D::getCurrentFrame() const
+{
+    return m_frameIndex;
+}
+
+
+/************************************************************************
 *    DESC:  Is rendering allowed?
 ************************************************************************/
 bool CVisualComponent2D::allowRender()
 {
     return ((GENERATION_TYPE > NDefs::EGT_NULL) && (GENERATION_TYPE < NDefs::EGT_FONT)) ||
            ((GENERATION_TYPE == NDefs::EGT_FONT) && !m_pFontData->m_fontString.empty() && (m_vbo > 0));
+}
+
+
+/************************************************************************
+*    DESC:  Is this a font sprite
+************************************************************************/
+bool CVisualComponent2D::isFontSprite()
+{
+    return (GENERATION_TYPE == NDefs::EGT_FONT);
 }
 
 

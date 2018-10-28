@@ -12,8 +12,8 @@
 #include <utilities/xmlparsehelper.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/exceptionhandling.h>
-#include <2d/visualcomponent2d.h>
-#include <2d/sprite2d.h>
+#include <common/ivisualcomponent.h>
+#include <sprite/sprite.h>
 #include <objectdata/objectdata2d.h>
 
 // Boost lib dependencies
@@ -108,7 +108,7 @@ void CUIMeter::loadControlFromNode( const XMLNode & controlNode )
     // Find the sprite that renders the font
     for( auto & iter : m_spriteDeq )
     {
-        if( iter.getVisualComponent().isFontSprite() )
+        if( iter.getVisualComponent()->isFontSprite() )
         {
             m_pSprite = &iter;
             break;
@@ -186,7 +186,7 @@ void CUIMeter::initBangRange( const CBangRange & bangRange )
     m_impulse = 0.0;
     m_bangScaleAdjustment.set(1,1);
 
-    m_pSprite->setScale( CPoint<float>(1,1,1) );
+    m_pSprite->getObject()->setScale( CPoint<float>(1,1,1) );
 
     m_velocity = bangRange.m_velocity / 1000.0;
 
@@ -215,7 +215,7 @@ void CUIMeter::initBangRange( const CBangRange & bangRange )
     m_startUpTimer.set( bangRange.m_slowStartTime );
 
     // Prepare the start script function if one exists
-    m_pSprite->prepareFuncId( "start" );
+    m_pSprite->prepare( "start" );
 }
 
 
@@ -304,7 +304,7 @@ void CUIMeter::update()
                 m_bangUp = false;
 
                 // Prepare the stop script function if one exists
-                m_pSprite->prepareFuncId( "stop" );
+                m_pSprite->prepare( "stop" );
             }
 
             // Display the value in the meter
@@ -320,10 +320,10 @@ void CUIMeter::update()
 void CUIMeter::displayValue()
 {
     // Display the new value
-    m_pSprite->getVisualComponent().createFontString( boost::lexical_cast<std::string>((int64_t)m_currentValue ) );
+    m_pSprite->getVisualComponent()->createFontString( boost::lexical_cast<std::string>((int64_t)m_currentValue ) );
 
     // Get the font size
-    const CSize<float> & size = m_pSprite->getVisualComponent().getFontSize();
+    const CSize<float> & size = m_pSprite->getVisualComponent()->getFontSize();
 
     // Check if the font string size is greater then what is allowed
     if( size > m_maxFontStrSize )
@@ -335,13 +335,13 @@ void CUIMeter::displayValue()
         {
             m_bangScaleAdjustment = dif;
 
-            CPoint<float> scale( m_pSprite->getScale() );
+            CPoint<float> scale( m_pSprite->getObject()->getScale() );
             if( dif.w < dif.h )
                 scale.set(dif.w, (m_scaleType == EST_AXIS ? 1.f : dif.w), 1.f);
             else
                 scale.set((m_scaleType == EST_AXIS ? 1.f : dif.h), dif.h, 1.f);
 
-            m_pSprite->setScale( scale );
+            m_pSprite->getObject()->setScale( scale );
         }
     }
 }
@@ -364,6 +364,6 @@ void CUIMeter::clear()
     m_lastValue = m_currentValue = m_targetValue = 0;
     m_bangUp = false;
 
-    if( !m_pSprite->prepareFuncId( "clear" ) )
-        m_pSprite->getVisualComponent().createFontString( boost::lexical_cast<std::string>((int64_t)m_currentValue ) );
+    if( !m_pSprite->prepare( "clear" ) )
+        m_pSprite->getVisualComponent()->createFontString( boost::lexical_cast<std::string>((int64_t)m_currentValue ) );
 }

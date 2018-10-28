@@ -86,6 +86,4 @@ private:
     CBitmask<uint> m_ActionMask;
 };
 
-#endif  // __ui_button_list_h__
-
-
+#endif

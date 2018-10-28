@@ -77,9 +77,6 @@ private:
     CUIControlNavNode * m_pDownNode;
     CUIControlNavNode * m_pLeftNode;
     CUIControlNavNode * m_pRightNode;
-
 };
 
-#endif  // __uicontrol_nav_node_h__
-
-
+#endif

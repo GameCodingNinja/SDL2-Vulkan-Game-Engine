@@ -39,7 +39,6 @@ add_library(
         script/scriptsound.cpp
         script/scriptplaylist.cpp
         script/scriptsoundmanager.cpp
-        script/scriptmenu.cpp
         script/scriptobjectdatamanager.cpp
         script/scriptstrategymanager.cpp
         script/scriptistrategy.cpp
@@ -48,9 +47,10 @@ add_library(
         script/scriptsettings.cpp
         script/scriptsize.cpp
         script/scripthighresolutiontimer.cpp
-        script/scriptmenumanager.cpp
         script/scriptfontmanager.cpp
         script/scriptscriptmanager.cpp
+        script/scriptmenumanager.cpp
+        script/scriptmenu.cpp
         script/scriptuicontrol.cpp
         system/devicevulkan.cpp
         system/device.cpp

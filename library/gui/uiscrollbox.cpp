@@ -9,7 +9,7 @@
 #include <gui/uiscrollbox.h>
 
 // Game lib dependencies
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
 #include <common/size.h>
 #include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>
@@ -127,13 +127,13 @@ void CUIScrollBox::loadControlFromNode( const XMLNode & node )
     {
         const std::string objectName = stencilMaskNode.getAttribute( "objectName" );
 
-        m_upStencilMaskSprite.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( getGroup(), objectName ) ) );
+        m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData2D( getGroup(), objectName ) ) );
 
         // Get the cull height
         m_cullHeight = (m_upStencilMaskSprite->getObjectData().getSize().getW() + m_controlHeight) / 2;
 
         // Load the transform data
-        m_upStencilMaskSprite->loadTransFromNode( stencilMaskNode );
+        m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
     }
 }
 
@@ -179,19 +179,6 @@ void CUIScrollBox::init()
     // Init all controls
     for( auto iter : m_pScrollControlVec )
         iter->init();
-}
-
-
-/************************************************************************
-*    DESC:  Do some cleanup
-************************************************************************/
-void CUIScrollBox::cleanUp()
-{
-    CUISubControl::cleanUp();
-
-    // Init all controls
-    for( auto iter : m_pScrollControlVec )
-        iter->cleanUp();
 }
 
 
@@ -325,20 +312,20 @@ void CUIScrollBox::transform( const CObject2D & object )
         m_pScrollControlVec[i]->transform( *this );
 
     // Transform the mask
-    m_upStencilMaskSprite->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upStencilMaskSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
 /************************************************************************
 *    DESC:  Render the sub control
 ************************************************************************/
-void CUIScrollBox::render( const CMatrix & matrix )
+/*void CUIScrollBox::render( const CMatrix & matrix )
 {
     // Call the parent
     CUISubControl::render( matrix );
 
     // Disable rendering to the color buffer
-    /*glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+    glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
 
     // Disable rendering to the depth mask
     glDepthMask( GL_FALSE );
@@ -371,8 +358,8 @@ void CUIScrollBox::render( const CMatrix & matrix )
 
 
     // Finished using stencil
-    glDisable( GL_STENCIL_TEST );*/
-}
+    glDisable( GL_STENCIL_TEST );
+}*/
 
 
 /************************************************************************

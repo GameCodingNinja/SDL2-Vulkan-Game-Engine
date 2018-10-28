@@ -33,9 +33,6 @@ public:
     
     // Init control
     virtual void init() override;
-    
-    // Do some cleanup
-    virtual void cleanUp() override;
 
     // Update the control
     virtual void update() override;
@@ -44,7 +41,7 @@ public:
     virtual void transform( const CObject2D & object ) override;
 
     // Render the control
-    virtual void render( const CMatrix & matrix ) override;
+    //virtual void render( const CMatrix & matrix ) override;
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent ) override;
@@ -154,12 +151,9 @@ protected:
     CUIControlNavNode * m_pActiveNode;
 
     // A sub control is a container for other controls so normally
-    // it doesn't respont to select messages. There can be a case
+    // it doesn't respond to select messages. There can be a case
     // where this control needs to respond.
     bool m_respondsToSelectMsg;
-
 };
 
-#endif  // __ui_sub_control_h__
-
-
+#endif

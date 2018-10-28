@@ -2,6 +2,23 @@
 # Add the files to the library
 add_library(
     library STATIC
+        gui/controlbase.cpp
+        gui/uibutton.cpp
+        gui/menumanager.cpp
+        gui/menutree.cpp
+        gui/uicontrol.cpp
+        gui/uicontrolfactory.cpp
+        gui/menu.cpp
+        gui/uilabel.cpp
+        gui/uisubcontrol.cpp
+        gui/ismartguibase.cpp
+        gui/uibuttonlist.cpp
+        gui/uicheckbox.cpp
+        gui/uislider.cpp
+        gui/uiscrollbox.cpp
+        gui/uimeter.cpp
+        gui/uiprogressbar.cpp
+        gui/scrollparam.cpp
         objectdata/objectdata2d.cpp
         objectdata/objectdata3d.cpp
         objectdata/objectdatamanager.cpp
@@ -31,6 +48,10 @@ add_library(
         script/scriptfontmanager.cpp
         script/scriptstrategymanager.cpp
         script/scriptistrategy.cpp
+        script/scriptmenumanager.cpp
+        script/scriptscriptmanager.cpp
+        script/scriptmenu.cpp
+        script/scriptuicontrol.cpp
         system/devicevulkan.cpp
         system/device.cpp
         utilities/xmlparsehelper.cpp

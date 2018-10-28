@@ -26,7 +26,7 @@ public:
     bool getToggleState();
 
     // Render the button
-    virtual void render( const CMatrix & matrix ) override;
+    //virtual void render( const CMatrix & matrix ) override;
 
 protected:
 
@@ -36,9 +36,6 @@ private:
 
     // Select state
     bool m_toggleState;
-
 };
 
-#endif  // __ui_check_box_h__
-
-
+#endif

@@ -38,7 +38,7 @@ public:
     void transform( const CObject2D & object ) override;
     
     // do the render
-    void render( const CMatrix & matrix ) override;
+    //void render( const CMatrix & matrix ) override;
     
     // Calculate the progress bar size and position
     void setSizePos();
@@ -59,7 +59,7 @@ public:
 private:
     
     // stencil mask sprite
-    std::unique_ptr<CSprite2D> m_upStencilMaskSprite;
+    std::unique_ptr<CSprite> m_upStencilMaskSprite;
     
     // current value of progress bar
     float m_curValue;
@@ -95,6 +95,4 @@ private:
 
 };
 
-#endif  // __ui_progress_bar_h__
-
-
+#endif

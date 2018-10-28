@@ -30,7 +30,7 @@
 #include <memory>
 
 // Forward declaration(s)
-class CSprite2D;
+class CSprite;
 union SDL_Event;
 
 class CMenu : public CObject2D, boost::noncopyable
@@ -48,9 +48,6 @@ public:
     
     // Init the menu
     void init();
-    
-    // Cleanup the menu controls. Currently only for font usage
-    void cleanUp();
 
     // Activate this menu because it's probably a root menu
     void activateMenu();
@@ -66,7 +63,7 @@ public:
     const std::string & getName() const;
 
     // do the render
-    void render( const CMatrix & matrix );
+    //void render( const CMatrix & matrix );
 
     // Handle events
     void handleEvent( const SDL_Event & rEvent );
@@ -175,7 +172,7 @@ private:
     std::string m_group;
 
     // Deque of menu static sprites
-    std::deque<CSprite2D> m_spriteDeq;
+    std::deque<CSprite> m_spriteDeq;
 
     // Vector list of static controls
     std::vector<CUIControl *> m_pStaticControlVec;
@@ -216,9 +213,6 @@ private:
     
     // menu alpha value
     float m_alpha;
-
 };
 
-#endif  // __menu_h__
-
-
+#endif

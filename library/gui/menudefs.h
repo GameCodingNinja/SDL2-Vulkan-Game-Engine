@@ -75,7 +75,6 @@ namespace NMenu
         ETC_BEGIN,
         ETC_END,
     };
+}
 
-}   // NMenu
-
-#endif  // __ui_menu_defs_h__
+#endif

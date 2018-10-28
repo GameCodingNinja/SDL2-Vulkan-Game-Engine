@@ -23,7 +23,8 @@
 #include <gui/ismartguibase.h>
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
-#include <2d/sprite2d.h>
+#include <common/ivisualcomponent.h>
+#include <sprite/sprite.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -188,7 +189,7 @@ void CMenu::loadStaticSpriteFromNode( const XMLNode & node )
     m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData2D( m_group, objectName ) );
 
     // Load the transform data
-    m_spriteDeq.back().loadTransFromNode( node );
+    m_spriteDeq.back().getObject()->loadTransFromNode( node );
 
     // Init the script functions
     m_spriteDeq.back().initScriptFunctions( node );
@@ -368,22 +369,6 @@ void CMenu::init()
 
 
 /************************************************************************
-*    DESC:  Cleanup the menu controls. Currently only for font usage
-************************************************************************/
-void CMenu::cleanUp()
-{
-    for( auto iter : m_pStaticControlVec )
-        iter->cleanUp();
-
-    for( auto iter : m_pMouseOnlyControlVec )
-        iter->cleanUp();
-
-    for( auto iter : m_pControlVec )
-        iter->cleanUp();
-}
-
-
-/************************************************************************
 *    DESC:  Activate this menu because it's probably a root menu
 ************************************************************************/
 void CMenu::activateMenu()
@@ -429,7 +414,7 @@ void CMenu::transform()
         CObject2D::transform();
 
         for( auto & iter : m_spriteDeq )
-            iter.transform( getMatrix(), wasWorldPosTranformed() );
+            iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );
@@ -449,7 +434,7 @@ void CMenu::transform( const CObject2D & object )
         CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
 
         for( auto & iter : m_spriteDeq )
-            iter.transform( getMatrix(), wasWorldPosTranformed() );
+            iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );
@@ -466,7 +451,7 @@ void CMenu::transform( const CObject2D & object )
 /************************************************************************
 *    DESC:  do the render
 ************************************************************************/
-void CMenu::render( const CMatrix & matrix )
+/*void CMenu::render( const CMatrix & matrix )
 {
     if( isVisible() )
     {
@@ -482,7 +467,7 @@ void CMenu::render( const CMatrix & matrix )
         for( auto iter : m_pControlVec )
             iter->render( matrix );
     }
-}
+}*/
 
 
 /************************************************************************
@@ -931,7 +916,7 @@ void CMenu::setAlpha( float alpha )
     if( isVisible() )
     {
         for( auto & iter : m_spriteDeq )
-            iter.getVisualComponent().setAlpha( alpha );
+            iter.getVisualComponent()->setAlpha( alpha );
 
         for( auto iter : m_pStaticControlVec )
             iter->setAlpha( alpha );

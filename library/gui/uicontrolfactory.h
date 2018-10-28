@@ -18,7 +18,6 @@ namespace NUIControlFactory
 {
     // Create the control
     CUIControl * Create( const XMLNode & node, const std::string & group );
-
 };
 
-#endif  // __ui_control_factory_h__
+#endif

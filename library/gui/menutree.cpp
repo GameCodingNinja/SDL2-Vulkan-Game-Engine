@@ -98,11 +98,11 @@ void CMenuTree::transform( const CObject2D & object )
 /************************************************************************
 *    DESC:  do the render
 ************************************************************************/
-void CMenuTree::render( const CMatrix & matrix )
+/*void CMenuTree::render( const CMatrix & matrix )
 {
     if( !m_pMenuPathVec.empty() )
         m_pMenuPathVec.back()->render( matrix );
-}
+}*/
 
 
 /************************************************************************
