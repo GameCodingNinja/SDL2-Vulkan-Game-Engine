@@ -29,6 +29,7 @@ public:
 
     // Constructor
     CLinearStageStrategy();
+    CLinearStageStrategy( const std::string & file );
 
     // Destructor
     virtual ~CLinearStageStrategy();

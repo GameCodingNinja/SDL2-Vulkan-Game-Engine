@@ -31,6 +31,7 @@ public:
 
     // Constructor
     CBasicStageStrategy();
+    CBasicStageStrategy( const std::string & file );
 
     // Destructor
     virtual ~CBasicStageStrategy();
@@ -48,8 +49,8 @@ public:
     virtual void transform() override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
     
     // Get the default camera position
     CObject & getDefaultCameraPos();

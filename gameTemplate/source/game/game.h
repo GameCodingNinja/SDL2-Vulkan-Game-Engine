@@ -74,9 +74,6 @@ private:
     // Call back function to create sprite ai
     void aICreateCallBack( const std::string & aiName, CSprite * pSprite );
     
-    // Callback for shader init
-    void shaderInitCallBack( const std::string & shaderId );
-    
     // Callback for the state string
     void statStringCallBack( const std::string & statStr );
     

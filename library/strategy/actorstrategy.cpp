@@ -34,6 +34,11 @@ CActorStrategy::CActorStrategy()
 {
 }
 
+CActorStrategy::CActorStrategy( const std::string & file )
+{
+    loadFromFile( file );
+}
+
 
 /************************************************************************
 *    DESC:  destructor

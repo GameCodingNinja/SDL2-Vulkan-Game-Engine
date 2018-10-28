@@ -24,15 +24,11 @@
 #include <vector>
 #include <map>
 
-// Vulkan lib dependencies
-#include <system/vulkan.h>
-
 // Forward Declarations
 class CNodeDataList;
 class CSpriteData;
 class CSprite;
 class CMatrix;
-class iNode;
 
 class CActorStrategy : public CBaseStrategy, boost::noncopyable
 {
@@ -40,6 +36,7 @@ public:
 
     // Constructor
     CActorStrategy();
+    CActorStrategy( const std::string & file );
 
     // Destructor
     virtual ~CActorStrategy();
@@ -67,8 +64,8 @@ public:
     void transform() override;
 
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
 
     // Get the reference to the node
     template<typename target>

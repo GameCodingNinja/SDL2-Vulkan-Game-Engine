@@ -150,16 +150,6 @@ void CGame::aICreateCallBack( const std::string & aiName, CSprite * pSprite )
 
 
 /************************************************************************
-*    DESC:  Callback for shader init
-************************************************************************/
-void CGame::shaderInitCallBack( const std::string & shaderId )
-{
-    // Init the color for fading in
-    //CShaderMgr::Instance().setShaderColor( shaderId, "additive", CColor(0,0,0,1) );
-}
-
-
-/************************************************************************
 *    DESC:  Callback for the state string
 ************************************************************************/
 void CGame::statStringCallBack( const std::string & statStr )

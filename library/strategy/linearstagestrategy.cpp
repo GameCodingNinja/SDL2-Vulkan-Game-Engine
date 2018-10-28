@@ -28,6 +28,13 @@ CLinearStageStrategy::CLinearStageStrategy() :
 {
 }
 
+CLinearStageStrategy::CLinearStageStrategy( const std::string & file ) :
+    CBasicStageStrategy( file ),
+    m_startIndex(0),
+    m_dirType(ESD_NULL)
+{
+}
+
 
 /************************************************************************
 *    DESC:  destructor

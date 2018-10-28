@@ -23,6 +23,7 @@ public:
 
     // Constructor
     CLoopStageStrategy();
+    CLoopStageStrategy( const std::string & file );
 
     // Destructor
     virtual ~CLoopStageStrategy();

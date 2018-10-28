@@ -12,8 +12,6 @@
 #include "titlescreenstate.h"
 
 // Game lib dependencies
-//#include <managers/vertexbuffermanager.h>
-//#include <managers/shadermanager.h>
 #include <managers/fontmanager.h>
 #include <managers/soundmanager.h>
 #include <managers/actionmanager.h>
@@ -36,7 +34,7 @@
 #include <script/scripthighresolutiontimer.h>
 #include <sprite/sprite.h>
 #include <system/device.h>
-//#include <gui/menumanager.h>
+#include <gui/menumanager.h>
 //#include <gui/menu.h>
 //#include <gui/uicontrol.h>
 #include <utilities/genfunc.h>
@@ -47,6 +45,8 @@
 #include <physics/physicsworldmanager2d.h>
 //#include <slot/slotmathmanager.h>
 //#include <slot/symbolsetviewmanager.h>
+#include <strategy/actorstrategy.h>
+#include <node/inode.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -77,6 +77,7 @@ CStartUpState::CStartUpState() :
 CStartUpState::~CStartUpState()
 {
     CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
+    CStrategyMgr::Instance().clear();
 }
 
 
@@ -87,38 +88,55 @@ void CStartUpState::init()
 {
     // Load the object data list table
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
-    
+
     // Load the script list table
     CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
-    
-    // Register the script items
+
+    // Register the script items needed for startup animation
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
-    RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), false );
     NScriptGlobals::Register();
-    NScriptColor::Register();
     NScriptPoint::Register();
     NScriptSize::Register();
+    NScriptColor::Register();
     NScriptHighResolutionTimer::Register();
     NScriptSprite::Register();
-    
+
     // Load group specific script items
     CScriptMgr::Instance().loadGroup("(startup)");
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
-    
+
     // Create the group command buffers
     m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
 
-    // Allocate the sprite to fade in
-    //m_upSpriteLogo.reset( new CSprite( CObjectDataMgr::Instance().getData2D( "(startup)", "logo" ) ) );
-    //m_upSpriteLogo->getObject()->setPos( 0, 0, -10 );
-    
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
+
+    // Add the actor strategy
+    CStrategyMgr::Instance().addStrategy(
+        "actorStrategy", new CActorStrategy( "data/objects/2d/spritestrategy/nodeList.lst" ) );
     
-    m_strategy.loadFromFile( "data/objects/2d/spritestrategy/stage/stage.cfg" );
-    //m_strategy.create( "spriteNode" );
+    // Start the fade in
+    m_pLogo = CStrategyMgr::Instance().create( "actorStrategy", "spriteNode" );
+    m_pLogo->getSprite()->prepare( "fadeIn" );
+}
+
+
+/************************************************************************
+*    DESC:  Handle events
+************************************************************************/
+void CStartUpState::handleEvent( const SDL_Event & rEvent )
+{
+    if( rEvent.type == 0xA000 )
+    {
+        std::thread load(&CStartUpState::assetLoad, this);
+        load.detach();
+    }
+    else if( rEvent.type == 0xA001 )
+    {
+        m_pLogo->getSprite()->prepare( "fadeOut" );
+    }
 }
 
 
@@ -127,7 +145,7 @@ void CStartUpState::init()
 ****************************************************************************/
 void CStartUpState::update()
 {
-    //m_upSpriteLogo->update();
+    CStrategyMgr::Instance().update();
 }
 
 
@@ -136,7 +154,7 @@ void CStartUpState::update()
 ****************************************************************************/
 void CStartUpState::transform()
 {
-    m_strategy.transform();
+    CStrategyMgr::Instance().transform();
 }
 
 
@@ -147,11 +165,11 @@ void CStartUpState::transform()
 void CStartUpState::recordCommandBuffer( uint32_t index )
 {
     auto cmdBuf( m_commandBufVec[index] );
-    
+
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-    
-    m_strategy.recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getFinalMatrix() );
-    
+
+    CStrategyMgr::Instance().recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getFinalMatrix() );
+
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
@@ -162,7 +180,7 @@ void CStartUpState::recordCommandBuffer( uint32_t index )
 void CStartUpState::assetLoad()
 {
     // Load in any fonts
-    /*CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
+    CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
 
     // Load 3D object data list table
     CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
@@ -187,31 +205,28 @@ void CStartUpState::assetLoad()
     CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
 
     // Register the script items
-    NScriptPoint::Register();
-    NScriptSize::Register();
-    NScriptiSprite::Register();
     NScriptSound::Register();
     NScriptPlayLst::Register();
     NScriptSoundManager::Register();
-    NScriptUIControl::Register();
-    NScriptMenu::Register();
-    NScriptShaderManager::Register();
-    NScriptHighResolutionTimer::Register();
+    //NScriptUIControl::Register();
+    //NScriptMenu::Register();
 
     // Load group specific script items
-    CScriptMgr::Instance().loadGroup("(menu)");
+    //CScriptMgr::Instance().loadGroup("(menu)");
 
     // Load all of the meshes and materials in these groups
-    CObjectDataMgr::Instance().loadGroup2D("(menu)");
+    //CObjectDataMgr::Instance().loadGroup2D("(menu)");
 
     // Load the menu group
-    CMenuMgr::Instance().loadGroup("(menu)");
+    //CMenuMgr::Instance().loadGroup("(menu)");
 
     // Do the state specific load
-    NTitleScreenState::ObjectDataLoad();
-    NTitleScreenState::CriticalLoad();
-    NTitleScreenState::Load();
-    NTitleScreenState::CriticalInit();*/
+    //NTitleScreenState::ObjectDataLoad();
+    //NTitleScreenState::CriticalLoad();
+    //NTitleScreenState::Load();
+    //NTitleScreenState::CriticalInit();
+    
+    NGenFunc::DispatchEvent( 0xA001 );
 }
 
 
@@ -238,44 +253,3 @@ bool CStartUpState::doStateChange()
     return false;
 }
 
-
-/************************************************************************
-*    DESC:  Fade to color
-************************************************************************/
-void CStartUpState::fade(
-    CSprite2D & sprite,
-    float time,
-    const CColor & cur,
-    const CColor & finalColor )
-{
-    /*CColor inc = (finalColor - cur) / time;
-    CColor current = cur;
-
-    do
-    {
-        // Get the elapsed time
-        CHighResTimer::Instance().calcElapsedTime();
-
-        time -= CHighResTimer::Instance().getElapsedTime();
-        current += inc * CHighResTimer::Instance().getElapsedTime();
-
-        if( time < 0 )
-            current = finalColor;
-
-        // Clear the screen
-        //glClear( GL_COLOR_BUFFER_BIT );
-
-        CShaderMgr::Instance().setShaderColor( "shader_2d", "additive", current );
-        sprite.render( CCameraMgr::Instance().getDefaultProjMatrix() );
-
-        SDL_GL_SwapWindow( CDevice::Instance().getWindow() );
-
-        // Unbind everything after a round of rendering
-        //CShaderMgr::Instance().unbind();
-        //CTextureMgr::Instance().unbind();
-        //CVertBufMgr::Instance().unbind();
-
-        std::this_thread::sleep_for( std::chrono::milliseconds( 2 ) );
-    }
-    while( time > 0 );*/
-}

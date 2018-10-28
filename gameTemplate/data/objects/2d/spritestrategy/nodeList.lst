@@ -1,5 +1,5 @@
 <node>
-
+<!--
     <node name="multiListNode" type="spriteNodeMultiList" defaultGroup="(startup)">
 
         <sprite2d name="background" objectName="background">
@@ -75,11 +75,16 @@
             
         </node>
     </node>
+    -->
     
     <node name="spriteNode" type="spriteNode" defaultGroup="(startup)">
         
         <sprite2d name="waffles" objectName="waffles">
             <position x="0" y="0" z="0"/>
+            <scriptLst>
+                <script fadeIn="StartUp_FadeIn"/>
+                <script fadeOut="StartUp_FadeOut"/>
+            </scriptLst>
         </sprite2d>
 
     </node>

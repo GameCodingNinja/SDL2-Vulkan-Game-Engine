@@ -6,7 +6,7 @@
 ************************************************************************/
 
 /************************************************************************
-*    desc:  Sound to play when the menu control becomes active
+*    DESC:  Sound to play when the menu control becomes active
 ************************************************************************/
 void Control_OnActive( CUIControl & control )
 {
@@ -15,7 +15,7 @@ void Control_OnActive( CUIControl & control )
 
 
 /************************************************************************
-*    desc:  Sound to play when the menu control is selected
+*    DESC:  Sound to play when the menu control is selected
 ************************************************************************/
 void Control_OnSelect( CUIControl & control )
 {
@@ -24,7 +24,7 @@ void Control_OnSelect( CUIControl & control )
 
 
 /************************************************************************
-*    desc:  Menu transition in script
+*    DESC:  Menu transition in script
 ************************************************************************/
 void Menu_TransIn( CMenu & menu )
 {
@@ -37,7 +37,7 @@ void Menu_TransIn( CMenu & menu )
 
 
 /************************************************************************
-*    desc:  Menu transition out script
+*    DESC:  Menu transition out script
 ************************************************************************/
 void Menu_TransOut( CMenu & menu )
 {
@@ -50,9 +50,9 @@ void Menu_TransOut( CMenu & menu )
 
 
 /************************************************************************
-*    desc:  Script for setting the look of the disabled state
+*    DESC:  Script for setting the look of the disabled state
 ************************************************************************/
-void Control_Disabled( iSprite & sprite )
+void Control_Disabled( CSprite & sprite )
 {
     CColor color = sprite.getDefaultColor();
     color.transformHSV( 0, 0, 1 );
@@ -62,27 +62,27 @@ void Control_Disabled( iSprite & sprite )
 
 
 /************************************************************************
-*    desc:  Script for setting the look of the inactive state
+*    DESC:  Script for setting the look of the inactive state
 ************************************************************************/
-void Control_Inactive( iSprite & sprite )
+void Control_Inactive( CSprite & sprite )
 {
     sprite.setDefaultColor();
 }
 
 
 /************************************************************************
-*    desc:  Script for setting the look of the hidden state
+*    DESC:  Script for setting the look of the hidden state
 ************************************************************************/
-void Control_Hidden( iSprite & sprite )
+void Control_Hidden( CSprite & sprite )
 {
     sprite.setVisible( false );
 }
 
 
 /************************************************************************
-*    desc:  Script for animating the look of the active state
+*    DESC:  Script for animating the look of the active state
 ************************************************************************/
-void Ctrl_Active( iSprite & sprite, float hiHSV, float lowHSV )
+void Ctrl_Active( CSprite & sprite, float hiHSV, float lowHSV )
 {
     sprite.setVisible( true );
 
@@ -99,21 +99,21 @@ void Ctrl_Active( iSprite & sprite, float hiHSV, float lowHSV )
     }
 }
 
-void Control_Active( iSprite & sprite )
+void Control_Active( CSprite & sprite )
 {
     Ctrl_Active( sprite, 1.3, .5 );
 }
 
-void Control_Solid_Active( iSprite & sprite )
+void Control_Solid_Active( CSprite & sprite )
 {
     Ctrl_Active( sprite, 1.1, .5 );
 }
 
 
 /************************************************************************
-*    desc:  Script for animating the look of the selected state
+*    DESC:  Script for animating the look of the selected state
 ************************************************************************/
-void Ctrl_Selected( iSprite & sprite, float hiHSV, float lowHSV )
+void Ctrl_Selected( CSprite & sprite, float hiHSV, float lowHSV )
 {
     sprite.setVisible( true );
 
@@ -131,9 +131,9 @@ void Ctrl_Selected( iSprite & sprite, float hiHSV, float lowHSV )
 
 
 /************************************************************************
-*    desc:  Animates the selected state and sends a message
+*    DESC:  Animates the selected state and sends a message
 ************************************************************************/
-void Control_Selected_Dispatch_Exe( iSprite & sprite )
+void Control_Selected_Dispatch_Exe( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.7, .6 );
 
@@ -142,7 +142,7 @@ void Control_Selected_Dispatch_Exe( iSprite & sprite )
     DispatchEvent( EGE_MENU_SELECT_EXECUTE );
 }
 
-void Control_Selected_Dispatch_Exe_Act( iSprite & sprite )
+void Control_Selected_Dispatch_Exe_Act( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.7, .6 );
 
@@ -152,7 +152,7 @@ void Control_Selected_Dispatch_Exe_Act( iSprite & sprite )
     DispatchEvent( EGE_MENU_REACTIVATE );
 }
 
-void Control_Selected_Visible( iSprite & sprite )
+void Control_Selected_Visible( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.7, .6 );
 
@@ -161,23 +161,23 @@ void Control_Selected_Visible( iSprite & sprite )
 
 
 /************************************************************************
-*    desc:  Animates the selected state for solid
+*    DESC:  Animates the selected state for solid
 ************************************************************************/
-void Control_Solid_Selected_visible( iSprite & sprite )
+void Control_Solid_Selected_visible( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.5, .6 );
 
     sprite.setColor( sprite.getDefaultColor() );
 }
 
-void Control_Selected( iSprite & sprite )
+void Control_Selected( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.7, .6 );
 
     sprite.setVisible( false );
 }
 
-void Control_Solid_Selected( iSprite & sprite )
+void Control_Solid_Selected( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.5, .6 );
 
@@ -186,9 +186,9 @@ void Control_Solid_Selected( iSprite & sprite )
 
 
 /************************************************************************
-*    desc:  Animates the selected state and sets final color to white
+*    DESC:  Animates the selected state and sets final color to white
 ************************************************************************/
-void Control_Selected_frame_highlight( iSprite & sprite )
+void Control_Selected_frame_highlight( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.7, .6 );
 
@@ -197,9 +197,9 @@ void Control_Selected_frame_highlight( iSprite & sprite )
 
 
 /************************************************************************
-*    desc:  Fast display of selected state
+*    DESC:  Fast display of selected state
 ************************************************************************/
-void Ctrl_Fast_Selected( iSprite & sprite, float hiHSV )
+void Ctrl_Fast_Selected( CSprite & sprite, float hiHSV )
 {
     sprite.setVisible( true );
 
@@ -209,7 +209,7 @@ void Ctrl_Fast_Selected( iSprite & sprite, float hiHSV )
     sprite.setColor( hiColor );
 }
 
-void Control_Fast_Face_Selected( iSprite & sprite )
+void Control_Fast_Face_Selected( CSprite & sprite )
 {
     Ctrl_Fast_Selected( sprite, 1.7 );
 
@@ -218,7 +218,7 @@ void Control_Fast_Face_Selected( iSprite & sprite )
     sprite.setDefaultColor();
 }
 
-void Control_Fast_Face_Selected_Act( iSprite & sprite )
+void Control_Fast_Face_Selected_Act( CSprite & sprite )
 {
     Ctrl_Fast_Selected( sprite, 1.7 );
 
@@ -229,7 +229,7 @@ void Control_Fast_Face_Selected_Act( iSprite & sprite )
     DispatchEvent( EGE_MENU_REACTIVATE );
 }
 
-void Control_Fast_Selected( iSprite & sprite )
+void Control_Fast_Selected( CSprite & sprite )
 {
     Ctrl_Fast_Selected( sprite, 1.5 );
 
@@ -238,7 +238,7 @@ void Control_Fast_Selected( iSprite & sprite )
     sprite.setVisible( false );
 }
 
-void Control_Fast_Solid_Selected( iSprite & sprite )
+void Control_Fast_Solid_Selected( CSprite & sprite )
 {
     Ctrl_Fast_Selected( sprite, 1.3 );
 
@@ -247,16 +247,16 @@ void Control_Fast_Solid_Selected( iSprite & sprite )
     sprite.setVisible( false );
 }
 
-void Control_slider_btn_Selected( iSprite & sprite )
+void Control_slider_btn_Selected( CSprite & sprite )
 {
     Ctrl_Fast_Selected( sprite, 1.7 );
 }
 
 
 /************************************************************************
-*    desc:  Meter on start
+*    DESC:  Meter on start
 ************************************************************************/
-void Meter_OnStart( iSprite & sprite )
+void Meter_OnStart( CSprite & sprite )
 {
     sprite.setVisible( true );
     AlphaTo( 300, 1, sprite );
@@ -264,17 +264,17 @@ void Meter_OnStart( iSprite & sprite )
 
 
 /************************************************************************
-*    desc:  Meter on stop
+*    DESC:  Meter on stop
 ************************************************************************/
-void Meter_OnStop( iSprite & sprite )
+void Meter_OnStop( CSprite & sprite )
 {
 }
 
 
 /************************************************************************
-*    desc:  Meter on clear
+*    DESC:  Meter on clear
 ************************************************************************/
-void Meter_OnClear( iSprite & sprite, uint value )
+void Meter_OnClear( CSprite & sprite, uint value )
 {
     if( sprite.isVisible() )
     {

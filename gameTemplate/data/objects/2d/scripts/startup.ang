@@ -1,0 +1,32 @@
+
+/************************************************************************
+*    FILE NAME:       menu.ang
+*
+*    DESCRIPTION:     Scripts for controlling/animating menu interface
+************************************************************************/
+
+/************************************************************************
+*    DESC:  Do a fade in and out
+************************************************************************/
+void StartUp_FadeIn( Sprite & sprite )
+{
+    CColor current(0,0,0,1);
+    sprite.setColor( current );
+    
+    Hold( 250 );
+            
+    CColor final(1,1,1,1);
+    ColorTo( 500, final, sprite );
+    
+    Hold( 1000 );
+    
+    DispatchEvent( 0xA000 );
+}
+
+void StartUp_FadeOut( Sprite & sprite )
+{
+    CColor current(0,0,0,1);
+    ColorTo( 500, current, sprite );
+    
+    DispatchEvent( 0xB000 );
+}

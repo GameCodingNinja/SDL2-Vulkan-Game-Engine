@@ -11,8 +11,9 @@
 // Game lib dependencies
 #include <2d/object2d.h>
 #include <utilities/deletefuncs.h>
-#include <strategy/istrategy.h>
 #include <utilities/exceptionhandling.h>
+#include <utilities/matrix.h>
+#include <strategy/istrategy.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -180,6 +181,23 @@ void CStrategyMgr::transform()
 {
     for( auto iter : m_pStrategyVec )
         iter->transform();
+}
+
+
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CStrategyMgr::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+{
+    for( auto iter : m_pStrategyVec )
+        iter->recordCommandBuffer( index, cmdBuffer, viewProj );
+}
+
+void CStrategyMgr::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+{
+    for( auto iter : m_pStrategyVec )
+        iter->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
 }
 
 

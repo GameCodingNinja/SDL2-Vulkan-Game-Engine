@@ -8,7 +8,7 @@
 ************************************************************************/
 
 /************************************************************************
-*    desc:  Color to the final color in time
+*    DESC:  Color to the final color in time
 ************************************************************************/
 shared void ColorTo( float time, CColor &in final, Sprite & sprite )
 {
@@ -36,7 +36,7 @@ shared void ColorTo( float time, CColor &in final, Sprite & sprite )
 
 
 /************************************************************************
-*    desc:  Alpha to the final alpha
+*    DESC:  Alpha to the final alpha
 ************************************************************************/
 shared void AlphaTo( float time, float final, Sprite & sprite )
 {
@@ -96,7 +96,7 @@ shared void AlphaTo( float time, float final, Sprite & sprite )
 
 
 /************************************************************************
-*    desc:  Volume to the final volume
+*    DESC:  Volume to the final volume
 ************************************************************************/
 /*shared void VolumeTo( float time, int final, CSound & sound )
 {
@@ -130,7 +130,7 @@ shared void AlphaTo( float time, float final, Sprite & sprite )
 
 
 /************************************************************************
-*    desc:  Play the animation
+*    DESC:  Play the animation
 ************************************************************************/
 /*shared void Play( int fps, Sprite & sprite, bool loop = false )
 {
@@ -151,7 +151,7 @@ shared void AlphaTo( float time, float final, Sprite & sprite )
 
 
 /************************************************************************
-*    desc:  Hold the sprite execution in time
+*    DESC:  Hold the sprite execution in time
 ************************************************************************/
 shared void Hold( float time )
 {

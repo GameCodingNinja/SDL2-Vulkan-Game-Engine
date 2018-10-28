@@ -19,6 +19,11 @@ CBasicStageStrategy::CBasicStageStrategy()
 {
 }
 
+CBasicStageStrategy::CBasicStageStrategy( const std::string & file )
+{
+    loadFromFile( file );
+}
+
 
 /************************************************************************
 *    DESC:  destructor

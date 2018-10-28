@@ -1,15 +1,16 @@
 <listTable>
 
     <!--
-  <groupList groupName="(menu)">
-    <file path="data/objects/2d/scripts/shared_utilities.ang"/>
-    <file path="data/objects/2d/scripts/menu_defs.ang"/>
-    <file path="data/objects/2d/scripts/menu.ang"/>
-  </groupList>
-  -->
+    <groupList groupName="(menu)">
+      <file path="data/objects/2d/scripts/shared_utilities.ang"/>
+      <file path="data/objects/2d/scripts/menu_defs.ang"/>
+      <file path="data/objects/2d/scripts/menu.ang"/>
+    </groupList>
+    -->
   
-  <groupList groupName="(startup)">
-    <file path="data/objects/2d/scripts/shared_utilities.ang"/>
-  </groupList>
+    <groupList groupName="(startup)">
+        <file path="data/objects/2d/scripts/shared_utilities.ang"/>
+        <file path="data/objects/2d/scripts/startup.ang"/>
+    </groupList>
 
 </listTable>

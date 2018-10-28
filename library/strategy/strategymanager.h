@@ -17,12 +17,16 @@
 
 // Standard lib dependencies
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
+
+// Vulkan lib dependencies
+#include <system/vulkan.h>
 
 // Forward Declarations
 class iNode;
 class iStrategy;
+class CMatrix;
 union SDL_Event;
 
 class CStrategyMgr : public CManagerBase
@@ -72,6 +76,10 @@ public:
     // Transform the sprite
     void transform();
     
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );
     
@@ -84,25 +92,6 @@ public:
     {
         return *dynamic_cast<target *>(getStrategy( strategyId ));
     }
-    
-    // Get a pointer to the strategy based on if the sprite can be found
-    /*template <typename target>
-    target & find( CSprite * pSprite )
-    {
-        target * pStrategy = nullptr;
-        
-        for( auto iter : m_pStrategyVec )
-        {
-            pStrategy = dynamic_cast<target *>(iter);
-            
-            if( (pStrategy != nullptr) && pStrategy->Find(pSprite) )
-                return *pStrategy;
-            
-            pStrategy = nullptr;
-        }
-        
-        return *pStrategy;
-    }*/
     
     // Get a pointer to the strategy based on a string find
     template <typename target>

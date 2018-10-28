@@ -21,6 +21,11 @@ CLoopStageStrategy::CLoopStageStrategy()
 {
 }
 
+CLoopStageStrategy::CLoopStageStrategy( const std::string & file ) :
+    CLinearStageStrategy( file )
+{
+}
+
 
 /************************************************************************
 *    DESC:  destructor
