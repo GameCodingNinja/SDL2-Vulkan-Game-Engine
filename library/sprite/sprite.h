@@ -97,6 +97,9 @@ public:
     // Get the script component
     CScriptComponent & getScriptComponent();
     
+    // Set/Get the AI pointer
+    virtual void setAI( iAIBase * pAIBase );
+    
     // Set the texture ID from index
     void setFrame( uint index );
     

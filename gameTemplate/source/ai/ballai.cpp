@@ -9,16 +9,18 @@
 #include "ballai.h"
 
 // Game lib dependencies
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
+#include <2d/object2d.h>
+#include <physics/iphysicscomponent.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CBallAI::CBallAI( iSprite * pSprite ) :
-    m_sprite(*dynamic_cast<CSprite2D *>(pSprite)),
+CBallAI::CBallAI( CSprite * pSprite ) :
+    m_sprite(*pSprite),
     m_generator(std::random_device{}())
 {
-}   // constructor
+}
 
 
 /************************************************************************
@@ -26,7 +28,7 @@ CBallAI::CBallAI( iSprite * pSprite ) :
 ************************************************************************/
 CBallAI::~CBallAI()
 {
-}   // destructor
+}
 
 
 /************************************************************************
@@ -35,8 +37,7 @@ CBallAI::~CBallAI()
 void CBallAI::init()
 {
     initPhysics();
-    
-}   // Init
+}
 
 
 /************************************************************************
@@ -44,10 +45,9 @@ void CBallAI::init()
 ************************************************************************/
 void CBallAI::update()
 {
-    if( m_sprite.getPos().y < -600.f )
+    if( m_sprite.getObject()->getPos().y < -600.f )
         initPhysics();
-    
-}   // Update
+}
 
 
 /************************************************************************
@@ -59,9 +59,8 @@ void CBallAI::initPhysics()
     std::uniform_int_distribution<int> m_RandY(600,1000);
     std::uniform_int_distribution<int> m_RandR(0,360);
     
-    m_sprite.getPhysicsComponent().setTransform(
+    m_sprite.getPhysicsComponent()->setTransform(
         m_RandX(m_generator),
         m_RandY(m_generator),
         m_RandR(m_generator) );
-    
-}   // InitPhysics
+}

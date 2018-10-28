@@ -341,3 +341,15 @@ const iObjectData & CSprite::getObjectData() const
 {
     return m_rObjectData;
 }
+
+
+/************************************************************************
+*    DESC:  Set/Get the AI pointer. This class owns the pointer
+************************************************************************/
+void CSprite::setAI( iAIBase * pAIBase )
+{
+    m_upAI.reset( pAIBase );
+
+    // Handle any initialization in a separate function
+    m_upAI->init();
+}

@@ -12,7 +12,7 @@
 #include <memory>
 
 // Forward declaration(s)
-class CSprite2D;
+class CSprite;
 class CUIControl;
 class iGameState;
 class CMenu;
@@ -72,7 +72,7 @@ private:
     void smartMenuCreateCallBack( CMenu * pMenu );
     
     // Call back function to create sprite ai
-    void aICreateCallBack( const std::string & aiName, iSprite * pSprite );
+    void aICreateCallBack( const std::string & aiName, CSprite * pSprite );
     
     // Callback for shader init
     void shaderInitCallBack( const std::string & shaderId );
@@ -100,6 +100,4 @@ private:
 
 int FilterEvents( void * userdata, SDL_Event * pEvent );
 
-#endif  // __game_h__
-
-
+#endif

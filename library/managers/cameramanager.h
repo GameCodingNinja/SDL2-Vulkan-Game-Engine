@@ -26,6 +26,10 @@ public:
         return cameraMgr;
     }
     
+    // Create the projection matrixes
+    // NOTE: Also called when the resolution changes for the new screen size
+    void createProjMatrix();
+    
     // Get the projection matrix
     const CMatrix & getProjMatrix( NDefs::EProjectionType type = NDefs::EPT_ORTHOGRAPHIC ) const;
     
@@ -77,9 +81,6 @@ private:
 
     CCameraMgr();
     ~CCameraMgr();
-    
-    // Create the projection matrixes
-    void createProjMatrix();
 
 private:
 

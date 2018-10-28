@@ -15,15 +15,14 @@
 #include <random>
 
 // Forward declaration(s)
-class iSprite;
-class CSprite2D;
+class CSprite;
 
 class CBallAI : public iAIBase
 {
 public:
 
     // Constructor
-    CBallAI( iSprite * pSprite );
+    CBallAI( CSprite * pSprite );
 
     // Destructor
     virtual ~CBallAI();
@@ -42,7 +41,7 @@ private:
 private:
     
     // Sprite reference
-    CSprite2D & m_sprite;
+    CSprite & m_sprite;
     
     // For ball random position generation
     std::default_random_engine m_generator;

@@ -24,16 +24,16 @@
 
 // Game lib dependencies
 #include <system/device.h>
-//#include <managers/signalmanager.h>
-//#include <managers/shadermanager.h>
-//#include <gui/menumanager.h>
-//#include <gui/uicontrol.h>
-//#include <gui/menu.h>
+#include <managers/signalmanager.h>
+#include <gui/menumanager.h>
+#include <gui/uicontrol.h>
+#include <gui/menu.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/statcounter.h>
 #include <utilities/highresolutiontimer.h>
 #include <common/build_defs.h>
+#include <sprite/sprite.h>
 
 // Boost lib dependencies
 #include <boost/bind.hpp>
@@ -48,10 +48,9 @@
 CGame::CGame() :
     m_gameRunning(false)
 {
-    //CSignalMgr::Instance().connect_smartGui( boost::bind(&CGame::smartGuiControlCreateCallBack, this, _1) );
-    //CSignalMgr::Instance().connect_smartMenu( boost::bind(&CGame::smartMenuCreateCallBack, this, _1) );
-    //CSignalMgr::Instance().connect_aICreate( boost::bind(&CGame::aICreateCallBack, this, _1, _2) );
-    //CShaderMgr::Instance().connect_initShader( boost::bind(&CGame::shaderInitCallBack, this, _1) );
+    CSignalMgr::Instance().connect_smartGui( boost::bind(&CGame::smartGuiControlCreateCallBack, this, _1) );
+    CSignalMgr::Instance().connect_smartMenu( boost::bind(&CGame::smartMenuCreateCallBack, this, _1) );
+    CSignalMgr::Instance().connect_aICreate( boost::bind(&CGame::aICreateCallBack, this, _1, _2) );
 
     if( NBDefs::IsDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
@@ -109,7 +108,7 @@ void CGame::create()
 ************************************************************************/
 void CGame::smartGuiControlCreateCallBack( CUIControl * pUIControl )
 {
-    /*if( pUIControl->getFaction() == "decision_btn" )
+    if( pUIControl->getFaction() == "decision_btn" )
         pUIControl->setSmartGui( new CSmartConfirmBtn( pUIControl ) );
 
     else if( pUIControl->getFaction() == "key_binding_btn" )
@@ -128,7 +127,7 @@ void CGame::smartGuiControlCreateCallBack( CUIControl * pUIControl )
             pUIControl->setSmartGui( new CSmartVSyncCheckBox( pUIControl ) );
 
     else if( pUIControl->getName() == "settings_dead_zone_slider" )
-            pUIControl->setSmartGui( new CSmartDeadZoneSlider( pUIControl ) );*/
+            pUIControl->setSmartGui( new CSmartDeadZoneSlider( pUIControl ) );
 }
 
 
@@ -143,10 +142,10 @@ void CGame::smartMenuCreateCallBack( CMenu * pMenu )
 /***************************************************************************
 *    decs:  Call back function to create sprite ai
 ****************************************************************************/
-void CGame::aICreateCallBack( const std::string & aiName, iSprite * pSprite )
+void CGame::aICreateCallBack( const std::string & aiName, CSprite * pSprite )
 {
-    //if( aiName == "aiBall" )
-        //pSprite->setAI( new CBallAI( pSprite ) );
+    if( aiName == "aiBall" )
+        pSprite->setAI( new CBallAI( pSprite ) );
 }
 
 
@@ -235,8 +234,8 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
         displayErrorMsg( "Low Memory Error", "The device is experiencing low memory. Try freeing up some apps." );
 
     // In a traditional game, want the pause menu to display when the game is sent to the background
-    //else if( (rEvent.type == SDL_APP_WILLENTERBACKGROUND) && !CMenuMgr::Instance().isMenuActive() )
-    //    NGenFunc::DispatchEvent( NMenu::EGE_MENU_ESCAPE_ACTION );
+    else if( (rEvent.type == SDL_APP_WILLENTERBACKGROUND) && !CMenuMgr::Instance().isMenuActive() )
+        NGenFunc::DispatchEvent( NMenu::EGE_MENU_ESCAPE_ACTION );
 
     // Handle events
     if( upGameState )

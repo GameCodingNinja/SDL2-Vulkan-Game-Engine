@@ -40,6 +40,7 @@ CCameraMgr::~CCameraMgr()
 
 /************************************************************************
 *    DESC:  Create or recreate the projection matrixes for resolution change
+*           NOTE: Also called when the resolution changes for the new screen size
 ************************************************************************/
 void CCameraMgr::createProjMatrix()
 {
@@ -54,6 +55,9 @@ void CCameraMgr::createProjMatrix()
         CSettings::Instance().getDefaultSize().getH(),
         CSettings::Instance().getMinZdist(),
         CSettings::Instance().getMaxZdist() );
+
+    for( auto & iter : m_cameraMap )
+        iter.second.recreateProjMatrix();
 
     // Generate the default camera projection
     if( CSettings::Instance().getProjectionType() == NDefs::EPT_ORTHOGRAPHIC )
