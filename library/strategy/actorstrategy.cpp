@@ -50,7 +50,7 @@ CActorStrategy::~CActorStrategy()
 void CActorStrategy::loadFromFile( const std::string & file )
 {
     // open and parse the XML file:
-    XMLNode node = XMLNode::openFileHelper( file.c_str(), "nodeStrategy" );
+    const XMLNode node = XMLNode::openFileHelper( file.c_str(), "node" );
     if( !node.isEmpty() )
     {
         for( int i = 0; i < node.nChildNode(); ++i )
@@ -174,34 +174,34 @@ iNode * CActorStrategy::create(
 *    DESC:  Load the node
 ****************************************************************************/
 void CActorStrategy::loadSprite(
-    CSprite & sprite,
+    CSprite * sprite,
     const CSpriteData & rSpriteData,
     const CPoint<CWorldValue> & pos,
     const CPoint<float> & rot,
     const CPoint<float> & scale )
 {
     // Load the rest from sprite data
-    sprite.load( rSpriteData );
+    sprite->load( rSpriteData );
 
     // Use passed in transforms if specified
     if( !pos.isEmpty() )
-        sprite.getObject()->setPos(pos);
+        sprite->getObject()->setPos(pos);
 
     if( !rot.isEmpty() )
-        sprite.getObject()->setRot(rot, false);
+        sprite->getObject()->setRot(rot, false);
 
     if( scale != CPoint<float>(1,1,1) )
-        sprite.getObject()->setScale(scale);
+        sprite->getObject()->setScale(scale);
 
     // Init the physics
-    sprite.initPhysics();
+    sprite->initPhysics();
 
     // Init the sprite
-    sprite.init();
+    sprite->init();
 
     // Broadcast the signal to create the sprite AI
     if( !rSpriteData.getAIName().empty() )
-        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), &sprite );
+        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), sprite );
 }
 
 
@@ -239,6 +239,16 @@ void CActorStrategy::deleteObj( int id )
 
 
 /***************************************************************************
+*    DESC:  Do any init
+****************************************************************************/
+void CActorStrategy::init()
+{
+    for( auto iter : m_pNodeVec )
+        iter->init();
+}
+
+
+/***************************************************************************
 *    DESC:  Update the nodes
 ****************************************************************************/
 void CActorStrategy::update()
@@ -259,13 +269,19 @@ void CActorStrategy::transform()
 
 
 /***************************************************************************
-*    DESC:  Record the command buffer vector in the device
-*           for all the sprite objects that are to be rendered
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
 ****************************************************************************/
 void CActorStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     for( auto iter : m_pNodeVec )
         iter->recordCommandBuffer( index, cmdBuffer, viewProj );
+}
+
+void CActorStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+{
+    for( auto iter : m_pNodeVec )
+        iter->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
 }
 
 

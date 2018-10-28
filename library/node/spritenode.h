@@ -34,22 +34,27 @@ public:
 
     // Destructor
     virtual ~CSpriteNode();
+    
+    // Do any init
+    void init() override;
 
     // Update the nodes
     void update() override;
 
     // Transform the nodes
     void transform() override;
+    void transform( const CMatrix & matrix, bool tranformWorldPos = false ) override;
 
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
 
     // Get the unique head node id number
     int getId() const override;
 
     // Get the sprite
-    CSprite & getSprite();
+    CSprite * getSprite() override;
 
 private:
 
@@ -58,6 +63,7 @@ private:
 
     // Record command buffer recursive function
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
 
 protected:
 

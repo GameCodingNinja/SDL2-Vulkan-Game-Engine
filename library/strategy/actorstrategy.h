@@ -56,6 +56,9 @@ public:
 
     virtual iNode * create(
         const std::string & dataName ) override;
+    
+    // Do any init
+    void init() override;
 
     // Update the nodes
     void update() override;
@@ -63,9 +66,9 @@ public:
     // Transform the node
     void transform() override;
 
-    // Record the command buffer vector in the device
-    // for all the sprite objects that are to be rendered
+    // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
 
     // Get the reference to the node
     template<typename target>
@@ -84,7 +87,7 @@ protected:
     
     // Load the node
     void loadSprite(
-        CSprite & sprite,
+        CSprite * sprite,
         const CSpriteData & rSpriteData,
         const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
         const CPoint<float> & rot = CPoint<float>(),

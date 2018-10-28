@@ -25,9 +25,9 @@
         <size width="0" height="0"/>
     </default>
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
-  
+
     <objectList>
-        
+
         <!--<object name="scaled_frame">
             <visual>
                 <texture file="data/textures/menu/menu_bg.png"/>
@@ -38,7 +38,7 @@
             </visual>
             <size width="500" height="500"/>
         </object>
-        
+
         <object name="scaled_frame2">
             <visual>
                 <texture file="data/textures/menu/menu_spriteSheet.png"/>
@@ -52,43 +52,49 @@
             </visual>
             <size width="500" height="500"/>
         </object>-->
-        
+
         <object name="logo">
             <visual>
                 <texture file="data/textures/startup/logo.png"/>
             </visual>
         </object>
-        
+
         <object name="waffles">
             <visual>
                 <texture file="data/textures/startup/waffles.png"/>
             </visual>
         </object>
-        
+
         <object name="background">
             <visual>
                 <texture file="data/textures/titleScreen/title_background.png"/>
             </visual>
         </object>
-        
+
         <object name="circle_green">
             <visual>
                 <texture file="data/textures/run/circle_green.png"/>
             </visual>
         </object>
-        
+
         <object name="square_red">
             <visual>
                 <texture file="data/textures/run/square_red.png"/>
             </visual>
         </object>
-        
+
         <object name="triangle_blue">
             <visual>
                 <texture file="data/textures/run/triangle_blue.png"/>
             </visual>
         </object>
-        
+
+        <object name="peg">
+            <visual>
+                <texture file="data/textures/run/peg.png"/>
+            </visual>
+        </object>
+
         <!--<object name="solid">
             <visual>
                 <pipeline id="2d_solid"/>
@@ -96,7 +102,7 @@
             </visual>
             <size width="400" height="200"/>
         </object>
-        
+
         <object name="spriteSheetTest4">
             <visual>
                 <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
@@ -106,7 +112,7 @@
                 <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
-        
+
         <object name="test_font">
             <visual>
                 <mesh genType="font"/>

@@ -34,7 +34,7 @@ public:
     virtual ~CVisualComponentQuad();
     
     // Record the command buffers
-    virtual void recordCommandBuffers( 
+    virtual void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,

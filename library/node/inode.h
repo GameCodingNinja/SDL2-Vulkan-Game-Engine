@@ -22,6 +22,7 @@
 
 // Forward declaration(s)
 class CMatrix;
+class CSprite;
 
 class iNode
 {
@@ -42,6 +43,9 @@ public:
     virtual bool addNode( iNode * pNode )
     { return false; }
     
+    // Reset the iterator
+    virtual void reset(){}
+    
     // Push back node into vector
     virtual void pushBackNode( iNode * pNode ){}
 
@@ -57,19 +61,28 @@ public:
     // Get the parent id
     virtual int getParentId() const
     { return 0; }
+    
+    // Do any init
+    virtual void init(){}
 
     // Update the nodes
     virtual void update(){}
 
     // Transform the nodes
     virtual void transform(){}
+    virtual void transform( const CMatrix & matrix, bool tranformWorldPos = false ){}
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ){}
+    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ){}
     
     // Get the node type
     virtual NDefs::ENodeType getType() const
     { return m_type; }
+    
+    // Get the sprite
+    virtual CSprite * getSprite()
+    { return nullptr; }
 
 protected:
 

@@ -26,9 +26,6 @@ public:
 
     // Transform the actor
     virtual void transform() override;
-
-    // Render the actors
-    void render() override;
 };
 
 #endif

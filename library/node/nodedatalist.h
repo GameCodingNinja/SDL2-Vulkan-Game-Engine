@@ -8,6 +8,9 @@
 #ifndef __node_data_list_h__
 #define __node_data_list_h__
 
+// Game lib dependencies
+#include <common/defs.h>
+
 // Standard lib dependencies
 #include <vector>
 #include <string>
@@ -22,6 +25,12 @@ public:
 
     // Constructor
     CNodeDataList( const XMLNode & node );
+    CNodeDataList(
+        const XMLNode & node,
+        const std::string & defGroup,
+        const std::string & defObjName,
+        const std::string & defAIName,
+        int defId = defs_SPRITE_DEFAULT_ID );
     
     // Destructor
     virtual ~CNodeDataList();
@@ -38,7 +47,8 @@ private:
         int & idCounter,
         const std::string & defGroup,
         const std::string & defObjName,
-        const std::string & defAIName );
+        const std::string & defAIName,
+        int defId = defs_SPRITE_DEFAULT_ID );
     
 private:
     

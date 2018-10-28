@@ -71,12 +71,6 @@ public:
 
     // Transform the sprite
     void transform();
-    void transform( const class CObject2D & object );
-
-    // Render the sprites
-    void render();
-    void render( const class CMatrix & matrix );
-    void render( const CMatrix & matrix, const CMatrix & cameraMatrix );
     
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );
@@ -146,6 +140,4 @@ private:
     std::vector<iStrategy *> m_pStrategyVec;
 };
 
-#endif  // __sprite_strategy_manager_h__
-
-
+#endif

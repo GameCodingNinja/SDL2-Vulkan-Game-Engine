@@ -23,7 +23,9 @@ CCameraMgr::CCameraMgr() :
     m_pActiveCamera(nullptr)
 {
     createProjMatrix();
-
+    
+    // Set the default position which allows everything to render
+    m_defaultCamera.setPos( 0, 0, 20 );
 }
 
 
@@ -55,7 +57,7 @@ void CCameraMgr::createProjMatrix()
     for( auto & iter : m_cameraMap )
         iter.second.recreateProjMatrix();
 
-    // Generate the default camera
+    // Generate the default camera projection
     if( CSettings::Instance().getProjectionType() == NDefs::EPT_ORTHOGRAPHIC )
         m_defaultCamera.generateOrthographicProjection(
             CSettings::Instance().getMinZdist(),
@@ -292,7 +294,6 @@ const CMatrix & CCameraMgr::getActiveCameraMatrix() const
 
     return getDefaultProjMatrix();
 }
-
 
 
 /************************************************************************

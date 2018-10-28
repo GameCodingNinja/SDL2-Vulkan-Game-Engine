@@ -47,7 +47,7 @@ public:
     void pushBackNode( iNode * pNode ) override;
     
     // Reset the iterator
-    void reset();
+    void reset() override;
 
 protected:
 

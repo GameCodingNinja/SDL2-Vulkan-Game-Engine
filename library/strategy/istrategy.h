@@ -51,11 +51,8 @@ public:
     virtual iNode * create(
         const std::string & name ){ return nullptr; }
     
-    // Do any pre-loop init
+    // Do any init
     virtual void init(){}
-    
-    // Do some cleanup
-    virtual void cleanUp(){}
     
     // Load the data from file
     virtual void miscProcess(){}
@@ -66,11 +63,6 @@ public:
     // Transform the sprite
     virtual void transform(){}
     virtual void transform( const class CObject2D & object ){}
-
-    // Render the sprites
-    virtual void render() {}
-    virtual void render( const class CMatrix & matrix ) {}
-    virtual void render( const CMatrix & matrix, const CMatrix & rotMatrix ) {}
     
     // Clear the sprite Id counter
     static void clearSpriteCounter();
@@ -101,4 +93,4 @@ protected:
     static int m_idInc;
 };
 
-#endif  // __i_sprite_strategy_h__
+#endif

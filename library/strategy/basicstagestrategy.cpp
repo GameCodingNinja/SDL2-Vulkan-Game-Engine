@@ -96,34 +96,21 @@ void CBasicStageStrategy::transform()
         iter.transform();
 }
 
-void CBasicStageStrategy::transform( const CObject2D & object )
-{
-    for( auto & iter : m_sectorDeq )
-        iter.transform( object );
-}
-
 
 /***************************************************************************
-*    DESC:  Render the sector
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
 ****************************************************************************/
-void CBasicStageStrategy::render( const CMatrix & matrix )
+void CBasicStageStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
-    //for( auto & iter : m_sectorDeq )
-    //    iter.render( matrix );
+    for( auto & iter : m_sectorDeq )
+        iter.recordCommandBuffer( index, cmdBuffer, viewProj );
 }
 
-void CBasicStageStrategy::render( const CMatrix & matrix, const CMatrix & rotMatrix )
+void CBasicStageStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
-    //for( auto & iter : m_sectorDeq )
-    //    iter.render( matrix, rotMatrix );
-}
-
-void CBasicStageStrategy::render()
-{
-    //const auto & camera = CCameraMgr::Instance().getCamera( m_cameraId );
-
-    //for( auto & iter : m_sectorDeq )
-    //    iter.render( camera );
+    for( auto & iter : m_sectorDeq )
+        iter.recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
 }
 
 
@@ -133,19 +120,4 @@ void CBasicStageStrategy::render()
 CObject & CBasicStageStrategy::getDefaultCameraPos()
 {
     return m_defaultCameraPos;
-}
-
-
-/************************************************************************
- *    DESC:  Find if the sprite exists
- ************************************************************************/
-bool CBasicStageStrategy::find( CSprite * pSprite )
-{
-    for( auto & iter : m_sectorDeq )
-    {
-        if( iter.find( pSprite ) )
-            return true;
-    }
-
-    return false;
 }

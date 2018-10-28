@@ -36,6 +36,15 @@ CSpriteNode::~CSpriteNode()
 
 
 /***************************************************************************
+*    DESC:  Do any init
+****************************************************************************/
+void CSpriteNode::init()
+{
+    m_sprite.init();
+}
+
+
+/***************************************************************************
 *    DESC:  Update the nodes.
 ****************************************************************************/
 void CSpriteNode::update()
@@ -53,6 +62,11 @@ void CSpriteNode::transform()
     m_sprite.getObject()->transform();
 }
 
+void CSpriteNode::transform( const CMatrix & matrix, bool tranformWorldPos )
+{
+    m_sprite.getObject()->transform( matrix, tranformWorldPos );
+}
+
 
 /***************************************************************************
 *    DESC:  Record the command buffer vector in the device
@@ -60,7 +74,12 @@ void CSpriteNode::transform()
 ****************************************************************************/
 void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
-    m_sprite.recordCommandBuffers( index, cmdBuffer, viewProj );
+    m_sprite.recordCommandBuffer( index, cmdBuffer, viewProj );
+}
+
+void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+{
+    m_sprite.recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
 }
 
 
@@ -76,7 +95,7 @@ int CSpriteNode::getId() const
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/
-CSprite & CSpriteNode::getSprite()
+CSprite * CSpriteNode::getSprite()
 {
-    return m_sprite;
+    return &m_sprite;
 }

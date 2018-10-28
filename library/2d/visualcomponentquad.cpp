@@ -60,7 +60,7 @@ CVisualComponentQuad::~CVisualComponentQuad()
 /***************************************************************************
 *   DESC:  Record the command buffers
 ****************************************************************************/
-void CVisualComponentQuad::recordCommandBuffers(
+void CVisualComponentQuad::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
     const CMatrix & model,

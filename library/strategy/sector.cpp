@@ -12,11 +12,16 @@
 #include <sprite/sprite.h>
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
+#include <utilities/deletefuncs.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 #include <managers/signalmanager.h>
 #include <common/camera.h>
-#include <sprite/spritedata.h>
+#include <node/spritenodemultilist.h>
+#include <node/spritenode.h>
+#include <node/nodedatalist.h>
+#include <node/nodedata.h>
+#include <node/inode.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -33,6 +38,7 @@ CSector::CSector() :
 ************************************************************************/
 CSector::~CSector()
 {
+    NDelFunc::DeleteVectorPointers( m_pNodeVec );
 }
 
 
@@ -43,6 +49,86 @@ void CSector::loadFromNode( const XMLNode & node )
 {
     // open and parse the XML file:
     const std::string filePath = node.getAttribute( "file" );
+    const XMLNode sectorNode = XMLNode::openFileHelper( filePath.c_str(), "node" );
+    if( !sectorNode.isEmpty() )
+    {
+        std::string defObjName, defGroup, defAIName, spriteName;
+        int defId(-1);
+
+        // Check for any defaults
+        if( sectorNode.isAttributeSet( "defaultGroup" ) )
+            defGroup = sectorNode.getAttribute( "defaultGroup" );
+
+        if( sectorNode.isAttributeSet( "defaultObjectName" ) )
+            defObjName = sectorNode.getAttribute( "defaultObjectName" );
+
+        if( sectorNode.isAttributeSet( "defaultAIName" ) )
+            defAIName = sectorNode.getAttribute( "defaultAIName" );
+
+        if( sectorNode.isAttributeSet( "defaultId" ) )
+            defId = std::atoi(sectorNode.getAttribute( "defaultId" ));
+        
+        // Create the nodes
+        for( int i = 0; i < sectorNode.nChildNode(); ++i )
+        {
+            const XMLNode childNode = sectorNode.getChildNode( i );
+            
+            CNodeDataList data( childNode, defGroup, defObjName, defAIName, defId );
+            const auto & rNodeDataList = data.getData();
+            
+            spriteName = rNodeDataList.front().getName();
+            
+            iNode * pHeadNode = nullptr;
+            
+            // Build the node list
+            for( auto & iter : rNodeDataList )
+            {
+                if( iter.getNodeType() == NDefs::ENT_SPRITE )
+                {
+                    auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ), iter.getSpriteId() );
+
+                    loadSprite( pSpriteNode->getSprite(), iter );
+
+                    if( pHeadNode == nullptr )
+                        pHeadNode = pSpriteNode;
+                }
+                else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
+                {
+                    auto * pSpriteNode = new CSpriteNodeMultiLst(
+                        CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ),
+                        iter.getSpriteId(),
+                        iter.getNodeId(),
+                        iter.getParentNodeId() );
+
+                    loadSprite( pSpriteNode->getSprite(), iter );
+
+                    if( pHeadNode == nullptr )
+                        pHeadNode = pSpriteNode;
+
+                    else if( !pHeadNode->addNode( pSpriteNode ) )
+                        throw NExcept::CCriticalException("Node Create Error!",
+                            boost::str( boost::format("Parent node not found when adding child node (%s).\n\n%s\nLine: %s")
+                                % iter.getSpriteId() % __FUNCTION__ % __LINE__ ));
+                }
+                else
+                {
+                    throw NExcept::CCriticalException("Node Create Error!",
+                        boost::str( boost::format("Node type not defined (%s).\n\n%s\nLine: %s")
+                            % iter.getSpriteId() % __FUNCTION__ % __LINE__ ));
+                }
+            }
+
+            // Add the node pointer to the vector for rendering
+            m_pNodeVec.push_back( pHeadNode );
+            
+            // If there is a name, add it to the map
+            if( !spriteName.empty() )
+                m_pNodeMap.emplace( spriteName, pHeadNode );
+        }
+    }
+    
+    // open and parse the XML file:
+    /*const std::string filePath = node.getAttribute( "file" );
     const XMLNode spriteListNode = XMLNode::openFileHelper( filePath.c_str(), "spriteList" );
     if( !spriteListNode.isEmpty() )
     {
@@ -84,15 +170,6 @@ void CSector::loadFromNode( const XMLNode & node )
                 aiName = data.getAIName();
                 spriteName = data.getName();
             }
-            /*else if( tag == "actor2d" )
-            {
-                // Allocate the actor sprite
-                CActorData data( spriteNode, defGroup, defObjName, defAIName, defId );
-                m_pSpriteVec.push_back( new CActorSprite2D( data, data.GetId() ) );
-
-                aiName = data.GetAIName();
-                spriteName = data.GetName();
-            }*/
 
             // If there is a name, add it to the map
             if( !spriteName.empty() )
@@ -105,7 +182,27 @@ void CSector::loadFromNode( const XMLNode & node )
             if( !aiName.empty() )
                 CSignalMgr::Instance().broadcast( aiName, m_pSpriteVec.back() );
         }
-    }
+    }*/
+}
+
+
+/***************************************************************************
+*    DESC:  Load the node
+****************************************************************************/
+void CSector::loadSprite( CSprite * sprite, const CSpriteData & rSpriteData )
+{
+    // Load the rest from sprite data
+    sprite->load( rSpriteData );
+
+    // Init the physics
+    sprite->initPhysics();
+
+    // Init the sprite
+    sprite->init();
+
+    // Broadcast the signal to create the sprite AI
+    if( !rSpriteData.getAIName().empty() )
+        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), sprite );
 }
 
 
@@ -116,17 +213,8 @@ void CSector::init()
 {
     // Create any font strings
     // This allows for delayed VBO create so that the fonts can be allocated during the load screen
-    for( auto iter : m_pSpriteVec )
+    for( auto iter : m_pNodeVec )
         iter->init();
-}
-
-
-/************************************************************************
-*    DESC:  Destroy this sector
-************************************************************************/
-void CSector::destroy()
-{
-    m_pSpriteVec.clear();
 }
 
 
@@ -135,7 +223,7 @@ void CSector::destroy()
 ************************************************************************/
 void CSector::update()
 {
-    for( auto & iter : m_pSpriteVec )
+    for( auto iter : m_pNodeVec )
         iter->update();
 }
 
@@ -145,18 +233,33 @@ void CSector::update()
 ************************************************************************/
 void CSector::transform()
 {
-    CObject2D::transform();
-
-    for( auto iter : m_pSpriteVec )
-        iter->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+    CObject3D::transform();
+    
+    for( auto iter : m_pNodeVec )
+        iter->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
-void CSector::transform( const CObject2D & object )
-{
-    CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
 
-    for( auto iter : m_pSpriteVec )
-        iter->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CSector::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+{
+    if( inView() )
+    {
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuffer, viewProj );
+    }
+}
+
+void CSector::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+{
+    if( inView() )
+    {
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+    }
 }
 
 
@@ -252,7 +355,7 @@ bool CSector::inPerspectiveView()
 /************************************************************************
  *    DESC:  Find if the sprite exists
  ************************************************************************/
-bool CSector::find( CSprite * pSprite )
+/*bool CSector::find( CSprite * pSprite )
 {
     for( auto iter : m_pSpriteVec )
     {
@@ -261,13 +364,13 @@ bool CSector::find( CSprite * pSprite )
     }
 
     return false;
-}
+}*/
 
 
 /************************************************************************
 *    DESC:  Get the pointer to the sprite
 ************************************************************************/
-CSprite * CSector::get( const std::string & spriteName )
+/*CSprite * CSector::get( const std::string & spriteName )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pSpriteMap.find( spriteName );
@@ -277,4 +380,4 @@ CSprite * CSector::get( const std::string & spriteName )
                 % spriteName % __FUNCTION__ % __LINE__ ));
 
     return mapIter->second;
-}
+}*/

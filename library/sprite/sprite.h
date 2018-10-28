@@ -32,7 +32,6 @@ class iAIBase;
 class CObjectData2D;
 class CObjectData3D;
 class SpriteData;
-class CCamera;
 class CMatrix;
 class CSpriteData;
 class btTransform;
@@ -70,8 +69,8 @@ public:
     void physicsUpdate();
 
     // Record the command buffers
-    void recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
-    void recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
     
     // Init the script functions
     void initScriptFunctions( const XMLNode & node );
@@ -138,6 +137,6 @@ private:
 
 };
 
-#endif  // __sprite_h__
+#endif
 
 

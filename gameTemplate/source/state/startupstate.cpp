@@ -117,9 +117,8 @@ void CStartUpState::init()
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
     
-    nodeStrategy.loadFromFile( "data/objects/2d/spritestrategy/nodeList.lst" );
-    nodeStrategy.create( "spriteNode" );
-
+    m_strategy.loadFromFile( "data/objects/2d/spritestrategy/stage/stage.cfg" );
+    //m_strategy.create( "spriteNode" );
 }
 
 
@@ -137,8 +136,7 @@ void CStartUpState::update()
 ****************************************************************************/
 void CStartUpState::transform()
 {
-    //m_upSpriteLogo->getObject()->transform();
-    nodeStrategy.transform();
+    m_strategy.transform();
 }
 
 
@@ -152,8 +150,7 @@ void CStartUpState::recordCommandBuffer( uint32_t index )
     
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
     
-    //m_upSpriteLogo->recordCommandBuffers( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
-    nodeStrategy.recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
+    m_strategy.recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
     
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }

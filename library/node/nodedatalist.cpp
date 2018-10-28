@@ -40,8 +40,22 @@ CNodeDataList::CNodeDataList( const XMLNode & node )
     
     // Call the recursive function to load the children
     loadNode( node, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName );
+}
+
+CNodeDataList::CNodeDataList(
+    const XMLNode & node,
+    const std::string & defGroup,
+    const std::string & defObjName,
+    const std::string & defAIName,
+    int defId )
+{
+    int idCounter = 0;
+
+    // Load the node data into the vector
+    m_dataVec.emplace_back( node, idCounter++, -1, defGroup, defObjName, defAIName, defId );
     
-    defAIName = "";
+    // Call the recursive function to load the children
+    loadNode( node, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName, defId );
 }
 
 
@@ -62,15 +76,16 @@ void CNodeDataList::loadNode(
     int & idCounter,
     const std::string & defGroup,
     const std::string & defObjName,
-    const std::string & defAIName )
+    const std::string & defAIName,
+    int defId )
 {
     for( int i = 0; i < xmlNode.nChildNode("node"); ++i )
     {
         const XMLNode & childXMLNode = xmlNode.getChildNode("node", i);
 
-        m_dataVec.emplace_back( childXMLNode, idCounter++, nodeData.getNodeId(), defGroup, defObjName, defAIName );
+        m_dataVec.emplace_back( childXMLNode, idCounter++, nodeData.getNodeId(), defGroup, defObjName, defAIName, defId );
 
-        loadNode( childXMLNode, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName );
+        loadNode( childXMLNode, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName, defId );
     }
 }
 

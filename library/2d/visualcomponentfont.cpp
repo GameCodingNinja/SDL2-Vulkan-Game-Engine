@@ -63,7 +63,7 @@ void CVisualComponentFont::updateUBO(
 /***************************************************************************
 *   DESC:  Record the command buffers
 ****************************************************************************/
-void CVisualComponentFont::recordCommandBuffers(
+void CVisualComponentFont::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
     const CMatrix & model,

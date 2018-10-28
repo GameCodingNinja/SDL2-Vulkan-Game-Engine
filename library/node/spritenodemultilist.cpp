@@ -48,6 +48,16 @@ CSpriteNodeMultiLst::~CSpriteNodeMultiLst()
 
 
 /***************************************************************************
+*    DESC:  Do any init
+****************************************************************************/
+void CSpriteNodeMultiLst::init()
+{
+    for( auto iter : m_allNodeVec )
+        iter->init();
+}
+
+
+/***************************************************************************
 *    DESC:  Update the nodes.
 ****************************************************************************/
 void CSpriteNodeMultiLst::update()
@@ -73,12 +83,9 @@ void CSpriteNodeMultiLst::update( iNode * pNode )
 
             if( pNextNode != nullptr )
             {
-                // Cast the child node
-                auto * pChildNode = dynamic_cast<CSpriteNodeMultiLst *>(pNextNode);
-                
                 // Update the children
-                pChildNode->getSprite().update();
-                pChildNode->getSprite().physicsUpdate();
+                pNextNode->getSprite()->update();
+                pNextNode->getSprite()->physicsUpdate();
                 
                 // Call a recursive function again
                 update( pNextNode );
@@ -101,6 +108,15 @@ void CSpriteNodeMultiLst::transform()
     resetIterators();
 }
 
+void CSpriteNodeMultiLst::transform( const CMatrix & matrix, bool tranformWorldPos )
+{
+    m_sprite.getObject()->transform( matrix, tranformWorldPos );
+
+    transform( this );
+    
+    resetIterators();
+}
+
 void CSpriteNodeMultiLst::transform( iNode * pNode )
 {
     if( pNode != nullptr )
@@ -114,14 +130,10 @@ void CSpriteNodeMultiLst::transform( iNode * pNode )
 
             if( pNextNode != nullptr )
             {
-                // Cast the parent and child nodes
-                auto * pParentNode = dynamic_cast<CSpriteNodeMultiLst *>(pNode);
-                auto * pChildNode = dynamic_cast<CSpriteNodeMultiLst *>(pNextNode);
-
                 // Transform the child node
-                pChildNode->getSprite().getObject()->transform(
-                    pParentNode->getSprite().getObject()->getMatrix(),
-                    pParentNode->getSprite().getObject()->wasWorldPosTranformed() );
+                pNextNode->getSprite()->getObject()->transform(
+                    pNode->getSprite()->getObject()->getMatrix(),
+                    pNode->getSprite()->getObject()->wasWorldPosTranformed() );
 
                 // Call a recursive function again
                 transform( pNextNode );
@@ -138,7 +150,7 @@ void CSpriteNodeMultiLst::transform( iNode * pNode )
 ****************************************************************************/
 void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
-    m_sprite.recordCommandBuffers( index, cmdBuffer, viewProj );
+    m_sprite.recordCommandBuffer( index, cmdBuffer, viewProj );
     
     recordCommandBuffer( this, index, cmdBuffer, viewProj );
     
@@ -158,14 +170,44 @@ void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, Vk
 
             if( pNextNode != nullptr )
             {
-                // Cast the child node
-                auto * pChildNode = dynamic_cast<CSpriteNodeMultiLst *>(pNextNode);
-                
                 // Record the command buffer
-                pChildNode->getSprite().recordCommandBuffers( index, cmdBuffer, viewProj );
+                pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, viewProj );
 
                 // Call a recursive function again
                 recordCommandBuffer( pNextNode, index, cmdBuffer, viewProj );
+            }
+        }
+        while( pNextNode != nullptr );
+    }
+}
+
+void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+{
+    m_sprite.recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+    
+    recordCommandBuffer( this, index, cmdBuffer, rotMatrix, viewProj );
+    
+    resetIterators();
+}
+
+void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+{
+    if( pNode != nullptr )
+    {
+        iNode * pNextNode;
+
+        do
+        {
+            // get the next node
+            pNextNode = pNode->next();
+
+            if( pNextNode != nullptr )
+            {
+                // Record the command buffer
+                pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+
+                // Call a recursive function again
+                recordCommandBuffer( pNextNode, index, cmdBuffer, rotMatrix, viewProj );
             }
         }
         while( pNextNode != nullptr );
@@ -178,7 +220,7 @@ void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, Vk
 ************************************************************************/
 bool CSpriteNodeMultiLst::addNode( iNode * pNode )
 {
-    m_allNodeVec.push_back( dynamic_cast<CSpriteNodeMultiLst *>(pNode) );
+    m_allNodeVec.push_back( pNode );
 
     const bool result = CNode::addNode( pNode );
 
@@ -203,9 +245,9 @@ void CSpriteNodeMultiLst::resetIterators()
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/
-CSprite & CSpriteNodeMultiLst::getSprite()
+CSprite * CSpriteNodeMultiLst::getSprite()
 {
-    return m_sprite;
+    return &m_sprite;
 }
 
 

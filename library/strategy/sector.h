@@ -18,9 +18,14 @@
 #include <vector>
 #include <map>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward Declarations
 class CSprite;
 class CCamera;
+class iNode;
+class CSpriteData;
 
 class CSector : public CObject3D, boost::noncopyable
 {
@@ -37,21 +42,18 @@ public:
     
     // Do any pre-game loop init's
     void init();
-    
-    // Do some cleanup
-    void cleanUp();
-    
-    // Destroy this sector
-    void destroy();
 
     // Update the actor
     void update();
 
     // Transform the actor
     void transform() override;
-    void transform( const CObject2D & object ) override;
-
-    // Render the actor
+    
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    
+    // Remove
     void render( const CCamera & camera );
     void render( const CMatrix & matrix );
     void render( const CMatrix & matrix, const CMatrix & rotMatrix );
@@ -60,12 +62,15 @@ public:
     bool inView();
     
     // Find if the sprite exists
-    bool find( CSprite * pSprite );
+    //bool find( CSprite * pSprite );
     
     // Get the pointer to the sprite
-    CSprite * get( const std::string & spriteName );
+    //CSprite * get( const std::string & spriteName );
     
 private:
+    
+    // Load the node
+    void loadSprite( CSprite * sprite, const CSpriteData & rSpriteData );
     
     // Check if the sector is within the orthographic view frustum
     bool inOrthographicView();
@@ -75,20 +80,19 @@ private:
     
 private:
     
-    // sprite allocation vector
-    std::vector<CSprite *> m_pSpriteVec;
+    // Vector of iNode pointers
+    std::vector<iNode *> m_pNodeVec;
     
     // sprites with names
-    std::map<const std::string, CSprite *> m_pSpriteMap;
+    std::map<const std::string, iNode *> m_pNodeMap;
     
     // The projection type
     NDefs::EProjectionType m_projectionType;
     
     // Half of the sector size
     float m_sectorSizeHalf;
-
 };
 
-#endif  // __sector_h__
+#endif
 
 

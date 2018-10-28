@@ -46,25 +46,13 @@ public:
 
     // Transform the actor
     virtual void transform() override;
-    virtual void transform( const CObject2D & object ) override;
-
-    // Render the actors
-    void render() override;
-    void render( const CMatrix & matrix ) override;
-    void render( const CMatrix & matrix, const CMatrix & rotMatrix ) override;
     
-    // Find if the sprite exists
-    bool find( CSprite * pSprite );
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
     
     // Get the default camera position
     CObject & getDefaultCameraPos();
-    
-    // Get a reference to the sprite
-    template <typename target>
-    target & get( const std::string & spriteName, int index = 0 )
-    {
-        return *dynamic_cast<target *>(m_sectorDeq.at(index).get( spriteName ));
-    }
     
 protected:
     
@@ -80,4 +68,4 @@ protected:
     CObject m_defaultCameraPos;
 };
 
-#endif  // __basic_stage_strategy_h__
+#endif

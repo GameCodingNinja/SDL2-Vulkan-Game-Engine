@@ -74,8 +74,6 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
     auto mapIter = m_pStrategyMap.find( strategyId );
     if( mapIter != m_pStrategyMap.end() )
     {
-        mapIter->second->cleanUp();
-
         auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), mapIter->second );
         if( strategyIter != m_pStrategyVec.end() )
             m_pStrategyVec.erase( strategyIter );
@@ -184,17 +182,11 @@ void CStrategyMgr::transform()
         iter->transform();
 }
 
-void CStrategyMgr::transform( const CObject2D & object )
-{
-    for( auto iter : m_pStrategyVec )
-        iter->transform( object );
-}
-
 
 /***************************************************************************
 *    DESC:  Render the sprites
 ****************************************************************************/
-void CStrategyMgr::render()
+/*void CStrategyMgr::render()
 {
     for( auto iter : m_pStrategyVec )
         iter->render();
@@ -210,7 +202,7 @@ void CStrategyMgr::render( const CMatrix & matrix, const CMatrix & rotMatrix )
 {
     for( auto iter : m_pStrategyVec )
         iter->render( matrix, rotMatrix );
-}
+}*/
 
 
 /************************************************************************

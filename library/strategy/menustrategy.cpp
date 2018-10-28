@@ -32,9 +32,9 @@ void CMenuStrategy::transform()
 /***************************************************************************
 *    DESC:  Render the menu
 ****************************************************************************/
-void CMenuStrategy::render()
+/*void CMenuStrategy::render()
 {
     const auto & camera = CCameraMgr::Instance().getCamera( m_cameraId );
 
     CMenuMgr::Instance().renderMenu( camera.getFinalMatrix() );
-}
+}*/

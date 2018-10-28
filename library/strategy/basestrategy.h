@@ -60,4 +60,4 @@ private:
     
 };
 
-#endif  // __base_strategy_h__
+#endif

@@ -39,14 +39,18 @@ public:
     virtual ~iVisualComponent() {}
     
     // Record the command buffers
-    virtual void recordCommandBuffers( 
+    virtual void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,
         const CMatrix & viewProj ) {}
-
-    // do the render
-    virtual void render( const CMatrix & objMatrix, const CMatrix & matrix ) {}
+    
+    virtual void recordCommandBuffer( 
+        uint32_t index,
+        VkCommandBuffer cmdBuffer,
+        const CMatrix & model,
+        const CMatrix & rotMatrix,
+        const CMatrix & viewProj ) {}
     
     // Set/Get the color
     void setColor( const CColor & color );

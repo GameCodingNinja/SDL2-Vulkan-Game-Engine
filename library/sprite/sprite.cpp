@@ -23,7 +23,6 @@
 #include <utilities/xmlParser.h>
 #include <utilities/matrix.h>
 #include <common/iaibase.h>
-#include <common/camera.h>
 #include <sprite/spritedata.h>
 
 /************************************************************************
@@ -37,20 +36,20 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
     // Create the visual component
     if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
         m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
-    
+
     else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SPRITE_SHEET )
         m_upVisualComponent.reset( new CVisualComponentSpriteSheet( objectData ) );
-    
+
     else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SCALED_FRAME )
         m_upVisualComponent.reset( new CVisualComponentScaledFrame( objectData ) );
-    
+
     else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
         m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
-    
+
     // Create the physics component
     if( objectData.getPhysicsData().isActive() )
         m_upPhysicsComponent.reset( new CPhysicsComponent2D( objectData ) );
-    
+
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
 }
@@ -63,18 +62,18 @@ CSprite::CSprite( const CObjectData3D & objectData, int id ) :
     // Create the visual component
     if( objectData.getVisualData().isActive() )
         m_upVisualComponent.reset( new CVisualComponent3D( objectData ) );
-    
+
     // Create the physics component
     if( objectData.getPhysicsData().isActive() )
         m_upPhysicsComponent.reset( new CPhysicsComponent3D( objectData ) );
-        
+
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );
 }
 
 
 /************************************************************************
-*    DESC:  destructor                                                             
+*    DESC:  destructor
 ************************************************************************/
 CSprite::~CSprite()
 {
@@ -91,7 +90,7 @@ void CSprite::load( const XMLNode & node )
 
     // Init the script functions
     initScriptFunctions( node );
-    
+
     // Load the font properties from XML node
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->loadFontPropFromNode( node );
@@ -101,10 +100,10 @@ void CSprite::load( const CSpriteData & spriteData )
 {
     // Copy over the transform
     m_upObject->copyTransform( &spriteData );
-    
+
     // Copy over the script functions
     copyScriptFunctions( spriteData.getScriptFunctions() );
-    
+
     // See if this sprite is used for rendering a font string
     if( m_upVisualComponent->isFontSprite() && (spriteData.getFontData() != nullptr) )
         m_upVisualComponent->setFontData( *spriteData.getFontData() );
@@ -119,7 +118,7 @@ void CSprite::init()
 {
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->createFontString();
-    
+
     prepare( "init", true );
 }
 
@@ -137,7 +136,7 @@ void CSprite::initScriptFunctions( const XMLNode & node )
         for( int i = 0; i < scriptLstNode.nChildNode(); ++i )
         {
             const XMLNode scriptNode = scriptLstNode.getChildNode(i);
-            
+
             // Only the first attribute is used
             const XMLAttribute attribute = scriptNode.getAttribute(0);
             const std::string attrName = attribute.lpszName;
@@ -147,7 +146,7 @@ void CSprite::initScriptFunctions( const XMLNode & node )
             if( !attrValue.empty() )
             {
                 m_scriptFunctionMap.emplace( attrName, attrValue );
-                
+
                 if( attrName == "update" )
                     m_upObject->getParameters().add( NDefs::SCRIPT_UPDATE );
             }
@@ -165,12 +164,12 @@ bool CSprite::prepare( const std::string & scriptFuncId, bool forceUpdate )
     if( iter != m_scriptFunctionMap.end() )
     {
         m_scriptComponent.prepare( m_rObjectData.getGroup(), iter->second, {this});
-        
+
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
         if( forceUpdate )
             m_scriptComponent.update();
-        
+
         return true;
     }
 
@@ -186,7 +185,7 @@ void CSprite::copyScriptFunctions( const std::map<std::string, std::string> & sc
     for( auto & iter : scriptFunctionMap )
     {
         m_scriptFunctionMap.emplace( iter );
-        
+
         if( iter.first == "update" )
             m_upObject->getParameters().add( NDefs::SCRIPT_UPDATE );
     }
@@ -194,7 +193,7 @@ void CSprite::copyScriptFunctions( const std::map<std::string, std::string> & sc
 
 
 /************************************************************************
-*    DESC:  Init the physics                                                           
+*    DESC:  Init the physics
 ************************************************************************/
 void CSprite::initPhysics()
 {
@@ -214,22 +213,22 @@ void CSprite::handleEvent( const SDL_Event & rEvent )
 
 
 /************************************************************************
-*    DESC:  Update the sprite                                                           
+*    DESC:  Update the sprite
 ************************************************************************/
 void CSprite::update()
 {
     m_scriptComponent.update();
-    
+
     if( m_upObject->getParameters().isSet( NDefs::SCRIPT_UPDATE ) )
         prepare( "update" );
-    
+
     if( m_upAI )
         m_upAI->update();
 }
 
 
 /************************************************************************
-*    DESC:  Update the physics                                                           
+*    DESC:  Update the physics
 ************************************************************************/
 void CSprite::physicsUpdate()
 {
@@ -239,18 +238,18 @@ void CSprite::physicsUpdate()
 
 
 /************************************************************************
-*    DESC:  Record the command buffers                                                           
+*    DESC:  Record the command buffer
 ************************************************************************/
-void CSprite::recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
 {
     if( m_upObject->isVisible() )
-        m_upVisualComponent->recordCommandBuffers( index, cmdBuffer, m_upObject->getMatrix(), viewProj );
+        m_upVisualComponent->recordCommandBuffer( index, cmdBuffer, m_upObject->getMatrix(), viewProj );
 }
 
-void CSprite::recordCommandBuffers( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
     if( m_upObject->isVisible() )
-        m_upVisualComponent->recordCommandBuffers( index, cmdBuffer, m_upObject->getMatrix(), camera.getFinalMatrix() );
+        m_upVisualComponent->recordCommandBuffer( index, cmdBuffer, m_upObject->getMatrix(), rotMatrix, viewProj );
 }
 
 
@@ -303,7 +302,7 @@ void CSprite::setFrame( uint index )
     if( m_upVisualComponent->getCurrentFrame() != index )
     {
         m_upVisualComponent->setFrame( index );
-        
+
         if( m_upVisualComponent->getGenerationType() == NDefs::EGT_SPRITE_SHEET )
             m_upObject->setCropOffset( m_upVisualComponent->getCropOffset( index ) );
     }
@@ -312,7 +311,7 @@ void CSprite::setFrame( uint index )
 /************************************************************************
 *    DESC:  Get the frame count
 ************************************************************************/
-uint CSprite::getFrameCount() const 
+uint CSprite::getFrameCount() const
 {
     return m_rObjectData.getVisualData().getFrameCount();
 }
@@ -320,7 +319,7 @@ uint CSprite::getFrameCount() const
 /************************************************************************
 *    DESC:  Get the current frame
 ************************************************************************/
-uint CSprite::getCurrentFrame() const 
+uint CSprite::getCurrentFrame() const
 {
     return m_upVisualComponent->getCurrentFrame();
 }
@@ -336,7 +335,7 @@ int CSprite::getId() const
 
 
 /************************************************************************
-*    DESC:  Get the object data                                                            
+*    DESC:  Get the object data
 ************************************************************************/
 const iObjectData & CSprite::getObjectData() const
 {

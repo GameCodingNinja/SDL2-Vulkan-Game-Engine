@@ -64,4 +64,4 @@ protected:
     CMatrix m_matrix;
 };
 
-#endif  // __object_2d_h__
+#endif

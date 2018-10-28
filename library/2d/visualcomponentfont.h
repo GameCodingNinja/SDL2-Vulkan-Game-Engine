@@ -49,7 +49,7 @@ public:
     const CSize<float> & getFontSize() const override;
     
     // Record the command buffers
-    void recordCommandBuffers( 
+    void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,
