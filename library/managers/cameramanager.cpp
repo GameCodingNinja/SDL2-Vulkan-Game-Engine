@@ -23,9 +23,10 @@ CCameraMgr::CCameraMgr() :
     m_pActiveCamera(nullptr)
 {
     createProjMatrix();
-    
+
     // Set the default position which allows everything to render
     m_defaultCamera.setPos( 0, 0, 20 );
+    m_defaultCamera.transform();
 }
 
 
@@ -54,9 +55,6 @@ void CCameraMgr::createProjMatrix()
         CSettings::Instance().getMinZdist(),
         CSettings::Instance().getMaxZdist() );
 
-    for( auto & iter : m_cameraMap )
-        iter.second.recreateProjMatrix();
-
     // Generate the default camera projection
     if( CSettings::Instance().getProjectionType() == NDefs::EPT_ORTHOGRAPHIC )
         m_defaultCamera.generateOrthographicProjection(
@@ -73,26 +71,14 @@ void CCameraMgr::createProjMatrix()
 
 
 /************************************************************************
-*    DESC:  Get the default projection matrix
-************************************************************************/
-const CMatrix & CCameraMgr::getDefaultProjMatrix() const
-{
-    if( CSettings::Instance().getProjectionType() == NDefs::EPT_ORTHOGRAPHIC )
-        return m_orthographicMatrix;
-    else
-        return m_perspectiveMatrix;
-}
-
-
-/************************************************************************
 *    DESC:  Get the projection matrix
 ************************************************************************/
-const CMatrix & CCameraMgr::getProjectionMatrix( NDefs::EProjectionType type ) const
+const CMatrix & CCameraMgr::getProjMatrix( NDefs::EProjectionType type ) const
 {
-    if( type == NDefs::EPT_PERSPECTIVE )
-        return m_perspectiveMatrix;
-    else
+    if( type == NDefs::EPT_ORTHOGRAPHIC )
         return m_orthographicMatrix;
+    else
+        return m_perspectiveMatrix;
 }
 
 
@@ -125,199 +111,190 @@ CCamera & CCameraMgr::createPerspective( const std::string & id, float angle, fl
 
 
 /************************************************************************
-*    DESC:  Set/Get the active camera
+*    DESC:  Switch to a camera
 ************************************************************************/
-void CCameraMgr::setActiveCamera( const std::string & id )
+void CCameraMgr::switchCamera( const std::string & id )
 {
+    m_pActiveCamera = nullptr;
+
     auto iter = m_cameraMap.find( id );
     if( iter != m_cameraMap.end() )
         m_pActiveCamera = &iter->second;
-    else
+
+    else if( id != "" )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Camera id does not exist (%s).") % id ) );
-}
-
-CCamera & CCameraMgr::getActiveCamera()
-{
-    return *m_pActiveCamera;
-}
-
-
-/************************************************************************
-*    DESC:  Get the camera
-************************************************************************/
-CCamera & CCameraMgr::getCamera( const std::string & id )
-{
-    auto iter = m_cameraMap.find( id );
-    if( iter != m_cameraMap.end() )
-        return iter->second;
-
-    return m_defaultCamera;
-}
-
-const CCamera & CCameraMgr::getCamera( const std::string & id ) const
-{
-    auto iter = m_cameraMap.find( id );
-    if( iter != m_cameraMap.end() )
-        return iter->second;
-
-    return m_defaultCamera;
-}
-
-
-/************************************************************************
-*    DESC:  Set the active camera position
-************************************************************************/
-void CCameraMgr::setActiveCameraPos( const CPoint<CWorldValue> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setPos(position);
-}
-
-void CCameraMgr::setActiveCameraPos( CWorldValue x, CWorldValue y, CWorldValue z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setPos(x,y,z);
-}
-
-void CCameraMgr::setActiveCameraPos( const CPoint<float> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setPos(position);
-}
-
-void CCameraMgr::setActiveCameraPos( float x, float y, float z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setPos(x,y,z);
-}
-
-
-/************************************************************************
-*    DESC:  Inc the active camera position
-************************************************************************/
-void CCameraMgr::incActiveCameraPos( const CPoint<CWorldValue> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incPos(position);
-}
-
-void CCameraMgr::incActiveCameraPos( CWorldValue x, CWorldValue y, CWorldValue z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incPos(x,y,z);
-}
-
-void CCameraMgr::incActiveCameraPos( const CPoint<float> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incPos(position);
-}
-
-void CCameraMgr::incActiveCameraPos( float x, float y, float z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incPos(x,y,z);
-}
-
-
-/************************************************************************
-*    DESC:  Set the active camera rotation
-************************************************************************/
-void CCameraMgr::setActiveCameraRot( const CPoint<float> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setRot(position);
-}
-
-void CCameraMgr::setActiveCameraRot( float x, float y, float z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setRot(x,y,z);
-}
-
-
-/************************************************************************
-*    DESC:  Inc the active camera rotation
-************************************************************************/
-void CCameraMgr::incActiveCameraRot( const CPoint<float> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incRot(position);
-}
-
-void CCameraMgr::incActiveCameraRot( float x, float y, float z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incRot(x,y,z);
-}
-
-
-/************************************************************************
-*    DESC:  Set the active camera scale
-************************************************************************/
-void CCameraMgr::setActiveCameraScale( const CPoint<float> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setScale(position);
-}
-
-void CCameraMgr::setActiveCameraScale( float x, float y, float z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->setScale(x,y,z);
-}
-
-
-/************************************************************************
-*    DESC:  Inc the active camera scale
-************************************************************************/
-void CCameraMgr::incActiveCameraScale( const CPoint<float> & position )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incScale(position);
-}
-
-void CCameraMgr::incActiveCameraScale( float x, float y, float z )
-{
-    if( m_pActiveCamera != nullptr )
-        m_pActiveCamera->incScale(x,y,z);
-}
-
-
-/************************************************************************
-*    DESC:  Get the final matrix
-************************************************************************/
-const CMatrix & CCameraMgr::getActiveCameraMatrix() const
-{
-    if( m_pActiveCamera != nullptr )
-        return m_pActiveCamera->getFinalMatrix();
-
-    return getDefaultProjMatrix();
 }
 
 
 /************************************************************************
 *    DESC:  Get the camera final matrix
 ************************************************************************/
-const CMatrix & CCameraMgr::getCameraMatrix( const std::string & id ) const
+const CMatrix & CCameraMgr::getFinalMatrix() const
 {
-    if( !id.empty() )
-    {
-        auto iter = m_cameraMap.find( id );
-        if( iter != m_cameraMap.end() )
-            return iter->second.getFinalMatrix();
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->getFinalMatrix();
 
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Camera id does not exist (%s).") % id ) );
-    }
+    return m_defaultCamera.getFinalMatrix();
+}
 
-    return getDefaultProjMatrix();
+
+/************************************************************************
+*    DESC:  Set the active camera position
+************************************************************************/
+void CCameraMgr::setPos( const CPoint<CWorldValue> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setPos(position);
+
+    else
+        m_defaultCamera.setPos(position);
+}
+
+void CCameraMgr::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setPos(x,y,z);
+    else
+        m_defaultCamera.setPos(x,y,z);
+}
+
+void CCameraMgr::setPos( const CPoint<float> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setPos(position);
+    else
+        m_defaultCamera.setPos(position);
+}
+
+void CCameraMgr::setPos( float x, float y, float z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setPos(x,y,z);
+    else
+        m_defaultCamera.setPos(x,y,z);
+}
+
+
+/************************************************************************
+*    DESC:  Inc the active camera position
+************************************************************************/
+void CCameraMgr::incPos( const CPoint<CWorldValue> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incPos(position);
+    else
+        m_defaultCamera.incPos(position);
+}
+
+void CCameraMgr::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incPos(x,y,z);
+    else
+        m_defaultCamera.incPos(x,y,z);
+}
+
+void CCameraMgr::incPos( const CPoint<float> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incPos(position);
+    else
+        m_defaultCamera.incPos(position);
+}
+
+void CCameraMgr::incPos( float x, float y, float z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incPos(x,y,z);
+    else
+        m_defaultCamera.incPos(x,y,z);
+}
+
+
+/************************************************************************
+*    DESC:  Set the active camera rotation
+************************************************************************/
+void CCameraMgr::setRot( const CPoint<float> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setRot(position);
+    else
+        m_defaultCamera.setRot(position);
+}
+
+void CCameraMgr::setRot( float x, float y, float z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setRot(x,y,z);
+    else
+        m_defaultCamera.setRot(x,y,z);
+}
+
+
+/************************************************************************
+*    DESC:  Inc the active camera rotation
+************************************************************************/
+void CCameraMgr::incRot( const CPoint<float> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incRot(position);
+    else
+        m_defaultCamera.incRot(position);
+}
+
+void CCameraMgr::incRot( float x, float y, float z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incRot(x,y,z);
+    else
+        m_defaultCamera.incRot(x,y,z);
+}
+
+
+/************************************************************************
+*    DESC:  Set the active camera scale
+************************************************************************/
+void CCameraMgr::setScale( const CPoint<float> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setScale(position);
+    else
+        m_defaultCamera.setScale(position);
+}
+
+void CCameraMgr::setScale( float x, float y, float z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->setScale(x,y,z);
+    else
+        m_defaultCamera.setScale(x,y,z);
+}
+
+
+/************************************************************************
+*    DESC:  Inc the active camera scale
+************************************************************************/
+void CCameraMgr::incScale( const CPoint<float> & position )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incScale(position);
+    else
+        m_defaultCamera.incScale(position);
+}
+
+void CCameraMgr::incScale( float x, float y, float z )
+{
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->incScale(x,y,z);
+    else
+        m_defaultCamera.incScale(x,y,z);
 }
 
 
 /************************************************************************
 *    DESC:  Transform the all cameras
 ************************************************************************/
-void CCameraMgr::transform()
+void CCameraMgr::transformAll()
 {
     for( auto & iter : m_cameraMap )
         iter.second.transform();
@@ -327,12 +304,10 @@ void CCameraMgr::transform()
 /************************************************************************
 *    DESC:  Transform the camera
 ************************************************************************/
-void CCameraMgr::transformCamera( const std::string & id )
+void CCameraMgr::transform()
 {
-    if( !id.empty() )
-    {
-        auto iter = m_cameraMap.find( id );
-        if( iter != m_cameraMap.end() )
-            return iter->second.transform();
-    }
+    if( m_pActiveCamera != nullptr )
+        return m_pActiveCamera->transform();
+    else
+        m_defaultCamera.transform();
 }

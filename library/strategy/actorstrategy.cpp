@@ -58,7 +58,7 @@ void CActorStrategy::loadFromFile( const std::string & file )
             const XMLNode nodeLst = node.getChildNode( "node", i );
 
             // Get the node list id
-            const std::string id = nodeLst.getAttribute( "id" );
+            const std::string id = nodeLst.getAttribute( "name" );
 
             // Load the sprite data into the map
             bool duplicate = !m_dataMap.emplace( id, nodeLst ).second;
@@ -124,7 +124,7 @@ iNode * CActorStrategy::create(
     {
         if( iter.getNodeType() == NDefs::ENT_SPRITE )
         {
-            auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ), nodeId );
+            auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ), nodeId );
 
             loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
             
@@ -134,7 +134,7 @@ iNode * CActorStrategy::create(
         else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
         {
             auto * pSpriteNode = new CSpriteNodeMultiLst(
-                    CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getName() ),
+                    CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ),
                     nodeId,
                     iter.getNodeId(),
                     iter.getParentNodeId() );
@@ -307,9 +307,9 @@ iNode * CActorStrategy::getNode( const int id )
 
 
 /************************************************************************
- *    DESC:  Find if the node exists
+ *    DESC:  Find if the node is active
  ************************************************************************/
-bool CActorStrategy::find( const int id )
+bool CActorStrategy::isActive( const int id )
 {
     // See if this node has already been created
     const auto iter = std::find_if(

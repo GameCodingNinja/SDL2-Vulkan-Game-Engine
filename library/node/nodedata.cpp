@@ -16,6 +16,7 @@
 ************************************************************************/
 CNodeData::CNodeData( 
     const XMLNode & node,
+    const std::string & nodeName,
     int nodeId,
     int parenNodetId,
     const std::string & defGroup,
@@ -23,6 +24,7 @@ CNodeData::CNodeData(
     const std::string & defAIName,
     int defId ) :
         CSpriteData( node.getChildNode(), defGroup, defObjName, defAIName, defId ),
+        m_nodeName(nodeName),
         m_nodeId(nodeId),
         m_parenNodetId(parenNodetId),
         m_nodeType(NDefs::ENT_NULL)
@@ -38,6 +40,7 @@ CNodeData::CNodeData(
 
 CNodeData::CNodeData( const CNodeData & data ) :
     CSpriteData( data ),
+    m_nodeName(data.m_nodeName),
     m_nodeId( data.m_nodeId ),
     m_parenNodetId( data.m_parenNodetId ),
     m_nodeType( data.m_nodeType )
@@ -50,6 +53,15 @@ CNodeData::CNodeData( const CNodeData & data ) :
 ************************************************************************/
 CNodeData::~CNodeData()
 {
+}
+
+
+/************************************************************************
+*    DESC:  Get the node Name
+************************************************************************/
+const std::string & CNodeData::getNodeName() const
+{
+    return m_nodeName;
 }
 
 

@@ -27,9 +27,9 @@ public:
     CNodeDataList( const XMLNode & node );
     CNodeDataList(
         const XMLNode & node,
-        const std::string & defGroup,
-        const std::string & defObjName,
-        const std::string & defAIName,
+        const std::string & _defGroup,
+        const std::string & _defObjName,
+        const std::string & _defAIName,
         int defId = defs_SPRITE_DEFAULT_ID );
     
     // Destructor

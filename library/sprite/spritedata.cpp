@@ -109,7 +109,7 @@ CSpriteData::~CSpriteData()
 /************************************************************************
 *    DESC:  Get the name of this specific sprite instance
 ************************************************************************/
-const std::string & CSpriteData::getName() const
+const std::string & CSpriteData::getSpriteName() const
 {
     return m_name;
 }

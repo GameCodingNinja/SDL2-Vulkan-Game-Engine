@@ -21,7 +21,7 @@
 ************************************************************************/
 CNodeDataList::CNodeDataList( const XMLNode & node )
 {
-    std::string defGroup, defObjName, defAIName;
+    std::string defGroup, defObjName, defAIName, nodeName;
 
     // Check for any defaults
     if( node.isAttributeSet( "defaultGroup" ) )
@@ -33,10 +33,13 @@ CNodeDataList::CNodeDataList( const XMLNode & node )
     if( node.isAttributeSet( "defaultAIName" ) )
         defAIName = node.getAttribute( "defaultAIName" );
     
+    if( node.isAttributeSet( "name" ) )
+        nodeName = node.getAttribute( "name" );
+    
     int idCounter = 0;
 
     // Load the node data into the vector
-    m_dataVec.emplace_back( node, idCounter++, -1, defGroup, defObjName, defAIName );
+    m_dataVec.emplace_back( node, nodeName, idCounter++, -1, defGroup, defObjName, defAIName );
     
     // Call the recursive function to load the children
     loadNode( node, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName );
@@ -44,15 +47,33 @@ CNodeDataList::CNodeDataList( const XMLNode & node )
 
 CNodeDataList::CNodeDataList(
     const XMLNode & node,
-    const std::string & defGroup,
-    const std::string & defObjName,
-    const std::string & defAIName,
+    const std::string & _defGroup,
+    const std::string & _defObjName,
+    const std::string & _defAIName,
     int defId )
 {
+    std::string defGroup(_defGroup), defObjName(_defObjName), defAIName(_defAIName), nodeName;
+
+    // Check for any defaults
+    if( node.isAttributeSet( "defaultGroup" ) )
+        defGroup = node.getAttribute( "defaultGroup" );
+
+    if( node.isAttributeSet( "defaultObjectName" ) )
+        defObjName = node.getAttribute( "defaultObjectName" );
+
+    if( node.isAttributeSet( "defaultAIName" ) )
+        defAIName = node.getAttribute( "defaultAIName" );
+    
+    if( node.isAttributeSet( "defaultId" ) )
+        defId = std::atoi(node.getAttribute( "defaultId" ));
+    
+    if( node.isAttributeSet( "name" ) )
+        nodeName = node.getAttribute( "name" );
+    
     int idCounter = 0;
 
     // Load the node data into the vector
-    m_dataVec.emplace_back( node, idCounter++, -1, defGroup, defObjName, defAIName, defId );
+    m_dataVec.emplace_back( node, nodeName, idCounter++, -1, defGroup, defObjName, defAIName, defId );
     
     // Call the recursive function to load the children
     loadNode( node, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName, defId );
@@ -83,7 +104,7 @@ void CNodeDataList::loadNode(
     {
         const XMLNode & childXMLNode = xmlNode.getChildNode("node", i);
 
-        m_dataVec.emplace_back( childXMLNode, idCounter++, nodeData.getNodeId(), defGroup, defObjName, defAIName, defId );
+        m_dataVec.emplace_back( childXMLNode, "", idCounter++, nodeData.getNodeId(), defGroup, defObjName, defAIName, defId );
 
         loadNode( childXMLNode, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName, defId );
     }

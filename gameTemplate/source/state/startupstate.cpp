@@ -150,7 +150,7 @@ void CStartUpState::recordCommandBuffer( uint32_t index )
     
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
     
-    m_strategy.recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getDefaultProjMatrix() );
+    m_strategy.recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getFinalMatrix() );
     
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }

@@ -61,12 +61,9 @@ public:
     // Is the actor in view
     bool inView();
     
-    // Find if the sprite exists
-    //bool find( CSprite * pSprite );
-    
-    // Get the pointer to the sprite
-    //CSprite * get( const std::string & spriteName );
-    
+    // Get the pointer to the node
+    iNode * get( const std::string & nodeName );
+
 private:
     
     // Load the node
@@ -83,7 +80,7 @@ private:
     // Vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;
     
-    // sprites with names
+    // Nodes with names
     std::map<const std::string, iNode *> m_pNodeMap;
     
     // The projection type

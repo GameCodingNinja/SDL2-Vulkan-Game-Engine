@@ -77,11 +77,8 @@ public:
         return dynamic_cast<target *>(getNode( id ));
     }
 
-    // Find if the node exists
-    bool find( const int id );
-
-    // Get the node data by name
-    CNodeDataList & getData( const std::string & name );
+    // Find if the node is active
+    bool isActive( const int id );
 
 protected:
     
@@ -101,6 +98,9 @@ protected:
 
     // Get the pointer to the sprite
     iNode * getNode( const int id );
+    
+    // Get the node data by name
+    CNodeDataList & getData( const std::string & name );
 
 protected:
 

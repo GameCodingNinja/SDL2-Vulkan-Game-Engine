@@ -48,7 +48,7 @@ public:
     const std::map<std::string, std::string> & getScriptFunctions() const;
     
     // Get the sprite name
-    const std::string & getName() const;
+    const std::string & getSpriteName() const;
     
     // Get the group
     const std::string & getGroup() const;

@@ -18,6 +18,7 @@ public:
     // Constructor
     CNodeData(
         const XMLNode & node,
+        const std::string & nodeName,
         int nodeId,
         int parenNodetId,
         const std::string & defGroup = std::string(),
@@ -30,6 +31,9 @@ public:
     // Destructor
     virtual ~CNodeData();
     
+    // Get the node Name
+    const std::string & getNodeName() const;
+    
     // Get the node id
     int getNodeId() const;
     
@@ -40,12 +44,15 @@ public:
     NDefs::ENodeType getNodeType() const;
 
 private:
+    
+    // node name
+    const std::string m_nodeName;
 
     // Node Id
-    int m_nodeId;
+    const int m_nodeId;
     
     // Parent Id
-    int m_parenNodetId;
+    const int m_parenNodetId;
     
     // Node type
     NDefs::ENodeType m_nodeType;
