@@ -56,9 +56,6 @@ private:
     
     // Map in a map of all the symbol sets
     std::map<const std::string, std::map<const std::string, CSymbolSetView> > m_symbolSetViewMap;
-
 };
 
-#endif  // __symbol_set_view_manager_h__
-
-
+#endif

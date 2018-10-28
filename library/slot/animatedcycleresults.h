@@ -49,9 +49,7 @@ public:
     bool isAnimating() override;
 
     // Do the render
-    void render( const CMatrix & matrix ) override;
+    //void render( const CMatrix & matrix ) override;
 };
 
-#endif  // __simple_cycle_results_h__
-
-
+#endif

@@ -339,11 +339,11 @@ void CSlotGame::transform()
 /***************************************************************************
 *    DESC:  2D/3D Render of game content
 ****************************************************************************/
-void CSlotGame::render( const CMatrix & matrix )
+/*void CSlotGame::render( const CMatrix & matrix )
 {
     for( auto & iter : m_slotGroupVec )
         iter->getView()->render( matrix );
-}
+}*/
 
 
 /***************************************************************************

@@ -66,9 +66,6 @@ private:
     
     // Total credits
     uint m_credits;
-
 };
 
-#endif  // __bet_manager_h__
-
-
+#endif

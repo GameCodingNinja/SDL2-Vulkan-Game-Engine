@@ -46,9 +46,6 @@ private:
     
     // Total win amount
     uint m_totalWinAmount;
-
 };
 
-#endif  // __slot_results_h__
-
-
+#endif

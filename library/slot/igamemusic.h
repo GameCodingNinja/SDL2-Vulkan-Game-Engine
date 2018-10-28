@@ -22,6 +22,4 @@ public:
     virtual void setTimeOut() = 0;
 };
 
-#endif  // __i_game_music_h__
-
-
+#endif

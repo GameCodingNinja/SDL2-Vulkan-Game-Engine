@@ -39,6 +39,4 @@ private:
     const std::vector<int> m_weightVec;
 };
 
-#endif  // __weighted_table_h__
-
-
+#endif

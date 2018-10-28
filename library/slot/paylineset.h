@@ -42,4 +42,4 @@ private:
     std::vector<std::vector<int8_t>> m_scatterVecVec;
 };
 
-#endif  // __payline_set_h__
+#endif

@@ -10,8 +10,10 @@
 
 // Game lib dependencies
 #include <objectdata/objectdatamanager.h>
-#include <common/spritedata.h>
+#include <common/ivisualcomponent.h>
 #include <common/fontdata.h>
+#include <sprite/spritedata.h>
+#include <sprite/sprite.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -24,19 +26,18 @@ CSymbol2d::CSymbol2d( const std::vector<CSpriteData> & rSpriteDataVec, const std
     {
         m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ) );
 
-        m_spriteDeq.back().setVisible( iter.isVisible() );
+        m_spriteDeq.back().getObject()->setVisible( iter.isVisible() );
 
-        if( m_spriteDeq.back().getVisualComponent().isFontSprite() )
+        if( m_spriteDeq.back().getVisualComponent()->isFontSprite() )
         {
-            m_spriteDeq.back().getVisualComponent().setFontProperties( iter.getFontData()->m_fontProp );
-            m_spriteDeq.back().getVisualComponent().createFontString( iter.getFontData()->m_fontString );
+            m_spriteDeq.back().getVisualComponent()->setFontProperties( iter.getFontData()->m_fontProp );
+            m_spriteDeq.back().getVisualComponent()->createFontString( iter.getFontData()->m_fontString );
         }
 
-        m_spriteDeq.back().copyTransform( &iter );
+        m_spriteDeq.back().getObject()->copyTransform( &iter );
 
         m_spriteDeq.back().copyScriptFunctions( iter.getScriptFunctions() );
     }
-
 }
 
 
@@ -51,7 +52,7 @@ CSymbol2d::~CSymbol2d()
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/
-CSprite2D & CSymbol2d::getSprite( int index )
+CSprite & CSymbol2d::getSprite( int index )
 {
     return m_spriteDeq.at( index );
 }
@@ -100,7 +101,7 @@ void CSymbol2d::transform()
     }
 
     for( auto & iter : m_spriteDeq )
-        iter.transform( m_finalMatrix, wasWorldPosTranformed() );
+        iter.getObject()->transform( m_finalMatrix, wasWorldPosTranformed() );
 }
 
 void CSymbol2d::transform( const CMatrix & matrix, bool tranformWorldPos )
@@ -120,18 +121,18 @@ void CSymbol2d::transform( const CMatrix & matrix, bool tranformWorldPos )
     }
 
     for( auto & iter : m_spriteDeq )
-        iter.transform( m_finalMatrix, wasWorldPosTranformed() );
+        iter.getObject()->transform( m_finalMatrix, wasWorldPosTranformed() );
 }
 
 
 /************************************************************************
 *    DESC:  do the render
 ************************************************************************/
-void CSymbol2d::render( const CMatrix & matrix )
+/*void CSymbol2d::render( const CMatrix & matrix )
 {
     for( auto & iter : m_spriteDeq )
         iter.render( matrix );
-}
+}*/
 
 
 /************************************************************************

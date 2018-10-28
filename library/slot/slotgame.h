@@ -57,7 +57,7 @@ public:
     void transform();
 
     // Render of game content
-    void render( const CMatrix & matrix );
+    //void render( const CMatrix & matrix );
     
     // Play a game
     void playGame(CUIControl *);
@@ -129,6 +129,4 @@ private:
     iGameMusic * m_pGameMusic;
 };
 
-#endif  // __slot_game_h__
-
-
+#endif

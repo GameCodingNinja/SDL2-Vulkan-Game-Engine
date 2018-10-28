@@ -50,10 +50,10 @@ public:
     void transform() override;
     
     // do the render
-    void render( const CMatrix & matrix ) override;
+    //void render( const CMatrix & matrix ) override;
     
     // Do the deferred render
-    void deferredRender( const CMatrix & matrix ) override;
+    //void deferredRender( const CMatrix & matrix ) override;
     
     // Start the reels spinning
     void startSpin() override;
@@ -80,9 +80,6 @@ private:
     
     // Cycle result symb vectors
     std::vector<std::vector<CSymbol2d *>> m_cycleResultSymbVec;
-
 };
 
-#endif  // __wheel_group_view_h__
-
-
+#endif

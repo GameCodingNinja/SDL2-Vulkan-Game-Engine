@@ -26,7 +26,7 @@ struct XMLNode;
 class CSlotGroupModel;
 class CSymbolSetView;
 class CSymbol2d;
-class CSprite2D;
+class CSprite;
 class iCycleResults;
 class CPay;
 
@@ -71,10 +71,10 @@ public:
     virtual void transform();
     
     // Do the render
-    virtual void render( const CMatrix & matrix );
+    //virtual void render( const CMatrix & matrix );
     
     // Do the deferred render
-    virtual void deferredRender( const CMatrix & matrix ) = 0;
+    //virtual void deferredRender( const CMatrix & matrix ) = 0;
     
     // Start the reels spinning
     virtual void startSpin() = 0;
@@ -118,13 +118,10 @@ protected:
     std::vector<std::vector<CSymbol2d *>> m_cycleResultSymbVec;
     
     // cycle results text sprite
-    std::unique_ptr<CSprite2D> m_upCycleResultsTxtSprite;
+    std::unique_ptr<CSprite> m_upCycleResultsTxtSprite;
     
     // Cycle results interface
     std::unique_ptr<iCycleResults> m_upCycleResults;
-
 };
 
-#endif  // __slot_group_view_h__
-
-
+#endif

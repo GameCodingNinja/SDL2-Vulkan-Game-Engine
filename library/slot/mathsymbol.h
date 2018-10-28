@@ -42,9 +42,6 @@ private:
     
     // ID's of other math symbols that this symbol is wild for
     const std::vector<std::string> m_wildMatches;
-
 };
 
-#endif  // __math_symbol_list_h__
-
-
+#endif

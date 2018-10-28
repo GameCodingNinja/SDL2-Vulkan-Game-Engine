@@ -51,10 +51,10 @@ public:
     void transform() override;
     
     // Do the render
-    void render( const CMatrix & matrix ) override;
+    //void render( const CMatrix & matrix ) override;
     
     // Do the deferred render
-    void deferredRender( const CMatrix & matrix ) override;
+    //void deferredRender( const CMatrix & matrix ) override;
     
     // Start the reels spinning
     void startSpin() override;
@@ -91,4 +91,4 @@ private:
     std::vector<std::vector<CSymbol2d *>> m_cycleResultSymbVec;
 };
 
-#endif  // __reel_group_view_h__
+#endif

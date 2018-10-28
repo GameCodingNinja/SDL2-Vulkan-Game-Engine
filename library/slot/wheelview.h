@@ -18,7 +18,6 @@
 #include <slot/slotdefs.h>
 #include <utilities/timer.h>
 #include <slot/symbol2d.h>
-#include <2d/sprite2d.h>
 
 // Boost lib dependencies
 #include <boost/signals2.hpp>
@@ -31,6 +30,7 @@
 class CSlotStripModel;
 class CSymbolSetView;
 class CSound;
+class CSprite;
 struct XMLNode;
 
 class CWheelView : public CObject2D, boost::noncopyable
@@ -59,10 +59,10 @@ public:
     void transform( const CMatrix & matrix, bool tranformWorldPos = false ) override;
     
     // Do the render
-    void render( const CMatrix & matrix );
+    //void render( const CMatrix & matrix );
     
     // Do the deferred render
-    void deferredRender( const CMatrix & matrix );
+    //void deferredRender( const CMatrix & matrix );
     
     // Start the spin
     void startSpin();
@@ -126,10 +126,10 @@ private:
     std::deque<CSymbol2d> m_symbolDeq;
     
     // sprite deque
-    std::deque<CSprite2D> m_wheelSpriteDeq;
+    std::deque<CSprite> m_wheelSpriteDeq;
     
     // sprite deque
-    std::deque<CSprite2D> m_spriteDeq;
+    std::deque<CSprite> m_spriteDeq;
     
     // Spin Profile
     CSpinProfile m_spinProfile;
@@ -177,6 +177,4 @@ private:
     bool m_allowStopSounds;
 };
 
-#endif  // __wheel_view_h__
-
-
+#endif

@@ -15,7 +15,8 @@
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
 #include <objectdata/objectdatamanager.h>
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
+#include <common/ivisualcomponent.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -59,12 +60,12 @@ void CSlotGroupView::create(
     const std::string objectName = cycleResultsTxtNode.getAttribute( "objectName" );
 
     // Allocate the cycle results text
-    m_upCycleResultsTxtSprite.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( group, objectName ) ) );
-    m_upCycleResultsTxtSprite->setVisible( false );
-    m_upCycleResultsTxtSprite->loadTransFromNode( cycleResultsTxtNode );
+    m_upCycleResultsTxtSprite.reset( new CSprite( CObjectDataMgr::Instance().getData2D( group, objectName ) ) );
+    m_upCycleResultsTxtSprite->getObject()->setVisible( false );
+    m_upCycleResultsTxtSprite->getObject()->loadTransFromNode( cycleResultsTxtNode );
 
     // Load the font properties from XML node
-    m_upCycleResultsTxtSprite->getVisualComponent().loadFontPropFromNode( cycleResultsTxtNode );
+    m_upCycleResultsTxtSprite->getVisualComponent()->loadFontPropFromNode( cycleResultsTxtNode );
 }
 
 
@@ -73,7 +74,7 @@ void CSlotGroupView::create(
 ************************************************************************/
 void CSlotGroupView::setCycleResultText( bool visible, const CPay * pPay )
 {
-    m_upCycleResultsTxtSprite->setVisible( visible );
+    m_upCycleResultsTxtSprite->getObject()->setVisible( visible );
 
     if( visible && (pPay != nullptr) )
     {
@@ -91,7 +92,7 @@ void CSlotGroupView::setCycleResultText( bool visible, const CPay * pPay )
                 text = boost::str( boost::format("Scatter Pays %d") % pPay->getFinalAward() );
         }
 
-        m_upCycleResultsTxtSprite->getVisualComponent().createFontString(text);
+        m_upCycleResultsTxtSprite->getVisualComponent()->createFontString(text);
     }
 }
 
@@ -166,11 +167,11 @@ void CSlotGroupView::transform()
 /************************************************************************
 *    DESC:  Do the render
 ************************************************************************/
-void CSlotGroupView::render( const CMatrix & matrix )
+/*void CSlotGroupView::render( const CMatrix & matrix )
 {
     if( m_upCycleResults )
         m_upCycleResults->render( matrix );
-}
+}*/
 
 
 /************************************************************************

@@ -19,6 +19,7 @@
 #include <utilities/deletefuncs.h>
 #include <utilities/matrix.h>
 #include <objectdata/objectdatamanager.h>
+#include <sprite/sprite.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -161,14 +162,14 @@ void CReelGroupView::transform()
     for( auto & iter : m_reelStripViewDeq )
         iter.transform( getMatrix(), wasWorldPosTranformed() );
 
-    m_upCycleResultsTxtSprite->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upCycleResultsTxtSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
 /************************************************************************
 *    DESC:  Do the render
 ************************************************************************/
-void CReelGroupView::render( const CMatrix & matrix )
+/*void CReelGroupView::render( const CMatrix & matrix )
 {
     for( auto & iter : m_reelStripViewDeq )
         iter.render( matrix );
@@ -176,17 +177,17 @@ void CReelGroupView::render( const CMatrix & matrix )
     m_upCycleResultsTxtSprite->render( matrix );
 
     CSlotGroupView::render( matrix );
-}
+}*/
 
 
 /************************************************************************
 *    DESC:  Do the deferred render
 ************************************************************************/
-void CReelGroupView::deferredRender( const CMatrix & matrix )
+/*void CReelGroupView::deferredRender( const CMatrix & matrix )
 {
     for( auto & iter : m_reelStripViewDeq )
         iter.deferredRender( matrix );
-}
+}*/
 
 
 /************************************************************************

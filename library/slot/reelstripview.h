@@ -17,7 +17,6 @@
 #include <slot/slotdefs.h>
 #include <slot/spinprofile.h>
 #include <utilities/timer.h>
-#include <2d/sprite2d.h>
 
 // Boost lib dependencies
 #include <boost/signals2.hpp>
@@ -32,6 +31,7 @@
 class CSlotStripModel;
 class CSymbolSetView;
 class CSymbol2d;
+class CSprite;
 class CSound;
 class CMatrix;
 struct XMLNode;
@@ -59,10 +59,10 @@ public:
     void transform( const CMatrix & matrix, bool tranformWorldPos = false ) override;
     
     // Do the render
-    void render( const CMatrix & matrix );
+    //void render( const CMatrix & matrix );
     
     // Do the deferred render
-    void deferredRender( const CMatrix & matrix );
+    //void deferredRender( const CMatrix & matrix );
     
     // Start the spin
     void startSpin();
@@ -135,10 +135,10 @@ private:
     std::deque<CPoint<float>> m_symPosDeq;
     
     // stencil mask sprite
-    std::unique_ptr<CSprite2D> m_upStencilMaskSprite;
+    std::unique_ptr<CSprite> m_upStencilMaskSprite;
     
     // sprite deque
-    std::deque<CSprite2D> m_spriteDeq;
+    std::deque<CSprite> m_spriteDeq;
     
     // spin the reel
     bool m_spin;
@@ -186,6 +186,4 @@ private:
     bool m_allowStopSounds;
 };
 
-#endif  // __reel_strip_view_h__
-
-
+#endif

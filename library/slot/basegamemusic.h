@@ -71,6 +71,4 @@ private:
     bool m_allowSpinMusic;
 };
 
-#endif  // __simplecycleresults_h__
-
-
+#endif

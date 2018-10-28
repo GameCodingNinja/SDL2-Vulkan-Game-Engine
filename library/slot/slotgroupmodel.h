@@ -89,9 +89,6 @@ private:
     
     // Paytable Set Id
     std::string m_paytableSetId;
-
 };
 
-#endif  // __slot_group_model_h__
-
-
+#endif

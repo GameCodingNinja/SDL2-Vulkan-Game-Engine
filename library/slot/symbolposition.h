@@ -34,6 +34,4 @@ private:
     int16_t m_pos;
 };
 
-#endif  // __symbol_position_h__
-
-
+#endif

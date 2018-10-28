@@ -38,4 +38,4 @@ namespace NSlotGroupFactory
         std::unique_ptr<iCycleResults> upCycleResults );
 };
 
-#endif  // __slot_group_factory_h__
+#endif

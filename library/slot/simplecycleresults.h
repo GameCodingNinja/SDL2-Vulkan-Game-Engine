@@ -51,6 +51,4 @@ private:
     CTimer m_cycleResultsTimer;
 };
 
-#endif  // __simple_cycle_results_h__
-
-
+#endif

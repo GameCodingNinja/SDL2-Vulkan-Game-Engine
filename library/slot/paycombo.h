@@ -48,7 +48,6 @@ private:
     
     // Bonus code
     const int m_bonusCode;
-    
 };
 
-#endif  // __pay_combo_h__
+#endif

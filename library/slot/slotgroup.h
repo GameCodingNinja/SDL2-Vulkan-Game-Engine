@@ -46,9 +46,6 @@ private:
     
     // Slot group view
     std::shared_ptr<CSlotGroupView> m_spSlotGroupView;
-
 };
 
-#endif  // __slot_group_h__
-
-
+#endif

@@ -37,6 +37,4 @@ private:
 
 };
 
-#endif  // __paytable_set_h__
-
-
+#endif

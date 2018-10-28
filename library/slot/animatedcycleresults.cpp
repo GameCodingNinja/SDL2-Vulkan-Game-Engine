@@ -12,6 +12,8 @@
 #include <slot/slotgroupview.h>
 #include <slot/playresult.h>
 #include <slot/symbol2d.h>
+#include <sprite/sprite.h>
+#include <common/ivisualcomponent.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -110,13 +112,12 @@ void CAnimatedCycleResults::startAnimation()
         auto & rPay = m_pPlayResult->getPay( m_curPayIndex );
         auto & rSymbPos = rPay.getSymbPos();
 
-
         // Set them all the alphs low
         for( auto & iter : rCycleResultSymb )
         {
             for( auto sympIter : iter )
             {
-                sympIter->getSprite().getVisualComponent().setAlpha( 0.20f );
+                sympIter->getSprite().getVisualComponent()->setAlpha( 0.20f );
                 sympIter->getSprite().getScriptComponent().resetAndRecycle();
                 sympIter->setDeferredRender( false );
             }
@@ -126,8 +127,8 @@ void CAnimatedCycleResults::startAnimation()
         for( auto & iter : rSymbPos )
         {
             auto symbol = rCycleResultSymb.at(iter.getReel()).at(iter.getPos());
-            symbol->getSprite().getVisualComponent().setDefaultColor();
-            symbol->getSprite().prepareFuncId( "animate" );
+            symbol->getSprite().getVisualComponent()->setDefaultColor();
+            symbol->getSprite().prepare( "animate" );
             symbol->setDeferredRender( true );
         }
 
@@ -150,7 +151,7 @@ void CAnimatedCycleResults::stopAnimation()
         {
             for( auto sympIter : iter )
             {
-                sympIter->getSprite().getVisualComponent().setDefaultColor();
+                sympIter->getSprite().getVisualComponent()->setDefaultColor();
                 sympIter->getSprite().getScriptComponent().resetAndRecycle();
                 sympIter->setDeferredRender( false );
             }
@@ -187,8 +188,8 @@ bool CAnimatedCycleResults::isAnimating()
 /************************************************************************
 *    DESC:  Do the render
 ************************************************************************/
-void CAnimatedCycleResults::render( const CMatrix & matrix )
+/*void CAnimatedCycleResults::render( const CMatrix & matrix )
 {
     if( m_cycleResultsActive )
         m_spSlotGroupView->deferredRender( matrix );
-}
+}*/

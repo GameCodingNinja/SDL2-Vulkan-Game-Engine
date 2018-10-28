@@ -71,7 +71,6 @@ protected:
     
     // Command buffer
     //std::vector<VkCommandBuffer> m_commandBufVec;
-
 };
 
-#endif  // __visual_component_quad_h__
+#endif

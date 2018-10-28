@@ -10,14 +10,6 @@
 #ifndef __spin_profile_h__
 #define __spin_profile_h__
 
-// Physical component dependency
-
-// Game lib dependencies
-
-// Boost lib dependencies
-
-// Standard lib dependencies
-
 // Forward declaration(s)
 struct XMLNode;
 
@@ -96,9 +88,6 @@ private:
 
     // For a wheel to divide against the wedge size for max and min safety checks
     double m_safetyCheckDivisor = 0;
-
 };
 
-#endif  // __spin_profile_h__
-
-
+#endif

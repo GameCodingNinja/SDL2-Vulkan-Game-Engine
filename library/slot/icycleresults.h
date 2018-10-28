@@ -78,9 +78,6 @@ protected:
     
     // Cycle results flag
     bool m_cycleResultsActive;
-
 };
 
-#endif  // __i_cycle_results_h__
-
-
+#endif

@@ -37,9 +37,6 @@ public:
     
     // Enable the buttons
     virtual void enableButtons( bool allowPlay ) = 0;
-
 };
 
-#endif  // __i_front_panel_h__
-
-
+#endif

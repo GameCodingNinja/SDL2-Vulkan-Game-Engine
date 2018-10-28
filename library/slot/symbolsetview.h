@@ -9,7 +9,7 @@
 #define __symbol_set_view_h__
 
 // Game lib dependencies
-#include <common/spritedata.h>
+#include <sprite/spritedata.h>
 #include <slot/symbol2d.h>
 
 // Standard lib dependencies
@@ -52,9 +52,6 @@ private:
     
     // Name of the default group
     const std::string m_group;
-
 };
 
-#endif  // __symbol_set_view_h__
-
-
+#endif

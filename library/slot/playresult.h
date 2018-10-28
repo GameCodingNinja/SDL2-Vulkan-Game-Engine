@@ -56,6 +56,4 @@ private:
     uint m_totalWinAmount;
 };
 
-#endif  // __play_result_h__
-
-
+#endif

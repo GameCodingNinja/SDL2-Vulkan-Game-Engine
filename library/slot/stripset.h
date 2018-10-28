@@ -33,9 +33,6 @@ private:
     
     // Evaluation symbol index vector
     std::vector<int8_t> m_evalSymbIndexVec;
-
 };
 
-#endif  // __reel_strip_set_h__
-
-
+#endif

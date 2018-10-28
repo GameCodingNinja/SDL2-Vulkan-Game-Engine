@@ -21,6 +21,7 @@
 #include <utilities/matrix.h>
 #include <common/sound.h>
 #include <managers/soundmanager.h>
+#include <sprite/sprite.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -98,10 +99,10 @@ void CReelStripView::create( const XMLNode & node, const std::string & group )
         const std::string objectName = stencilMaskNode.getAttribute( "objectName" );
 
         // Allocate the stencil
-        m_upStencilMaskSprite.reset( new CSprite2D( CObjectDataMgr::Instance().getData2D( group, objectName ) ) );
+        m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData2D( group, objectName ) ) );
 
         // Load the transform data
-        m_upStencilMaskSprite->loadTransFromNode( stencilMaskNode );
+        m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
     }
 
     // Get the sprite list if any
@@ -118,7 +119,7 @@ void CReelStripView::create( const XMLNode & node, const std::string & group )
             m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData2D( group, objectName ) );
 
             // Load the transform data
-            m_spriteDeq.back().loadTransFromNode( spriteNode );
+            m_spriteDeq.back().getObject()->loadTransFromNode( spriteNode );
         }
     }
 
@@ -466,23 +467,23 @@ void CReelStripView::transform( const CMatrix & matrix, bool tranformWorldPos )
     CObject2D::transform( matrix, tranformWorldPos );
 
     // Transform the mask
-    m_upStencilMaskSprite->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upStencilMaskSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 
     for( auto & iter : m_spriteDeq )
-        iter.transform( getMatrix(), wasWorldPosTranformed() );
+        iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
 /************************************************************************
 *    DESC:  Do the render
 ************************************************************************/
-void CReelStripView::render( const CMatrix & matrix )
+/*void CReelStripView::render( const CMatrix & matrix )
 {
     for( auto & iter : m_spriteDeq )
         iter.render( matrix );
 
     // Disable rendering to the color buffer
-    /*glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+    glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
     glDepthMask( GL_FALSE );
 
     // Start using the stencil
@@ -522,14 +523,14 @@ void CReelStripView::render( const CMatrix & matrix )
 
 
     // Finished using stencil
-    glDisable( GL_STENCIL_TEST );*/
-}
+    glDisable( GL_STENCIL_TEST );
+}*/
 
 
 /************************************************************************
 *    DESC:  do the render
 ************************************************************************/
-void CReelStripView::deferredRender( const CMatrix & matrix )
+/*void CReelStripView::deferredRender( const CMatrix & matrix )
 {
     if( m_spinState == NSlotDefs::ESS_STOPPED )
     {
@@ -545,7 +546,7 @@ void CReelStripView::deferredRender( const CMatrix & matrix )
             }
         }
     }
-}
+}*/
 
 
 /************************************************************************

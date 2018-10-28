@@ -69,9 +69,6 @@ private:
     
     // Payline description
     std::map<const std::string, CPaylineSet > m_paylineSetMap;
-
 };
 
-#endif  // __math_data_manager_h__
-
-
+#endif

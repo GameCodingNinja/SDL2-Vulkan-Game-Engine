@@ -13,7 +13,8 @@
 #include <slot/slotgroupmodel.h>
 #include <slot/slotstripmodel.h>
 #include <slot/icycleresults.h>
-#include <2d/sprite2d.h>
+#include <sprite/sprite.h>
+#include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
 
 // Boost lib dependencies
@@ -129,14 +130,14 @@ void CWheelGroupView::transform()
     for( auto & iter : m_wheelViewDeq )
         iter.transform( getMatrix(), wasWorldPosTranformed() );
 
-    m_upCycleResultsTxtSprite->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upCycleResultsTxtSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
 /************************************************************************
 *    DESC:  Do the render
 ************************************************************************/
-void CWheelGroupView::render( const CMatrix & matrix )
+/*void CWheelGroupView::render( const CMatrix & matrix )
 {
     for( auto & iter : m_wheelViewDeq )
         iter.render( matrix );
@@ -144,17 +145,17 @@ void CWheelGroupView::render( const CMatrix & matrix )
     m_upCycleResultsTxtSprite->render( matrix );
 
     CSlotGroupView::render( matrix );
-}
+}*/
 
 
 /************************************************************************
 *    DESC:  Do the deferred render
 ************************************************************************/
-void CWheelGroupView::deferredRender( const CMatrix & matrix )
+/*void CWheelGroupView::deferredRender( const CMatrix & matrix )
 {
     for( auto & iter : m_wheelViewDeq )
         iter.render( matrix );
-}
+}*/
 
 
 /************************************************************************

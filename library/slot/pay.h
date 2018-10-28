@@ -72,9 +72,6 @@ private:
     
     // Vector of symbol positions per reel that contribute to the win
     std::vector<CSymbPos> m_symbPosVec;
-
 };
 
-#endif  // __pay_h__
-
-
+#endif

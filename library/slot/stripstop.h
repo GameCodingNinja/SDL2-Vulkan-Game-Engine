@@ -31,9 +31,6 @@ private:
     
     // Math symbol weight
     const int m_weight;
-
 };
 
-#endif  // __strip_stop_h__
-
-
+#endif

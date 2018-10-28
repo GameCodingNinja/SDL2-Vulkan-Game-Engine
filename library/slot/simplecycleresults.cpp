@@ -12,6 +12,8 @@
 #include <slot/slotgroupview.h>
 #include <slot/playresult.h>
 #include <slot/symbol2d.h>
+#include <sprite/sprite.h>
+#include <common/ivisualcomponent.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -88,11 +90,11 @@ void CSimpleCycleresults::startAnimation()
         // Set them all to a low alphs
         for( auto & iter : rCycleResultSymb )
             for( auto sympIter : iter )
-                sympIter->getSprite().getVisualComponent().setAlpha( 0.20f );
+                sympIter->getSprite().getVisualComponent()->setAlpha( 0.20f );
 
         // Set only the winners to default color
         for( auto & iter : rSymbPos )
-            rCycleResultSymb.at(iter.getReel()).at(iter.getPos())->getSprite().getVisualComponent().setDefaultColor();
+            rCycleResultSymb.at(iter.getReel()).at(iter.getPos())->getSprite().getVisualComponent()->setDefaultColor();
 
         m_spSlotGroupView->setCycleResultText( true, &rPay );
     }
@@ -113,7 +115,7 @@ void CSimpleCycleresults::stopAnimation()
         // Set it all back to normal
         for( auto & iter : rCycleResultSymb )
             for( auto sympIter : iter )
-                sympIter->getSprite().getVisualComponent().setDefaultColor();
+                sympIter->getSprite().getVisualComponent()->setDefaultColor();
 
         m_spSlotGroupView->setCycleResultText( false );
     }

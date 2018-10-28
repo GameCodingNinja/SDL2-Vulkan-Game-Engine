@@ -30,4 +30,4 @@ private:
     const std::vector<int> m_valueVec;
 };
 
-#endif  // __value_table_h__
+#endif

@@ -74,9 +74,6 @@ private:
     
     // strip stop
     int m_stop;
-
 };
 
-#endif  // __slot_strip_model_h__
-
-
+#endif

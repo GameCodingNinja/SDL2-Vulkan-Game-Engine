@@ -61,9 +61,6 @@ namespace NSlotDefs
         ESLOT_WAIT_FOR_AWARD,
         ESLOT_END
     };
+}
 
-}   // NSlotDefs
-
-#endif  // __slot_defs_h__
-
-
+#endif

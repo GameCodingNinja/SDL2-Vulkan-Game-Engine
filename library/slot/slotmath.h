@@ -125,9 +125,6 @@ private:
     
     // Map of value table data
     std::map<const std::string, CValueTable> m_valueTableMap;
-
 };
 
-#endif  // __slot_math_h__
-
-
+#endif
