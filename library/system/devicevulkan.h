@@ -47,7 +47,7 @@ protected:
     void destroy();
     
     // Create the command pool
-    VkCommandPool createCommandPool();
+    VkCommandPool createCommandPool( uint32_t queueFamilyIndex );
     
     // Create secondary command buffers
     std::vector<VkCommandBuffer> createSecondaryCommandBuffers( VkCommandPool cmdPool );
@@ -135,8 +135,7 @@ private:
     virtual void createSurface() = 0;
     
     // Find the queue family index
-    uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice, uint32_t queueMask );
-    uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice );
+    uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice, uint32_t queueMask = VK_QUEUE_FLAG_BITS_MAX_ENUM );
     
     // Find the GPU memory type
     uint32_t findMemoryType( uint32_t typeFilter, VkMemoryPropertyFlags properties );
@@ -248,12 +247,18 @@ protected:
     
     // Present queue family index
     uint32_t m_presentQueueFamilyIndex;
+    
+    // Transfer queue family index
+    uint32_t m_transferQueueFamilyIndex;
 
     // Graphics queue handle
     VkQueue m_graphicsQueue;
     
     // Present queue handle
     VkQueue m_presentQueue;
+    
+    // Present queue handle
+    VkQueue m_transferQueue;
     
     // Swap chain
     VkSwapchainKHR m_swapchain;
@@ -269,6 +274,9 @@ protected:
     
     // Primary Command pool. Only use for primary command buffers
     VkCommandPool m_primaryCmdPool;
+    
+    // Command pool for loading assets from a thread
+    VkCommandPool m_transferCmdPool;
     
     // Command pool
     std::vector<VkCommandBuffer> m_primaryCmdBufVec;

@@ -53,11 +53,14 @@ CDeviceVulkan::CDeviceVulkan() :
     m_logicalDevice(VK_NULL_HANDLE),
     m_graphicsQueueFamilyIndex(VK_NULL_HANDLE),
     m_presentQueueFamilyIndex(VK_NULL_HANDLE),
+    m_transferQueueFamilyIndex(VK_NULL_HANDLE),
     m_graphicsQueue(VK_NULL_HANDLE),
     m_presentQueue(VK_NULL_HANDLE),
+    m_transferQueue(VK_NULL_HANDLE),
     m_swapchain(VK_NULL_HANDLE),
     m_renderPass(VK_NULL_HANDLE),
     m_primaryCmdPool(VK_NULL_HANDLE),
+    m_transferCmdPool(VK_NULL_HANDLE),
     m_currentFrame(0),
     m_maxConcurrentFrames(0),
     m_lastResult(VK_SUCCESS),
@@ -203,6 +206,12 @@ void CDeviceVulkan::destroy()
         {
             vkDestroyCommandPool( m_logicalDevice, m_primaryCmdPool, nullptr );
             m_primaryCmdPool = VK_NULL_HANDLE;
+        }
+        
+        if( m_transferCmdPool != VK_NULL_HANDLE )
+        {
+            vkDestroyCommandPool( m_logicalDevice, m_transferCmdPool, nullptr );
+            m_transferCmdPool = VK_NULL_HANDLE;
         }
         
         destroyAssets();
@@ -363,6 +372,7 @@ void CDeviceVulkan::selectPhysicalDevice()
         if( CSettings::Instance().isValidationLayers() )
             NGenFunc::PostDebugMsg( "GPU: " + std::string(props.deviceName));
         
+        // Find the queu family on this graphics device
         m_graphicsQueueFamilyIndex = findQueueFamilyIndex( iter, VK_QUEUE_GRAPHICS_BIT );
 
         // If we found a discrete GPU, our work here is done
@@ -381,6 +391,14 @@ void CDeviceVulkan::selectPhysicalDevice()
 
     if( (m_physicalDevice == nullptr) || (m_graphicsQueueFamilyIndex == UINT32_MAX) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Suitable GPU could not be found!" );
+    
+    // Make sure we have a swap chain
+    if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
+        throw NExcept::CCriticalException( "Vulkan Error!", "No swap chain support!" );
+    
+    // Find the remaining queue families for present and transfer
+    m_presentQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice );
+    m_transferQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice, VK_QUEUE_TRANSFER_BIT );
 }
 
 
@@ -391,10 +409,22 @@ void CDeviceVulkan::createLogicalDevice(
     const std::vector<const char*> & validationNameVec,
     const std::vector<const char*> & physicalDeviceExtensionNameVec )
 {
-    // Make sure we have a swap chain
-    if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
-        throw NExcept::CCriticalException( "Vulkan Error!", "No swap chain support!" );
+    // Need a structure to hold members for organizing
+    struct queueFamilyIndexStruct
+    {
+        queueFamilyIndexStruct(uint32_t queueFamilyIndex, uint32_t queueIndex, VkQueue * pQueue, const std::string &typeStr) :
+            m_queueFamilyIndex(queueFamilyIndex),
+            m_queueIndex(queueIndex),
+            m_pQueue(pQueue),
+            m_typeStr(typeStr)
+        {}
+        uint32_t m_queueFamilyIndex;
+        uint32_t m_queueIndex;
+        VkQueue * m_pQueue;
+        std::string m_typeStr;
+    };
     
+    // Setup the initial structure
     float queuePriority = 1.0f;
     VkDeviceQueueCreateInfo deviceQueueInfo = {};
     deviceQueueInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -402,14 +432,49 @@ void CDeviceVulkan::createLogicalDevice(
     deviceQueueInfo.queueCount = 1;
     deviceQueueInfo.pQueuePriorities = &queuePriority;
     
+    // This vector is for organizing unique families into separate vector indexes
+    std::vector<VkDeviceQueueCreateInfo> devQueueVec = {deviceQueueInfo};
+
+    // Pack the vector with all the queues we'll need
+    std::vector<queueFamilyIndexStruct> queueFamilyIndexVec;
+    queueFamilyIndexVec.emplace_back(m_graphicsQueueFamilyIndex, 0, &m_graphicsQueue, "graphics");
+    queueFamilyIndexVec.emplace_back(m_presentQueueFamilyIndex, 0, &m_presentQueue, "present");
+    queueFamilyIndexVec.emplace_back(m_transferQueueFamilyIndex, 0, &m_transferQueue, "transfer");
+
+    // Organize two vectors. One to create x number of queues per family and the
+    // other to get the handle based on queue family index
+    for( size_t i = 1; i < queueFamilyIndexVec.size(); ++i )
+    {
+        bool found = false;
+        
+        for( auto & iter : devQueueVec )
+        {
+            // If this is the same family, get the family index and inc the queue count
+            if( iter.queueFamilyIndex == queueFamilyIndexVec[i].m_queueFamilyIndex )
+            {
+                queueFamilyIndexVec[i].m_queueIndex = iter.queueCount;
+                iter.queueCount += 1;
+                found = true;
+                break;
+            }
+        }
+        
+        // If no prior family has been found, start a new one
+        if( !found )
+        {
+            devQueueVec.emplace_back( deviceQueueInfo );
+            devQueueVec.back().queueFamilyIndex = queueFamilyIndexVec[i].m_queueFamilyIndex;
+        }
+    }
+
     // Get all the features supported on this device
     VkPhysicalDeviceFeatures physicalDeviceFeatures;
     vkGetPhysicalDeviceFeatures( m_physicalDevice, &physicalDeviceFeatures );
     
     VkDeviceCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-    createInfo.queueCreateInfoCount = 1;
-    createInfo.pQueueCreateInfos = &deviceQueueInfo;
+    createInfo.queueCreateInfoCount = devQueueVec.size();
+    createInfo.pQueueCreateInfos = devQueueVec.data();
     createInfo.enabledLayerCount = validationNameVec.size();
     createInfo.ppEnabledLayerNames = validationNameVec.data();
     createInfo.enabledExtensionCount = physicalDeviceExtensionNameVec.size();
@@ -429,17 +494,15 @@ void CDeviceVulkan::createLogicalDevice(
     if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCmdPushDescriptorSetKHR!" );
     
-    // Get a handle to the graphics and present queue family - Could be different but most likely in the same queue family
-    // Get a handle to the graphics queue
-    vkGetDeviceQueue( m_logicalDevice, m_graphicsQueueFamilyIndex, 0, &m_graphicsQueue );
-    if( m_graphicsQueue == nullptr )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Could not get handle to graphics queue family!" );
+    // Get a handle to the queue family for graphics, present & transfer - Could be different but most likely in the same queue family
     
-    // Get a handle to the present queue
-    m_presentQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice );
-    vkGetDeviceQueue( m_logicalDevice, m_presentQueueFamilyIndex, 0, &m_presentQueue );
-    if( m_presentQueue == nullptr )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Could not get handle to present queue family!" );
+    for( auto & iter : queueFamilyIndexVec )
+    {
+        vkGetDeviceQueue( m_logicalDevice, iter.m_queueFamilyIndex, iter.m_queueIndex, iter.m_pQueue );
+        if( iter.m_pQueue == nullptr )
+            throw NExcept::CCriticalException( 
+                "Vulkan Error!", boost::str( boost::format("Could not get handle to the queue family for %s!") % iter.m_typeStr) );
+    }
 }
 
 
@@ -931,7 +994,8 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
 ****************************************************************************/
 void CDeviceVulkan::createPrimaryCommandPool()
 {
-    m_primaryCmdPool = createCommandPool();
+    m_primaryCmdPool = createCommandPool( m_graphicsQueueFamilyIndex );
+    m_transferCmdPool = createCommandPool( m_transferQueueFamilyIndex );
 }
 
 
@@ -942,26 +1006,26 @@ void CDeviceVulkan::createDepthResources()
 {
     if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
     {
-    VkFormat depthFormat = findDepthFormat();
-        
-    if( depthFormat == VK_FORMAT_UNDEFINED )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Could not find depth format!");
-        
-    createImage(
-        m_swapchainInfo.imageExtent.width,
-        m_swapchainInfo.imageExtent.height,
-        1,
-        depthFormat,
-        VK_IMAGE_TILING_OPTIMAL,
-        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        m_depthImage,
-        m_depthImageMemory );
-    
-    m_depthImageView = createImageView( m_depthImage, depthFormat, 1, VK_IMAGE_ASPECT_DEPTH_BIT );
+        VkFormat depthFormat = findDepthFormat();
 
-    transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1 );
-}
+        if( depthFormat == VK_FORMAT_UNDEFINED )
+            throw NExcept::CCriticalException( "Vulkan Error!", "Could not find depth format!");
+
+        createImage(
+            m_swapchainInfo.imageExtent.width,
+            m_swapchainInfo.imageExtent.height,
+            1,
+            depthFormat,
+            VK_IMAGE_TILING_OPTIMAL,
+            VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+            m_depthImage,
+            m_depthImageMemory );
+
+        m_depthImageView = createImageView( m_depthImage, depthFormat, 1, VK_IMAGE_ASPECT_DEPTH_BIT );
+
+        transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1 );
+    }
 }
 
 
@@ -1144,32 +1208,24 @@ uint32_t CDeviceVulkan::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, u
         std::vector<VkQueueFamilyProperties> queueFamiliesVec(queueFamilyCount);
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamiliesVec.data());
 
-        for( uint32_t i = 0; i < queueFamiliesVec.size(); ++i )
-            if( (queueFamiliesVec[i].queueCount > 0) && (queueFamiliesVec[i].queueFlags & queueMask) )
-                return i;
-    }
-    
-    return UINT32_MAX;
-}
-
-uint32_t CDeviceVulkan::findQueueFamilyIndex( VkPhysicalDevice physicalDevice )
-{
-    // Get the queue family information - Check that graphics bit is available
-    uint32_t queueFamilyCount = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
-
-    if( queueFamilyCount > 0 )
-    {
-        std::vector<VkQueueFamilyProperties> queueFamiliesVec(queueFamilyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamiliesVec.data());
-
-        for( uint32_t i = 0; i < queueFamiliesVec.size(); ++i )
+        if( queueMask == VK_QUEUE_FLAG_BITS_MAX_ENUM )
         {
-            VkBool32 presentSupport = false;
-            vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, m_vulkanSurface, &presentSupport);
-            
-            if( (queueFamiliesVec[i].queueCount > 0) && presentSupport )
-                return i;
+            // Find family present index
+            for( uint32_t i = 0; i < queueFamiliesVec.size(); ++i )
+            {
+                VkBool32 presentSupport = false;
+                vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, m_vulkanSurface, &presentSupport);
+
+                if( (queueFamiliesVec[i].queueCount > 0) && presentSupport )
+                    return i;
+            }
+        }
+        else
+        {
+            // Find family based on bit flag
+            for( uint32_t i = 0; i < queueFamiliesVec.size(); ++i )
+                if( (queueFamiliesVec[i].queueCount > 0) && (queueFamiliesVec[i].queueFlags & queueMask) )
+                    return i;
         }
     }
     
@@ -1325,7 +1381,7 @@ VkCommandBuffer CDeviceVulkan::beginSingleTimeCommands()
     VkCommandBufferAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocInfo.commandPool = m_primaryCmdPool;
+    allocInfo.commandPool = m_transferCmdPool;
     allocInfo.commandBufferCount = 1;
 
     VkCommandBuffer commandBuffer;
@@ -1349,10 +1405,10 @@ void CDeviceVulkan::endSingleTimeCommands( VkCommandBuffer commandBuffer )
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers = &commandBuffer;
 
-    vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE );
-    vkQueueWaitIdle( m_graphicsQueue );
+    vkQueueSubmit( m_transferQueue, 1, &submitInfo, VK_NULL_HANDLE );
+    vkQueueWaitIdle( m_transferQueue );
 
-    vkFreeCommandBuffers( m_logicalDevice, m_primaryCmdPool, 1, &commandBuffer);
+    vkFreeCommandBuffers( m_logicalDevice, m_transferCmdPool, 1, &commandBuffer);
 }
 
 
@@ -1462,11 +1518,11 @@ void CDeviceVulkan::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t 
 /***************************************************************************
 *   DESC:  Create the command pool
 ****************************************************************************/
-VkCommandPool CDeviceVulkan::createCommandPool()
+VkCommandPool CDeviceVulkan::createCommandPool( uint32_t queueFamilyIndex )
 {
     VkCommandPoolCreateInfo poolInfo = {};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    poolInfo.queueFamilyIndex = m_graphicsQueueFamilyIndex;
+    poolInfo.queueFamilyIndex = queueFamilyIndex;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     
     VkCommandPool commandPool;

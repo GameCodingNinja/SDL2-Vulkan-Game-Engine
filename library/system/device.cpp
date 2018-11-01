@@ -396,7 +396,7 @@ std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::
     if( iter == m_commandPoolMap.end() )
     {
         // Create the command pool
-        VkCommandPool commandPool = CDeviceVulkan::createCommandPool();
+        VkCommandPool commandPool = CDeviceVulkan::createCommandPool( m_graphicsQueueFamilyIndex );
 
         // Add the pool to the map
         iter = m_commandPoolMap.emplace( group, commandPool ).first;
