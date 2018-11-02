@@ -8,7 +8,7 @@
 /************************************************************************
 *    DESC:  Do a fade in and out
 ************************************************************************/
-void StartUp_FadeIn( CSprite & sprite )
+void StartUp_FadeIn( Sprite & sprite )
 {
     CColor current(0,0,0,1);
     sprite.setColor( current );

@@ -1,0 +1,67 @@
+
+/************************************************************************
+*    FILE NAME:       shared_sprite_utilities.ang
+*
+*    DESCRIPTION:     General purpose shared utility scripts
+*                     The keyword "shared" allows for only one copy to
+*                     loaded and used among all modules
+************************************************************************/
+
+/************************************************************************
+*    DESC:  Color to the final color in time
+************************************************************************/
+shared void ColorTo( float time, CColor &in final, Sprite & sprite )
+{
+    CColor current = sprite.getColor();
+    CColor inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            sprite.setColor( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            sprite.setColor( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+}
+
+
+/************************************************************************
+*    DESC:  Alpha to the final alpha
+************************************************************************/
+shared void AlphaTo( float time, float final, Sprite & sprite )
+{
+    // Convert from RGB value to normalized value
+    if( final > 1.5 )
+        final *= 0.00390625f;
+
+    float current = sprite.getAlpha();
+    float inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            sprite.setAlpha( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            sprite.setAlpha( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+}

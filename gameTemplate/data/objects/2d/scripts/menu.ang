@@ -24,6 +24,38 @@ void Control_OnSelect( CUIControl & control )
 
 
 /************************************************************************
+*    DESC:  Menu function to fade the alpha
+************************************************************************/
+void AlphaTo( float time, float final, CMenu & menu )
+{
+    // Convert from RGB value to normalized value
+    if( final > 1.5 )
+        final *= 0.00390625f;
+
+    float current = menu.getAlpha();
+    float inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            menu.setAlpha( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            menu.setAlpha( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+}
+
+
+/************************************************************************
 *    DESC:  Menu transition in script
 ************************************************************************/
 void Menu_TransIn( CMenu & menu )
