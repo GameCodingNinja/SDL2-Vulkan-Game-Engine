@@ -907,10 +907,12 @@ void CDevice::deleteCommandPoolGroup( const std::string & group )
     // Free the command pool group if it exists
     auto iter = m_commandPoolMap.find( group );
     if( iter != m_commandPoolMap.end() )
+    {
         vkDestroyCommandPool( m_logicalDevice, iter->second, nullptr );
 
-    // Erase this group
-    m_commandPoolMap.erase( iter );
+        // Erase this group
+        m_commandPoolMap.erase( iter );
+    }
 }
 
 
@@ -988,6 +990,8 @@ void CDevice::displayErrorMsg( const std::string & title, const std::string & ms
 {
     if( m_pWindow )
         SDL_ShowSimpleMessageBox( SDL_MESSAGEBOX_ERROR, title.c_str(), msg.c_str(), m_pWindow );
+    
+    NGenFunc::PostDebugMsg( boost::str( boost::format("Error: %s, %s") % title.c_str() % msg.c_str() ) );
 }
 
 

@@ -29,8 +29,8 @@
 #include <script/scriptglobals.h>
 #include <script/scriptsprite.h>
 #include <script/scriptsoundmanager.h>
-//#include <script/scriptuicontrol.h>
-//#include <script/scriptmenu.h>
+#include <script/scriptuicontrol.h>
+#include <script/scriptmenu.h>
 #include <script/scripthighresolutiontimer.h>
 #include <sprite/sprite.h>
 #include <system/device.h>
@@ -141,6 +141,17 @@ void CStartUpState::handleEvent( const SDL_Event & rEvent )
 
 
 /***************************************************************************
+*    DESC:  Handle Misc processes
+****************************************************************************/
+void CStartUpState::miscProcess()
+{
+    // Re-throw any threaded exceptions
+    if( !m_errorMessage.empty() )
+        throw NExcept::CCriticalException( m_errorTitle, m_errorMessage );
+}
+
+
+/***************************************************************************
 *    DESC:  Update objects that require them
 ****************************************************************************/
 void CStartUpState::update()
@@ -179,54 +190,72 @@ void CStartUpState::recordCommandBuffer( uint32_t index )
 ****************************************************************************/
 void CStartUpState::assetLoad()
 {
-    // Load in any fonts
-    CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
+    try
+    {
+        // Load in any fonts
+        CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
 
-    // Load 3D object data list table
-    CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
+        // Load 3D object data list table
+        CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
 
-    // Load the actor list table
-    CStrategyMgr::Instance().loadListTable( "data/objects/2d/spritestrategy/strategyListTable.lst" );
+        // Load the actor list table
+        CStrategyMgr::Instance().loadListTable( "data/objects/2d/spritestrategy/strategyListTable.lst" );
 
-    // Load the action manager
-    CActionMgr::Instance().loadActionFromXML( "data/settings/controllerMapping.cfg" );
+        // Load the action manager
+        CActionMgr::Instance().loadActionFromXML( "data/settings/controllerMapping.cfg" );
 
-    // Load menu list table
-    CMenuMgr::Instance().loadListTable( "data/objects/2d/menu/menuListTable.lst" );
+        // Load menu list table
+        CMenuMgr::Instance().loadListTable( "data/objects/2d/menu/menuListTable.lst" );
 
-    // Load the menu action list
-    CMenuMgr::Instance().loadMenuAction( "data/objects/2d/menu/menu_action.list" );
+        // Load the menu action list
+        CMenuMgr::Instance().loadMenuAction( "data/objects/2d/menu/menu_action.list" );
 
-    // Load sound resources for the menu
-    CSoundMgr::Instance().loadListTable( "data/sound/soundListTable.lst" );
-    CSoundMgr::Instance().loadGroup("(menu)");
+        // Load sound resources for the menu
+        CSoundMgr::Instance().loadListTable( "data/sound/soundListTable.lst" );
+        CSoundMgr::Instance().loadGroup("(menu)");
 
-    // Load the physics list table
-    CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
+        // Load the physics list table
+        CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
 
-    // Register the script items
-    NScriptSound::Register();
-    NScriptPlayLst::Register();
-    NScriptSoundManager::Register();
-    //NScriptUIControl::Register();
-    //NScriptMenu::Register();
+        // Register the script items
+        NScriptSound::Register();
+        NScriptPlayLst::Register();
+        NScriptSoundManager::Register();
+        NScriptUIControl::Register();
+        NScriptMenu::Register();
 
-    // Load group specific script items
-    //CScriptMgr::Instance().loadGroup("(menu)");
+        // Load group specific script items
+        //CScriptMgr::Instance().loadGroup("(menu)");
 
-    // Load all of the meshes and materials in these groups
-    //CObjectDataMgr::Instance().loadGroup2D("(menu)");
+        // Load all of the meshes and materials in these groups
+        //CObjectDataMgr::Instance().loadGroup2D("(menu)");
 
-    // Load the menu group
-    //CMenuMgr::Instance().loadGroup("(menu)");
+        // Load the menu group
+        //CMenuMgr::Instance().loadGroup("(menu)");
 
-    // Do the state specific load
-    //NTitleScreenState::ObjectDataLoad();
-    //NTitleScreenState::CriticalLoad();
-    //NTitleScreenState::Load();
-    //NTitleScreenState::CriticalInit();
-    
-    NGenFunc::DispatchEvent( 0xA001 );
+        // Do the state specific load
+        //NTitleScreenState::ObjectDataLoad();
+        //NTitleScreenState::CriticalLoad();
+        //NTitleScreenState::Load();
+        //NTitleScreenState::CriticalInit();
+
+        NGenFunc::DispatchEvent( 0xA001 );
+    }
+    catch( NExcept::CCriticalException & ex )
+    {
+        m_errorTitle = ex.getErrorTitle();
+        m_errorMessage = ex.getErrorMsg();
+    }
+    catch( std::exception const & ex )
+    {
+        m_errorTitle = "Standard Exception";
+        m_errorMessage = ex.what();
+    }
+    catch(...)
+    {
+        m_errorTitle = "Unknown Error";
+        m_errorMessage = "Something bad happened and I'm not sure what it was.";
+    }
 }
 
 

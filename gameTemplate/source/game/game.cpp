@@ -353,8 +353,6 @@ void CGame::pollEvents()
 ****************************************************************************/
 void CGame::displayErrorMsg( const std::string & title, const std::string & msg )
 {
-    printf("Error: %s, %s", title.c_str(), msg.c_str() );
-
     CDevice::Instance().displayErrorMsg( title, msg );
 }
 

@@ -34,6 +34,9 @@ public:
     // Do any pre-load init's
     void init() override;
     
+    // Handle any misc processing before the real work is started
+    void miscProcess() override;
+    
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
 
@@ -62,6 +65,10 @@ private:
     
     // Node pointer to logo
     iNode * m_pLogo;
+    
+    // Error string messages
+    std::string m_errorTitle;
+    std::string m_errorMessage;
 };
 
 #endif
