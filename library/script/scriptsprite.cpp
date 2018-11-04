@@ -117,32 +117,32 @@ namespace NScriptSprite
     {
         sprite.getVisualComponent()->setColor( color );
     }
-    
-    void SetColor2(const CColor & color, CSprite & sprite)
+
+    void SetColor2(float r, float g, float b, float a, CSprite & sprite)
     {
-        sprite.getVisualComponent()->setColor( color );
+        sprite.getVisualComponent()->setColor( r, g, b, a );
     }
-    
+
     const CColor & GetColor(CSprite & sprite)
     {
         return sprite.getVisualComponent()->getColor();
     }
-    
+
     void SetDefaultColor(CSprite & sprite)
     {
         sprite.getVisualComponent()->setDefaultColor();
     }
-    
+
     const CColor & GetDefaultColor(CSprite & sprite)
     {
         return sprite.getVisualComponent()->getDefaultColor();
     }
-    
+
     void SetAlpha(float alpha, bool allowToExceed, CSprite & sprite)
     {
         sprite.getVisualComponent()->setAlpha( alpha, allowToExceed );
     }
-    
+
     float GetAlpha(CSprite & sprite)
     {
         return sprite.getVisualComponent()->getAlpha();
@@ -158,6 +158,21 @@ namespace NScriptSprite
         return sprite.getVisualComponent()->getDefaultAlpha();
     }
 
+    void SetAdditiveColor1(const CColor & color, CSprite & sprite)
+    {
+        sprite.getVisualComponent()->setAdditiveColor( color );
+    }
+
+    void SetAdditiveColor2(float r, float g, float b, float a, CSprite & sprite)
+    {
+        sprite.getVisualComponent()->setAdditiveColor( r, g, b, a );
+    }
+
+    const CColor & GetAdditiveColor(CSprite & sprite)
+    {
+        return sprite.getVisualComponent()->getAdditiveColor();
+    }
+
     void CreateFontString(const std::string & fontStr, CSprite & sprite)
     {
         sprite.getVisualComponent()->createFontString(fontStr);
@@ -167,7 +182,7 @@ namespace NScriptSprite
     {
         return sprite.getVisualComponent()->getFontString();
     }
-    
+
     const CSize<float> & GetFontSize(CSprite & sprite)
     {
         return sprite.getVisualComponent()->getFontSize();
@@ -187,17 +202,17 @@ namespace NScriptSprite
     {
         sprite.getPhysicsComponent()->setLinearVelocity( x, y );
     }
-    
+
     void SetAngularVelocity(float angle, CSprite & sprite)
     {
         sprite.getPhysicsComponent()->setAngularVelocity( angle );
     }
-    
+
     void ApplyAngularImpulse(float value, bool wake, CSprite & sprite)
     {
         sprite.getPhysicsComponent()->applyAngularImpulse( value, wake );
     }
-    
+
     /************************************************************************
     *    DESC:  Register the class with AngelScript
     ************************************************************************/
@@ -209,22 +224,25 @@ namespace NScriptSprite
 
         // Register type
         Throw( pEngine->RegisterObjectType(  "Sprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
-        
+
         // Visual component functions
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(const CColor &in)",                  asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(float, float, float, float)",        asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getColor()",                        asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultColor()",                           asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getDefaultColor()",                 asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAlpha(float, bool allowToExceed = false)", asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "float getAlpha()",                                 asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultAlpha()",                           asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "float getDefaultAlpha()",                          asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void createFontString(string &in)",                asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "const string & getFontString()",                   asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "const CSize & getFontSize()",                      asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "bool isFontSprite()",                              asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
-        
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(const CColor &in)",                   asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(float, float, float, float)",         asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getColor()",                         asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAdditiveColor(const CColor &in)",           asFUNCTION(SetAdditiveColor1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAdditiveColor(float, float, float, float)", asFUNCTION(SetAdditiveColor2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getAdditiveColor()",                 asFUNCTION(GetAdditiveColor),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultColor()",                            asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getDefaultColor()",                  asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAlpha(float, bool allowToExceed = false)",  asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "float getAlpha()",                                  asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultAlpha()",                            asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "float getDefaultAlpha()",                           asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "void createFontString(string &in)",                 asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const string & getFontString()",                    asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CSize & getFontSize()",                       asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "bool isFontSprite()",                               asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
+
         // Physics component functions
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", asFUNCTION(SetTransform), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setLinearVelocity(float, float)", asFUNCTION(SetLinearVelocity), asCALL_CDECL_OBJLAST) );

@@ -40,6 +40,10 @@ public:
     void freeGroup2D( const std::string & group );
     void freeGroup3D( const std::string & group );
     
+    // Free only the data of a specific group
+    void freeDataGroup2D( const std::string & group );
+    void freeDataGroup3D( const std::string & group );
+    
     // Is data part of 2d/3d
     bool isData2D( const std::string & group, const std::string & name ) const;
     bool isData3D( const std::string & group, const std::string & name ) const;

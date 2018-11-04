@@ -14,6 +14,7 @@
 // Standard lib dependencies
 #include <string>
 #include <map>
+#include <vector>
 
 class CCommonState : public iGameState
 {
@@ -27,18 +28,19 @@ public:
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent ) override;
+    
+    // Handle any misc processing before the real work is started
+    void miscProcess() override;
 
     // Update objects that require them
-    virtual void update() override;
+    void update() override;
 
     // Transform the game objects
-    virtual void transform() override;
+    void transform() override;
     
-    // 2D/3D Render of game content
-    virtual void preRender() override;
-
-    // 2D/3D Render of game content
-    virtual void postRender() override;
+    // Record the command buffer vector in the device
+    // for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t cmdBufIndex ) override;
     
 protected:
     

@@ -23,6 +23,7 @@
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
+#include <system/device.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -34,7 +35,8 @@ CActorStrategy::CActorStrategy()
 {
 }
 
-CActorStrategy::CActorStrategy( const std::string & file )
+CActorStrategy::CActorStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec ) :
+    m_commandBufVec(commandBufVec)
 {
     loadFromFile( file );
 }
@@ -277,16 +279,28 @@ void CActorStrategy::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CActorStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CActorStrategy::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
 {
+    auto cmdBuf( m_commandBufVec[index] );
+
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+
     for( auto iter : m_pNodeVec )
-        iter->recordCommandBuffer( index, cmdBuffer, viewProj );
+        iter->recordCommandBuffer( index, cmdBuf, viewProj );
+    
+    CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
-void CActorStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+void CActorStrategy::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
+    auto cmdBuf( m_commandBufVec[index] );
+
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+    
     for( auto iter : m_pNodeVec )
-        iter->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+        iter->recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
+    
+    CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
 

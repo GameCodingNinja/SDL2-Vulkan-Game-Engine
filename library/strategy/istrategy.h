@@ -15,9 +15,6 @@
 // Standard lib dependencies
 #include <string>
 
-// Vulkan lib dependencies
-#include <system/vulkan.h>
-
 // Forward Declarations
 class iNode;
 class CMatrix;
@@ -69,8 +66,8 @@ public:
     virtual void transform( const class CObject2D & object ){}
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ){}
-    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ){}
+    virtual void recordCommandBuffer( uint32_t index, const CMatrix & viewProj ){}
+    virtual void recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj ){}
     
     // Clear the sprite Id counter
     static void clearSpriteCounter();

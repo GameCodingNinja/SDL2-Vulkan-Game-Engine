@@ -183,22 +183,29 @@ void CObjectDataMgr::createFromData2D( const std::string & group )
  ************************************************************************/
 void CObjectDataMgr::freeGroup2D( const std::string & group )
 {
+    // Free the data of a specific group
+    freeDataGroup2D( group );
+    
+    // Delete the group assets
+    CDevice::Instance().deleteGroupAssets( group );
+}
+
+
+/************************************************************************
+ *    DESC:  Free only the data of a specific group
+ ************************************************************************/
+void CObjectDataMgr::freeDataGroup2D( const std::string & group )
+{
     // Make sure the group we are looking for exists
     if( m_listTableMap.find( group ) == m_listTableMap.end() )
         throw NExcept::CCriticalException("Obj Data List 2D Free Group Data Error!",
             boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
                 % group % __FUNCTION__ % __LINE__ ));
 
-    // See if this group is still loaded
+    // Unload the group data
     auto mapIter = m_objectData2DMapMap.find( group );
     if( mapIter != m_objectData2DMapMap.end() )
-    {
-        // Delete the group assets
-        CDevice::Instance().deleteGroupAssets( group );
-
-        // Unload the group data
         m_objectData2DMapMap.erase( mapIter );
-    }
 }
 
 
@@ -360,25 +367,29 @@ void CObjectDataMgr::createFromData3D( const std::string & group )
  ************************************************************************/
 void CObjectDataMgr::freeGroup3D( const std::string & group )
 {
+    // Free the data of a specific group
+    freeDataGroup3D( group );
+
+    // Delete the group assets
+    CDevice::Instance().deleteGroupAssets( group );
+}
+
+
+/************************************************************************
+ *    DESC:  Free only the data of a specific group
+ ************************************************************************/
+void CObjectDataMgr::freeDataGroup3D( const std::string & group )
+{
     // Make sure the group we are looking for exists
     if( m_listTableMap.find( group ) == m_listTableMap.end() )
-    {
         throw NExcept::CCriticalException( "Obj Data List 3D Load Group Data Error!",
             boost::str( boost::format( "Object data list group name can't be found (%s).\n\n%s\nLine: %s" )
                 % group % __FUNCTION__ % __LINE__ ) );
-    }
 
-    // See if this group is still loaded
+    // Unload the group data
     auto groupMapIter = m_objectData3DMapMap.find( group );
     if( groupMapIter != m_objectData3DMapMap.end() )
-    {
-        // Delete the group assets
-        CDevice::Instance().deleteGroupAssets( group );
-        //CMeshMgr::Instance().deleteBufferGroup( group );
-
-        // Unload the group data
         m_objectData3DMapMap.erase( groupMapIter );
-    }
 }
 
 

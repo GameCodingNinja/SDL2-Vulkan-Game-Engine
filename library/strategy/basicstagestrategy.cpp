@@ -11,6 +11,7 @@
 // Game lib dependencies
 #include <utilities/xmlParser.h>
 #include <managers/cameramanager.h>
+#include <system/device.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -19,7 +20,8 @@ CBasicStageStrategy::CBasicStageStrategy()
 {
 }
 
-CBasicStageStrategy::CBasicStageStrategy( const std::string & file )
+CBasicStageStrategy::CBasicStageStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec ) :
+    m_commandBufVec(commandBufVec)
 {
     loadFromFile( file );
 }
@@ -106,16 +108,28 @@ void CBasicStageStrategy::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CBasicStageStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
 {
+    auto cmdBuf( m_commandBufVec[index] );
+
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+    
     for( auto & iter : m_sectorDeq )
-        iter.recordCommandBuffer( index, cmdBuffer, viewProj );
+        iter.recordCommandBuffer( index, cmdBuf, viewProj );
+    
+    CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
-void CBasicStageStrategy::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
+    auto cmdBuf( m_commandBufVec[index] );
+
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+    
     for( auto & iter : m_sectorDeq )
-        iter.recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+        iter.recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
+    
+    CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
 

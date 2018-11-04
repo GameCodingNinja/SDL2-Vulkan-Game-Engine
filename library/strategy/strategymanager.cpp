@@ -188,39 +188,17 @@ void CStrategyMgr::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CStrategyMgr::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CStrategyMgr::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
 {
     for( auto iter : m_pStrategyVec )
-        iter->recordCommandBuffer( index, cmdBuffer, viewProj );
+        iter->recordCommandBuffer( index, viewProj );
 }
 
-void CStrategyMgr::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
+void CStrategyMgr::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
     for( auto iter : m_pStrategyVec )
-        iter->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+        iter->recordCommandBuffer( index, rotMatrix, viewProj );
 }
-
-
-/***************************************************************************
-*    DESC:  Render the sprites
-****************************************************************************/
-/*void CStrategyMgr::render()
-{
-    for( auto iter : m_pStrategyVec )
-        iter->render();
-}
-
-void CStrategyMgr::render( const CMatrix & matrix )
-{
-    for( auto iter : m_pStrategyVec )
-        iter->render( matrix );
-}
-
-void CStrategyMgr::render( const CMatrix & matrix, const CMatrix & rotMatrix )
-{
-    for( auto iter : m_pStrategyVec )
-        iter->render( matrix, rotMatrix );
-}*/
 
 
 /************************************************************************

@@ -133,37 +133,37 @@ void CDeviceVulkan::create(
 
     // Create the vulkan instance
     createVulkanInstance( validationNameVec, instanceExtensionNameVec );
-    
+
     // Create the Vulkan surface
     createSurface();
-    
+
     // Select a physical device (GPU)
     selectPhysicalDevice();
-    
+
     // Create the logical device
     createLogicalDevice( validationNameVec, physicalDeviceExtensionNameVec );
-    
+
     // Setup the swap chain to be created
     setupSwapChain();
-    
+
     // Create the swap chain
     createSwapChain();
-    
+
     // Create the render pass
     createRenderPass();
-    
+
     // Create the primary command pool
     createPrimaryCommandPool();
-    
+
     // Create depth resources
     createDepthResources();
-    
+
     // Create the frame buffer
     createFrameBuffer();
-    
+
     // Create the Semaphores and fences
     createSyncObjects();
-    
+
     // Create the primary command buffers
     createPrimaryCommandBuffers();
 }
@@ -180,7 +180,7 @@ void CDeviceVulkan::destroy()
         {
             for( auto iter : m_frameFenceVec )
                 vkDestroyFence( m_logicalDevice, iter, nullptr );
-            
+
             m_frameFenceVec.clear();
         }
 
@@ -188,18 +188,18 @@ void CDeviceVulkan::destroy()
         {
             for( auto iter : m_imageAvailableSemaphoreVec )
                 vkDestroySemaphore( m_logicalDevice, iter, nullptr );
-            
+
             m_imageAvailableSemaphoreVec.clear();
         }
-        
+
         if( !m_renderFinishedSemaphoreVec.empty()  )
         {
             for( auto iter : m_renderFinishedSemaphoreVec )
                 vkDestroySemaphore( m_logicalDevice, iter, nullptr );
-            
+
             m_renderFinishedSemaphoreVec.clear();
         }
-        
+
         destroySwapChain();
 
         if( m_primaryCmdPool != VK_NULL_HANDLE )
@@ -207,19 +207,19 @@ void CDeviceVulkan::destroy()
             vkDestroyCommandPool( m_logicalDevice, m_primaryCmdPool, nullptr );
             m_primaryCmdPool = VK_NULL_HANDLE;
         }
-        
+
         if( m_transferCmdPool != VK_NULL_HANDLE )
         {
             vkDestroyCommandPool( m_logicalDevice, m_transferCmdPool, nullptr );
             m_transferCmdPool = VK_NULL_HANDLE;
         }
-        
+
         destroyAssets();
 
         vkDestroyDevice( m_logicalDevice, nullptr );
         m_logicalDevice = VK_NULL_HANDLE;
     }
-    
+
     if( m_vulkanInstance != VK_NULL_HANDLE )
     {
         if( CSettings::Instance().isValidationLayers() && (vkDestroyDebugReportCallbackEXT != nullptr) )
@@ -242,10 +242,10 @@ void CDeviceVulkan::destroySwapChain()
         {
             for( auto framebuffer : m_framebufferVec )
                 vkDestroyFramebuffer( m_logicalDevice, framebuffer, nullptr );
-            
+
             m_framebufferVec.clear();
         }
-        
+
         if( m_renderPass != VK_NULL_HANDLE )
         {
             vkDestroyRenderPass( m_logicalDevice, m_renderPass, nullptr );
@@ -257,13 +257,13 @@ void CDeviceVulkan::destroySwapChain()
             vkDestroyImageView( m_logicalDevice, m_depthImageView, nullptr );
             m_depthImageView = VK_NULL_HANDLE;
         }
-        
+
         if( m_depthImage != VK_NULL_HANDLE )
         {
             vkDestroyImage( m_logicalDevice, m_depthImage, nullptr );
             m_depthImage = VK_NULL_HANDLE;
         }
-        
+
         if( m_depthImageMemory != VK_NULL_HANDLE )
         {
             vkFreeMemory( m_logicalDevice, m_depthImageMemory, nullptr );
@@ -310,23 +310,23 @@ void CDeviceVulkan::createVulkanInstance(
     // Try to create the instance
     if( (m_lastResult = vkCreateInstance( &instCreateInfo, nullptr, &m_vulkanInstance )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create instance! %s") % getError() ) );
-    
+
     // Get a function pointer to the vulkan vkDestroySwapchainKHR
     if( !(vkDestroySwapchainKHR = (PFN_vkDestroySwapchainKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkDestroySwapchainKHR" )) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkDestroySwapchainKHR!" );
-    
+
     // Get a function pointer to the vulkan vkGetSwapchainImagesKHR
     if( !(vkGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetSwapchainImagesKHR" )) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkGetSwapchainImagesKHR!" );
-    
+
     ///////////////////////////////////////////////////
     // Setup validation layers() call back
     //////////////////////////////////////////////////
-    
+
     if( CSettings::Instance().isValidationLayers() )
     {
         PFN_vkCreateDebugReportCallbackEXT CreateDebugReportCallback = nullptr;
-        
+
         // Get the function instances of the debug report callback messages
         if( !(CreateDebugReportCallback = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateDebugReportCallbackEXT" )) )
             throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCreateDebugReportCallbackEXT!" );
@@ -371,7 +371,7 @@ void CDeviceVulkan::selectPhysicalDevice()
         // Print out the GPU if validation layers is enabled
         if( CSettings::Instance().isValidationLayers() )
             NGenFunc::PostDebugMsg( "GPU: " + std::string(props.deviceName));
-        
+
         // Find the queu family on this graphics device
         m_graphicsQueueFamilyIndex = findQueueFamilyIndex( iter, VK_QUEUE_GRAPHICS_BIT );
 
@@ -391,11 +391,11 @@ void CDeviceVulkan::selectPhysicalDevice()
 
     if( (m_physicalDevice == nullptr) || (m_graphicsQueueFamilyIndex == UINT32_MAX) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Suitable GPU could not be found!" );
-    
+
     // Make sure we have a swap chain
     if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
         throw NExcept::CCriticalException( "Vulkan Error!", "No swap chain support!" );
-    
+
     // Find the remaining queue families for present and transfer
     m_presentQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice );
     m_transferQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice, VK_QUEUE_TRANSFER_BIT );
@@ -423,7 +423,7 @@ void CDeviceVulkan::createLogicalDevice(
         VkQueue * m_pQueue;
         std::string m_typeStr;
     };
-    
+
     // Setup the initial structure
     float queuePriority = 1.0f;
     VkDeviceQueueCreateInfo deviceQueueInfo = {};
@@ -431,7 +431,7 @@ void CDeviceVulkan::createLogicalDevice(
     deviceQueueInfo.queueFamilyIndex = m_graphicsQueueFamilyIndex;
     deviceQueueInfo.queueCount = 1;
     deviceQueueInfo.pQueuePriorities = &queuePriority;
-    
+
     // This vector is for organizing unique families into separate vector indexes
     std::vector<VkDeviceQueueCreateInfo> devQueueVec = {deviceQueueInfo};
 
@@ -446,7 +446,7 @@ void CDeviceVulkan::createLogicalDevice(
     for( size_t i = 1; i < queueFamilyIndexVec.size(); ++i )
     {
         bool found = false;
-        
+
         for( auto & iter : devQueueVec )
         {
             // If this is the same family, get the family index and inc the queue count
@@ -458,7 +458,7 @@ void CDeviceVulkan::createLogicalDevice(
                 break;
             }
         }
-        
+
         // If no prior family has been found, start a new one
         if( !found )
         {
@@ -470,7 +470,7 @@ void CDeviceVulkan::createLogicalDevice(
     // Get all the features supported on this device
     VkPhysicalDeviceFeatures physicalDeviceFeatures;
     vkGetPhysicalDeviceFeatures( m_physicalDevice, &physicalDeviceFeatures );
-    
+
     VkDeviceCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     createInfo.queueCreateInfoCount = devQueueVec.size();
@@ -480,27 +480,27 @@ void CDeviceVulkan::createLogicalDevice(
     createInfo.enabledExtensionCount = physicalDeviceExtensionNameVec.size();
     createInfo.ppEnabledExtensionNames = physicalDeviceExtensionNameVec.data();
     createInfo.pEnabledFeatures = &physicalDeviceFeatures;
-    
+
     if( CSettings::Instance().isValidationLayers() )
     {
         createInfo.enabledLayerCount = validationNameVec.size();
         createInfo.ppEnabledLayerNames = validationNameVec.data();
     }
-    
+
     // Create the logical device
     if( (m_lastResult = vkCreateDevice( m_physicalDevice, &createInfo, nullptr, &m_logicalDevice )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create logical device! %s") % getError() ) );
-    
+
     if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCmdPushDescriptorSetKHR!" );
-    
+
     // Get a handle to the queue family for graphics, present & transfer - Could be different but most likely in the same queue family
-    
+
     for( auto & iter : queueFamilyIndexVec )
     {
         vkGetDeviceQueue( m_logicalDevice, iter.m_queueFamilyIndex, iter.m_queueIndex, iter.m_pQueue );
         if( iter.m_pQueue == nullptr )
-            throw NExcept::CCriticalException( 
+            throw NExcept::CCriticalException(
                 "Vulkan Error!", boost::str( boost::format("Could not get handle to the queue family for %s!") % iter.m_typeStr) );
     }
 }
@@ -512,16 +512,16 @@ void CDeviceVulkan::createLogicalDevice(
 VkShaderModule CDeviceVulkan::createShader( const std::string & filePath )
 {
     std::vector<char> shaderVec = NGenFunc::FileToVec( filePath );
-    
+
     VkShaderModuleCreateInfo shaderInfo = {};
     shaderInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     shaderInfo.codeSize = shaderVec.size();
     shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderVec.data());
-    
+
     VkShaderModule shaderModule;
     if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &shaderModule )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create shader! %s-%s") % filePath % getError() ) );
-    
+
     return shaderModule;
 }
 
@@ -534,35 +534,35 @@ void CDeviceVulkan::setupSwapChain()
     PFN_vkGetPhysicalDeviceSurfaceFormatsKHR GetPhysicalDeviceSurfaceFormats = nullptr;
     PFN_vkGetPhysicalDeviceSurfacePresentModesKHR GetPhysicalDeviceSurfacePresentModes = nullptr;
     PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR GetPhysicalDeviceSurfaceCapabilities = nullptr;
-    
+
     if( !(GetPhysicalDeviceSurfaceFormats = (PFN_vkGetPhysicalDeviceSurfaceFormatsKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfaceFormatsKHR")) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfaceFormatsKHR!" );
-    
+
     if( !(GetPhysicalDeviceSurfacePresentModes = (PFN_vkGetPhysicalDeviceSurfacePresentModesKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfacePresentModesKHR")) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfacePresentModesKHR!" );
-    
+
     if( !(GetPhysicalDeviceSurfaceCapabilities = (PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR")) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR!" );
-    
+
     // Get the device surface capabilities
     VkSurfaceCapabilitiesKHR surfCapabilities = {};
     if( (m_lastResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &surfCapabilities )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface capabilities! %s") % getError() ) );
-    
+
     // Get the best surface format
     VkSurfaceFormatKHR surfaceFormat;
     uint32_t surfaceFormatCount;
     if( (m_lastResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, nullptr)) || (surfaceFormatCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface format count! %s") % getError() ) );
-    
+
     std::vector<VkSurfaceFormatKHR> surfaceFormatVec(surfaceFormatCount);
-    
+
     if( (m_lastResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, surfaceFormatVec.data())) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface formats! %s") % getError() ) );
-    
+
     // Init to the first format in the event the below two fail
     surfaceFormat = surfaceFormatVec.front();
-    
+
     if( (surfaceFormatCount == 1) && surfaceFormatVec.back().format == VK_FORMAT_UNDEFINED)
     {
         surfaceFormat.format = VK_FORMAT_B8G8R8A8_UNORM;
@@ -579,18 +579,18 @@ void CDeviceVulkan::setupSwapChain()
             }
         }
     }
-    
+
     // Get the best presentation mode
     VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_FIFO_KHR;
     uint32_t surfacePresModeCount;
     if( (m_lastResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError() ) );
-    
+
     std::vector<VkPresentModeKHR> surfacePresModeVec(surfacePresModeCount);
-    
+
     if( (m_lastResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation modes! %s") % getError() ) );
-    
+
     for( const auto & presentMode : surfacePresModeVec )
     {
         if( presentMode == VK_PRESENT_MODE_MAILBOX_KHR )
@@ -606,7 +606,7 @@ void CDeviceVulkan::setupSwapChain()
     VkSurfaceTransformFlagBitsKHR preTransform = surfCapabilities.currentTransform;
     if (surfCapabilities.supportedTransforms & VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR)
         preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
-    
+
     m_swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     m_swapchainInfo.surface = m_vulkanSurface;
     m_swapchainInfo.imageFormat = surfaceFormat.format;
@@ -619,25 +619,25 @@ void CDeviceVulkan::setupSwapChain()
     m_swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
     m_swapchainInfo.presentMode = surfacePresMode;
     m_swapchainInfo.clipped = true;
-    
+
     // Determine the number of VkImage's to use in the swap chain.
     uint32_t minImageCount = surfCapabilities.minImageCount;
-    
+
     if( CSettings::Instance().getTripleBuffering() )
         ++minImageCount;
-    
+
     // Application must settle for fewer images than desired
     if ((surfCapabilities.maxImageCount > 0) && (minImageCount > surfCapabilities.maxImageCount))
         minImageCount = surfCapabilities.maxImageCount;
-    
+
     m_swapchainInfo.minImageCount = minImageCount;
-    
+
     // Set the extent of the render resolution
     VkExtent2D swapchainExtent;
-    
+
     // Get the render size of the window
     const CSize<uint32_t> size( CSettings::Instance().getSize() );
-    
+
     // width and height are either both -1, or both not -1.
     if (surfCapabilities.currentExtent.width == (uint32_t)-1)
     {
@@ -656,16 +656,16 @@ void CDeviceVulkan::setupSwapChain()
                 CSize<float>(
                     surfCapabilities.currentExtent.width,
                     surfCapabilities.currentExtent.height) );
-            
+
             CSettings::Instance().calcRatio();
         }
-        
+
         // If the surface size is defined, the swap chain size must match
         swapchainExtent = surfCapabilities.currentExtent;
     }
-    
+
     m_swapchainInfo.imageExtent = swapchainExtent;
-    
+
     // In the event the graphics and present queue family doesn't match
     std::vector<uint32_t> queueFamilyIndiceVec = {m_graphicsQueueFamilyIndex, m_presentQueueFamilyIndex};
     if( m_graphicsQueueFamilyIndex != m_presentQueueFamilyIndex )
@@ -685,27 +685,27 @@ void CDeviceVulkan::createSwapChain()
     PFN_vkCreateSwapchainKHR CreateSwapchain = nullptr;
     if( !(CreateSwapchain = (PFN_vkCreateSwapchainKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateSwapchainKHR")) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCreateSwapchainKHR!" );
-    
+
     // Create the swap chain
     if( (m_lastResult = CreateSwapchain( m_logicalDevice, &m_swapchainInfo, nullptr, &m_swapchain)) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create swap chain! %s") % getError() ) );
-    
+
     // get the swap chain images. NOTE: Swap chain images are destroyed when the swap chain is destroyed.
     uint32_t swapChainImageCount;
     if( (m_lastResult = vkGetSwapchainImagesKHR( m_logicalDevice, m_swapchain, &swapChainImageCount, nullptr)) || (swapChainImageCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate swap chain image count! %s") % getError() ) );
-    
+
     std::vector<VkImage> swapChainImage(swapChainImageCount);
-    
+
     if( (m_lastResult = vkGetSwapchainImagesKHR( m_logicalDevice, m_swapchain, &swapChainImageCount, swapChainImage.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not get swap chain images! %s") % getError() ) );
-    
+
     // Print out info if the swap images don't match
     if( m_swapchainInfo.minImageCount != swapChainImageCount )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Swap chain image don't match! (%d / %d)") % m_swapchainInfo.minImageCount % swapChainImageCount ));
-    
+
     m_swapChainImageViewVec.reserve( swapChainImageCount );
-    
+
     for( uint32_t i = 0; i < swapChainImageCount; ++i )
         m_swapChainImageViewVec.push_back( createImageView( swapChainImage[i], m_swapchainInfo.imageFormat, 1, VK_IMAGE_ASPECT_COLOR_BIT ) );
 }
@@ -726,7 +726,7 @@ void CDeviceVulkan::createRenderPass()
     colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
     colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    
+
     VkAttachmentDescription depthAttachment = {};
     depthAttachment.format = findDepthFormat();
     depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
@@ -736,20 +736,20 @@ void CDeviceVulkan::createRenderPass()
     depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
     depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     depthAttachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    
+
     VkAttachmentReference colorAttachmentRef = {};
     colorAttachmentRef.attachment = 0;
     colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-    
+
     VkAttachmentReference depthAttachmentRef = {};
     depthAttachmentRef.attachment = 1;
     depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    
+
     VkSubpassDescription subpass = {};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
     subpass.colorAttachmentCount = 1;
     subpass.pColorAttachments = &colorAttachmentRef;
-    
+
     VkSubpassDependency dependency = {};
     dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
     dependency.dstSubpass = 0;
@@ -757,16 +757,16 @@ void CDeviceVulkan::createRenderPass()
     dependency.srcAccessMask = 0;
     dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
     dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-    
+
     std::vector<VkAttachmentDescription> attachments = { colorAttachment };
-    
+
     // Add the depth attachment if depth or stencil buffer is needed
-    if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+    if( CSettings::Instance().activateDepthBuffer() )
     {
         subpass.pDepthStencilAttachment = &depthAttachmentRef;
         attachments.push_back( depthAttachment );
     }
-    
+
     VkRenderPassCreateInfo renderPassInfo = {};
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     renderPassInfo.attachmentCount = attachments.size();
@@ -775,7 +775,7 @@ void CDeviceVulkan::createRenderPass()
     renderPassInfo.pSubpasses = &subpass;
     renderPassInfo.dependencyCount = 1;
     renderPassInfo.pDependencies = &dependency;
-    
+
     if( (m_lastResult = vkCreateRenderPass( m_logicalDevice, &renderPassInfo, nullptr, &m_renderPass )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError() ) );
 }
@@ -788,7 +788,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
 {
     int bindingOffset = 0;
     std::vector<VkDescriptorSetLayoutBinding> bindings;
-    
+
     for( auto & descIdIter : descData.m_descriptorVec )
     {
         // There can be multiple uniform buffers
@@ -811,7 +811,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
             binding.pImmutableSamplers = nullptr;
             binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
-            
+
             bindings.push_back( binding );
         }
         else
@@ -825,11 +825,11 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
     layoutInfo.flags = VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR;
     layoutInfo.bindingCount = bindings.size();
     layoutInfo.pBindings = bindings.data();
-    
+
     VkDescriptorSetLayout descriptorSetLayout;
     if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &descriptorSetLayout)) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError() ) );
-    
+
     return descriptorSetLayout;
 }
 
@@ -847,7 +847,7 @@ VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout desc
     VkPipelineLayout pipelineLayout;
     if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineLayout )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
-    
+
     return pipelineLayout;
 }
 
@@ -857,28 +857,37 @@ VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout desc
 ****************************************************************************/
 void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
 {
+    // Make sure our states are setup correctly
+    if( pipelineData.m_enableDepthBuffer && !CSettings::Instance().activateDepthBuffer() )
+        throw NExcept::CCriticalException(
+            "Vulkan Error!", "Can't enable the depth buffer without activating it in the settings.cfg!" );
+
+    if( pipelineData.m_enableStencilBuffer && !CSettings::Instance().activateStencilBuffer() )
+        throw NExcept::CCriticalException(
+            "Vulkan Error!", "Can't enable the stencil buffer without activating it in the settings.cfg!" );
+
     // Create the graphics pipeline
     VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
     vertShaderStageInfo.module = pipelineData.m_shader.m_vert;
     vertShaderStageInfo.pName = "main";
-    
+
     VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
     fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
     fragShaderStageInfo.module = pipelineData.m_shader.m_frag;
     fragShaderStageInfo.pName = "main";
-    
+
     std::vector<VkPipelineShaderStageCreateInfo> shaderStages = {vertShaderStageInfo, fragShaderStageInfo};
-    
+
     VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputInfo.vertexBindingDescriptionCount = 1;
     vertexInputInfo.vertexAttributeDescriptionCount = pipelineData.vertInputAttrDescVec.size();
     vertexInputInfo.pVertexBindingDescriptions = &pipelineData.vertInputBindingDesc;
     vertexInputInfo.pVertexAttributeDescriptions = pipelineData.vertInputAttrDescVec.data();
-        
+
     VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
     inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
     inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
@@ -891,18 +900,18 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     viewport.height = m_swapchainInfo.imageExtent.height;
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
-    
+
     VkRect2D scissor = {};
     scissor.offset = {0, 0};
     scissor.extent = m_swapchainInfo.imageExtent;
-    
+
     VkPipelineViewportStateCreateInfo viewportState = {};
     viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
     viewportState.viewportCount = 1;
     viewportState.pViewports = &viewport;
     viewportState.scissorCount = 1;
     viewportState.pScissors = &scissor;
-    
+
     VkPipelineRasterizationStateCreateInfo rasterizer = {};
     rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     rasterizer.depthClampEnable = VK_FALSE;
@@ -915,26 +924,25 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     rasterizer.depthBiasConstantFactor = 0.0f;
     rasterizer.depthBiasClamp = 0.0f;
     rasterizer.depthBiasSlopeFactor = 0.0f;
-    
+
     VkPipelineMultisampleStateCreateInfo multisampling = {};
     multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
     multisampling.sampleShadingEnable = VK_FALSE;
     multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
-    
-    /*std::vector<VkDynamicState> dynamicStateEnables = {VK_DYNAMIC_STATE_VIEWPORT,VK_DYNAMIC_STATE_SCISSOR};
-    
+
+    /*std::vector<VkDynamicState> dynamicStateEnables = {VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR};
     VkPipelineDynamicStateCreateInfo dynamicState = {};
     dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
     dynamicState.pDynamicStates = dynamicStateEnables.data();
     dynamicState.dynamicStateCount = dynamicStateEnables.size();*/
-    
+
     VkPipelineDepthStencilStateCreateInfo depthStencil = {};
     depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-    depthStencil.depthTestEnable = CSettings::Instance().getEnableDepthBuffer();
-    depthStencil.depthWriteEnable = CSettings::Instance().getEnableDepthBuffer();
+    depthStencil.depthTestEnable = pipelineData.m_enableDepthBuffer;
+    depthStencil.depthWriteEnable = pipelineData.m_enableDepthBuffer;
+    depthStencil.stencilTestEnable = pipelineData.m_enableStencilBuffer;
     depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
-    depthStencil.depthBoundsTestEnable = VK_FALSE;
-    depthStencil.stencilTestEnable = CSettings::Instance().getEnableStencilBuffer();
+    depthStencil.depthBoundsTestEnable = VK_FALSE; // This is not a toggle to turn on depth testing
     depthStencil.back.compareOp = VK_COMPARE_OP_ALWAYS;
     depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
     depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
@@ -943,9 +951,13 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     depthStencil.back.writeMask = 0xff;
     depthStencil.back.reference = 1;
     depthStencil.front = depthStencil.back;
-    //depthStencil.front = {}; // Optional
-    //depthStencil.back = {}; // Optional
-    
+
+    if( pipelineData.m_enableStencilBuffer )
+    {
+        depthStencil.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
+        rasterizer.cullMode = VK_CULL_MODE_NONE;
+    }
+
     VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
     colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
     colorBlendAttachment.blendEnable = VK_TRUE;
@@ -955,7 +967,10 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
     colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
     colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
-    
+
+    if( pipelineData.m_enableStencilBuffer )
+        colorBlendAttachment.blendEnable = VK_FALSE;
+
     VkPipelineColorBlendStateCreateInfo colorBlending = {};
     colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
     colorBlending.logicOpEnable = VK_FALSE;
@@ -973,7 +988,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     pipelineInfo.pRasterizationState = &rasterizer;
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
-    pipelineInfo.pDynamicState = nullptr;//&dynamicState;
+    //pipelineInfo.pDynamicState = &dynamicState;
     pipelineInfo.layout = pipelineData.m_pipelineLayout;
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;
@@ -981,7 +996,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     pipelineInfo.basePipelineIndex = -1;
 
     // Add the depthStencil if depth or stencil buffer is needed
-    if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+    if( CSettings::Instance().activateDepthBuffer() )
         pipelineInfo.pDepthStencilState = &depthStencil;
 
     if( (m_lastResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineData.m_pipeline )) )
@@ -1004,7 +1019,7 @@ void CDeviceVulkan::createPrimaryCommandPool()
 ****************************************************************************/
 void CDeviceVulkan::createDepthResources()
 {
-    if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+    if( CSettings::Instance().activateDepthBuffer() )
     {
         VkFormat depthFormat = findDepthFormat();
 
@@ -1022,7 +1037,12 @@ void CDeviceVulkan::createDepthResources()
             m_depthImage,
             m_depthImageMemory );
 
-        m_depthImageView = createImageView( m_depthImage, depthFormat, 1, VK_IMAGE_ASPECT_DEPTH_BIT );
+        VkImageAspectFlags aspectFlags = VK_IMAGE_ASPECT_DEPTH_BIT;
+
+        if( CSettings::Instance().activateStencilBuffer() )
+            aspectFlags |= VK_IMAGE_ASPECT_STENCIL_BIT;
+
+        m_depthImageView = createImageView( m_depthImage, depthFormat, 1, aspectFlags );
 
         transitionImageLayout( m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1 );
     }
@@ -1035,13 +1055,13 @@ void CDeviceVulkan::createDepthResources()
 void CDeviceVulkan::createFrameBuffer()
 {
     m_framebufferVec.resize( m_swapChainImageViewVec.size() );
-    
+
     for( size_t i = 0; i < m_swapChainImageViewVec.size(); ++i )
     {
         std::vector<VkImageView> attachmentsAry = { m_swapChainImageViewVec[i] };
 
         // Add the depth image if depth or stencil buffer is needed
-        if( CSettings::Instance().getEnableDepthBuffer() || CSettings::Instance().getEnableStencilBuffer() )
+        if( CSettings::Instance().activateDepthBuffer() )
             attachmentsAry.push_back( m_depthImageView );
 
         VkFramebufferCreateInfo framebufferInfo = {};
@@ -1063,18 +1083,18 @@ void CDeviceVulkan::createFrameBuffer()
 *   DESC:  Create the Semaphores and fences
 ****************************************************************************/
 void CDeviceVulkan::createSyncObjects()
-{    
+{
     m_imageAvailableSemaphoreVec.resize( m_maxConcurrentFrames );
     m_renderFinishedSemaphoreVec.resize( m_maxConcurrentFrames );
     m_frameFenceVec.resize( m_maxConcurrentFrames );
-            
+
     VkSemaphoreCreateInfo semaphoreInfo = {};
     semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    
+
     VkFenceCreateInfo fenceInfo = {};
     fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
     fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-    
+
     for( int i = 0; i < m_maxConcurrentFrames; ++i )
     {
         if( (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_imageAvailableSemaphoreVec[i] )) ||
@@ -1091,13 +1111,13 @@ void CDeviceVulkan::createSyncObjects()
 void CDeviceVulkan::createPrimaryCommandBuffers()
 {
     m_primaryCmdBufVec.resize( m_framebufferVec.size() );
-    
+
     VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
     commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     commandBufferAllocateInfo.commandPool = m_primaryCmdPool;
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     commandBufferAllocateInfo.commandBufferCount = (uint32_t) m_primaryCmdBufVec.size();
-    
+
     if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, m_primaryCmdBufVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
 }
@@ -1109,16 +1129,16 @@ void CDeviceVulkan::createPrimaryCommandBuffers()
 std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCommandPool cmdPool )
 {
     std::vector<VkCommandBuffer>cmdBufVec( m_framebufferVec.size() );
-    
+
     VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
     commandBufferAllocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     commandBufferAllocateInfo.commandPool = cmdPool;
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_SECONDARY;
     commandBufferAllocateInfo.commandBufferCount = (uint32_t) cmdBufVec.size();
-    
+
     if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, cmdBufVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
-    
+
     return cmdBufVec;
 }
 
@@ -1130,25 +1150,25 @@ void CDeviceVulkan::recreateSwapChain()
 {
     // Wait for the logical device to be idle before doing the clean up
     vkDeviceWaitIdle( m_logicalDevice );
-    
+
     // Destroy the current swap chain
     destroySwapChain();
-        
+
     // Setup the swap chain to be created
     setupSwapChain();
-    
+
     // Create the swap chain
     createSwapChain();
-    
+
     // Create the render pass
     createRenderPass();
-    
+
     // Recreate the graphics pipeline
     recreatePipelines();
-    
+
     // Create depth resources
     createDepthResources();
-    
+
     // Create the frame buffer
     createFrameBuffer();
 }
@@ -1180,16 +1200,16 @@ bool CDeviceVulkan::isDeviceExtension( VkPhysicalDevice physicalDevice, const ch
     uint32_t deviceExtensionCount = 0;
     if( (m_lastResult = vkEnumerateDeviceExtensionProperties( physicalDevice, nullptr, &deviceExtensionCount, nullptr )) || (deviceExtensionCount == 0 ) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate device extension count! %s") % getError() ) );
-    
+
     std::vector<VkExtensionProperties> availableExtensions(deviceExtensionCount);
-    
+
     if( (m_lastResult = vkEnumerateDeviceExtensionProperties( physicalDevice, nullptr, &deviceExtensionCount, availableExtensions.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate device extension info! %s") % getError() ) );
-    
+
     for( auto iter : availableExtensions )
         if( std::strcmp( iter.extensionName, extenName ) == 0 )
             return true;
- 
+
     return false;
 }
 
@@ -1228,7 +1248,7 @@ uint32_t CDeviceVulkan::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, u
                     return i;
         }
     }
-    
+
     return UINT32_MAX;
 }
 
@@ -1242,14 +1262,14 @@ VkFormat CDeviceVulkan::findSupportedFormat( const std::vector<VkFormat> & candi
     {
         VkFormatProperties props;
         vkGetPhysicalDeviceFormatProperties( m_physicalDevice, format, &props );
-        
+
         if( tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features )
             return format;
 
         else if( tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features )
             return format;
     }
-    
+
     return VK_FORMAT_UNDEFINED;
 }
 
@@ -1260,19 +1280,19 @@ VkFormat CDeviceVulkan::findSupportedFormat( const std::vector<VkFormat> & candi
 VkFormat CDeviceVulkan::findDepthFormat()
 {
     std::vector<VkFormat> depthStencilFormatChoices;
-            
+
     // Check only the formats that include the stencil buffer if stencil is needed
-    if( CSettings::Instance().getEnableStencilBuffer() )
+    if( CSettings::Instance().activateStencilBuffer() )
         depthStencilFormatChoices = {VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
     else
         depthStencilFormatChoices = {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT };
-        
+
     VkFormat format = findSupportedFormat( depthStencilFormatChoices, VK_IMAGE_TILING_OPTIMAL, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
-    
+
     // If an optimal one is not found, try for a linear one
     if( format == VK_FORMAT_UNDEFINED )
         format = findSupportedFormat( depthStencilFormatChoices, VK_IMAGE_TILING_LINEAR, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT );
-    
+
     return format;
 }
 
@@ -1305,7 +1325,7 @@ void CDeviceVulkan::createImage(
     imageInfo.usage = usage;
     imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
     imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    
+
     if( (m_lastResult = vkCreateImage( m_logicalDevice, &imageInfo, nullptr, &image )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create image! %s") % getError() ) );
 
@@ -1316,7 +1336,7 @@ void CDeviceVulkan::createImage(
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memRequirements.size;
     allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
-    
+
     if( (m_lastResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &imageMemory )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate image memory! %s") % getError() ) );
 
@@ -1339,7 +1359,7 @@ void CDeviceVulkan::createBuffer(
     bufferInfo.size = size;
     bufferInfo.usage = usage;
     bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    
+
     if( (m_lastResult = vkCreateBuffer( m_logicalDevice, &bufferInfo, nullptr, &buffer )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create buffer! %s") % getError() ) );
 
@@ -1350,10 +1370,10 @@ void CDeviceVulkan::createBuffer(
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memRequirements.size;
     allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
-    
+
     if( (m_lastResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &bufferMemory )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate buffer memory! %s") % getError() ) );
-    
+
     vkBindBufferMemory( m_logicalDevice, buffer, bufferMemory, 0);
 }
 
@@ -1362,7 +1382,7 @@ void CDeviceVulkan::createBuffer(
 *   DESC:  Copy a buffer
 ****************************************************************************/
 void CDeviceVulkan::copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size )
-{    
+{
     VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
     VkBufferCopy copyRegion = {};
@@ -1445,7 +1465,7 @@ void CDeviceVulkan::transitionImageLayout( VkImage image, VkFormat format, VkIma
 
     VkPipelineStageFlags sourceStage;
     VkPipelineStageFlags destinationStage;
-    
+
     if( oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL )
     {
         barrier.srcAccessMask = 0;
@@ -1524,11 +1544,11 @@ VkCommandPool CDeviceVulkan::createCommandPool( uint32_t queueFamilyIndex )
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.queueFamilyIndex = queueFamilyIndex;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    
+
     VkCommandPool commandPool;
     if( (m_lastResult = vkCreateCommandPool( m_logicalDevice, &poolInfo, nullptr, &commandPool )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create command pool! %s") % getError() ) );
-    
+
     return commandPool;
 }
 
@@ -1539,43 +1559,43 @@ VkCommandPool CDeviceVulkan::createCommandPool( uint32_t queueFamilyIndex )
 void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
 {
     int channels(0);
-    unsigned char * pixels = SOIL_load_image( 
+    unsigned char * pixels = SOIL_load_image(
         texture.m_textFilePath.c_str(),
         &texture.m_size.w,
         &texture.m_size.h,
         &channels,
         SOIL_LOAD_RGBA );
-    
+
     if( pixels == nullptr )
         throw NExcept::CCriticalException( "SOIL Error!", "Error loading image!");
-    
+
     VkDeviceSize imageSize = texture.m_size.w * texture.m_size.h * SOIL_LOAD_RGBA;
-    
+
     VkBuffer stagingBuffer;
     VkDeviceMemory stagingBufferMemory;
-    
+
     createBuffer(
         imageSize,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
         stagingBuffer,
         stagingBufferMemory );
-    
+
     void* data;
     vkMapMemory( m_logicalDevice, stagingBufferMemory, 0, imageSize, 0, &data );
     std::memcpy( data, pixels, static_cast<size_t>(imageSize));
     vkUnmapMemory( m_logicalDevice, stagingBufferMemory );
-    
+
     SOIL_free_image_data( pixels );
-    
+
     uint32_t imageUsageFlags( VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT );
-    
+
     if( mipMap )
     {
         imageUsageFlags |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         texture.m_mipLevels = std::floor(std::log2(std::max(texture.m_size.w, texture.m_size.h))) + 1;
     }
-    
+
     createImage(
         texture.m_size.w,
         texture.m_size.h,
@@ -1586,21 +1606,21 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         texture.m_textureImage,
         texture.m_textureImageMemory );
-    
+
     transitionImageLayout( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texture.m_mipLevels );
     copyBufferToImage( stagingBuffer, texture.m_textureImage, static_cast<uint32_t>(texture.m_size.w), static_cast<uint32_t>(texture.m_size.h) );
-    
+
     if( mipMap )
         generateMipmaps( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.m_size.w, texture.m_size.h, texture.m_mipLevels );
     else
         transitionImageLayout( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, texture.m_mipLevels );
-    
+
     vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
     vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
-    
+
     // create the image view
     texture.m_textureImageView = createImageView( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.m_mipLevels, VK_IMAGE_ASPECT_COLOR_BIT );
-    
+
     // Create the texture sampler
     texture.m_textureSampler = createTextureSampler( texture.m_mipLevels );
 }
@@ -1719,12 +1739,12 @@ VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
     samplerInfo.mipLodBias = 0.0f;
     samplerInfo.minLod = 0.0f;
     samplerInfo.maxLod = ((mipLevels > 1) ? mipLevels : 0.f);
-    
+
     VkSampler textureSampler;
-            
+
     if( (m_lastResult = vkCreateSampler( m_logicalDevice, &samplerInfo, nullptr, &textureSampler )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture sampler! %s") % getError() ) );
-    
+
     return textureSampler;
 }
 
@@ -1763,7 +1783,7 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData, size_t setCount )
 {
     std::vector<VkDescriptorPoolSize> descriptorPoolVec;
-    
+
     for( auto & descIdIter : descData.m_descriptorVec )
     {
         // There can be multiple uniform buffers
@@ -1780,7 +1800,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
             VkDescriptorPoolSize combinedImageSamplerPoolSize = {};
             combinedImageSamplerPoolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             combinedImageSamplerPoolSize.descriptorCount = m_framebufferVec.size();
-            
+
             descriptorPoolVec.push_back( combinedImageSamplerPoolSize );
         }
         else
@@ -1788,19 +1808,19 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
             throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool binding not defined! %s") % descIdIter.m_descrId ) );
         }
     }
-    
+
     VkDescriptorPoolCreateInfo poolInfo = {};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = descriptorPoolVec.size();
     poolInfo.pPoolSizes = descriptorPoolVec.data();
     poolInfo.maxSets = descriptorPoolVec.size() * setCount;
     poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-    
+
     VkDescriptorPool descriptorPool;
-    
+
     if( (m_lastResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &descriptorPool )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
-    
+
     return descriptorPool;
 }
 
@@ -1816,7 +1836,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
     VkDescriptorPool descriptorPool )
 {
     std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), pipelineData.m_descriptorSetLayout );
-    
+
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = descriptorPool;
@@ -1824,18 +1844,18 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
     allocInfo.pSetLayouts = layouts.data();
 
     std::vector<VkDescriptorSet> descriptorSetVec( m_framebufferVec.size() );
-    
+
     if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, descriptorSetVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
-    
+
     for( size_t i = 0; i < descriptorSetVec.size(); ++i )
     {
         std::vector<VkWriteDescriptorSet> writeDescriptorSetVec;
-        
+
         // Keep the data alive until the call to vkUpdateDescriptorSets
         std::vector<VkDescriptorBufferInfo> descriptorBufferInfoVec;
         std::vector<VkDescriptorImageInfo> descriptorImageInfoVec;
-        
+
         int bindingOffset = 0;
 
         for( auto & descIdIter : descData.m_descriptorVec )
@@ -1845,7 +1865,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
                 // Make sure this UBO has a size
                 if( descIdIter.m_ubo.uboSize == 0 )
                     throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Uniform Buffer UBO size is 0! %s") % descIdIter.m_descrId ) );
-                
+
                 VkDescriptorBufferInfo bufferInfo = {};
                 bufferInfo.buffer = uniformBufVec[i].m_buffer;
                 bufferInfo.offset = 0;
@@ -1870,7 +1890,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
                 imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
                 imageInfo.imageView = texture.m_textureImageView;
                 imageInfo.sampler = texture.m_textureSampler;
-                
+
                 descriptorImageInfoVec.emplace_back( imageInfo );
 
                 VkWriteDescriptorSet writeDescriptorSet = {};
@@ -1881,7 +1901,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
                 writeDescriptorSet.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
                 writeDescriptorSet.descriptorCount = 1;
                 writeDescriptorSet.pImageInfo = &descriptorImageInfoVec.back();
-                
+
                 writeDescriptorSetVec.push_back( writeDescriptorSet );
             }
             else
@@ -1892,7 +1912,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
 
         vkUpdateDescriptorSets( m_logicalDevice, writeDescriptorSetVec.size(), writeDescriptorSetVec.data(), 0, nullptr );
     }
-    
+
     return descriptorSetVec;
 }
 

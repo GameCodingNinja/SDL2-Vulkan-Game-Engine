@@ -21,6 +21,9 @@
 #include <vector>
 #include <deque>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward Declarations
 class CObject2D;
 class CMatrix;
@@ -31,7 +34,7 @@ public:
 
     // Constructor
     CBasicStageStrategy();
-    CBasicStageStrategy( const std::string & file );
+    CBasicStageStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec );
 
     // Destructor
     virtual ~CBasicStageStrategy();
@@ -49,8 +52,8 @@ public:
     virtual void transform() override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
     
     // Get the default camera position
     CObject & getDefaultCameraPos();
@@ -67,6 +70,11 @@ protected:
     
     // default camera position
     CObject m_defaultCameraPos;
+    
+    // Command buffer
+    // NOTE: command buffers don't to be freed because
+    //       they are freed by deleting the pool they belong to
+    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

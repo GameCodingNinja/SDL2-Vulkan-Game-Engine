@@ -24,6 +24,9 @@
 #include <vector>
 #include <map>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward Declarations
 class CNodeDataList;
 class CSpriteData;
@@ -36,7 +39,7 @@ public:
 
     // Constructor
     CActorStrategy();
-    CActorStrategy( const std::string & file );
+    CActorStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec );
 
     // Destructor
     virtual ~CActorStrategy();
@@ -64,8 +67,8 @@ public:
     void transform() override;
 
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
 
     // Get the reference to the node
     template<typename target>
@@ -106,6 +109,11 @@ protected:
 
     // Vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;
+    
+    // Command buffer
+    // NOTE: command buffers don't to be freed because
+    //       they are freed by deleting the pool they belong to
+    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

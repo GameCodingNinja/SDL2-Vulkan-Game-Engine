@@ -11,14 +11,12 @@
 void StartUp_FadeIn( Sprite & sprite )
 {
     CColor current(0,0,0,1);
-    sprite.setColor( current );
+    sprite.setAdditiveColor( current );
     
     Hold( 250 );
             
     CColor final(1,1,1,1);
-    ColorTo( 500, final, sprite );
-    
-    Hold( 1000 );
+    AdditiveColorTo( 500, final, sprite );
     
     DispatchEvent( 0xA000 );
 }
@@ -26,7 +24,9 @@ void StartUp_FadeIn( Sprite & sprite )
 void StartUp_FadeOut( Sprite & sprite )
 {
     CColor current(0,0,0,1);
-    ColorTo( 500, current, sprite );
+    AdditiveColorTo( 500, current, sprite );
+    
+    Hold( 1000 );
     
     DispatchEvent( 0xB000 );
 }

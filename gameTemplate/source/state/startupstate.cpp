@@ -66,7 +66,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CStartUpState::CStartUpState() :
-    iGameState( NGameDefs::EGS_STARTUP, NGameDefs::EGS_TITLE_SCREEN )
+    CCommonState( NGameDefs::EGS_STARTUP, NGameDefs::EGS_TITLE_SCREEN )
 {
 }
 
@@ -76,8 +76,6 @@ CStartUpState::CStartUpState() :
 ************************************************************************/
 CStartUpState::~CStartUpState()
 {
-    CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
-    CStrategyMgr::Instance().clear();
 }
 
 
@@ -108,18 +106,27 @@ void CStartUpState::init()
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
 
     // Create the group command buffers
-    m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-
-    // Reset the elapsed time before entering the render loop
-    CHighResTimer::Instance().calcElapsedTime();
+    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
 
     // Add the actor strategy
     CStrategyMgr::Instance().addStrategy(
-        "actorStrategy", new CActorStrategy( "data/objects/2d/spritestrategy/nodeList.lst" ) );
+        "actorStrategy", new CActorStrategy( "data/objects/2d/spritestrategy/nodeList.lst", commandBufVec ) );
+    
+    //CStrategyMgr::Instance().create( "actorStrategy", "solid" );
+    
+    //CStrategyMgr::Instance().create( "actorStrategy", "logo" );
     
     // Start the fade in
-    m_pLogo = CStrategyMgr::Instance().create( "actorStrategy", "spriteNode" );
+    m_pLogo = CStrategyMgr::Instance().create( "actorStrategy", "waffles" );
     m_pLogo->getSprite()->prepare( "fadeIn" );
+    
+    //CStrategyMgr::Instance().create( "actorStrategy", "multiListNode" );
+    
+    // This data no longer needed so free it
+    CObjectDataMgr::Instance().freeDataGroup2D( "(startup)" );
+    
+    // Reset the elapsed time before entering the render loop
+    CHighResTimer::Instance().calcElapsedTime();
 }
 
 
@@ -128,60 +135,28 @@ void CStartUpState::init()
 ************************************************************************/
 void CStartUpState::handleEvent( const SDL_Event & rEvent )
 {
+    // Called from script
     if( rEvent.type == 0xA000 )
     {
         std::thread load(&CStartUpState::assetLoad, this);
         load.detach();
     }
+    // Called from thread
     else if( rEvent.type == 0xA001 )
     {
         m_pLogo->getSprite()->prepare( "fadeOut" );
     }
-}
-
-
-/***************************************************************************
-*    DESC:  Handle Misc processes
-****************************************************************************/
-void CStartUpState::miscProcess()
-{
-    // Re-throw any threaded exceptions
-    if( !m_errorMessage.empty() )
-        throw NExcept::CCriticalException( m_errorTitle, m_errorMessage );
-}
-
-
-/***************************************************************************
-*    DESC:  Update objects that require them
-****************************************************************************/
-void CStartUpState::update()
-{
-    CStrategyMgr::Instance().update();
-}
-
-
-/***************************************************************************
-*    DESC:  Transform the game objects
-****************************************************************************/
-void CStartUpState::transform()
-{
-    CStrategyMgr::Instance().transform();
-}
-
-
-/***************************************************************************
-*    DESC:  Record the command buffer vector in the device
-*           for all the sprite objects that are to be rendered
-****************************************************************************/
-void CStartUpState::recordCommandBuffer( uint32_t index )
-{
-    auto cmdBuf( m_commandBufVec[index] );
-
-    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-
-    CStrategyMgr::Instance().recordCommandBuffer( index, cmdBuf, CCameraMgr::Instance().getFinalMatrix() );
-
-    CDevice::Instance().endCommandBuffer( cmdBuf );
+    // Called from script
+    else if( rEvent.type == 0xB000 )
+    {
+        // Wait for all rendering to be finished
+        CDevice::Instance().waitForIdle();
+    
+        CStrategyMgr::Instance().clear();
+        CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
+        CScriptMgr::Instance().freeGroup("(startup)");
+        CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
+    }
 }
 
 
@@ -264,6 +239,10 @@ void CStartUpState::assetLoad()
 ****************************************************************************/
 bool CStartUpState::doStateChange()
 {
+    // Re-throw any threaded exceptions
+    if( !m_errorMessage.empty() )
+        throw NExcept::CCriticalException( m_errorTitle, m_errorMessage );
+    
     // Do the fade in
     /*fade( *m_upSpriteLogo.get(), 500.f, CColor(0,0,0,1), CColor(1,1,1,1) );
 
@@ -281,4 +260,3 @@ bool CStartUpState::doStateChange()
 
     return false;
 }
-

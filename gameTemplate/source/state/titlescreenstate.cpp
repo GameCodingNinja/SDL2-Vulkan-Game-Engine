@@ -115,7 +115,7 @@ void CTitleScreenState::transform()
 /***************************************************************************
 *    DESC:  2D/3D Render of game content
 ****************************************************************************/
-void CTitleScreenState::preRender()
+/*void CTitleScreenState::preRender()
 {
     //m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
 
@@ -126,7 +126,7 @@ void CTitleScreenState::preRender()
     //auto & camera = CCameraMgr::Instance().getActiveCamera();
 
     //m_cube.render( camera.getFinalMatrix(), camera.getRotMatrix() );
-}
+}*/
 
 
 /***************************************************************************
@@ -138,7 +138,7 @@ namespace NTitleScreenState
     *    DESC:  Namespace function for loading the assets for this state
     *           NOTE: Only call when the class is not allocated
     ****************************************************************************/
-    void ObjectDataLoad()
+    void Load()
     {
         //CObjectDataMgr::Instance().loadGroup2D( "(title_screen)" );
 
@@ -146,36 +146,13 @@ namespace NTitleScreenState
         //CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     }
 
-    void CriticalLoad()
-    {
-        // Create the group's VBO, IBO, textures, etc
-        //CObjectDataMgr::Instance().createFromData2D( "(title_screen)" );
-        //CObjectDataMgr::Instance().createFromData3D( "(cube)" );
-    }
-
-    void Load()
-    {
-
-    }
-
-    void CriticalInit()
-    {
-
-    }
-
-
     /***************************************************************************
     *    DESC:  Namespace function for unloading the assets for this state
     *           NOTE: Only call when the class is not allocated
     ****************************************************************************/
-    void CriticalUnload()
+    void Unload()
     {
         //CObjectDataMgr::Instance().freeGroup2D( "(title_screen)" );
         //CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
-    }
-
-    void Unload()
-    {
-
     }
 }

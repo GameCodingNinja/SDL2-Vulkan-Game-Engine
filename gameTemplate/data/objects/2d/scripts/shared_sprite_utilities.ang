@@ -36,6 +36,35 @@ shared void ColorTo( float time, CColor &in final, Sprite & sprite )
 
 
 /************************************************************************
+*    DESC:  Additive color to the final color in time
+*           NOTE: Additive color is a static and effects all sprites
+************************************************************************/
+shared void AdditiveColorTo( float time, CColor &in final, Sprite & sprite )
+{
+    CColor current = sprite.getAdditiveColor();
+    CColor inc = (final - current) / time;
+
+    do
+    {
+        time -= HighResTimer.getElapsedTime();
+
+        if( time < 0 )
+        {
+            sprite.setAdditiveColor( final );
+        }
+        else
+        {
+            current += inc * HighResTimer.getElapsedTime();
+            sprite.setAdditiveColor( current );
+        }
+
+        Suspend();
+    }
+    while( time > 0 );
+}
+
+
+/************************************************************************
 *    DESC:  Alpha to the final alpha
 ************************************************************************/
 shared void AlphaTo( float time, float final, Sprite & sprite )

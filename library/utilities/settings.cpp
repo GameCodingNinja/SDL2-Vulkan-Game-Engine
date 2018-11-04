@@ -41,8 +41,8 @@ CSettings::CSettings() :
     m_sound_channels(MIX_DEFAULT_CHANNELS),
     m_mix_channels(MIX_CHANNELS),
     m_chunksize(1024),
-    m_enableDepthBuffer(false),
-    m_enableStencilBuffer(false),
+    m_activateDepthBuffer(false),
+    m_activateStencilBuffer(false),
     m_clearTargetBuffer(true),
     m_minThreadCount(2),
     m_maxThreadCount(0),
@@ -262,12 +262,12 @@ void CSettings::loadXML()
             if( !depthStencilBufferNode.isEmpty() )
             {
                 // Do we enable the depth buffer
-                if( depthStencilBufferNode.isAttributeSet("enableDepthBuffer") )
-                    m_enableDepthBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableDepthBuffer"), "true" ) == 0 );
+                if( depthStencilBufferNode.isAttributeSet("activateDepthBuffer") )
+                    m_activateDepthBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("activateDepthBuffer"), "true" ) == 0 );
 
                 // Do we enable the stencil buffer
-                if( depthStencilBufferNode.isAttributeSet("enableStencilBuffer") )
-                    m_enableStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableStencilBuffer"), "true" ) == 0 );
+                if( depthStencilBufferNode.isAttributeSet("activateStencilBuffer") )
+                    m_activateStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("activateStencilBuffer"), "true" ) == 0 );
             }
 
             // Get the sound settings
@@ -529,20 +529,20 @@ void CSettings::setFullScreen( bool value )
 
 
 /************************************************************************
-*    DESC:  Is the depth buffer enabled by default
+*    DESC:  Is the depth buffer activated by default
 ************************************************************************/
-bool CSettings::getEnableDepthBuffer() const
+bool CSettings::activateDepthBuffer() const
 {
-    return m_enableDepthBuffer;
+    return m_activateDepthBuffer;
 }
 
 
 /************************************************************************
-*    DESC:  Is the stencil buffer enabled by default
+*    DESC:  Is the stencil buffer activated by default
 ************************************************************************/
-bool CSettings::getEnableStencilBuffer() const
+bool CSettings::activateStencilBuffer() const
 {
-    return m_enableStencilBuffer;
+    return m_activateStencilBuffer;
 }
 
 

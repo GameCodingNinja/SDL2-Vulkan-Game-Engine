@@ -9,9 +9,9 @@
 #include "commonstate.h"
 
 // Game lib dependencies
-//#include <gui/menumanager.h>
 #include <managers/cameramanager.h>
 #include <utilities/exceptionhandling.h>
+#include <strategy/strategymanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -70,12 +70,20 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
 
 
 /***************************************************************************
+*    DESC:  Handle Misc processes
+****************************************************************************/
+void CCommonState::miscProcess()
+{
+    CStrategyMgr::Instance().miscProcess();
+}
+
+
+/***************************************************************************
 *    DESC:  Update objects that require them
 ****************************************************************************/
 void CCommonState::update()
 {
-    // Update the menus
-    //CMenuMgr::Instance().update();
+    CStrategyMgr::Instance().update();
 }
 
 
@@ -84,26 +92,17 @@ void CCommonState::update()
 ****************************************************************************/
 void CCommonState::transform()
 {
-    // Transform the menus
-    //CMenuMgr::Instance().transformMenu();
+    CStrategyMgr::Instance().transform();
 }
 
 
 /***************************************************************************
-*    DESC:  2D/3D Render of game content
+*    DESC:  Record the command buffer vector in the device
+*           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CCommonState::preRender()
+void CCommonState::recordCommandBuffer( uint32_t index )
 {
-    //CMenuMgr::Instance().renderInterface( CCameraMgr::Instance().getDefaultProjMatrix() );
-}
-
-
-/***************************************************************************
-*    DESC:  2D/3D Render of game content
-****************************************************************************/
-void CCommonState::postRender()
-{
-    //CMenuMgr::Instance().renderMenu( CCameraMgr::Instance().getDefaultProjMatrix() );
+    CStrategyMgr::Instance().recordCommandBuffer( index, CCameraMgr::Instance().getFinalMatrix() );
 }
 
 

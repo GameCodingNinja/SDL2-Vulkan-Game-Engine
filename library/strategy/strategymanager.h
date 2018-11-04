@@ -77,8 +77,8 @@ public:
     void transform();
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj );
     
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );

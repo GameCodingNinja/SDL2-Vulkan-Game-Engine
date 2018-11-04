@@ -110,12 +110,12 @@ void CRunState::transform()
 /***************************************************************************
 *    DESC:  Do the 2D rendering
 ****************************************************************************/
-void CRunState::preRender()
+/*void CRunState::preRender()
 {
     CCommonState::preRender();
 
     //CStrategyMgr::Instance().render( CCameraMgr::Instance().getDefaultProjMatrix() );
-}
+}*/
 
 
 /***************************************************************************

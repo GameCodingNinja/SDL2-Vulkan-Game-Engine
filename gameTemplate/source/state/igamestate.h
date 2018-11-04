@@ -60,11 +60,6 @@ public:
 
     // Transform the game objects
     virtual void transform(){};
-
-    // 2D/3D Render of game content
-    virtual void render(){};
-    virtual void preRender(){};
-    virtual void postRender(){};
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered

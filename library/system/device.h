@@ -52,6 +52,9 @@ public:
 
     // Create secondary command buffers
     std::vector<VkCommandBuffer> createSecondaryCommandBuffers( const std::string & group );
+    
+    // Create the command pool group
+    VkCommandPool createSecondaryCommandPool( const std::string & group );
 
     // Delete a secondary command buffer of a specific group
     void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );

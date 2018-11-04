@@ -43,7 +43,7 @@ public:
     void transform() override;
 
     // Do the rendering
-    void preRender() override;
+    //void preRender() override;
 
 private:
     

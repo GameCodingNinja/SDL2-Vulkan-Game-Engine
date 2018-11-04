@@ -118,7 +118,7 @@ void CLoadState::animate()
 void CLoadState::objectDataLoad()
 {
     // Test code to see loading animation!!!!
-    std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+    /*std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
 
     try
     {
@@ -145,7 +145,7 @@ void CLoadState::objectDataLoad()
     }
 
     // Set the flag to indicate the load is complete
-    m_threadActive = false;
+    m_threadActive = false;*/
 }
 
 
@@ -156,7 +156,7 @@ void CLoadState::criticalLoad()
 {
     // ----------------- UNLOAD ASSETS SECTION -----------------
 
-    if( m_stateMessage.getUnloadState() == NGameDefs::EGS_TITLE_SCREEN )
+    /*if( m_stateMessage.getUnloadState() == NGameDefs::EGS_TITLE_SCREEN )
         NTitleScreenState::CriticalUnload();
 
     else if( m_stateMessage.getUnloadState() == NGameDefs::EGS_RUN )
@@ -168,7 +168,7 @@ void CLoadState::criticalLoad()
         NTitleScreenState::CriticalLoad();
 
     else if( m_stateMessage.getLoadState() == NGameDefs::EGS_RUN )
-        NRunState::CriticalLoad();
+        NRunState::CriticalLoad();*/
 }
 
 
@@ -177,11 +177,11 @@ void CLoadState::criticalLoad()
 ****************************************************************************/
 void CLoadState::criticalInit()
 {
-    if( m_stateMessage.getLoadState() == NGameDefs::EGS_TITLE_SCREEN )
+    /*if( m_stateMessage.getLoadState() == NGameDefs::EGS_TITLE_SCREEN )
         NTitleScreenState::CriticalInit();
 
     else if( m_stateMessage.getLoadState() == NGameDefs::EGS_RUN )
-        NRunState::CriticalInit();
+        NRunState::CriticalInit();*/
 }
 
 
@@ -191,7 +191,7 @@ void CLoadState::criticalInit()
 void CLoadState::assetsLoad()
 {
     // Test code to see loading animation!!!!
-    std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+    /*std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
 
     try
     {
@@ -229,7 +229,7 @@ void CLoadState::assetsLoad()
     }
 
     // Set the flag to indicate the load is complete
-    m_threadActive = false;
+    m_threadActive = false;*/
 }
 
 
@@ -238,7 +238,7 @@ void CLoadState::assetsLoad()
 ****************************************************************************/
 bool CLoadState::doStateChange()
 {
-    CActionMgr::Instance().resetLastUsedDevice();
+    /*CActionMgr::Instance().resetLastUsedDevice();
 
     std::thread objLoadThread( &CLoadState::objectDataLoad, this );
     objLoadThread.detach();
@@ -272,7 +272,7 @@ bool CLoadState::doStateChange()
     if( !m_errorMsg.empty() )
         throw NExcept::CCriticalException(m_errorTitle, m_errorMsg);
 
-    criticalInit();
+    criticalInit();*/
 
     return true;
 }

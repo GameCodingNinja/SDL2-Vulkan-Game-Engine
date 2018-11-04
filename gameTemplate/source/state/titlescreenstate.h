@@ -49,7 +49,7 @@ public:
     void transform() override;
 
     // 2D/3D Render of game content
-    void preRender() override;
+    //void preRender() override;
     
 private:
 
@@ -70,15 +70,8 @@ private:
 ****************************************************************************/
 namespace NTitleScreenState
 {
-    //static std::tuple<std::string, std::string> reelGrpCfg("data/objects/2d/slot/wheelgroup.cfg", "wheelgroup");
-    //static std::tuple<std::string, std::string> spinProfileCfg("data/objects/2d/slot/spinProfile.cfg", "spinProfile");
-    
-    void ObjectDataLoad();
-    void CriticalLoad();
-    void CriticalUnload();
     void Load();
     void Unload();
-    void CriticalInit();
 }
 
 

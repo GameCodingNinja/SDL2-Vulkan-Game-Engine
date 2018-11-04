@@ -55,6 +55,7 @@
 
         <object name="logo">
             <visual>
+                <pipeline id="2d_quad"/>
                 <texture file="data/textures/startup/logo.png"/>
             </visual>
         </object>
@@ -95,15 +96,15 @@
             </visual>
         </object>
 
-        <!--<object name="solid">
+        <object name="solid">
             <visual>
-                <pipeline id="2d_solid"/>
-                <color r="0" g="0" b="1" a="1"/>
+                <pipeline id="2d_solid_stencil"/>
+                <color r="1" g="1" b="1" a="1"/>
             </visual>
-            <size width="400" height="200"/>
+            <size width="500" height="200"/>
         </object>
 
-        <object name="spriteSheetTest4">
+        <!--<object name="spriteSheetTest4">
             <visual>
                 <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
                 <mesh genType="sprite_sheet">

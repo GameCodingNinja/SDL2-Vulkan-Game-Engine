@@ -72,6 +72,10 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     m_pWindow = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.getW(), size.getH(), flags );
     if( m_pWindow == nullptr )
         throw NExcept::CCriticalException("Game window could not be created!", SDL_GetError() );
+    
+    // Make sure the depth buffer is active along with the stencil buffer
+    if( CSettings::Instance().activateStencilBuffer() && !CSettings::Instance().activateDepthBuffer() )
+        throw NExcept::CCriticalException("Vulkan Error!", "Can't activate stencil buffer without activating the depth buffer. They are one in the same." );
 
     uint32_t instanceExtensionCount(0);
     if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, nullptr) || (instanceExtensionCount == 0) )
@@ -108,10 +112,6 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
     // Set the full screen
     if( CSettings::Instance().getFullScreen() )
         setFullScreen( CSettings::Instance().getFullScreen() );
-
-    // Depth testing is off by default. Enable it?
-    //if( CSettings::Instance().getEnableDepthBuffer() )
-    //    glEnable(GL_DEPTH_TEST);
 
     // Init current gamepads plugged in at startup
     initStartupGamepads();
@@ -387,9 +387,18 @@ void CDevice::createSurface()
 
 
 /************************************************************************
-*    DESC:  Create the command pool group
+*    DESC:  Create the command buffers from the pool group
 ************************************************************************/
 std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::string & group )
+{
+    return CDeviceVulkan::createSecondaryCommandBuffers( createSecondaryCommandPool( group ) );
+}
+
+
+/************************************************************************
+*    DESC:  Create the command pool group
+************************************************************************/
+VkCommandPool CDevice::createSecondaryCommandPool( const std::string & group )
 {
     // Find the command pool group or create it if it doesn't exist
     auto iter = m_commandPoolMap.find( group );
@@ -402,7 +411,7 @@ std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::
         iter = m_commandPoolMap.emplace( group, commandPool ).first;
     }
 
-    return CDeviceVulkan::createSecondaryCommandBuffers( iter->second );
+    return iter->second;
 }
 
 
@@ -758,6 +767,19 @@ void CDevice::createPipelines( const std::string & filePath )
         const std::string vertexInputDescrId = pipelineNode.getAttribute("vertexInputDescrId");
         pipelineData.vertInputBindingDesc = NVertex::getBindingDesc( vertexInputDescrId );
         pipelineData.vertInputAttrDescVec = NVertex::getAttributeDesc( vertexInputDescrId );
+        
+        // Get the attribute from the "depthStencilBuffer" node
+        const XMLNode depthStencilBufferNode = pipelineNode.getChildNode("depthStencilBuffer");
+        if( !depthStencilBufferNode.isEmpty() )
+        {
+            // Do we enable the depth buffer
+            if( depthStencilBufferNode.isAttributeSet("enableDepthBuffer") )
+                pipelineData.m_enableDepthBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableDepthBuffer"), "true" ) == 0 );
+
+            // Do we enable the stencil buffer
+            if( depthStencilBufferNode.isAttributeSet("enableStencilBuffer") )
+                pipelineData.m_enableStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableStencilBuffer"), "true" ) == 0 );
+        }
 
         // Create the graphics pipeline
         CDeviceVulkan::createPipeline( pipelineData );
@@ -1103,7 +1125,7 @@ int CDevice::getPipelineIndex( const std::string & id )
 {
     auto iter = m_pipelineIndexMap.find( id );
     if( iter == m_pipelineIndexMap.end() )
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Pipeline Id does not exist: %s") % id ) );
+        throw NExcept::CCriticalException("Vulkan Error!", boost::str( boost::format("Pipeline Id does not exist: %s") % id ) );
 
     return iter->second;
 }
@@ -1185,6 +1207,7 @@ CMemoryBuffer CDevice::getMemoryBuffer( const std::string & group, const std::st
 
 /***************************************************************************
 *   DESC:  Set/Get last pipeline used
+*          This is to keep from re-binding the same pipeline over and over
 ****************************************************************************/
 void CDevice::setLastPipeline( VkPipeline lastPipeline )
 {
