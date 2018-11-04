@@ -100,7 +100,7 @@
     <node name="logo" type="spriteNode" defaultGroup="(startup)">
         
         <sprite2d objectName="logo">
-            <position x="50" y="50" z="-20"/>
+            <position x="50" y="50" z="0"/>
         </sprite2d>
 
     </node>

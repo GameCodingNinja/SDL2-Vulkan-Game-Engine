@@ -858,11 +858,11 @@ VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout desc
 void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
 {
     // Make sure our states are setup correctly
-    if( pipelineData.m_enableDepthBuffer && !CSettings::Instance().activateDepthBuffer() )
+    if( pipelineData.m_enableDepthTest && !CSettings::Instance().activateDepthBuffer() )
         throw NExcept::CCriticalException(
             "Vulkan Error!", "Can't enable the depth buffer without activating it in the settings.cfg!" );
 
-    if( pipelineData.m_enableStencilBuffer && !CSettings::Instance().activateStencilBuffer() )
+    if( pipelineData.m_enableStencilTest && !CSettings::Instance().activateStencilBuffer() )
         throw NExcept::CCriticalException(
             "Vulkan Error!", "Can't enable the stencil buffer without activating it in the settings.cfg!" );
 
@@ -935,29 +935,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
     dynamicState.pDynamicStates = dynamicStateEnables.data();
     dynamicState.dynamicStateCount = dynamicStateEnables.size();*/
-
-    VkPipelineDepthStencilStateCreateInfo depthStencil = {};
-    depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-    depthStencil.depthTestEnable = pipelineData.m_enableDepthBuffer;
-    depthStencil.depthWriteEnable = pipelineData.m_enableDepthBuffer;
-    depthStencil.stencilTestEnable = pipelineData.m_enableStencilBuffer;
-    depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
-    depthStencil.depthBoundsTestEnable = VK_FALSE; // This is not a toggle to turn on depth testing
-    depthStencil.back.compareOp = VK_COMPARE_OP_ALWAYS;
-    depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
-    depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
-    depthStencil.back.passOp = VK_STENCIL_OP_REPLACE;
-    depthStencil.back.compareMask = 0xff;
-    depthStencil.back.writeMask = 0xff;
-    depthStencil.back.reference = 1;
-    depthStencil.front = depthStencil.back;
-
-    if( pipelineData.m_enableStencilBuffer )
-    {
-        depthStencil.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
-        rasterizer.cullMode = VK_CULL_MODE_NONE;
-    }
-
+    
     VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
     colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
     colorBlendAttachment.blendEnable = VK_TRUE;
@@ -967,16 +945,44 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
     colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
     colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
-
-    if( pipelineData.m_enableStencilBuffer )
-        colorBlendAttachment.blendEnable = VK_FALSE;
-
+    
     VkPipelineColorBlendStateCreateInfo colorBlending = {};
     colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
     colorBlending.logicOpEnable = VK_FALSE;
     colorBlending.logicOp = VK_LOGIC_OP_COPY;
     colorBlending.attachmentCount = 1;
     colorBlending.pAttachments = &colorBlendAttachment;
+
+    VkPipelineDepthStencilStateCreateInfo depthStencil = {};
+    depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+    depthStencil.depthTestEnable = pipelineData.m_enableDepthTest;
+    depthStencil.depthWriteEnable = pipelineData.m_enableDepthTest;
+    depthStencil.stencilTestEnable = pipelineData.m_enableStencilTest;
+    depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
+    depthStencil.depthBoundsTestEnable = VK_FALSE; // This is not a toggle to turn on depth testing
+    // Stencil buffer masks
+    depthStencil.back.compareOp = VK_COMPARE_OP_EQUAL;
+    depthStencil.back.failOp = VK_STENCIL_OP_KEEP;
+    depthStencil.back.depthFailOp = VK_STENCIL_OP_KEEP;
+    depthStencil.back.passOp = VK_STENCIL_OP_REPLACE;
+    depthStencil.back.compareMask = 0xff;
+    depthStencil.back.writeMask = 0xff;
+    depthStencil.back.reference = 1;
+
+    if( pipelineData.m_stencilPipeline )
+    {
+        colorBlendAttachment.colorWriteMask = 0;
+        colorBlendAttachment.blendEnable = VK_FALSE;
+        rasterizer.cullMode = VK_CULL_MODE_NONE;
+        
+        depthStencil.depthTestEnable = VK_FALSE;
+        depthStencil.depthWriteEnable = VK_FALSE;
+        depthStencil.back.compareOp = VK_COMPARE_OP_ALWAYS;
+	depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
+	depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
+    }
+    
+    depthStencil.front = depthStencil.back;
 
     VkGraphicsPipelineCreateInfo pipelineInfo = {};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;

@@ -268,7 +268,7 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
     // Accessed by attachment index. Current attachments are color and depth
     std::vector<VkClearValue> clearValues(2);
     clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
-    clearValues[1].depthStencil = {1.0f, 0};
+    clearValues[1].depthStencil = {1.0f, 0xff};
 
     // Start a render pass
     VkRenderPassBeginInfo renderPassInfo = {};
@@ -772,13 +772,17 @@ void CDevice::createPipelines( const std::string & filePath )
         const XMLNode depthStencilBufferNode = pipelineNode.getChildNode("depthStencilBuffer");
         if( !depthStencilBufferNode.isEmpty() )
         {
-            // Do we enable the depth buffer
-            if( depthStencilBufferNode.isAttributeSet("enableDepthBuffer") )
-                pipelineData.m_enableDepthBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableDepthBuffer"), "true" ) == 0 );
+            // Do we enable the depth testing
+            if( depthStencilBufferNode.isAttributeSet("enableDepthTest") )
+                pipelineData.m_enableDepthTest = ( std::strcmp( depthStencilBufferNode.getAttribute("enableDepthTest"), "true" ) == 0 );
 
-            // Do we enable the stencil buffer
-            if( depthStencilBufferNode.isAttributeSet("enableStencilBuffer") )
-                pipelineData.m_enableStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("enableStencilBuffer"), "true" ) == 0 );
+            // Do we enable the stencil testing
+            if( depthStencilBufferNode.isAttributeSet("enableStencilTest") )
+                pipelineData.m_enableStencilTest = ( std::strcmp( depthStencilBufferNode.getAttribute("enableStencilTest"), "true" ) == 0 );
+            
+            // Is this the stencil pipeline
+            if( depthStencilBufferNode.isAttributeSet("stencilPipeline") )
+                pipelineData.m_stencilPipeline = ( std::strcmp( depthStencilBufferNode.getAttribute("stencilPipeline"), "true" ) == 0 );
         }
 
         // Create the graphics pipeline

@@ -84,11 +84,14 @@ public:
     // Vertex input attribute description
     std::vector<VkVertexInputAttributeDescription> vertInputAttrDescVec;
     
-    // Do we enable the depth buffer
-    bool m_enableDepthBuffer = false;
+    // Do we enable the depth test
+    bool m_enableDepthTest = false;
 
-    // Do we create the depth stencil buffer
-    bool m_enableStencilBuffer = false;
+    // Do we create the depth stencil test
+    bool m_enableStencilTest = false;
+    
+    // Flag if this is the stencil pipeline
+    bool m_stencilPipeline = false;
 };
 
 #endif  // __pipeline_data_h__

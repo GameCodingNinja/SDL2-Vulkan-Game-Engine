@@ -76,6 +76,10 @@ CStartUpState::CStartUpState() :
 ************************************************************************/
 CStartUpState::~CStartUpState()
 {
+    CStrategyMgr::Instance().clear();
+    CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
+    CScriptMgr::Instance().freeGroup("(startup)");
+    CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
 }
 
 
@@ -111,16 +115,10 @@ void CStartUpState::init()
     // Add the actor strategy
     CStrategyMgr::Instance().addStrategy(
         "actorStrategy", new CActorStrategy( "data/objects/2d/spritestrategy/nodeList.lst", commandBufVec ) );
-    
-    //CStrategyMgr::Instance().create( "actorStrategy", "solid" );
-    
-    //CStrategyMgr::Instance().create( "actorStrategy", "logo" );
-    
+
     // Start the fade in
     m_pLogo = CStrategyMgr::Instance().create( "actorStrategy", "waffles" );
     m_pLogo->getSprite()->prepare( "fadeIn" );
-    
-    //CStrategyMgr::Instance().create( "actorStrategy", "multiListNode" );
     
     // This data no longer needed so free it
     CObjectDataMgr::Instance().freeDataGroup2D( "(startup)" );
@@ -149,13 +147,7 @@ void CStartUpState::handleEvent( const SDL_Event & rEvent )
     // Called from script
     else if( rEvent.type == 0xB000 )
     {
-        // Wait for all rendering to be finished
-        CDevice::Instance().waitForIdle();
-    
-        CStrategyMgr::Instance().clear();
-        CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
-        CScriptMgr::Instance().freeGroup("(startup)");
-        CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
+
     }
 }
 
