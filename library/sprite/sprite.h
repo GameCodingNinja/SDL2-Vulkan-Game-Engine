@@ -69,8 +69,8 @@ public:
     void physicsUpdate();
 
     // Record the command buffers
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & rotMatrix, const CMatrix & viewProj );
     
     // Init the script functions
     void initScriptFunctions( const XMLNode & node );

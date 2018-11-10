@@ -22,6 +22,9 @@
 #include <vector>
 #include <map>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward declaration(s)
 class CMenu;
 class CMenuTree;
@@ -82,11 +85,9 @@ public:
     void transformMenu( const CObject2D & object );
     void transformInterface();
     void transformInterface( const CObject2D & object );
-
-    // Render menus
-    //void renderMenu( const CMatrix & matrix ); 
-    //void renderInterface( const CMatrix & matrix );
-    //void render( const CMatrix & matrix );
+    
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, const CMatrix & viewProj );
 
     // Get reference to the menu in questionn
     CMenu & getMenu( const std::string & nameStr );
@@ -125,6 +126,9 @@ public:
     
     // Allow message processing
     void allow( bool allow = true );
+    
+    // Set the command buffer vec
+    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
 
 private:
     
@@ -142,9 +146,6 @@ private:
     
     // Load the trees from node
     void loadTreesFromNode( const std::string & group, const XMLNode & node );
-
-    // Set the active state
-    void setActiveState();
 
     // Timer call back function
     static Uint32 scrollTimerCallbackFunc( Uint32 interval, void *param );
@@ -204,6 +205,11 @@ private:
     
     // Allow message processing
     bool m_allow;
+    
+    // Command buffer
+    // NOTE: command buffers don't to be freed because
+    //       they are freed by deleting the pool they belong to
+    std::vector<VkCommandBuffer> m_commandBufVec;
     
 };
 

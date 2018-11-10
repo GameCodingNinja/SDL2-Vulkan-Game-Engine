@@ -445,9 +445,7 @@ void CObjectVisualData2D::generateScaledFrame(
         10,9,7,    10,11,9,
         11,10,12,  12,13,11,
         10,3,14,   14,12,10,
-        
         3,2,15,    15,14,3,
-        
         7,0,3,     3,10,7 };
 
     // Create the reusable IBO buffer
@@ -488,7 +486,7 @@ void CObjectVisualData2D::createScaledFrame(
     // If it's not found, create the vertex buffer and add it to the list
     if( m_vboBuffer.isEmpty() )
     {
-        std::vector<NVertex::vert_uv> vertVec( extraVertVec );
+        std::vector<NVertex::vert_uv> vertVec;
 
         // Offsets to center the mesh
         const CPoint<float> center((frameSize.w / 2.f), (frameSize.h / 2.f));
@@ -609,6 +607,9 @@ void CObjectVisualData2D::createScaledFrame(
         vertVec.push_back( quadBuf[6].vert[2] );
         vertVec.push_back( quadBuf[7].vert[2] );
         
+        for( auto & iter : extraVertVec )
+            vertVec.push_back( iter );
+        
         m_vboBuffer = CDevice::Instance().creatMemoryBuffer( group, id, vertVec, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
     }
 }
@@ -687,22 +688,22 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
     const CSize<int> & frameSize,
     const CRect<float> & textureOffset )
 {
-    // Construct the name used for vbo and ibo
+    // Construct the name used for vbo
     std::string id = "scaled_frame_mesh_" + m_meshFilePath;
 
     std::vector<uint16_t> iboVec = {
-        0,1,2,     0,3,1,
-        2,4,5,     2,1,4,
-        1,6,4,     1,7,6,
-        7,8,6,     7,9,8,
+        0,1,2,     2,3,0,
+        4,5,1,     1,0,4,
+        6,4,0,     0,7,6,
+        8,6,7,     7,9,8,
         10,9,7,    10,11,9,
-        12,11,10,  12,13,11,
-        14,10,3,   14,12,10,
-        15,3,0,    15,14,3 };
+        11,10,12,  12,13,11,
+        10,3,14,   14,12,10,
+        3,2,15,    15,14,3 };
 
     if( m_scaledFrame.m_centerQuad )
     {
-        std::vector<uint16_t> exraVec = { 3,7,1, 3,10,7 };
+        std::vector<uint16_t> exraVec = { 7,0,3,  3,10,7 };
         iboVec.insert( iboVec.end(), exraVec.begin(), exraVec.end() );
     }
 
@@ -719,6 +720,9 @@ void CObjectVisualData2D::generateScaledFrameMeshFile(
         createScaledFrame(
             group, id, m_scaledFrame, textureSize, glyphSize, frameSize, textureOffset, loadedVertVec );
     }
+    
+    // Construct the name used for ibo
+    id = "scaled_frame_ibo_" + m_meshFilePath;
 
     // Create the unique IBO buffer
     m_iboBuffer = CDevice::Instance().creatMemoryBuffer( group, id, iboVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
@@ -777,7 +781,7 @@ void CObjectVisualData2D::loadMeshFromXML(
         additionalOffsetY = 0.5f;
 
     // This converts the data to a center aligned vertex buffer
-    const CSize<float> centerAlignSize(-(size.w / 2), (size.h / 2));
+    const CSize<float> centerAlignSize(-(size.w / 2), -(size.h / 2));
 
     // Open and parse the XML file:
     const XMLNode mainNode = XMLNode::openFileHelper( m_meshFilePath.c_str(), "mesh" );
@@ -795,7 +799,7 @@ void CObjectVisualData2D::loadMeshFromXML(
 
             // This converts the data to a center aligned vertex buffer
             vert.vert.x = centerAlignSize.w + vert.vert.x + additionalOffsetX;
-            vert.vert.y = centerAlignSize.h - vert.vert.y + additionalOffsetY;
+            vert.vert.y = centerAlignSize.h + vert.vert.y + additionalOffsetY;
             vert.uv.u = textureOffset.x1 + (vert.uv.u / textureSize.w);
             vert.uv.v = textureOffset.y1 + (vert.uv.v / textureSize.h);
 

@@ -448,26 +448,27 @@ void CMenu::transform( const CObject2D & object )
 }
 
 
-/************************************************************************
-*    DESC:  do the render
-************************************************************************/
-/*void CMenu::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CMenu::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     if( isVisible() )
     {
         for( auto & iter : m_spriteDeq )
-            iter.render( matrix );
+            iter.recordCommandBuffer( index, cmdBuf, viewProj );
 
         for( auto iter : m_pStaticControlVec )
-            iter->render( matrix );
+            iter->recordCommandBuffer( index, cmdBuf, viewProj );
 
         for( auto iter : m_pMouseOnlyControlVec )
-            iter->render( matrix );
+            iter->recordCommandBuffer( index, cmdBuf, viewProj );
 
         for( auto iter : m_pControlVec )
-            iter->render( matrix );
+            iter->recordCommandBuffer( index, cmdBuf, viewProj );
     }
-}*/
+}
 
 
 /************************************************************************

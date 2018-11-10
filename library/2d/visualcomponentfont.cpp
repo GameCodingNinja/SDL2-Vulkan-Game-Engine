@@ -80,21 +80,8 @@ void CVisualComponentFont::recordCommandBuffer(
         // Update the UBO buffer
         updateUBO( index, device, rVisualData, model, viewProj );
 
-        //CDevice::Instance().beginCommandBuffer( index, m_commandBufVec[index] );
-
         // Bind the pipeline
-        if( device.getLastPipeline() != rPipelineData.m_pipeline )
-        {
-            vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
-            device.setLastPipeline( rPipelineData.m_pipeline );
-        }
-
-
-        /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
-        vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
-
-        VkRect2D scissor = {{50, 50}, {1000, 500}};
-        vkCmdSetScissor( m_commandBufVec[index], 0, 1, &scissor );*/
+        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
 
         // Bind vertex buffer
         VkBuffer vertexBuffers[] = {m_vboBuffer.m_buffer};
@@ -110,8 +97,6 @@ void CVisualComponentFont::recordCommandBuffer(
         // Do the draw
         vkCmdDrawIndexed( cmdBuffer, m_iboCount, 1, 0, 0, 0 );
     }
-    
-    //CDevice::Instance().endCommandBuffer( m_commandBufVec[index] );
 }
 
 
@@ -161,7 +146,7 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
     // Qualify if we want to build the font string
     if( !fontString.empty() &&
         !m_fontData.m_fontProp.m_fontName.empty() &&
-        ((fontString != m_fontData.m_fontString)) )
+        ((fontString != m_fontData.m_fontString) || m_vboBuffer.isEmpty()) )
     {
         m_fontData.m_fontStrSize.clear();
         float lastCharDif(0.f);
@@ -392,21 +377,6 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
             font.getTexture(),
             m_uniformBufVec,
             m_pushDescSet );
-        
-        //m_textureID = font.getTextureID();
-
-        // Save the data
-        // If one doesn't exist, create the VBO and IBO for this font
-        /*if( m_vbo == 0 )
-            glGenBuffers( 1, &m_vbo );
-
-        glBindBuffer( GL_ARRAY_BUFFER, m_vbo );
-        glBufferData( GL_ARRAY_BUFFER, sizeof(CQuad2D) * charCount, upQuadBuf.get(), GL_STATIC_DRAW );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );*/
-
-        // All fonts share the same IBO because it's always the same and the only difference is it's length
-        // This updates the current IBO if it exceeds the current max
-        //m_ibo = CVertBufMgr::Instance().createDynamicFontIBO( CFontMgr::Instance().getGroup(), "dynamic_font_ibo", upIndxBuf.get(), m_iboCount );
     }
     else if( fontString.empty() &&
              (fontString != m_fontData.m_fontString) &&

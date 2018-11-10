@@ -16,7 +16,7 @@
                 <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
             </mesh>
             <color r="1" g="1" b="1" a="1"/>
-            <pipeline id="shader_2d"/>
+            <pipeline id="2d_quad"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
@@ -41,6 +41,7 @@
             </visual>
         </object>
         
+        <!--
         <object name="wheel">
             <visual>
                 <texture file="data/textures/slot/wheel.png"/>
@@ -66,6 +67,7 @@
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
         </object>
+        -->
         
 <!--
         <object name="spriteSheetTest1">
@@ -76,7 +78,7 @@
                         <glyph id="weaponicons (%d)"/>
                     </spriteSheet>
                 </mesh>
-                <pipeline id="shader_2d_spriteSheet"/>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
         
@@ -88,7 +90,7 @@
                         <glyph id="weaponicons (%d)"/>
                     </spriteSheet>
                 </mesh>
-                <pipeline id="shader_2d_spriteSheet"/>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
 
@@ -104,7 +106,7 @@
                         <glyph id="pomel (14)"/>
                     </spriteSheet>
                 </mesh>
-                <pipeline id="shader_2d_spriteSheet"/>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
 
@@ -114,7 +116,7 @@
                 <mesh genType="sprite_sheet">
                     <spriteSheet defIndex="9" glyphCount="22" columns="4"/>
                 </mesh>
-                <pipeline id="shader_2d_spriteSheet"/>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
 
@@ -124,7 +126,7 @@
                 <mesh genType="sprite_sheet">
                     <spriteSheet defIndex="2" file="data/objects/2d/mesh/titleScreen/test_simple.xml" loadAllGlyphs="true"/>
                 </mesh>
-                <pipeline id="shader_2d_spriteSheet"/>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
         </object>
 -->

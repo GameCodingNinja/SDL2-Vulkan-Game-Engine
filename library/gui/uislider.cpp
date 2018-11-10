@@ -359,7 +359,7 @@ void CUISlider::setSliderPos()
         if( m_orientation == EO_HORIZONTAL )
             getSubControl()->setPos( m_defaultPos + CPoint<float>(pos,0,0) );
         else
-            getSubControl()->setPos( m_defaultPos + CPoint<float>(0,-pos,0) );
+            getSubControl()->setPos( m_defaultPos + CPoint<float>(0,pos,0) );
     }
 }
 

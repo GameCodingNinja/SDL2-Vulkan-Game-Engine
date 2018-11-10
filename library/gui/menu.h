@@ -58,12 +58,12 @@ public:
     // Transform the menu
     void transform() override;
     void transform( const CObject2D & object ) override;
+    
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
 
     // Get the name of the menu
     const std::string & getName() const;
-
-    // do the render
-    //void render( const CMatrix & matrix );
 
     // Handle events
     void handleEvent( const SDL_Event & rEvent );

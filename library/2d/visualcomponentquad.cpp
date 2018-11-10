@@ -42,8 +42,6 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
             objectData.getVisualData().getTexture(),
             m_uniformBufVec,
             m_pushDescSet );
-    
-    //m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
 }
 
 
@@ -53,7 +51,6 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 CVisualComponentQuad::~CVisualComponentQuad()
 {
     CDevice::Instance().deleteUniformBufferVec( m_uniformBufVec );
-    //CDevice::Instance().deleteCommandBuffer( m_rObjectData.getGroup(), m_commandBufVec );
 }
 
 
@@ -77,20 +74,8 @@ void CVisualComponentQuad::recordCommandBuffer(
         // Update the UBO buffer
         updateUBO( index, device, rVisualData, model, viewProj );
 
-        //CDevice::Instance().beginCommandBuffer( index, m_commandBufVec[index] );
-
         // Bind the pipeline
-        if( device.getLastPipeline() != rPipelineData.m_pipeline )
-        {
-            vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
-            device.setLastPipeline( rPipelineData.m_pipeline );
-        }
-
-        /*VkViewport viewport = {0, 0, 1280, 720, 0.0f, 1.0f};
-        vkCmdSetViewport(m_commandBufVec[index], 0, 1, &viewport );
-
-        VkRect2D scissor = {{50, 50}, {1000, 500}};
-        vkCmdSetScissor( m_commandBufVec[index], 0, 1, &scissor );*/
+        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
 
         // Bind vertex buffer
         VkBuffer vertexBuffers[] = {rVisualData.getVBO().m_buffer};
@@ -106,8 +91,6 @@ void CVisualComponentQuad::recordCommandBuffer(
         // Do the draw
         vkCmdDrawIndexed( cmdBuffer, rVisualData.getIBOCount(), 1, 0, 0, 0 );
     }
-    
-    //CDevice::Instance().endCommandBuffer( m_commandBufVec[index] );
 }
 
 

@@ -19,6 +19,7 @@
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
 #include <managers/signalmanager.h>
+#include <system/device.h>
 
 // SDL lib dependencies
 #include <SDL.h>
@@ -126,9 +127,6 @@ void CMenuMgr::freeGroup( const std::string & group )
     auto menuMapIter = m_menuMapMap.find( group );
     if( menuMapIter != m_menuMapMap.end() )
         m_menuMapMap.erase( menuMapIter );
-
-    // See if we are active
-    setActiveState();
 }
 
 
@@ -445,9 +443,6 @@ void CMenuMgr::activateTree( const std::string & group, const std::string & tree
             boost::str( boost::format("Menu tree group doesn't exist (%s - %s).\n\n%s\nLine: %s")
                 % group % treeStr % __FUNCTION__ % __LINE__ ));
     }
-
-    // See if we are active
-    setActiveState();
 }
 
 
@@ -514,9 +509,6 @@ void CMenuMgr::deactivateTree( const std::string & group, const std::string & tr
             boost::str( boost::format("Menu tree group doesn't exist (%s - %s).\n\n%s\nLine: %s")
                 % group % treeStr % __FUNCTION__ % __LINE__ ));
     }
-
-    // See if we are still active
-    setActiveState();
 }
 
 
@@ -600,7 +592,7 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
                 else
                     NGenFunc::DispatchEvent( NMenu::EGE_MENU_TOGGLE_ACTION, 0, &pTree->getName() );
             }
-            else if( isActive() )
+            else if( m_active )
             {
                 NDefs::EActionPress pressType;
 
@@ -668,9 +660,6 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
             }
 
             handleEventForTrees( rEvent );
-
-            // Set the active state
-            setActiveState();
         }
     }
 }
@@ -755,14 +744,13 @@ bool CMenuMgr::handleMenuScrolling(
 ************************************************************************/
 void CMenuMgr::update()
 {
-    if( m_active )
+    m_active = false;
+    
+    if( !update( m_pActiveMenuTreeVec ) )
     {
-        if( !update( m_pActiveMenuTreeVec ) )
-        {
-            // Only allow Updating for interface menus when regular menus are not active
-            // Don't want interface menus animating when the menu is displayed
-            update( m_pActiveInterTreeVec );
-        }
+        // Only allow Updating for interface menus when regular menus are not active
+        // Don't want interface menus animating when the menu is displayed
+        update( m_pActiveInterTreeVec );
     }
 }
 
@@ -775,7 +763,7 @@ bool CMenuMgr::update( const std::vector<CMenuTree *> & activeTreeVec )
         // See if there's an active menu
         if( iter->isActive() )
         {
-            menuActive = true;
+            m_active = menuActive = true;
             iter->update();
         }
     }
@@ -850,42 +838,29 @@ void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec, const 
 }
 
 
-/************************************************************************
-*    DESC:  Render menus
-************************************************************************/
-/*void CMenuMgr::renderMenu( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CMenuMgr::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
 {
     if( m_active )
     {
-        for( auto iter : m_pActiveMenuTreeVec )
-            if( iter->isActive() )
-                iter->render( matrix );
-    }
-}
+        auto cmdBuf( m_commandBufVec[index] );
 
-void CMenuMgr::renderInterface( const CMatrix & matrix )
-{
-    if( m_active )
-    {
+        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+    
         for( auto iter : m_pActiveInterTreeVec )
             if( iter->isActive() )
-                iter->render( matrix );
-    }
-}
-
-void CMenuMgr::render( const CMatrix & matrix )
-{
-    if( m_active )
-    {
-        for( auto iter : m_pActiveInterTreeVec )
-            if( iter->isActive() )
-                iter->render( matrix );
+                iter->recordCommandBuffer( index, cmdBuf, viewProj );
         
         for( auto iter : m_pActiveMenuTreeVec )
             if( iter->isActive() )
-                iter->render( matrix );
+                iter->recordCommandBuffer( index, cmdBuf, viewProj );
+        
+        CDevice::Instance().endCommandBuffer( cmdBuf );
     }
-}*/
+}
 
 
 /************************************************************************
@@ -956,36 +931,6 @@ bool CMenuMgr::isInterfaceItemActive()
     }
 
     return result;
-}
-
-
-/************************************************************************
-*    DESC:  Set the active state
-************************************************************************/
-void CMenuMgr::setActiveState()
-{
-    m_active = false;
-
-    for( auto iter : m_pActiveMenuTreeVec )
-    {
-        if( iter->isActive() )
-        {
-            m_active = true;
-            break;
-        }
-    }
-
-    if( !m_active )
-    {
-        for( auto iter : m_pActiveInterTreeVec )
-        {
-            if( iter->isActive() )
-            {
-                m_active = true;
-                break;
-            }
-        }
-    }
 }
 
 
@@ -1114,4 +1059,13 @@ Uint32 CMenuMgr::scrollTimerCallbackFunc( Uint32 interval, void *param )
 void CMenuMgr::allow( bool allow )
 {
     m_allow = allow;
+}
+
+
+/************************************************************************
+*    DESC:  Set the command buffer vec
+************************************************************************/
+void CMenuMgr::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
+{
+    m_commandBufVec = commandBufVec;
 }

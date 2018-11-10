@@ -1,14 +1,14 @@
 
 /************************************************************************
-*    FILE NAME:       menu.ang
+*    FILE NAME:       state.ang
 *
-*    DESCRIPTION:     Scripts for controlling/animating menu interface
+*    DESCRIPTION:     Scripts for general state
 ************************************************************************/
 
 /************************************************************************
 *    DESC:  Do a fade in and out
 ************************************************************************/
-void StartUp_FadeIn( Sprite & sprite )
+shared void State_FadeIn( Sprite & sprite )
 {
     CColor current(0,0,0,1);
     sprite.setAdditiveColor( current );
@@ -21,12 +21,12 @@ void StartUp_FadeIn( Sprite & sprite )
     DispatchEvent( 0xA000 );
 }
 
-void StartUp_FadeOut( Sprite & sprite )
+shared void State_FadeOut( Sprite & sprite )
 {
     CColor current(0,0,0,1);
     AdditiveColorTo( 500, current, sprite );
     
-    Hold( 1000 );
+    Hold( 250 );
     
     DispatchEvent( 0xB000 );
 }

@@ -9,7 +9,7 @@
                 <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
             </mesh>
             <color r="48" g="97" b="153" a="1"/>
-            <pipeline id="shader_2d"/>
+            <pipeline id="2d_quad"/>
         </visual>
     </default>
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
@@ -135,6 +135,7 @@
                         <glyph id="16x16_3_pixel_frame"/>
                     </spriteSheet>
                 </mesh>
+                <pipeline id="2d_quad_stencilTest"/>
             </visual>
             <size width="908" height="40"/>
         </object>
@@ -146,6 +147,7 @@
                         <glyph id="16x16_3_pixel_frame"/>
                     </spriteSheet>
                 </mesh>
+                <pipeline id="2d_quad_stencilTest"/>
             </visual>
             <size width="908" height="40"/>
         </object>

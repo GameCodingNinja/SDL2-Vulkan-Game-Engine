@@ -68,9 +68,6 @@ protected:
 
     // Push Descriptor set
     CPushDescriptorSet m_pushDescSet;
-    
-    // Command buffer
-    //std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

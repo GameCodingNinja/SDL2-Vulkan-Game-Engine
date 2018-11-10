@@ -191,10 +191,6 @@ public:
     // End the recording of the command buffer
     void endCommandBuffer( VkCommandBuffer cmdBuffer );
 
-    // Set/Get last pipeline used
-    void setLastPipeline( VkPipeline lastPipeline );
-    VkPipeline getLastPipeline();
-
     // Create the shared font IBO buffer
     void createSharedFontIBO( std::vector<uint16_t> & iboVec );
 
@@ -268,14 +264,8 @@ private:
     // Map containing a group of descriptor pools
     std::map< const std::string, std::map< const std::string, VkDescriptorPool > > m_descriptorPoolMapMap;
 
-    // Map containing a group of descriptor sets
-    //std::map< const std::string, std::map< const std::string, std::vector<VkDescriptorSet> > > m_descriptorSetMapMap;
-
     // Map containing a group of memory buffer handles
     std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_memoryBufferMapMap;
-
-    // Map containing a group of uniform buffer handles
-    //std::map< const std::string, std::map< const std::string, std::vector<CMemoryBuffer> > > m_uboVecMapMap;
 
     // Map containing loaded shader module
     std::map< const std::string, VkShaderModule > m_shaderModuleMap;
@@ -301,9 +291,6 @@ private:
     // Map containing pipeline layouts
     std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
 
-    // Keep track of the last pipeline used
-    VkPipeline m_lastPipeline = VK_NULL_HANDLE;
-
     // Current dynamic font IBO indices size
     size_t m_currentMaxFontIndices = 0;
 
@@ -311,6 +298,4 @@ private:
     CMemoryBuffer m_sharedFontIbo;
 };
 
-#endif  // __device_h__
-
-
+#endif

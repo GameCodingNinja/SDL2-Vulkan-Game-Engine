@@ -12,6 +12,7 @@
 #include <managers/cameramanager.h>
 #include <utilities/exceptionhandling.h>
 #include <strategy/strategymanager.h>
+#include <gui/menumanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -44,7 +45,7 @@ CCommonState::~CCommonState()
 void CCommonState::handleEvent( const SDL_Event & rEvent )
 {
     // Have the menu manager handle events
-    /*CMenuMgr::Instance().handleEvent( rEvent );
+    CMenuMgr::Instance().handleEvent( rEvent );
 
     // Check for the "game change state" message
     if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
@@ -65,7 +66,7 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
             // Set the flag to change the state
             m_changeState = true;
         }
-    }*/
+    }
 }
 
 
@@ -84,6 +85,7 @@ void CCommonState::miscProcess()
 void CCommonState::update()
 {
     CStrategyMgr::Instance().update();
+    CMenuMgr::Instance().update();
 }
 
 
@@ -93,6 +95,7 @@ void CCommonState::update()
 void CCommonState::transform()
 {
     CStrategyMgr::Instance().transform();
+    CMenuMgr::Instance().transform();
 }
 
 
@@ -103,6 +106,7 @@ void CCommonState::transform()
 void CCommonState::recordCommandBuffer( uint32_t index )
 {
     CStrategyMgr::Instance().recordCommandBuffer( index, CCameraMgr::Instance().getFinalMatrix() );
+    CMenuMgr::Instance().recordCommandBuffer( index, CCameraMgr::Instance().getFinalMatrix() );
 }
 
 

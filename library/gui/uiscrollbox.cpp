@@ -154,6 +154,9 @@ CUIControl * CUIScrollBox::addScrollControlFromNode( const XMLNode & node )
 
     // Record the default y offset
     m_defaultOffsetVec.push_back( pos.y );
+    
+    // Invert the Y for vulkan coordinate system
+    pos.invertY();
 
     // Set the position
     pCtrl->setPos( pos );
@@ -316,50 +319,22 @@ void CUIScrollBox::transform( const CObject2D & object )
 }
 
 
-/************************************************************************
-*    DESC:  Render the sub control
-************************************************************************/
-/*void CUIScrollBox::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CUIScrollBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     // Call the parent
-    CUISubControl::render( matrix );
+    CUISubControl::recordCommandBuffer( index, cmdBuf, viewProj );
 
-    // Disable rendering to the color buffer
-    glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+    // Record the command buffer for the stencil mask
+    m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, viewProj );
 
-    // Disable rendering to the depth mask
-    glDepthMask( GL_FALSE );
-
-    // Start using the stencil
-    glEnable( GL_STENCIL_TEST );
-
-    glStencilFunc( GL_ALWAYS, 0x1, 0x1 );
-    glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
-
-
-    m_upStencilMaskSprite->render( matrix );
-
-
-    // Re-enable color
-    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-
-    // Where a 1 was not rendered
-    glStencilFunc( GL_EQUAL, 0x1, 0x1 );
-
-    // Keep the pixel
-    glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
-
-    // Enable rendering to the depth mask
-    glDepthMask( GL_TRUE );
-
-
+    // Record the command buffer for the inside of the stencil mask
     for( int i = m_visStartPos; i < m_visEndPos; ++i )
-        m_pScrollControlVec[i]->render( matrix );
-
-
-    // Finished using stencil
-    glDisable( GL_STENCIL_TEST );
-}*/
+        m_pScrollControlVec[i]->recordCommandBuffer( index, cmdBuf, viewProj );
+}
 
 
 /************************************************************************
@@ -859,6 +834,10 @@ void CUIScrollBox::repositionScrollControls()
     {
         CPoint<float> pos( m_pScrollControlVec[i]->getPos() );
         pos.y = m_defaultOffsetVec[i] + m_scrollCurPos;
+        
+        // Invert the Y for vulkan coordinate system
+        pos.invertY();
+        
         m_pScrollControlVec[i]->setPos( pos );
     }
 }

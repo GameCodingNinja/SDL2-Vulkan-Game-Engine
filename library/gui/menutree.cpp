@@ -95,14 +95,15 @@ void CMenuTree::transform( const CObject2D & object )
 }
 
 
-/************************************************************************
-*    DESC:  do the render
-************************************************************************/
-/*void CMenuTree::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CMenuTree::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     if( !m_pMenuPathVec.empty() )
-        m_pMenuPathVec.back()->render( matrix );
-}*/
+        m_pMenuPathVec.back()->recordCommandBuffer( index, cmdBuf, viewProj );
+}
 
 
 /************************************************************************

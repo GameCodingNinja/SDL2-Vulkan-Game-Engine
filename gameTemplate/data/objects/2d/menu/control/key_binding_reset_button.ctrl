@@ -20,7 +20,7 @@
             </scriptLst>
         </sprite>
 
-        <sprite objectName="control_font">
+        <sprite objectName="keybinding_font">
             <font fontName="dejavu_sans_cond_32">
                 <alignment horzAlign="center" vertAlign="center"/>
             </font>

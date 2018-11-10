@@ -90,8 +90,8 @@
         <sprite2d objectName="waffles">
             <position x="0" y="0" z="0"/>
             <scriptLst>
-                <script fadeIn="StartUp_FadeIn"/>
-                <script fadeOut="StartUp_FadeOut"/>
+                <script fadeIn="State_FadeIn"/>
+                <script fadeOut="State_FadeOut"/>
             </scriptLst>
         </sprite2d>
 

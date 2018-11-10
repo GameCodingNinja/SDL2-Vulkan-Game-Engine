@@ -68,6 +68,9 @@ CGame::~CGame()
     // Free all objects
     upGameState.reset();
     
+    // Free the menu group
+    CMenuMgr::Instance().freeGroup("(menu)");
+    
     // Destroy the window and Vulkan instance
     CDevice::Instance().destroy();
 
@@ -166,6 +169,9 @@ void CGame::doStateChange()
 {
     if( upGameState->doStateChange() )
     {
+        // Wait for all rendering to be finished
+        CDevice::Instance().waitForIdle();
+    
         // Get the game state we are moving to
         const NGameDefs::EGameState curState = upGameState->getState();
 

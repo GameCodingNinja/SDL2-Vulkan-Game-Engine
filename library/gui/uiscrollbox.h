@@ -47,9 +47,9 @@ public:
 
     // Transform the control
     void transform( const CObject2D & object ) override;
-
-    // Render the control
-    //void render( const CMatrix & matrix ) override;
+    
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj ) override;
 
     // Set the first inactive control to be active
     bool activateFirstInactiveControl() override;

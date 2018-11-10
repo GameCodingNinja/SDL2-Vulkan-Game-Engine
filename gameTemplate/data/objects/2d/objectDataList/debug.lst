@@ -9,7 +9,7 @@
                 <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
             </mesh>
             <color r="1" g="1" b="1" a="1"/>
-            <pipeline id="shader_2d"/>
+            <pipeline id="2d_quad"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>

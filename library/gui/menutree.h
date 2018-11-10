@@ -25,6 +25,9 @@
 #include <vector>
 #include <map>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward declaration(s)
 struct XMLNode;
 class CObject2D;
@@ -57,9 +60,9 @@ public:
     // Transform the menu tree
     void transform();
     void transform( const CObject2D & object );
-
-    // do the render
-    //void render( const CMatrix & matrix );
+    
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
 
     // Is a menu active
     bool isActive();

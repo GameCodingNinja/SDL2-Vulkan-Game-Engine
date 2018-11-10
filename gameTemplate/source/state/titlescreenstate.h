@@ -11,17 +11,8 @@
 // Physical component dependency
 #include "commonstate.h"
 
-// Game lib dependencies
-//#include <2d/sprite2d.h>
-//#include <3d/sprite3d.h>
-#include <slot/slotgame.h>
-#include <script/scriptcomponent.h>
-
-// Standard lib dependencies
-#include <tuple>
-
-// Forward declaration(s)
-class CUIMeter;
+// Forward Declarations
+class iNode;
 
 class CTitleScreenState : public CCommonState
 {
@@ -31,7 +22,7 @@ public:
     CTitleScreenState();
 
     // Destructor
-    virtual ~CTitleScreenState(){};
+    virtual ~CTitleScreenState();
     
     // Do any pre-game loop init's
     void init() override;
@@ -39,42 +30,13 @@ public:
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
     
-    // Handle any misc processing before the real work is started
-    void miscProcess() override;
-    
-    // Update objects that require them
-    void update() override;
-
-    // Transform the game objects
-    void transform() override;
-
-    // 2D/3D Render of game content
-    //void preRender() override;
+    // Static load function
+    static void load();
     
 private:
 
-    // The script component
-    CScriptComponent m_scriptComponent;
-    
-    // title screen background
-    //CSprite2D m_background;
-    
-    //CSprite2D m_spriteSheetTest;
-    
-    //CSprite3D m_cube;
+    // Node pointer to logo. Do NOT free
+    iNode * m_pBackground;
 };
 
-
-/***************************************************************************
-*    desc: Functions for loading/unloading the assets for this state
-****************************************************************************/
-namespace NTitleScreenState
-{
-    void Load();
-    void Unload();
-}
-
-
-#endif  // __title_screen_state_h__
-
-
+#endif

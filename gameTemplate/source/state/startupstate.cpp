@@ -108,13 +108,16 @@ void CStartUpState::init()
 
     // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
+    
+    // Add the command buffers to the menu manager
+    auto menuCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(menu)" );
+    CMenuMgr::Instance().setCommandBuffers( menuCmdBuf );
 
-    // Create the group command buffers
-    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-
-    // Add the actor strategy
+    // Create the group command buffers and add the actor strategy
+    auto stratCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
     CStrategyMgr::Instance().addStrategy(
-        "actorStrategy", new CActorStrategy( "data/objects/2d/spritestrategy/nodeList.lst", commandBufVec ) );
+        "actorStrategy",
+        new CActorStrategy( "data/objects/2d/spritestrategy/startupNode.lst", stratCmdBuf ) );
 
     // Start the fade in
     m_pLogo = CStrategyMgr::Instance().create( "actorStrategy", "waffles" );
@@ -147,7 +150,7 @@ void CStartUpState::handleEvent( const SDL_Event & rEvent )
     // Called from script
     else if( rEvent.type == 0xB000 )
     {
-
+        m_changeState = true;
     }
 }
 
@@ -192,19 +195,16 @@ void CStartUpState::assetLoad()
         NScriptMenu::Register();
 
         // Load group specific script items
-        //CScriptMgr::Instance().loadGroup("(menu)");
+        CScriptMgr::Instance().loadGroup("(menu)");
 
         // Load all of the meshes and materials in these groups
-        //CObjectDataMgr::Instance().loadGroup2D("(menu)");
+        CObjectDataMgr::Instance().loadGroup2D("(menu)");
 
         // Load the menu group
-        //CMenuMgr::Instance().loadGroup("(menu)");
+        CMenuMgr::Instance().loadGroup("(menu)");
 
         // Do the state specific load
-        //NTitleScreenState::ObjectDataLoad();
-        //NTitleScreenState::CriticalLoad();
-        //NTitleScreenState::Load();
-        //NTitleScreenState::CriticalInit();
+        CTitleScreenState::load();
 
         NGenFunc::DispatchEvent( 0xA001 );
     }
@@ -235,20 +235,5 @@ bool CStartUpState::doStateChange()
     if( !m_errorMessage.empty() )
         throw NExcept::CCriticalException( m_errorTitle, m_errorMessage );
     
-    // Do the fade in
-    /*fade( *m_upSpriteLogo.get(), 500.f, CColor(0,0,0,1), CColor(1,1,1,1) );
-
-    CHighResTimer::Instance().timerStart();
-
-    assetLoad();
-
-    const int time = static_cast<int>(CHighResTimer::Instance().timerStop());
-
-    if( time < 2000.f )
-        std::this_thread::sleep_for( std::chrono::milliseconds( 2000 - time ) );
-
-    // Do the fade out
-    fade( *m_upSpriteLogo.get(), 500.f, CColor(1,1,1,1), CColor(0,0,0,1) );*/
-
-    return false;
+    return m_changeState;
 }

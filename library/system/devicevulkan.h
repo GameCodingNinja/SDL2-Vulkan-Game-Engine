@@ -316,5 +316,4 @@ protected:
     PFN_vkCmdPushDescriptorSetKHR vkCmdPushDescriptorSetKHR;
 };
 
-#endif  // __device_vulkan_h__
-
+#endif

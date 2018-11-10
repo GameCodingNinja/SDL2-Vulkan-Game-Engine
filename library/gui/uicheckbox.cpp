@@ -63,14 +63,15 @@ void CUICheckBox::onSelectExecute( const SDL_Event & rEvent )
 }
 
 
-/************************************************************************
-*    DESC:  Render the control
-************************************************************************/
-/*void CUICheckBox::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CUICheckBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     for( size_t i = 0; i < m_spriteDeq.size()-1; ++i )
-        m_spriteDeq[i].render( matrix );
+        m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, viewProj );
 
     if( m_toggleState == NUIControl::TOGGLE_STATE_ON )
-        m_spriteDeq.back().render( matrix );
-}*/
+        m_spriteDeq.back().recordCommandBuffer( index, cmdBuf, viewProj );
+}

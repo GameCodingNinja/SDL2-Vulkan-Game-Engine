@@ -158,10 +158,11 @@ void CUIProgressBar::transform( const CObject2D & object )
 }
 
 
-/************************************************************************
-*    DESC:  do the render
-************************************************************************/
-/*void CUIProgressBar::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     if( m_upStencilMaskSprite )
     {
@@ -169,46 +170,21 @@ void CUIProgressBar::transform( const CObject2D & object )
         {
             if( static_cast<int>(i) == m_spriteApplyIndex )
             {
-                // Disable rendering to the color buffer
-                glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
-                glDepthMask( GL_FALSE );
+                // Record the command buffer for the stencil mask
+                m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, viewProj );
 
-                // Start using the stencil
-                glEnable( GL_STENCIL_TEST );
-
-                glStencilFunc( GL_ALWAYS, 0x1, 0x1 );
-                glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
-
-
-                m_upStencilMaskSprite->render( matrix );
-
-
-                // Re-enable color
-                glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-
-                // Where a 1 was not rendered
-                glStencilFunc( GL_EQUAL, 0x1, 0x1 );
-
-                // Keep the pixel
-                glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
-
-                // Disable any writing to the stencil buffer
-                glDepthMask(GL_TRUE);
-
-                m_spriteDeq[i].render( matrix );
-
-                // Finished using stencil
-                glDisable( GL_STENCIL_TEST );
+                // Record the command buffer for the inside of the stencil mask
+                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, viewProj );
             }
             else
-                m_spriteDeq[i].render( matrix );
+                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, viewProj );
         }
     }
     else
     {
-        CUIControl::render( matrix );
+        CUIControl::recordCommandBuffer( index, cmdBuf, viewProj );
     }
-}*/
+}
 
 
 /************************************************************************

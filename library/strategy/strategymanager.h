@@ -20,9 +20,6 @@
 #include <map>
 #include <vector>
 
-// Vulkan lib dependencies
-#include <system/vulkan.h>
-
 // Forward Declarations
 class iNode;
 class iStrategy;

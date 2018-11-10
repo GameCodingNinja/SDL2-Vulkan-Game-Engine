@@ -31,6 +31,9 @@
 #include <map>
 #include <deque>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward declaration(s)
 class CSmartGuiControl;
 class CObject2D;
@@ -59,9 +62,9 @@ public:
 
     // Transform the control
     virtual void transform( const CObject2D & object ) override;
-
-    // do the render
-    //virtual void render( const CMatrix & matrix );
+    
+    // Record the command buffer for all the sprite objects that are to be rendered
+    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent );

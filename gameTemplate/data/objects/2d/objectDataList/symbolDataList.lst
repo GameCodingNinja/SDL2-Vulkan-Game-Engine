@@ -9,7 +9,7 @@
                 <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
             </mesh>
             <color r="1" g="1" b="1" a="1"/>
-            <pipeline id="shader_2d"/>
+            <pipeline id="2d_quad"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
@@ -96,7 +96,7 @@
         
         <object name="reel_strip_mask_vert_5">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="160" height="640"/>
@@ -104,7 +104,7 @@
         
         <object name="reel_strip_mask_vert_4">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="160" height="512"/>
@@ -112,7 +112,7 @@
         
         <object name="reel_strip_mask_vert_3">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="160" height="384"/>
@@ -120,7 +120,7 @@
         
         <object name="reel_strip_mask_vert_2">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="160" height="256"/>
@@ -128,7 +128,7 @@
         
         <object name="reel_strip_mask_vert_1">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="160" height="128"/>
@@ -136,7 +136,7 @@
         
         <object name="reel_strip_mask_horz_3">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="480" height="128"/>
@@ -144,7 +144,7 @@
         
         <object name="reel_strip_mask_horz_2">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="320" height="128"/>
@@ -152,7 +152,7 @@
         
         <object name="reel_strip_mask_horz_7">
             <visual>
-                <pipeline id="shader_solid_2d"/>
+                <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="1120" height="128"/>

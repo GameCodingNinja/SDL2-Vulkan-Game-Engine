@@ -63,10 +63,10 @@ public:
             pos.x = point.x;
 
         if( m_parameters.isSet( CDynamicOffset::EDO_TOP ) )
-            pos.y = defaultHalfSize.h - point.y;
+            pos.y = -(defaultHalfSize.h - point.y);
             
         else if( m_parameters.isSet( CDynamicOffset::EDO_BOTTOM ) )
-            pos.y = -(defaultHalfSize.h - point.y);
+            pos.y = defaultHalfSize.h - point.y;
 
         else if( m_parameters.isSet( EDO_VERT_CENTER ) )
             pos.y = point.y;

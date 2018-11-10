@@ -191,17 +191,18 @@ void CUISubControl::transform( const CObject2D & object )
 }
 
 
-/************************************************************************
-*    DESC:  Render the sub control
-************************************************************************/
-/*void CUISubControl::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CUISubControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     // Call the parent
-    CUIControl::render( matrix );
+    CUIControl::recordCommandBuffer( index, cmdBuf, viewProj );
 
     for( auto iter : m_pSubControlVec )
-        iter->render( matrix );
-}*/
+        iter->recordCommandBuffer( index, cmdBuf, viewProj );
+}
 
 
 /************************************************************************

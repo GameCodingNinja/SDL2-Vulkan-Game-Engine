@@ -25,8 +25,8 @@ public:
     void setToggleState( bool value );
     bool getToggleState();
 
-    // Render the button
-    //virtual void render( const CMatrix & matrix ) override;
+    // Record the command buffer for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj ) override;
 
 protected:
 

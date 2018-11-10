@@ -243,7 +243,6 @@ void CUIControl::transformCollision()
     {
         CMatrix finalMatrix( getMatrix() );
         finalMatrix.scale( CSettings::Instance().getOrthoAspectRatio().getH() );
-        finalMatrix.invertY();
 
         // Get half the screen size to convert to screen coordinates
         CSize<float> screenHalf = CSettings::Instance().getSizeHalf();
@@ -254,13 +253,13 @@ void CUIControl::transformCollision()
 
         CQuad quad;
         quad.point[0].x = -halfwidth + -m_sizeModifier.x1;
-        quad.point[0].y = -halfHeight + -m_sizeModifier.y1;
+        quad.point[0].y = -halfHeight + m_sizeModifier.y1;
         quad.point[1].x = halfwidth + m_sizeModifier.x2;
-        quad.point[1].y = -halfHeight + -m_sizeModifier.y1;
+        quad.point[1].y = -halfHeight + m_sizeModifier.y1;
         quad.point[2].x = halfwidth + m_sizeModifier.x2;
-        quad.point[2].y = halfHeight + m_sizeModifier.y2;
+        quad.point[2].y = halfHeight + -m_sizeModifier.y2;
         quad.point[3].x = -halfwidth + -m_sizeModifier.x1;
-        quad.point[3].y = halfHeight + m_sizeModifier.y2;
+        quad.point[3].y = halfHeight + -m_sizeModifier.y2;
 
         finalMatrix.transform( m_collisionQuad, quad );
 
@@ -283,14 +282,15 @@ void CUIControl::transformCollision()
 }
 
 
-/************************************************************************
-*    DESC:  do the render
-************************************************************************/
-/*void CUIControl::render( const CMatrix & matrix )
+/***************************************************************************
+*    DESC:  Record the command buffer for all the sprite
+*           objects that are to be rendered
+****************************************************************************/
+void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
 {
     for( auto & iter : m_spriteDeq )
-        iter.render( matrix );
-}*/
+        iter.recordCommandBuffer( index, cmdBuf, viewProj );
+}
 
 
 /************************************************************************
