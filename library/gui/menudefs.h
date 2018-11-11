@@ -7,7 +7,7 @@
 #ifndef __ui_menu_defs_h__
 #define __ui_menu_defs_h__
 
-namespace NMenu
+namespace NMenuDefs
 {
     enum EMenuState
     {
@@ -33,33 +33,33 @@ namespace NMenu
         EMTS_MAX_MENU_TREE_STATES
     };
 
-    enum EGameEvent
+    enum EMenuEvent
     {
         // Menu events
-        EGE_MENU_USER_EVENTS = 0x8000,
-        EGE_MENU_TRANS_IN,
-        EGE_MENU_TRANS_OUT,
-        EGE_MENU_ESCAPE_ACTION,
-        EGE_MENU_TOGGLE_ACTION,
-        EGE_MENU_BACK_ACTION,
-        EGE_MENU_TO_TREE,
-        EGE_MENU_TO_MENU,
-        EGE_MENU_GAME_STATE_CHANGE,
-        EGE_MENU_UP_ACTION,
-        EGE_MENU_DOWN_ACTION,
-        EGE_MENU_LEFT_ACTION,
-        EGE_MENU_RIGHT_ACTION,
-        EGE_MENU_CONTROL_STATE_CHANGE,
-        EGE_MENU_SELECT_ACTION,
-        EGE_MENU_SELECT_EXECUTE,
-        EGE_MENU_SET_ACTIVE_CONTROL,
-        EGE_MENU_REACTIVATE,
-        EGE_MENU_SCROLL_UP,
-        EGE_MENU_SCROLL_DOWN,
-        EGE_MENU_SCROLL_LEFT,
-        EGE_MENU_SCROLL_RIGHT,
-        EGE_MENU_TAB_LEFT,
-        EGE_MENU_TAB_RIGHT,
+        EME_MENU_USER_EVENTS = 0x8000,
+        EME_MENU_TRANS_IN,
+        EME_MENU_TRANS_OUT,
+        EME_MENU_ESCAPE_ACTION,
+        EME_MENU_TOGGLE_ACTION,
+        EME_MENU_BACK_ACTION,
+        EME_MENU_TO_TREE,
+        EME_MENU_TO_MENU,
+        EME_MENU_GAME_STATE_CHANGE,
+        EME_MENU_UP_ACTION,
+        EME_MENU_DOWN_ACTION,
+        EME_MENU_LEFT_ACTION,
+        EME_MENU_RIGHT_ACTION,
+        EME_MENU_CONTROL_STATE_CHANGE,
+        EME_MENU_SELECT_ACTION,
+        EME_MENU_SELECT_EXECUTE,
+        EME_MENU_SET_ACTIVE_CONTROL,
+        EME_MENU_REACTIVATE,
+        EME_MENU_SCROLL_UP,
+        EME_MENU_SCROLL_DOWN,
+        EME_MENU_SCROLL_LEFT,
+        EME_MENU_SCROLL_RIGHT,
+        EME_MENU_TAB_LEFT,
+        EME_MENU_TAB_RIGHT,
     };
 
     enum EActiveControl

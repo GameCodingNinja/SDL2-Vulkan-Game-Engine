@@ -32,7 +32,7 @@ CMenuTree::CMenuTree(
     m_pRootMenu( nullptr),
     m_pDefaultMenu( nullptr ),
     m_interfaceTree( interfaceTree ),
-    m_state( NMenu::EMTS_IDLE )
+    m_state( NMenuDefs::EMTS_IDLE )
 {
     auto iter = rMenuMap.find( rootMenu );
     if( iter != rMenuMap.end() )
@@ -135,40 +135,40 @@ void CMenuTree::handleEvent( const SDL_Event & rEvent )
         if( !m_pMenuPathVec.empty() )
             m_pMenuPathVec.back()->handleEvent( rEvent );
 
-        if( m_state == NMenu::EMTS_IDLE )
+        if( m_state == NMenuDefs::EMTS_IDLE )
         {
-            if( rEvent.type == NMenu::EGE_MENU_ESCAPE_ACTION )
+            if( rEvent.type == NMenuDefs::EME_MENU_ESCAPE_ACTION )
             {
                 onEscape( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_TOGGLE_ACTION )
+            else if( rEvent.type == NMenuDefs::EME_MENU_TOGGLE_ACTION )
             {
                 onToggle( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_BACK_ACTION )
+            else if( rEvent.type == NMenuDefs::EME_MENU_BACK_ACTION )
             {
                 onBack( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_TO_TREE )
+            else if( rEvent.type == NMenuDefs::EME_MENU_TO_TREE )
             {
                 onToTree( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_TO_MENU )
+            else if( rEvent.type == NMenuDefs::EME_MENU_TO_MENU )
             {
                 onToMenu( rEvent );
             }
         }
-        else if( rEvent.type == NMenu::EGE_MENU_TRANS_IN )
+        else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
         {
             onTransIn( rEvent );
         }
-        else if( rEvent.type == NMenu::EGE_MENU_TRANS_OUT )
+        else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_OUT )
         {
             onTransOut( rEvent );
         }
     }
     // Don't process menu specific messages if this is an interface menu
-    else if( (rEvent.type < NMenu::EGE_MENU_USER_EVENTS) || (rEvent.type > NMenu::EGE_MENU_GAME_STATE_CHANGE) )
+    else if( (rEvent.type < NMenuDefs::EME_MENU_USER_EVENTS) || (rEvent.type > NMenuDefs::EME_MENU_GAME_STATE_CHANGE) )
     {
         if( !m_pMenuPathVec.empty() )
             m_pMenuPathVec.back()->handleEvent( rEvent );
@@ -198,10 +198,10 @@ void CMenuTree::activateMenu( const std::string & menuName )
         m_pMenuPathVec.push_back( &iter->second );
 
         // Set the state as "active" so that input messages are ignored
-        m_state = NMenu::EMTS_ACTIVE;
+        m_state = NMenuDefs::EMTS_ACTIVE;
 
         // Start the transition in
-        NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_IN, NMenu::ETC_BEGIN );
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_BEGIN );
     }
     else
     {
@@ -209,10 +209,10 @@ void CMenuTree::activateMenu( const std::string & menuName )
         if( m_pMenuPathVec.back() != m_pRootMenu )
         {
             // Set the state as "active" so that input messages are ignored
-            m_state = NMenu::EMTS_ACTIVE;
+            m_state = NMenuDefs::EMTS_ACTIVE;
 
             // Start the transition out
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_OUT, NMenu::ETC_BEGIN );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_BEGIN );
         }
     }
 }
@@ -240,10 +240,10 @@ void CMenuTree::transitionMenu()
         m_toMenu = m_pDefaultMenu->getName();
 
         // Set the state as "active" so that input messages are ignored
-        m_state = NMenu::EMTS_ACTIVE;
+        m_state = NMenuDefs::EMTS_ACTIVE;
 
         // Start the transition in
-        NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_IN, NMenu::ETC_BEGIN );
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_BEGIN );
     }
     else
     {
@@ -251,10 +251,10 @@ void CMenuTree::transitionMenu()
         if( m_pMenuPathVec.back() != m_pRootMenu )
         {
             // Set the state as "active" so that input messages are ignored
-            m_state = NMenu::EMTS_ACTIVE;
+            m_state = NMenuDefs::EMTS_ACTIVE;
 
             // Start the transition out
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_OUT, NMenu::ETC_BEGIN );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_BEGIN );
         }
     }
 }
@@ -350,7 +350,7 @@ void CMenuTree::onToMenu( const SDL_Event & rEvent )
         ((void *)m_pMenuPathVec.back()->getPtrToActiveControl() == rEvent.user.data2) )
     {
         // Set the state as "active" so that input messages are ignored
-        m_state = NMenu::EMTS_ACTIVE;
+        m_state = NMenuDefs::EMTS_ACTIVE;
 
         // Get the name of the menu we are transitioning to
         // This is also used as a flag to indicate moving deaper into the menu tree
@@ -363,7 +363,7 @@ void CMenuTree::onToMenu( const SDL_Event & rEvent )
                     % m_toMenu % __FUNCTION__ % __LINE__ ));
 
         // Start the transition out
-        NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_OUT, NMenu::ETC_BEGIN );
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_BEGIN );
     }
 }
 
@@ -372,12 +372,12 @@ void CMenuTree::onToMenu( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenuTree::onTransOut( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenu::ETC_END )
+    if( rEvent.user.code == NMenuDefs::ETC_END )
     {
         if( !m_toMenu.empty() )
         {
             m_pMenuPathVec.push_back( &m_rMenuMap.find(m_toMenu)->second );
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_IN, NMenu::ETC_BEGIN );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_BEGIN );
         }
         else if( !m_pMenuPathVec.empty() && (m_pMenuPathVec.back() != m_pRootMenu) )
         {
@@ -388,13 +388,13 @@ void CMenuTree::onTransOut( const SDL_Event & rEvent )
             m_pMenuPathVec.pop_back();
 
             if( !m_pMenuPathVec.empty() )
-                NGenFunc::DispatchEvent( NMenu::EGE_MENU_TRANS_IN, NMenu::ETC_BEGIN );
+                NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_BEGIN );
         }
 
         // Normally, after one menu transitions out, the next menu transitions in
         // Only set the idle state if this transition out is final
         if( m_pMenuPathVec.empty() )
-            m_state = NMenu::EMTS_IDLE;
+            m_state = NMenuDefs::EMTS_IDLE;
     }
 }
 
@@ -403,16 +403,16 @@ void CMenuTree::onTransOut( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenuTree::onTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenu::ETC_END )
+    if( rEvent.user.code == NMenuDefs::ETC_END )
     {
         // m_toMenu is also used as a flag to indicate moving up the menu tree
         // When moving up the menu tree, activate the first control on the menu
         // When backing out of the menu tree, activate the last control used
-        NGenFunc::DispatchEvent( NMenu::EGE_MENU_SET_ACTIVE_CONTROL,
-            (m_toMenu.empty()) ? NMenu::EAC_LAST_ACTIVE_CONTROL : NMenu::EAC_FIRST_ACTIVE_CONTROL );
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_SET_ACTIVE_CONTROL,
+            (m_toMenu.empty()) ? NMenuDefs::EAC_LAST_ACTIVE_CONTROL : NMenuDefs::EAC_FIRST_ACTIVE_CONTROL );
 
         // Set to idle to allow for input messages to come through
-        m_state = NMenu::EMTS_IDLE;
+        m_state = NMenuDefs::EMTS_IDLE;
 
         // Clear in the event we start backing out of the menu tree
         m_toMenu.clear();

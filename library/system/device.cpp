@@ -170,18 +170,19 @@ void CDevice::destroyAssets()
 
         // Free all memory buffer groups
         for( auto & mapIter : m_memoryBufferMapMap )
-        {
             for( auto & iter : mapIter.second )
-            {
-                vkDestroyBuffer( m_logicalDevice, iter.second.m_buffer, nullptr );
-                vkFreeMemory( m_logicalDevice, iter.second.m_deviceMemory, nullptr );
-            }
-        }
+                freeMemoryBuffer( iter.second );
 
         m_memoryBufferMapMap.clear();
         
         // Free the shared font IBO buffer
         freeMemoryBuffer( m_sharedFontIbo );
+        
+        // Free the delete queue
+        for( auto & iter : m_memoryDeleteMultimap )
+            freeMemoryBuffer( iter.second );
+        
+        m_memoryDeleteMultimap.clear();
 
         // Free all the shader modules
         for( auto & iter : m_shaderModuleMap )
@@ -354,7 +355,23 @@ void CDevice::render()
             "Vulkan Error!",
             boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
 
-    m_currentFrame = (m_currentFrame + 1) % m_maxConcurrentFrames;
+    m_currentFrame = (m_currentFrame + 1) % m_framebufferVec.size();
+    
+    // Delete the memory buffer if it's been in the queue for one cycle
+    // NOTE: This needs to be done after the current frame increment
+    auto iter = m_memoryDeleteMultimap.begin();
+    while( iter != m_memoryDeleteMultimap.end() )
+    {
+        if( iter->first == m_currentFrame )
+        {
+            freeMemoryBuffer( iter->second );
+            iter = m_memoryDeleteMultimap.erase( iter );
+        }
+        else
+        {
+            ++iter;
+        }
+    }
 }
 
 
@@ -753,22 +770,6 @@ void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkComm
 
 
 /************************************************************************
-*    DESC:  Delete a uniform buffer vec
-************************************************************************/
-void CDevice::deleteUniformBufferVec( std::vector<CMemoryBuffer> & commandBufVec )
-{
-    for( auto & iter : commandBufVec )
-    {
-        vkDestroyBuffer( m_logicalDevice, iter.m_buffer, nullptr );
-        vkFreeMemory( m_logicalDevice, iter.m_deviceMemory, nullptr );
-
-        iter.m_buffer = VK_NULL_HANDLE;
-        iter.m_deviceMemory = VK_NULL_HANDLE;
-    }
-}
-
-
-/************************************************************************
 *    DESC:  Delete group assets
 ************************************************************************/
 void CDevice::deleteGroupAssets( const std::string & group )
@@ -1139,18 +1140,30 @@ size_t CDevice::getSharedFontIBOMaxIndiceCount()
 ************************************************************************/
 void CDevice::freeMemoryBuffer( CMemoryBuffer & memoryBuffer )
 {
-    if( m_logicalDevice != VK_NULL_HANDLE )
+    if( memoryBuffer.m_buffer != VK_NULL_HANDLE )
     {
-        if( memoryBuffer.m_buffer != VK_NULL_HANDLE )
-        {
-            vkDestroyBuffer( m_logicalDevice, memoryBuffer.m_buffer, nullptr );
-            memoryBuffer.m_buffer = VK_NULL_HANDLE;
-        }
-        
-        if( memoryBuffer.m_deviceMemory != VK_NULL_HANDLE )
-        {
-            vkFreeMemory( m_logicalDevice, memoryBuffer.m_deviceMemory, nullptr );
-            memoryBuffer.m_deviceMemory = VK_NULL_HANDLE;
-        }
+        vkDestroyBuffer( m_logicalDevice, memoryBuffer.m_buffer, nullptr );
+        memoryBuffer.m_buffer = VK_NULL_HANDLE;
     }
+
+    if( memoryBuffer.m_deviceMemory != VK_NULL_HANDLE )
+    {
+        vkFreeMemory( m_logicalDevice, memoryBuffer.m_deviceMemory, nullptr );
+        memoryBuffer.m_deviceMemory = VK_NULL_HANDLE;
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Add a memory buffer to the delete 
+************************************************************************/
+void CDevice::AddToDeleteQueue( CMemoryBuffer & memBuff )
+{
+    m_memoryDeleteMultimap.emplace( m_currentFrame, memBuff );
+}
+
+void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & commandBufVec )
+{
+    for( auto & iter : commandBufVec )
+        m_memoryDeleteMultimap.emplace( m_currentFrame, iter );
 }

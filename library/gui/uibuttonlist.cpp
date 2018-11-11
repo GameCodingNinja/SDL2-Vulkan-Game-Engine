@@ -106,7 +106,7 @@ void CUIButtonList::loadControlFromNode( const XMLNode & node )
 void CUIButtonList::inc()
 {
     NGenFunc::DispatchEvent(
-            NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
             NUIControl::ECS_SELECTED,
             (void *)m_pSubControlVec[NUIControl::BTN_INC] );
 }
@@ -114,7 +114,7 @@ void CUIButtonList::inc()
 void CUIButtonList::dec()
 {
     NGenFunc::DispatchEvent(
-        NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+        NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
         NUIControl::ECS_SELECTED,
         (void *)m_pSubControlVec[NUIControl::BTN_DEC] );
 }

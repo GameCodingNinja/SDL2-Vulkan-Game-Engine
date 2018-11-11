@@ -292,10 +292,7 @@ protected:
     std::vector<VkFence> m_frameFenceVec;
     
     // The current frame
-    int m_currentFrame;
-    
-    // Max concurrent frames that can be rendered
-    int m_maxConcurrentFrames;
+    size_t m_currentFrame;
     
     // Last error result
     VkResult m_lastResult;

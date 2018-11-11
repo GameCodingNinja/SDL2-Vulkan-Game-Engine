@@ -84,7 +84,7 @@ void CSmartResolutionBtn::create()
 ****************************************************************************/
 void CSmartResolutionBtn::handleEvent( const SDL_Event & rEvent )
 {
-    if( (m_resIndex > -1) && (rEvent.type == NMenu::EGE_MENU_TRANS_IN) )
+    if( (m_resIndex > -1) && (rEvent.type == NMenuDefs::EME_MENU_TRANS_IN) )
         (*dynamic_cast<CUIButtonList *>(m_pUIControl)).updateDisplay( m_resIndex );
 }
 

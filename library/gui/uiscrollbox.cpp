@@ -485,7 +485,7 @@ CBitmask<uint> CUIScrollBox::selectNextControl( int scrollVector )
     if( scrollResult.isSet(IN_VIEWABLE_AREA) && !scrollResult.isSet(NEW_ACTIVE_CTRL) )
     {
         NGenFunc::DispatchEvent(
-            NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
             NUIControl::ECS_ACTIVE,
             (void *)m_pScrollControlVec[m_activeScrollCtrl] );
     }
@@ -624,7 +624,7 @@ bool CUIScrollBox::activateScrollCtrl( int scrollControlIndex )
         !m_pScrollControlVec.at(scrollControlIndex)->isDisabled() )
     {
         NGenFunc::DispatchEvent(
-            NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
             NUIControl::ECS_ACTIVE,
             (void *)m_pScrollControlVec[scrollControlIndex] );
 

@@ -50,7 +50,7 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 ************************************************************************/
 CVisualComponentQuad::~CVisualComponentQuad()
 {
-    CDevice::Instance().deleteUniformBufferVec( m_uniformBufVec );
+    CDevice::Instance().AddToDeleteQueue( m_uniformBufVec );
 }
 
 

@@ -218,51 +218,51 @@ void CUISubControl::handleEvent( const SDL_Event & rEvent )
 
     if( isActive() )
     {
-        if( (rEvent.type >= NMenu::EGE_MENU_UP_ACTION) &&
-            (rEvent.type <= NMenu::EGE_MENU_RIGHT_ACTION) )
+        if( (rEvent.type >= NMenuDefs::EME_MENU_UP_ACTION) &&
+            (rEvent.type <= NMenuDefs::EME_MENU_RIGHT_ACTION) )
         {
-            if( rEvent.type == NMenu::EGE_MENU_UP_ACTION )
+            if( rEvent.type == NMenuDefs::EME_MENU_UP_ACTION )
             {
                 onUpAction( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_DOWN_ACTION )
+            else if( rEvent.type == NMenuDefs::EME_MENU_DOWN_ACTION )
             {
                 onDownAction( rEvent );
             }
-            if( rEvent.type == NMenu::EGE_MENU_LEFT_ACTION )
+            if( rEvent.type == NMenuDefs::EME_MENU_LEFT_ACTION )
             {
                 onLeftAction( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_RIGHT_ACTION )
+            else if( rEvent.type == NMenuDefs::EME_MENU_RIGHT_ACTION )
             {
                 onRightAction( rEvent );
             }
         }
-        else if( (rEvent.type >= NMenu::EGE_MENU_SCROLL_UP) &&
-                 (rEvent.type <= NMenu::EGE_MENU_SCROLL_RIGHT) )
+        else if( (rEvent.type >= NMenuDefs::EME_MENU_SCROLL_UP) &&
+                 (rEvent.type <= NMenuDefs::EME_MENU_SCROLL_RIGHT) )
         {
-            if( rEvent.type == NMenu::EGE_MENU_SCROLL_UP )
+            if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_UP )
             {
                 onUpScroll( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_SCROLL_DOWN )
+            else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_DOWN )
             {
                 onDownScroll( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_SCROLL_LEFT )
+            else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_LEFT )
             {
                 onLeftScroll( rEvent );
             }
-            else if( rEvent.type == NMenu::EGE_MENU_SCROLL_RIGHT )
+            else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_RIGHT )
             {
                 onRightScroll( rEvent );
             }
         }
-        else if( rEvent.type == NMenu::EGE_MENU_TAB_LEFT )
+        else if( rEvent.type == NMenuDefs::EME_MENU_TAB_LEFT )
         {
             onTabLeft( rEvent );
         }
-        else if( rEvent.type == NMenu::EGE_MENU_TAB_RIGHT )
+        else if( rEvent.type == NMenuDefs::EME_MENU_TAB_RIGHT )
         {
             onTabRight( rEvent );
         }
@@ -374,7 +374,7 @@ void CUISubControl::navigateMenu( CUIControlNavNode::ENavNode navNode )
                 m_pActiveNode = pNavNode;
 
                 NGenFunc::DispatchEvent(
-                    NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+                    NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
                     NUIControl::ECS_ACTIVE,
                     pNavNode->getControl() );
 

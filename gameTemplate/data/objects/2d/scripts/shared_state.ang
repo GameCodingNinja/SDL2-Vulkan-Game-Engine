@@ -18,7 +18,7 @@ shared void State_FadeIn( Sprite & sprite )
     CColor final(1,1,1,1);
     AdditiveColorTo( 500, final, sprite );
     
-    DispatchEvent( 0xA000 );
+    DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
 }
 
 shared void State_FadeOut( Sprite & sprite )
@@ -28,5 +28,5 @@ shared void State_FadeOut( Sprite & sprite )
     
     Hold( 250 );
     
-    DispatchEvent( 0xB000 );
+    DispatchEvent( NGameDefs::EGE_FADE_OUT_COMPLETE );
 }

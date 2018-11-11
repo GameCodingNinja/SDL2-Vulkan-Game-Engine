@@ -131,6 +131,21 @@ void CMenuMgr::freeGroup( const std::string & group )
 
 
 /************************************************************************
+*    DESC:  Clear all memory
+************************************************************************/
+void CMenuMgr::clear()
+{
+    m_allow = false;
+    
+    // Clear the active trees
+    clearActiveTrees();
+    
+    m_menuTreeMapMap.clear();
+    m_menuMapMap.clear();
+}
+
+
+/************************************************************************
  *    DESC:  Init a menu group
  *           This allows certain actions to be done after the group load
  ************************************************************************/
@@ -579,18 +594,18 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
                 CMenuTree * pTree = getActiveTree();
 
                 if( pTree == nullptr )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_ESCAPE_ACTION, 0, &m_defaultTree );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION, 0, &m_defaultTree );
                 else
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_ESCAPE_ACTION, 0, &pTree->getName() );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION, 0, &pTree->getName() );
             }
             else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, NDefs::EAP_DOWN ) )
             {
                 CMenuTree * pTree = getActiveTree();
 
                 if( pTree == nullptr )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_TOGGLE_ACTION, 0, &m_defaultTree );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION, 0, &m_defaultTree );
                 else
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_TOGGLE_ACTION, 0, &pTree->getName() );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION, 0, &pTree->getName() );
             }
             else if( m_active )
             {
@@ -616,28 +631,28 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
                         msgCracker.setY( rEvent.button.y );
                     }
 
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_SELECT_ACTION, msgCracker.getPackedUnit() );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_SELECT_ACTION, msgCracker.getPackedUnit() );
                 }
                 else if( CActionMgr::Instance().wasAction( rEvent, m_backAction, NDefs::EAP_DOWN ) )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_BACK_ACTION );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_BACK_ACTION );
 
                 else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_upAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_UP_ACTION, pressType );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_UP_ACTION, pressType );
 
                 else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_downAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_DOWN_ACTION, pressType );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_DOWN_ACTION, pressType );
 
                 else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_leftAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_LEFT_ACTION, pressType );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_LEFT_ACTION, pressType );
 
                 else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_rightAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_RIGHT_ACTION, pressType );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_RIGHT_ACTION, pressType );
 
                 else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabLeft )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_TAB_LEFT, pressType );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TAB_LEFT, pressType );
 
                 else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabRight )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenu::EGE_MENU_TAB_RIGHT, pressType );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TAB_RIGHT, pressType );
 
                 // If none of the predefined actions have been hit, just send the message for processing
                 else
@@ -649,7 +664,7 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
         else if( rEvent.type > SDL_USEREVENT )
         {
             // Are we doing menu actions? May need to do some scrolling
-            if( (rEvent.type >= NMenu::EGE_MENU_UP_ACTION) && (rEvent.type <= NMenu::EGE_MENU_RIGHT_ACTION) )
+            if( (rEvent.type >= NMenuDefs::EME_MENU_UP_ACTION) && (rEvent.type <= NMenuDefs::EME_MENU_RIGHT_ACTION) )
             {
                 // Free a timer if one happens to be running
                 SDL_RemoveTimer(m_scrollTimerId);

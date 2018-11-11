@@ -142,9 +142,6 @@ public:
     
     // Do we want tripple buffering?
     bool getTripleBuffering() const;
-    
-    // Get the max concurrent frame Render count
-    int getMaxConcurrentFrameRender() const;
 
 private:
 
@@ -231,9 +228,6 @@ private:
     // Max thread count
     // Value of zero means use max hardware threads to cores
     int m_maxThreadCount;
-    
-    // Max concurrent frame render
-    int m_maxConcurrentFrameRender;
 
     // the sector size
     float m_sectorSize;

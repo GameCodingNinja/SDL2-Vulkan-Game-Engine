@@ -27,7 +27,7 @@ CSmartVSyncCheckBox::CSmartVSyncCheckBox( CUIControl * pUIControl ) :
 ****************************************************************************/
 void CSmartVSyncCheckBox::handleEvent( const SDL_Event & rEvent )
 {
-    if( rEvent.type == NMenu::EGE_MENU_TRANS_IN )
+    if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
         (*dynamic_cast<CUICheckBox *>(m_pUIControl)).setToggleState( CSettings::Instance().getVSync() );
 }
 

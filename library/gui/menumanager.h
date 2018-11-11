@@ -54,6 +54,9 @@ public:
     // Free the menu group
     void freeGroup( const std::string & group );
     
+    // Clear all memory
+    void clear();
+    
     // Init a menu group
     void initGroup( const std::string & group );
     

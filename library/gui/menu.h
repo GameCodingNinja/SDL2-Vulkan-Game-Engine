@@ -194,7 +194,7 @@ private:
     CUIControlNavNode * m_pActiveNode;
 
     // menu state
-    NMenu::EMenuState m_state;
+    NMenuDefs::EMenuState m_state;
 
     // Dynamic offset
     CDynamicOffset m_dynamicOffset;

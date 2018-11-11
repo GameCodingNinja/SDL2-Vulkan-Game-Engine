@@ -8,6 +8,9 @@
 // Physical component dependency
 #include "titlescreenstate.h"
 
+// Game dependencies
+#include "gamedefs.h"
+
 // Game lib dependencies
 #include <objectdata/objectdatamanager.h>
 #include <utilities/highresolutiontimer.h>
@@ -55,7 +58,6 @@ CTitleScreenState::~CTitleScreenState()
 void CTitleScreenState::init()
 {
     // Unblock the menu messaging and activate needed trees
-    CMenuMgr::Instance().allow();
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
 
     /*m_cube.setScale( 3, 3, 3 );
@@ -88,11 +90,15 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
     CCommonState::handleEvent( rEvent );
 
     // Check for the "change state" message
-    if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
+    if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
         // Prepare the script to fade in the screen. The script will send the end message
-        if( rEvent.user.code == NMenu::ETC_BEGIN )
+        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
             m_pBackground->getSprite()->prepare( "fadeOut" );
+    }
+    else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
+    {
+        CMenuMgr::Instance().allow();
     }
 }
 

@@ -48,9 +48,9 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
     CMenuMgr::Instance().handleEvent( rEvent );
 
     // Check for the "game change state" message
-    if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
+    if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
-        if( rEvent.user.code == NMenu::ETC_BEGIN )
+        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
         {
             // Block all message processing in the menu manager
             CMenuMgr::Instance().allow( false );
@@ -58,7 +58,7 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
             // Set the message to load and unload the states
             m_stateMessage.setMsg( getLoadState( rEvent.user.data1 ), m_gameState );
         }
-        else if( rEvent.user.code == NMenu::ETC_END )
+        else if( rEvent.user.code == NMenuDefs::ETC_END )
         {
             // Clear out all the trees
             CMenuMgr::Instance().clearActiveTrees();

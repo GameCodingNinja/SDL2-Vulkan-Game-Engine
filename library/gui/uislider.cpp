@@ -236,7 +236,7 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
 
         // Send a message to blink the button
         NGenFunc::DispatchEvent(
-            NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
             NUIControl::ECS_SELECTED,
             getSubControl() );
 

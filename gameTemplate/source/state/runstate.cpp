@@ -60,10 +60,10 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
     CCommonState::handleEvent( rEvent );
 
     // Check for the "change state" message
-    /*if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
+    /*if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
         // Prepare the script to fade in the screen. The script will send the end message
-        if( rEvent.user.code == NMenu::ETC_BEGIN )
+        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
             m_scriptComponent.prepare( "(menu)", "Screen_FadeOut" );
     }*/
 }

@@ -62,7 +62,6 @@ CDeviceVulkan::CDeviceVulkan() :
     m_primaryCmdPool(VK_NULL_HANDLE),
     m_transferCmdPool(VK_NULL_HANDLE),
     m_currentFrame(0),
-    m_maxConcurrentFrames(0),
     m_lastResult(VK_SUCCESS),
     m_depthImage(VK_NULL_HANDLE),
     m_depthImageMemory(VK_NULL_HANDLE),
@@ -123,13 +122,6 @@ void CDeviceVulkan::create(
     if( InitVulkan() == 0 )
         throw NExcept::CCriticalException( "Vulkan Error!", "Could not initialize Vulkan library!" );
     #endif
-
-    // Determines how many frames are going through the pipeline simultaneously. Unrelated to buffering.
-    m_maxConcurrentFrames = CSettings::Instance().getMaxConcurrentFrameRender() + 1;
-
-    // Sanity check. This should never happen
-    if( m_maxConcurrentFrames == 0 )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Max concurrent frames can't be zero!" );
 
     // Create the vulkan instance
     createVulkanInstance( validationNameVec, instanceExtensionNameVec );
@@ -626,7 +618,7 @@ void CDeviceVulkan::setupSwapChain()
     if( CSettings::Instance().getTripleBuffering() )
         ++minImageCount;
 
-    // Application must settle for fewer images than desired
+    // Application might settle for fewer images than desired
     if ((surfCapabilities.maxImageCount > 0) && (minImageCount > surfCapabilities.maxImageCount))
         minImageCount = surfCapabilities.maxImageCount;
 
@@ -1084,9 +1076,9 @@ void CDeviceVulkan::createFrameBuffer()
 ****************************************************************************/
 void CDeviceVulkan::createSyncObjects()
 {
-    m_imageAvailableSemaphoreVec.resize( m_maxConcurrentFrames );
-    m_renderFinishedSemaphoreVec.resize( m_maxConcurrentFrames );
-    m_frameFenceVec.resize( m_maxConcurrentFrames );
+    m_imageAvailableSemaphoreVec.resize( m_framebufferVec.size() );
+    m_renderFinishedSemaphoreVec.resize( m_framebufferVec.size() );
+    m_frameFenceVec.resize( m_framebufferVec.size() );
 
     VkSemaphoreCreateInfo semaphoreInfo = {};
     semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -1095,7 +1087,7 @@ void CDeviceVulkan::createSyncObjects()
     fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
     fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
-    for( int i = 0; i < m_maxConcurrentFrames; ++i )
+    for( size_t i = 0; i < m_framebufferVec.size(); ++i )
     {
         if( (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_imageAvailableSemaphoreVec[i] )) ||
             (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_renderFinishedSemaphoreVec[i] )) ||

@@ -100,7 +100,7 @@ void CSmartKeyBindBtn::handleEvent( const SDL_Event & rEvent )
             CActionMgr::Instance().enableAction(true);
             
             // Dispatch a message to clear the selected control and put it back into active state
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_REACTIVATE );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
         }
         else
         {
@@ -124,7 +124,7 @@ void CSmartKeyBindBtn::handleEvent( const SDL_Event & rEvent )
                 CActionMgr::Instance().enableAction(true);
 
                 // Dispatch a message to clear the selected control and put it back into active state
-                NGenFunc::DispatchEvent( NMenu::EGE_MENU_REACTIVATE );
+                NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
             }
         }
     }

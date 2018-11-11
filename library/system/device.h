@@ -59,13 +59,6 @@ public:
     // Delete a secondary command buffer of a specific group
     void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
 
-    // Create descriptor sets
-    /*std::vector<VkDescriptorSet> createDescriptorSetVec(
-        const std::string & group,
-        int pipelineIndex,
-        const CTexture & texture,
-        const std::vector<CMemoryBuffer> & uniformBufVec );*/
-
     // Create push descriptor set
     void createPushDescriptorSet(
         uint32_t pipelineIndex,
@@ -81,7 +74,6 @@ public:
 
     // Create uniform buffer
     std::vector<CMemoryBuffer> createUniformBufferVec( uint32_t pipelineIndex );
-    //std::vector<CMemoryBuffer> createUniformBufferVec( const std::string & group, const std::string & uboId );
 
     // Delete group assets
     void deleteGroupAssets( const std::string & group );
@@ -200,8 +192,9 @@ public:
     // Get the shared font ibo max indice count
     size_t getSharedFontIBOMaxIndiceCount();
     
-    // Free the memory buffer
-    void freeMemoryBuffer( CMemoryBuffer & memoryBuffer );
+    // Add a memory buffer to the delete queue
+    void AddToDeleteQueue( CMemoryBuffer & memoryBuffer );
+    void AddToDeleteQueue( std::vector<CMemoryBuffer> & commandBufVec );
 
 private:
 
@@ -232,9 +225,6 @@ private:
     // Delete a buffer in a group
     void deleteMemoryBufferGroup( const std::string & group );
 
-    // Delete the UBO vector group
-    //void deleteUboVecGroup( const std::string & group );
-
     // Record the command buffers
     void recordCommandBuffers( uint32_t cmdBufIndex );
 
@@ -243,6 +233,9 @@ private:
 
     // Destroy the swap chain
     void destroySwapChain() override;
+    
+    // Free the memory buffer
+    void freeMemoryBuffer( CMemoryBuffer & memoryBuffer );
 
 private:
 
@@ -290,6 +283,9 @@ private:
 
     // Map containing pipeline layouts
     std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
+
+    // Vector for deleting memory buffers
+    std::multimap< uint32_t, CMemoryBuffer > m_memoryDeleteMultimap;
 
     // Current dynamic font IBO indices size
     size_t m_currentMaxFontIndices = 0;

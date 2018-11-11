@@ -64,7 +64,7 @@ void Menu_TransIn( CMenu & menu )
     
     AlphaTo( 250, 1.f, menu );
     
-    DispatchEvent( EGE_MENU_TRANS_IN, ETC_END );
+    DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_END );
 }
 
 
@@ -77,7 +77,7 @@ void Menu_TransOut( CMenu & menu )
     
     menu.setVisible( false );
     
-    DispatchEvent( EGE_MENU_TRANS_OUT, ETC_END );
+    DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_END );
 }
 
 
@@ -171,7 +171,7 @@ void Control_Selected_Dispatch_Exe( Sprite & sprite )
 
     sprite.setColor( sprite.getDefaultColor() );
 
-    DispatchEvent( EGE_MENU_SELECT_EXECUTE );
+    DispatchEvent( NMenuDefs::EME_MENU_SELECT_EXECUTE );
 }
 
 void Control_Selected_Dispatch_Exe_Act( Sprite & sprite )
@@ -180,8 +180,8 @@ void Control_Selected_Dispatch_Exe_Act( Sprite & sprite )
 
     sprite.setColor( sprite.getDefaultColor() );
 
-    DispatchEvent( EGE_MENU_SELECT_EXECUTE );
-    DispatchEvent( EGE_MENU_REACTIVATE );
+    DispatchEvent( NMenuDefs::EME_MENU_SELECT_EXECUTE );
+    DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
 }
 
 void Control_Selected_Visible( Sprite & sprite )
@@ -258,7 +258,7 @@ void Control_Fast_Face_Selected_Act( Sprite & sprite )
 
     sprite.setDefaultColor();
 
-    DispatchEvent( EGE_MENU_REACTIVATE );
+    DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
 }
 
 void Control_Fast_Selected( Sprite & sprite )

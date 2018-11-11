@@ -43,7 +43,7 @@ CSmartApplySettingsBtn::CSmartApplySettingsBtn( CUIControl * pUIControl ) :
 ****************************************************************************/
 void CSmartApplySettingsBtn::handleEvent( const SDL_Event & rEvent )
 {
-    if( rEvent.type == NMenu::EGE_MENU_TRANS_IN )
+    if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
         m_pUIControl->changeState(NUIControl::ECS_DISABLED);
 }
 
@@ -151,5 +151,5 @@ void CSmartApplySettingsBtn::execute()
     m_pUIControl->changeState(NUIControl::ECS_DISABLED);
 
     // Reactivate the menu now that we are done
-    NGenFunc::DispatchEvent( NMenu::EGE_MENU_REACTIVATE );
+    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
 }

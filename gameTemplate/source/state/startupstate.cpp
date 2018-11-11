@@ -10,6 +10,7 @@
 
 // Game dependencies
 #include "titlescreenstate.h"
+#include "gamedefs.h"
 
 // Game lib dependencies
 #include <managers/fontmanager.h>
@@ -137,18 +138,18 @@ void CStartUpState::init()
 void CStartUpState::handleEvent( const SDL_Event & rEvent )
 {
     // Called from script
-    if( rEvent.type == 0xA000 )
+    if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
     {
         std::thread load(&CStartUpState::assetLoad, this);
         load.detach();
     }
     // Called from thread
-    else if( rEvent.type == 0xA001 )
+    else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
     {
         m_pLogo->getSprite()->prepare( "fadeOut" );
     }
     // Called from script
-    else if( rEvent.type == 0xB000 )
+    else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
     {
         m_changeState = true;
     }
@@ -206,7 +207,7 @@ void CStartUpState::assetLoad()
         // Do the state specific load
         CTitleScreenState::load();
 
-        NGenFunc::DispatchEvent( 0xA001 );
+        NGenFunc::DispatchEvent( NGameDefs::EGE_THREAD_LOAD_COMPLETE );
     }
     catch( NExcept::CCriticalException & ex )
     {

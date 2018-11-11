@@ -129,7 +129,7 @@ private:
     std::vector<CMenu *> m_pMenuPathVec;
 
     // menu tree state
-    NMenu::EMenuTreeState m_state;
+    NMenuDefs::EMenuTreeState m_state;
 };
 
 #endif

@@ -19,6 +19,14 @@ namespace NGameDefs
         EGS_GAME_LOAD,
         EGS_RUN
     };
+    
+    enum EGameEvent
+    {
+        EGE_USER_EVENTS = 0x9000,
+        EGE_FADE_IN_COMPLETE,
+        EGE_FADE_OUT_COMPLETE,
+        EGE_THREAD_LOAD_COMPLETE,
+    };
 }
 
 #endif  // __game_defs_h__

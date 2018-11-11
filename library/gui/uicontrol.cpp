@@ -298,27 +298,27 @@ void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, co
 ************************************************************************/
 void CUIControl::handleEvent( const SDL_Event & rEvent )
 {
-    if( rEvent.type == NMenu::EGE_MENU_CONTROL_STATE_CHANGE )
+    if( rEvent.type == NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE )
     {
         onStateChange( rEvent );
     }
-    else if( rEvent.type == NMenu::EGE_MENU_SELECT_EXECUTE )
+    else if( rEvent.type == NMenuDefs::EME_MENU_SELECT_EXECUTE )
     {
         onSelectExecute( rEvent );
     }
-    else if( rEvent.type == NMenu::EGE_MENU_SET_ACTIVE_CONTROL )
+    else if( rEvent.type == NMenuDefs::EME_MENU_SET_ACTIVE_CONTROL )
     {
         onSetActiveControl( rEvent );
     }
-    else if( rEvent.type == NMenu::EGE_MENU_REACTIVATE )
+    else if( rEvent.type == NMenuDefs::EME_MENU_REACTIVATE )
     {
         onReactivate( rEvent );
     }
-    else if( rEvent.type == NMenu::EGE_MENU_TRANS_IN )
+    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
     {
         onTransIn( rEvent );
     }
-    else if( rEvent.type == NMenu::EGE_MENU_TRANS_OUT )
+    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_OUT )
     {
         onTransOut( rEvent );
     }
@@ -333,7 +333,7 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenu::ETC_BEGIN )
+    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
     {
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
@@ -346,7 +346,7 @@ void CUIControl::onTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onTransOut( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenu::ETC_BEGIN )
+    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
     {
         // Reset the control
         reset();
@@ -381,19 +381,19 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
     if( m_state == NUIControl::ECS_SELECTED )
     {
         if( m_actionType == NUIControl::ECAT_TO_TREE )
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_TO_TREE, 0, &m_executionAction );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TO_TREE, 0, &m_executionAction );
 
         else if( m_actionType == NUIControl::ECAT_TO_MENU )
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_TO_MENU, 0, &m_executionAction, this );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TO_MENU, 0, &m_executionAction, this );
 
         else if( m_actionType == NUIControl::ECAT_BACK )
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_BACK_ACTION );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_BACK_ACTION );
 
         else if( m_actionType == NUIControl::ECAT_CLOSE )
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_TOGGLE_ACTION );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION );
 
         else if( m_actionType == NUIControl::ECAT_GAME_STATE_CHANGE )
-            NGenFunc::DispatchEvent( NMenu::EGE_MENU_GAME_STATE_CHANGE, NMenu::ETC_BEGIN, &m_executionAction );
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN, &m_executionAction );
 
         else if( m_actionType == NUIControl::ECAT_QUIT_GAME )
             NGenFunc::DispatchEvent( SDL_QUIT );
@@ -416,7 +416,7 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
 void CUIControl::onSetActiveControl( const SDL_Event & rEvent )
 {
     // Set the last active control to be active again
-    if( (rEvent.user.code == NMenu::EAC_LAST_ACTIVE_CONTROL) &&
+    if( (rEvent.user.code == NMenuDefs::EAC_LAST_ACTIVE_CONTROL) &&
         (m_lastState > NUIControl::ECS_INACTIVE))
     {
         m_lastState = m_state = NUIControl::ECS_ACTIVE;
@@ -466,7 +466,7 @@ bool CUIControl::onMouseMove( const SDL_Event & rEvent )
         if( !isActive() )
         {
             NGenFunc::DispatchEvent(
-                NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+                NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
                 NUIControl::ECS_ACTIVE,
                 (void *)this );
         }
@@ -901,7 +901,7 @@ bool CUIControl::handleSelectAction( const CSelectMsgCracker & msgCracker )
         (isActive() && !msgCracker.isDeviceMouse() && msgCracker.isPressDown()) )
     {
         NGenFunc::DispatchEvent(
-            NMenu::EGE_MENU_CONTROL_STATE_CHANGE,
+            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
             NUIControl::ECS_SELECTED,
             (void *)this );
 
