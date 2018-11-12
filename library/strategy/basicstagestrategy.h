@@ -34,7 +34,7 @@ public:
 
     // Constructor
     CBasicStageStrategy();
-    CBasicStageStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec );
+    CBasicStageStrategy( std::vector<VkCommandBuffer> & commandBufVec );
 
     // Destructor
     virtual ~CBasicStageStrategy();

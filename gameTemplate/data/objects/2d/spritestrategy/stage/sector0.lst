@@ -1,4 +1,4 @@
-<node defaultGroup="(startup)" defaultObjectName="peg" defaultId="-2">
+<node defaultGroup="(run)" defaultObjectName="peg" defaultId="-2">
 
     <node type="spriteNode">
         <sprite2d>

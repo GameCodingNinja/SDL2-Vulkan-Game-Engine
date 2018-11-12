@@ -35,10 +35,9 @@ CActorStrategy::CActorStrategy()
 {
 }
 
-CActorStrategy::CActorStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec ) :
+CActorStrategy::CActorStrategy( std::vector<VkCommandBuffer> & commandBufVec ) :
     m_commandBufVec(commandBufVec)
 {
-    loadFromFile( file );
 }
 
 
@@ -60,6 +59,18 @@ void CActorStrategy::loadFromFile( const std::string & file )
     const XMLNode node = XMLNode::openFileHelper( file.c_str(), "node" );
     if( !node.isEmpty() )
     {
+        std::string defGroup, defObjName, defAIName, nodeName;
+        
+        // Check for any defaults
+        if( node.isAttributeSet( "defaultGroup" ) )
+            defGroup = node.getAttribute( "defaultGroup" );
+
+        if( node.isAttributeSet( "defaultObjectName" ) )
+            defObjName = node.getAttribute( "defaultObjectName" );
+
+        if( node.isAttributeSet( "defaultAIName" ) )
+            defAIName = node.getAttribute( "defaultAIName" );
+    
         for( int i = 0; i < node.nChildNode(); ++i )
         {
             const XMLNode nodeLst = node.getChildNode( "node", i );
@@ -68,7 +79,10 @@ void CActorStrategy::loadFromFile( const std::string & file )
             const std::string id = nodeLst.getAttribute( "name" );
 
             // Load the sprite data into the map
-            bool duplicate = !m_dataMap.emplace( id, nodeLst ).second;
+            bool duplicate = !m_dataMap.emplace(
+                std::piecewise_construct,
+                std::forward_as_tuple(id),
+                std::forward_as_tuple(nodeLst, defGroup, defObjName, defAIName) ).second;
 
             // Check for duplicate names
             if( duplicate )
@@ -260,8 +274,11 @@ void CActorStrategy::init()
 ****************************************************************************/
 void CActorStrategy::update()
 {
-    for( auto iter : m_pNodeVec )
-        iter->update();
+    if( m_enable )
+    {
+        for( auto iter : m_pNodeVec )
+            iter->update();
+    }
 }
 
 
@@ -270,8 +287,11 @@ void CActorStrategy::update()
 ************************************************************************/
 void CActorStrategy::transform()
 {
-    for( auto iter : m_pNodeVec )
-        iter->transform();
+    if( m_enable )
+    {
+        for( auto iter : m_pNodeVec )
+            iter->transform();
+    }
 }
 
 
@@ -281,26 +301,32 @@ void CActorStrategy::transform()
 ****************************************************************************/
 void CActorStrategy::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
 {
-    auto cmdBuf( m_commandBufVec[index] );
+    if( m_enable )
+    {
+        auto cmdBuf( m_commandBufVec[index] );
 
-    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
-    for( auto iter : m_pNodeVec )
-        iter->recordCommandBuffer( index, cmdBuf, viewProj );
-    
-    CDevice::Instance().endCommandBuffer( cmdBuf );
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuf, viewProj );
+
+        CDevice::Instance().endCommandBuffer( cmdBuf );
+    }
 }
 
 void CActorStrategy::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
-    auto cmdBuf( m_commandBufVec[index] );
+    if( m_enable )
+    {
+        auto cmdBuf( m_commandBufVec[index] );
 
-    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-    
-    for( auto iter : m_pNodeVec )
-        iter->recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
-    
-    CDevice::Instance().endCommandBuffer( cmdBuf );
+        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
+
+        CDevice::Instance().endCommandBuffer( cmdBuf );
+    }
 }
 
 

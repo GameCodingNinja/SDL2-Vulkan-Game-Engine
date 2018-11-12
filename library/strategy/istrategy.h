@@ -78,6 +78,9 @@ public:
     // Customize sprite id generation by defining a direction
     void setIdDir( int dir );
     
+    // Enable this strategy
+    void enable( bool enable = true );
+    
 protected:
     
     // Delete any sprites scheduled to die
@@ -93,6 +96,9 @@ protected:
     
     // camera id
     std::string m_cameraId;
+    
+    // Enable strategy
+    bool m_enable;
     
     // Id increment member
     static int m_idInc;

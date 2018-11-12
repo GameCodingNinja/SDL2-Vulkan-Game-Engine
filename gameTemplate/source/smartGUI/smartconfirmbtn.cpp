@@ -57,6 +57,12 @@ void CSmartConfirmBtn::execute()
         pSmartGuiCtrl = new CSmartResetKeyBindBtn( pYesBtn );
         conformationMsg = "Reset all key bindings|to their default settings?";
     }
+    else if( m_pUIControl->getName() == "continue_btn" )
+    {
+        conformationMsg = "Are you sure you|want to continue|on to the next state?";
+        actionType = NUIControl::ECAT_GAME_STATE_CHANGE;
+        executionAction = "run_state";
+    }
     /*else if( m_pUIControl->GetName().find(".game_save") != string::npos )
     {
         // Find the file name save no. deliminator

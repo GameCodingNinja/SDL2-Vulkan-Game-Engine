@@ -14,7 +14,21 @@
         <file path="data/objects/2d/scripts/shared_state.ang"/>
     </groupList>
     
-    <groupList groupName="(title_screen)">
+    <groupList groupName="(title)">
+        <file path="data/objects/2d/scripts/game_defs.ang"/>
+        <file path="data/objects/2d/scripts/shared_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_state.ang"/>
+    </groupList>
+    
+    <groupList groupName="(load)">
+        <file path="data/objects/2d/scripts/game_defs.ang"/>
+        <file path="data/objects/2d/scripts/shared_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_state.ang"/>
+    </groupList>
+    
+    <groupList groupName="(run)">
         <file path="data/objects/2d/scripts/game_defs.ang"/>
         <file path="data/objects/2d/scripts/shared_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>

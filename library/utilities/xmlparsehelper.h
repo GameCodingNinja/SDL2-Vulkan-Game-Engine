@@ -67,7 +67,7 @@ namespace NParseHelper
     NDefs::EVertAlignment LoadVertAlignment( const XMLNode & node, NDefs::EVertAlignment vertAlignment );
 
     // Load the dynamic offset
-    CDynamicOffset LoadDynamicOffset( const XMLNode & node );
+    CDynamicOffset LoadDynamicOffset( const XMLNode & node, bool & loaded );
 }
 
 #endif  // __xml_parse_helper_h__

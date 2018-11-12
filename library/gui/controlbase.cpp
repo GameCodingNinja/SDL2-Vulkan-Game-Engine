@@ -83,7 +83,8 @@ void CControlBase::loadFromNode( const XMLNode & node )
 void CControlBase::loadDynamicOffsetFromNode( const XMLNode & node )
 {
     // Load the dynamic offset
-    m_dynamicOffset = NParseHelper::LoadDynamicOffset( node );
+    bool dummy;
+    m_dynamicOffset = NParseHelper::LoadDynamicOffset( node, dummy );
 
     // Set the dynamic position
     setDynamicPos();
@@ -97,7 +98,7 @@ void CControlBase::setDynamicPos()
 {
     // Position the menu based on the dynamic offset
     if( !m_dynamicOffset.isEmpty() )
-        setPos( m_dynamicOffset.getPos( CSettings::Instance().getDefaultSizeHalf() ) );
+        setPos( m_dynamicOffset.getPos() );
 }
 
 

@@ -267,7 +267,8 @@ void CMenu::loadControlFromNode( XMLNode & node, NavHelperMap & navNodeMap )
 void CMenu::loadDynamicOffsetFromNode( const XMLNode & node )
 {
     // Load the dynamic offset
-    m_dynamicOffset = NParseHelper::LoadDynamicOffset( node );
+    bool dummy;
+    m_dynamicOffset = NParseHelper::LoadDynamicOffset( node, dummy );
 
     // Set the dynamic position
     setDynamicPos();
@@ -281,7 +282,7 @@ void CMenu::setDynamicPos()
 {
     // Position the menu based on the dynamic offset
     if( !m_dynamicOffset.isEmpty() )
-        setPos( m_dynamicOffset.getPos( CSettings::Instance().getDefaultSizeHalf() ) );
+        setPos( m_dynamicOffset.getPos() );
 }
 
 

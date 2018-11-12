@@ -16,8 +16,6 @@
 #include <managers/fontmanager.h>
 #include <managers/soundmanager.h>
 #include <managers/actionmanager.h>
-#include <managers/spritesheetmanager.h>
-#include <managers/cameramanager.h>
 #include <strategy/strategymanager.h>
 #include <objectdata/objectdatamanager.h>
 #include <common/color.h>
@@ -36,16 +34,12 @@
 #include <sprite/sprite.h>
 #include <system/device.h>
 #include <gui/menumanager.h>
-//#include <gui/menu.h>
-//#include <gui/uicontrol.h>
 #include <utilities/genfunc.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/xmlParser.h>
 #include <physics/physicsworldmanager2d.h>
-//#include <slot/slotmathmanager.h>
-//#include <slot/symbolsetviewmanager.h>
 #include <strategy/actorstrategy.h>
 #include <node/inode.h>
 
@@ -77,7 +71,7 @@ CStartUpState::CStartUpState() :
 ************************************************************************/
 CStartUpState::~CStartUpState()
 {
-    CStrategyMgr::Instance().clear();
+    CStrategyMgr::Instance().deleteStrategy( "(startup)" );
     CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
     CScriptMgr::Instance().freeGroup("(startup)");
     CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
@@ -89,11 +83,10 @@ CStartUpState::~CStartUpState()
 ************************************************************************/
 void CStartUpState::init()
 {
-    // Load the object data list table
+    // Load list table data
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
-
-    // Load the script list table
     CScriptMgr::Instance().loadListTable( "data/objects/2d/scripts/scriptListTable.lst" );
+    CStrategyMgr::Instance().loadListTable( "data/objects/2d/spritestrategy/strategyListTable.lst" );
 
     // Register the script items needed for startup animation
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
@@ -104,10 +97,8 @@ void CStartUpState::init()
     NScriptHighResolutionTimer::Register();
     NScriptSprite::Register();
 
-    // Load group specific script items
+    // Load group specific assets
     CScriptMgr::Instance().loadGroup("(startup)");
-
-    // Load the start up animation group
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
     
     // Add the command buffers to the menu manager
@@ -116,12 +107,10 @@ void CStartUpState::init()
 
     // Create the group command buffers and add the actor strategy
     auto stratCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-    CStrategyMgr::Instance().addStrategy(
-        "actorStrategy",
-        new CActorStrategy( "data/objects/2d/spritestrategy/startupNode.lst", stratCmdBuf ) );
+    CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy( stratCmdBuf ) )->enable();
 
     // Start the fade in
-    m_pLogo = CStrategyMgr::Instance().create( "actorStrategy", "waffles" );
+    m_pLogo = CStrategyMgr::Instance().create( "(startup)", "waffles" );
     m_pLogo->getSprite()->prepare( "fadeIn" );
     
     // This data no longer needed so free it
@@ -137,18 +126,18 @@ void CStartUpState::init()
 ************************************************************************/
 void CStartUpState::handleEvent( const SDL_Event & rEvent )
 {
-    // Called from script
+    // Event sent from script
     if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
     {
         std::thread load(&CStartUpState::assetLoad, this);
         load.detach();
     }
-    // Called from thread
+    // Event sent from thread
     else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
     {
         m_pLogo->getSprite()->prepare( "fadeOut" );
     }
-    // Called from script
+    // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
     {
         m_changeState = true;
@@ -168,9 +157,6 @@ void CStartUpState::assetLoad()
 
         // Load 3D object data list table
         CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
-
-        // Load the actor list table
-        CStrategyMgr::Instance().loadListTable( "data/objects/2d/spritestrategy/strategyListTable.lst" );
 
         // Load the action manager
         CActionMgr::Instance().loadActionFromXML( "data/settings/controllerMapping.cfg" );
@@ -212,17 +198,17 @@ void CStartUpState::assetLoad()
     catch( NExcept::CCriticalException & ex )
     {
         m_errorTitle = ex.getErrorTitle();
-        m_errorMessage = ex.getErrorMsg();
+        m_errorMsg = ex.getErrorMsg();
     }
     catch( std::exception const & ex )
     {
         m_errorTitle = "Standard Exception";
-        m_errorMessage = ex.what();
+        m_errorMsg = ex.what();
     }
     catch(...)
     {
         m_errorTitle = "Unknown Error";
-        m_errorMessage = "Something bad happened and I'm not sure what it was.";
+        m_errorMsg = "Something bad happened and I'm not sure what it was.";
     }
 }
 
@@ -233,8 +219,8 @@ void CStartUpState::assetLoad()
 bool CStartUpState::doStateChange()
 {
     // Re-throw any threaded exceptions
-    if( !m_errorMessage.empty() )
-        throw NExcept::CCriticalException( m_errorTitle, m_errorMessage );
+    if( !m_errorMsg.empty() )
+        throw NExcept::CCriticalException( m_errorTitle, m_errorMsg );
     
     return m_changeState;
 }

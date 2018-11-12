@@ -313,6 +313,10 @@ void CObject::loadTransFromNode( const XMLNode & node )
     CPoint<float> centerPos = NParseHelper::LoadCenterPos( node, loadedFlag );
     if( loadedFlag )
         setCenterPos( centerPos );
+    
+    CDynamicOffset dynamicOffset = NParseHelper::LoadDynamicOffset( node, loadedFlag );
+    if( loadedFlag )
+        setPos( dynamicOffset.getPos() );
 }
 
 

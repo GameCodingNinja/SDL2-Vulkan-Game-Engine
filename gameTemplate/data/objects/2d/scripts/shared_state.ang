@@ -16,7 +16,7 @@ shared void State_FadeIn( Sprite & sprite )
     Hold( 250 );
             
     CColor final(1,1,1,1);
-    AdditiveColorTo( 500, final, sprite );
+    NSpriteUtils::AdditiveColorTo( 500, final, sprite );
     
     DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
 }
@@ -24,9 +24,18 @@ shared void State_FadeIn( Sprite & sprite )
 shared void State_FadeOut( Sprite & sprite )
 {
     CColor current(0,0,0,1);
-    AdditiveColorTo( 500, current, sprite );
+    NSpriteUtils::AdditiveColorTo( 500, current, sprite );
     
     Hold( 250 );
     
     DispatchEvent( NGameDefs::EGE_FADE_OUT_COMPLETE );
+}
+
+
+/************************************************************************
+*    DESC:  Looping Animation
+************************************************************************/
+shared void State_LoopAnimation( Sprite & sprite )
+{
+    NSpriteUtils::Play( 12, sprite, true );
 }

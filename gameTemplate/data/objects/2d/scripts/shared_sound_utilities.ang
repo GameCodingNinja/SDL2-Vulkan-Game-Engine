@@ -7,57 +7,38 @@
 *                     loaded and used among all modules
 ************************************************************************/
 
-
-/************************************************************************
-*    DESC:  Volume to the final volume
-************************************************************************/
-shared void VolumeTo( float time, int final, CSound & sound )
+namespace NSoundUtils
 {
-    float current = sound.getVolume();
-    float inc = (float(final) - current) / time;
-    int lastVolume = int(current);
-
-    do
+    /************************************************************************
+    *    DESC:  Volume to the final volume
+    ************************************************************************/
+    shared void VolumeTo( float time, int final, CSound & sound )
     {
-        time -= HighResTimer.getElapsedTime();
+        float current = sound.getVolume();
+        float inc = (float(final) - current) / time;
+        int lastVolume = int(current);
 
-        if( time < 0 )
+        do
         {
-            sound.setVolume( int(final) );
-        }
-        else
-        {
-            current += inc * HighResTimer.getElapsedTime();
-        
-            if( lastVolume != int(current) )
+            time -= HighResTimer.getElapsedTime();
+
+            if( time < 0 )
             {
-                sound.setVolume( int(current) );
-                lastVolume = int(current);
+                sound.setVolume( int(final) );
             }
+            else
+            {
+                current += inc * HighResTimer.getElapsedTime();
+
+                if( lastVolume != int(current) )
+                {
+                    sound.setVolume( int(current) );
+                    lastVolume = int(current);
+                }
+            }
+
+            Suspend();
         }
-        
-        Suspend();
+        while( time > 0 );
     }
-    while( time > 0 );
-}
-
-
-/************************************************************************
-*    DESC:  Play the animation
-************************************************************************/
-shared void Play( int fps, Sprite & sprite, bool loop = false )
-{
-    float time = 1000.0 / fps;
-    uint frameCount = sprite.getFrameCount();
-
-    do
-    {
-        for( uint i = 0; i < frameCount; ++i )
-        {
-            sprite.setFrame( i );
-
-            Hold( time );
-        }
-    }
-    while( loop );
 }

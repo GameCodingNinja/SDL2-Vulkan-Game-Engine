@@ -45,7 +45,7 @@ private:
     
     // Error string messages
     std::string m_errorTitle;
-    std::string m_errorMessage;
+    std::string m_errorMsg;
 };
 
 #endif

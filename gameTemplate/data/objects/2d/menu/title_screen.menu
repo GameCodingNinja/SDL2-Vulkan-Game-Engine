@@ -10,13 +10,13 @@
     <menuControls>
 
         <!-- Continue Button -->
-        <control name="continue_btn" controlType="button" defaultState="inactive">
+        <control name="continue_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="-140" z="0"/>
             <fontStringLst>
                 <string text="Continue"/>
             </fontStringLst>
-            <action actionType="game_state_change" executionAction="run_state"/>
+            <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="exit_btn" down="new_game_btn"/>
             <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
         </control>

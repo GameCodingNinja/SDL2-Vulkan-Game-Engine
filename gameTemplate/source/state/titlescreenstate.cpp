@@ -23,8 +23,6 @@
 #include <sprite/sprite.h>
 #include <script/scriptmanager.h>
 #include <gui/menumanager.h>
-//#include <gui/uibutton.h>
-//#include <gui/uimeter.h>
 
 // SDL lib dependencies
 #include <SDL.h>
@@ -34,7 +32,7 @@
 ************************************************************************/
 CTitleScreenState::CTitleScreenState() :
     CCommonState( NGameDefs::EGS_TITLE_SCREEN, NGameDefs::EGS_GAME_LOAD ),
-    m_pBackground(nullptr)
+    m_pBackgroundNode(nullptr)
 {
 }
 
@@ -44,10 +42,10 @@ CTitleScreenState::CTitleScreenState() :
 ************************************************************************/
 CTitleScreenState::~CTitleScreenState()
 {
-    CStrategyMgr::Instance().clear();
-    CDevice::Instance().deleteCommandPoolGroup( "(title_screen)" );
-    CObjectDataMgr::Instance().freeGroup2D( "(title_screen)" );
-    CScriptMgr::Instance().freeGroup("(title_screen)");
+    CStrategyMgr::Instance().deleteStrategy( "(title)" );
+    CDevice::Instance().deleteCommandPoolGroup( "(title)" );
+    CObjectDataMgr::Instance().freeGroup2D( "(title)" );
+    CScriptMgr::Instance().freeGroup("(title)");
     //CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
 }
 
@@ -66,16 +64,13 @@ void CTitleScreenState::init()
     CCameraMgr::Instance().setActiveCameraPos( 0, 0, 20 );
     CCameraMgr::Instance().setActiveCameraRot( 10, 0, 0 );*/
     
-    // Create the group command buffers
-    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title_screen)" );
-
     // Add the actor strategy
-    CStrategyMgr::Instance().addStrategy(
-        "actorStrategy", new CActorStrategy( "data/objects/2d/spritestrategy/titlescreenNode.lst", commandBufVec ) );
+    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
+    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( commandBufVec ) )->enable();
     
     // Start the fade in
-    m_pBackground = CStrategyMgr::Instance().create( "actorStrategy", "background" );
-    m_pBackground->getSprite()->prepare( "fadeIn" );
+    m_pBackgroundNode = CStrategyMgr::Instance().create( "(title)", "background" );
+    m_pBackgroundNode->getSprite()->prepare( "fadeIn" );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -89,16 +84,26 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 {
     CCommonState::handleEvent( rEvent );
 
-    // Check for the "change state" message
+    // Event sent from menu
     if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
         // Prepare the script to fade in the screen. The script will send the end message
         if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
-            m_pBackground->getSprite()->prepare( "fadeOut" );
+            m_pBackgroundNode->getSprite()->prepare( "fadeOut" );
     }
+    // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
     {
         CMenuMgr::Instance().allow();
+    }
+    // Event sent from script
+    else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
+    {
+        // Clear out all the trees
+        CMenuMgr::Instance().clearActiveTrees();
+            
+        // Set the flag to change the state
+        m_changeState = true;
     }
 }
 
@@ -152,13 +157,13 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 
 
 /***************************************************************************
-*    DESC:  Namespace function for loading the assets for this state
+*    DESC:  Static function for loading the assets for this state
 *           NOTE: Only call when the class is not allocated
 ****************************************************************************/
 void CTitleScreenState::load()
 {
-    CObjectDataMgr::Instance().loadGroup2D( "(title_screen)" );
-    CScriptMgr::Instance().loadGroup("(title_screen)");
+    CObjectDataMgr::Instance().loadGroup2D( "(title)" );
+    CScriptMgr::Instance().loadGroup("(title)");
 
     //CObjectDataMgr::Instance().LoadGroup2D( "(actor)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
     //CObjectDataMgr::Instance().loadGroup3D( "(cube)" );

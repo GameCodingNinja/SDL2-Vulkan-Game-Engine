@@ -22,6 +22,7 @@ public:
 
     // Constructor
     CCommonState( const NGameDefs::EGameState, const NGameDefs::EGameState );
+    CCommonState( const NGameDefs::EGameState gameState, const CStateMessage & stateMsg );
 
     // Destructor
     virtual ~CCommonState();

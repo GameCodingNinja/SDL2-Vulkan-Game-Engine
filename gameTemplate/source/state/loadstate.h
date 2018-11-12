@@ -10,16 +10,16 @@
 #define __load_state_h__
 
 // Physical component dependency
-#include "igamestate.h"
+#include "commonstate.h"
 
 // Standard lib dependencies
 #include <string>
 #include <memory>
 
 // Forward declaration(s)
-class CSprite2D;
+class iNode;
 
-class CLoadState : public iGameState
+class CLoadState : public CCommonState
 {
 public:
 
@@ -31,6 +31,9 @@ public:
     
     // Do any pre-load init's
     void init() override;
+    
+    // Handle events
+    void handleEvent( const SDL_Event & rEvent ) override;
 
     // Is the state done
     bool doStateChange() override;
@@ -40,33 +43,17 @@ public:
 
 private:
 
-    // Load during the startup screen
-    void animate();
-
     // Load the assets
-    void objectDataLoad();
-    void assetsLoad();
-    void criticalLoad();
-    void criticalInit();
+    void assetLoad();
     
 private:
-    
-    // Load animation
-    //std::unique_ptr<CSprite2D> m_upSprite;
-    
-    // Flag to indicate the thread load is finished
-    bool m_threadActive;
-    
-    // Animation members
-    float m_time;
-    int m_frame;
     
     // Exception text
     std::string m_errorTitle;
     std::string m_errorMsg;
-
+    
+    // Node pointer to load animation Do NOT free
+    iNode * m_pLoadAnimNode;
 };
 
-#endif  // __game_load_state_h__
-
-
+#endif

@@ -115,29 +115,6 @@ namespace NScriptStrategyManager
     }
 
     /************************************************************************
-    *    DESC:  Get the sprite strategy via string find
-    ************************************************************************/
-    iStrategy * FindStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
-    {
-        iStrategy * pStrategy = nullptr;
-        
-        try
-        {
-            pStrategy = rStrategyMgr.findStrategy( strategyId );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return pStrategy;
-    }
-
-    /************************************************************************
     *    DESC:  Create a basic stage strategy                                                            
     ************************************************************************/
     void DeleteStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
@@ -193,7 +170,6 @@ namespace NScriptStrategyManager
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createBasicStageStrategy(string &in)",     asFUNCTION(CreateBasicStageStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createMenuStrategy(string &in)",           asFUNCTION(CreateMenuStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",                  asFUNCTION(GetStrategy), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & findStrategy(string &in)",                 asFUNCTION(FindStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",                      asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteSprite(string &in, int)",                   asMETHOD(CStrategyMgr, deleteSprite),   asCALL_THISCALL) );
         //Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iSprite & createSprite(string &in, string &in)",       asFUNCTION(CreateSprite), asCALL_CDECL_OBJLAST) );

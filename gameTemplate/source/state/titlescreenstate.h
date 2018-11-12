@@ -35,8 +35,8 @@ public:
     
 private:
 
-    // Node pointer to logo. Do NOT free
-    iNode * m_pBackground;
+    // Node pointer to background. Do NOT free
+    iNode * m_pBackgroundNode;
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include <2d/visualcomponentspritesheet.h>
 #include <2d/visualcomponentscaledframe.h>
 #include <2d/visualcomponentfont.h>
+#include <2d/visualcomponentnull.h>
 #include <3d/object3d.h>
 #include <3d/visualcomponent3d.h>
 #include <physics/physicscomponent2d.h>
@@ -45,6 +46,9 @@ CSprite::CSprite( const CObjectData2D & objectData, int id ) :
 
     else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
         m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
+    
+    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_NULL )
+        m_upVisualComponent.reset( new CVisualComponentNull( objectData ) );
 
     // Create the physics component
     if( objectData.getPhysicsData().isActive() )

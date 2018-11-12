@@ -30,49 +30,20 @@ public:
     };
 
     // Add to the bit mask
-    void add( EDynamicOffset value )
-    { m_parameters.add( value ); }
+    void add( EDynamicOffset value );
 
     // Set/Get X
-    void setX( float value )
-    { point.x = value; }
+    void setX( float value );
 
     // Set/Get Y
-    void setY( float value )
-    { point.y = value; }
+    void setY( float value );
 
     // Is the dynamic offset being used
-    bool isEmpty() const
-    { return m_parameters.isEmpty(); }
+    bool isEmpty() const;
 
     // Get the dynamic position
-    CPoint<float> getPos( CSize<float> defaultHalfSize )
-    {
-        CPoint<float> pos;
-        
-        // Strip out any fractional component for correct rendering
-        defaultHalfSize.round();
-
-        if( m_parameters.isSet( CDynamicOffset::EDO_LEFT ) )
-            pos.x = -(defaultHalfSize.w - point.x);
-
-        else if( m_parameters.isSet( CDynamicOffset::EDO_RIGHT ) )
-            pos.x = defaultHalfSize.w - point.x;
-
-        else if( m_parameters.isSet( CDynamicOffset::EDO_HORZ_CENTER ) )
-            pos.x = point.x;
-
-        if( m_parameters.isSet( CDynamicOffset::EDO_TOP ) )
-            pos.y = -(defaultHalfSize.h - point.y);
-            
-        else if( m_parameters.isSet( CDynamicOffset::EDO_BOTTOM ) )
-            pos.y = defaultHalfSize.h - point.y;
-
-        else if( m_parameters.isSet( EDO_VERT_CENTER ) )
-            pos.y = point.y;
-
-        return pos;
-    }
+    CPoint<float> getPos( CSize<float> defaultHalfSize );
+    CPoint<float> getPos();
 
 private:
 
@@ -81,8 +52,6 @@ private:
 
     // offset
     CPoint<float> point;
-
 };
 
-#endif  // __dynamic_offset_h__
-
+#endif

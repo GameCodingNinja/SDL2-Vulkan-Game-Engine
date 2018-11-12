@@ -20,10 +20,9 @@ CBasicStageStrategy::CBasicStageStrategy()
 {
 }
 
-CBasicStageStrategy::CBasicStageStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec ) :
+CBasicStageStrategy::CBasicStageStrategy( std::vector<VkCommandBuffer> & commandBufVec ) :
     m_commandBufVec(commandBufVec)
 {
-    loadFromFile( file );
 }
 
 
@@ -89,8 +88,11 @@ void CBasicStageStrategy::init()
 ****************************************************************************/
 void CBasicStageStrategy::update()
 {
-    for( auto & iter : m_sectorDeq )
-        iter.update();
+    if( m_enable )
+    {
+        for( auto & iter : m_sectorDeq )
+            iter.update();
+    }
 }
 
 
@@ -99,8 +101,11 @@ void CBasicStageStrategy::update()
 ************************************************************************/
 void CBasicStageStrategy::transform()
 {
-    for( auto & iter : m_sectorDeq )
-        iter.transform();
+    if( m_enable )
+    {
+        for( auto & iter : m_sectorDeq )
+            iter.transform();
+    }
 }
 
 
@@ -110,26 +115,32 @@ void CBasicStageStrategy::transform()
 ****************************************************************************/
 void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
 {
-    auto cmdBuf( m_commandBufVec[index] );
+    if( m_enable )
+    {
+        auto cmdBuf( m_commandBufVec[index] );
 
-    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-    
-    for( auto & iter : m_sectorDeq )
-        iter.recordCommandBuffer( index, cmdBuf, viewProj );
-    
-    CDevice::Instance().endCommandBuffer( cmdBuf );
+        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+
+        for( auto & iter : m_sectorDeq )
+            iter.recordCommandBuffer( index, cmdBuf, viewProj );
+
+        CDevice::Instance().endCommandBuffer( cmdBuf );
+    }
 }
 
 void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
 {
-    auto cmdBuf( m_commandBufVec[index] );
+    if( m_enable )
+    {
+        auto cmdBuf( m_commandBufVec[index] );
 
-    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-    
-    for( auto & iter : m_sectorDeq )
-        iter.recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
-    
-    CDevice::Instance().endCommandBuffer( cmdBuf );
+        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+
+        for( auto & iter : m_sectorDeq )
+            iter.recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
+
+        CDevice::Instance().endCommandBuffer( cmdBuf );
+    }
 }
 
 

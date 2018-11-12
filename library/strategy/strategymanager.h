@@ -80,9 +80,6 @@ public:
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );
     
-    // Get the pointer to the strategy based on string find
-    iStrategy * findStrategy( const std::string & strategyId );
-    
     // Get a reference to the strategy
     template <typename target>
     target & get( const std::string & strategyId )

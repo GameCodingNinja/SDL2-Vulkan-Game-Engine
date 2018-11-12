@@ -15,7 +15,8 @@
 //#include <2d/sprite2d.h>
 
 // Forward declaration(s)
-//class CPhysicsWorld2D;
+class CPhysicsWorld2D;
+class iNode;
 
 class CRunState : public CCommonState
 {
@@ -25,7 +26,7 @@ public:
     CRunState();
 
     // Destructor
-    virtual ~CRunState(){};
+    virtual ~CRunState();
     
     // Do any pre-game loop init's
     void init() override;
@@ -34,16 +35,19 @@ public:
     void handleEvent( const SDL_Event & rEvent ) override;
 
     // Handle the physics
-    void physics() override;
+    //void physics() override;
 
     // Update objects that require them
-    void update() override;
+    //void update() override;
 
     // Transform the game objects
-    void transform() override;
+    //void transform() override;
 
     // Do the rendering
     //void preRender() override;
+    
+    // Static load function
+    static void load();
 
 private:
     
@@ -52,20 +56,9 @@ private:
     
     // Physics world
     //CPhysicsWorld2D & m_rPhysicsWorld;
+    
+    // Node pointer to load animation Do NOT free
+    iNode * m_pLoadAnimNode;
 };
 
-
-namespace NRunState
-{
-    void ObjectDataLoad();
-    void CriticalLoad();
-    void CriticalUnload();
-    void Load();
-    void Unload();
-    void CriticalInit();
-}
-
-
-#endif  // __run_up_state_h__
-
-
+#endif

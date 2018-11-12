@@ -30,6 +30,11 @@ CCommonState::CCommonState( const NGameDefs::EGameState gameState, const NGameDe
     m_gameStateMap.emplace( "run_state", NGameDefs::EGS_RUN );
 }
 
+CCommonState::CCommonState( const NGameDefs::EGameState gameState, const CStateMessage & stateMsg ) :
+    iGameState( gameState, stateMsg )
+{
+}
+
 
 /************************************************************************
 *    DESC:  Destructor
@@ -57,14 +62,6 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
 
             // Set the message to load and unload the states
             m_stateMessage.setMsg( getLoadState( rEvent.user.data1 ), m_gameState );
-        }
-        else if( rEvent.user.code == NMenuDefs::ETC_END )
-        {
-            // Clear out all the trees
-            CMenuMgr::Instance().clearActiveTrees();
-
-            // Set the flag to change the state
-            m_changeState = true;
         }
     }
 }

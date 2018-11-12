@@ -1,0 +1,53 @@
+<node defaultGroup="(run)">
+    
+    <node name="null" type="spriteNode">
+        
+        <sprite2d objectName="null">
+            <position x="0" y="0" z="0"/>
+            <scriptLst>
+                <script fadeIn="State_FadeIn"/>
+                <script fadeOut="State_FadeOut"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    <!--
+    <node name="square_red" type="spriteNode">
+        
+        <sprite2d objectName="square_red">
+            <scale x=".9" y=".9" z="1"/>
+        </sprite2d>
+
+    </node>
+    
+    <node name="triangle_green" type="spriteNode">
+        
+        <sprite2d objectName="triangle_green"/>
+
+    </node>
+    
+    <node name="triangle_blue" type="spriteNode">
+        
+        <sprite2d objectName="triangle_blue"/>
+
+    </node>
+    
+    <node name="circle_green" type="spriteNode">
+        
+        <sprite2d objectName="circle_green"/>
+
+    </node>
+    
+    <node name="circle_blue" type="spriteNode">
+        
+        <sprite2d objectName="circle_blue"/>
+
+    </node>
+    
+    <node name="circle_red" type="spriteNode">
+        
+        <sprite2d objectName="circle_red"/>
+
+    </node>
+-->
+</node>

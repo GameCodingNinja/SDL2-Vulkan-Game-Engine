@@ -39,7 +39,7 @@ public:
 
     // Constructor
     CActorStrategy();
-    CActorStrategy( const std::string & file, std::vector<VkCommandBuffer> & commandBufVec );
+    CActorStrategy( std::vector<VkCommandBuffer> & commandBufVec );
 
     // Destructor
     virtual ~CActorStrategy();

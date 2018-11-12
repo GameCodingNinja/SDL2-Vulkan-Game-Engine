@@ -388,14 +388,18 @@ namespace NParseHelper
     /************************************************************************
     *    DESC:  Load the dynamic offset
     ************************************************************************/
-    CDynamicOffset LoadDynamicOffset( const XMLNode & node )
+    CDynamicOffset LoadDynamicOffset( const XMLNode & node, bool & loaded )
     {
         CDynamicOffset dynamicOffset;
 
         XMLNode dynamicOffsetNode = node.getChildNode( "dynamicOffset" );
+        
+        loaded = false;
 
         if( !dynamicOffsetNode.isEmpty() )
         {
+            loaded = true;
+            
             if( dynamicOffsetNode.isAttributeSet( "left" ) )
             {
                 dynamicOffset.add( CDynamicOffset::EDO_LEFT );

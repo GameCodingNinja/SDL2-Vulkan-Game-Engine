@@ -75,6 +75,7 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
     auto mapIter = m_pStrategyMap.find( strategyId );
     if( mapIter != m_pStrategyMap.end() )
     {
+        // Delete from the vector
         auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), mapIter->second );
         if( strategyIter != m_pStrategyVec.end() )
             m_pStrategyVec.erase( strategyIter );
@@ -214,21 +215,4 @@ iStrategy * CStrategyMgr::getStrategy( const std::string & strategyId )
                 % strategyId % __FUNCTION__ % __LINE__ ));
 
     return mapIter->second;
-}
-
-
-/************************************************************************
-*    DESC:  Get the pointer to the strategy based on string find
-************************************************************************/
-iStrategy * CStrategyMgr::findStrategy( const std::string & strategyId )
-{
-    for( auto & iter : m_pStrategyMap )
-        if( iter.first.find(strategyId) != std::string::npos )
-            return iter.second;
-    
-    throw NExcept::CCriticalException("Sprite Strategy Manager Id Find Error!",
-        boost::str( boost::format("Sprite Manager strategy Id can't be found via string find (%s).\n\n%s\nLine: %s")
-            % strategyId % __FUNCTION__ % __LINE__ ));
-    
-    return nullptr;
 }
