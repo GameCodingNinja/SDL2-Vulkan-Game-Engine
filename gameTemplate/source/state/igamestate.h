@@ -97,4 +97,4 @@ protected:
 
 };
 
-#endif  // __i_game_state_h__
+#endif

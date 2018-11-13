@@ -14,6 +14,4 @@ namespace NScriptObjectDataManager
     void Register();
 }
 
-#endif  // __script_object_data_manager_h__
-
-
+#endif

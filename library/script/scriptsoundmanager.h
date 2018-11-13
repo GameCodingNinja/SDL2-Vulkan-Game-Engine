@@ -14,6 +14,4 @@ namespace NScriptSoundManager
     void Register();
 }
 
-#endif  // __script_sound_manager_h__
-
-
+#endif

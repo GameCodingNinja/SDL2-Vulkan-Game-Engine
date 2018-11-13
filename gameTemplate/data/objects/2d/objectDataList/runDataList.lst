@@ -31,6 +31,12 @@
   
     <objectList>
         
+        <object name="null">
+            <visual>
+                <mesh genType="null"/>
+            </visual>
+        </object>
+        
         <object name="circle_green">
             <visual>
                 <texture file="data/textures/run/circle_green.png"/>

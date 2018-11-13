@@ -30,8 +30,8 @@
 #include <script/scriptsoundmanager.h>
 #include <script/scriptuicontrol.h>
 #include <script/scriptmenu.h>
+#include <script/scriptvisual.h>
 #include <script/scripthighresolutiontimer.h>
-#include <sprite/sprite.h>
 #include <system/device.h>
 #include <gui/menumanager.h>
 #include <utilities/genfunc.h>
@@ -41,7 +41,6 @@
 #include <utilities/xmlParser.h>
 #include <physics/physicsworldmanager2d.h>
 #include <strategy/actorstrategy.h>
-#include <node/inode.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -94,6 +93,7 @@ void CStartUpState::init()
     NScriptPoint::Register();
     NScriptSize::Register();
     NScriptColor::Register();
+    NScriptVisual::Register();
     NScriptHighResolutionTimer::Register();
     NScriptSprite::Register();
 
@@ -108,10 +108,12 @@ void CStartUpState::init()
     // Create the group command buffers and add the actor strategy
     auto stratCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
     CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy( stratCmdBuf ) )->enable();
+    
+    // Add the logo
+    CStrategyMgr::Instance().create( "(startup)", "waffles" );
 
     // Start the fade in
-    m_pLogo = CStrategyMgr::Instance().create( "(startup)", "waffles" );
-    m_pLogo->getSprite()->prepare( "fadeIn" );
+    m_scriptComponent.prepare( "(startup)", "State_FadeIn" );
     
     // This data no longer needed so free it
     CObjectDataMgr::Instance().freeDataGroup2D( "(startup)" );
@@ -135,7 +137,7 @@ void CStartUpState::handleEvent( const SDL_Event & rEvent )
     // Event sent from thread
     else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
     {
-        m_pLogo->getSprite()->prepare( "fadeOut" );
+        m_scriptComponent.prepare( "(startup)", "State_FadeOut" );
     }
     // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )

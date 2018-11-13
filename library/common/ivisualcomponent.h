@@ -8,6 +8,9 @@
 #ifndef __i_visual_component_h__
 #define __i_visual_component_h__
 
+// Physical component dependency
+#include <common/visual.h>
+
 // Game lib dependencies
 #include <common/color.h>
 #include <common/size.h>
@@ -27,7 +30,7 @@ class CFontProperties;
 class CFontData;
 struct XMLNode;
 
-class iVisualComponent
+class iVisualComponent : public CVisual
 {
 public:
     
@@ -115,9 +118,6 @@ protected:
     
     // Color
     CColor m_color;
-    
-    // Additive Color
-    static CColor m_additive;
     
     // The default color
     const CColor m_rDefaultColor;

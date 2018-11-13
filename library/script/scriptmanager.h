@@ -115,6 +115,4 @@ private:
 
 };
 
-#endif  // __script_manager_h__
-
-
+#endif

@@ -14,6 +14,4 @@ namespace NScriptMenu
     void Register();
 }
 
-#endif  // __script_menu_h__
-
-
+#endif

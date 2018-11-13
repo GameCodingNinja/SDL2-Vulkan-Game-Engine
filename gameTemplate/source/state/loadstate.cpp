@@ -40,8 +40,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CLoadState::CLoadState( const CStateMessage & stateMsg ) :
-    CCommonState( NGameDefs::EGS_GAME_LOAD, stateMsg ),
-    m_pLoadAnimNode(nullptr)
+    CCommonState( NGameDefs::EGS_GAME_LOAD, stateMsg )
 {
 }
 
@@ -72,9 +71,8 @@ void CLoadState::init()
     CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy( commandBufVec ) )->enable();
     
     // Start the fade in and animation
-    m_pLoadAnimNode = CStrategyMgr::Instance().create( "(load)", "loadAnim" );
-    m_pLoadAnimNode->getSprite()->prepare( "fadeIn" );
-    m_pLoadAnimNode->getSprite()->prepare( "loadAnimationLoop" );
+    m_scriptComponent.prepare( "(load)", "State_FadeIn" );
+    CStrategyMgr::Instance().create( "(load)", "loadAnim" )->getSprite()->prepare( "loadAnimationLoop" );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -101,7 +99,7 @@ void CLoadState::handleEvent( const SDL_Event & rEvent )
     // Event sent from thread
     else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
     {
-        m_pLoadAnimNode->getSprite()->prepare( "fadeOut" );
+        m_scriptComponent.prepare( "(load)", "State_FadeOut" );
     }
 }
 

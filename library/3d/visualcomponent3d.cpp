@@ -12,7 +12,6 @@
 #include <objectdata/objectdata3d.h>
 #include <objectdata/objectvisualdata3d.h>
 #include <common/vertex3d.h>
-#include <common/shaderdata.h>
 #include <system/device.h>
 #include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>

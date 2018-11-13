@@ -15,5 +15,3 @@ namespace NScriptMenuManager
 }
 
 #endif
-
-

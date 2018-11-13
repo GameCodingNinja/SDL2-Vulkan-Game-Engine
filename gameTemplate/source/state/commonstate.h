@@ -11,6 +11,9 @@
 // Physical component dependency
 #include "igamestate.h"
 
+// Game lib dependencies
+#include <script/scriptcomponent.h>
+
 // Standard lib dependencies
 #include <string>
 #include <map>
@@ -48,12 +51,15 @@ protected:
     // Get the load state
     NGameDefs::EGameState getLoadState( void * pVoid );
     
+protected:
+
+    // Script component for screen fades
+    CScriptComponent m_scriptComponent;
+    
 private:
         
     // game state map
     std::map<std::string, NGameDefs::EGameState> m_gameStateMap;
 };
 
-#endif  // __common_state_h__
-
-
+#endif

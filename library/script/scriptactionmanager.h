@@ -14,6 +14,4 @@ namespace NScriptActionManager
     void Register();
 }
 
-#endif  // __script_action_manager_h__
-
-
+#endif

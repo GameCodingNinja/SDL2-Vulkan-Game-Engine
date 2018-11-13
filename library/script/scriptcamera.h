@@ -14,6 +14,4 @@ namespace NScriptCamera
     void Register();
 }
 
-#endif  // __script_camera_h__
-
-
+#endif

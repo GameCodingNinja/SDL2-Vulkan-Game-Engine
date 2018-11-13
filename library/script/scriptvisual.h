@@ -1,14 +1,14 @@
 
 /************************************************************************
-*    FILE NAME:       scriptcameramanager.h
+*    FILE NAME:       scriptvisual.h
 *
-*    DESCRIPTION:     CCameraMgr script object registration
+*    DESCRIPTION:     CVisual script object registration
 ************************************************************************/
 
-#ifndef __script_camera_manager_h__
-#define __script_camera_manager_h__
+#ifndef __script_visual_h__
+#define __script_visual_h__
 
-namespace NScriptCameraManager
+namespace NScriptVisual
 {
     // Register Script Object
     void Register();

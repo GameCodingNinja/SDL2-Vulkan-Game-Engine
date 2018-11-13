@@ -15,5 +15,3 @@ namespace NScriptScriptManager
 }
 
 #endif
-
-

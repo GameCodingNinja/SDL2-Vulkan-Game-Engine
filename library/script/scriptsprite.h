@@ -14,6 +14,4 @@ namespace NScriptSprite
     void Register();
 }
 
-#endif  // __script_sprite_h__
-
-
+#endif

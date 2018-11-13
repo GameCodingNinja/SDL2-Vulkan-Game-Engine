@@ -11,12 +11,8 @@
 // Physical component dependency
 #include "commonstate.h"
 
-// Game lib dependencies
-//#include <2d/sprite2d.h>
-
 // Forward declaration(s)
 class CPhysicsWorld2D;
-class iNode;
 
 class CRunState : public CCommonState
 {
@@ -56,9 +52,6 @@ private:
     
     // Physics world
     //CPhysicsWorld2D & m_rPhysicsWorld;
-    
-    // Node pointer to load animation Do NOT free
-    iNode * m_pLoadAnimNode;
 };
 
 #endif

@@ -16,9 +16,6 @@
 #include <string>
 #include <memory>
 
-// Forward declaration(s)
-class iNode;
-
 class CLoadState : public CCommonState
 {
 public:
@@ -51,9 +48,6 @@ private:
     // Exception text
     std::string m_errorTitle;
     std::string m_errorMsg;
-    
-    // Node pointer to load animation Do NOT free
-    iNode * m_pLoadAnimNode;
 };
 
 #endif

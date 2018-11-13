@@ -14,6 +14,4 @@ namespace NScriptPoint
     void Register();
 }
 
-#endif  // __script_color_h__
-
-
+#endif

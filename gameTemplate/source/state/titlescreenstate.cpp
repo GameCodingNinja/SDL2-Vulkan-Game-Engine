@@ -19,8 +19,6 @@
 #include <system/device.h>
 #include <strategy/strategymanager.h>
 #include <strategy/actorstrategy.h>
-#include <node/inode.h>
-#include <sprite/sprite.h>
 #include <script/scriptmanager.h>
 #include <gui/menumanager.h>
 
@@ -31,8 +29,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CTitleScreenState::CTitleScreenState() :
-    CCommonState( NGameDefs::EGS_TITLE_SCREEN, NGameDefs::EGS_GAME_LOAD ),
-    m_pBackgroundNode(nullptr)
+    CCommonState( NGameDefs::EGS_TITLE_SCREEN, NGameDefs::EGS_GAME_LOAD )
 {
 }
 
@@ -68,9 +65,11 @@ void CTitleScreenState::init()
     auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
     CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( commandBufVec ) )->enable();
     
+    // Add the background
+    CStrategyMgr::Instance().create( "(title)", "background" );
+    
     // Start the fade in
-    m_pBackgroundNode = CStrategyMgr::Instance().create( "(title)", "background" );
-    m_pBackgroundNode->getSprite()->prepare( "fadeIn" );
+    m_scriptComponent.prepare( "(title)", "State_FadeIn" );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -87,9 +86,9 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
     // Event sent from menu
     if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
-        // Prepare the script to fade in the screen. The script will send the end message
+        // Prepare the script to fade in the screen
         if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
-            m_pBackgroundNode->getSprite()->prepare( "fadeOut" );
+            m_scriptComponent.prepare( "(title)", "State_FadeOut" );
     }
     // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )

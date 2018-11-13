@@ -14,6 +14,4 @@ namespace NScriptSettings
     void Register();
 }
 
-#endif  // __script_settings_h__
-
-
+#endif

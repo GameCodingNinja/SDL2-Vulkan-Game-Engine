@@ -22,8 +22,6 @@
 #include <strategy/basicstagestrategy.h>
 #include <strategy/actorstrategy.h>
 #include <strategy/strategymanager.h>
-#include <node/inode.h>
-#include <sprite/sprite.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -32,7 +30,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CRunState::CRunState() :
-    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD )//,
+    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD )
         //m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
 {
 }
@@ -48,7 +46,6 @@ CRunState::~CRunState()
     CDevice::Instance().deleteCommandPoolGroup( "(run)" );
     CObjectDataMgr::Instance().freeGroup2D( "(run)" );
     CScriptMgr::Instance().freeGroup("(run)");
-    //CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
 }
 
 
@@ -58,32 +55,15 @@ CRunState::~CRunState()
 void CRunState::init()
 {
     // Unblock the menu messaging and activate needed trees
-    //CMenuMgr::Instance().allow();
-    /*CMenuMgr::Instance().activateTree("pause_tree");
-    
-    
-    // Create the group command buffers
-    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
+    CMenuMgr::Instance().activateTree("pause_tree");
 
-    // Add the actor strategy
-    CStrategyMgr::Instance().addStrategy(
-        "actorStrategy", new CBasicStageStrategy( "data/objects/2d/spritestrategy/titlescreenNode.lst", commandBufVec ) );
-    
-    // Start the fade in
-    m_pBackgroundNode = CStrategyMgr::Instance().create( "actorStrategy", "background" );
-    m_pBackgroundNode->getSprite()->prepare( "fadeIn" );*/
-    
-    //CStrategyMgr::Instance().get()
-    
-    // Add the actor strategy
-    //auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    //CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy( runCmdBufVec ) );
-    
-    // Start the fade in and animation
-    //CStrategyMgr::Instance().create( "(run)", "null" )->getSprite()->prepare( "fadeIn" );
-    
-    
+    // Enable the strategy for rendering
+    CStrategyMgr::Instance().getStrategy( "(stage)" )->enable();
+    CStrategyMgr::Instance().getStrategy( "(run)" )->enable();
 
+    // Start the fade
+    m_scriptComponent.prepare( "(run)", "State_FadeIn" );
+    
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
 }
@@ -99,9 +79,9 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
     // Event sent from menu
     if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
-        // Prepare the script to fade in the screen. The script will send the end message
-        //if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
-            //m_pBackgroundNode->getSprite()->prepare( "fadeOut" );
+        // Prepare the script to fade in the screen.
+        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+            m_scriptComponent.prepare( "(run)", "State_FadeOut" );
     }
     // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
@@ -129,20 +109,6 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
     {
         m_rPhysicsWorld.fixedTimeStep();
     }
-}*/
-
-
-/***************************************************************************
-*    DESC:  Update objects that require them
-****************************************************************************/
-/*void CRunState::update()
-{
-    CCommonState::update();
-
-    //m_scriptComponent.update();
-
-    if( !CMenuMgr::Instance().isActive() )
-        CStrategyMgr::Instance().update();
 }*/
 
 
@@ -178,16 +144,13 @@ void CRunState::load()
     CObjectDataMgr::Instance().loadGroup2D( "(run)");
     CScriptMgr::Instance().loadGroup("(run)");
     
-    // Add the stage strategy
+    // Add a stage strategy
     auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
     CStrategyMgr::Instance().addStrategy( "(stage)", new CBasicStageStrategy( stageCmdBufVec ) );
     
-    // Add the actor strategy
-    //auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    //CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy( runCmdBufVec ) );
-    
-    // Start the fade in and animation
-    //CStrategyMgr::Instance().create( "(run)", "null" )->getSprite()->prepare( "fadeIn" );
+    // Add an actor strategy
+    auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
+    CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy( runCmdBufVec ) );
     
     // All physics entities are destroyed and all heap memory is released.
     //CPhysicsWorldManager2D::Instance().createWorld( "(game)" );

@@ -15,5 +15,3 @@ namespace NScriptFontManager
 }
 
 #endif
-
-

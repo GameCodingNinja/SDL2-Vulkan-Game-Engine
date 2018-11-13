@@ -19,7 +19,6 @@
 std::string iVisualComponent::m_null_string;
 CSize<float> iVisualComponent::m_null_float_size;
 CSize<int> iVisualComponent::m_null_int_size;
-CColor iVisualComponent::m_additive;
 
 /************************************************************************
 *    desc:  Constructor

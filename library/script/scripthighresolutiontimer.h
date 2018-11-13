@@ -15,5 +15,3 @@ namespace NScriptHighResolutionTimer
 }
 
 #endif
-
-

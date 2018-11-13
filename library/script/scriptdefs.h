@@ -72,6 +72,4 @@ template<> inline uint   CScriptParam::get() const { return m_paramVal.uintVal; 
 template<> inline float  CScriptParam::get() const { return m_paramVal.floatVal; }
 template<> inline void * CScriptParam::get() const { return m_paramVal.pRegObjVal; }
 
-#endif  // __script_defs_h__
-
-
+#endif

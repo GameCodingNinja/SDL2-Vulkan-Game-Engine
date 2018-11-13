@@ -11,9 +11,6 @@
 // Physical component dependency
 #include "commonstate.h"
 
-// Forward Declarations
-class iNode;
-
 class CTitleScreenState : public CCommonState
 {
 public:
@@ -32,11 +29,6 @@ public:
     
     // Static load function
     static void load();
-    
-private:
-
-    // Node pointer to background. Do NOT free
-    iNode * m_pBackgroundNode;
 };
 
 #endif

@@ -8,23 +8,27 @@
 /************************************************************************
 *    DESC:  Do a fade in and out
 ************************************************************************/
-shared void State_FadeIn( Sprite & sprite )
+shared void State_FadeIn()
 {
+    CVisual visual;
+    
     CColor current(0,0,0,1);
-    sprite.setAdditiveColor( current );
+    visual.setAdditiveColor( current );
     
     Hold( 250 );
             
     CColor final(1,1,1,1);
-    NSpriteUtils::AdditiveColorTo( 500, final, sprite );
+    NVisualUtils::ColorTo( 500, final, visual );
     
     DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
 }
 
-shared void State_FadeOut( Sprite & sprite )
+shared void State_FadeOut()
 {
+    CVisual visual;
+    
     CColor current(0,0,0,1);
-    NSpriteUtils::AdditiveColorTo( 500, current, sprite );
+    NVisualUtils::ColorTo( 500, current, visual );
     
     Hold( 250 );
     

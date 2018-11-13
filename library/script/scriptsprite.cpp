@@ -158,21 +158,6 @@ namespace NScriptSprite
         return sprite.getVisualComponent()->getDefaultAlpha();
     }
 
-    void SetAdditiveColor1(const CColor & color, CSprite & sprite)
-    {
-        sprite.getVisualComponent()->setAdditiveColor( color );
-    }
-
-    void SetAdditiveColor2(float r, float g, float b, float a, CSprite & sprite)
-    {
-        sprite.getVisualComponent()->setAdditiveColor( r, g, b, a );
-    }
-
-    const CColor & GetAdditiveColor(CSprite & sprite)
-    {
-        return sprite.getVisualComponent()->getAdditiveColor();
-    }
-
     void CreateFontString(const std::string & fontStr, CSprite & sprite)
     {
         sprite.getVisualComponent()->createFontString(fontStr);
@@ -229,9 +214,6 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(const CColor &in)",                   asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setColor(float, float, float, float)",         asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getColor()",                         asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAdditiveColor(const CColor &in)",           asFUNCTION(SetAdditiveColor1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "void setAdditiveColor(float, float, float, float)", asFUNCTION(SetAdditiveColor2), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getAdditiveColor()",                 asFUNCTION(GetAdditiveColor),  asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setDefaultColor()",                            asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "const CColor & getDefaultColor()",                  asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setAlpha(float, bool allowToExceed = false)",  asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );

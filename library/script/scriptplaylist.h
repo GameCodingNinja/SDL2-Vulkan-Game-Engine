@@ -14,6 +14,4 @@ namespace NScriptPlayLst
     void Register();
 }
 
-#endif  // __script_playlist_h__
-
-
+#endif

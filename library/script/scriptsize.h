@@ -15,5 +15,3 @@ namespace NScriptSize
 }
 
 #endif
-
-

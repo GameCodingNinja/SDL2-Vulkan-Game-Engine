@@ -11,9 +11,6 @@
 // Physical component dependency
 #include "commonstate.h"
 
-// Forward Declarations
-class iNode;
-
 class CStartUpState : public CCommonState
 {
 public:
@@ -39,9 +36,6 @@ private:
     void assetLoad();
     
 private:
-    
-    // Node pointer to logo. Do NOT free
-    iNode * m_pLogo;
     
     // Error string messages
     std::string m_errorTitle;

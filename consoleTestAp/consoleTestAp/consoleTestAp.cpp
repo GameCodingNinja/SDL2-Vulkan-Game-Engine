@@ -1,6 +1,32 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
+class iStatic
+{
+public:
+    static int myStatic;
+};
+
+int iStatic::myStatic = 5;
+
+class CMyStatic1 : public iStatic
+{};
+
+class CMyStatic2 : public iStatic
+{};
+
+int main()
+{
+    iStatic miStatic;
+    CMyStatic1 myStatic1;
+    CMyStatic2 myStatic2;
+    
+    myStatic2.myStatic = 10;
+    
+    return 0;
+}
+
+
 /*#include <iostream>
 
 int main()
@@ -184,7 +210,7 @@ int main()
     return 0;
 }*/
 
-#include <iostream>
+/*#include <iostream>
 #include <limits>
 #include <cstdint>
 #include <string>
@@ -226,7 +252,7 @@ int main()
     int min = std::numeric_limits<int8_t>::min();
 
     return 0;
-}
+}*/
 
 /*#include <iostream>
 

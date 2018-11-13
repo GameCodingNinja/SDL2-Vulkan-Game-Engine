@@ -81,7 +81,11 @@ void CCommonState::miscProcess()
 ****************************************************************************/
 void CCommonState::update()
 {
-    CStrategyMgr::Instance().update();
+    m_scriptComponent.update();
+    
+    if( !CMenuMgr::Instance().isActive() || m_gameState == NGameDefs::EGS_TITLE_SCREEN )
+        CStrategyMgr::Instance().update();
+
     CMenuMgr::Instance().update();
 }
 
@@ -91,7 +95,9 @@ void CCommonState::update()
 ****************************************************************************/
 void CCommonState::transform()
 {
-    CStrategyMgr::Instance().transform();
+    if( !CMenuMgr::Instance().isActive() || m_gameState == NGameDefs::EGS_TITLE_SCREEN )
+        CStrategyMgr::Instance().transform();
+
     CMenuMgr::Instance().transform();
 }
 

@@ -16,6 +16,4 @@ namespace NScriptGlobals
     void Register();
 }
 
-#endif  // __script_globals_h__
-
-
+#endif

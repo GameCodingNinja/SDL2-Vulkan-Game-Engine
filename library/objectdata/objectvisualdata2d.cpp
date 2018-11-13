@@ -131,6 +131,9 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
 
                 else if( genTypeStr == "font" )
                     m_genType = NDefs::EGT_FONT;
+                
+                else if( genTypeStr == "null" )
+                    m_genType = NDefs::EGT_NULL;
             }
 
             if( meshNode.isAttributeSet("file") )

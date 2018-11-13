@@ -58,6 +58,4 @@ private:
 
 };
 
-#endif  // __script_component_2d_h__
-
-
+#endif

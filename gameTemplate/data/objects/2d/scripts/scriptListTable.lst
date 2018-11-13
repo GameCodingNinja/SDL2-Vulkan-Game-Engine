@@ -11,6 +11,7 @@
         <file path="data/objects/2d/scripts/game_defs.ang"/>
         <file path="data/objects/2d/scripts/shared_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_visual_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_state.ang"/>
     </groupList>
     
@@ -18,6 +19,7 @@
         <file path="data/objects/2d/scripts/game_defs.ang"/>
         <file path="data/objects/2d/scripts/shared_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_visual_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_state.ang"/>
     </groupList>
     
@@ -25,6 +27,7 @@
         <file path="data/objects/2d/scripts/game_defs.ang"/>
         <file path="data/objects/2d/scripts/shared_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_visual_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_state.ang"/>
     </groupList>
     
@@ -32,6 +35,7 @@
         <file path="data/objects/2d/scripts/game_defs.ang"/>
         <file path="data/objects/2d/scripts/shared_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_sprite_utilities.ang"/>
+        <file path="data/objects/2d/scripts/shared_visual_utilities.ang"/>
         <file path="data/objects/2d/scripts/shared_state.ang"/>
     </groupList>
 

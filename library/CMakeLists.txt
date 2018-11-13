@@ -52,6 +52,7 @@ add_library(
         script/scriptscriptmanager.cpp
         script/scriptmenu.cpp
         script/scriptuicontrol.cpp
+        script/scriptvisual.cpp
         system/devicevulkan.cpp
         system/device.cpp
         utilities/xmlparsehelper.cpp
@@ -112,6 +113,7 @@ add_library(
         common/fontdata.cpp
         common/fontproperties.cpp
         common/ivisualcomponent.cpp
+        common/visual.cpp
         common/vertex.cpp
         common/uniformbufferobject.cpp
         common/pushdescriptorset.cpp
