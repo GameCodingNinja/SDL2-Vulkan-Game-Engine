@@ -5,9 +5,7 @@
         <sprite2d objectName="loadAnim">
             <dynamicOffset right="150" bottom="150"/>
             <scriptLst>
-                <script fadeIn="State_FadeIn"/>
-                <script fadeOut="State_FadeOut"/>
-                <script loadAnimationLoop="State_LoopAnimation"/>
+                <script loadAnimationLoop="State_LoopAnimation" group="(state)"/>
             </scriptLst>
         </sprite2d>
 

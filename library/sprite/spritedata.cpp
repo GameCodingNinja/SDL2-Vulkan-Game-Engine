@@ -154,7 +154,7 @@ const CFontData * CSpriteData::getFontData() const
 /************************************************************************
 *    DESC:  Get the script functions
 ************************************************************************/
-const std::map<std::string, std::string> & CSpriteData::getScriptFunctions() const
+const std::map<std::string, std::tuple<std::string, std::string>> & CSpriteData::getScriptFunctions() const
 {
     return m_scriptFunctionMap;
 }
@@ -177,10 +177,19 @@ void CSpriteData::loadScriptFunctions( const XMLNode & node )
             const XMLAttribute attribute = scriptNode.getAttribute(0);
             const std::string attrName = attribute.lpszName;
             const std::string attrValue = attribute.lpszValue;
+            
+            // Get the group for this script. Default it to the object data group
+            std::string group = m_group;
+            if( scriptNode.isAttributeSet( "group" ) )
+            {
+                group = scriptNode.getAttribute( "group" );
+                if( group.empty() )
+                        group = m_group;
+            }
 
             // Add the attribute name and value to the map
             if( !attrValue.empty() )
-                m_scriptFunctionMap.emplace( attrName, attrValue );
+                m_scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
         }
     }
 }

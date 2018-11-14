@@ -77,30 +77,10 @@
     </node>
     -->
     
-    <node name="solid" type="spriteNode" defaultGroup="(startup)">
-        
-        <sprite2d objectName="solid">
-            <position x="0" y="0" z="0"/>
-        </sprite2d>
-
-    </node>
-    
     <node name="waffles" type="spriteNode" defaultGroup="(startup)">
         
         <sprite2d objectName="waffles">
             <position x="0" y="0" z="0"/>
-            <scriptLst>
-                <script fadeIn="State_FadeIn"/>
-                <script fadeOut="State_FadeOut"/>
-            </scriptLst>
-        </sprite2d>
-
-    </node>
-    
-    <node name="logo" type="spriteNode" defaultGroup="(startup)">
-        
-        <sprite2d objectName="logo">
-            <position x="50" y="50" z="0"/>
         </sprite2d>
 
     </node>

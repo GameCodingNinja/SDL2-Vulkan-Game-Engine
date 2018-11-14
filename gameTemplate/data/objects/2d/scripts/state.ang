@@ -8,7 +8,7 @@
 /************************************************************************
 *    DESC:  Do a fade in and out
 ************************************************************************/
-shared void State_FadeIn()
+void State_FadeIn()
 {
     CVisual visual;
     
@@ -23,7 +23,7 @@ shared void State_FadeIn()
     DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
 }
 
-shared void State_FadeOut()
+void State_FadeOut()
 {
     CVisual visual;
     
@@ -39,7 +39,7 @@ shared void State_FadeOut()
 /************************************************************************
 *    DESC:  Looping Animation
 ************************************************************************/
-shared void State_LoopAnimation( Sprite & sprite )
+void State_LoopAnimation( Sprite & sprite )
 {
     NSpriteUtils::Play( 12, sprite, true );
 }

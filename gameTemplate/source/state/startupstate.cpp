@@ -72,7 +72,6 @@ CStartUpState::~CStartUpState()
 {
     CStrategyMgr::Instance().deleteStrategy( "(startup)" );
     CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
-    CScriptMgr::Instance().freeGroup("(startup)");
     CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
 }
 
@@ -98,7 +97,7 @@ void CStartUpState::init()
     NScriptSprite::Register();
 
     // Load group specific assets
-    CScriptMgr::Instance().loadGroup("(startup)");
+    CScriptMgr::Instance().loadGroup("(state)");
     CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
     
     // Add the command buffers to the menu manager
@@ -113,7 +112,7 @@ void CStartUpState::init()
     CStrategyMgr::Instance().create( "(startup)", "waffles" );
 
     // Start the fade in
-    m_scriptComponent.prepare( "(startup)", "State_FadeIn" );
+    m_scriptComponent.prepare( "(state)", "State_FadeIn" );
     
     // This data no longer needed so free it
     CObjectDataMgr::Instance().freeDataGroup2D( "(startup)" );
@@ -137,7 +136,7 @@ void CStartUpState::handleEvent( const SDL_Event & rEvent )
     // Event sent from thread
     else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
     {
-        m_scriptComponent.prepare( "(startup)", "State_FadeOut" );
+        m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )

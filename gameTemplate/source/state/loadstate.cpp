@@ -53,7 +53,6 @@ CLoadState::~CLoadState()
     CStrategyMgr::Instance().deleteStrategy( "(load)" );
     CDevice::Instance().deleteCommandPoolGroup( "(load)" );
     CObjectDataMgr::Instance().freeGroup2D( "(load)" );
-    CScriptMgr::Instance().freeGroup("(load)");
 }
 
 
@@ -63,7 +62,6 @@ CLoadState::~CLoadState()
 void CLoadState::init()
 {
     // Load group specific assets
-    CScriptMgr::Instance().loadGroup("(load)");
     CObjectDataMgr::Instance().loadGroup2D( "(load)" );
     
     // Add the actor strategy
@@ -71,7 +69,7 @@ void CLoadState::init()
     CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy( commandBufVec ) )->enable();
     
     // Start the fade in and animation
-    m_scriptComponent.prepare( "(load)", "State_FadeIn" );
+    m_scriptComponent.prepare( "(state)", "State_FadeIn" );
     CStrategyMgr::Instance().create( "(load)", "loadAnim" )->getSprite()->prepare( "loadAnimationLoop" );
 
     // Reset the elapsed time before entering game loop
@@ -99,7 +97,7 @@ void CLoadState::handleEvent( const SDL_Event & rEvent )
     // Event sent from thread
     else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
     {
-        m_scriptComponent.prepare( "(load)", "State_FadeOut" );
+        m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
 }
 

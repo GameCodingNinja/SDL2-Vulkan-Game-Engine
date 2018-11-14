@@ -149,7 +149,16 @@ void CSprite::initScriptFunctions( const XMLNode & node )
             // Add the attribute name and value to the map
             if( !attrValue.empty() )
             {
-                m_scriptFunctionMap.emplace( attrName, attrValue );
+                // Get the group for this script. Default it to the object data group
+                std::string group = m_rObjectData.getGroup();
+                if( scriptNode.isAttributeSet( "group" ) )
+                {
+                    group = scriptNode.getAttribute( "group" );
+                    if( group.empty() )
+                        group = m_rObjectData.getGroup();
+                }
+            
+                m_scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
 
                 if( attrName == "update" )
                     m_upObject->getParameters().add( NDefs::SCRIPT_UPDATE );
@@ -167,7 +176,7 @@ bool CSprite::prepare( const std::string & scriptFuncId, bool forceUpdate )
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.prepare( m_rObjectData.getGroup(), iter->second, {this});
+        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
 
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
@@ -184,7 +193,7 @@ bool CSprite::prepare( const std::string & scriptFuncId, bool forceUpdate )
 /************************************************************************
 *    DESC:  Copy over the script functions
 ************************************************************************/
-void CSprite::copyScriptFunctions( const std::map<std::string, std::string> & scriptFunctionMap )
+void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string>> & scriptFunctionMap )
 {
     for( auto & iter : scriptFunctionMap )
     {

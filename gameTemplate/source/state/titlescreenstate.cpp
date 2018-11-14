@@ -42,7 +42,6 @@ CTitleScreenState::~CTitleScreenState()
     CStrategyMgr::Instance().deleteStrategy( "(title)" );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
     CObjectDataMgr::Instance().freeGroup2D( "(title)" );
-    CScriptMgr::Instance().freeGroup("(title)");
     //CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
 }
 
@@ -61,15 +60,11 @@ void CTitleScreenState::init()
     CCameraMgr::Instance().setActiveCameraPos( 0, 0, 20 );
     CCameraMgr::Instance().setActiveCameraRot( 10, 0, 0 );*/
     
-    // Add the actor strategy
-    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( commandBufVec ) )->enable();
-    
-    // Add the background
-    CStrategyMgr::Instance().create( "(title)", "background" );
+    // Enable the strategy for rendering
+    CStrategyMgr::Instance().getStrategy( "(title)" )->enable();
     
     // Start the fade in
-    m_scriptComponent.prepare( "(title)", "State_FadeIn" );
+    m_scriptComponent.prepare( "(state)", "State_FadeIn" );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -88,7 +83,7 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
     {
         // Prepare the script to fade in the screen
         if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
-            m_scriptComponent.prepare( "(title)", "State_FadeOut" );
+            m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
@@ -162,7 +157,13 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 void CTitleScreenState::load()
 {
     CObjectDataMgr::Instance().loadGroup2D( "(title)" );
-    CScriptMgr::Instance().loadGroup("(title)");
+    
+    // Add the actor strategy
+    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
+    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( commandBufVec ) );
+    
+    // Add the background
+    CStrategyMgr::Instance().create( "(title)", "background" );
 
     //CObjectDataMgr::Instance().LoadGroup2D( "(actor)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
     //CObjectDataMgr::Instance().loadGroup3D( "(cube)" );

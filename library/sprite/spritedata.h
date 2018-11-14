@@ -45,7 +45,7 @@ public:
     void loadScriptFunctions( const XMLNode & node );
     
     // Get the script functions
-    const std::map<std::string, std::string> & getScriptFunctions() const;
+    const std::map<std::string, std::tuple<std::string, std::string>> & getScriptFunctions() const;
     
     // Get the sprite name
     const std::string & getSpriteName() const;
@@ -83,7 +83,7 @@ private:
     std::string m_aiName;
     
     // Script function map
-    std::map<std::string, std::string> m_scriptFunctionMap;
+    std::map<std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;
     
     // Font data
     std::shared_ptr<CFontData> m_upFontData;

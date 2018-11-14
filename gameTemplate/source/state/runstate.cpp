@@ -45,7 +45,6 @@ CRunState::~CRunState()
     CStrategyMgr::Instance().deleteStrategy( "(stage)" );
     CDevice::Instance().deleteCommandPoolGroup( "(run)" );
     CObjectDataMgr::Instance().freeGroup2D( "(run)" );
-    CScriptMgr::Instance().freeGroup("(run)");
 }
 
 
@@ -62,7 +61,7 @@ void CRunState::init()
     CStrategyMgr::Instance().getStrategy( "(run)" )->enable();
 
     // Start the fade
-    m_scriptComponent.prepare( "(run)", "State_FadeIn" );
+    m_scriptComponent.prepare( "(state)", "State_FadeIn" );
     
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
@@ -81,7 +80,7 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
     {
         // Prepare the script to fade in the screen.
         if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
-            m_scriptComponent.prepare( "(run)", "State_FadeOut" );
+            m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script
     else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
@@ -142,7 +141,6 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
 void CRunState::load()
 {
     CObjectDataMgr::Instance().loadGroup2D( "(run)");
-    CScriptMgr::Instance().loadGroup("(run)");
     
     // Add a stage strategy
     auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
