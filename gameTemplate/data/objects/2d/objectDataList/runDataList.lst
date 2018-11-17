@@ -31,12 +31,6 @@
   
     <objectList>
         
-        <object name="null">
-            <visual>
-                <mesh genType="null"/>
-            </visual>
-        </object>
-        
         <object name="circle_green">
             <visual>
                 <texture file="data/textures/run/circle_green.png"/>
@@ -127,12 +121,12 @@
             <visual>
                 <texture file="data/textures/run/peg.png"/>
             </visual>
-            <!--<physics>
+            <physics>
                 <body type="static"/>
                 <fixtureLst>
                     <fixture shape="circle" radius="17"/>
                 </fixtureLst>
-            </physics>-->
+            </physics>
         </object>
 
     </objectList>

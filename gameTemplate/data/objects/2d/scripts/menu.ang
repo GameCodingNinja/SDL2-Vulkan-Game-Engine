@@ -6,20 +6,31 @@
 ************************************************************************/
 
 /************************************************************************
-*    DESC:  Sound to play when the menu control becomes active
+*    DESC:  Menu transition in script
 ************************************************************************/
-void Control_OnActive( CUIControl & control )
+void Menu_TransIn( CMenu & menu )
 {
-    SoundMgr.play( "(menu)", "active" );
+    menu.setAlpha( 0.f );
+    menu.setVisible( true );
+    
+    AlphaTo( 250, 1.f, menu );
+    
+    DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_END );
 }
 
 
 /************************************************************************
-*    DESC:  Sound to play when the menu control is selected
+*    DESC:  Menu transition out script
 ************************************************************************/
-void Control_OnSelect( CUIControl & control )
+void Menu_TransOut( CMenu & menu )
 {
-    SoundMgr.play( "(menu)", "select" );
+    menu.setAlpha( 1.f );
+    
+    AlphaTo( 250, 0.f, menu );
+    
+    menu.setVisible( false );
+    
+    DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_END );
 }
 
 
@@ -28,10 +39,6 @@ void Control_OnSelect( CUIControl & control )
 ************************************************************************/
 void AlphaTo( float time, float final, CMenu & menu )
 {
-    // Convert from RGB value to normalized value
-    if( final > 1.5 )
-        final *= 0.00390625f;
-
     float current = menu.getAlpha();
     float inc = (final - current) / time;
 
@@ -56,28 +63,20 @@ void AlphaTo( float time, float final, CMenu & menu )
 
 
 /************************************************************************
-*    DESC:  Menu transition in script
+*    DESC:  Sound to play when the menu control becomes active
 ************************************************************************/
-void Menu_TransIn( CMenu & menu )
+void Control_OnActive( CUIControl & control )
 {
-    menu.setVisible( true );
-    
-    AlphaTo( 250, 1.f, menu );
-    
-    DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_END );
+    SoundMgr.play( "(menu)", "active" );
 }
 
 
 /************************************************************************
-*    DESC:  Menu transition out script
+*    DESC:  Sound to play when the menu control is selected
 ************************************************************************/
-void Menu_TransOut( CMenu & menu )
+void Control_OnSelect( CUIControl & control )
 {
-    AlphaTo( 250, 0.f, menu );
-    
-    menu.setVisible( false );
-    
-    DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_END );
+    SoundMgr.play( "(menu)", "select" );
 }
 
 

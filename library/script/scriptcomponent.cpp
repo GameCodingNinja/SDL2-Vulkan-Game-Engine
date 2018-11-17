@@ -35,7 +35,7 @@ CScriptComponent::CScriptComponent()
 ************************************************************************/
 CScriptComponent::~CScriptComponent()
 {
-    // Release the contextes we are still holding on to
+    // Release the contexts we are still holding on to
     for( auto iter : m_pContextVec )
         iter->Release();
 }

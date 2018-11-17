@@ -39,6 +39,9 @@ CTitleScreenState::CTitleScreenState() :
 ************************************************************************/
 CTitleScreenState::~CTitleScreenState()
 {
+    // Wait for all rendering to be finished
+    CDevice::Instance().waitForIdle();
+    
     CStrategyMgr::Instance().deleteStrategy( "(title)" );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
     CObjectDataMgr::Instance().freeGroup2D( "(title)" );

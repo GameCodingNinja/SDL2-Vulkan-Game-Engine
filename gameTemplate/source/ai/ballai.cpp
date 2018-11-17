@@ -45,7 +45,7 @@ void CBallAI::init()
 ************************************************************************/
 void CBallAI::update()
 {
-    if( m_sprite.getObject()->getPos().y < -600.f )
+    if( m_sprite.getObject()->getPos().y > 600.f )
         initPhysics();
 }
 
@@ -61,6 +61,6 @@ void CBallAI::initPhysics()
     
     m_sprite.getPhysicsComponent()->setTransform(
         m_RandX(m_generator),
-        m_RandY(m_generator),
+        -m_RandY(m_generator),
         m_RandR(m_generator) );
 }

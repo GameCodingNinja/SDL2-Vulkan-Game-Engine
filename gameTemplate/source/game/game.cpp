@@ -62,10 +62,8 @@ CGame::CGame() :
 ************************************************************************/
 CGame::~CGame()
 {
-    // Wait for all rendering to be finished
-    CDevice::Instance().waitForIdle();
-    
     // Free all objects
+    // This waits for idle before returning
     upGameState.reset();
     
     // Free the menu assets

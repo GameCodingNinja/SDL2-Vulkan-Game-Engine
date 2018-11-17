@@ -179,10 +179,11 @@ void CDevice::destroyAssets()
         freeMemoryBuffer( m_sharedFontIbo );
         
         // Free the delete queue
-        for( auto & iter : m_memoryDeleteMultimap )
-            freeMemoryBuffer( iter.second );
+        for( auto & mapIter : m_memoryDeleteMap )
+            for( auto & vecIter : mapIter.second )
+                freeMemoryBuffer( vecIter );
         
-        m_memoryDeleteMultimap.clear();
+        m_memoryDeleteMap.clear();
 
         // Free all the shader modules
         for( auto & iter : m_shaderModuleMap )
@@ -359,17 +360,19 @@ void CDevice::render()
     
     // Delete the memory buffer if it's been in the queue for one cycle
     // NOTE: This needs to be done after the current frame increment
-    auto iter = m_memoryDeleteMultimap.begin();
-    while( iter != m_memoryDeleteMultimap.end() )
+    auto mapIter = m_memoryDeleteMap.begin();
+    while( mapIter != m_memoryDeleteMap.end() )
     {
-        if( iter->first == m_currentFrame )
+        if( mapIter->first == m_currentFrame )
         {
-            freeMemoryBuffer( iter->second );
-            iter = m_memoryDeleteMultimap.erase( iter );
+            for( auto & vecIter : mapIter->second )
+                freeMemoryBuffer( vecIter );
+            
+            mapIter = m_memoryDeleteMap.erase( mapIter );
         }
         else
         {
-            ++iter;
+            ++mapIter;
         }
     }
 }
@@ -782,9 +785,6 @@ void CDevice::deleteGroupAssets( const std::string & group )
 
     // Delete the memory buffers
     deleteMemoryBufferGroup( group );
-
-    // This also deletes all the command buffers
-    deleteCommandPoolGroup( group );
 }
 
 
@@ -1159,11 +1159,20 @@ void CDevice::freeMemoryBuffer( CMemoryBuffer & memoryBuffer )
 ************************************************************************/
 void CDevice::AddToDeleteQueue( CMemoryBuffer & memBuff )
 {
-    m_memoryDeleteMultimap.emplace( m_currentFrame, memBuff );
+    auto mapIter = m_memoryDeleteMap.find( m_currentFrame );
+    if( mapIter != m_memoryDeleteMap.end() )
+    {
+        mapIter->second.push_back( memBuff );
+    }
+    else
+    {
+        auto iter = m_memoryDeleteMap.emplace( m_currentFrame, std::vector<CMemoryBuffer>() );
+        iter.first->second.push_back( memBuff );
+    }
 }
 
 void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & commandBufVec )
 {
     for( auto & iter : commandBufVec )
-        m_memoryDeleteMultimap.emplace( m_currentFrame, iter );
+        AddToDeleteQueue( iter );
 }

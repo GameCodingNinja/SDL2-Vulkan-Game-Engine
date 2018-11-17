@@ -1,13 +1,5 @@
-<node defaultGroup="(run)">
+<node defaultGroup="(run)" defaultAIName="aiBall">
     
-    <node name="null" type="spriteNode">
-        
-        <sprite2d objectName="null">
-            <position x="0" y="0" z="0"/>
-        </sprite2d>
-
-    </node>
-    <!--
     <node name="square_red" type="spriteNode">
         
         <sprite2d objectName="square_red">
@@ -45,5 +37,5 @@
         <sprite2d objectName="circle_red"/>
 
     </node>
--->
+
 </node>

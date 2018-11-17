@@ -70,6 +70,9 @@ CStartUpState::CStartUpState() :
 ************************************************************************/
 CStartUpState::~CStartUpState()
 {
+    // Wait for all rendering to be finished
+    CDevice::Instance().waitForIdle();
+    
     CStrategyMgr::Instance().deleteStrategy( "(startup)" );
     CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
     CObjectDataMgr::Instance().freeGroup2D( "(startup)" );

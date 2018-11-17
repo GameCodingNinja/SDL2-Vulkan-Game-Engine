@@ -15,8 +15,8 @@
 #include <objectdata/objectdatamanager.h>
 #include <system/device.h>
 #include <script/scriptmanager.h>
-//#include <physics/physicsworldmanager2d.h>
-//#include <physics/physicsworld2d.h>
+#include <physics/physicsworldmanager2d.h>
+#include <physics/physicsworld2d.h>
 //#include <physics/physicscomponent2d.h>
 #include <managers/cameramanager.h>
 #include <strategy/basicstagestrategy.h>
@@ -30,8 +30,8 @@
 *    DESC:  Constructor
 ************************************************************************/
 CRunState::CRunState() :
-    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD )
-        //m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
+    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD ),
+        m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
 {
 }
 
@@ -41,10 +41,14 @@ CRunState::CRunState() :
 ************************************************************************/
 CRunState::~CRunState()
 {
+    // Wait for all rendering to be finished
+    CDevice::Instance().waitForIdle();
+    
     CStrategyMgr::Instance().deleteStrategy( "(run)" );
     CStrategyMgr::Instance().deleteStrategy( "(stage)" );
     CDevice::Instance().deleteCommandPoolGroup( "(run)" );
     CObjectDataMgr::Instance().freeGroup2D( "(run)" );
+    CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
 }
 
 
@@ -102,36 +106,13 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
 /***************************************************************************
 *    DESC:  Handle the physics
 ****************************************************************************/
-/*void CRunState::physics()
+void CRunState::physics()
 {
     if( !CMenuMgr::Instance().isActive() )
     {
         m_rPhysicsWorld.fixedTimeStep();
     }
-}*/
-
-
-/***************************************************************************
-*    DESC:  Transform the game objects
-****************************************************************************/
-/*void CRunState::transform()
-{
-    CCommonState::transform();
-
-    if( !CMenuMgr::Instance().isActive() )
-        CStrategyMgr::Instance().transform();
-}*/
-
-
-/***************************************************************************
-*    DESC:  Do the 2D rendering
-****************************************************************************/
-/*void CRunState::preRender()
-{
-    CCommonState::preRender();
-
-    //CStrategyMgr::Instance().render( CCameraMgr::Instance().getDefaultProjMatrix() );
-}*/
+}
 
 
 /***************************************************************************
@@ -142,6 +123,9 @@ void CRunState::load()
 {
     CObjectDataMgr::Instance().loadGroup2D( "(run)");
     
+    // Create the physics world
+    CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
+    
     // Add a stage strategy
     auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
     CStrategyMgr::Instance().addStrategy( "(stage)", new CBasicStageStrategy( stageCmdBufVec ) );
@@ -150,8 +134,8 @@ void CRunState::load()
     auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
     CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy( runCmdBufVec ) );
     
-    // All physics entities are destroyed and all heap memory is released.
-    //CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
-    //CStrategyMgr::Instance().addStrategy( "(stage1)", new CBasicStageStrategy );
-    //CStrategyMgr::Instance().addStrategy( "(sprite)", new CBasicSpriteStrategy );
+    // Add the sprites to the stategy
+    const char* shapes[] = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
+    for( int i = 0; i < 24; ++i )
+        CStrategyMgr::Instance().create( "(run)", shapes[i % 6] );
 }

@@ -285,7 +285,7 @@ private:
     std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
 
     // Vector for deleting memory buffers
-    std::multimap< uint32_t, CMemoryBuffer > m_memoryDeleteMultimap;
+    std::map< uint32_t, std::vector<CMemoryBuffer> > m_memoryDeleteMap;
 
     // Current dynamic font IBO indices size
     size_t m_currentMaxFontIndices = 0;

@@ -31,27 +31,15 @@ public:
     void handleEvent( const SDL_Event & rEvent ) override;
 
     // Handle the physics
-    //void physics() override;
-
-    // Update objects that require them
-    //void update() override;
-
-    // Transform the game objects
-    //void transform() override;
-
-    // Do the rendering
-    //void preRender() override;
+    void physics() override;
     
     // Static load function
     static void load();
 
 private:
     
-    // The script conponent
-    //CScriptComponent m_scriptComponent;
-    
     // Physics world
-    //CPhysicsWorld2D & m_rPhysicsWorld;
+    CPhysicsWorld2D & m_rPhysicsWorld;
 };
 
 #endif

@@ -323,8 +323,8 @@ void CPhysicsComponent2D::update( CSprite * pSprite )
         {
             const b2Vec2 & pos = m_pBody->GetPosition();
             const float angle = m_pBody->GetAngle();
-            pSprite->getObject()->setPos( pos.x * METERS_TO_PIXELS, -(pos.y * METERS_TO_PIXELS) );
-            pSprite->getObject()->setRot( 0, 0, -angle, false );
+            pSprite->getObject()->setPos( pos.x * METERS_TO_PIXELS, (pos.y * METERS_TO_PIXELS) );
+            pSprite->getObject()->setRot( 0, 0, angle, false );
         }
     }
 }
@@ -347,7 +347,7 @@ void CPhysicsComponent2D::setTransform( float x, float y, float angle, bool rese
 {
     if( m_pBody != nullptr )
     {
-        m_pBody->SetTransform( b2Vec2( x * PIXELS_TO_METERS, -(y * PIXELS_TO_METERS) ), angle );
+        m_pBody->SetTransform( b2Vec2( x * PIXELS_TO_METERS, (y * PIXELS_TO_METERS) ), angle );
 
         if( resetVelocity )
         {
