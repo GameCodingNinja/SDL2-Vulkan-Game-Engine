@@ -5,19 +5,24 @@
  *    DESCRIPTION:     mesh manager class singleton
  ************************************************************************/
 
+#if !(defined(__IOS__) || defined(__ANDROID__) || defined(__arm__))
+// Glew dependencies (have to be defined first)
+#include <GL/glew.h>
+#endif
+
 // Physical component dependency
 #include <managers/meshmanager.h>
 
 // Game lib dependencies
 #include <utilities/smartpointers.h>
 #include <utilities/exceptionhandling.h>
+#include <managers/texturemanager.h>
 #include <common/meshbinaryfileheader.h>
 #include <common/point.h>
 #include <common/normal.h>
 #include <common/uv.h>
 #include <common/texture.h>
 #include <common/vertex3d.h>
-#include <system/device.h>
 
 // SDL lib dependencies
 #include <SDL.h>
@@ -30,44 +35,46 @@
 #include <memory>
 
 /************************************************************************
- *    DESC:  Constructor
+ *    desc:  Constructor
  ************************************************************************/
 CMeshMgr::CMeshMgr()
 {
-}
+}   // constructor
 
 
 /************************************************************************
- *    DESC:  destructor
+ *    desc:  destructor
  ************************************************************************/
 CMeshMgr::~CMeshMgr()
 {
     // Free the buffers in all groups
-    /*for( auto & mapMapIter : m_meshBufMapMap )
+    for( auto & mapMapIter : m_meshBufMapMapVec )
     {
         for( auto & mapIter : mapMapIter.second )
         {
-            for( auto & iter : mapIter.second.getMeshVec() )
+            for( auto & iter : mapIter.second )
             {
                 glDeleteBuffers( 1, &iter.m_ibo );
                 glDeleteBuffers( 1, &iter.m_vbo );
             }
         }
-    }*/
-}
+    }
+
+}	// destructor
 
 
 /************************************************************************
- *    DESC: Load mesh from file
+ *    desc: Load mesh from file
  ************************************************************************/
-void CMeshMgr::loadFromFile(
+void CMeshMgr::LoadFromFile(
     const std::string & group,
-    const std::string & filePath )
+    const std::string & filePath,
+    std::vector<CMesh3D> & meshVec )
 {
     // Create the map group if it doesn't already exist
-    auto mapMapIter = m_meshBufMapMap.find( group );
-    if( mapMapIter == m_meshBufMapMap.end() )
-        mapMapIter = m_meshBufMapMap.emplace( group, std::map<const std::string, CMesh3D >() ).first;
+    auto mapMapIter = m_meshBufMapMapVec.find( group );
+    if( mapMapIter == m_meshBufMapMapVec.end() )
+        mapMapIter = m_meshBufMapMapVec.emplace( group, std::map<const std::string, std::vector < CMesh3D >>() ).first;
 
     // See if the ID has already been loaded
     auto mapIter = mapMapIter->second.find( filePath );
@@ -75,17 +82,23 @@ void CMeshMgr::loadFromFile(
     // If it's not found, create the mesh buffer and add it to the list
     if( mapIter == mapMapIter->second.end() )
     {
-        mapIter = mapMapIter->second.emplace( filePath, CMesh3D() ).first;
+        mapIter = mapMapIter->second.emplace( filePath, std::vector<CMesh3D>() ).first;
 
-        loadFrom3DM( group, filePath, mapIter->second );
+        LoadFrom3DM( group, filePath, mapIter->second );
     }
-}
+
+    // Copy the mesh data to the passed in mesh vector
+    meshVec.reserve( mapIter->second.size() );
+    for( auto & iter : mapIter->second )
+        meshVec.emplace_back( iter );
+
+}   // LoadFromFile
 
 
 /************************************************************************
- *    DESC: Load collision mesh from file
+ *    desc: Load collision mesh from file
  ************************************************************************/
-void CMeshMgr::loadFromFile(
+void CMeshMgr::LoadFromFile(
     const std::string & group,
     const std::string & filePath,
     CCollisionMesh3D & collisionMesh )
@@ -103,21 +116,22 @@ void CMeshMgr::loadFromFile(
     {
         mapIter = mapMapIter->second.emplace( filePath, CCollisionMesh3D() ).first;
 
-        loadFrom3DM( filePath, mapIter->second );
+        LoadFrom3DM( filePath, mapIter->second );
     }
 
     // Copy the mesh data over
     collisionMesh = mapIter->second;
-}
+
+}   // LoadFromFile
 
 
 /************************************************************************
- *    DESC: Load 3d mesh file
+ *    desc: Load 3d mesh file
  ************************************************************************/
-void CMeshMgr::loadFrom3DM(
+void CMeshMgr::LoadFrom3DM(
     const std::string & group,
     const std::string & filePath,
-    CMesh3D & mesh3d )
+    std::vector<CMesh3D> & meshVec )
 {
     // Open file for reading
     NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( filePath.c_str(), "rb" ) );
@@ -138,29 +152,30 @@ void CMeshMgr::loadFrom3DM(
 
     if( fileHeader.text_count > 0 )
         // Load with textures
-        loadFromFile( scpFile.get(), fileHeader, group, filePath, mesh3d );
+        LoadFromFile( scpFile.get(), fileHeader, group, filePath, meshVec );
     else
         // Load without textures
-        loadFromFile( scpFile.get(), fileHeader, filePath, mesh3d );
-}
+        LoadFromFile( scpFile.get(), fileHeader, filePath, meshVec );
+
+}   // LoadFrom3DM
 
 
 /************************************************************************
- *    DESC: Load 3d mesh file with textures
+ *    desc: Load 3d mesh file with textures
  ************************************************************************/
-void CMeshMgr::loadFromFile(
+void CMeshMgr::LoadFromFile(
     SDL_RWops * pFile,
     const CMeshBinaryFileHeader & fileHeader,
     const std::string & group,
     const std::string & filePath,
-    CMesh3D & mesh3d )
+    std::vector<CMesh3D> & meshVec )
 {
-    // Check to insure we are in the correct spot in the binary file
-    tagCheck( pFile, filePath );
+    // temporary texture vector
+    std::vector<CTexture> textureVec;
+    textureVec.reserve( fileHeader.text_count );
 
-    // Setup the texture file path vector
-    auto & textureVec = mesh3d.getTextureVec();
-    textureVec.reserve( fileHeader.text_count);
+    // Check to insure we are in the correct spot in the binary file
+    TagCheck( pFile, filePath );
 
     // Load the textures into a temporary vector
     for( int i = 0; i < fileHeader.text_count; ++i )
@@ -170,249 +185,186 @@ void CMeshMgr::loadFromFile(
         SDL_RWread( pFile, &btext, 1, sizeof( btext ) );
 
         // Load the texture
-        CDevice::Instance().createTexture( group, btext.path );
+        CTexture texture = CTextureMgr::Instance().LoadFor3D( group, btext.path );
+        texture.m_type = ETextureType(btext.type);
 
-        // Record texture info for later
-        textureVec.emplace_back();
-        textureVec.back().m_textFilePath = btext.path;
-        textureVec.back().m_type = ETextureType(btext.type);
+        textureVec.emplace_back( texture );
     }
 
-    // Allocate smart pointer arrays and load the unique verts, normals and UV's
+    // Allocate local smart pointer arrays and load the unique verts, normals and UV's
 
     // Load in the verts
-    tagCheck( pFile, filePath );
     std::unique_ptr < CPoint<float>[] > upVert( new CPoint<float>[fileHeader.vert_count] );
+    TagCheck( pFile, filePath );
     SDL_RWread( pFile, upVert.get(), fileHeader.vert_count, sizeof( CPoint<float> ) );
 
     // Load in the normals
-    tagCheck( pFile, filePath );
     std::unique_ptr < CNormal<float>[] > upVNormal( new CNormal<float>[fileHeader.vert_norm_count] );
+    TagCheck( pFile, filePath );
     SDL_RWread( pFile, upVNormal.get(), fileHeader.vert_norm_count, sizeof( CNormal<float> ) );
 
-    // Load in the UV
-    tagCheck( pFile, filePath );
+    // Check to insure we are in the correct spot in the binary file
     std::unique_ptr < CUV[] > upUV( new CUV[fileHeader.uv_count] );
+    TagCheck( pFile, filePath );
     SDL_RWread( pFile, upUV.get(), fileHeader.uv_count, sizeof( CUV ) );
 
     // Reserve the number of vbo groups
-    mesh3d.reserve( fileHeader.face_group_count );
+    meshVec.reserve( fileHeader.face_group_count );
 
     // Read in each face group
     for( int i = 0; i < fileHeader.face_group_count; ++i )
     {
-        // Add a new mesh entry into the vector
-        mesh3d.emplace_back();
-        auto & mesh = mesh3d.back();
-
         // Check to insure we are in the correct spot in the binary file
-        tagCheck( pFile, filePath );
+        TagCheck( pFile, filePath );
 
         // Get the number faces in the group as well as the material index
-        SDL_RWread( pFile, &mesh.m_faceGroup, 1, sizeof( CBinaryFaceGroup ) );
+        CBinaryFaceGroup faceGroup;
+        SDL_RWread( pFile, &faceGroup, 1, sizeof( faceGroup ) );
 
-        // Allocate a temporary buffers for building the VBO
-        mesh.allocateBuffers();
-        std::unique_ptr < CBinaryVertex[] > upVertBuf( new CBinaryVertex[mesh.m_faceGroup.vertexBufCount] );
+        // Allocate local smart pointer arrays
+        std::unique_ptr < uint16_t[] > upTextIndexBuf( new uint16_t[faceGroup.textureCount] );
+        std::unique_ptr < CBinaryVertex[] > upVertBuf( new CBinaryVertex[faceGroup.vertexBufCount] );
+        std::unique_ptr < uint16_t[] > upIndexBuf( new uint16_t[faceGroup.indexBufCount] );
 
         // Read in the indexes that are the textures
-        SDL_RWread( pFile, mesh.m_spTextIndexBuf.get(), mesh.m_faceGroup.textureCount, sizeof( uint16_t ) );
+        SDL_RWread( pFile, upTextIndexBuf.get(), faceGroup.textureCount, sizeof( uint16_t ) );
 
         // Read in the indexes used to create the VBO
-        SDL_RWread( pFile, upVertBuf.get(), mesh.m_faceGroup.vertexBufCount, sizeof( CBinaryVertex ) );
+        SDL_RWread( pFile, upVertBuf.get(), faceGroup.vertexBufCount, sizeof( CBinaryVertex ) );
 
         // Read in the indexes that are the IBO
-        SDL_RWread( pFile, mesh.m_spIndexBuf.get(), mesh.m_faceGroup.indexBufCount, sizeof( uint16_t ) );
+        SDL_RWread( pFile, upIndexBuf.get(), faceGroup.indexBufCount, sizeof( uint16_t ) );
+
+
+        // Allocate a temporary buffer for building the VBO
+        std::unique_ptr < CVertex3D[] > upVBO( new CVertex3D[faceGroup.vertexBufCount] );
 
         // Build the VBO
-        for( int j = 0; j < mesh.m_faceGroup.vertexBufCount; ++j )
+        for( int j = 0; j < faceGroup.vertexBufCount; ++j )
         {
-            mesh.m_spVBO.get()[j].vert = upVert[ upVertBuf[j].vert ];
-            mesh.m_spVBO.get()[j].norm = upVNormal[ upVertBuf[j].norm ];
-            mesh.m_spVBO.get()[j].uv = upUV[ upVertBuf[j].uv ];
+            upVBO[j].vert = upVert[ upVertBuf[j].vert ];
+            upVBO[j].norm = upVNormal[ upVertBuf[j].norm ];
+            upVBO[j].uv = upUV[ upVertBuf[j].uv ];
         }
 
-        // Save the number of indexes in the IBO buffer - Will need this for the render call
-        mesh.m_iboCount = mesh.m_faceGroup.indexBufCount;
-    }
-}
+        // Add a new entry into the vector
+        meshVec.emplace_back();
 
-
-/************************************************************************
- *    DESC: Create from data
- ************************************************************************/
-void CMeshMgr::createFromData(
-    const std::string & group,
-    const std::string & filePath,
-    CMesh3D & mesh3d )
-{
-    // Create the map group if it doesn't already exist
-    auto mapMapIter = m_meshBufMapMap.find( group );
-    if( mapMapIter == m_meshBufMapMap.end() )
-        mapMapIter = m_meshBufMapMap.emplace( group, std::map<const std::string, CMesh3D >() ).first;
-
-    // See if the ID has already been loaded
-    auto mapIter = mapMapIter->second.find( filePath );
-
-    // If it's not found, there's a problem
-    if( mapIter == mapMapIter->second.end() )
-        throw NExcept::CCriticalException("Create Mesh Error!",
-                boost::str( boost::format("Error creating mesh (%s)(%s).\n\n%s\nLine: %s")
-                    % filePath % group % __FUNCTION__ % __LINE__ ));
-
-    // See if this mesh needs to be created
-    if( mapIter->second.allowCreate() )
-    {
-        createFromData( group, mapIter->second );
-
-        // Copy the mesh data to the passed in mesh vector
-        mesh3d.reserve( mapIter->second.size() );
-        for( auto & iter : mapIter->second.getMeshVec() )
-            mesh3d.emplace_back( iter );
-    }
-}
-
-
-/************************************************************************
- *    DESC: Create from the data
- ************************************************************************/
-void CMeshMgr::createFromData(
-    const std::string & group,
-    CMesh3D & mesh3d )
-{
-    // Get the texture vector
-    /*auto & textureVec = mesh3d.getTextureVec();
-
-    // Create the textures from data
-    for( auto & iter : textureVec )
-    {
-        // Load the texture
-        CTexture texture = CDevice::Instance().loadTexture( group, iter.m_textFilePath );
-
-        //iter.m_id = texture.m_id;
-        iter.m_size = texture.m_size;
-        //iter.m_channels = texture.m_channels;
-    }
-
-    // Get the mesh vector
-    auto & meshVec = mesh3d.getMeshVec();
-
-    // Read in each face group
-    for( auto & iter : meshVec )
-    {
         // Create the VBO
-        glGenBuffers( 1, &iter.m_vbo );
-        glBindBuffer( GL_ARRAY_BUFFER, iter.m_vbo );
-        glBufferData( GL_ARRAY_BUFFER, sizeof(CVertex3D)*iter.m_faceGroup.vertexBufCount, iter.m_spVBO.get(), GL_STATIC_DRAW );
+        glGenBuffers( 1, &meshVec.back().m_vbo );
+        glBindBuffer( GL_ARRAY_BUFFER, meshVec.back().m_vbo );
+        glBufferData( GL_ARRAY_BUFFER, sizeof(CVertex3D)*faceGroup.vertexBufCount, upVBO.get(), GL_STATIC_DRAW );
 
         // unbind the buffer
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
         // Create the IBO - It's saved in the binary file as needed. Don't need to build it.
-        glGenBuffers( 1, &iter.m_ibo );
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, iter.m_ibo );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * iter.m_faceGroup.indexBufCount, iter.m_spIndexBuf.get(), GL_STATIC_DRAW );
+        glGenBuffers( 1, &meshVec.back().m_ibo );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, meshVec.back().m_ibo );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * faceGroup.indexBufCount, upIndexBuf.get(), GL_STATIC_DRAW );
 
         // unbind the buffer
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
+        // Save the number of indexes in the IBO buffer - Will need this for the render call
+        meshVec.back().m_iboCount = faceGroup.indexBufCount;
+
         // Reserve texture space
-        iter.m_textureVec.reserve(iter.m_faceGroup.textureCount);
+        meshVec.back().m_textureVec.reserve(faceGroup.textureCount);
 
         // Copy over the texture data
-        for( int j = 0; j < iter.m_faceGroup.textureCount; ++j )
+        for( int j = 0; j < faceGroup.textureCount; ++j )
         {
-            int textIndex = iter.m_spTextIndexBuf.get()[j];
-            iter.m_textureVec.emplace_back( textureVec.at(textIndex) );
+            int textIndex = upTextIndexBuf[j];
+            meshVec.back().m_textureVec.emplace_back( textureVec.at(textIndex) );
         }
     }
-
-    // Clear out the allocated buffers
-    mesh3d.clearBuffers();*/
-}
+}   // LoadFromFile
 
 
 /************************************************************************
- *    DESC: Load 3d mesh file without textures
+ *    desc: Load 3d mesh file without textures
  ************************************************************************/
-void CMeshMgr::loadFromFile(
+void CMeshMgr::LoadFromFile(
     SDL_RWops * pFile,
     const CMeshBinaryFileHeader & fileHeader,
     const std::string & filePath,
-    CMesh3D & mesh3d )
+    std::vector<CMesh3D> & meshVec )
 {
-    // Allocate smart pointer arrays and load the unique verts and normals
+    // Allocate local smart pointer arrays and load the unique verts and normals
 
     // Load in the verts
-    tagCheck( pFile, filePath );
     std::unique_ptr < CPoint<float>[] > upVert( new CPoint<float>[fileHeader.vert_count] );
+    TagCheck( pFile, filePath );
     SDL_RWread( pFile, upVert.get(), fileHeader.vert_count, sizeof( CPoint<float> ) );
 
     // Load in the normals
-    tagCheck( pFile, filePath );
     std::unique_ptr < CNormal<float>[] > upVNormal( new CNormal<float>[fileHeader.vert_norm_count] );
+    TagCheck( pFile, filePath );
     SDL_RWread( pFile, upVNormal.get(), fileHeader.vert_norm_count, sizeof( CNormal<float> ) );
 
     // Reserve the number of vbo groups
-    mesh3d.reserve( fileHeader.face_group_count );
+    meshVec.reserve( fileHeader.face_group_count );
 
     // Read in each face group
     for( int i = 0; i < fileHeader.face_group_count; ++i )
     {
-        // Add a new mesh entry into the vector
-        mesh3d.emplace_back();
-        auto & mesh = mesh3d.back();
-
         // Check to insure we are in the correct spot in the binary file
-        tagCheck( pFile, filePath );
+        TagCheck( pFile, filePath );
 
         // Get the number faces in the group as well as the material index
-        SDL_RWread( pFile, &mesh.m_faceGroup, 1, sizeof( CBinaryFaceGroup ) );
+        CBinaryFaceGroup faceGroup;
+        SDL_RWread( pFile, &faceGroup, 1, sizeof( faceGroup ) );
 
-        // Allocate a temporary buffers for building the VBO
-        mesh.allocateBuffers();
-
-        std::unique_ptr<CBinaryVertexNoTxt[]> upVertBuf( new CBinaryVertexNoTxt[mesh.m_faceGroup.vertexBufCount] );
+        // Allocate local smart pointer arrays
+        std::unique_ptr<CBinaryVertexNoTxt[]> upVertBuf( new CBinaryVertexNoTxt[faceGroup.vertexBufCount] );
+        std::unique_ptr<uint16_t[]> upIndexBuf( new uint16_t[faceGroup.indexBufCount] );
 
         // Read in the indexes used to create the VBO
-        SDL_RWread( pFile, upVertBuf.get(), mesh.m_faceGroup.vertexBufCount, sizeof( CBinaryVertexNoTxt ) );
+        SDL_RWread( pFile, upVertBuf.get(), faceGroup.vertexBufCount, sizeof( CBinaryVertexNoTxt ) );
 
         // Read in the indexes that are the IBO
-        SDL_RWread( pFile, mesh.m_spIndexBuf.get(), mesh.m_faceGroup.indexBufCount, sizeof( uint16_t ) );
+        SDL_RWread( pFile, upIndexBuf.get(), faceGroup.indexBufCount, sizeof( uint16_t ) );
+
+        // Allocate a temporary buffer for building the VBO
+        std::unique_ptr<CVertex3D_no_txt[]> upVBO( new CVertex3D_no_txt[faceGroup.vertexBufCount] );
 
         // Build the VBO
-        for( int j = 0; j < mesh.m_faceGroup.vertexBufCount; ++j )
+        for( int j = 0; j < faceGroup.vertexBufCount; ++j )
         {
-            mesh.m_spVBONoTxt.get()[j].vert = upVert[ upVertBuf[j].vert ];
-            mesh.m_spVBONoTxt.get()[j].norm = upVNormal[ upVertBuf[j].norm ];
+            upVBO[j].vert = upVert[ upVertBuf[j].vert ];
+            upVBO[j].norm = upVNormal[ upVertBuf[j].norm ];
         }
 
+        // Add a new entry into the vector
+        meshVec.emplace_back();
+
         // Create the VBO
-        /*glGenBuffers( 1, &mesh3d.back().m_vbo );
-        glBindBuffer( GL_ARRAY_BUFFER, mesh3d.back().m_vbo );
-        glBufferData( GL_ARRAY_BUFFER, sizeof(CVertex3D_no_txt)*mesh.m_faceGroup.vertexBufCount, mesh.m_spVBONoTxt.get(), GL_STATIC_DRAW );
+        glGenBuffers( 1, &meshVec.back().m_vbo );
+        glBindBuffer( GL_ARRAY_BUFFER, meshVec.back().m_vbo );
+        glBufferData( GL_ARRAY_BUFFER, sizeof(CVertex3D_no_txt)*faceGroup.vertexBufCount, upVBO.get(), GL_STATIC_DRAW );
 
         // unbind the buffer
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
         // Create the IBO - It's saved in the binary file as needed. Don't need to build it.
-        glGenBuffers( 1, &mesh3d.back().m_ibo );
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, mesh3d.back().m_ibo );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * mesh.m_faceGroup.indexBufCount, mesh.m_spIndexBuf.get(), GL_STATIC_DRAW );
+        glGenBuffers( 1, &meshVec.back().m_ibo );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, meshVec.back().m_ibo );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(GLushort) * faceGroup.indexBufCount, upIndexBuf.get(), GL_STATIC_DRAW );
 
         // unbind the buffer
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );*/
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
         // Save the number of indexes in the IBO buffer - Will need this for the render call
-        mesh3d.back().m_iboCount = mesh.m_faceGroup.indexBufCount;;
+        meshVec.back().m_iboCount = faceGroup.indexBufCount;
     }
-}
+}   // LoadFromFile
 
 
 /************************************************************************
- *    DESC: Load 3d collision mesh file
+ *    desc: Load 3d collision mesh file
  ************************************************************************/
-void CMeshMgr::loadFrom3DM(
+void CMeshMgr::LoadFrom3DM(
     const std::string & filePath,
     CCollisionMesh3D & collisionMesh )
 {
@@ -432,18 +384,18 @@ void CMeshMgr::loadFrom3DM(
         throw NExcept::CCriticalException( "Visual Mesh Load Error!",
             boost::str( boost::format( "File header mismatch (%s).\n\n%s\nLine: %s" )
                 % filePath % __FUNCTION__ % __LINE__ ) );
-
+    
 
     // Allocate local smart pointer arrays and load the unique verts and normals
 
     // Load in the verts
     std::unique_ptr<CPoint<float>[]> upVert( new CPoint<float>[fileHeader.vert_count] );
-    tagCheck( scpFile.get(), filePath );
+    TagCheck( scpFile.get(), filePath );
     SDL_RWread( scpFile.get(), upVert.get(), fileHeader.vert_count, sizeof( CPoint<float> ) );
 
 
     // Check to insure we are in the correct spot in the binary file
-    tagCheck( scpFile.get(), filePath );
+    TagCheck( scpFile.get(), filePath );
 
     // Get the number faces in the group as well as the material index
     CBinaryFaceGroup faceGroup;
@@ -468,13 +420,14 @@ void CMeshMgr::loadFrom3DM(
 
     // Save the number of indexes in the IBO buffer - Will need this for the render call
     collisionMesh.m_iboCount = faceGroup.indexBufCount;
-}
+        
+}   // LoadFrom3DM
 
 
 /************************************************************************
- *    DESC: Do the tag check to insure we are in the correct spot
+ *    desc: Do the tag check to insure we are in the correct spot
  ************************************************************************/
-void CMeshMgr::tagCheck( SDL_RWops * file, const std::string & filePath )
+void CMeshMgr::TagCheck( SDL_RWops * file, const std::string & filePath )
 {
     int tag_check;
 
@@ -485,21 +438,22 @@ void CMeshMgr::tagCheck( SDL_RWops * file, const std::string & filePath )
         throw NExcept::CCriticalException( "Visual Mesh Load Error!",
             boost::str( boost::format( "Tag check mismatch (%s).\n\n%s\nLine: %s" )
                 % filePath % __FUNCTION__ % __LINE__ ) );
-}
+
+}   // TagCheck
 
 
 /************************************************************************
- *    DESC:  Delete mesh buffer group
+ *    desc:  Delete mesh buffer group
  ************************************************************************/
-void CMeshMgr::deleteBufferGroup( const std::string & group )
+void CMeshMgr::DeleteBufferGroup( const std::string & group )
 {
-    /*auto mapMapIter = m_meshBufMapMap.find( group );
-    if( mapMapIter != m_meshBufMapMap.end() )
+    auto mapMapIter = m_meshBufMapMapVec.find( group );
+    if( mapMapIter != m_meshBufMapMapVec.end() )
     {
         // Delete all the buffers in this group
         for( auto & mapIter : mapMapIter->second )
         {
-            for( auto & iter : mapIter.second.getMeshVec() )
+            for( auto & iter : mapIter.second )
             {
                 glDeleteBuffers( 1, &iter.m_ibo );
                 glDeleteBuffers( 1, &iter.m_vbo );
@@ -507,6 +461,7 @@ void CMeshMgr::deleteBufferGroup( const std::string & group )
         }
 
         // Erase this group
-        m_meshBufMapMap.erase( mapMapIter );
-    }*/
-}
+        m_meshBufMapMapVec.erase( mapMapIter );
+    }
+
+}   // DeleteBufferGroup

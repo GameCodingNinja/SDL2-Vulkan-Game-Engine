@@ -26,6 +26,9 @@ class CDescriptorData;
 class CUboData;
 class CPushDescriptorSet;
 class CTexture;
+class CModel;
+class CMeshBinaryFileHeader;
+struct SDL_RWops;
 
 class CDevice : public CDeviceVulkan
 {
@@ -101,7 +104,7 @@ public:
             // Load buffer into video memory
             CDeviceVulkan::creatMemoryBuffer( dataVec, memoryBuffer, bufferUsageFlag );
 
-            // Insert the new texture info
+            // Insert the buffer into the map
             iter = mapIter->second.emplace( id, memoryBuffer ).first;
         }
 
@@ -195,6 +198,12 @@ public:
     // Add a memory buffer to the delete queue
     void AddToDeleteQueue( CMemoryBuffer & memoryBuffer );
     void AddToDeleteQueue( std::vector<CMemoryBuffer> & commandBufVec );
+    
+    // Create a model
+    void createModel(
+        const std::string & group,
+        const std::string & filePath,
+        CModel & model );
 
 private:
 
@@ -216,14 +225,17 @@ private:
     // Recreate the pipeline
     void recreatePipelines() override;
 
-    // Delete a texture in a group
+    // Delete the texture in a group
     void deleteTextureGroup( const std::string & group );
 
-    // Delete a Descriptor Pool group
+    // Delete the Descriptor Pool group
     void deleteDescriptorPoolGroup( const std::string & group );
 
-    // Delete a buffer in a group
+    // Delete the memory buffer group
     void deleteMemoryBufferGroup( const std::string & group );
+    
+    // Delete the model group
+    void deleteModelGroup( const std::string & group );
 
     // Record the command buffers
     void recordCommandBuffers( uint32_t cmdBufIndex );
@@ -236,6 +248,23 @@ private:
     
     // Free the memory buffer
     void freeMemoryBuffer( CMemoryBuffer & memoryBuffer );
+    
+    // Load 3d mesh file
+    void loadFrom3DM(
+        const std::string & group,
+        const std::string & filePath,
+        CModel & model );
+    
+    // Load 3d mesh file with textures
+    void load3DM(
+        SDL_RWops * pFile,
+        const CMeshBinaryFileHeader & fileHeader,
+        const std::string & group,
+        const std::string & filePath,
+        CModel & model );
+    
+    // Do the tag check to insure we are in the correct spot
+    void tagCheck( SDL_RWops * file, const std::string & filePath );
 
 private:
 
@@ -286,6 +315,9 @@ private:
 
     // Vector for deleting memory buffers
     std::map< uint32_t, std::vector<CMemoryBuffer> > m_memoryDeleteMap;
+    
+    // Map containing a group array of vbo, ibo and texture id's
+    std::map< const std::string, std::map< const std::string, CModel > > m_modelMapMap;
 
     // Current dynamic font IBO indices size
     size_t m_currentMaxFontIndices = 0;

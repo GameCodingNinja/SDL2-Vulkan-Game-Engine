@@ -13,12 +13,7 @@
 
 // Game lib dependencies
 #include <utilities/matrix.h>
-#include <common/color.h>
-#include <common/point.h>
-#include <common/defs.h>
-#include <common/fontproperties.h>
-#include <common/mesh3d.h>
-#include <utilities/xmlParser.h>
+#include <common/pushdescriptorset.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -28,7 +23,10 @@
 
 // Forward declaration(s)
 class CObjectData3D;
-class CShaderData;
+class CModel;
+class CDevice;
+class iObjectVisualData;
+class CMemoryBuffer;
 
 class CVisualComponent3D : public iVisualComponent, boost::noncopyable
 {
@@ -40,37 +38,35 @@ public:
     // Destructor
     ~CVisualComponent3D();
 
-    // do the render
-    void render( const CMatrix & matrix, const CMatrix & ropMatrix );
+    // Record the command buffers
+    virtual void recordCommandBuffer( 
+        uint32_t index,
+        VkCommandBuffer cmdBuffer,
+        const CMatrix & model,
+        const CMatrix & viewProj ) override;
+    
+private:
+    
+    // Update the UBO buffer
+    virtual void updateUBO(
+        uint32_t index,
+        CDevice & device,
+        const iObjectVisualData & rVisualData,
+        const CMatrix & model,
+        const CMatrix & viewProj );
 
 private:
 
     const CObjectData3D & m_rObjectData;
-    
-    // Reference to object visual data
-    //const CObjectVisualData3D & m_rVisualData;
-    
-    // Shader data pointer - We DON'T own this pointer, don't free
-    CShaderData * m_pShaderData;
 
-    // shader location data
-    int32_t m_vertexLocation;
-    int32_t m_normalLocation;
-    int32_t m_uvLocation;
-    int32_t m_text0Location;
-    int32_t m_colorLocation;
-    int32_t m_matrixLocation;
-    int32_t m_normalMatrixLocation;
-
-    // Copy of 3D mesh data
-    //const CMesh3D & m_mesh3d;
-
-    // Color
-    CColor m_color;
+    // Copy of model data
+    const CModel & m_rModel;
     
-    // Vertex buffer sizes
-    int8_t m_VERTEX_BUF_SIZE;
+    // Uniform buffers
+    std::vector<CMemoryBuffer> m_uniformBufVec;
+
+    // Push Descriptor set
+    std::vector<CPushDescriptorSet> m_pushDescSetVec;
 };
 
-#endif  // __visual_component_3d_h__
-
+#endif

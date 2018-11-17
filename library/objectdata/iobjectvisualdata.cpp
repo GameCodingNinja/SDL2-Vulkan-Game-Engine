@@ -13,3 +13,4 @@ CColor iObjectVisualData::m_null_color;
 CSize<float> iObjectVisualData::m_null_size;
 CMemoryBuffer iObjectVisualData::m_null_memoryBuffer;
 CSpriteSheet iObjectVisualData::m_null_spriteSheet;
+CModel iObjectVisualData::m_null_model;

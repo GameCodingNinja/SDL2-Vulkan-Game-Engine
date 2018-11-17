@@ -14,7 +14,7 @@
 #include <objectdata/objectvisualdata3d.h>
 
 // Game lib dependencies
-#include <system/device.h>
+#include <managers/meshmanager.h>
 #include <utilities/xmlparsehelper.h>
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
@@ -23,91 +23,90 @@
 #include <boost/format.hpp>
 
 /************************************************************************
- *    DESC:  Constructor
+ *    desc:  Constructor
  ************************************************************************/
 CObjectVisualData3D::CObjectVisualData3D()
 {
-}
+}   // constructor
 
 /************************************************************************
- *    DESC:  Destructor                                                             
+ *    desc:  Destructor                                                             
  ************************************************************************/
 CObjectVisualData3D::~CObjectVisualData3D()
 {
-}
+    // NOTE: Nothing should ever be deleted here
+}   // Destructor
 
 /************************************************************************
- *    DESC:  Load the object data from node
+ *    desc:  Load the object data from node
  ************************************************************************/
-void CObjectVisualData3D::loadFromNode( const XMLNode & objectNode )
+void CObjectVisualData3D::LoadFromNode( const XMLNode & objectNode )
 {
     const XMLNode visualNode = objectNode.getChildNode( "visual" );
     if( !visualNode.isEmpty() )
     {
         // Get the mesh file
         if (visualNode.isAttributeSet("file"))
-            m_modelFile = visualNode.getAttribute("file");
+            m_meshFile = visualNode.getAttribute("file");
 
         // Get the color
         m_color = NParseHelper::LoadColor( visualNode, m_color );
 
-        // Get the pipeline id
-        const XMLNode pipelineNode = visualNode.getChildNode( "pipeline" );
-        if( !pipelineNode.isEmpty() )
-            m_pipelineID = pipelineNode.getAttribute( "id" );
+        // Get the shader id
+        const XMLNode shaderNode = visualNode.getChildNode( "shader" );
+        if( !shaderNode.isEmpty() )
+            m_shaderID = shaderNode.getAttribute( "id" );
 
         // Raise an exception if there's a mesh but no shader id
-        if( !m_modelFile.empty() && m_pipelineID.empty() )
+        if( !m_meshFile.empty() && m_shaderID.empty() )
         {
-            throw NExcept::CCriticalException("Pipeline not set!",
-                boost::str( boost::format("Pipeline id missing.\n\n%s\nLine: %s")
+            throw NExcept::CCriticalException("Shader effect or techique not set!",
+                boost::str( boost::format("Shader object data missing.\n\n%s\nLine: %s")
                     % __FUNCTION__ % __LINE__ ));
         }
     }
-}
 
+}   // LoadFromNode
 
 /************************************************************************
- *    DESC:  Create the object from data
+ *    desc:  Create the object from data
  ************************************************************************/
-void CObjectVisualData3D::createFromData( const std::string & group )
+void CObjectVisualData3D::CreateFromData( const std::string & group )
 {
-    if( !m_modelFile.empty() )
-        CDevice::Instance().createModel( group, m_modelFile, m_model );
-}
+    // Temporary implementation to just get cube on screen - remove
+    if( !m_meshFile.empty() )
+        CMeshMgr::Instance().LoadFromFile( group, m_meshFile, m_meshVec );
 
+}   // CreateFromData
 
 /************************************************************************
- *    DESC:  Get the pipeline ID
+ *    desc:  Get the name of the shader ID
  ************************************************************************/
-const std::string & CObjectVisualData3D::getPipelineID() const
+const std::string & CObjectVisualData3D::GetShaderID() const
 {
-    return m_pipelineID;
+    return m_shaderID;
 }
 
-
 /************************************************************************
- *    DESC:  Get the color
+ *    desc:  Get the color
  ************************************************************************/
-const CColor & CObjectVisualData3D::getColor() const
+const CColor & CObjectVisualData3D::GetColor() const
 {
     return m_color;
 }
 
-
 /************************************************************************
- *    DESC:  Whether or not the visual tag was specified
+ *    desc:  Whether or not the visual tag was specified
  ************************************************************************/
-bool CObjectVisualData3D::isActive() const
+bool CObjectVisualData3D::IsActive() const
 {
-    return !m_modelFile.empty();
+    return !m_meshFile.empty();
 }
 
-
 /************************************************************************
- *    DESC:  Get the mesh3d vector
+ *    desc:  Get the mesh3d vector
  ************************************************************************/
-const CModel & CObjectVisualData3D::getModel() const
+const std::vector<CMesh3D> & CObjectVisualData3D::GetMesh3D() const
 {
-    return m_model;
+    return m_meshVec;
 }

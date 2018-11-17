@@ -14,6 +14,7 @@
 #include <common/color.h>
 #include <common/memorybuffer.h>
 #include <common/texture.h>
+#include <common/model.h>
 #include <sprite/spritesheet.h>
 
 // Standard lib dependencies
@@ -87,6 +88,10 @@ public:
     virtual void addToDescSet( const std::string & descriptorId, std::set<std::string> & descUniqueLst ) const
     {}
     
+    // Get the mesh3d vector
+    virtual const CModel & getModel() const
+    { return m_null_model; }
+    
 private:
     
     static CTexture m_null_texture;
@@ -94,8 +99,7 @@ private:
     static CSize<float> m_null_size;
     static CMemoryBuffer m_null_memoryBuffer;
     static CSpriteSheet m_null_spriteSheet;
+    static CModel m_null_model;
 };
 
-#endif  // __iobjectdata_h__
-
-
+#endif

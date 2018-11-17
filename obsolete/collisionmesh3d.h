@@ -12,17 +12,22 @@
 #include <common/point.h>
 
 // Standard lib dependencies
-#include <vector>
+#include <memory>
+#include <cstdint>
 
 class CCollisionMesh3D
 {
 public:
 
     // Shared pointer of verticies
-    std::vector<CPoint<float>> m_vbo;
+    std::shared_ptr<CPoint<float>> vbo;
     
     // Index buffer
-    std::vector<uint16_t> m_ibo;
+    std::shared_ptr<uint16_t> ibo;
+
+    // Number of IBO needed for rendering
+    uint m_iboCount = 0;
+
 };
 
-#endif
+#endif  // __collision_mesh_3d_h__

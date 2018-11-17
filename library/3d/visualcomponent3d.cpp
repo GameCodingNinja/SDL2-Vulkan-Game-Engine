@@ -10,14 +10,11 @@
 
 // Game lib dependencies
 #include <objectdata/objectdata3d.h>
-#include <objectdata/objectvisualdata3d.h>
-#include <common/vertex3d.h>
+#include <objectdata/iobjectvisualdata.h>
 #include <system/device.h>
-#include <utilities/xmlParser.h>
-#include <utilities/xmlparsehelper.h>
-#include <utilities/genfunc.h>
-#include <utilities/exceptionhandling.h>
 #include <utilities/statcounter.h>
+#include <common/uniformbufferobject.h>
+#include <common/pipeline.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -31,32 +28,22 @@
 CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
     iVisualComponent( objectData ),
     m_rObjectData( objectData ),
-    m_pShaderData( nullptr ),
-    m_vertexLocation( -1 ),
-    m_uvLocation( -1 ),
-    m_text0Location( -1 ),
-    m_colorLocation( -1 ),
-    m_matrixLocation( -1 ),
-    m_normalMatrixLocation( -1 )
-    //m_mesh3d( visualData.getMesh3D() ),
-    //m_VERTEX_BUF_SIZE( visualData.getMesh3D().meshEmpty() || visualData.getMesh3D().textEmpty() ? sizeof(CVertex3D_no_txt) : sizeof(CVertex3D) )
+    m_rModel( objectData.getVisualData().getModel() ),
+    m_pushDescSetVec( objectData.getVisualData().getModel().m_meshVec.size() )
 {
-    /*if( visualData.isActive() )
-    {
-        m_pShaderData = &CShaderMgr::Instance().getShaderData( visualData.getShaderID() );
+    auto & device( CDevice::Instance() );
+    const uint32_t pipelineIndex( objectData.getVisualData().getPipelineIndex() );
 
-        m_vertexLocation = m_pShaderData->getAttributeLocation( "in_position" );
-        m_normalLocation = m_pShaderData->getAttributeLocation( "in_normal" );
-        m_matrixLocation = m_pShaderData->getUniformLocation( "cameraViewProjMatrix" );
-        m_normalMatrixLocation = m_pShaderData->getUniformLocation( "normalMatrix" );
-        m_colorLocation = m_pShaderData->getUniformLocation( "color" );
-
-        if( !m_mesh3d.back().m_textureVec.empty() )
-        {
-            m_uvLocation = m_pShaderData->getAttributeLocation( "in_uv" );
-            m_text0Location = m_pShaderData->getUniformLocation( "text0" );
-        }
-    }*/
+    // Create the uniform buffer
+    m_uniformBufVec = device.createUniformBufferVec( pipelineIndex );
+    
+    // Create the push descriptor set
+    for( size_t i = 0; i < m_rModel.m_meshVec.size(); ++i )
+        device.createPushDescriptorSet(
+            pipelineIndex,
+            m_rModel.m_meshVec[i].m_textureVec.back(),
+            m_uniformBufVec,
+            m_pushDescSetVec[i] );
 }
 
 
@@ -65,53 +52,74 @@ CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
 ************************************************************************/
 CVisualComponent3D::~CVisualComponent3D()
 {
+    CDevice::Instance().AddToDeleteQueue( m_uniformBufVec );
+}
+
+
+/***************************************************************************
+*   DESC:  Record the command buffers
+****************************************************************************/
+void CVisualComponent3D::recordCommandBuffer(
+    uint32_t index,
+    VkCommandBuffer cmdBuffer,
+    const CMatrix & model,
+    const CMatrix & viewProj )
+{
+    if( GENERATION_TYPE > NDefs::EGT_NULL )
+    {
+        // Increment our stat counter to keep track of what is going on.
+        CStatCounter::Instance().incDisplayCounter();
+        
+        const auto & rVisualData( m_rObjectData.getVisualData() );
+        auto & device( CDevice::Instance() );
+
+        // Get the pipeline data
+        const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
+
+        // Update the UBO buffer
+        updateUBO( index, device, rVisualData, model, viewProj );
+
+        // Bind the pipeline
+        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
+        
+        for( size_t i = 0; i < m_rModel.m_meshVec.size(); ++i )
+        {
+            // Bind vertex buffer
+            VkBuffer vertexBuffers[] = {m_rModel.m_meshVec[i].m_vboBuffer.m_buffer};
+            VkDeviceSize offsets[] = {0};
+            vkCmdBindVertexBuffers( cmdBuffer, 0, 1, vertexBuffers, offsets );
+
+            // Bind the index buffer
+            vkCmdBindIndexBuffer( cmdBuffer, m_rModel.m_meshVec[i].m_iboBuffer.m_buffer, 0, VK_INDEX_TYPE_UINT16 );
+
+            // Use the push descriptors
+            m_pushDescSetVec[i].cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+
+            // Do the draw
+            vkCmdDrawIndexed( cmdBuffer, m_rModel.m_meshVec[i].m_iboCount, 1, 0, 0, 0 );
+        }
+    }
 }
 
 
 /************************************************************************
-*    DESC:  do the render
+*    DESC:  Update the UBO buffer
 ************************************************************************/
-void CVisualComponent3D::render( const CMatrix & matrix, const CMatrix & normalMatrix )
+void CVisualComponent3D::updateUBO(
+    uint32_t index,
+    CDevice & device,
+    const iObjectVisualData & rVisualData,
+    const CMatrix & model,
+    const CMatrix & viewProj )
 {
-    /*for( auto & meshIter : m_mesh3d.getMeshVec() )
-    {
-        // Increment our stat counter to keep track of what is going on.
-        CStatCounter::Instance().incDisplayCounter();
+    // Setup the uniform buffer object
+    NUBO::model_viewProj_color_additive ubo;
+    ubo.model.setScale( rVisualData.getVertexScale() );
+    ubo.model *= model;
+    ubo.viewProj = viewProj;
+    ubo.color = m_color;
+    ubo.additive = m_additive;
 
-        // Bind the VBO and IBO
-        CVertBufMgr::Instance().bind( meshIter.m_vbo, meshIter.m_ibo );
-
-        // Bind the shader. This must be done first
-        CShaderMgr::Instance().bind( m_pShaderData );
-
-        // Setup the vertex attribute shader data
-        glVertexAttribPointer( m_vertexLocation, 3, GL_FLOAT, GL_FALSE, m_VERTEX_BUF_SIZE, (GLvoid*)0 );
-
-        // Setup the normal attribute shade data
-        glVertexAttribPointer( m_normalLocation, 3, GL_FLOAT, GL_FALSE, m_VERTEX_BUF_SIZE, (GLvoid*)12 );
-
-        // Enable the UV attribute shade data
-        if( m_uvLocation > -1 )
-        {
-            // Bind the texture
-            for( auto & txtIter : meshIter.m_textureVec )
-            {
-                //CTextureMgr::Instance().bind( txtIter.m_id );
-                glUniform1i( m_text0Location, (int)txtIter.m_type); // 0 = TEXTURE0
-            }
-
-            // Setup the uv attribute shade data
-            glVertexAttribPointer( m_uvLocation, 2, GL_FLOAT, GL_FALSE, m_VERTEX_BUF_SIZE, (GLvoid*)24 );
-        }
-
-        // Send the color to the shader
-        glUniform4fv( m_colorLocation, 1, (float*)&m_color );
-
-        glUniformMatrix4fv( m_matrixLocation, 1, GL_FALSE, matrix() );
-        glUniformMatrix4fv( m_normalMatrixLocation, 1, GL_FALSE, normalMatrix() );
-
-        // Render it
-        glDrawElements( GL_TRIANGLES, meshIter.m_iboCount, GL_UNSIGNED_SHORT, nullptr );
-    }*/
+    // Update the uniform buffer
+    device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
-

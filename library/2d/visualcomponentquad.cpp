@@ -11,8 +11,6 @@
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
 #include <objectdata/iobjectvisualdata.h>
-#include <utilities/settings.h>
-#include <utilities/exceptionhandling.h>
 #include <utilities/matrix.h>
 #include <common/uniformbufferobject.h>
 #include <common/pipeline.h>

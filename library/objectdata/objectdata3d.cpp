@@ -49,9 +49,6 @@ void CObjectData3D::loadFromNode( const XMLNode & node, const std::string & grou
     // Load the visual data
     m_visualData.loadFromNode( node );
 
-    // Load the mesh data from file
-    m_visualData.loadMeshData( group );
-
     // Load the physics data
     m_physicsData.loadFromNode( node );
 }
@@ -66,8 +63,8 @@ void CObjectData3D::createFromData( const std::string & group )
     m_visualData.createFromData( group );
 
     // Calculate the radii
-    /*m_radiusSquared = pow((float)m_size.w / 2, 2) + pow((float)m_size.h / 2, 2);
-    m_radius = sqrt( m_radiusSquared );*/
+    //m_radiusSquared = pow((float)m_size.w / 2, 2) + pow((float)m_size.h / 2, 2);
+    //m_radius = sqrt( m_radiusSquared );
 }
 
 

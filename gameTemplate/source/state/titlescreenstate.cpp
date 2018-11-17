@@ -160,6 +160,7 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 void CTitleScreenState::load()
 {
     CObjectDataMgr::Instance().loadGroup2D( "(title)" );
+    CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     
     // Add the actor strategy
     auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );

@@ -15,12 +15,15 @@
 #include <utilities/matrix.h>
 #include <common/texture.h>
 #include <common/color.h>
+#include <common/model.h>
 #include <common/memorybuffer.h>
 #include <common/uniformbufferobject.h>
 #include <common/vertex.h>
 #include <common/pipeline.h>
 #include <common/pushdescriptorset.h>
+#include <common/meshbinaryfileheader.h>
 #include <utilities/xmlParser.h>
+#include <utilities/smartpointers.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -785,11 +788,14 @@ void CDevice::deleteGroupAssets( const std::string & group )
 
     // Delete the memory buffers
     deleteMemoryBufferGroup( group );
+    
+    // Delete the model group
+    deleteModelGroup( group );
 }
 
 
 /************************************************************************
-*    DESC:  Delete a texture in a group
+*    DESC:  Delete the texture in a group
 ************************************************************************/
 void CDevice::deleteTextureGroup( const std::string & group )
 {
@@ -830,7 +836,7 @@ void CDevice::deleteCommandPoolGroup( const std::string & group )
 
 
 /************************************************************************
-*    DESC:  Delete a Descriptor Pool group
+*    DESC:  Delete the Descriptor Pool group
 ************************************************************************/
 void CDevice::deleteDescriptorPoolGroup( const std::string & group )
 {
@@ -848,7 +854,7 @@ void CDevice::deleteDescriptorPoolGroup( const std::string & group )
 
 
 /************************************************************************
-*    DESC:  Delete a memory buffer group
+*    DESC:  Delete the memory buffer group
 ************************************************************************/
 void CDevice::deleteMemoryBufferGroup( const std::string & group )
 {
@@ -865,6 +871,20 @@ void CDevice::deleteMemoryBufferGroup( const std::string & group )
         // Erase this group
         m_memoryBufferMapMap.erase( mapIter );
     }
+}
+
+
+/************************************************************************
+*    DESC:  Delete the model group
+*           NOTE: Nothing to delete here because the textures, vbo and ibo
+*                 are being held in their respective groups
+************************************************************************/
+void CDevice::deleteModelGroup( const std::string & group )
+{
+    // Erase this group
+    auto mapIter = m_modelMapMap.find( group );
+    if( mapIter != m_modelMapMap.end() )
+        m_modelMapMap.erase( mapIter );
 }
 
 
@@ -1175,4 +1195,196 @@ void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & commandBufVec )
 {
     for( auto & iter : commandBufVec )
         AddToDeleteQueue( iter );
+}
+
+
+/************************************************************************
+ *    DESC: Create a model
+ ************************************************************************/
+void CDevice::createModel(
+    const std::string & group,
+    const std::string & filePath,
+    CModel & model )
+{
+    // Create the map group if it doesn't already exist
+    auto mapMapIter = m_modelMapMap.find( group );
+    if( mapMapIter == m_modelMapMap.end() )
+        mapMapIter = m_modelMapMap.emplace( group, std::map<const std::string, CModel>() ).first;
+
+    // See if the ID has already been loaded
+    auto mapIter = mapMapIter->second.find( filePath );
+
+    // If it's not found, create the mesh buffer and add it to the list
+    if( mapIter == mapMapIter->second.end() )
+    {
+        mapIter = mapMapIter->second.emplace( filePath, CModel() ).first;
+
+        loadFrom3DM( group, filePath, mapIter->second );
+    }
+
+    // Copy the mesh data to the passed in mesh vector
+    model = mapIter->second;
+}
+
+
+/************************************************************************
+ *    DESC: Load 3d mesh file
+ ************************************************************************/
+void CDevice::loadFrom3DM(
+    const std::string & group,
+    const std::string & filePath,
+    CModel & model )
+{
+    // Open file for reading
+    NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( filePath.c_str(), "rb" ) );
+    if( scpFile.isNull() )
+        throw NExcept::CCriticalException( "File Load Error!",
+            boost::str( boost::format( "Error Loading file (%s).\n\n%s\nLine: %s" )
+                % filePath % __FUNCTION__ % __LINE__ ) );
+
+    // Read in the file header
+    CMeshBinaryFileHeader fileHeader;
+    SDL_RWread( scpFile.get(), &fileHeader, 1, sizeof( fileHeader ) );
+
+    // Check to make sure we're loading in the right kind of file
+    if( fileHeader.file_header != MESH_FILE_HEADER )
+        throw NExcept::CCriticalException( "Visual Mesh Load Error!",
+            boost::str( boost::format( "File header mismatch (%s).\n\n%s\nLine: %s" )
+                % filePath % __FUNCTION__ % __LINE__ ) );
+
+    if( fileHeader.text_count > 0 )
+        // Load with textures
+        load3DM( scpFile.get(), fileHeader, group, filePath, model );
+    //else
+        // Load without textures
+        //LoadFromFile( scpFile.get(), fileHeader, filePath, modelVec );
+}
+
+
+/************************************************************************
+ *    DESC: Load 3d mesh file with textures
+ ************************************************************************/
+void CDevice::load3DM(
+    SDL_RWops * pFile,
+    const CMeshBinaryFileHeader & fileHeader,
+    const std::string & group,
+    const std::string & filePath,
+    CModel & model )
+{
+    // temporary texture vector
+    std::vector<CTexture> textureVec;
+    textureVec.reserve( fileHeader.text_count );
+
+    // Check to insure we are in the correct spot in the binary file
+    tagCheck( pFile, filePath );
+
+    // Load the textures into a temporary vector
+    for( int i = 0; i < fileHeader.text_count; ++i )
+    {
+        // Get the texture and it's type
+        CBinaryTexture btext;
+        SDL_RWread( pFile, &btext, 1, sizeof( btext ) );
+
+        // Load the texture
+        CTexture texture = createTexture( group, btext.path );
+        texture.m_type = ETextureType(btext.type);
+
+        textureVec.emplace_back( texture );
+    }
+
+    // Load in the verts
+    std::vector<CPoint<float>> vertLstVec( fileHeader.vert_count );
+    tagCheck( pFile, filePath );
+    SDL_RWread( pFile, vertLstVec.data(), vertLstVec.size(), sizeof( vertLstVec.back() ) );
+
+    // Load in the normals
+    std::vector<CPoint<float>> normalLstVec( fileHeader.vert_norm_count );
+    tagCheck( pFile, filePath );
+    SDL_RWread( pFile, normalLstVec.data(), normalLstVec.size(), sizeof( normalLstVec.back() ) );
+
+    // Check to insure we are in the correct spot in the binary file
+    std::vector<CUV> uvLstVec( fileHeader.uv_count );
+    tagCheck( pFile, filePath );
+    SDL_RWread( pFile, uvLstVec.data(), uvLstVec.size(), sizeof( uvLstVec.back() ) );
+
+    // Reserve the number of vbo groups
+    model.m_meshVec.reserve( fileHeader.face_group_count );
+
+    // Read in each face group
+    for( int i = 0; i < fileHeader.face_group_count; ++i )
+    {
+        // Check to insure we are in the correct spot in the binary file
+        tagCheck( pFile, filePath );
+
+        // Get the number faces in the group as well as the material index
+        CBinaryFaceGroup faceGroup;
+        SDL_RWread( pFile, &faceGroup, 1, sizeof( faceGroup ) );
+        
+        // Allocate the buffers for loading the index lists
+        std::vector<uint16_t> textIndexVec( faceGroup.textureCount );
+        std::vector<CBinaryVertex> vertIndexVec( faceGroup.vertexBufCount );
+        std::vector<uint16_t> indexBufVec( faceGroup.indexBufCount );
+        
+        // Allocate a temporary buffer for building the VBO
+        std::vector<NVertex::vert_uv_normal> vert( faceGroup.vertexBufCount );
+
+        // Read in the indexes that are the textures
+        SDL_RWread( pFile, textIndexVec.data(), textIndexVec.size(), sizeof( textIndexVec.back() ) );
+
+        // Read in the indexes used to create the VBO
+        SDL_RWread( pFile, vertIndexVec.data(), vertIndexVec.size(), sizeof( vertIndexVec.back() ) );
+
+        // Read in the indexes that are the IBO
+        SDL_RWread( pFile, indexBufVec.data(), indexBufVec.size(), sizeof( indexBufVec.back() ) );
+
+        // Build the VBO
+        for( size_t j = 0; j < vertIndexVec.size(); ++j )
+        {
+            vert[j].vert = vertLstVec[ vertIndexVec[j].vert ];
+            vert[j].norm = normalLstVec[ vertIndexVec[j].norm ];
+            vert[j].uv = uvLstVec[ vertIndexVec[j].uv ];
+        }
+
+        // Add a new entry into the vector
+        model.m_meshVec.emplace_back();
+
+        // Create the VBO
+        model.m_meshVec.back().m_vboBuffer =
+            creatMemoryBuffer( group, filePath + "_vbo_" + std::to_string(i), vert, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
+        
+        // Create the IBO
+        model.m_meshVec.back().m_vboBuffer =
+            creatMemoryBuffer( group, filePath + "_ibo_" + std::to_string(i), indexBufVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
+        
+        // Save the number of indexes in the IBO buffer - Will need this for the render call
+        model.m_meshVec.back().m_iboCount = faceGroup.indexBufCount;
+
+        // Reserve texture space
+        model.m_meshVec.back().m_textureVec.reserve(faceGroup.textureCount);
+
+        // Copy over the texture handles
+        for( int j = 0; j < faceGroup.textureCount; ++j )
+        {
+            int textIndex = textIndexVec[j];
+            model.m_meshVec.back().m_textureVec.emplace_back( textureVec.at(textIndex) );
+        }
+    }
+}
+
+
+/************************************************************************
+ *    DESC: Do the tag check to insure we are in the correct spot
+ ************************************************************************/
+void CDevice::tagCheck( SDL_RWops * file, const std::string & filePath )
+{
+    int tag_check;
+
+    // Read in new tag
+    SDL_RWread( file, &tag_check, 1, sizeof( tag_check ) );
+
+    if( tag_check != TAG_CHECK )
+        throw NExcept::CCriticalException( "Visual Mesh Load Error!",
+            boost::str( boost::format( "Tag check mismatch (%s).\n\n%s\nLine: %s" )
+                % filePath % __FUNCTION__ % __LINE__ ) );
+
 }
