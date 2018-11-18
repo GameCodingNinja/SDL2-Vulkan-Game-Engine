@@ -67,11 +67,11 @@ void CUICheckBox::onSelectExecute( const SDL_Event & rEvent )
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CUICheckBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CUICheckBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     for( size_t i = 0; i < m_spriteDeq.size()-1; ++i )
-        m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, viewProj );
+        m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, camera );
 
     if( m_toggleState == NUIControl::TOGGLE_STATE_ON )
-        m_spriteDeq.back().recordCommandBuffer( index, cmdBuf, viewProj );
+        m_spriteDeq.back().recordCommandBuffer( index, cmdBuf, camera );
 }

@@ -41,7 +41,7 @@ public:
     virtual void transform( const CObject2D & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera ) override;
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent ) override;

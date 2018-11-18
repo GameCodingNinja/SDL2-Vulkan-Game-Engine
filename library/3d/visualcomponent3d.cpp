@@ -15,6 +15,7 @@
 #include <utilities/statcounter.h>
 #include <common/uniformbufferobject.h>
 #include <common/pipeline.h>
+#include <common/camera.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -64,7 +65,7 @@ void CVisualComponent3D::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
     const CMatrix & model,
-    const CMatrix & viewProj )
+    const CCamera & camera )
 {
     if( m_active )
     {
@@ -78,7 +79,7 @@ void CVisualComponent3D::recordCommandBuffer(
         const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
 
         // Update the UBO buffer
-        updateUBO( index, device, rVisualData, model, viewProj );
+        updateUBO( index, device, rVisualData, model, camera.getFinalMatrix() );
 
         // Bind the pipeline
         vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );

@@ -34,6 +34,7 @@ class CObjectData3D;
 class SpriteData;
 class CMatrix;
 class CSpriteData;
+class CCamera;
 class btTransform;
 struct XMLNode;
 union SDL_Event;
@@ -69,8 +70,7 @@ public:
     void physicsUpdate();
 
     // Record the command buffers
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );
     
     // Init the script functions
     void initScriptFunctions( const XMLNode & node );

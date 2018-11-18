@@ -21,11 +21,14 @@ public:
 
     // Constructor
     CCamera();
-    CCamera( float minZDist, float maxZDist, float scale );
-    CCamera( float angle, float minZDist, float maxZDist, float scale );
+    CCamera( float minZDist, float maxZDist );
+    CCamera( float angle, float minZDist, float maxZDist );
 
     // Destructor
     virtual ~CCamera();
+    
+    // Init the camera
+    void init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist );
 
     // Recreate the projection matrix
     void recreateProjMatrix();
@@ -38,10 +41,10 @@ public:
     void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
 
     // Generate a custom perspective projection for this camera
-    void generatePerspectiveProjection( float angle, float minZDist, float maxZDist, float scale = 1.f );
+    void generatePerspectiveProjection( float angle, float minZDist, float maxZDist );
 
     // Generate a custom orthographic projection for this camera
-    void generateOrthographicProjection( float minZDist, float maxZDist, float scale = 1.f );
+    void generateOrthographicProjection( float minZDist, float maxZDist );
 
     // Get the projected matrix
     const CMatrix & getProjectionMatrix() const;
@@ -88,7 +91,6 @@ private:
     float m_angle;
     float m_minZDist;
     float m_maxZDist;
-    float m_scale;
 };
 
 #endif

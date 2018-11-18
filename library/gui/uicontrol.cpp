@@ -286,10 +286,10 @@ void CUIControl::transformCollision()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     for( auto & iter : m_spriteDeq )
-        iter.recordCommandBuffer( index, cmdBuf, viewProj );
+        iter.recordCommandBuffer( index, cmdBuf, camera );
 }
 
 

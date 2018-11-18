@@ -162,7 +162,7 @@ void CUIProgressBar::transform( const CObject2D & object )
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     if( m_upStencilMaskSprite )
     {
@@ -171,18 +171,18 @@ void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf
             if( static_cast<int>(i) == m_spriteApplyIndex )
             {
                 // Record the command buffer for the stencil mask
-                m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, viewProj );
+                m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, camera );
 
                 // Record the command buffer for the inside of the stencil mask
-                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, viewProj );
+                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, camera );
             }
             else
-                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, viewProj );
+                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, camera );
         }
     }
     else
     {
-        CUIControl::recordCommandBuffer( index, cmdBuf, viewProj );
+        CUIControl::recordCommandBuffer( index, cmdBuf, camera );
     }
 }
 

@@ -18,21 +18,20 @@ CCamera::CCamera() :
     m_projType(NDefs::EPT_NULL),
     m_angle(0),
     m_minZDist(0),
-    m_maxZDist(0),
-    m_scale(0)
+    m_maxZDist(0)
 {
 }
 
-CCamera::CCamera( float minZDist, float maxZDist, float scale ) :
+CCamera::CCamera( float minZDist, float maxZDist ) :
     m_orthoHeightAspectRatio(0.f)
 {
-    generateOrthographicProjection( minZDist, maxZDist, scale ); 
+    generateOrthographicProjection( minZDist, maxZDist ); 
 }
 
-CCamera::CCamera( float angle, float minZDist, float maxZDist, float scale ) :
+CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
     m_orthoHeightAspectRatio(0.f)
 {
-    generatePerspectiveProjection( angle, minZDist, maxZDist, scale );
+    generatePerspectiveProjection( angle, minZDist, maxZDist );
 }
 
 
@@ -50,26 +49,38 @@ CCamera::~CCamera()
 void CCamera::recreateProjMatrix()
 {
     if( m_projType == NDefs::EPT_PERSPECTIVE )
-        generatePerspectiveProjection( m_angle, m_minZDist, m_maxZDist, m_scale );
+        generatePerspectiveProjection( m_angle, m_minZDist, m_maxZDist );
     else
-        generateOrthographicProjection( m_minZDist, m_maxZDist, m_scale );
+        generateOrthographicProjection( m_minZDist, m_maxZDist );
+}
+
+
+/************************************************************************
+*    DESC:  Init the camera
+************************************************************************/  
+void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist )
+{
+    if( projType == NDefs::EPT_PERSPECTIVE )
+        generatePerspectiveProjection( angle, minZDist, maxZDist );
+    
+    else
+        generateOrthographicProjection( minZDist, maxZDist );
 }
 
 
 /************************************************************************
 *    DESC:  Generate a custom perspective projection for this camera
 ************************************************************************/  
-void CCamera::generatePerspectiveProjection( float angle, float minZDist, float maxZDist, float scale )
+void CCamera::generatePerspectiveProjection( float angle, float minZDist, float maxZDist )
 {
     m_projType = NDefs::EPT_PERSPECTIVE;
     m_angle = angle;
     m_minZDist = minZDist;
     m_maxZDist = maxZDist;
-    m_scale = scale;
     
     m_projectionMatrix.perspectiveFovRH(
         angle,
-        CSettings::Instance().getScreenAspectRatio().w * scale,
+        CSettings::Instance().getScreenAspectRatio().w,
         minZDist,
         maxZDist );
     
@@ -80,16 +91,16 @@ void CCamera::generatePerspectiveProjection( float angle, float minZDist, float 
 /************************************************************************
 *    DESC:  Generate a custom orthographic projection for this camera
 ************************************************************************/  
-void CCamera::generateOrthographicProjection( float minZDist, float maxZDist, float scale )
+void CCamera::generateOrthographicProjection( float minZDist, float maxZDist )
 {
     m_projType = NDefs::EPT_ORTHOGRAPHIC;
     m_minZDist = minZDist;
     m_maxZDist = maxZDist;
-    m_scale = scale;
+
     const auto defSize = CSettings::Instance().getDefaultSize();
     
     // Calc the new width and height
-    m_orthoProjSize.set( defSize.getW() * scale, defSize.getH() * scale );
+    m_orthoProjSize.set( defSize.getW(), defSize.getH() );
     m_orthoProjSizeHalf = m_orthoProjSize / 2.f;
     
     // Calc the new height aspect ratio

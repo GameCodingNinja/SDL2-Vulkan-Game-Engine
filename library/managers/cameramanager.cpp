@@ -63,14 +63,12 @@ void CCameraMgr::createProjMatrix()
     if( CSettings::Instance().getProjectionType() == NDefs::EPT_ORTHOGRAPHIC )
         m_defaultCamera.generateOrthographicProjection(
             CSettings::Instance().getMinZdist(),
-            CSettings::Instance().getMaxZdist(),
-            CSettings::Instance().getProjectionScale() );
+            CSettings::Instance().getMaxZdist() );
     else
         m_defaultCamera.generatePerspectiveProjection(
             CSettings::Instance().getViewAngle(),
             CSettings::Instance().getMinZdist(),
-            CSettings::Instance().getMaxZdist(),
-            CSettings::Instance().getProjectionScale() );
+            CSettings::Instance().getMaxZdist() );
 }
 
 
@@ -89,10 +87,10 @@ const CMatrix & CCameraMgr::getProjMatrix( NDefs::EProjectionType type ) const
 /************************************************************************
 *    DESC:  Create an orthographic camera
 ************************************************************************/
-CCamera & CCameraMgr::createOrthographic( const std::string & id, float minZDist, float maxZDist, float scale )
+CCamera & CCameraMgr::createOrthographic( const std::string & id, float minZDist, float maxZDist )
 {
     auto iter = m_cameraMap.emplace(
-        std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(minZDist, maxZDist, scale) );
+        std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(minZDist, maxZDist) );
 
     m_pActiveCamera = &iter.first->second;
 
@@ -103,10 +101,10 @@ CCamera & CCameraMgr::createOrthographic( const std::string & id, float minZDist
 /************************************************************************
 *    DESC:  Create a perspective camera
 ************************************************************************/
-CCamera & CCameraMgr::createPerspective( const std::string & id, float angle, float minZDist, float maxZDist, float scale )
+CCamera & CCameraMgr::createPerspective( const std::string & id, float angle, float minZDist, float maxZDist )
 {
     auto iter = m_cameraMap.emplace(
-        std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(angle, minZDist, maxZDist, scale) );
+        std::piecewise_construct, std::forward_as_tuple(id), std::forward_as_tuple(angle, minZDist, maxZDist) );
 
     m_pActiveCamera = &iter.first->second;
 

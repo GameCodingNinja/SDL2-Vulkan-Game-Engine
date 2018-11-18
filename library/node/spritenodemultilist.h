@@ -51,8 +51,7 @@ public:
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
     
     // Add a node
     bool addNode( iNode * pNode ) override;
@@ -75,8 +74,7 @@ private:
     void transform( iNode * pNode );
     
     // Record command buffer recursive function
-    void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
-    void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
+    void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
     
 private:
     

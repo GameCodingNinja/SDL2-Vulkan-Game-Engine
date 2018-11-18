@@ -58,10 +58,22 @@ void CManagerBase::loadListTable( const std::string & filePath )
                     % group % __FUNCTION__ % __LINE__));
         }
 
-        for( int j = 0; j < dataListNode.nChildNode(); ++j )
+        for( int j = 0; j < dataListNode.nChildNode("file"); ++j )
         {
             const XMLNode dataNode = dataListNode.getChildNode("file", j);
             iter.first->second.push_back(dataNode.getAttribute("path"));
         }
+        
+        // External loading of group data
+        loadGroup( dataListNode, group );
     }
+}
+
+
+/************************************************************************
+*    DESC:  Load the group
+************************************************************************/
+void CManagerBase::loadGroup( const XMLNode & node, const std::string & group )
+{
+    // Empty for purposes of overriding
 }

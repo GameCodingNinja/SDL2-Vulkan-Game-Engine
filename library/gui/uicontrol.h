@@ -38,6 +38,7 @@
 class CSmartGuiControl;
 class CObject2D;
 class CSprite;
+class CCamera;
 
 class CUIControl : public CControlBase
 {
@@ -64,7 +65,7 @@ public:
     virtual void transform( const CObject2D & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
+    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent );

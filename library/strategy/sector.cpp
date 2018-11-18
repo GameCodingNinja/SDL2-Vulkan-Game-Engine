@@ -188,21 +188,12 @@ void CSector::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CSector::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSector::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     if( inView() )
     {
         for( auto iter : m_pNodeVec )
-            iter->recordCommandBuffer( index, cmdBuffer, viewProj );
-    }
-}
-
-void CSector::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    if( inView() )
-    {
-        for( auto iter : m_pNodeVec )
-            iter->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+            iter->recordCommandBuffer( index, cmdBuffer, camera );
     }
 }
 

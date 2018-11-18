@@ -72,14 +72,9 @@ void CSpriteNode::transform( const CMatrix & matrix, bool tranformWorldPos )
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
-    m_sprite.recordCommandBuffer( index, cmdBuffer, viewProj );
-}
-
-void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    m_sprite.recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
+    m_sprite.recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 

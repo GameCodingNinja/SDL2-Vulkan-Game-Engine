@@ -13,9 +13,10 @@
 
 // Game lib dependencies
 #include <utilities/matrix.h>
+#include <utilities/genfunc.h>
 #include <gui/menudefs.h>
 #include <gui/menu.h>
-#include <utilities/genfunc.h>
+#include <common/camera.h>
 
 // Standard lib dependencies
 #include <string>
@@ -83,14 +84,11 @@ public:
     
     // Do the transform
     void transform();
-    void transform( const CObject2D & object );
     void transformMenu();
-    void transformMenu( const CObject2D & object );
     void transformInterface();
-    void transformInterface( const CObject2D & object );
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index );
 
     // Get reference to the menu in questionn
     CMenu & getMenu( const std::string & nameStr );
@@ -168,7 +166,6 @@ private:
     
     // Transform the menu
     void transform( const std::vector<CMenuTree *> & activeTreeVec );
-    void transform( const std::vector<CMenuTree *> & activeTreeVec, const CObject2D & object );
     
     // Get a pointer to the active tree
     CMenuTree * getActiveTree();
@@ -214,6 +211,8 @@ private:
     //       they are freed by deleting the pool they belong to
     std::vector<VkCommandBuffer> m_commandBufVec;
     
+    // Default camera
+    CCamera m_camera;
 };
 
 /************************************************************************

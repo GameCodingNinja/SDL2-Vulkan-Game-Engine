@@ -195,13 +195,13 @@ void CUISubControl::transform( const CObject2D & object )
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CUISubControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CUISubControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     // Call the parent
-    CUIControl::recordCommandBuffer( index, cmdBuf, viewProj );
+    CUIControl::recordCommandBuffer( index, cmdBuf, camera );
 
     for( auto iter : m_pSubControlVec )
-        iter->recordCommandBuffer( index, cmdBuf, viewProj );
+        iter->recordCommandBuffer( index, cmdBuf, camera );
 }
 
 

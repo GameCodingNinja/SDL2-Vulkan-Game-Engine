@@ -32,6 +32,7 @@
 struct XMLNode;
 class CObject2D;
 class CMenu;
+class CCamera;
 
 class CMenuTree : public boost::noncopyable
 {
@@ -62,7 +63,7 @@ public:
     void transform( const CObject2D & object );
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj );
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );
 
     // Is a menu active
     bool isActive();

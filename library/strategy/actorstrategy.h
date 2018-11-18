@@ -67,8 +67,7 @@ public:
     void transform() override;
 
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, const CMatrix & viewProj ) override;
-    void recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, const CCamera & camera ) override;
 
     // Get the reference to the node
     template<typename target>

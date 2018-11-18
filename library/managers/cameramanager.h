@@ -34,10 +34,10 @@ public:
     const CMatrix & getProjMatrix( NDefs::EProjectionType type = NDefs::EPT_ORTHOGRAPHIC ) const;
     
     // Create an orthographic camera
-    CCamera & createOrthographic( const std::string & id, float minZDist = 5, float maxZDist = 1000, float scale = 1.f );
+    CCamera & createOrthographic( const std::string & id, float minZDist = 5, float maxZDist = 1000 );
     
     // Create a perspective camera
-    CCamera & createPerspective( const std::string & id, float angle = 45, float minZDist = 5, float maxZDist = 1000, float scale = 1.f );
+    CCamera & createPerspective( const std::string & id, float angle = 45, float minZDist = 5, float maxZDist = 1000 );
     
     // Get the camera
     CCamera & getCamera( const std::string & id );
@@ -89,7 +89,6 @@ private:
 
     // map list of cameras
     std::map<const std::string, CCamera> m_cameraMap;
-    //std::map< const std::string, std::map< const std::string, CCamera > > m_cameraMapMap;
     
     // Default Projection matrixes
     CMatrix m_perspectiveMatrix;

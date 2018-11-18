@@ -47,8 +47,7 @@ public:
 
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ) override;
-    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ) override;
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
 
     // Get the unique head node id number
     int getId() const override;

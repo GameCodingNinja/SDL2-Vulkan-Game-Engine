@@ -113,7 +113,7 @@ void CBasicStageStrategy::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
+void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
 {
     if( m_enable )
     {
@@ -122,22 +122,7 @@ void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & v
         CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
         for( auto & iter : m_sectorDeq )
-            iter.recordCommandBuffer( index, cmdBuf, viewProj );
-
-        CDevice::Instance().endCommandBuffer( cmdBuf );
-    }
-}
-
-void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    if( m_enable )
-    {
-        auto cmdBuf( m_commandBufVec[index] );
-
-        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-
-        for( auto & iter : m_sectorDeq )
-            iter.recordCommandBuffer( index, cmdBuf, rotMatrix, viewProj );
+            iter.recordCommandBuffer( index, cmdBuf, camera );
 
         CDevice::Instance().endCommandBuffer( cmdBuf );
     }

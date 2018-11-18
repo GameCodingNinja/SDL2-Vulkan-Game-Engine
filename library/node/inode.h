@@ -23,6 +23,7 @@
 // Forward declaration(s)
 class CMatrix;
 class CSprite;
+class CCamera;
 
 class iNode
 {
@@ -73,8 +74,7 @@ public:
     virtual void transform( const CMatrix & matrix, bool tranformWorldPos = false ){}
 
     // Record the command buffer
-    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj ){}
-    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj ){}
+    virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}
     
     // Get the node type
     virtual NDefs::ENodeType getType() const

@@ -13,7 +13,10 @@
 #include <utilities/deletefuncs.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/matrix.h>
+#include <utilities/xmlParser.h>
+#include <utilities/settings.h>
 #include <strategy/istrategy.h>
+#include <common/cameradata.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -26,6 +29,15 @@
 ************************************************************************/
 CStrategyMgr::CStrategyMgr()
 {
+    m_defaultCamera.init(
+        CSettings::Instance().getProjectionType(),
+        CSettings::Instance().getViewAngle(),
+        CSettings::Instance().getMinZdist(),
+        CSettings::Instance().getMaxZdist() );
+    
+    // Set the default position which allows everything to render
+    m_defaultCamera.setPos( 0, 0, 100 );
+    m_defaultCamera.transform();
 }
 
 
@@ -35,6 +47,47 @@ CStrategyMgr::CStrategyMgr()
 CStrategyMgr::~CStrategyMgr()
 {
     NDelFunc::DeleteMapPointers(m_pStrategyMap);
+}
+
+
+/************************************************************************
+*    DESC:  Load the group
+************************************************************************/
+void CStrategyMgr::loadGroup( const XMLNode & node, const std::string & group )
+{
+    for( int i = 0; i < node.nChildNode("camera"); ++i )
+    {
+        const XMLNode cameraNode = node.getChildNode("camera", i);
+        
+        // Create the map group if it doesn't already exist
+        auto mapIter = m_cameraDataMapMap.find( group );
+        if( mapIter == m_cameraDataMapMap.end() )
+            mapIter = m_cameraDataMapMap.emplace( group, std::map<const std::string, CCameraData>() ).first;
+
+        // Get the camera id
+        std::string cameraId = "";
+        if( cameraNode.isAttributeSet( "id" ) )
+            cameraId = cameraNode.getAttribute( "id" );
+
+        // Must have a camera id
+        if( cameraId.empty() )
+        {
+            throw NExcept::CCriticalException("Strategy Manager camera data load error!",
+                boost::str( boost::format("Camera does not have a id (%s).\n\n%s\nLine: %s")
+                    % group % __FUNCTION__ % __LINE__ ));
+        }
+
+        // Load the camera data
+        auto iter = mapIter->second.emplace( cameraId, cameraNode );
+
+        // Check for duplicate names
+        if( !iter.second )
+        {
+            throw NExcept::CCriticalException("Strategy Manager camera data load error!",
+                boost::str( boost::format("Duplicate camera id (%s).\n\n%s\nLine: %s")
+                    % cameraId % __FUNCTION__ % __LINE__ ));
+        }
+    }
 }
 
 
@@ -189,16 +242,10 @@ void CStrategyMgr::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CStrategyMgr::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
+void CStrategyMgr::recordCommandBuffer( uint32_t index )
 {
     for( auto iter : m_pStrategyVec )
-        iter->recordCommandBuffer( index, viewProj );
-}
-
-void CStrategyMgr::recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    for( auto iter : m_pStrategyVec )
-        iter->recordCommandBuffer( index, rotMatrix, viewProj );
+        iter->recordCommandBuffer( index, m_defaultCamera );
 }
 
 

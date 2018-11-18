@@ -52,7 +52,6 @@ namespace NScriptiStrategy
         // Register type
         Throw( pEngine->RegisterObjectType("iStrategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCameraId(string &in)",        asMETHOD(iStrategy, setCameraId),         asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setIdOffset(int)",               asMETHOD(iStrategy, setIdOffset),         asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setIdDir(int)",                  asMETHOD(iStrategy, setIdDir),            asCALL_THISCALL) );
         

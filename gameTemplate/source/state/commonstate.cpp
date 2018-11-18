@@ -110,8 +110,8 @@ void CCommonState::transform()
 ****************************************************************************/
 void CCommonState::recordCommandBuffer( uint32_t index )
 {
-    CStrategyMgr::Instance().recordCommandBuffer( index, CCameraMgr::Instance().getFinalMatrix() );
-    CMenuMgr::Instance().recordCommandBuffer( index, CCameraMgr::Instance().getFinalMatrix() );
+    CStrategyMgr::Instance().recordCommandBuffer( index );
+    CMenuMgr::Instance().recordCommandBuffer( index );
 }
 
 

@@ -16,22 +16,28 @@ int iStrategy::m_idInc = 0;
 iStrategy::iStrategy() :
     m_idOffset(0),
     m_idDir(1),
-    m_enable(false)
+    m_enable(false),
+    m_pCamera(nullptr)
 {
 }
 
 
 /************************************************************************
-*    DESC:  Transform the sprites
+*    DESC:  Set/Get the camera
 ************************************************************************/
-void iStrategy::setCameraId( const std::string & cameraId )
+void iStrategy::setCamera( CCamera * pCamera )
 {
-    m_cameraId = cameraId;
+    m_pCamera = pCamera;
+}
+
+CCamera * iStrategy::getCamera()
+{
+    return m_pCamera;
 }
 
 
 /************************************************************************
-*    DESC:  Enable event handling
+*    DESC:  Clear the sprite Id counter
 ************************************************************************/
 void iStrategy::clearSpriteCounter()
 {

@@ -118,6 +118,8 @@ add_library(
         common/uniformbufferobject.cpp
         common/pushdescriptorset.cpp
         common/dynamicoffset.cpp
+        common/camera.cpp
+        common/cameradata.cpp
         slot/symbol2d.cpp
         slot/symbolsetview.cpp
         slot/symbolsetviewmanager.cpp

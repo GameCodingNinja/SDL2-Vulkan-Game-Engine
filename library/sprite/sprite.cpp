@@ -253,16 +253,10 @@ void CSprite::physicsUpdate()
 /************************************************************************
 *    DESC:  Record the command buffer
 ************************************************************************/
-void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     if( m_upObject->isVisible() )
-        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, m_upObject->getMatrix(), viewProj );
-}
-
-void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    if( m_upObject->isVisible() )
-        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, m_upObject->getMatrix(), rotMatrix, viewProj );
+        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, m_upObject->getMatrix(), camera );
 }
 
 

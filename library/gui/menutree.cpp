@@ -99,10 +99,10 @@ void CMenuTree::transform( const CObject2D & object )
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CMenuTree::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CMenuTree::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     if( !m_pMenuPathVec.empty() )
-        m_pMenuPathVec.back()->recordCommandBuffer( index, cmdBuf, viewProj );
+        m_pMenuPathVec.back()->recordCommandBuffer( index, cmdBuf, camera );
 }
 
 

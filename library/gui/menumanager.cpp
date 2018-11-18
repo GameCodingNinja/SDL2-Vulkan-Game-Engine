@@ -13,6 +13,7 @@
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
+#include <utilities/settings.h>
 #include <gui/menutree.h>
 #include <gui/menu.h>
 #include <gui/scrollparam.h>
@@ -35,6 +36,15 @@ CMenuMgr::CMenuMgr() :
     m_scrollTimerId(0),
     m_allow(false)
 {
+    m_camera.init(
+        CSettings::Instance().getProjectionType(),
+        CSettings::Instance().getViewAngle(),
+        CSettings::Instance().getMinZdist(),
+        CSettings::Instance().getMaxZdist() );
+    
+    // Set the default position which allows everything to render
+    m_camera.setPos( 0, 0, 100 );
+    m_camera.transform();
 }
 
 
@@ -802,18 +812,6 @@ void CMenuMgr::transformMenu()
         transform( m_pActiveMenuTreeVec );
 }
 
-void CMenuMgr::transformInterface( const CObject2D & object )
-{
-    if( m_active )
-        transform( m_pActiveInterTreeVec, object );
-}
-
-void CMenuMgr::transformMenu( const CObject2D & object )
-{
-    if( m_active )
-        transform( m_pActiveMenuTreeVec, object );
-}
-
 void CMenuMgr::transform()
 {
     if( m_active )
@@ -823,17 +821,10 @@ void CMenuMgr::transform()
     }
 }
 
-void CMenuMgr::transform( const CObject2D & object )
-{
-    if( m_active )
-    {
-        transform( m_pActiveInterTreeVec, object );
-        transform( m_pActiveMenuTreeVec, object );
-    }
-}
-
 void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec )
 {
+    m_camera.transform();
+    
     for( auto iter : activeTreeVec )
     {
         // See if there's an active menu
@@ -842,22 +833,12 @@ void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec )
     }
 }
 
-void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec, const CObject2D & object )
-{
-    for( auto iter : activeTreeVec )
-    {
-        // See if there's an active menu
-        if( iter->isActive() )
-            iter->transform( object );
-    }
-}
-
 
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CMenuMgr::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
+void CMenuMgr::recordCommandBuffer( uint32_t index )
 {
     if( m_active )
     {
@@ -867,11 +848,11 @@ void CMenuMgr::recordCommandBuffer( uint32_t index, const CMatrix & viewProj )
     
         for( auto iter : m_pActiveInterTreeVec )
             if( iter->isActive() )
-                iter->recordCommandBuffer( index, cmdBuf, viewProj );
+                iter->recordCommandBuffer( index, cmdBuf, m_camera );
         
         for( auto iter : m_pActiveMenuTreeVec )
             if( iter->isActive() )
-                iter->recordCommandBuffer( index, cmdBuf, viewProj );
+                iter->recordCommandBuffer( index, cmdBuf, m_camera );
         
         CDevice::Instance().endCommandBuffer( cmdBuf );
     }

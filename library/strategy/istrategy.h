@@ -18,6 +18,7 @@
 // Forward Declarations
 class iNode;
 class CMatrix;
+class CCamera;
 union SDL_Event;
 
 class iStrategy
@@ -40,7 +41,8 @@ public:
     virtual void setToCreate( const std::string & name ){}
     
     // Set to create the sprite
-    void setCameraId( const std::string & cameraId );
+    void setCamera( CCamera * pCamera );
+    CCamera * getCamera();
     
     // Create the sprite
     virtual iNode * create(
@@ -63,11 +65,9 @@ public:
 
     // Transform the sprite
     virtual void transform(){}
-    virtual void transform( const class CObject2D & object ){}
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    virtual void recordCommandBuffer( uint32_t index, const CMatrix & viewProj ){}
-    virtual void recordCommandBuffer( uint32_t index, const CMatrix & rotMatrix, const CMatrix & viewProj ){}
+    virtual void recordCommandBuffer( uint32_t index, const CCamera & camera ){}
     
     // Clear the sprite Id counter
     static void clearSpriteCounter();
@@ -94,14 +94,14 @@ protected:
     // ID Direction
     int m_idDir;
     
-    // camera id
-    std::string m_cameraId;
-    
     // Enable strategy
     bool m_enable;
     
     // Id increment member
     static int m_idInc;
+    
+    // Camera pointer
+    CCamera * m_pCamera;
 };
 
 #endif

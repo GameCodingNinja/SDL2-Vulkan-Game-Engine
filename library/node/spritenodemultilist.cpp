@@ -148,16 +148,16 @@ void CSpriteNodeMultiLst::transform( iNode * pNode )
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
-    m_sprite.recordCommandBuffer( index, cmdBuffer, viewProj );
+    m_sprite.recordCommandBuffer( index, cmdBuffer, camera );
     
-    recordCommandBuffer( this, index, cmdBuffer, viewProj );
+    recordCommandBuffer( this, index, cmdBuffer, camera );
     
     resetIterators();
 }
 
-void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj )
+void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     if( pNode != nullptr )
     {
@@ -171,43 +171,10 @@ void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, Vk
             if( pNextNode != nullptr )
             {
                 // Record the command buffer
-                pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, viewProj );
+                pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, camera );
 
                 // Call a recursive function again
-                recordCommandBuffer( pNextNode, index, cmdBuffer, viewProj );
-            }
-        }
-        while( pNextNode != nullptr );
-    }
-}
-
-void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    m_sprite.recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
-    
-    recordCommandBuffer( this, index, cmdBuffer, rotMatrix, viewProj );
-    
-    resetIterators();
-}
-
-void CSpriteNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj )
-{
-    if( pNode != nullptr )
-    {
-        iNode * pNextNode;
-
-        do
-        {
-            // get the next node
-            pNextNode = pNode->next();
-
-            if( pNextNode != nullptr )
-            {
-                // Record the command buffer
-                pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, rotMatrix, viewProj );
-
-                // Call a recursive function again
-                recordCommandBuffer( pNextNode, index, cmdBuffer, rotMatrix, viewProj );
+                recordCommandBuffer( pNextNode, index, cmdBuffer, camera );
             }
         }
         while( pNextNode != nullptr );

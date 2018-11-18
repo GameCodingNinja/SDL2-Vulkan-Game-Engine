@@ -323,17 +323,17 @@ void CUIScrollBox::transform( const CObject2D & object )
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CUIScrollBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CUIScrollBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     // Call the parent
-    CUISubControl::recordCommandBuffer( index, cmdBuf, viewProj );
+    CUISubControl::recordCommandBuffer( index, cmdBuf, camera );
 
     // Record the command buffer for the stencil mask
-    m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, viewProj );
+    m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, camera );
 
     // Record the command buffer for the inside of the stencil mask
     for( int i = m_visStartPos; i < m_visEndPos; ++i )
-        m_pScrollControlVec[i]->recordCommandBuffer( index, cmdBuf, viewProj );
+        m_pScrollControlVec[i]->recordCommandBuffer( index, cmdBuf, camera );
 }
 
 

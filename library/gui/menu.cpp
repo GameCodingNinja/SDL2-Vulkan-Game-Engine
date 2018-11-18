@@ -453,21 +453,21 @@ void CMenu::transform( const CObject2D & object )
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CMenu::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CMatrix & viewProj )
+void CMenu::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     if( isVisible() )
     {
         for( auto & iter : m_spriteDeq )
-            iter.recordCommandBuffer( index, cmdBuf, viewProj );
+            iter.recordCommandBuffer( index, cmdBuf, camera );
 
         for( auto iter : m_pStaticControlVec )
-            iter->recordCommandBuffer( index, cmdBuf, viewProj );
+            iter->recordCommandBuffer( index, cmdBuf, camera );
 
         for( auto iter : m_pMouseOnlyControlVec )
-            iter->recordCommandBuffer( index, cmdBuf, viewProj );
+            iter->recordCommandBuffer( index, cmdBuf, camera );
 
         for( auto iter : m_pControlVec )
-            iter->recordCommandBuffer( index, cmdBuf, viewProj );
+            iter->recordCommandBuffer( index, cmdBuf, camera );
     }
 }
 

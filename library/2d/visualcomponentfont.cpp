@@ -14,6 +14,7 @@
 #include <common/uniformbufferobject.h>
 #include <common/quad2d.h>
 #include <common/pipeline.h>
+#include <common/camera.h>
 #include <system/device.h>
 #include <managers/fontmanager.h>
 #include <utilities/genfunc.h>
@@ -67,7 +68,7 @@ void CVisualComponentFont::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
     const CMatrix & model,
-    const CMatrix & viewProj )
+    const CCamera & camera )
 {
     if( allowCommandRecording() )
     {
@@ -78,7 +79,7 @@ void CVisualComponentFont::recordCommandBuffer(
         const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
 
         // Update the UBO buffer
-        updateUBO( index, device, rVisualData, model, viewProj );
+        updateUBO( index, device, rVisualData, model, camera.getFinalMatrix() );
 
         // Bind the pipeline
         vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );

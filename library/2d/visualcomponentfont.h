@@ -53,7 +53,7 @@ public:
         uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,
-        const CMatrix & viewProj ) override;
+        const CCamera & camera ) override;
     
 private:
     
