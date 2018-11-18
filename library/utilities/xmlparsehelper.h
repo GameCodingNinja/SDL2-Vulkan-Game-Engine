@@ -14,7 +14,6 @@
 #include <common/size.h>
 #include <common/rect.h>
 #include <common/defs.h>
-#include <common/vertex2d.h>
 #include <common/vertex.h>
 #include <common/dynamicoffset.h>
 #include <utilities/xmlParser.h>
@@ -27,7 +26,6 @@
 namespace NParseHelper
 {
     // Load the vertex
-    CVertex2D LoadVertex2d( const XMLNode & node );
     NVertex::vert_uv Load_vert_uv( const XMLNode & node );
 
     // load position data

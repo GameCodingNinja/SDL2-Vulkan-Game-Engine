@@ -25,7 +25,7 @@ CCameraMgr::CCameraMgr() :
     createProjMatrix();
 
     // Set the default position which allows everything to render
-    m_defaultCamera.setPos( 0, 0, 20 );
+    m_defaultCamera.setPos( 0, 0, 100 );
     m_defaultCamera.transform();
 }
 
@@ -111,6 +111,19 @@ CCamera & CCameraMgr::createPerspective( const std::string & id, float angle, fl
     m_pActiveCamera = &iter.first->second;
 
     return iter.first->second;
+}
+
+
+/************************************************************************
+*    DESC:  Get the camera
+************************************************************************/
+CCamera & CCameraMgr::getCamera( const std::string & id )
+{
+    auto iter = m_cameraMap.find( id );
+    if( iter == m_cameraMap.end() )
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Camera id does not exist (%s).") % id ) );
+    
+    return iter->second;
 }
 
 

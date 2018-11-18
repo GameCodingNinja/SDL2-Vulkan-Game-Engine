@@ -10,35 +10,6 @@
 namespace NParseHelper
 {
     /************************************************************************
-    *    DESC:  Load the 2d vertex
-    ************************************************************************/
-    CVertex2D LoadVertex2d( const XMLNode & node )
-    {
-        CVertex2D vert2D;
-
-        if( !node.isEmpty() )
-        {
-            if( node.isAttributeSet( "x" ) )
-                vert2D.vert.x = std::atof( node.getAttribute( "x" ) );
-
-            if( node.isAttributeSet( "y" ) )
-                vert2D.vert.y = std::atof( node.getAttribute( "y" ) );
-
-            if( node.isAttributeSet( "z" ) )
-                vert2D.vert.z = std::atof( node.getAttribute( "z" ) );
-
-            if( node.isAttributeSet( "u" ) )
-                vert2D.uv.u = std::atof( node.getAttribute( "u" ) );
-
-            if( node.isAttributeSet( "v" ) )
-                vert2D.uv.v = std::atof( node.getAttribute( "v" ) );
-        }
-
-        return vert2D;
-    }
-    
-    
-    /************************************************************************
     *    DESC:  Load the vert uv
     ************************************************************************/
     NVertex::vert_uv Load_vert_uv( const XMLNode & node )

@@ -4,7 +4,7 @@
     <default  name="">
         <visual file="">
             <color r="1" g="1" b="1" a="1"/>
-            <pipeline id="shader_3d"/>
+            <pipeline id="3d_mesh"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>

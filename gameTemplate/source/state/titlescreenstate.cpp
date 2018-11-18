@@ -16,6 +16,7 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/xmlpreloader.h>
 #include <managers/cameramanager.h>
+#include <managers/cameramanager.h>
 #include <system/device.h>
 #include <strategy/strategymanager.h>
 #include <strategy/actorstrategy.h>
@@ -45,7 +46,7 @@ CTitleScreenState::~CTitleScreenState()
     CStrategyMgr::Instance().deleteStrategy( "(title)" );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
     CObjectDataMgr::Instance().freeGroup2D( "(title)" );
-    //CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
+    CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
 }
 
 
@@ -108,15 +109,13 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 /***************************************************************************
 *    DESC:  Update objects that require them
 ****************************************************************************/
-/*void CTitleScreenState::update()
+void CTitleScreenState::update()
 {
     CCommonState::update();
 
-    m_scriptComponent.update();
-
     //float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
-    //m_cube.incRot( rot, rot, 0 );
-}*/
+    //CCameraMgr::Instance().incRot( rot, rot, 0 );
+}
 
 
 /***************************************************************************
@@ -168,7 +167,5 @@ void CTitleScreenState::load()
     
     // Add the background
     CStrategyMgr::Instance().create( "(title)", "background" );
-
-    //CObjectDataMgr::Instance().LoadGroup2D( "(actor)", CObjectDataMgr::DONT_CREATE_FROM_DATA );
-    //CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
+    //CStrategyMgr::Instance().create( "(title)", "cube" );
 }

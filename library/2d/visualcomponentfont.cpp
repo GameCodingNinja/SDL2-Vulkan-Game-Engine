@@ -359,7 +359,8 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
         m_fontData.m_fontStrSize.h = font.getLineHeight();
         
         // Free the previous memory buffer
-        device.AddToDeleteQueue( m_vboBuffer );
+        if( !m_vboBuffer.isEmpty() )
+            device.AddToDeleteQueue( m_vboBuffer );
         
         // Create the font vertex buffer
         device.creatMemoryBuffer( quadVec, m_vboBuffer, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );

@@ -29,7 +29,8 @@ CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
     iVisualComponent( objectData ),
     m_rObjectData( objectData ),
     m_rModel( objectData.getVisualData().getModel() ),
-    m_pushDescSetVec( objectData.getVisualData().getModel().m_meshVec.size() )
+    m_pushDescSetVec( objectData.getVisualData().getModel().m_meshVec.size() ),
+    m_active( objectData.getVisualData().isActive() )
 {
     auto & device( CDevice::Instance() );
     const uint32_t pipelineIndex( objectData.getVisualData().getPipelineIndex() );
@@ -65,10 +66,10 @@ void CVisualComponent3D::recordCommandBuffer(
     const CMatrix & model,
     const CMatrix & viewProj )
 {
-    if( GENERATION_TYPE > NDefs::EGT_NULL )
+    if( m_active )
     {
         // Increment our stat counter to keep track of what is going on.
-        CStatCounter::Instance().incDisplayCounter();
+        //CStatCounter::Instance().incDisplayCounter();
         
         const auto & rVisualData( m_rObjectData.getVisualData() );
         auto & device( CDevice::Instance() );
@@ -114,8 +115,7 @@ void CVisualComponent3D::updateUBO(
 {
     // Setup the uniform buffer object
     NUBO::model_viewProj_color_additive ubo;
-    ubo.model.setScale( rVisualData.getVertexScale() );
-    ubo.model *= model;
+    ubo.model = model;
     ubo.viewProj = viewProj;
     ubo.color = m_color;
     ubo.additive = m_additive;

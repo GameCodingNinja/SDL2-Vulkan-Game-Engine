@@ -57,6 +57,7 @@ private:
 
 private:
 
+    // Reference to object visual data
     const CObjectData3D & m_rObjectData;
 
     // Copy of model data
@@ -67,6 +68,9 @@ private:
 
     // Push Descriptor set
     std::vector<CPushDescriptorSet> m_pushDescSetVec;
+    
+    // Is the active
+    const bool m_active;
 };
 
 #endif

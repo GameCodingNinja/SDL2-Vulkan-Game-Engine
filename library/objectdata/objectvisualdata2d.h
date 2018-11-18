@@ -17,7 +17,6 @@
 #include <common/rect.h>
 #include <common/point.h>
 #include <common/defs.h>
-#include <common/face2d.h>
 #include <common/scaledframe.h>
 #include <common/texture.h>
 #include <common/memorybuffer.h>

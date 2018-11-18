@@ -1,0 +1,27 @@
+<listTable>
+
+    <groupList groupName="(stage)">
+        <file path="data/objects/spritestrategy/stage/stage.cfg"/>
+    </groupList>
+    
+    <groupList groupName="(run)">
+        <file path="data/objects/spritestrategy/runscreenNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(startup)">
+        <file path="data/objects/spritestrategy/startupNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(title)">
+        <file path="data/objects/spritestrategy/titlescreenNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(cube)">
+        <file path="data/objects/spritestrategy/cubeNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(load)">
+        <file path="data/objects/spritestrategy/loadscreenNode.lst"/>
+    </groupList>
+  
+</listTable>

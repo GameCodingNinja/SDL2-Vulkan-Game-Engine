@@ -37,7 +37,7 @@ public:
     void miscProcess() override;
 
     // Update objects that require them
-    void update() override;
+    virtual void update() override;
 
     // Transform the game objects
     void transform() override;

@@ -99,6 +99,8 @@ void CCommonState::transform()
         CStrategyMgr::Instance().transform();
 
     CMenuMgr::Instance().transform();
+    
+    CCameraMgr::Instance().transform();
 }
 
 

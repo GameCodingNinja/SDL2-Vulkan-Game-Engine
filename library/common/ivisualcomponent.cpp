@@ -33,7 +33,7 @@ iVisualComponent::iVisualComponent( const CObjectData2D & objectData ) :
 }
 
 iVisualComponent::iVisualComponent( const CObjectData3D & objectData ) :
-    GENERATION_TYPE( NDefs::EGT_NULL ),
+    GENERATION_TYPE( objectData.getVisualData().getGenerationType() ),
     m_color( objectData.getVisualData().getColor() ),
     m_rDefaultColor( objectData.getVisualData().getColor() ),
     m_frameIndex(0)

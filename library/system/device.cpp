@@ -1353,7 +1353,7 @@ void CDevice::load3DM(
             creatMemoryBuffer( group, filePath + "_vbo_" + std::to_string(i), vert, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT );
         
         // Create the IBO
-        model.m_meshVec.back().m_vboBuffer =
+        model.m_meshVec.back().m_iboBuffer =
             creatMemoryBuffer( group, filePath + "_ibo_" + std::to_string(i), indexBufVec, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
         
         // Save the number of indexes in the IBO buffer - Will need this for the render call

@@ -145,7 +145,13 @@ iNode * CActorStrategy::create(
     {
         if( iter.getNodeType() == NDefs::ENT_SPRITE )
         {
-            auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ), nodeId );
+            CSpriteNode * pSpriteNode(nullptr);
+            
+            if( iter.getSpriteType() == NDefs::EST_SPRITE2D )
+                pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ), nodeId );
+            
+            else if( iter.getSpriteType() == NDefs::EST_SPRITE3D )
+                pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData3D( iter.getGroup(), iter.getObjectName() ), nodeId );
 
             loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
             
@@ -154,11 +160,21 @@ iNode * CActorStrategy::create(
         }
         else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
         {
-            auto * pSpriteNode = new CSpriteNodeMultiLst(
-                    CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ),
-                    nodeId,
-                    iter.getNodeId(),
-                    iter.getParentNodeId() );
+            CSpriteNodeMultiLst * pSpriteNode(nullptr);
+            
+            if( iter.getSpriteType() == NDefs::EST_SPRITE2D )
+                pSpriteNode = new CSpriteNodeMultiLst(
+                        CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ),
+                        nodeId,
+                        iter.getNodeId(),
+                        iter.getParentNodeId() );
+            
+            else if( iter.getSpriteType() == NDefs::EST_SPRITE3D )
+                pSpriteNode = new CSpriteNodeMultiLst(
+                        CObjectDataMgr::Instance().getData3D( iter.getGroup(), iter.getObjectName() ),
+                        nodeId,
+                        iter.getNodeId(),
+                        iter.getParentNodeId() );
                 
             loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
             

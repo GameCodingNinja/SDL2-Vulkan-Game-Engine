@@ -39,6 +39,9 @@ public:
     // Create a perspective camera
     CCamera & createPerspective( const std::string & id, float angle = 45, float minZDist = 5, float maxZDist = 1000, float scale = 1.f );
     
+    // Get the camera
+    CCamera & getCamera( const std::string & id );
+    
     // Get the camera final matrix
     const CMatrix & getFinalMatrix() const;
     
@@ -86,6 +89,7 @@ private:
 
     // map list of cameras
     std::map<const std::string, CCamera> m_cameraMap;
+    //std::map< const std::string, std::map< const std::string, CCamera > > m_cameraMapMap;
     
     // Default Projection matrixes
     CMatrix m_perspectiveMatrix;
