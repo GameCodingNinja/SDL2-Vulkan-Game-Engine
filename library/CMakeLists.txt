@@ -40,7 +40,6 @@ add_library(
         script/scriptplaylist.cpp
         script/scriptsoundmanager.cpp
         script/scriptobjectdatamanager.cpp
-        script/scriptcameramanager.cpp
         script/scriptactionmanager.cpp
         script/scriptsettings.cpp
         script/scriptsize.cpp
@@ -71,7 +70,6 @@ add_library(
         managers/fontmanager.cpp
         managers/actionmanager.cpp
         managers/spritesheetmanager.cpp
-        managers/cameramanager.cpp
         managers/signalmanager.cpp
         physics/physicsworldmanager2d.cpp
         physics/physicsworldmanager3d.cpp

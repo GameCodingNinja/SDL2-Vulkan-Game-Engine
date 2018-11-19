@@ -43,6 +43,8 @@ CCameraData::CCameraData( const XMLNode & node )
         else if( std::strcmp( node.getAttribute("projectType"), "perspective" ) == 0 )
             m_projectionType = NDefs::EPT_PERSPECTIVE;
     }
+    
+    loadTransFromNode( node );
 }
 
 CCameraData::CCameraData( const CCameraData & data ) :
@@ -51,6 +53,7 @@ CCameraData::CCameraData( const CCameraData & data ) :
     m_maxZdist( data.m_maxZdist ),
     m_viewAngle( data.m_viewAngle )
 {
+    copyTransform( &data );
 }
 
 

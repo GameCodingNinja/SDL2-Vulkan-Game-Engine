@@ -19,7 +19,7 @@
     <groupList groupName="(cube)">
         <file path="data/objects/spritestrategy/cubeNode.lst"/>
         <camera id="cube" projectType="perspective" minZDist="5" maxZDist="1000" view_angle="45.0">
-            <position x="0" y="0" z="20"/>
+            <position x="0" y="0" z="-20"/>
         </camera>
     </groupList>
     

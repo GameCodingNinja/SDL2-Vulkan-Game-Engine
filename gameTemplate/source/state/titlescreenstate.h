@@ -11,6 +11,9 @@
 // Physical component dependency
 #include "commonstate.h"
 
+// Forward Declarations
+class iStrategy;
+
 class CTitleScreenState : public CCommonState
 {
 public:
@@ -32,6 +35,11 @@ public:
     
     // Static load function
     static void load();
+    
+private:
+        
+    // Cube strategy
+    iStrategy * pCubeStrategy;
 };
 
 #endif

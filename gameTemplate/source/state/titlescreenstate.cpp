@@ -15,8 +15,6 @@
 #include <objectdata/objectdatamanager.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/xmlpreloader.h>
-#include <managers/cameramanager.h>
-#include <managers/cameramanager.h>
 #include <system/device.h>
 #include <strategy/strategymanager.h>
 #include <strategy/actorstrategy.h>
@@ -44,6 +42,7 @@ CTitleScreenState::~CTitleScreenState()
     CDevice::Instance().waitForIdle();
     
     CStrategyMgr::Instance().deleteStrategy( "(title)" );
+    CStrategyMgr::Instance().deleteStrategy( "(cube)" );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
     CObjectDataMgr::Instance().freeGroup2D( "(title)" );
     CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
@@ -57,15 +56,11 @@ void CTitleScreenState::init()
 {
     // Unblock the menu messaging and activate needed trees
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
-
-    /*m_cube.setScale( 3, 3, 3 );
-
-    CCameraMgr::Instance().createPerspective( "cube" );
-    CCameraMgr::Instance().setActiveCameraPos( 0, 0, 20 );
-    CCameraMgr::Instance().setActiveCameraRot( 10, 0, 0 );*/
     
     // Enable the strategy for rendering
     CStrategyMgr::Instance().getStrategy( "(title)" )->enable();
+    pCubeStrategy = CStrategyMgr::Instance().getStrategy( "(cube)" );
+    pCubeStrategy->enable();
     
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -113,8 +108,8 @@ void CTitleScreenState::update()
 {
     CCommonState::update();
 
-    //float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
-    //CCameraMgr::Instance().incRot( rot, rot, 0 );
+    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
+    pCubeStrategy->getCamera()->incRot( rot, rot, 0 );
 }
 
 
@@ -162,10 +157,16 @@ void CTitleScreenState::load()
     CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     
     // Add the actor strategy
-    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( commandBufVec ) );
+    auto titleCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
+    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( titleCmdBufVec ) );
     
-    // Add the background
+    auto cubeCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
+    CStrategyMgr::Instance().addStrategy( "(cube)", new CActorStrategy( cubeCmdBufVec ) );
+    
+    // Add the actors
     CStrategyMgr::Instance().create( "(title)", "background" );
-    //CStrategyMgr::Instance().create( "(title)", "cube" );
+    CStrategyMgr::Instance().create( "(cube)", "cube" );
+    
+    // Set the camera for the cube strategy
+    CStrategyMgr::Instance().setCamera( "(cube)", "cube" );
 }

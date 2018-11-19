@@ -15,6 +15,9 @@
 #include <common/size.h>
 #include <utilities/matrix.h>
 
+// Forward Declarations
+class CCameraData;
+
 class CCamera : public CObject3D
 {
 public:
@@ -23,6 +26,7 @@ public:
     CCamera();
     CCamera( float minZDist, float maxZDist );
     CCamera( float angle, float minZDist, float maxZDist );
+    CCamera( const CCameraData & cameraData );
 
     // Destructor
     virtual ~CCamera();
@@ -30,8 +34,8 @@ public:
     // Init the camera
     void init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist );
 
-    // Recreate the projection matrix
-    void recreateProjMatrix();
+    // Build the projection matrix
+    void buildProjectionMatrix();
 
     // Set/Inc the camera's world position
     void setPos( const CPoint<CWorldValue> & position );
@@ -39,12 +43,6 @@ public:
 
     void incPos( const CPoint<CWorldValue> & position );
     void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
-
-    // Generate a custom perspective projection for this camera
-    void generatePerspectiveProjection( float angle, float minZDist, float maxZDist );
-
-    // Generate a custom orthographic projection for this camera
-    void generateOrthographicProjection( float minZDist, float maxZDist );
 
     // Get the projected matrix
     const CMatrix & getProjectionMatrix() const;
@@ -65,6 +63,12 @@ public:
     const CMatrix & getFinalMatrix() const;
 
 private:
+    
+    // Generate a custom perspective projection for this camera
+    void generatePerspectiveProjection( float angle, float minZDist, float maxZDist );
+
+    // Generate a custom orthographic projection for this camera
+    void generateOrthographicProjection( float minZDist, float maxZDist );
 
     // Calculate the final matrix
     void calcFinalMatrix();

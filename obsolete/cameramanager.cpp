@@ -44,7 +44,7 @@ CCameraMgr::~CCameraMgr()
 ************************************************************************/
 void CCameraMgr::createProjMatrix()
 {
-    m_perspectiveMatrix.perspectiveFovRH(
+    /*m_perspectiveMatrix.perspectiveFovRH(
         CSettings::Instance().getViewAngle(),
         CSettings::Instance().getScreenAspectRatio().w,
         CSettings::Instance().getMinZdist(),
@@ -68,7 +68,7 @@ void CCameraMgr::createProjMatrix()
         m_defaultCamera.generatePerspectiveProjection(
             CSettings::Instance().getViewAngle(),
             CSettings::Instance().getMinZdist(),
-            CSettings::Instance().getMaxZdist() );
+            CSettings::Instance().getMaxZdist() );*/
 }
 
 

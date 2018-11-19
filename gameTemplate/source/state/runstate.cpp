@@ -17,8 +17,6 @@
 #include <script/scriptmanager.h>
 #include <physics/physicsworldmanager2d.h>
 #include <physics/physicsworld2d.h>
-//#include <physics/physicscomponent2d.h>
-#include <managers/cameramanager.h>
 #include <strategy/basicstagestrategy.h>
 #include <strategy/actorstrategy.h>
 #include <strategy/strategymanager.h>

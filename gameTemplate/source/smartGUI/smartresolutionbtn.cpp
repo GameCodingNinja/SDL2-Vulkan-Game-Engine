@@ -9,11 +9,11 @@
 #include "smartresolutionbtn.h"
 
 // Game lib dependencies
-#include <managers/cameramanager.h>
 #include <gui/uibuttonlist.h>
 #include <gui/uicontrol.h>
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
+#include <strategy/strategymanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -107,7 +107,7 @@ void CSmartResolutionBtn::setResolutionChange()
 
     CSettings::Instance().setSize( m_resVec[m_resIndex] );
     CSettings::Instance().calcRatio();
-    CCameraMgr::Instance().createProjMatrix();
+    CStrategyMgr::Instance().buildCameras();
 }
 
 

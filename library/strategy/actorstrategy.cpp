@@ -14,7 +14,6 @@
 #include <utilities/xmlParser.h>
 #include <utilities/deletefuncs.h>
 #include <utilities/genfunc.h>
-#include <managers/cameramanager.h>
 #include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
@@ -24,6 +23,8 @@
 #include <node/nodedata.h>
 #include <node/inode.h>
 #include <system/device.h>
+#include <3d/object3d.h>
+#include <common/camera.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>

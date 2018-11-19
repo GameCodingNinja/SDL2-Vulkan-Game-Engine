@@ -9,7 +9,6 @@
 #include "commonstate.h"
 
 // Game lib dependencies
-#include <managers/cameramanager.h>
 #include <utilities/exceptionhandling.h>
 #include <strategy/strategymanager.h>
 #include <gui/menumanager.h>
@@ -99,8 +98,6 @@ void CCommonState::transform()
         CStrategyMgr::Instance().transform();
 
     CMenuMgr::Instance().transform();
-    
-    CCameraMgr::Instance().transform();
 }
 
 

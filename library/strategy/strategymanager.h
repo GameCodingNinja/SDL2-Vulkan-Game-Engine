@@ -41,7 +41,7 @@ public:
     }
     
     // Load the group
-    void loadGroup( const XMLNode & node, const std::string & group ) override;
+    void loadGroup( const XMLNode & node, const std::string & strategyId ) override;
     
     // Add strategy
     iStrategy * addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy );
@@ -51,6 +51,9 @@ public:
     
     // Delete sprite
     void deleteSprite( const std::string & strategyId, int spriteId );
+    
+    // Set the strategy camera
+    void setCamera( const std::string & strategyId, const std::string & cameraId );
     
     // create the iNode and provide a unique id number for each one
     iNode * create(
@@ -84,6 +87,9 @@ public:
     
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );
+    
+    // Build all the camera
+    void buildCameras();
     
     // Get a reference to the strategy
     template <typename target>
@@ -129,6 +135,9 @@ private:
     
     // Camera data for camera creation
     std::map< const std::string, std::map< const std::string, CCameraData > > m_cameraDataMapMap;
+    
+    // Strategy Camera map
+    std::map< const std::string, std::map< const std::string, CCamera > > m_cameraMapMap;
     
     // Default camera
     CCamera m_defaultCamera;

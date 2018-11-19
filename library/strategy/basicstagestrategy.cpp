@@ -10,7 +10,6 @@
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
-#include <managers/cameramanager.h>
 #include <system/device.h>
 
 /************************************************************************

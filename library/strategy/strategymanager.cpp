@@ -15,6 +15,7 @@
 #include <utilities/matrix.h>
 #include <utilities/xmlParser.h>
 #include <utilities/settings.h>
+#include <utilities/genfunc.h>
 #include <strategy/istrategy.h>
 #include <common/cameradata.h>
 
@@ -53,16 +54,16 @@ CStrategyMgr::~CStrategyMgr()
 /************************************************************************
 *    DESC:  Load the group
 ************************************************************************/
-void CStrategyMgr::loadGroup( const XMLNode & node, const std::string & group )
+void CStrategyMgr::loadGroup( const XMLNode & node, const std::string & strategyId )
 {
     for( int i = 0; i < node.nChildNode("camera"); ++i )
     {
         const XMLNode cameraNode = node.getChildNode("camera", i);
         
-        // Create the map group if it doesn't already exist
-        auto mapIter = m_cameraDataMapMap.find( group );
+        // Create the map strategy id if it doesn't already exist
+        auto mapIter = m_cameraDataMapMap.find( strategyId );
         if( mapIter == m_cameraDataMapMap.end() )
-            mapIter = m_cameraDataMapMap.emplace( group, std::map<const std::string, CCameraData>() ).first;
+            mapIter = m_cameraDataMapMap.emplace( strategyId, std::map<const std::string, CCameraData>() ).first;
 
         // Get the camera id
         std::string cameraId = "";
@@ -74,7 +75,7 @@ void CStrategyMgr::loadGroup( const XMLNode & node, const std::string & group )
         {
             throw NExcept::CCriticalException("Strategy Manager camera data load error!",
                 boost::str( boost::format("Camera does not have a id (%s).\n\n%s\nLine: %s")
-                    % group % __FUNCTION__ % __LINE__ ));
+                    % strategyId % __FUNCTION__ % __LINE__ ));
         }
 
         // Load the camera data
@@ -101,9 +102,21 @@ iStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, iStrategy
     // Check for duplicate groups being used
     if( !mapIter.second )
     {
-        throw NExcept::CCriticalException("Sprite Manager Strategy Load Error!",
+        throw NExcept::CCriticalException("Strategy Manager Load Error!",
             boost::str( boost::format("Duplicate id name (%s).\n\n%s\nLine: %s")
                 % strategyId % __FUNCTION__ % __LINE__ ));
+    }
+    
+    // See if we need to make some cameras
+    auto cameraDataMapIter = m_cameraDataMapMap.find( strategyId );
+    if( cameraDataMapIter != m_cameraDataMapMap.end() )
+    {
+        // Make an entry into the map
+        auto iter = m_cameraMapMap.emplace( strategyId, std::map< const std::string, CCamera >() );
+        
+        // Create each camera with the data
+        for( auto & cameraDataIter : cameraDataMapIter->second )
+            iter.first->second.emplace( cameraDataIter.first, cameraDataIter.second );
     }
 
     // See if there is any files associated with the strategy id in the list table
@@ -136,6 +149,11 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
         NDelFunc::Delete( mapIter->second );
         m_pStrategyMap.erase( mapIter );
     }
+    
+    // Delete it's associated cameras
+    auto cameraMapIter = m_cameraMapMap.find( strategyId );
+    if( cameraMapIter != m_cameraMapMap.end() )
+        m_cameraMapMap.erase( cameraMapIter );
 }
 
 
@@ -148,6 +166,31 @@ void CStrategyMgr::deleteSprite( const std::string & strategyId, int spriteId )
     auto mapIter = m_pStrategyMap.find( strategyId );
     if( mapIter != m_pStrategyMap.end() )
         mapIter->second->setToDestroy( spriteId );
+}
+
+
+/************************************************************************
+ *    DESC:  Set the strategy camera
+ ************************************************************************/
+void CStrategyMgr::setCamera( const std::string & strategyId, const std::string & cameraId )
+{
+    auto cameraMapIter = m_cameraMapMap.find( strategyId );
+    if( cameraMapIter != m_cameraMapMap.end() )
+    {
+        auto cameraIter = cameraMapIter->second.find( cameraId );
+        if( cameraIter != cameraMapIter->second.end() )
+        {
+            getStrategy( strategyId )->setCamera( &cameraIter->second );
+        }
+        else
+        {
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy doesn't have camera defined (%s, %s).") % strategyId % cameraId ) );
+        }
+    }
+    else
+    {
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy doesn't have any camera's defined (%s).") % strategyId ) );
+    }
 }
 
 
@@ -262,4 +305,15 @@ iStrategy * CStrategyMgr::getStrategy( const std::string & strategyId )
                 % strategyId % __FUNCTION__ % __LINE__ ));
 
     return mapIter->second;
+}
+
+
+/************************************************************************
+*    DESC:  Build all the camera
+************************************************************************/
+void CStrategyMgr::buildCameras()
+{
+    for( auto & cameraMapIter : m_cameraMapMap )
+        for( auto & cameraIter : cameraMapIter.second )
+            cameraIter.second.buildProjectionMatrix();
 }

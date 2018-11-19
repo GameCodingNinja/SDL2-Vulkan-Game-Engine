@@ -17,7 +17,6 @@
 #include <system/device.h>
 #include <objectdata/objectdatamanager.h>
 #include <managers/actionmanager.h>
-#include <managers/cameramanager.h>
 #include <script/scriptmanager.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/settings.h>
