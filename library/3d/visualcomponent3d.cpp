@@ -70,7 +70,7 @@ void CVisualComponent3D::recordCommandBuffer(
     if( m_active )
     {
         // Increment our stat counter to keep track of what is going on.
-        //CStatCounter::Instance().incDisplayCounter();
+        CStatCounter::Instance().incDisplayCounter();
         
         const auto & rVisualData( m_rObjectData.getVisualData() );
         auto & device( CDevice::Instance() );
@@ -79,7 +79,7 @@ void CVisualComponent3D::recordCommandBuffer(
         const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
 
         // Update the UBO buffer
-        updateUBO( index, device, rVisualData, model, camera.getFinalMatrix() );
+        updateUBO( index, device, rVisualData, model, camera.getRotMatrix(), camera.getFinalMatrix() );
 
         // Bind the pipeline
         vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
@@ -112,11 +112,13 @@ void CVisualComponent3D::updateUBO(
     CDevice & device,
     const iObjectVisualData & rVisualData,
     const CMatrix & model,
+    const CMatrix & rotate,
     const CMatrix & viewProj )
 {
     // Setup the uniform buffer object
-    NUBO::model_viewProj_color_additive ubo;
+    NUBO::model_rotate_viewProj_color_additive ubo;
     ubo.model = model;
+    ubo.rotate = rotate;
     ubo.viewProj = viewProj;
     ubo.color = m_color;
     ubo.additive = m_additive;

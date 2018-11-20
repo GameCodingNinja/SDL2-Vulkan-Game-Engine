@@ -4,6 +4,7 @@
 layout(binding = 0) uniform UniformBufferObject
 {
     mat4 model;
+    mat4 rotate;
     mat4 viewProj;
     vec4 color;
     vec4 additive;

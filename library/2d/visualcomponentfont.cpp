@@ -18,6 +18,7 @@
 #include <system/device.h>
 #include <managers/fontmanager.h>
 #include <utilities/genfunc.h>
+#include <utilities/statcounter.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -72,6 +73,9 @@ void CVisualComponentFont::recordCommandBuffer(
 {
     if( allowCommandRecording() )
     {
+        // Increment our stat counter to keep track of what is going on.
+        CStatCounter::Instance().incDisplayCounter();
+        
         const auto & rVisualData( m_rObjectData.getVisualData() );
         auto & device( CDevice::Instance() );
 

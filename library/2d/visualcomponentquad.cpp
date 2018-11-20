@@ -12,6 +12,7 @@
 #include <objectdata/objectdata2d.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <utilities/matrix.h>
+#include <utilities/statcounter.h>
 #include <common/uniformbufferobject.h>
 #include <common/pipeline.h>
 #include <common/camera.h>
@@ -64,6 +65,9 @@ void CVisualComponentQuad::recordCommandBuffer(
 {
     if( allowCommandRecording() )
     {
+        // Increment our stat counter to keep track of what is going on.
+        CStatCounter::Instance().incDisplayCounter();
+        
         const auto & rVisualData( m_rObjectData.getVisualData() );
         auto & device( CDevice::Instance() );
 

@@ -39,7 +39,7 @@ public:
     ~CVisualComponent3D();
 
     // Record the command buffers
-    virtual void recordCommandBuffer( 
+    void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
         const CMatrix & model,
@@ -48,11 +48,12 @@ public:
 private:
     
     // Update the UBO buffer
-    virtual void updateUBO(
+    void updateUBO(
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
         const CMatrix & model,
+        const CMatrix & rotate,
         const CMatrix & viewProj );
 
 private:

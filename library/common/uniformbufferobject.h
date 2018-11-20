@@ -35,11 +35,22 @@ namespace NUBO
         CMatrix viewProj;
         CColor color;
         CColor additive;
-        CRect <float> glyph;
+        CRect<float> glyph;
+    };
+    
+    class model_rotate_viewProj_color_additive
+    {
+    public:
+
+        CMatrix model;
+        CMatrix rotate;
+        CMatrix viewProj;
+        CColor color;
+        CColor additive;
     };
     
     // Get the UBO size
     int GetUboSize( const std::string & ubo );
 }
 
-#endif  // __uniform_buffer_object_h__
+#endif
