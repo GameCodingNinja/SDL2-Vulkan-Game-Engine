@@ -108,8 +108,11 @@ void CStartUpState::init()
     CMenuMgr::Instance().setCommandBuffers( menuCmdBuf );
 
     // Create the group command buffers and add the actor strategy
-    auto stratCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-    CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy( stratCmdBuf ) )->enable();
+    // Command buffers can only be used in the thread they are created
+    auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
+    auto * pStrategy = CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() );
+    pStrategy->setCommandBuffers( cmdBuf );
+    pStrategy->enable();
     
     // Add the logo
     CStrategyMgr::Instance().create( "(startup)", "waffles" );

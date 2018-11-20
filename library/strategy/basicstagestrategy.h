@@ -21,9 +21,6 @@
 #include <vector>
 #include <deque>
 
-// Vulkan lib dependencies
-#include <system/vulkan.h>
-
 // Forward Declarations
 class CObject2D;
 class CMatrix;
@@ -34,13 +31,15 @@ public:
 
     // Constructor
     CBasicStageStrategy();
-    CBasicStageStrategy( std::vector<VkCommandBuffer> & commandBufVec );
 
     // Destructor
     virtual ~CBasicStageStrategy();
 
     // Load the sector data from file
     virtual void loadFromFile( const std::string & file ) override;
+    
+    // Set the command buffers
+    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec ) override;
     
     // Do any pre-game loop init's
     virtual void init() override;

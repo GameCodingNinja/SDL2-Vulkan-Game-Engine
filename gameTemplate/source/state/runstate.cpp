@@ -59,8 +59,17 @@ void CRunState::init()
     CMenuMgr::Instance().activateTree("pause_tree");
 
     // Enable the strategy for rendering
-    CStrategyMgr::Instance().getStrategy( "(stage)" )->enable();
-    CStrategyMgr::Instance().getStrategy( "(run)" )->enable();
+    // Command buffers can only be used in the thread they are created
+    auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
+    auto * pStageStrategy = CStrategyMgr::Instance().getStrategy( "(stage)" );
+    pStageStrategy->setCommandBuffers( stageCmdBufVec );
+    pStageStrategy->enable();
+    
+    // Command buffers can only be used in the thread they are created
+    auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
+    auto * pRunStrategy = CStrategyMgr::Instance().getStrategy( "(run)" );
+    pRunStrategy->setCommandBuffers( runCmdBufVec );
+    pRunStrategy->enable();
 
     // Start the fade
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -124,13 +133,9 @@ void CRunState::load()
     // Create the physics world
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
     
-    // Add a stage strategy
-    auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    CStrategyMgr::Instance().addStrategy( "(stage)", new CBasicStageStrategy( stageCmdBufVec ) );
-    
-    // Add an actor strategy
-    auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy( runCmdBufVec ) );
+    // Add the strategies
+    CStrategyMgr::Instance().addStrategy( "(stage)", new CBasicStageStrategy() );
+    CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy() );
     
     // Add the sprites to the stategy
     const char* shapes[] = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};

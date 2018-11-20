@@ -19,11 +19,6 @@ CBasicStageStrategy::CBasicStageStrategy()
 {
 }
 
-CBasicStageStrategy::CBasicStageStrategy( std::vector<VkCommandBuffer> & commandBufVec ) :
-    m_commandBufVec(commandBufVec)
-{
-}
-
 
 /************************************************************************
 *    DESC:  destructor
@@ -69,6 +64,15 @@ void CBasicStageStrategy::loadFromNode( const XMLNode & node )
             m_sectorDeq.back().loadTransFromNode( sectorNode );
         }
     }
+}
+
+
+/************************************************************************
+ *    DESC:  Set the command buffers
+ ************************************************************************/
+void CBasicStageStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
+{
+    m_commandBufVec = commandBufVec;
 }
 
 

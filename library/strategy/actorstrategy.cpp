@@ -36,11 +36,6 @@ CActorStrategy::CActorStrategy()
 {
 }
 
-CActorStrategy::CActorStrategy( std::vector<VkCommandBuffer> & commandBufVec ) :
-    m_commandBufVec(commandBufVec)
-{
-}
-
 
 /************************************************************************
 *    DESC:  destructor
@@ -94,6 +89,15 @@ void CActorStrategy::loadFromFile( const std::string & file )
             }
         }
     }
+}
+
+
+/************************************************************************
+ *    DESC:  Set the command buffers
+ ************************************************************************/
+void CActorStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
+{
+    m_commandBufVec = commandBufVec;
 }
 
 
@@ -323,7 +327,7 @@ void CActorStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera
 {
     if( m_enable )
     {
-        auto cmdBuf( m_commandBufVec[index] );
+        auto cmdBuf( m_commandBufVec.at(index) );
 
         CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 

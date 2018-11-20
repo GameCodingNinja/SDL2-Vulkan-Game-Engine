@@ -58,8 +58,16 @@ void CTitleScreenState::init()
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
     
     // Enable the strategy for rendering
-    CStrategyMgr::Instance().getStrategy( "(title)" )->enable();
+    // Command buffers can only be used in the thread they are created
+    auto titleCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
+    auto * pTitleStrategy = CStrategyMgr::Instance().getStrategy( "(title)" );
+    pTitleStrategy->setCommandBuffers( titleCmdBufVec );
+    pTitleStrategy->enable();
+    
+    // Command buffers can only be used in the thread they are created
+    auto cubeCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
     pCubeStrategy = CStrategyMgr::Instance().getStrategy( "(cube)" );
+    pCubeStrategy->setCommandBuffers( cubeCmdBufVec );
     pCubeStrategy->enable();
     
     // Start the fade in
@@ -156,12 +164,9 @@ void CTitleScreenState::load()
     CObjectDataMgr::Instance().loadGroup2D( "(title)" );
     CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     
-    // Add the actor strategy
-    auto titleCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy( titleCmdBufVec ) );
-    
-    auto cubeCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().addStrategy( "(cube)", new CActorStrategy( cubeCmdBufVec ) );
+    // Add the strategies
+    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy() );
+    CStrategyMgr::Instance().addStrategy( "(cube)", new CActorStrategy() );
     
     // Add the actors
     CStrategyMgr::Instance().create( "(title)", "background" );

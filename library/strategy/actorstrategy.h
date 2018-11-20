@@ -24,9 +24,6 @@
 #include <vector>
 #include <map>
 
-// Vulkan lib dependencies
-#include <system/vulkan.h>
-
 // Forward Declarations
 class CNodeDataList;
 class CSpriteData;
@@ -39,13 +36,15 @@ public:
 
     // Constructor
     CActorStrategy();
-    CActorStrategy( std::vector<VkCommandBuffer> & commandBufVec );
 
     // Destructor
     virtual ~CActorStrategy();
 
     // Load the node data from file
     void loadFromFile( const std::string & file ) override;
+    
+    // Set the command buffers
+    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec ) override;
 
     // Create the node
     virtual iNode * create(

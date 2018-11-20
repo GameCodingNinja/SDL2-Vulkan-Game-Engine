@@ -1343,6 +1343,8 @@ void CDevice::load3DM(
             vert[j].vert = vertLstVec[ vertIndexVec[j].vert ];
             vert[j].norm = normalLstVec[ vertIndexVec[j].norm ];
             vert[j].uv = uvLstVec[ vertIndexVec[j].uv ];
+            
+            vert[j].vert.invertY();
         }
 
         // Add a new entry into the vector

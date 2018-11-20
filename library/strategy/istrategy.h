@@ -14,6 +14,10 @@
 
 // Standard lib dependencies
 #include <string>
+#include <vector>
+
+// Vulkan lib dependencies
+#include <system/vulkan.h>
 
 // Forward Declarations
 class iNode;
@@ -43,6 +47,9 @@ public:
     // Set to create the sprite
     void setCamera( CCamera * pCamera );
     CCamera * getCamera();
+    
+    // Set the command buffers
+    virtual void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec ) = 0;
     
     // Create the sprite
     virtual iNode * create(
