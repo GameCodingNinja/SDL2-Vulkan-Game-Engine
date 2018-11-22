@@ -4,8 +4,8 @@
     <default  name="">
         <visual>
             <texture count="0" file="" compressed="false"/>
-            <mesh genType="quad">
-                <spriteSheet defIndex="0" glyphCount="0" columns="0">
+            <mesh genType="quad" file="" >
+                <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file="">
                     <!--
                     <glyph id="weaponicons (2)"/>
                     <glyph id="hero001"/>
@@ -14,10 +14,9 @@
                     <glyph id="pomel (14)"/> -->
                 </spriteSheet>
                 <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
-                <file name=""/>
             </mesh>
             <color r="1" g="1" b="1" a="1"/>
-            <shader id="shader_2d"/>
+            <pipeline id="2d_quad"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
@@ -42,110 +41,95 @@
             </visual>
         </object>
         
+        <!--
         <object name="wheel">
             <visual>
                 <texture file="data/textures/slot/wheel.png"/>
             </visual>
         </object>
         
-        <object name="circle_green">
+        <object name="triangle">
             <visual>
-                <texture file="data/textures/run/circle_green.png"/>
+                <texture file="data/textures/slot/triangle_green.png"/>
             </visual>
-            <physics>
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="circle" radius="48" density="0.3" restitution="0.6"/>
-                </fixtureLst>
-            </physics>
-        </object>
-    
-        <object name="circle_blue">
-            <visual>
-                <texture file="data/textures/run/circle_blue.png"/>
-            </visual>
-            <physics>
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="circle" radius="48" density="0.2" restitution="0.4"/>
-                </fixtureLst>
-            </physics>
         </object>
         
-        <object name="circle_red">
+        <object name="black_font">
             <visual>
-                <texture file="data/textures/run/circle_red.png"/>
+                <mesh genType="font"/>
+                <color r="0" g="0" b="0" a="1"/>
             </visual>
-            <physics>
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="circle" radius="48" density="0.1" restitution="0.3"/>
-                </fixtureLst>
-            </physics>
-        </object>
-    
-        <object name="square_red">
-            <visual>
-                <texture file="data/textures/run/square_red.png"/>
-            </visual>
-            <physics>
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="polygon" density="0.1" restitution="0.2">
-                        <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
-                    </fixture>
-                </fixtureLst>
-            </physics>
         </object>
         
-        <object name="triangle_green">
+        <object name="white_font">
             <visual>
-                <texture file="data/textures/run/triangle_green.png"/>
+                <mesh genType="font"/>
+                <color r="1" g="1" b="1" a="1"/>
             </visual>
-            <physics>
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="polygon" density="0.3" restitution="0.6">
-                        <vertLst>
-                            <vert x="50" y="5"/>
-                            <vert x="5" y="94"/>
-                            <vert x="94" y="94"/>
-                        </vertLst>
-                    </fixture>
-                </fixtureLst>
-            </physics>
         </object>
-    
-        <object name="triangle_blue">
+        -->
+        
+<!--
+        <object name="spriteSheetTest1">
             <visual>
-                <texture file="data/textures/run/triangle_blue.png"/>
+                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="8" glyphCount="16" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
+                        <glyph id="weaponicons (%d)"/>
+                    </spriteSheet>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
-            <physics>
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="polygon" density="0.2" restitution="0.4">
-                        <vertLst>
-                            <vert x="50" y="5"/>
-                            <vert x="5" y="94"/>
-                            <vert x="94" y="94"/>
-                        </vertLst>
-                    </fixture>
-                </fixtureLst>
-            </physics>
+        </object>
+        
+        <object name="spriteSheetTest2">
+            <visual>
+                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="2" glyphCount="8" formatCodeOffset="8" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
+                        <glyph id="weaponicons (%d)"/>
+                    </spriteSheet>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
         </object>
 
-        <object name="peg">
+        <object name="spriteSheetTest3">
             <visual>
-                <texture file="data/textures/run/peg.png"/>
+                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="3" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
+                        <glyph id="weaponicons (2)"/>
+                        <glyph id="hero001"/>
+                        <glyph id="hero3down001"/>
+                        <glyph id="ship (3)"/>
+                        <glyph id="pomel (14)"/>
+                    </spriteSheet>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
             </visual>
-            <physics>
-                <body type="static"/>
-                <fixtureLst>
-                    <fixture shape="circle" radius="17"/>
-                </fixtureLst>
-            </physics>
         </object>
-        
+
+        <object name="spriteSheetTest4">
+            <visual>
+                <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="9" glyphCount="22" columns="4"/>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+
+        <object name="spriteSheetTest5">
+            <visual>
+                <texture file="data/textures/spriteSheet/test_simple.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="2" file="data/objects/2d/mesh/titleScreen/test_simple.xml" loadAllGlyphs="true"/>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+-->
     </objectList>
 
 </objectDataList2D>

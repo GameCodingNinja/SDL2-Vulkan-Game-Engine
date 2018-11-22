@@ -33,6 +33,15 @@ void iStrategy::init( std::vector<VkCommandBuffer> & commandBufVec, bool enable 
 
 
 /************************************************************************
+ *    DESC:  Set the command buffers
+ ************************************************************************/
+void iStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
+{
+    m_commandBufVec = commandBufVec;
+}
+
+
+/************************************************************************
 *    DESC:  Set/Get the camera
 ************************************************************************/
 void iStrategy::setCamera( CCamera * pCamera )

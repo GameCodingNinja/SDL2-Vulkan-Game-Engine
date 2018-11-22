@@ -5,13 +5,6 @@
 *    DESCRIPTION:     CGame class
 ************************************************************************/
 
-#if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-#include "SDL_opengles2.h"
-#else
-#include <GL/glew.h>     // Glew dependencies (have to be defined first)
-#include <SDL_opengl.h>  // SDL/OpenGL lib dependencies
-#endif
-
 // Physical component dependency
 #include "game.h"
 
@@ -24,11 +17,6 @@
 #include <utilities/genfunc.h>
 #include <strategy/strategymanager.h>
 #include <managers/actionmanager.h>
-#include <managers/cameramanager.h>
-#include <managers/shadermanager.h>
-#include <managers/texturemanager.h>
-#include <managers/vertexbuffermanager.h>
-#include <managers/meshmanager.h>
 #include <gui/menumanager.h>
 #include <script/scriptmanager.h>
 #include <script/scriptcolor.h>
@@ -37,12 +25,10 @@
 #include <script/scriptpoint.h>
 #include <script/scriptsize.h>
 #include <script/scriptglobals.h>
-#include <script/scriptisprite.h>
+#include <script/scriptsprite.h>
 #include <script/scriptsoundmanager.h>
 #include <script/scriptcamera.h>
-#include <script/scriptcameramanager.h>
 #include <script/scriptmenu.h>
-#include <script/scriptshadermanager.h>
 #include <script/scriptobjectdatamanager.h>
 #include <script/scriptstrategymanager.h>
 #include <script/scriptistrategy.h>
@@ -53,6 +39,7 @@
 #include <script/scriptfontmanager.h>
 #include <script/scriptscriptmanager.h>
 #include <script/scriptuicontrol.h>
+#include <script/scriptdevice.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -68,10 +55,6 @@
 *    DESC:  Constructor
 ************************************************************************/
 CGame::CGame()
-    : m_pWindow(nullptr),
-      m_context(nullptr),
-      m_gameRunning(false),
-      m_clearBufferMask(0)
 {
     if( NBDefs::IsDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
@@ -83,13 +66,16 @@ CGame::CGame()
 ************************************************************************/
 CGame::~CGame()
 {
-    // Destroy the OpenGL context
-    if( m_context != nullptr )
-        SDL_GL_DeleteContext( m_context );
-
-    // Destroy window
-    if( m_pWindow != nullptr )
-        SDL_DestroyWindow( m_pWindow );
+    // Wait for all rendering to be finished
+    //CDevice::Instance().waitForIdle();
+    //CScriptMgr::Instance().clear();
+    
+    // Free the assets
+    //CMenuMgr::Instance().clear();
+    //CStrategyMgr::Instance().clear();
+    
+    // Destroy the window and Vulkan instance
+    //CDevice::Instance().destroy();
 
     // Quit SDL subsystems
     SDL_Quit();
@@ -101,69 +87,20 @@ CGame::~CGame()
  ****************************************************************************/
 void CGame::create()
 {
-    // Create the window and OpenGL context
-    CDevice::Instance().create();
+    CDevice::Instance().setRecordCommandBufferCallback(
+        std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
+    
+    // Show the window
+    //CDevice::Instance().showWindow( true );
 
-    // Get local copies of the device handles
-    m_pWindow = CDevice::Instance().getWindow();
-    m_context = CDevice::Instance().getContext();
+    // Setup the message filtering
+    SDL_SetEventFilter(FilterEvents, 0);
+
+    // Handle some events on startup
+    pollEvents();
 
     // Game start init
     init();
-}
-
-
-/************************************************************************
-*    DESC:  OpenGL Init
-************************************************************************/
-void CGame::openGLInit()
-{
-    // Init the clear color
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    // Init the stencil clear mask based on the bit size of the mask
-    // Stencil buffer can only be 1 or 8 bits per pixel
-    if( CSettings::Instance().getStencilBufferBitSize() == 1 )
-        glStencilMask(0x1);
-    else if( CSettings::Instance().getStencilBufferBitSize() == 8 )
-        glStencilMask(0xff);
-
-    // Cull the back face
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
-    glEnable(GL_CULL_FACE);
-
-    // Enable alpha blending
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // Make the zero texture the active texture
-    glActiveTexture(GL_TEXTURE0);
-
-    // Init the clear buffer mask
-    if( CSettings::Instance().getClearTargetBuffer() )
-        m_clearBufferMask |= GL_COLOR_BUFFER_BIT;
-
-    if( CSettings::Instance().getEnableDepthBuffer() )
-        m_clearBufferMask |= GL_DEPTH_BUFFER_BIT;
-
-    if( CSettings::Instance().getClearStencilBuffer() )
-        m_clearBufferMask |= GL_STENCIL_BUFFER_BIT;
-
-    if( CSettings::Instance().getEnableDepthBuffer() )
-        glEnable( GL_DEPTH_TEST );
-
-    // Clear the back buffer and flip it prior to showing the window
-    // Keeps us from seeing a flash or flicker of pre init junk
-    glClear( GL_COLOR_BUFFER_BIT );
-    SDL_GL_SwapWindow( m_pWindow );
-
-    // Show the window
-    CDevice::Instance().showWindow( true );
-
-    // Display a black screen
-    glClear( GL_COLOR_BUFFER_BIT );
-    SDL_GL_SwapWindow( m_pWindow );
 }
 
 
@@ -172,8 +109,6 @@ void CGame::openGLInit()
 ************************************************************************/
 void CGame::init()
 {
-    openGLInit();
-
     // Handle some events on startup
     pollEvents();
 
@@ -189,17 +124,15 @@ void CGame::init()
     NScriptColor::Register();
     NScriptPoint::Register();
     NScriptSize::Register();
+    NScriptActionManager::Register();
     NScriptCamera::Register();
-    NScriptiSprite::Register();
+    NScriptSprite::Register();
     NScriptSound::Register();
     NScriptPlayLst::Register();
     NScriptiStrategy::Register();
     NScriptSoundManager::Register();
-    NScriptShaderManager::Register();
     NScriptObjectDataManager::Register();
     NScriptStrategyManager::Register();
-    NScriptCameraManager::Register();
-    NScriptActionManager::Register();
     NScriptSettings::Register();
     NScriptHighResolutionTimer::Register();
     NScriptUIControl::Register();
@@ -207,14 +140,12 @@ void CGame::init()
     NScriptMenuManager::Register();
     NScriptFontManager::Register();
     NScriptScriptManager::Register();
+    NScriptDevice::Register();
 
     CScriptMgr::Instance().loadGroup("(main)");
     CScriptMgr::Instance().prepare("(main)", "main");
 
     CHighResTimer::Instance().calcElapsedTime();
-
-    // Let the games begin
-    startGame();
 }
 
 
@@ -232,19 +163,18 @@ void CGame::pollEvents()
     while( SDL_PollEvent( &msgEvent ) )
     {
         CActionMgr::Instance().queueEvent( msgEvent );
+        
+        handleEvent( msgEvent );
 
         // let the game handle the event
         // turns true on quit
-        if( handleEvent( msgEvent ) )
+        /*if( handleEvent( msgEvent ) )
         {
-            // Stop the game
-            m_gameRunning = false;
-
             // Hide the window to give the impression of a quick exit
             CDevice::Instance().showWindow( false );
 
             break;
-        }
+        }*/
     }
 }
 
@@ -261,35 +191,36 @@ bool CGame::gameLoop()
     CHighResTimer::Instance().calcElapsedTime();
 
     // Main script update
-    CScriptMgr::Instance().update();
+    return CScriptMgr::Instance().update();
 
-    if( m_gameRunning )
+    /*if( m_gameRunning )
     {
-        // Clear the buffers
-        glClear( m_clearBufferMask );
-
         // Process all game states
         CStrategyMgr::Instance().miscProcess();
+        
         CStrategyMgr::Instance().update();
         CMenuMgr::Instance().update();
+        
         CStrategyMgr::Instance().transform();
-        CCameraMgr::Instance().transform();
-        CStrategyMgr::Instance().render();
-
-        // Do the back buffer swap
-        SDL_GL_SwapWindow( m_pWindow );
-
-        // Unbind everything after a round of rendering
-        CShaderMgr::Instance().unbind();
-        CTextureMgr::Instance().unbind();
-        CVertBufMgr::Instance().unbind();
+        CMenuMgr::Instance().transform();
+        
+        // Do the rendering
+        CDevice::Instance().render();
 
         // Inc the cycle
         if( NBDefs::IsDebugMode() )
             CStatCounter::Instance().incCycle();
-    }
+    }*/
+}
 
-    return m_gameRunning;
+
+/***************************************************************************
+*    decs:  Record the command buffer vector in the device
+*           for all the sprite objects that are to be rendered
+****************************************************************************/
+void CGame::recordCommandBuffer( uint32_t cmdBufIndex )
+{
+    CStrategyMgr::Instance().recordCommandBuffer( cmdBufIndex );
 }
 
 
@@ -299,7 +230,7 @@ bool CGame::gameLoop()
 void CGame::statStringCallBack( const std::string & statStr )
 {
     if( !CSettings::Instance().getFullScreen() )
-        SDL_SetWindowTitle( m_pWindow, statStr.c_str() );
+        SDL_SetWindowTitle( CDevice::Instance().getWindow(), statStr.c_str() );
 }
 
 
@@ -308,23 +239,23 @@ void CGame::statStringCallBack( const std::string & statStr )
 ************************************************************************/
 bool CGame::handleEvent( const SDL_Event & rEvent )
 {
-    if( (rEvent.type == SDL_QUIT) || (rEvent.type == SDL_APP_TERMINATING) )
-        return true;
+    //if( (rEvent.type == SDL_QUIT) || (rEvent.type == SDL_APP_TERMINATING) )
+    //    return true;
     
     // Handle events for the menu manager
     CMenuMgr::Instance().handleEvent( rEvent );
     
     // Check for the "game change state" message
-    if( rEvent.type == NMenu::EGE_MENU_GAME_STATE_CHANGE )
+    /*if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
     {
         // Block all message processing in the menu manager
-        if( rEvent.user.code == NMenu::ETC_BEGIN )
+        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
             CMenuMgr::Instance().allow( false );
 
         // Clear out all the trees
-        else if( rEvent.user.code == NMenu::ETC_END )
+        else if( rEvent.user.code == NMenuDefs::ETC_END )
             CMenuMgr::Instance().clearActiveTrees();
-    }
+    }*/
 
     // Filter out these events. Can't do this through the normal event filter
     if( (rEvent.type >= SDL_JOYAXISMOTION) && (rEvent.type <= SDL_JOYBUTTONUP) )
@@ -341,7 +272,7 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
 
     // In a traditional game, want the pause menu to display when the game is sent to the background
     else if( (rEvent.type == SDL_APP_WILLENTERBACKGROUND) && !CMenuMgr::Instance().isMenuActive() )
-        NGenFunc::DispatchEvent( NMenu::EGE_MENU_ESCAPE_ACTION );
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION );
 
     return false;
 }
@@ -352,38 +283,7 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
 ****************************************************************************/
 void CGame::displayErrorMsg( const std::string & title, const std::string & msg )
 {
-    printf("Error: %s, %s", title.c_str(), msg.c_str() );
-
-    SDL_ShowSimpleMessageBox( SDL_MESSAGEBOX_ERROR, title.c_str(), msg.c_str(), m_pWindow );
-}
-
-
-/***************************************************************************
-*   DESC:  Start the game
-****************************************************************************/
-void CGame::startGame()
-{
-    m_gameRunning = true;
-}
-
-
-/***************************************************************************
-*   DESC:  Stop the game
-****************************************************************************/
-void CGame::stopGame()
-{
-    m_gameRunning = false;
-}
-
-
-/***************************************************************************
-*  DESC:  Is the game running?
-*
-*  ret: bool - true or false if game is running
-****************************************************************************/
-bool CGame::isGameRunning() const
-{
-    return m_gameRunning;
+    CDevice::Instance().displayErrorMsg( title, msg );
 }
 
 

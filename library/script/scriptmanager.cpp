@@ -54,12 +54,24 @@ CScriptMgr::CScriptMgr()
 ************************************************************************/
 CScriptMgr::~CScriptMgr()
 {
+    clear();
+}
+
+
+/************************************************************************
+*    DESC:  Delete all the strategies
+************************************************************************/
+void CScriptMgr::clear()
+{
     // Release the context pool
     for( auto iter : m_pContextPoolVec )
         iter->Release();
 
     for( auto iter : m_pActiveContextVec )
         iter->Release();
+    
+    m_pContextPoolVec.clear();
+    m_pActiveContextVec.clear();
 }
 
 
@@ -366,10 +378,12 @@ void CScriptMgr::prepareLocalSpawnVoid( const std::string & funcName, void * pVo
 /************************************************************************
 *    DESC:  Update the script
 ************************************************************************/
-void CScriptMgr::update()
+bool CScriptMgr::update()
 {
     if( !m_pActiveContextVec.empty() )
         update( m_pActiveContextVec );
+    
+    return !m_pActiveContextVec.empty();
 }
 
 void CScriptMgr::update( std::vector<asIScriptContext *> & pContextVec )

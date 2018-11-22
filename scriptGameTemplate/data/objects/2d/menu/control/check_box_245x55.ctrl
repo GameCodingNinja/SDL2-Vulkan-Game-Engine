@@ -37,7 +37,7 @@
         <!-- This sprite is toggled so it need to be last -->
         <sprite objectName="control_font">
             <font fontName="dejavu_sans_reg_bold_32"/>
-            <position x="-97.5" y="2" z="0"/>
+            <position x="-97.5" y="-2" z="0"/>
             <scriptLst>
                 <script disabled="Control_Disabled"/>
                 <script inactive="Control_Inactive"/>

@@ -131,10 +131,10 @@ void CRunState::load()
     
     // Add the strategies
     CStrategyMgr::Instance().addStrategy( "(stage)", new CBasicStageStrategy() );
-    CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy() );
+    auto strategy = CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy() );
     
-    // Add the sprites to the stategy
+    // Add the sprites to the strategy
     const char* shapes[] = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
     for( int i = 0; i < 24; ++i )
-        CStrategyMgr::Instance().create( "(run)", shapes[i % 6] );
+        strategy->create( shapes[i % 6] );
 }

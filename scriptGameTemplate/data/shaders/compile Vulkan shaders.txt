@@ -1,0 +1,11 @@
+https://www.khronos.org/opengl/wiki/Layout_Qualifier_(GLSL)
+
+// CD to shader directory
+cd Development/SDL2-Vulkan-Game-Engine/gameTemplate/data/shaders/
+
+// Compile shader
+glslangValidator -V <shader text file>
+glslangValidator -V vulkanTriangle.vert
+
+generated file needs to be renamed
+

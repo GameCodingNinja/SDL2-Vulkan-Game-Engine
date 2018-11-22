@@ -8,24 +8,53 @@
 class CGame
 {
     // State handle
-    iGameState@ m_gameState;
+    iGameState @gameState;
+    
+    // Game running flag
+    bool gameRunning = true;
+    
+    //
+    //  Constructor
+    //
+    CGame()
+    {
+    }
+    
+    //
+    //  Do the cleanup.
+    //  NOTE: Can't be called from destructor
+    //
+    void destroy()
+    {
+        // Wait for all rendering to be finished
+        Device.waitForIdle();
+        
+        // Destroy the window and render device instance
+        Device.destroy();
+    }
     
     //
     //  Init the game
     //
-    void Init()
+    void init()
     {
+        // Create the rendering device
+        Device.create( "data/shaders/pipeline.cfg" );
+        
+        // Show the window
+        Device.showWindow();
+        
         // Create the startup state
-        @m_gameState = CStartUpState();
-        m_gameState.init();
+        //@gameState = CStartUpState();
+        //gameState.init();
     }
     
     //
     //  Handle the state change
     //
-    void HandleStateChange()
+    void handleStateChange()
     {
-        if( m_gameState.isStateChange() )
+        /*if( m_gameState.isStateChange() )
         {
             // Get the game state we are moving to
             const EGameState curState = m_gameState.getState();
@@ -47,18 +76,44 @@ class CGame
 
             // Do any pre-game loop init's
             m_gameState.init();
+        }*/
+    }
+    
+    //
+    //  Handle the state change
+    //
+    void handleEvent()
+    {
+        // Is it time to quit?
+        if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||
+            ActionMgr.wasEvent( NGameDefs::EGE_APP_TERMINATING ) )
+        {
+            gameRunning = false;
+            
+            // Show the window
+            Device.showWindow(false);
         }
+            
+        if( gameState !is null )
+            gameState.handleEvent();
     }
     
     //
     //  Main game loop
     //
-    void GameLoop()
+    bool gameLoop()
     {
-        HandleStateChange();
+        handleStateChange();
         
-        m_gameState.handleEvent();
+        handleEvent();
         
-        m_gameState.update();
+        if( gameRunning )
+        {
+            Device.render();
+
+            //m_gameState.update();
+        }
+        
+        return gameRunning;
     }
 };

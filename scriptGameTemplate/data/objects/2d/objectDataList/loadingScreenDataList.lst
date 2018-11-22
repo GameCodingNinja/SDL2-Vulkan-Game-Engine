@@ -4,13 +4,12 @@
     <default  name="">
         <visual>
             <texture count="0" file="" compressed="false"/>
-            <mesh genType="quad">
-                <spriteSheet defIndex="0" glyphCount="0" columns="0"/>
+            <mesh genType="quad" file="" >
+                <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file=""/>
                 <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
-                <file name=""/>
             </mesh>
             <color r="1" g="1" b="1" a="1"/>
-            <shader id="shader_2d_spriteSheet"/>
+            <pipeline id="2d_spriteSheet"/>
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>

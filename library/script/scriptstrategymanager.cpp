@@ -15,6 +15,8 @@
 #include <strategy/basicstagestrategy.h>
 #include <strategy/actorstrategy.h>
 #include <utilities/exceptionhandling.h>
+#include <node/inode.h>
+#include <sprite/sprite.h>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
@@ -66,29 +68,6 @@ namespace NScriptStrategyManager
         
         return pStrategy;
     }
-    
-    /************************************************************************
-    *    DESC:  Create a menu strategy                                                            
-    ************************************************************************/
-    /*iStrategy * CreateMenuStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
-    {
-        iStrategy * pStrategy = nullptr;
-        
-        try
-        {
-            pStrategy = rStrategyMgr.addStrategy( strategyId, new CMenuStrategy );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return pStrategy;
-    }*/
 
     /************************************************************************
     *    DESC:  Get the sprite strategy via string search
@@ -133,27 +112,6 @@ namespace NScriptStrategyManager
     }
 
     /************************************************************************
-    *    DESC:  Create a basic stage strategy                                                            
-    ************************************************************************/
-    /*CSprite * CreateSprite( const std::string & strategyId, const std::string & dataName, CStrategyMgr & rStrategyMgr )
-    {
-        try
-        {
-            return rStrategyMgr.create( strategyId, dataName );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return nullptr;
-    }*/
-
-    /************************************************************************
     *    DESC:  Register global functions
     ************************************************************************/
     void Register()
@@ -165,13 +123,13 @@ namespace NScriptStrategyManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createNodeStrategy(string &in)",           asFUNCTION(CreateActorStrategy), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadListTable(string &in)",                   asMETHOD(CStrategyMgr, loadListTable), asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createActorStrategy(string &in)",          asFUNCTION(CreateActorStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createBasicStageStrategy(string &in)",     asFUNCTION(CreateBasicStageStrategy), asCALL_CDECL_OBJLAST) );
-        //Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createMenuStrategy(string &in)",           asFUNCTION(CreateMenuStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",                  asFUNCTION(GetStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",                      asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteSprite(string &in, int)",                   asMETHOD(CStrategyMgr, deleteSprite),   asCALL_THISCALL) );
-        //Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iSprite & createSprite(string &in, string &in)",       asFUNCTION(CreateSprite), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteSprite(string &in, int)",                   asMETHOD(CStrategyMgr, deleteSprite), asCALL_THISCALL) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );

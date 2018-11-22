@@ -55,11 +55,13 @@ public:
         const CPoint<float> & rot,
         const CPoint<float> & scale ){ return nullptr; }
 
-    virtual iNode * create(
-        const std::string & name ){ return nullptr; }
+    virtual iNode * create( const std::string & name ){ return nullptr; }
     
     // Do any init
     virtual void init( std::vector<VkCommandBuffer> & commandBufVec, bool enable = false );
+    
+    // Set the command buffers
+    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
     
     // Load the data from file
     virtual void miscProcess(){}

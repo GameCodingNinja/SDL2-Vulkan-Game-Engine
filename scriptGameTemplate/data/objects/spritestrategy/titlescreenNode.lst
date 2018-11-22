@@ -1,0 +1,11 @@
+<node>
+    
+    <node name="background" type="spriteNode" defaultGroup="(title)">
+        
+        <sprite2d objectName="background">
+            <position x="0" y="0" z="0"/>
+        </sprite2d>
+
+    </node>
+
+</node>

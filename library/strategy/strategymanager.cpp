@@ -195,41 +195,6 @@ void CStrategyMgr::setCamera( const std::string & strategyId, const std::string 
 
 
 /************************************************************************
-*    DESC:  create the iNode and provide a unique id number for each one
-************************************************************************/
-iNode * CStrategyMgr::create(
-    const std::string & strategyId,
-    const std::string & dataName,
-    const CPoint<CWorldValue> & pos,
-    const CPoint<float> & rot,
-    const CPoint<float> & scale )
-{
-    // Make sure the strategy we are looking for is available
-    auto mapIter = m_pStrategyMap.find( strategyId );
-    if( mapIter == m_pStrategyMap.end() )
-        throw NExcept::CCriticalException("Sprite Manager Strategy Group Find Error!",
-            boost::str( boost::format("Sprite Manager strategy id can't be found (%s, %s).\n\n%s\nLine: %s")
-                % strategyId % dataName % __FUNCTION__ % __LINE__ ));
-
-    return mapIter->second->create( dataName, pos, rot, scale );
-}
-
-iNode * CStrategyMgr::create(
-    const std::string & strategyId,
-    const std::string & dataName )
-{
-    // Make sure the strategy we are looking for is available
-    auto mapIter = m_pStrategyMap.find( strategyId );
-    if( mapIter == m_pStrategyMap.end() )
-        throw NExcept::CCriticalException("Sprite Manager Strategy Group Find Error!",
-            boost::str( boost::format("Sprite Manager strategy id can't be found (%s, %s).\n\n%s\nLine: %s")
-                % strategyId % dataName % __FUNCTION__ % __LINE__ ));
-
-    return mapIter->second->create( dataName );
-}
-
-
-/************************************************************************
 *    DESC:  Delete all the strategies
 ************************************************************************/
 void CStrategyMgr::clear()

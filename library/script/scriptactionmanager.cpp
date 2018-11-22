@@ -32,7 +32,7 @@ namespace NScriptActionManager
         
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void load(string &in)",                             asMETHOD(CActionMgr, loadActionFromXML),     asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasAction(string &in, int actionPress = 1)",   asMETHOD(CActionMgr, wasActionInQueue),      asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasEvent(int, int)",                           asMETHOD(CActionMgr, wasEventInQueue),       asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasEvent(uint type, int code = 0)",            asMETHOD(CActionMgr, wasEventInQueue),       asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasKeyboard(string &in, int actionPress = 1)", asMETHOD(CActionMgr, wasKeyboard),           asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasMouse(string &in, int actionPress = 1)",    asMETHOD(CActionMgr, wasMouse),              asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasGamepad(string &in, int actionPress = 1)",  asMETHOD(CActionMgr, wasGamepad),            asCALL_THISCALL) );

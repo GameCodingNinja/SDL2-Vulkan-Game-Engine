@@ -33,7 +33,7 @@
     <scrollBoxControlList>
 
         <!-- initial offset -->
-        <position x="0" y="250" z="-5"/>
+        <position x="0" y="250" z="0"/>
         <controlInfo height="50" visibleInScrollBox="11"/>
 
         <!-- Menu Seperator - Menu Navigation -->

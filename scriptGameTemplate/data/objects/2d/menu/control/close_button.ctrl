@@ -22,7 +22,7 @@
         
         <sprite objectName="control_font">
             <font fontName="dejavu_sans_reg_bold_32"/>
-            <position x="-0.5" y="2" z="0"/>
+            <position x="-1" y="-1.5" z="0"/>
             <scriptLst>
                 <script disabled="Control_Disabled"/>
                 <script inactive="Control_Inactive"/>

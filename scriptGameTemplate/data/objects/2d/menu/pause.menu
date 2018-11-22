@@ -12,7 +12,7 @@
         <!-- Pause Label -->
         <control controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/menu_label.ctrl"/>
-            <position x="0" y="150" z="0"/>
+            <position x="0" y="-150" z="0"/>
             <fontStringLst>
                 <string text="Pause"/>
             </fontStringLst>
@@ -25,7 +25,7 @@
         <!-- mouse-only close Button -->
         <control name="close_btn" controlType="button" defaultState="inactive" mouseOnlyCtrl="true">
             <filePath file="data/objects/2d/menu/control/close_button.ctrl"/>
-            <position x="140" y="160" z="0"/>
+            <position x="140" y="-160" z="0"/>
             <fontStringLst>
                 <string text="x"/>
             </fontStringLst>
@@ -40,7 +40,7 @@
         <!-- Resume Button -->
         <control name="resume_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="90" z="0"/>
+            <position x="0" y="-90" z="0"/>
             <fontStringLst>
                 <string text="Resume"/>
             </fontStringLst>
@@ -52,7 +52,7 @@
         <!-- Settings Button -->
         <control name="settings_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="35" z="0"/>
+            <position x="0" y="-35" z="0"/>
             <fontStringLst>
                 <string text="Settings"/>
             </fontStringLst>
@@ -64,7 +64,7 @@
         <!-- Key Bindings Button -->
         <control name="key_binding_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="-20" z="0"/>
+            <position x="0" y="20" z="0"/>
             <fontStringLst>
                 <string text="Key Bindings"/>
             </fontStringLst>
@@ -76,7 +76,7 @@
         <!-- Main Menu Button -->
         <control name="main_menu_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="-75" z="0"/>
+            <position x="0" y="75" z="0"/>
             <fontStringLst>
                 <string text="Main Menu"/>
             </fontStringLst>
@@ -88,7 +88,7 @@
         <!-- Exit Game Button -->
         <control name="exit_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="-130" z="0"/>
+            <position x="0" y="130" z="0"/>
             <fontStringLst>
                 <string text="Exit Game"/>
             </fontStringLst>

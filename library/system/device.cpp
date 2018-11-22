@@ -51,11 +51,8 @@ CDevice::~CDevice()
 /***************************************************************************
 *   DESC:  Create the window and Vulkan instance
 ****************************************************************************/
-void CDevice::create( std::function<void(uint32_t)> callback, const std::string & pipelineCfg )
+void CDevice::create( const std::string & pipelineCfg )
 {
-    // Set the command buffer call back to be called from the game
-    RecordCommandBufferCallback = callback;
-
     // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
     if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
         throw NExcept::CCriticalException("SDL could not initialize!", SDL_GetError() );
@@ -118,6 +115,24 @@ void CDevice::create( std::function<void(uint32_t)> callback, const std::string 
 
     // Init current gamepads plugged in at startup
     initStartupGamepads();
+}
+
+void CDevice::create( std::function<void(uint32_t)> callback, const std::string & pipelineCfg )
+{
+    // Set the command buffer call back to be called from the game
+    RecordCommandBufferCallback = callback;
+    
+    create( pipelineCfg );
+}
+
+
+/***************************************************************************
+*   DESC:  Set the callback for command buffer recording
+****************************************************************************/
+void CDevice::setRecordCommandBufferCallback( std::function<void(uint32_t)> callback )
+{
+    // Set the command buffer call back to be called from the game
+    RecordCommandBufferCallback = callback;
 }
 
 

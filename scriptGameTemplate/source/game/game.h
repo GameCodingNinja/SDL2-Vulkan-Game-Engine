@@ -15,7 +15,6 @@
 #include <SDL.h>
 
 // Forward declaration(s)
-class CSprite2D;
 class CUIControl;
 class iGameState;
 class CMenu;
@@ -39,14 +38,8 @@ public:
     
     // Display error massage
     void displayErrorMsg( const std::string & title, const std::string & msg );
-    
-    // Is the game running?
-    bool isGameRunning() const;
 
 private:
-
-    // OpenGL Init
-    void openGLInit();
     
     // Game start init
     void init();
@@ -57,32 +50,14 @@ private:
     // Handle events
     bool handleEvent( const SDL_Event & rEvent );
     
-    // Start the game
-    void startGame();
-
-    // Stop the game
-    void stopGame();
-    
     // Callback for the state string
     void statStringCallBack( const std::string & statStr );
     
-private:
-    
-    // The window we'll be rendering to
-    SDL_Window * m_pWindow;
-
-    // OpenGL context
-    SDL_GLContext m_context;
-
-    // flag to indicate the game is running
-    bool m_gameRunning;
-
-    // Clear buffer mask
-    uint m_clearBufferMask;
+    // Record the command buffer vector in the device
+    // for all the sprite objects that are to be rendered
+    void recordCommandBuffer( uint32_t cmdBufIndex );
 };
 
 int FilterEvents( void * userdata, SDL_Event * pEvent );
 
-#endif  // __game_h__
-
-
+#endif

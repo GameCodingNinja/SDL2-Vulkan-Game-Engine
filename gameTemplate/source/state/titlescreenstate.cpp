@@ -117,12 +117,12 @@ void CTitleScreenState::load()
     CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
     
     // Add the strategies
-    CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy() );
-    CStrategyMgr::Instance().addStrategy( "(cube)", new CActorStrategy() );
+    auto titleStrategy = CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy() );
+    auto cubeStrategy = CStrategyMgr::Instance().addStrategy( "(cube)", new CActorStrategy() );
     
     // Add the actors
-    CStrategyMgr::Instance().create( "(title)", "background" );
-    CStrategyMgr::Instance().create( "(cube)", "cube" )->getSprite()->prepare( "rotate" );
+    titleStrategy->create( "background" );
+    cubeStrategy->create( "cube" )->getSprite()->prepare( "rotate" );
     
     // Set the camera for the cube strategy
     CStrategyMgr::Instance().setCamera( "(cube)", "cube" );

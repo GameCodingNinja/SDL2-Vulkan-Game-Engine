@@ -1,0 +1,30 @@
+<listTable>
+
+    <groupList groupName="(stage)">
+        <file path="data/objects/spritestrategy/stage/stage.cfg"/>
+    </groupList>
+    
+    <groupList groupName="(run)">
+        <file path="data/objects/spritestrategy/runscreenNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(startup)">
+        <file path="data/objects/spritestrategy/startupNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(title)">
+        <file path="data/objects/spritestrategy/titlescreenNode.lst"/>
+    </groupList>
+    
+    <groupList groupName="(cube)">
+        <file path="data/objects/spritestrategy/cubeNode.lst"/>
+        <camera id="cube" projectType="perspective" minZDist="5" maxZDist="1000" view_angle="45.0">
+            <position x="0" y="0" z="-20"/>
+        </camera>
+    </groupList>
+    
+    <groupList groupName="(load)">
+        <file path="data/objects/spritestrategy/loadscreenNode.lst"/>
+    </groupList>
+  
+</listTable>

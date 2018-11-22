@@ -54,18 +54,6 @@ public:
     
     // Set the strategy camera
     void setCamera( const std::string & strategyId, const std::string & cameraId );
-    
-    // create the iNode and provide a unique id number for each one
-    iNode * create(
-        const std::string & strategyId,
-        const std::string & dataName,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot = CPoint<float>(),
-        const CPoint<float> & scale = CPoint<float>(1,1,1) );
-    
-    iNode * create(
-        const std::string & strategyId,
-        const std::string & dataName );
 
     // Delete all the sprites
     void clear();

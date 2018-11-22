@@ -46,6 +46,9 @@ public:
 
     // Free all of the scripts of a specific data group
     void freeGroup( const std::string & group );
+    
+    // Delete all the contexts
+    void clear();
 
     // Get the script engine contex from a managed pool
     // NOTE: The receiver of this pointer is the owner if it's still 
@@ -53,7 +56,7 @@ public:
     asIScriptContext * getContext();
     
     // Update the active scripts
-    void update();
+    bool update();
     void update( std::vector<asIScriptContext *> & pContextVec );
 
     // Add the script context back to the managed pool

@@ -38,9 +38,6 @@ public:
     // Display error massage
     void displayErrorMsg( const std::string & title, const std::string & msg );
 
-    // Is the game running?
-    bool isGameRunning() const;
-
 private:
 
     // Handle events
@@ -48,18 +45,6 @@ private:
 
     // Handle the state change
     void doStateChange();
-    
-    // Handle any misc processing before the real work is started
-    void miscProcess();
-
-    // Handle the physics
-    void physics();
-
-    // Update animations, Move sprites, Check for collision
-    void update();
-
-    // Transform game objects
-    void transform();
 
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
@@ -76,12 +61,6 @@ private:
     
     // Callback for the state string
     void statStringCallBack( const std::string & statStr );
-    
-    // Start the game
-    void startGame();
-
-    // Stop the game
-    void stopGame();
 
     // Poll for game events
     void pollEvents();

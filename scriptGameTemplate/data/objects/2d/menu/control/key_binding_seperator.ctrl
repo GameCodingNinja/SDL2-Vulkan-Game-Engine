@@ -2,7 +2,7 @@
 
     <spriteList>
 
-        <sprite objectName="control_font">
+        <sprite objectName="keybinding_font">
             <font fontName="dejavu_sans_reg_bold_32">
                 <alignment horzAlign="left" vertAlign="center"/>
             </font>

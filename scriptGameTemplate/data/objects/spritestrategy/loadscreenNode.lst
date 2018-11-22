@@ -1,0 +1,14 @@
+<node>
+    
+    <node name="loadAnim" type="spriteNode" defaultGroup="(load)">
+        
+        <sprite2d objectName="loadAnim">
+            <dynamicOffset right="150" bottom="150"/>
+            <scriptLst>
+                <script loadAnimationLoop="State_LoopAnimation" group="(state)"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+
+</node>

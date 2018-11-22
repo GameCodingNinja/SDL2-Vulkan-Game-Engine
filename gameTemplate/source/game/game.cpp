@@ -100,7 +100,7 @@ void CGame::create()
     upGameState->init();
 
     // Let the games begin
-    startGame();
+    m_gameRunning = true;
 }
 
 
@@ -239,42 +239,6 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
 }
 
 
-/************************************************************************
-*    DESC:  Handle any misc processing before the real work is started.
-************************************************************************/
-void CGame::miscProcess()
-{
-    upGameState->miscProcess();
-}
-
-
-/************************************************************************
-*    DESC:  Handle the physics.
-************************************************************************/
-void CGame::physics()
-{
-    upGameState->physics();
-}
-
-
-/***************************************************************************
-*    decs:  Update animations
-****************************************************************************/
-void CGame::update()
-{
-    upGameState->update();
-}
-
-
-/***************************************************************************
-*    DESC:  Transform game objects
-****************************************************************************/
-void CGame::transform()
-{
-    upGameState->transform();
-}
-
-
 /***************************************************************************
 *    decs:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
@@ -302,16 +266,16 @@ bool CGame::gameLoop()
     if( m_gameRunning )
     {
         // Handle any misc processing before the real work is started
-        miscProcess();
+        upGameState->miscProcess();
 
         // Handle the physics
-        physics();
+        upGameState->physics();
 
         // Update animations, Move sprites, Check for collision
-        update();
+        upGameState->update();
 
         // Transform game objects
-        transform();
+        upGameState->transform();
 
         // Do the rendering
         CDevice::Instance().render();
@@ -358,33 +322,6 @@ void CGame::pollEvents()
 void CGame::displayErrorMsg( const std::string & title, const std::string & msg )
 {
     CDevice::Instance().displayErrorMsg( title, msg );
-}
-
-
-/***************************************************************************
-*   DESC:  Start the game
-****************************************************************************/
-void CGame::startGame()
-{
-    m_gameRunning = true;
-}
-
-
-/***************************************************************************
-*   DESC:  Stop the game
-****************************************************************************/
-void CGame::stopGame()
-{
-    m_gameRunning = false;
-}
-
-
-/***************************************************************************
-*  DESC:  Is the game running?
-****************************************************************************/
-bool CGame::isGameRunning() const
-{
-    return m_gameRunning;
 }
 
 

@@ -8,7 +8,7 @@ namespace NGameDefs
 {
     shared enum EGameEvent
     {
-        // Menu events
+        // Game events
         EGE_USER_EVENTS = 0x9000,
         EGE_FADE_IN_COMPLETE,
         EGE_FADE_OUT_COMPLETE,

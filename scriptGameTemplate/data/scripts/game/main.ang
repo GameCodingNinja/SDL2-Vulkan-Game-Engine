@@ -9,12 +9,12 @@ void main()
 {
     // Create the game
     CGame game;
-    game.Init();
+    game.init();
 
     // Call the game loop
-    while(true)
-    {
-        game.GameLoop();
+    while( game.gameLoop() )
         Suspend();
-    }
+    
+    // Do the cleanup
+    game.destroy();
 }

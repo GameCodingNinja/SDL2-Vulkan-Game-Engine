@@ -1,0 +1,23 @@
+/************************************************************************
+*    FILE NAME:       game_defs.ang
+*
+*    DESCRIPTION:     Game defines
+************************************************************************/
+
+namespace NGameDefs
+{
+    const double PI = 3.14159265358979323846;
+    const int MAX_ANALOG_AXIS_VALUE = 32767;
+
+    enum EGameEvent
+    {
+        // Game events
+        EGE_QUIT = 0x100,
+        EGE_APP_TERMINATING,
+                
+        EGE_USER_EVENTS = 0x9000,
+        EGE_FADE_IN_COMPLETE,
+        EGE_FADE_OUT_COMPLETE,
+        EGE_THREAD_LOAD_COMPLETE,
+    }
+}

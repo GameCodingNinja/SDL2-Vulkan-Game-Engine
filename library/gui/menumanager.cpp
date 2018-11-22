@@ -840,7 +840,7 @@ void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec )
 ****************************************************************************/
 void CMenuMgr::recordCommandBuffer( uint32_t index )
 {
-    if( m_active )
+    if( m_active && !m_commandBufVec.empty() )
     {
         auto cmdBuf( m_commandBufVec[index] );
 
