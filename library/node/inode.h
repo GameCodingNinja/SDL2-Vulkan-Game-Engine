@@ -62,9 +62,6 @@ public:
     // Get the parent id
     virtual int getParentId() const
     { return 0; }
-    
-    // Do any init
-    virtual void init(){}
 
     // Update the nodes
     virtual void update(){}

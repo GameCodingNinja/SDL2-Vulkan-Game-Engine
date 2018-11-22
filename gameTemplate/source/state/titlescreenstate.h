@@ -30,16 +30,8 @@ public:
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
     
-    // Update objects that require them
-    void update() override;
-    
     // Static load function
     static void load();
-    
-private:
-        
-    // Cube strategy
-    iStrategy * pCubeStrategy;
 };
 
 #endif

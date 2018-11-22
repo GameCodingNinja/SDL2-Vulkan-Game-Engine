@@ -34,8 +34,8 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CMatrix & model,
-        const CMatrix & viewProj ) override;
+        const CObject2D * const pObject,
+        const CCamera & camera ) override;
     
     // Get the crop offset
     const CSize<int> & getCropOffset( uint index = 0 ) const override;

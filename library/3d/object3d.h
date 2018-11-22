@@ -26,7 +26,7 @@ public:
     virtual ~CObject3D();
     
     // Get the object's rotation matrix
-    const CMatrix & getRotMatrix() const;
+    const CMatrix & getRotMatrix() const override;
     
     // Use a point to set a column
     virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z );

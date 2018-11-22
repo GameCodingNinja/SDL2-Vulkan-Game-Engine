@@ -42,9 +42,6 @@ public:
 
     // Load the node data from file
     void loadFromFile( const std::string & file ) override;
-    
-    // Set the command buffers
-    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec ) override;
 
     // Create the node
     virtual iNode * create(
@@ -55,9 +52,6 @@ public:
 
     virtual iNode * create(
         const std::string & dataName ) override;
-    
-    // Do any init
-    void init() override;
 
     // Update the nodes
     void update() override;
@@ -107,11 +101,6 @@ protected:
 
     // Vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;
-    
-    // Command buffer
-    // NOTE: command buffers don't to be freed because
-    //       they are freed by deleting the pool they belong to
-    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

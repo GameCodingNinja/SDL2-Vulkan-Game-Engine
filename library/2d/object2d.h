@@ -31,6 +31,9 @@ public:
 
     // Get the object's matrix
     const CMatrix & getMatrix() const;
+    
+    // Get the object's rotation matrix
+    virtual const CMatrix & getRotMatrix() const;
 
     // Was the world position transformed?
     bool wasWorldPosTranformed() const;

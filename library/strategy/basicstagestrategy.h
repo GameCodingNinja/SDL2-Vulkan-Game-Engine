@@ -37,12 +37,6 @@ public:
 
     // Load the sector data from file
     virtual void loadFromFile( const std::string & file ) override;
-    
-    // Set the command buffers
-    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec ) override;
-    
-    // Do any pre-game loop init's
-    virtual void init() override;
 
     // Update the actors
     virtual void update() override;
@@ -68,11 +62,6 @@ protected:
     
     // default camera position
     CObject m_defaultCameraPos;
-    
-    // Command buffer
-    // NOTE: command buffers don't to be freed because
-    //       they are freed by deleting the pool they belong to
-    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

@@ -70,9 +70,6 @@ public:
     // Delete all the sprites
     void clear();
     
-    // Do any pre-game loop init's
-    void init();
-    
     // Handle any misc processing before the real work is started.
     void miscProcess();
     

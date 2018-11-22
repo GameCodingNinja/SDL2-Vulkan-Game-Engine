@@ -110,15 +110,13 @@ void CStartUpState::init()
     // Create the group command buffers and add the actor strategy
     // Command buffers can only be used in the thread they are created
     auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-    auto * pStrategy = CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() );
-    pStrategy->setCommandBuffers( cmdBuf );
-    pStrategy->enable();
+    CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() )->init( cmdBuf, true );
     
     // Add the logo
     CStrategyMgr::Instance().create( "(startup)", "waffles" );
 
     // Start the fade in
-    m_scriptComponent.prepare( "(state)", "State_FadeIn" );
+    m_scriptComponent.prepare( "(state)", "State_StartUpFadeIn" );
     
     // This data no longer needed so free it
     CObjectDataMgr::Instance().freeDataGroup2D( "(startup)" );

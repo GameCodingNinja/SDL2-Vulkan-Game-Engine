@@ -256,7 +256,7 @@ void CSprite::physicsUpdate()
 void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
     if( m_upObject->isVisible() )
-        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, m_upObject->getMatrix(), camera );
+        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, m_upObject.get(), camera );
 }
 
 

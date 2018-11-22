@@ -151,18 +151,6 @@ void CSector::loadSprite( CSprite * sprite, const CSpriteData & rSpriteData )
 
 
 /************************************************************************
-*    DESC:  Do any pre-game loop init's
-************************************************************************/
-void CSector::init()
-{
-    // Create any font strings
-    // This allows for delayed VBO create so that the fonts can be allocated during the load screen
-    for( auto iter : m_pNodeVec )
-        iter->init();
-}
-
-
-/************************************************************************
 *    DESC:  Update the actor
 ************************************************************************/
 void CSector::update()

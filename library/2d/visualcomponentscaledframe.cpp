@@ -12,7 +12,9 @@
 #include <objectdata/objectdata2d.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <common/uniformbufferobject.h>
+#include <common/camera.h>
 #include <system/device.h>
+#include <2d/object2d.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -40,13 +42,13 @@ void CVisualComponentScaledFrame::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CMatrix & model,
-    const CMatrix & viewProj )
+    const CObject2D * const pObject,
+    const CCamera & camera )
 {
     // Setup the uniform buffer object
     NUBO::model_viewProj_color_additive ubo;
-    ubo.model = model;
-    ubo.viewProj = viewProj;
+    ubo.model = pObject->getMatrix();
+    ubo.viewProj = camera.getFinalMatrix();
     ubo.color = m_color;
     ubo.additive = m_additive;
 

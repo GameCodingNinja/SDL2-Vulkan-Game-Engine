@@ -93,15 +93,6 @@ void CActorStrategy::loadFromFile( const std::string & file )
 
 
 /************************************************************************
- *    DESC:  Set the command buffers
- ************************************************************************/
-void CActorStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
-{
-    m_commandBufVec = commandBufVec;
-}
-
-
-/************************************************************************
  *    DESC:  Get the node data container by name
  ************************************************************************/
 CNodeDataList & CActorStrategy::getData( const std::string & name )
@@ -277,16 +268,6 @@ void CActorStrategy::deleteObj( int id )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Node index can't be found (%s).\n\n%s\nLine: %s")
             % id % __FUNCTION__ % __LINE__ ) );
     }
-}
-
-
-/***************************************************************************
-*    DESC:  Do any init
-****************************************************************************/
-void CActorStrategy::init()
-{
-    for( auto iter : m_pNodeVec )
-        iter->init();
 }
 
 

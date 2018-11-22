@@ -61,15 +61,11 @@ void CRunState::init()
     // Enable the strategy for rendering
     // Command buffers can only be used in the thread they are created
     auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    auto * pStageStrategy = CStrategyMgr::Instance().getStrategy( "(stage)" );
-    pStageStrategy->setCommandBuffers( stageCmdBufVec );
-    pStageStrategy->enable();
+    CStrategyMgr::Instance().getStrategy( "(stage)" )->init( stageCmdBufVec, true );
     
     // Command buffers can only be used in the thread they are created
     auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    auto * pRunStrategy = CStrategyMgr::Instance().getStrategy( "(run)" );
-    pRunStrategy->setCommandBuffers( runCmdBufVec );
-    pRunStrategy->enable();
+    CStrategyMgr::Instance().getStrategy( "(run)" )->init( runCmdBufVec, true );
 
     // Start the fade
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );

@@ -20,6 +20,8 @@
 #include <strategy/actorstrategy.h>
 #include <script/scriptmanager.h>
 #include <gui/menumanager.h>
+#include <node/inode.h>
+#include <sprite/sprite.h>
 
 // SDL lib dependencies
 #include <SDL.h>
@@ -60,15 +62,11 @@ void CTitleScreenState::init()
     // Enable the strategy for rendering
     // Command buffers can only be used in the thread they are created
     auto titleCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    auto * pTitleStrategy = CStrategyMgr::Instance().getStrategy( "(title)" );
-    pTitleStrategy->setCommandBuffers( titleCmdBufVec );
-    pTitleStrategy->enable();
+    CStrategyMgr::Instance().getStrategy( "(title)" )->init( titleCmdBufVec, true );
     
     // Command buffers can only be used in the thread they are created
     auto cubeCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    pCubeStrategy = CStrategyMgr::Instance().getStrategy( "(cube)" );
-    pCubeStrategy->setCommandBuffers( cubeCmdBufVec );
-    pCubeStrategy->enable();
+    CStrategyMgr::Instance().getStrategy( "(cube)" )->init( cubeCmdBufVec, true );
     
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -110,52 +108,6 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 
 
 /***************************************************************************
-*    DESC:  Update objects that require them
-****************************************************************************/
-void CTitleScreenState::update()
-{
-    CCommonState::update();
-
-    float rot = CHighResTimer::Instance().getElapsedTime() * 0.04;
-    pCubeStrategy->getCamera()->incRot( rot, rot, 0 );
-}
-
-
-/***************************************************************************
-*    DESC:  Transform the game objects
-****************************************************************************/
-/*void CTitleScreenState::transform()
-{
-    CCommonState::transform();
-
-    //m_background.transform();
-
-    CCameraMgr::Instance().transform();
-
-    //m_spriteSheetTest.Transform();
-
-    //m_cube.transform();
-}*/
-
-
-/***************************************************************************
-*    DESC:  2D/3D Render of game content
-****************************************************************************/
-/*void CTitleScreenState::preRender()
-{
-    //m_background.render( CCameraMgr::Instance().getDefaultProjMatrix() );
-
-    //m_spriteSheetTest.Render( orthoMatrix );
-
-    CCommonState::preRender();
-
-    //auto & camera = CCameraMgr::Instance().getActiveCamera();
-
-    //m_cube.render( camera.getFinalMatrix(), camera.getRotMatrix() );
-}*/
-
-
-/***************************************************************************
 *    DESC:  Static function for loading the assets for this state
 *           NOTE: Only call when the class is not allocated
 ****************************************************************************/
@@ -170,7 +122,7 @@ void CTitleScreenState::load()
     
     // Add the actors
     CStrategyMgr::Instance().create( "(title)", "background" );
-    CStrategyMgr::Instance().create( "(cube)", "cube" );
+    CStrategyMgr::Instance().create( "(cube)", "cube" )->getSprite()->prepare( "rotate" );
     
     // Set the camera for the cube strategy
     CStrategyMgr::Instance().setCamera( "(cube)", "cube" );

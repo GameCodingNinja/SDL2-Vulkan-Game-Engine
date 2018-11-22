@@ -39,9 +39,6 @@ public:
     
     // Load the sector data from node
     void loadFromNode( const struct XMLNode & node );
-    
-    // Do any pre-game loop init's
-    void init();
 
     // Update the actor
     void update();

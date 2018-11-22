@@ -48,16 +48,6 @@ CSpriteNodeMultiLst::~CSpriteNodeMultiLst()
 
 
 /***************************************************************************
-*    DESC:  Do any init
-****************************************************************************/
-void CSpriteNodeMultiLst::init()
-{
-    for( auto iter : m_allNodeVec )
-        iter->init();
-}
-
-
-/***************************************************************************
 *    DESC:  Update the nodes.
 ****************************************************************************/
 void CSpriteNodeMultiLst::update()

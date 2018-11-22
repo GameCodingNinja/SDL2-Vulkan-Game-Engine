@@ -242,16 +242,6 @@ void CStrategyMgr::clear()
 
 
 /************************************************************************
-*    DESC:  Do any pre-game loop init's
-************************************************************************/
-void CStrategyMgr::init()
-{
-    for( auto iter : m_pStrategyVec )
-        iter->init();
-}
-
-
-/************************************************************************
 *    DESC:  Handle any misc processing before the real work is started
 ************************************************************************/
 void CStrategyMgr::miscProcess()

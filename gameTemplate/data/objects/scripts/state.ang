@@ -8,7 +8,7 @@
 /************************************************************************
 *    DESC:  Do a fade in and out
 ************************************************************************/
-void State_FadeIn()
+void State_StartUpFadeIn()
 {
     CVisual visual;
     
@@ -23,14 +23,26 @@ void State_FadeIn()
     DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
 }
 
+
+void State_FadeIn()
+{
+    CVisual visual;
+    
+    CColor current(0,0,0,1);
+    visual.setAdditiveColor( current );
+            
+    CColor final(1,1,1,1);
+    NVisualUtils::ColorTo( 500, final, visual );
+    
+    DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
+}
+
 void State_FadeOut()
 {
     CVisual visual;
     
     CColor current(0,0,0,1);
     NVisualUtils::ColorTo( 500, current, visual );
-    
-    Hold( 250 );
     
     DispatchEvent( NGameDefs::EGE_FADE_OUT_COMPLETE );
 }
@@ -42,4 +54,19 @@ void State_FadeOut()
 void State_LoopAnimation( Sprite & sprite )
 {
     NSpriteUtils::Play( 12, sprite, true );
+}
+
+
+/************************************************************************
+*    DESC:  Cube rotate
+************************************************************************/
+void State_RotateCube( Sprite & sprite )
+{
+    while( true )
+    {
+        float rot = HighResTimer.getElapsedTime() * 0.04;
+        sprite.incRot( rot, rot, 0 );
+
+        Suspend();
+    }
 }

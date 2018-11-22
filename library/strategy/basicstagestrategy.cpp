@@ -67,25 +67,6 @@ void CBasicStageStrategy::loadFromNode( const XMLNode & node )
 }
 
 
-/************************************************************************
- *    DESC:  Set the command buffers
- ************************************************************************/
-void CBasicStageStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
-{
-    m_commandBufVec = commandBufVec;
-}
-
-
-/************************************************************************
-*    DESC:  Do any pre-game loop init's
-************************************************************************/
-void CBasicStageStrategy::init()
-{
-    for( auto & iter : m_sectorDeq )
-        iter.init();
-}
-
-
 /***************************************************************************
 *    DESC:  Update the sector
 ****************************************************************************/

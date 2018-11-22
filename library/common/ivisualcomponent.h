@@ -29,6 +29,7 @@ class CObjectData3D;
 class CFontProperties;
 class CFontData;
 class CCamera;
+class CObject2D;
 struct XMLNode;
 
 class iVisualComponent : public CVisual
@@ -46,7 +47,7 @@ public:
     virtual void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CMatrix & model,
+        const CObject2D * const pObject,
         const CCamera & camera ) {}
     
     // Set/Get the color

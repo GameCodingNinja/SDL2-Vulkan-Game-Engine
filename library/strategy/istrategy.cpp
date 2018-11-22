@@ -22,6 +22,16 @@ iStrategy::iStrategy() :
 }
 
 
+/***************************************************************************
+*    DESC:  Init this strategy
+****************************************************************************/
+void iStrategy::init( std::vector<VkCommandBuffer> & commandBufVec, bool enable )
+{
+    m_commandBufVec = commandBufVec;
+    m_enable = enable;
+}
+
+
 /************************************************************************
 *    DESC:  Set/Get the camera
 ************************************************************************/

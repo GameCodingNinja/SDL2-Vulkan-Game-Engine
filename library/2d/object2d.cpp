@@ -144,6 +144,16 @@ const CMatrix & CObject2D::getMatrix() const
 
 
 /************************************************************************
+*    DESC:  Get the object's rotation matrix
+*           NOTE: For 2d, it's the same matrix
+************************************************************************/
+const CMatrix & CObject2D::getRotMatrix() const
+{
+    return m_matrix;
+}
+
+
+/************************************************************************
 *    DESC:  Was the world position transformed?
 ************************************************************************/
 bool CObject2D::wasWorldPosTranformed() const

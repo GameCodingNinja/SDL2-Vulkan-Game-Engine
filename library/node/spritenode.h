@@ -34,9 +34,6 @@ public:
 
     // Destructor
     virtual ~CSpriteNode();
-    
-    // Do any init
-    void init() override;
 
     // Update the nodes
     void update() override;

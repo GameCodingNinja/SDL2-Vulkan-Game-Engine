@@ -48,9 +48,6 @@ public:
     void setCamera( CCamera * pCamera );
     CCamera * getCamera();
     
-    // Set the command buffers
-    virtual void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec ) = 0;
-    
     // Create the sprite
     virtual iNode * create(
         const std::string & name,
@@ -62,7 +59,7 @@ public:
         const std::string & name ){ return nullptr; }
     
     // Do any init
-    virtual void init(){}
+    virtual void init( std::vector<VkCommandBuffer> & commandBufVec, bool enable = false );
     
     // Load the data from file
     virtual void miscProcess(){}
@@ -109,6 +106,11 @@ protected:
     
     // Camera pointer
     CCamera * m_pCamera;
+    
+    // Command buffer
+    // NOTE: command buffers don't to be freed because
+    //       they are freed by deleting the pool they belong to
+    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

@@ -68,10 +68,8 @@ void CLoadState::init()
     
     // Add the actor strategy
     // Command buffers can only be used in the thread they are created
-    auto commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(load)" );
-    auto * pLoadStrategy = CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy() );
-    pLoadStrategy->setCommandBuffers( commandBufVec );
-    pLoadStrategy->enable();
+    auto cmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(load)" );
+    CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy() )->init( cmdBufVec, true );
     
     // Start the fade in and animation
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );

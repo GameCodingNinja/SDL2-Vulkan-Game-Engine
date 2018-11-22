@@ -42,7 +42,7 @@ public:
     void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CMatrix & model,
+        const CObject2D * const pObject,
         const CCamera & camera ) override;
     
 private:
@@ -52,9 +52,8 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CMatrix & model,
-        const CMatrix & rotate,
-        const CMatrix & viewProj );
+        const CObject2D * const pObject,
+        const CCamera & camera );
 
 private:
 

@@ -1344,6 +1344,7 @@ void CDevice::load3DM(
             vert[j].norm = normalLstVec[ vertIndexVec[j].norm ];
             vert[j].uv = uvLstVec[ vertIndexVec[j].uv ];
             
+            // flip the Y for Vulkan coordinate system vs OpenGL
             vert[j].vert.invertY();
         }
 

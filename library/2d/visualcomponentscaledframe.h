@@ -31,8 +31,8 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CMatrix & model,
-        const CMatrix & viewProj ) override;
+        const CObject2D * const pObject,
+        const CCamera & camera ) override;
 };
 
 #endif  // __visual_component_scaledframe_h__

@@ -17,6 +17,7 @@
 #include <common/pipeline.h>
 #include <common/camera.h>
 #include <system/device.h>
+#include <2d/object2d.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -60,7 +61,7 @@ CVisualComponentQuad::~CVisualComponentQuad()
 void CVisualComponentQuad::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
-    const CMatrix & model,
+    const CObject2D * const pObject,
     const CCamera & camera )
 {
     if( allowCommandRecording() )
@@ -75,7 +76,7 @@ void CVisualComponentQuad::recordCommandBuffer(
         const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
 
         // Update the UBO buffer
-        updateUBO( index, device, rVisualData, model, camera.getFinalMatrix() );
+        updateUBO( index, device, rVisualData, pObject, camera );
 
         // Bind the pipeline
         vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
@@ -104,14 +105,14 @@ void CVisualComponentQuad::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CMatrix & model,
-    const CMatrix & viewProj )
+    const CObject2D * const pObject,
+    const CCamera & camera )
 {
     // Setup the uniform buffer object
     NUBO::model_viewProj_color_additive ubo;
     ubo.model.setScale( rVisualData.getVertexScale() );
-    ubo.model *= model;
-    ubo.viewProj = viewProj;
+    ubo.model *= pObject->getMatrix();
+    ubo.viewProj = camera.getFinalMatrix();
     ubo.color = m_color;
     ubo.additive = m_additive;
 

@@ -37,7 +37,7 @@ public:
     virtual void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CMatrix & model,
+        const CObject2D * const pObject,
         const CCamera & camera ) override;
     
     // Set the frame index
@@ -55,8 +55,8 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CMatrix & model,
-        const CMatrix & viewProj );
+        const CObject2D * const pObject,
+        const CCamera & camera );
 
 protected:
     
