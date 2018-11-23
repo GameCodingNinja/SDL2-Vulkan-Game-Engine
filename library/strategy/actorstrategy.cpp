@@ -278,6 +278,9 @@ void CActorStrategy::update()
 {
     if( m_enable )
     {
+        handleDelete();
+        handleCreate();
+    
         for( auto iter : m_pNodeVec )
             iter->update();
     }

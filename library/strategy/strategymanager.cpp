@@ -214,16 +214,6 @@ void CStrategyMgr::clear()
 }
 
 
-/************************************************************************
-*    DESC:  Handle any misc processing before the real work is started
-************************************************************************/
-void CStrategyMgr::miscProcess()
-{
-    for( auto iter : m_pStrategyVec )
-        iter->miscProcess();
-}
-
-
 /***************************************************************************
 *    DESC:  Update the sprites
 ****************************************************************************/

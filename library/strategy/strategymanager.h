@@ -61,9 +61,6 @@ public:
     // Delete all the sprites
     void clear();
     
-    // Handle any misc processing before the real work is started.
-    void miscProcess();
-    
     // Update the sprites
     void update();
 

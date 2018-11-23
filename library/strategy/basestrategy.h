@@ -31,9 +31,6 @@ public:
     // Set to create the sprite
     void setToCreate( const std::string & name ) override;
     
-    // Load the data from file
-    virtual void miscProcess() override;
-    
 protected:
     
     // Handle the deleting of any object by Id

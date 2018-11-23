@@ -48,9 +48,6 @@ public:
 
     // Act upon what the user is doing
     virtual void getUserInput( bool hasFocus ){};
-    
-    // Handle any misc processing before the real work is started
-    virtual void miscProcess(){};
 
     // Handle the physics
     virtual void physics(){};

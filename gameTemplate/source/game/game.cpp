@@ -265,9 +265,6 @@ bool CGame::gameLoop()
 
     if( m_gameRunning )
     {
-        // Handle any misc processing before the real work is started
-        upGameState->miscProcess();
-
         // Handle the physics
         upGameState->physics();
 

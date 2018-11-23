@@ -62,9 +62,6 @@ public:
     
     // Set the command buffers
     void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
-    
-    // Load the data from file
-    virtual void miscProcess(){}
 
     // Update the sprite
     virtual void update(){}

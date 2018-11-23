@@ -38,17 +38,6 @@ void CBaseStrategy::setToCreate( const std::string & name )
 }
 
 
-/************************************************************************
-*    DESC:  Handle any misc processing before the real work is started
-************************************************************************/
-void CBaseStrategy::miscProcess()
-{
-    handleDelete();
-
-    handleCreate();
-}
-
-
 /***************************************************************************
 *    DESC:  Handle the deleting of any object by Id
 ****************************************************************************/

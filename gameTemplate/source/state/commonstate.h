@@ -32,9 +32,6 @@ public:
 
     // Handle events
     virtual void handleEvent( const SDL_Event & rEvent ) override;
-    
-    // Handle any misc processing before the real work is started
-    void miscProcess() override;
 
     // Update objects that require them
     virtual void update() override;

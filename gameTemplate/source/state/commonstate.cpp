@@ -67,15 +67,6 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
 
 
 /***************************************************************************
-*    DESC:  Handle Misc processes
-****************************************************************************/
-void CCommonState::miscProcess()
-{
-    CStrategyMgr::Instance().miscProcess();
-}
-
-
-/***************************************************************************
 *    DESC:  Update objects that require them
 ****************************************************************************/
 void CCommonState::update()
