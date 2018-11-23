@@ -52,9 +52,6 @@ public:
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
     
-    // Delete sprite
-    void deleteSprite( const std::string & strategyId, int spriteId );
-    
     // Set the strategy camera
     void setCamera( const std::string & strategyId, const std::string & cameraId );
 

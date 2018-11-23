@@ -166,18 +166,6 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
 
 
 /************************************************************************
- *    DESC:  Delete sprite
- ************************************************************************/
-void CStrategyMgr::deleteSprite( const std::string & strategyId, int spriteId )
-{
-    // Make sure the strategy we are looking for is available
-    auto mapIter = m_pStrategyMap.find( strategyId );
-    if( mapIter != m_pStrategyMap.end() )
-        mapIter->second->setToDestroy( spriteId );
-}
-
-
-/************************************************************************
  *    DESC:  Set the strategy camera
  ************************************************************************/
 void CStrategyMgr::setCamera( const std::string & strategyId, const std::string & cameraId )

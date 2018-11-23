@@ -129,7 +129,6 @@ namespace NScriptStrategyManager
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createBasicStageStrategy(string &in)", asFUNCTION(CreateBasicStageStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",              asFUNCTION(GetStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",                  asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteSprite(string &in, int)",               asMETHOD(CStrategyMgr, deleteSprite), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                    asMETHOD(CStrategyMgr, update), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                                 asMETHOD(CStrategyMgr, transform), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void initDefaultCamera()",                         asMETHOD(CStrategyMgr, initDefaultCamera), asCALL_THISCALL) );
