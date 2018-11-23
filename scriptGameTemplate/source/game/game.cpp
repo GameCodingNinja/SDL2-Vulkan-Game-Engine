@@ -40,6 +40,7 @@
 #include <script/scriptscriptmanager.h>
 #include <script/scriptuicontrol.h>
 #include <script/scriptdevice.h>
+#include <script/scriptvisual.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -141,6 +142,7 @@ void CGame::init()
     NScriptFontManager::Register();
     NScriptScriptManager::Register();
     NScriptDevice::Register();
+    NScriptVisual::Register();
 
     CScriptMgr::Instance().loadGroup("(main)");
     CScriptMgr::Instance().prepare("(main)", "main");
@@ -192,25 +194,6 @@ bool CGame::gameLoop()
 
     // Main script update
     return CScriptMgr::Instance().update();
-
-    /*if( m_gameRunning )
-    {
-        // Process all game states
-        CStrategyMgr::Instance().miscProcess();
-        
-        CStrategyMgr::Instance().update();
-        CMenuMgr::Instance().update();
-        
-        CStrategyMgr::Instance().transform();
-        CMenuMgr::Instance().transform();
-        
-        // Do the rendering
-        CDevice::Instance().render();
-
-        // Inc the cycle
-        if( NBDefs::IsDebugMode() )
-            CStatCounter::Instance().incCycle();
-    }*/
 }
 
 

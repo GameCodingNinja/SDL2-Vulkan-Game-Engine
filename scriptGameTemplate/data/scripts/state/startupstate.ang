@@ -7,30 +7,12 @@
 
 final class CStartUpState : iGameState
 {
-    // Startup logo
-    //iSprite @m_logo;
-
-    // Basic strategy
-    //iStrategy @strategyFor2D;
-
     //
     //  Constructor
     //
     CStartUpState()
     {
-        super( EGS_STARTUP, EGS_TITLE_SCREEN );
-    }
-
-    //
-    //  Destructor
-    //
-    ~CStartUpState()
-    {
-        // Wait for all rendering to be finished
-        //Device.waitForIdle();
-        
-        //ObjectDataMgr.freeGroup2D( "(startup)" );
-        //StrategyMgr.deleteStrategy( "(startup)" );
+        super( NStateDefs::EGS_STARTUP, NStateDefs::EGS_TITLE_SCREEN );
     }
 
     //
@@ -42,14 +24,22 @@ final class CStartUpState : iGameState
         ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
         StrategyMgr.loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
         
+        ScriptMgr.loadGroup( "(state)" );
+        
         // Load the start up group
         ObjectDataMgr.loadGroup2D( "(startup)" );
+        
+        // Init the default camera
+        StrategyMgr.initDefaultCamera();
         
         iStrategy @strategy = StrategyMgr.createActorStrategy( "(startup)" );
         strategy.setCommandBuffer( "(startup)" );
         strategy.enable();
         
         strategy.create( "waffles" );
+        
+        // Do the fade in
+        Spawn("State_StartUpFadeIn", "(state)");
         
         // Create all the needed strategies
         /*@strategyFor2D = StrategyMgr.createBasicSpriteStrategy( "strategyFor2D" );
@@ -69,6 +59,34 @@ final class CStartUpState : iGameState
         Screen_FadeOut();
 
         doChangeState();*/
+    }
+    
+    //
+    //  Destroy the state
+    //
+    void destroy() override
+    {
+        // Wait for all rendering to be finished
+        Device.waitForIdle();
+        
+        ObjectDataMgr.freeGroup2D( "(startup)" );
+        StrategyMgr.deleteStrategy( "(startup)" );
+    }
+    
+    //
+    //  Update animations, Move sprites, Check for collision
+    //
+    void update() override
+    {
+        StrategyMgr.update();
+    }
+    
+    //
+    //  Transform game objects
+    //
+    void transform() override
+    {
+        StrategyMgr.transform();
     }
 
     //

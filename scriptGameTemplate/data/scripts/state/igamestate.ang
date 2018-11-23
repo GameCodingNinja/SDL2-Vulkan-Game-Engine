@@ -14,10 +14,10 @@ class iGameState
     private CStateMessage m_stateMessage;
 
     // This objects current game state value
-    private EGameState m_gameState = EGS_NULL;
+    private NStateDefs::EGameState m_gameState = NStateDefs::EGS_NULL;
 
     // This objects next game state value
-    private EGameState m_nextState = EGS_NULL;
+    private NStateDefs::EGameState m_nextState = NStateDefs::EGS_NULL;
 
     //
     //  Default Constructor - required if defining a constructor with parameters
@@ -28,7 +28,7 @@ class iGameState
     //
     //  Constructor
     //
-    iGameState( const EGameState gameState, const EGameState nextState )
+    iGameState( const NStateDefs::EGameState gameState, const NStateDefs::EGameState nextState )
     {
         m_gameState = gameState;
         m_nextState = nextState;
@@ -39,12 +39,27 @@ class iGameState
         // Empty member to be overwritten
     }
     
+    void destroy()
+    {
+        // Empty member to be overwritten
+    }
+    
     void handleEvent()
+    {
+        // Empty member to be overwritten
+    }
+    
+    void physics()
     {
         // Empty member to be overwritten
     }
 
     void update()
+    {
+        // Empty member to be overwritten
+    }
+    
+    void transform()
     {
         // Empty member to be overwritten
     }
@@ -58,11 +73,11 @@ class iGameState
     { return m_changeState; };
 
     // Get the current game state
-    EGameState getState()
+    NStateDefs::EGameState getState()
     { return m_gameState; }
 
     // Get the next game state
-    EGameState getNextState()
+    NStateDefs::EGameState getNextState()
     { return m_nextState; }
 
     // Get the message

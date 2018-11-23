@@ -54,7 +54,6 @@ CScriptMgr::CScriptMgr()
 ************************************************************************/
 CScriptMgr::~CScriptMgr()
 {
-    clear();
 }
 
 
@@ -335,16 +334,18 @@ void CScriptMgr::prepare(
 /************************************************************************
 *    DESC:  Prepare the spawn script function to run
 ************************************************************************/
-void CScriptMgr::prepareSpawn( const std::string & funcName )
+void CScriptMgr::prepareSpawn( const std::string & funcName, const std::string & group )
 {
     auto pContex = asGetActiveContext();
     if( pContex )
     {
         // Get the module name
-        std::string group = pContex->GetFunction()->GetModuleName();
+        std::string grp = group;
+        if( group.empty() )
+            grp = pContex->GetFunction()->GetModuleName();
 
         // Prepare the script function to run
-        prepare( group, funcName, m_pActiveContextVec );
+        prepare( grp, funcName, m_pActiveContextVec );
     }
 }
 

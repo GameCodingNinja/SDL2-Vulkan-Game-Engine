@@ -78,7 +78,7 @@ public:
         const std::vector<CScriptParam> & paramVec = std::vector<CScriptParam>() );
     
     // Prepare the spawn script function to run
-    void prepareSpawn( const std::string & funcName );
+    void prepareSpawn( const std::string & funcName, const std::string & group = "" );
     void prepareSpawnVoid( const std::string & funcName, void * pVoid );
     void prepareLocalSpawnVoid( const std::string & funcName, void * pVoid );
 

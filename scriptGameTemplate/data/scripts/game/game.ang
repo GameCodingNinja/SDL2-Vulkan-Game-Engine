@@ -26,8 +26,7 @@ class CGame
     //
     void destroy()
     {
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
+        gameState.destroy();
         
         // Destroy the window and render device instance
         Device.destroy();
@@ -43,10 +42,10 @@ class CGame
         
         // Show the window
         Device.showWindow();
-        
+
         // Create the startup state
-        //@gameState = CStartUpState();
-        //gameState.init();
+        @gameState = CStartUpState();
+        gameState.init();
     }
     
     //
@@ -109,9 +108,17 @@ class CGame
         
         if( gameRunning )
         {
+            // Handle the physics
+            gameState.physics();
+            
+            // Update animations, Move sprites, Check for collision
+            gameState.update();
+            
+            // Transform game objects
+            gameState.transform();
+            
+            // Do the rendering
             Device.render();
-
-            //m_gameState.update();
         }
         
         return gameRunning;

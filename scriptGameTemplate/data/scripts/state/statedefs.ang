@@ -1,8 +1,0 @@
-enum EGameState
-{
-    EGS_NULL,
-    EGS_STARTUP,
-    EGS_TITLE_SCREEN,
-    EGS_GAME_LOAD,
-    EGS_RUN
-}
