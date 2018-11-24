@@ -51,7 +51,7 @@ void State_FadeOut()
 /************************************************************************
 *    DESC:  Looping Animation
 ************************************************************************/
-void State_LoopAnimation( Sprite & sprite )
+void State_LoopAnimation( CSprite & sprite )
 {
     NSpriteUtils::Play( 12, sprite, true );
 }
@@ -60,7 +60,7 @@ void State_LoopAnimation( Sprite & sprite )
 /************************************************************************
 *    DESC:  Cube rotate
 ************************************************************************/
-void State_RotateCube( Sprite & sprite )
+void State_RotateCube( CSprite & sprite )
 {
     while( true )
     {

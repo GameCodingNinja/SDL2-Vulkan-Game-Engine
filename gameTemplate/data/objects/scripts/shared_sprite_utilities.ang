@@ -12,7 +12,7 @@ namespace NSpriteUtils
     /************************************************************************
     *    DESC:  Color to the final color in time
     ************************************************************************/
-    shared void ColorTo( float time, CColor &in final, Sprite & sprite )
+    shared void ColorTo( float time, CColor &in final, CSprite & sprite )
     {
         CColor current = sprite.getColor();
         CColor inc = (final - current) / time;
@@ -40,7 +40,7 @@ namespace NSpriteUtils
     /************************************************************************
     *    DESC:  Alpha to the final alpha
     ************************************************************************/
-    shared void AlphaTo( float time, float final, Sprite & sprite )
+    shared void AlphaTo( float time, float final, CSprite & sprite )
     {
         // Convert from RGB value to normalized value
         if( final > 1.5 )
@@ -72,7 +72,7 @@ namespace NSpriteUtils
     /************************************************************************
     *    DESC:  Play the animation
     ************************************************************************/
-    shared void Play( int fps, Sprite & sprite, bool loop = false )
+    shared void Play( int fps, CSprite & sprite, bool loop = false )
     {
         float time = 1000.0 / fps;
         uint frameCount = sprite.getFrameCount();

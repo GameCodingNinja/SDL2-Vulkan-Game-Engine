@@ -105,6 +105,6 @@ namespace NScriptiStrategy
         
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCommandBuffer(string &in)",   asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
         
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "Sprite & create(string &in)",         asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "CSprite & create(string &in)",         asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
     }
 }
