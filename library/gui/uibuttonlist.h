@@ -31,7 +31,7 @@ public:
     bool activateFirstInactiveControl() override;
 
     // Update the display
-    void updateDisplay( int index );
+    void updateDisplay( int index ) override;
 
     // Get the active index
     int getActiveIndex() const;

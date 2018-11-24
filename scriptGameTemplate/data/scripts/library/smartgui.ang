@@ -1,10 +1,9 @@
 
 //
-//  FILE NAME:  confirm.ang
+//  FILE NAME:  smartgui.ang
 //
-//  DESC:       Scripts for the button triggering the confirm menu
+//  DESC:       Smaert GUI menu scripts
 //
-
 
 //
 //  Execution script for the menu control to change to the confirmation menu
@@ -23,9 +22,41 @@ void ControlConfirm_OnExecute( CUIControl & control )
         actionType = "quit_game";
         conformationMsg = "Do you want to|quit the game?";
     }
+    else if( control.getName() == "continue_btn" )
+    {
+        actionType = "game_state_change";
+        conformationMsg = "Are you sure you|want to continue|on to the next state?";
+        executionAction = "run_state";
+    }
     
     yesBtn.setActionType( actionType );
     yesBtn.setExecutionAction( executionAction );
     msgLbl.createFontString( conformationMsg );
 }
 
+//
+//  Execution script for the menu control to fill it with display resolutions
+//
+void ControlResolution_OnInit( CUIControl & control )
+{
+    // Get the screen resolutions
+    array<CSize> @ resAry = GetScreenResolutions();
+    
+    // Get the current game resolution
+    CSize curRes = Settings.getResolution();
+    
+    // Add the strings to the control
+    for( uint i = 0; i < resAry.length(); ++i )
+        control.setStringToList( formatInt(int(resAry[i].w)) + " x "  + formatInt(int(resAry[i].h)) );
+    
+    // Find the current resolution and set it
+    for( uint i = 0; i < resAry.length(); ++i )
+    {
+        // If we found our current game res, set it
+        if( int(resAry[i].w) == int(curRes.w) && int(resAry[i].h) == int(curRes.h) )
+        {
+            control.updateDisplay( i );
+            break;
+        }
+    }
+}

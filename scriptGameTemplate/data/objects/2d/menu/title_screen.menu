@@ -23,6 +23,7 @@
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="ControlConfirm_OnExecute"/>
             </scriptLst>
         </control>
 

@@ -98,13 +98,13 @@ void CGame::init()
 
     // Register the script items
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
-    RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), false );
+    RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), true );
     RegisterScriptDictionary( CScriptMgr::Instance().getEnginePtr() );
     RegisterScriptMath( CScriptMgr::Instance().getEnginePtr() );
+    NScriptSize::Register();
     NScriptGlobals::Register();
     NScriptColor::Register();
     NScriptPoint::Register();
-    NScriptSize::Register();
     NScriptActionManager::Register();
     NScriptCamera::Register();
     NScriptSprite::Register();

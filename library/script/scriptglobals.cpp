@@ -14,6 +14,11 @@
 #include <utilities/exceptionhandling.h>
 #include <managers/signalmanager.h>
 #include <script/scriptmanager.h>
+#include <scriptarray/scriptarray.h>
+#include <common/size.h>
+
+// SDL lib dependencies
+#include <SDL.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -45,6 +50,46 @@ namespace NScriptGlobals
         if( ctx )
             ctx->Suspend();
     }
+    
+    
+    /************************************************************************
+    *    DESC:  Get Resolutions
+    ************************************************************************/
+    CScriptArray * GetScreenResolutions()
+    {
+        // The script array needs to know its type to properly handle the elements.
+        // Note that the object type should be cached to avoid performance issues
+        // if the function is called frequently.
+        asITypeInfo * arrayType = CScriptMgr::Instance().getEnginePtr()->GetTypeInfoByDecl("array<CSize>");
+        
+        std::vector< CSize<int> > resVec;
+        int displayCount = SDL_GetNumDisplayModes(0);
+        for( int i = 0; i < displayCount; i++ )
+        {
+            SDL_DisplayMode mode;
+
+            if( SDL_GetDisplayMode(0, i, &mode) == 0 )
+            {
+                CSize<int> size(mode.w, mode.h);
+
+                // Keep out any duplicates
+                if( std::find(resVec.begin(), resVec.end(), size) == resVec.end() )
+                    resVec.push_back( size );
+            }
+        }
+
+        // The resolutions are in greatest to smallest. We need the order reversed
+        std::reverse(resVec.begin(), resVec.end());
+        
+        CScriptArray* ary = CScriptArray::Create(arrayType, resVec.size());
+        for( size_t i = 0; i < resVec.size(); ++i )
+        {
+            CSize<float> mode( resVec[i] );
+            ary->SetValue(i, &mode);
+        }
+        
+        return ary;
+    }
  
 
     /************************************************************************
@@ -63,5 +108,7 @@ namespace NScriptGlobals
         Throw( pEngine->RegisterGlobalFunction("void DispatchEvent(int type, int code = 0)", asFUNCTION(NGenFunc::DispatchEvent), asCALL_CDECL) );
         Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, string &in = '')", asMETHOD(CScriptMgr, prepareSpawn), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
         Throw( pEngine->RegisterGlobalFunction("void SpawnByThread(string &in, string &in = '')", asMETHOD(CScriptMgr, spawnByThread), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
+        
+        Throw( pEngine->RegisterGlobalFunction("array<CSize> @ GetScreenResolutions()", asFUNCTION(GetScreenResolutions), asCALL_CDECL) );
     }
 }

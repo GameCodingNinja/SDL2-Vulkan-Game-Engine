@@ -59,9 +59,12 @@
             <filePath file="data/objects/2d/menu/control/button_list.ctrl"/>
             <position x="0" y="-115" z="0"/>
             <navigate up="settings_apply_btn" down="full_screen_check_box"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
             <scroll startDelay="750" scrollDelay="350" left="true" right="true"/>
             <actionResponse left="true" right="true"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script init="ControlResolution_OnInit"/>
+            </scriptLst>
         </control>
 
         <!-- Full Screen Check Box -->

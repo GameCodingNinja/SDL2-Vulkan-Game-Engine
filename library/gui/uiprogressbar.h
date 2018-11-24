@@ -92,7 +92,6 @@ private:
         NDefs::EHorzAlignment horz;
         NDefs::EVertAlignment vert;
     } m_alignment;
-
 };
 
 #endif

@@ -180,6 +180,12 @@ public:
     
     // Set the script state function
     void setScriptStateFunc( const std::string & scriptStateStr, const std::string & scriptFuncStr );
+    
+    // Interface to complex controls for scripting
+    
+    // Update the display
+    virtual void updateDisplay( int index ){};
+    
 
 protected:
 

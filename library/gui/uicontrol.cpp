@@ -594,6 +594,9 @@ void CUIControl::init()
     // This allows for delayed VBO create so that the fonts can be allocated during the load screen
     for( auto & iter : m_spriteDeq )
         iter.init();
+    
+    // Prepare script functions associated with this event
+    prepareControlScriptFunction( NUIControl::ECS_INIT );
 }
 
 
@@ -656,7 +659,6 @@ void CUIControl::callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, 
 void CUIControl::prepareControlScriptFunction( NUIControl::EControlState controlState )
 {
     auto iter = m_scriptFunction.find( controlState );
-
     if( iter != m_scriptFunction.end() )
         m_scriptComponent.prepare(m_group, iter->second, {this});
 }

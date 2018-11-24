@@ -91,9 +91,10 @@ void CStartUpState::init()
 
     // Register the script items needed for startup animation
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
+    RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), true );
+    NScriptSize::Register();
     NScriptGlobals::Register();
     NScriptPoint::Register();
-    NScriptSize::Register();
     NScriptColor::Register();
     NScriptVisual::Register();
     NScriptHighResolutionTimer::Register();
