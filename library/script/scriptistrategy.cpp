@@ -23,27 +23,6 @@
 namespace NScriptiStrategy
 {
     /************************************************************************
-    *    DESC:  Create a basic stage strategy                                                            
-    ************************************************************************/
-    /*CSprite * CreateSprite( const std::string & strategyId, const std::string & dataName, iStrategy & rStrategy )
-    {
-        try
-        {
-            return rStrategy.create( dataName );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return nullptr;
-    }*/
-    
-    /************************************************************************
     *    DESC:  Set the command buffers
     ************************************************************************/
     void SetCommandBuffer( const std::string & cmdBufPoolId, iStrategy & rStrategy )
@@ -66,11 +45,11 @@ namespace NScriptiStrategy
     /************************************************************************
     *    DESC:  Create an actor sprite                                                            
     ************************************************************************/
-    CSprite * Create( const std::string & id, iStrategy & rStrategy )
+    iNode * Create( const std::string & id, iStrategy & rStrategy )
     {
         try
         {
-            return rStrategy.create( id )->getSprite();
+            return rStrategy.create( id );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -105,6 +84,6 @@ namespace NScriptiStrategy
         
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCommandBuffer(string &in)",   asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
         
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "CSprite & create(string &in)",         asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in)",          asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
     }
 }

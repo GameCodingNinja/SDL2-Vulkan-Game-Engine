@@ -76,7 +76,7 @@ void LoadTitleScreenAssets()
     
     // Add the actors
     titleStrategy.create( "background" );
-    cubeStrategy.create( "cube" ).prepare( "rotate" );
+    cubeStrategy.create( "cube" ).getSprite().prepare( "rotate" );
     
     // Set the camera for the cube strategy
     StrategyMgr.setCamera( "(cube)", "cube" );

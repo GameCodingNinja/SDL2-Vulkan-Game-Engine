@@ -40,6 +40,7 @@
 #include <script/scriptuicontrol.h>
 #include <script/scriptdevice.h>
 #include <script/scriptvisual.h>
+#include <script/scriptinode.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -109,6 +110,7 @@ void CGame::init()
     NScriptSprite::Register();
     NScriptSound::Register();
     NScriptPlayLst::Register();
+    NScriptiNode::Register();
     NScriptiStrategy::Register();
     NScriptSoundManager::Register();
     NScriptObjectDataManager::Register();

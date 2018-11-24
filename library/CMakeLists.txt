@@ -53,6 +53,7 @@ add_library(
         script/scriptuicontrol.cpp
         script/scriptvisual.cpp
         script/scriptdevice.cpp
+        script/scriptinode.cpp
         system/devicevulkan.cpp
         system/device.cpp
         utilities/xmlparsehelper.cpp

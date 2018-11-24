@@ -80,6 +80,9 @@ public:
     // Get the sprite
     virtual CSprite * getSprite()
     { return nullptr; }
+    
+    // Reset the iterators
+    virtual void resetIterators(){}
 
 protected:
 
