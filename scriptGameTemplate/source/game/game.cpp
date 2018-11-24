@@ -67,17 +67,6 @@ CGame::CGame()
 ************************************************************************/
 CGame::~CGame()
 {
-    // Wait for all rendering to be finished
-    //CDevice::Instance().waitForIdle();
-    //CScriptMgr::Instance().clear();
-    
-    // Free the assets
-    //CMenuMgr::Instance().clear();
-    //CStrategyMgr::Instance().clear();
-    
-    // Destroy the window and Vulkan instance
-    //CDevice::Instance().destroy();
-
     // Quit SDL subsystems
     SDL_Quit();
 }
@@ -90,9 +79,6 @@ void CGame::create()
 {
     CDevice::Instance().setRecordCommandBufferCallback(
         std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
-    
-    // Show the window
-    //CDevice::Instance().showWindow( true );
 
     // Setup the message filtering
     SDL_SetEventFilter(FilterEvents, 0);
@@ -167,16 +153,6 @@ void CGame::pollEvents()
         CActionMgr::Instance().queueEvent( msgEvent );
         
         handleEvent( msgEvent );
-
-        // let the game handle the event
-        // turns true on quit
-        /*if( handleEvent( msgEvent ) )
-        {
-            // Hide the window to give the impression of a quick exit
-            CDevice::Instance().showWindow( false );
-
-            break;
-        }*/
     }
 }
 
@@ -191,6 +167,10 @@ bool CGame::gameLoop()
 
     // Get our elapsed time
     CHighResTimer::Instance().calcElapsedTime();
+    
+    // Inc the cycle
+    if( NBDefs::IsDebugMode() )
+        CStatCounter::Instance().incCycle();
 
     // Main script update
     return CScriptMgr::Instance().update();
@@ -222,23 +202,8 @@ void CGame::statStringCallBack( const std::string & statStr )
 ************************************************************************/
 bool CGame::handleEvent( const SDL_Event & rEvent )
 {
-    //if( (rEvent.type == SDL_QUIT) || (rEvent.type == SDL_APP_TERMINATING) )
-    //    return true;
-    
     // Handle events for the menu manager
     CMenuMgr::Instance().handleEvent( rEvent );
-    
-    // Check for the "game change state" message
-    /*if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
-    {
-        // Block all message processing in the menu manager
-        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
-            CMenuMgr::Instance().allow( false );
-
-        // Clear out all the trees
-        else if( rEvent.user.code == NMenuDefs::ETC_END )
-            CMenuMgr::Instance().clearActiveTrees();
-    }*/
 
     // Filter out these events. Can't do this through the normal event filter
     if( (rEvent.type >= SDL_JOYAXISMOTION) && (rEvent.type <= SDL_JOYBUTTONUP) )

@@ -8,16 +8,16 @@
 class iGameState
 {
     // Flag to indicate state change
-    private bool m_changeState = false;
+    protected bool mChangeState = false;
 
     // Message to send to next state
-    private CStateMessage m_stateMessage;
+    protected CStateMessage mStateMessage;
 
     // This objects current game state value
-    private NStateDefs::EGameState m_gameState = NStateDefs::EGS_NULL;
+    protected NStateDefs::EGameState mGameState = NStateDefs::EGS_NULL;
 
     // This objects next game state value
-    private NStateDefs::EGameState m_nextState = NStateDefs::EGS_NULL;
+    protected NStateDefs::EGameState mNextState = NStateDefs::EGS_NULL;
 
     //
     //  Default Constructor - required if defining a constructor with parameters
@@ -30,8 +30,8 @@ class iGameState
     //
     iGameState( const NStateDefs::EGameState gameState, const NStateDefs::EGameState nextState )
     {
-        m_gameState = gameState;
-        m_nextState = nextState;
+        mGameState = gameState;
+        mNextState = nextState;
     }
 
     void init()
@@ -64,23 +64,21 @@ class iGameState
         // Empty member to be overwritten
     }
 
-    //
-    void doChangeState()
-    { m_changeState = true; }
-
     // Is the state done
-    bool isStateChange()
-    { return m_changeState; };
+    bool doStateChange()
+    {
+        return mChangeState;
+    }
 
     // Get the current game state
     NStateDefs::EGameState getState()
-    { return m_gameState; }
+    { return mGameState; }
 
     // Get the next game state
     NStateDefs::EGameState getNextState()
-    { return m_nextState; }
+    { return mNextState; }
 
     // Get the message
     CStateMessage & getStateMessage()
-    { return m_stateMessage; }
+    { return mStateMessage; }
 };

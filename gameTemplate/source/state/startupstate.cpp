@@ -10,7 +10,7 @@
 
 // Game dependencies
 #include "titlescreenstate.h"
-#include "gamedefs.h"
+#include "statedefs.h"
 
 // Game lib dependencies
 #include <managers/fontmanager.h>
@@ -60,7 +60,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CStartUpState::CStartUpState() :
-    CCommonState( NGameDefs::EGS_STARTUP, NGameDefs::EGS_TITLE_SCREEN )
+    CCommonState( NStateDefs::EGS_STARTUP, NStateDefs::EGS_TITLE_SCREEN )
 {
 }
 
@@ -136,18 +136,18 @@ void CStartUpState::init()
 void CStartUpState::handleEvent( const SDL_Event & rEvent )
 {
     // Event sent from script
-    if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
+    if( rEvent.type == NStateDefs::ESE_FADE_IN_COMPLETE )
     {
         std::thread load(&CStartUpState::assetLoad, this);
         load.detach();
     }
     // Event sent from thread
-    else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_THREAD_LOAD_COMPLETE )
     {
         m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script
-    else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
     {
         m_changeState = true;
     }
@@ -161,27 +161,21 @@ void CStartUpState::assetLoad()
 {
     try
     {
+        // Load the data list tables
+        CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
+        CMenuMgr::Instance().loadListTable( "data/objects/2d/menu/menuListTable.lst" );
+        CMenuMgr::Instance().loadMenuAction( "data/objects/2d/menu/menu_action.list" );
+        CSoundMgr::Instance().loadListTable( "data/sound/soundListTable.lst" );
+        CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
+
         // Load in any fonts
         CFontMgr::Instance().load( "data/textures/fonts/font.lst" );
-
-        // Load 3D object data list table
-        CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
 
         // Load the action manager
         CActionMgr::Instance().loadActionFromXML( "data/settings/controllerMapping.cfg" );
 
-        // Load menu list table
-        CMenuMgr::Instance().loadListTable( "data/objects/2d/menu/menuListTable.lst" );
-
-        // Load the menu action list
-        CMenuMgr::Instance().loadMenuAction( "data/objects/2d/menu/menu_action.list" );
-
-        // Load sound resources for the menu
-        CSoundMgr::Instance().loadListTable( "data/sound/soundListTable.lst" );
+        // Load the menu sounds
         CSoundMgr::Instance().loadGroup("(menu)");
-
-        // Load the physics list table
-        CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
 
         // Register the script items
         NScriptSound::Register();
@@ -202,7 +196,7 @@ void CStartUpState::assetLoad()
         // Do the state specific load
         CTitleScreenState::load();
 
-        NGenFunc::DispatchEvent( NGameDefs::EGE_THREAD_LOAD_COMPLETE );
+        NGenFunc::DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
     }
     catch( NExcept::CCriticalException & ex )
     {

@@ -1,7 +1,7 @@
 <listTable>
     
     <groupList groupName="(state)">
-        <file path="data/objects/scripts/game_defs.ang"/>
+        <file path="data/objects/scripts/state_defs.ang"/>
         <file path="data/objects/scripts/shared_utilities.ang"/>
         <file path="data/objects/scripts/shared_sprite_utilities.ang"/>
         <file path="data/objects/scripts/shared_visual_utilities.ang"/>

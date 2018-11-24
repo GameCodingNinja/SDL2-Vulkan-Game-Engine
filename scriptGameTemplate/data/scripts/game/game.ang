@@ -8,10 +8,10 @@
 class CGame
 {
     // State handle
-    iGameState @gameState;
+    iGameState @mGameState;
     
     // Game running flag
-    bool gameRunning = true;
+    bool mGameRunning = true;
     
     //
     //  Constructor
@@ -26,7 +26,11 @@ class CGame
     //
     void destroy()
     {
-        gameState.destroy();
+        // Destroy the game state
+        mGameState.destroy();
+        
+        // Free the menu assets
+        MenuMgr.freeGroup( "(menu)" );
         
         // Destroy the window and render device instance
         Device.destroy();
@@ -44,42 +48,45 @@ class CGame
         Device.showWindow();
 
         // Create the startup state
-        @gameState = CStartUpState();
-        gameState.init();
+        @mGameState = CStartUpState();
+        mGameState.init();
     }
     
     //
     //  Handle the state change
     //
-    void handleStateChange()
+    void doChangeState()
     {
-        /*if( m_gameState.isStateChange() )
+        if( mGameState.doStateChange() )
         {
             // Get the game state we are moving to
-            const EGameState curState = m_gameState.getState();
+            const NStateDefs::EGameState curState = mGameState.getState();
 
             // Get the game state we are moving to
-            const EGameState nextState = m_gameState.getNextState();
+            const NStateDefs::EGameState nextState = mGameState.getNextState();
 
             // Get the message to the next state
-            const CStateMessage stateMessage = m_gameState.getStateMessage();
+            const CStateMessage stateMessage = mGameState.getStateMessage();
+            
+            // Free the current state assets
+            mGameState.destroy();
 
-            if( nextState == EGS_TITLE_SCREEN )
-                @m_gameState = CTitleScreenState();
+            if( nextState == NStateDefs::EGS_TITLE_SCREEN )
+                @mGameState = CTitleScreenState();
 
             //else if( nextState == NGameDefs::EGS_GAME_LOAD )
-            //    upGameState.reset( new CLoadState( stateMessage ) );
+            //    mGameState.reset( new CLoadState( stateMessage ) );
 
             //else if( nextState == NGameDefs::EGS_RUN )
-                //upGameState.reset( new CRunState );
+                //mGameState.reset( new CRunState );
 
             // Do any pre-game loop init's
-            m_gameState.init();
-        }*/
+            mGameState.init();
+        }
     }
     
     //
-    //  Handle the state change
+    //  Handle the events
     //
     void handleEvent()
     {
@@ -87,14 +94,14 @@ class CGame
         if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||
             ActionMgr.wasEvent( NGameDefs::EGE_APP_TERMINATING ) )
         {
-            gameRunning = false;
+            mGameRunning = false;
             
             // Show the window
             Device.showWindow(false);
         }
             
-        if( gameState !is null )
-            gameState.handleEvent();
+        if( mGameState !is null )
+            mGameState.handleEvent();
     }
     
     //
@@ -102,25 +109,25 @@ class CGame
     //
     bool gameLoop()
     {
-        handleStateChange();
+        doChangeState();
         
         handleEvent();
         
-        if( gameRunning )
+        if( mGameRunning )
         {
             // Handle the physics
-            gameState.physics();
+            mGameState.physics();
             
             // Update animations, Move sprites, Check for collision
-            gameState.update();
+            mGameState.update();
             
             // Transform game objects
-            gameState.transform();
+            mGameState.transform();
             
             // Do the rendering
             Device.render();
         }
         
-        return gameRunning;
+        return mGameRunning;
     }
 };

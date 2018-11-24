@@ -20,6 +20,7 @@
 
 // Standard lib dependencies
 #include <cstring>
+#include <thread>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
@@ -269,13 +270,29 @@ void CScriptMgr::freeGroup( const std::string & group )
 void CScriptMgr::prepare(
     const std::string & group,
     const std::string & funcName,
+    const std::vector<CScriptParam> & paramVec )
+{
+    prepare( group, funcName, m_pActiveContextVec, paramVec );
+}
+
+void CScriptMgr::prepare(
+    const std::string & group,
+    const std::string & funcName,
     std::vector<asIScriptContext *> & pContextVec,
     const std::vector<CScriptParam> & paramVec )
 {
     // Get a context from the script manager pool
     pContextVec.push_back( getContext() );
-    auto * pContext = pContextVec.back();
 
+    prepare( group, funcName, pContextVec.back(), paramVec );
+}
+
+void CScriptMgr::prepare(
+    const std::string & group,
+    const std::string & funcName,
+    asIScriptContext * pContext,
+    const std::vector<CScriptParam> & paramVec )
+{
     // Get the function pointer
     asIScriptFunction * pScriptFunc = getPtrToFunc(group, funcName);
 
@@ -322,14 +339,6 @@ void CScriptMgr::prepare(
     }
 }
 
-void CScriptMgr::prepare(
-    const std::string & group,
-    const std::string & funcName,
-    const std::vector<CScriptParam> & paramVec )
-{
-    prepare( group, funcName, m_pActiveContextVec, paramVec );
-}
-
 
 /************************************************************************
 *    DESC:  Prepare the spawn script function to run
@@ -337,7 +346,7 @@ void CScriptMgr::prepare(
 void CScriptMgr::prepareSpawn( const std::string & funcName, const std::string & group )
 {
     auto pContex = asGetActiveContext();
-    if( pContex )
+    if( pContex || !group.empty() )
     {
         // Get the module name
         std::string grp = group;
@@ -349,30 +358,69 @@ void CScriptMgr::prepareSpawn( const std::string & funcName, const std::string &
     }
 }
 
-void CScriptMgr::prepareSpawnVoid( const std::string & funcName, void * pVoid )
+
+/************************************************************************
+*    DESC:  Spawn by thread
+************************************************************************/
+void CScriptMgr::spawnByThread( const std::string & funcName, const std::string & group )
 {
     auto pContex = asGetActiveContext();
-    if( pContex )
+    if( pContex || !group.empty() )
     {
         // Get the module name
-        std::string group = pContex->GetFunction()->GetModuleName();
-
+        std::string grp = group;
+        if( group.empty() )
+            grp = pContex->GetFunction()->GetModuleName();
+        
+        // Increment the active script context counter
+        CStatCounter::Instance().incActiveScriptContexCounter();
+        
         // Prepare the script function to run
-        prepare( group, funcName, m_pActiveContextVec, {pVoid} );
+        // Don't prepare the script in the thread because that calls the script engine
+        // and requires the use of a cleanup function call asThreadCleanup
+        pContex = getContext();
+        prepare( grp, funcName, pContex );
+        
+        // Execute the script from thread
+        std::thread load( &CScriptMgr::executeFromThread, this, pContex );
+        load.detach();
     }
 }
 
-void CScriptMgr::prepareLocalSpawnVoid( const std::string & funcName, void * pVoid )
-{
-    auto pContex = asGetActiveContext();
-    if( pContex )
-    {
-        // Get the module name
-        std::string group = pContex->GetFunction()->GetModuleName();
 
-        // Prepare the script function to run
-        prepare( group, funcName, m_pLocalSpawnContextVec, {pVoid} );
+/************************************************************************
+*    DESC:  Execute the script from thread
+************************************************************************/
+void CScriptMgr::executeFromThread( asIScriptContext * pContext )
+{
+    try
+    {
+        do
+        {
+            // Execute the script
+            executeScript( pContext );
+        }
+        // Keep executing if there are any suspends in the script
+        while( pContext->GetState() == asEXECUTION_SUSPENDED );
     }
+    catch( NExcept::CCriticalException & ex )
+    {
+        m_errorTitle = ex.getErrorTitle();
+        m_errorMsg = ex.getErrorMsg();
+    }
+    catch( std::exception const & ex )
+    {
+        m_errorTitle = "Standard Exception";
+        m_errorMsg = ex.what();
+    }
+    catch(...)
+    {
+        m_errorTitle = "Unknown Error";
+        m_errorMsg = "Something bad happened and I'm not sure what it was.";
+    }
+    
+    // release it here
+    pContext->Release();
 }
 
 
@@ -381,6 +429,10 @@ void CScriptMgr::prepareLocalSpawnVoid( const std::string & funcName, void * pVo
 ************************************************************************/
 bool CScriptMgr::update()
 {
+    // Re-throw any threaded exceptions
+    if( !m_errorMsg.empty() )
+        throw NExcept::CCriticalException( m_errorTitle, m_errorMsg );
+    
     if( !m_pActiveContextVec.empty() )
         update( m_pActiveContextVec );
     
@@ -389,46 +441,15 @@ bool CScriptMgr::update()
 
 void CScriptMgr::update( std::vector<asIScriptContext *> & pContextVec )
 {
-    // Using a for loop because it simplifies the implementation that new
-    // spawns are added to the vector be it through a local spawn or a global spawn.
-    // For example, if this is the m_pActiveContextVec, PrepareSpawn adds a context to the vector
+    // Using a for loop because it allows the m_pActiveContextVec to grow
+    // while the for loop is executing as spawn contexts are added.
+    // DO NOT change to a C++11 ranged for loop. It won't work.
     for( size_t i = 0; i < pContextVec.size(); ++i )
     {
-        auto pContext = pContextVec[i];
-
-        // See if this context is still being used
-        if( (pContext->GetState() == asEXECUTION_SUSPENDED) ||
-            (pContext->GetState() == asEXECUTION_PREPARED) )
-        {
-            // Increment the active script context counter
-            CStatCounter::Instance().incActiveScriptContexCounter();
-
-            // Execute the script and check for errors
-            // Since the script can be suspended, this also is used to continue execution
-            const int execReturnCode = pContext->Execute();
-            if( execReturnCode == asEXECUTION_ERROR )
-            {
-                throw NExcept::CCriticalException(
-                    "Error Calling Spawn Script!",
-                    "There was an error executing the script.");
-            }
-            else if( execReturnCode == asEXECUTION_EXCEPTION )
-            {
-                throw NExcept::CCriticalException("Error Calling Spawn Script!",
-                    boost::str( boost::format("There was an error executing the script (%s).")
-                        % pContext->GetExceptionString() ));
-            }
-
-            // If this execution spawned any local contexts, they will be in this vector.
-            // This will also start their execution in this update
-            if( !m_pLocalSpawnContextVec.empty() )
-            {
-                for( auto spawnIter : m_pLocalSpawnContextVec )
-                    pContextVec.push_back( spawnIter );
-
-                m_pLocalSpawnContextVec.clear();
-            }
-        }
+        executeScript( pContextVec[i] );
+        
+        // Increment the active script context counter
+        CStatCounter::Instance().incActiveScriptContexCounter();
     }
 
     auto iter = pContextVec.begin();
@@ -443,6 +464,34 @@ void CScriptMgr::update( std::vector<asIScriptContext *> & pContextVec )
         else
         {
             ++iter;
+        }
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Execute the script
+************************************************************************/
+void CScriptMgr::executeScript( asIScriptContext * pContext )
+{
+    // See if this context is still being used
+    if( (pContext->GetState() == asEXECUTION_SUSPENDED) ||
+        (pContext->GetState() == asEXECUTION_PREPARED) )
+    {
+        // Execute the script and check for errors
+        // Since the script can be suspended, this also is used to continue execution
+        const int execReturnCode = pContext->Execute();
+        if( execReturnCode == asEXECUTION_ERROR )
+        {
+            throw NExcept::CCriticalException( "Error Calling Script!",
+                boost::str( boost::format("There was an error executing the script (%s).")
+                    % pContext->GetExceptionString() ));
+        }
+        else if( execReturnCode == asEXECUTION_EXCEPTION )
+        {
+            throw NExcept::CCriticalException("Error Calling Script!",
+                boost::str( boost::format("There was an error executing the script (%s).")
+                    % pContext->GetExceptionString() ));
         }
     }
 }

@@ -25,15 +25,15 @@ class iGameState : public boost::noncopyable
 public:
 
     // Constructor
-    iGameState( const NGameDefs::EGameState gameState, const NGameDefs::EGameState nextState )  :
+    iGameState( const NStateDefs::EGameState gameState, const NStateDefs::EGameState nextState )  :
         m_gameState(gameState),
         m_nextState(nextState)
     {};
 
     // Constructor
-    iGameState( const NGameDefs::EGameState gameState, const CStateMessage & stateMsg ) :
+    iGameState( const NStateDefs::EGameState gameState, const CStateMessage & stateMsg ) :
         m_gameState(gameState),
-        m_nextState(NGameDefs::EGS_GAME_LOAD),
+        m_nextState(NStateDefs::EGS_GAME_LOAD),
         m_stateMessage(stateMsg)
     {};
 
@@ -67,11 +67,11 @@ public:
     { return m_changeState; };
 
     // Get the correct game state
-    NGameDefs::EGameState getState()
+    NStateDefs::EGameState getState()
     { return m_gameState; }
 
     // Get the next game state
-    virtual NGameDefs::EGameState getNextState()
+    virtual NStateDefs::EGameState getNextState()
     { return m_nextState; }
 
     // Get the message
@@ -81,10 +81,10 @@ public:
 protected:
 
     // This objects current game state value
-    const NGameDefs::EGameState m_gameState;
+    const NStateDefs::EGameState m_gameState;
 
     // This objects next game state value
-    const NGameDefs::EGameState m_nextState;
+    const NStateDefs::EGameState m_nextState;
     
     // Message to send to next state
     CStateMessage m_stateMessage;

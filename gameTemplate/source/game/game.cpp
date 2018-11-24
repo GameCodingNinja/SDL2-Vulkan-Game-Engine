@@ -171,10 +171,10 @@ void CGame::doStateChange()
         CDevice::Instance().waitForIdle();
     
         // Get the game state we are moving to
-        const NGameDefs::EGameState curState = upGameState->getState();
+        const NStateDefs::EGameState curState = upGameState->getState();
 
         // Get the game state we are moving to
-        const NGameDefs::EGameState nextState = upGameState->getNextState();
+        const NStateDefs::EGameState nextState = upGameState->getNextState();
 
         // Get the message to the next state
         const CStateMessage stateMessage = upGameState->getStateMessage();
@@ -186,13 +186,13 @@ void CGame::doStateChange()
         // getting hammered by a bunch of queued up messages
         pollEvents();
 
-        if( nextState == NGameDefs::EGS_TITLE_SCREEN )
+        if( nextState == NStateDefs::EGS_TITLE_SCREEN )
             upGameState.reset( new CTitleScreenState );
 
-        else if( nextState == NGameDefs::EGS_GAME_LOAD )
+        else if( nextState == NStateDefs::EGS_GAME_LOAD )
             upGameState.reset( new CLoadState( stateMessage ) );
 
-        else if( nextState == NGameDefs::EGS_RUN )
+        else if( nextState == NStateDefs::EGS_RUN )
             upGameState.reset( new CRunState );
 
         else

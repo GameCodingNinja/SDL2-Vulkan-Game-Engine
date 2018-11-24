@@ -36,7 +36,7 @@ public:
     bool doStateChange() override;
 
     // Get the next state to load
-    NGameDefs::EGameState getNextState() override;
+    NStateDefs::EGameState getNextState() override;
 
 private:
 

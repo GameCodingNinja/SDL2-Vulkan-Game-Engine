@@ -28,7 +28,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CRunState::CRunState() :
-    CCommonState( NGameDefs::EGS_RUN, NGameDefs::EGS_GAME_LOAD ),
+    CCommonState( NStateDefs::EGS_RUN, NStateDefs::EGS_GAME_LOAD ),
         m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
 {
 }
@@ -90,12 +90,12 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
             m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script
-    else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_FADE_IN_COMPLETE )
     {
         CMenuMgr::Instance().allow();
     }
     // Event sent from script
-    else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
     {
         // Clear out all the trees
         CMenuMgr::Instance().clearActiveTrees();

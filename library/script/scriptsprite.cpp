@@ -237,6 +237,8 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("Sprite", "uint getCurrentFrame()",                             asMETHOD(CSprite, getCurrentFrame),      asCALL_THISCALL) );
 
         Throw( pEngine->RegisterObjectMethod("Sprite", "int getId()",                                        asMETHOD(CSprite,   getId),            asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("Sprite", "bool prepare(string &in, bool forceUpdate = false)", asMETHOD(CSprite,   prepare),            asCALL_THISCALL) );
 
         Throw( pEngine->RegisterObjectMethod("Sprite", "void setVisible(bool)",                              asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "bool isVisible()",                                   asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
@@ -263,7 +265,7 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("Sprite", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("Sprite", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("Sprite", "const CPoint & getScale()",     asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("Sprite", "const CPoint & getScale()",                             asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
 
         //Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, Sprite @)", asMETHOD(CScriptMgr, prepareSpawnVoid), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
         //Throw( pEngine->RegisterGlobalFunction("void LocalSpawn(string &in, Sprite @)", asMETHOD(CScriptMgr, prepareLocalSpawnVoid), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );

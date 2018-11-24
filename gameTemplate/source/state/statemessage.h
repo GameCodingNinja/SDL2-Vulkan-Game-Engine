@@ -9,19 +9,19 @@
 #define __state_message_h__
 
 // Game dependencies
-#include "gamedefs.h"
+#include "statedefs.h"
 
 class CStateMessage
 {
 public:
     
-    NGameDefs::EGameState getLoadState()
+    NStateDefs::EGameState getLoadState()
     { return m_loadState; }
     
-    NGameDefs::EGameState getUnloadState()
+    NStateDefs::EGameState getUnloadState()
     { return m_unloadState; }
     
-    void setMsg( NGameDefs::EGameState loadState, NGameDefs::EGameState unloadState )
+    void setMsg( NStateDefs::EGameState loadState, NStateDefs::EGameState unloadState )
     {
         m_loadState = loadState;
         m_unloadState = unloadState;
@@ -29,10 +29,8 @@ public:
     
 private:
 
-    NGameDefs::EGameState m_loadState   : 16;
-    NGameDefs::EGameState m_unloadState : 16;
+    NStateDefs::EGameState m_loadState   : 16;
+    NStateDefs::EGameState m_unloadState : 16;
 };
 
-#endif  // __state_message_h__
-
-
+#endif

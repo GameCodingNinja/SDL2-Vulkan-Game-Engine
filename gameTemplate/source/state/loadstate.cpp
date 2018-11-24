@@ -9,7 +9,7 @@
 #include "loadstate.h"
 
 // Game dependencies
-#include "gamedefs.h"
+#include "statedefs.h"
 #include "titlescreenstate.h"
 #include "runstate.h"
 
@@ -39,7 +39,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CLoadState::CLoadState( const CStateMessage & stateMsg ) :
-    CCommonState( NGameDefs::EGS_GAME_LOAD, stateMsg )
+    CCommonState( NStateDefs::EGS_GAME_LOAD, stateMsg )
 {
 }
 
@@ -87,19 +87,19 @@ void CLoadState::init()
 void CLoadState::handleEvent( const SDL_Event & rEvent )
 {
     // Event sent from script
-    if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
+    if( rEvent.type == NStateDefs::ESE_FADE_IN_COMPLETE )
     {
         std::thread load(&CLoadState::assetLoad, this);
         load.detach();
     }
     // Event sent from script
-    else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
     {
         // Set the flag to change the state
         m_changeState = true;
     }
     // Event sent from thread
-    else if( rEvent.type == NGameDefs::EGE_THREAD_LOAD_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_THREAD_LOAD_COMPLETE )
     {
         m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
@@ -113,13 +113,13 @@ void CLoadState::assetLoad()
 {
     try
     {
-        if( m_stateMessage.getLoadState() == NGameDefs::EGS_TITLE_SCREEN )
+        if( m_stateMessage.getLoadState() == NStateDefs::EGS_TITLE_SCREEN )
             CTitleScreenState::load();
 
-        else if( m_stateMessage.getLoadState() == NGameDefs::EGS_RUN )
+        else if( m_stateMessage.getLoadState() == NStateDefs::EGS_RUN )
             CRunState::load();
 
-        NGenFunc::DispatchEvent( NGameDefs::EGE_THREAD_LOAD_COMPLETE );
+        NGenFunc::DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
     }
     catch( NExcept::CCriticalException & ex )
     {
@@ -155,7 +155,7 @@ bool CLoadState::doStateChange()
 /***************************************************************************
 *    DESC:  Get the next state to load
 ****************************************************************************/
-NGameDefs::EGameState CLoadState::getNextState()
+NStateDefs::EGameState CLoadState::getNextState()
 {
     return m_stateMessage.getLoadState();
 }

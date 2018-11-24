@@ -17,8 +17,16 @@ namespace NExcept
     {
     public:
         
-        IException( std::string title, std::string msg ) : errorTitle(title), errorMsg(msg)
-        {}
+        IException( std::string title, std::string msg )
+        {
+            // This will keep additional exceptions
+            // from overwriting the first one
+            if( errorTitle.empty() )
+                errorTitle = title;
+            
+            if( errorMsg.empty() )
+                errorMsg = msg;
+        }
 
         // Return the error info
         std::string & getErrorMsg(){ return errorMsg; }
@@ -26,9 +34,8 @@ namespace NExcept
 
     protected:
 
-        std::string errorTitle;
-        std::string errorMsg;
-        
+        static std::string errorTitle;
+        static std::string errorMsg;
     };
 
     // Critical exception class. Used for non-recoverable exceptions

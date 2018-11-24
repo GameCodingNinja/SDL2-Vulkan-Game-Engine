@@ -1,12 +1,12 @@
 <listTable>
     
     <groupList groupName="(menu)">
-        <file path="data/objects/scripts/shared_defs.ang"/>
-        <file path="data/objects/scripts/shared_utilities.ang"/>
-        <file path="data/objects/scripts/menu.ang"/>
-        <file path="data/objects/scripts/smartgui.ang"/>
+      <file path="data/objects/scripts/shared_utilities.ang"/>
+      <file path="data/objects/scripts/shared_sprite_utilities.ang"/>
+      <file path="data/objects/scripts/menu_defs.ang"/>
+      <file path="data/objects/scripts/menu.ang"/>
     </groupList>
-    
+
     <groupList groupName="(state)">
         <file path="data/objects/scripts/state_defs.ang"/>
         <file path="data/objects/scripts/shared_utilities.ang"/>
@@ -21,8 +21,10 @@
         <file path="data/objects/scripts/state_defs.ang"/>
         <file path="data/scripts/game/game_defs.ang"/>
         <file path="data/scripts/state/igamestate.ang"/>
-        <file path="data/scripts/state/startupstate.ang"/>
         <file path="data/scripts/state/statemessage.ang"/>
+        <file path="data/scripts/state/commonstate.ang"/>
+        <file path="data/scripts/state/startupstate.ang"/>
+        <file path="data/scripts/state/titlescreenstate.ang"/>
     </groupList>
   
     <!--

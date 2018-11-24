@@ -66,6 +66,7 @@ add_library(
         utilities/threadpool.cpp
         utilities/xmlpreloader.cpp
         utilities/matrix.cpp
+        utilities/exceptionhandling.cpp
         managers/soundmanager.cpp
         managers/managerbase.cpp
         managers/fontmanager.cpp

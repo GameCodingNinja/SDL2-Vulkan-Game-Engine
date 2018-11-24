@@ -61,6 +61,7 @@ namespace NScriptGlobals
         // The DispatchEvent function has 4 parameters and because they are not defined here, they only return garbage
         // AngelScript is not allowing the other two voided pointers
         Throw( pEngine->RegisterGlobalFunction("void DispatchEvent(int type, int code = 0)", asFUNCTION(NGenFunc::DispatchEvent), asCALL_CDECL) );
-        Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, string &in = "")", asMETHOD(CScriptMgr, prepareSpawn), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
+        Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, string &in = '')", asMETHOD(CScriptMgr, prepareSpawn), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
+        Throw( pEngine->RegisterGlobalFunction("void SpawnByThread(string &in, string &in = '')", asMETHOD(CScriptMgr, spawnByThread), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
     }
 }

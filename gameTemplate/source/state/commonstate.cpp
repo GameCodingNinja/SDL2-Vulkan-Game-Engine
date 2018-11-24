@@ -22,14 +22,14 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CCommonState::CCommonState( const NGameDefs::EGameState gameState, const NGameDefs::EGameState nextState ) :
+CCommonState::CCommonState( const NStateDefs::EGameState gameState, const NStateDefs::EGameState nextState ) :
     iGameState( gameState, nextState )
 {
-    m_gameStateMap.emplace( "title_screen_state", NGameDefs::EGS_TITLE_SCREEN );
-    m_gameStateMap.emplace( "run_state", NGameDefs::EGS_RUN );
+    m_gameStateMap.emplace( "title_screen_state", NStateDefs::EGS_TITLE_SCREEN );
+    m_gameStateMap.emplace( "run_state", NStateDefs::EGS_RUN );
 }
 
-CCommonState::CCommonState( const NGameDefs::EGameState gameState, const CStateMessage & stateMsg ) :
+CCommonState::CCommonState( const NStateDefs::EGameState gameState, const CStateMessage & stateMsg ) :
     iGameState( gameState, stateMsg )
 {
 }
@@ -73,7 +73,7 @@ void CCommonState::update()
 {
     m_scriptComponent.update();
     
-    if( !CMenuMgr::Instance().isActive() || m_gameState == NGameDefs::EGS_TITLE_SCREEN )
+    if( !CMenuMgr::Instance().isActive() || m_gameState == NStateDefs::EGS_TITLE_SCREEN )
         CStrategyMgr::Instance().update();
 
     CMenuMgr::Instance().update();
@@ -85,7 +85,7 @@ void CCommonState::update()
 ****************************************************************************/
 void CCommonState::transform()
 {
-    if( !CMenuMgr::Instance().isActive() || m_gameState == NGameDefs::EGS_TITLE_SCREEN )
+    if( !CMenuMgr::Instance().isActive() || m_gameState == NStateDefs::EGS_TITLE_SCREEN )
         CStrategyMgr::Instance().transform();
 
     CMenuMgr::Instance().transform();
@@ -106,7 +106,7 @@ void CCommonState::recordCommandBuffer( uint32_t index )
 /***************************************************************************
 *    DESC:  Get the load state
 ****************************************************************************/
-NGameDefs::EGameState CCommonState::getLoadState( void * pVoid )
+NStateDefs::EGameState CCommonState::getLoadState( void * pVoid )
 {
     if( pVoid == nullptr )
     {

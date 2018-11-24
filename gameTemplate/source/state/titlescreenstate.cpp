@@ -9,7 +9,7 @@
 #include "titlescreenstate.h"
 
 // Game dependencies
-#include "gamedefs.h"
+#include "statedefs.h"
 
 // Game lib dependencies
 #include <objectdata/objectdatamanager.h>
@@ -30,7 +30,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CTitleScreenState::CTitleScreenState() :
-    CCommonState( NGameDefs::EGS_TITLE_SCREEN, NGameDefs::EGS_GAME_LOAD )
+    CCommonState( NStateDefs::EGS_TITLE_SCREEN, NStateDefs::EGS_GAME_LOAD )
 {
 }
 
@@ -91,12 +91,12 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
             m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script
-    else if( rEvent.type == NGameDefs::EGE_FADE_IN_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_FADE_IN_COMPLETE )
     {
         CMenuMgr::Instance().allow();
     }
     // Event sent from script
-    else if( rEvent.type == NGameDefs::EGE_FADE_OUT_COMPLETE )
+    else if( rEvent.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
     {
         // Clear out all the trees
         CMenuMgr::Instance().clearActiveTrees();

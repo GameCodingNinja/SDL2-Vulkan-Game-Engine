@@ -1,0 +1,45 @@
+
+//
+//  FILE NAME:  commonstate.ang
+//
+//  DESC:       Common game state
+//
+
+class CCommonState : iGameState
+{
+    dictionary m_gameStateDict;
+    
+    //
+    //  Constructor
+    //
+    CCommonState( const NStateDefs::EGameState gameState, const NStateDefs::EGameState nextState )
+    {
+        super( gameState, nextState );
+        
+        m_gameStateDict.set("title_screen_state", NStateDefs::EGS_TITLE_SCREEN);
+        m_gameStateDict.set("run_state", NStateDefs::EGS_RUN);
+    }
+    
+    //
+    //  Handle the events
+    //
+    void handleEvent() override
+    {
+    }
+    
+    //
+    //  Update animations, Move sprites, Check for collision
+    //
+    void update() override
+    {
+        StrategyMgr.update();
+    }
+    
+    //
+    //  Transform game objects
+    //
+    void transform() override
+    {
+        StrategyMgr.transform();
+    }
+};

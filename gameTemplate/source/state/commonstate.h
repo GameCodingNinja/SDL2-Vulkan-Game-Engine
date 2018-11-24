@@ -24,8 +24,8 @@ class CCommonState : public iGameState
 public:
 
     // Constructor
-    CCommonState( const NGameDefs::EGameState, const NGameDefs::EGameState );
-    CCommonState( const NGameDefs::EGameState gameState, const CStateMessage & stateMsg );
+    CCommonState( const NStateDefs::EGameState, const NStateDefs::EGameState );
+    CCommonState( const NStateDefs::EGameState gameState, const CStateMessage & stateMsg );
 
     // Destructor
     virtual ~CCommonState();
@@ -46,7 +46,7 @@ public:
 protected:
     
     // Get the load state
-    NGameDefs::EGameState getLoadState( void * pVoid );
+    NStateDefs::EGameState getLoadState( void * pVoid );
     
 protected:
 
@@ -56,7 +56,7 @@ protected:
 private:
         
     // game state map
-    std::map<std::string, NGameDefs::EGameState> m_gameStateMap;
+    std::map<std::string, NStateDefs::EGameState> m_gameStateMap;
 };
 
 #endif

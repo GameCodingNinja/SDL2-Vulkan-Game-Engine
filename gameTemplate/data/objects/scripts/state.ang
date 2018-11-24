@@ -20,7 +20,7 @@ void State_StartUpFadeIn()
     CColor final(1,1,1,1);
     NVisualUtils::ColorTo( 500, final, visual );
     
-    DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
+    DispatchEvent( NStateDefs::ESE_FADE_IN_COMPLETE );
 }
 
 
@@ -34,7 +34,7 @@ void State_FadeIn()
     CColor final(1,1,1,1);
     NVisualUtils::ColorTo( 500, final, visual );
     
-    DispatchEvent( NGameDefs::EGE_FADE_IN_COMPLETE );
+    DispatchEvent( NStateDefs::ESE_FADE_IN_COMPLETE );
 }
 
 void State_FadeOut()
@@ -44,7 +44,7 @@ void State_FadeOut()
     CColor current(0,0,0,1);
     NVisualUtils::ColorTo( 500, current, visual );
     
-    DispatchEvent( NGameDefs::EGE_FADE_OUT_COMPLETE );
+    DispatchEvent( NStateDefs::ESE_FADE_OUT_COMPLETE );
 }
 
 

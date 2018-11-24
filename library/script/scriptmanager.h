@@ -69,18 +69,25 @@ public:
     void prepare(
         const std::string & group,
         const std::string & funcName,
+        const std::vector<CScriptParam> & paramVec = std::vector<CScriptParam>() );
+    
+    void prepare(
+        const std::string & group,
+        const std::string & funcName,
         std::vector<asIScriptContext *> & pContextVec,
         const std::vector<CScriptParam> & paramVec = std::vector<CScriptParam>() );
     
     void prepare(
         const std::string & group,
         const std::string & funcName,
+        asIScriptContext * pContext,
         const std::vector<CScriptParam> & paramVec = std::vector<CScriptParam>() );
     
     // Prepare the spawn script function to run
     void prepareSpawn( const std::string & funcName, const std::string & group = "" );
-    void prepareSpawnVoid( const std::string & funcName, void * pVoid );
-    void prepareLocalSpawnVoid( const std::string & funcName, void * pVoid );
+
+    // Spawn by thread
+    void spawnByThread( const std::string & funcName, const std::string & group = "" );
 
 private:
 
@@ -98,6 +105,12 @@ private:
 
     // Call back to display AngelScript messages
     void messageCallback(const asSMessageInfo & msg);
+    
+    // Execute the script
+    void executeScript( asIScriptContext * pContext );
+    
+    // Execute the script from thread
+    void executeFromThread( asIScriptContext * pContext );
 
 private:
 
@@ -113,9 +126,9 @@ private:
     // Holds active contexts that are executing scripts
     std::vector<asIScriptContext *> m_pActiveContextVec;
     
-    // Holds the spawn contexts to be added to the component pool
-    std::vector<asIScriptContext *> m_pLocalSpawnContextVec;
-
+    // Error string messages
+    std::string m_errorTitle;
+    std::string m_errorMsg;
 };
 
 #endif
