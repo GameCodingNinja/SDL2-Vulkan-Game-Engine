@@ -48,10 +48,6 @@
 #include <scriptdictionary/scriptdictionary.h>
 #include <scriptmath/scriptmath.h>
 
-// Boost lib dependencies
-#include <boost/bind.hpp>
-#include <boost/format.hpp>
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -59,6 +55,9 @@ CGame::CGame()
 {
     if( NBDefs::IsDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
+    
+    // Init the device
+    CDevice::Instance().init( std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
 }
 
 
@@ -67,8 +66,6 @@ CGame::CGame()
 ************************************************************************/
 CGame::~CGame()
 {
-    // Quit SDL subsystems
-    SDL_Quit();
 }
 
 
@@ -77,9 +74,6 @@ CGame::~CGame()
  ****************************************************************************/
 void CGame::create()
 {
-    CDevice::Instance().setRecordCommandBufferCallback(
-        std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
-
     // Setup the message filtering
     SDL_SetEventFilter(FilterEvents, 0);
 
@@ -100,7 +94,7 @@ void CGame::init()
     pollEvents();
 
     // Load the script list table
-    CScriptMgr::Instance().loadListTable( "data/scripts/scriptListTable.lst" );
+    CScriptMgr::Instance().loadListTable( CSettings::Instance().getScriptListTable() );
 
     // Register the script items
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
@@ -130,8 +124,9 @@ void CGame::init()
     NScriptDevice::Register();
     NScriptVisual::Register();
 
-    CScriptMgr::Instance().loadGroup("(main)");
-    CScriptMgr::Instance().prepare("(main)", "main");
+    CScriptMgr::Instance().loadGroup( CSettings::Instance().getScriptGroup() );
+    CScriptMgr::Instance().prepare(
+        CSettings::Instance().getScriptGroup(), CSettings::Instance().getScriptMain() );
 
     CHighResTimer::Instance().calcElapsedTime();
 }
@@ -167,10 +162,6 @@ bool CGame::gameLoop()
 
     // Get our elapsed time
     CHighResTimer::Instance().calcElapsedTime();
-    
-    // Inc the cycle
-    if( NBDefs::IsDebugMode() )
-        CStatCounter::Instance().incCycle();
 
     // Main script update
     return CScriptMgr::Instance().update();

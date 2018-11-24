@@ -16,13 +16,39 @@
 ************************************************************************/
 CThreadPool::CThreadPool()
 {
-    #if !defined(__thread_disable__)
-    // Get minimum number of threads
-    int threads = CSettings::Instance().getMinThreadCount();
+}
 
-    // Get maximum number of threads.
-    // Value of zero means use max hardware threads to number of cores
-    const int maxThreads = CSettings::Instance().getMaxThreadCount();
+
+/************************************************************************
+*    DESC:  destructor
+************************************************************************/
+CThreadPool::~CThreadPool()
+{
+    #if !defined(__thread_disable__)
+    {
+        std::unique_lock<std::mutex> lock( m_queue_mutex );
+        m_stop = true;
+    }
+
+    m_condition.notify_all();
+
+    for( std::thread & iter : m_workers )
+        iter.join();
+    #endif
+}
+
+
+/************************************************************************
+*    DESC:  Thread pool init
+************************************************************************/
+void CThreadPool::init( const int minThreads, const int maxThreads )
+{
+    // NOTE: maxThreads value of zero means use max hardware threads to number of cores
+    
+    #if !defined(__thread_disable__)
+
+    // Get minimum number of threads
+    int threads = minThreads;
 
     // Get the number of hardware cores. May return 0 if can't determine
     const int maxCores = std::thread::hardware_concurrency();
@@ -62,25 +88,6 @@ CThreadPool::CThreadPool()
             }
         );
     }
-    #endif
-}
-
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CThreadPool::~CThreadPool()
-{
-    #if !defined(__thread_disable__)
-    {
-        std::unique_lock<std::mutex> lock( m_queue_mutex );
-        m_stop = true;
-    }
-
-    m_condition.notify_all();
-
-    for( std::thread & iter : m_workers )
-        iter.join();
     #endif
 }
 

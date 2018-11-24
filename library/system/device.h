@@ -40,13 +40,12 @@ public:
         static CDevice device;
         return device;
     }
+    
+    // Init the device
+    void init( std::function<void(uint32_t)> callback );
 
     // Create the window and Vulkan instance
     void create( const std::string & pipelineCfg );
-    void create( std::function<void(uint32_t)> callback, const std::string & pipelineCfg );
-    
-    // Set the callback for command buffer recording
-    void setRecordCommandBufferCallback( std::function<void(uint32_t)> callback );
 
     // Destroy the window and Vulkan instance
     void destroy();

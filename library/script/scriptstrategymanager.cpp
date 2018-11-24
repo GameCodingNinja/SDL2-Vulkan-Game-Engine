@@ -131,7 +131,6 @@ namespace NScriptStrategyManager
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",                  asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                    asMETHOD(CStrategyMgr, update), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                                 asMETHOD(CStrategyMgr, transform), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void initDefaultCamera()",                         asMETHOD(CStrategyMgr, initDefaultCamera), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void setCamera(string &in, string &in)",           asMETHOD(CStrategyMgr, setCamera), asCALL_THISCALL) );
 
         // Set this object registration as a global property to simulate a singleton

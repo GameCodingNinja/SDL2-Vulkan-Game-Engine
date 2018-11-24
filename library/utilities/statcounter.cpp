@@ -53,7 +53,7 @@ void CStatCounter::connect( const StatCounterSignal::slot_type & slot )
 ************************************************************************/
 void CStatCounter::disconnect()
 {
-    m_statCounterSignal.disconnect_all_slots();;
+    m_statCounterSignal.disconnect_all_slots();
 }
 
 

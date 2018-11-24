@@ -30,23 +30,6 @@
 ************************************************************************/
 CStrategyMgr::CStrategyMgr()
 {
-}
-
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CStrategyMgr::~CStrategyMgr()
-{
-    NDelFunc::DeleteMapPointers(m_pStrategyMap);
-}
-
-
-/************************************************************************
-*    DESC:  Init the default camera
-************************************************************************/
-void CStrategyMgr::initDefaultCamera()
-{
     m_defaultCamera.init(
         CSettings::Instance().getProjectionType(),
         CSettings::Instance().getViewAngle(),
@@ -56,6 +39,15 @@ void CStrategyMgr::initDefaultCamera()
     // Set the default position which allows everything to render
     m_defaultCamera.setPos( 0, 0, 100 );
     m_defaultCamera.transform();
+}
+
+
+/************************************************************************
+*    DESC:  destructor
+************************************************************************/
+CStrategyMgr::~CStrategyMgr()
+{
+    NDelFunc::DeleteMapPointers(m_pStrategyMap);
 }
 
 

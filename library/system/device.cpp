@@ -33,7 +33,7 @@
 #include <SDL_vulkan.h>
 
 /************************************************************************
-*    desc:  Constructor
+*    DESC:  Constructor
 ************************************************************************/
 CDevice::CDevice()
 {
@@ -41,10 +41,27 @@ CDevice::CDevice()
 
 
 /************************************************************************
-*    desc:  destructor
+*    DESC:  destructor
 ************************************************************************/
 CDevice::~CDevice()
 {
+}
+
+
+/***************************************************************************
+*   DESC: Init the device
+****************************************************************************/
+void CDevice::init( std::function<void(uint32_t)> callback )
+{
+    // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
+        throw NExcept::CCriticalException("SDL could not initialize!", SDL_GetError() );
+
+    // All file I/O is handled by SDL and SDL_Init must be called before doing any I/O.
+    CSettings::Instance().loadXML();
+    
+    // Set the command buffer call back to be called from the game
+    RecordCommandBufferCallback = callback;
 }
 
 
@@ -53,13 +70,6 @@ CDevice::~CDevice()
 ****************************************************************************/
 void CDevice::create( const std::string & pipelineCfg )
 {
-    // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
-    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
-        throw NExcept::CCriticalException("SDL could not initialize!", SDL_GetError() );
-
-    // All file I/O is handled by SDL and SDL_Init must be called before doing any I/O.
-    CSettings::Instance().loadXML();
-
     // Get the render size of the window
     const CSize<int> size( CSettings::Instance().getSize() );
 
@@ -117,24 +127,6 @@ void CDevice::create( const std::string & pipelineCfg )
     initStartupGamepads();
 }
 
-void CDevice::create( std::function<void(uint32_t)> callback, const std::string & pipelineCfg )
-{
-    // Set the command buffer call back to be called from the game
-    RecordCommandBufferCallback = callback;
-    
-    create( pipelineCfg );
-}
-
-
-/***************************************************************************
-*   DESC:  Set the callback for command buffer recording
-****************************************************************************/
-void CDevice::setRecordCommandBufferCallback( std::function<void(uint32_t)> callback )
-{
-    // Set the command buffer call back to be called from the game
-    RecordCommandBufferCallback = callback;
-}
-
 
 /***************************************************************************
 *   DESC:  Destroy the window and Vulkan instance
@@ -149,6 +141,9 @@ void CDevice::destroy()
         SDL_DestroyWindow( m_pWindow );
         m_pWindow = nullptr;
     }
+    
+    // Quit SDL subsystems
+    SDL_Quit();
 }
 
 

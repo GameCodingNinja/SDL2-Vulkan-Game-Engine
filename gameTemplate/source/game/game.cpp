@@ -54,6 +54,9 @@ CGame::CGame() :
 
     if( NBDefs::IsDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
+    
+    // Init the device
+    CDevice::Instance().init( std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
 }
 
 
@@ -71,9 +74,6 @@ CGame::~CGame()
     
     // Destroy the window and Vulkan instance
     CDevice::Instance().destroy();
-
-    // Quit SDL subsystems
-    SDL_Quit();
 }
 
 
@@ -82,9 +82,8 @@ CGame::~CGame()
 ************************************************************************/
 void CGame::create()
 {
-    CDevice::Instance().create(
-        std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1),
-        "data/shaders/pipeline.cfg" );
+    // Create the device
+    CDevice::Instance().create( "data/shaders/pipeline.cfg" );
     
     // Show the window
     CDevice::Instance().showWindow( true );

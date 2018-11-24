@@ -29,9 +29,6 @@ final class CStartUpState : CCommonState
         // Load the start up group
         ObjectDataMgr.loadGroup2D( "(startup)" );
         
-        // Init the default camera
-        StrategyMgr.initDefaultCamera();
-        
         // Create the needed strategies
         iStrategy @strategy = StrategyMgr.createActorStrategy( "(startup)" );
         strategy.setCommandBuffer( "(startup)" );

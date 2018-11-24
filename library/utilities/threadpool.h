@@ -41,6 +41,9 @@ public:
     template<class F, class... Args>
     void post(F&& f, Args&&... args);
     
+    // Thread pool init
+    void init( const int minThreads, const int maxThreads );
+    
     // Wait for the jobs to complete
     void wait();
     

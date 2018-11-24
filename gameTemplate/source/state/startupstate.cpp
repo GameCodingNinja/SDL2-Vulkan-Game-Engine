@@ -98,9 +98,6 @@ void CStartUpState::init()
     NScriptVisual::Register();
     NScriptHighResolutionTimer::Register();
     NScriptSprite::Register();
-    
-    // Init the default camera
-    CStrategyMgr::Instance().initDefaultCamera();
 
     // Load group specific assets
     CScriptMgr::Instance().loadGroup("(state)");

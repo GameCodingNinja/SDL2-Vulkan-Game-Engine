@@ -43,9 +43,6 @@ CSettings::CSettings() :
     m_chunksize(1024),
     m_activateDepthBuffer(false),
     m_activateStencilBuffer(false),
-    m_clearTargetBuffer(true),
-    m_minThreadCount(2),
-    m_maxThreadCount(0),
     m_sectorSize(512),
     m_sectorSizeHalf(256),
     m_anisotropicLevel(NDefs::ETF_ANISOTROPIC_0X),
@@ -243,16 +240,6 @@ void CSettings::loadXML()
                 m_gamepadStickDeadZone = std::atoi(joypadNode.getAttribute("stickDeadZone"));
             }
 
-            const XMLNode threadNode = deviceNode.getChildNode("threads");
-            if( !threadNode.isEmpty() )
-            {
-                if( threadNode.isAttributeSet("minThreadCount") )
-                    m_minThreadCount = std::atoi(threadNode.getAttribute("minThreadCount"));
-
-                if( threadNode.isAttributeSet("maxThreadCount") )
-                    m_maxThreadCount = std::atoi(threadNode.getAttribute("maxThreadCount"));
-            }
-
             // Get the attribute from the "depthStencilBuffer" node
             const XMLNode depthStencilBufferNode = deviceNode.getChildNode("depthStencilBuffer");
             if( !depthStencilBufferNode.isEmpty() )
@@ -264,6 +251,20 @@ void CSettings::loadXML()
                 // Do we enable the stencil buffer
                 if( depthStencilBufferNode.isAttributeSet("activateStencilBuffer") )
                     m_activateStencilBuffer = ( std::strcmp( depthStencilBufferNode.getAttribute("activateStencilBuffer"), "true" ) == 0 );
+            }
+            
+            // Get the scripting settings
+            const XMLNode scriptNode = m_mainNode.getChildNode("scripting");
+            if( !scriptNode.isEmpty() )
+            {
+                if( scriptNode.isAttributeSet("scriptListTable") )
+                    m_scriptListTable = scriptNode.getAttribute("scriptListTable");
+                
+                if( scriptNode.isAttributeSet("group") )
+                    m_scriptGroup = scriptNode.getAttribute("group");
+                
+                if( scriptNode.isAttributeSet("mainFunction") )
+                    m_scriptMain = scriptNode.getAttribute("mainFunction");
             }
 
             // Get the sound settings
@@ -543,11 +544,29 @@ bool CSettings::activateStencilBuffer() const
 
 
 /************************************************************************
-*    DESC:  Do we clear the target buffer
+*    DESC:  Get the script list table
 ************************************************************************/
-bool CSettings::getClearTargetBuffer() const
+const std::string & CSettings::getScriptListTable() const
 {
-    return m_clearTargetBuffer;
+    return m_scriptListTable;
+}
+
+
+/************************************************************************
+*    DESC:  Get the script group
+************************************************************************/
+const std::string & CSettings::getScriptGroup() const
+{
+    return m_scriptGroup;
+}
+
+
+/************************************************************************
+*    DESC:  Get the script main function
+************************************************************************/
+const std::string & CSettings::getScriptMain() const
+{
+    return m_scriptMain;
 }
 
 
@@ -586,25 +605,6 @@ int CSettings::getMixChannels() const
 int CSettings::getChunkSize() const
 {
     return m_chunksize;
-}
-
-
-/************************************************************************
-*    DESC:  Get the minimum thread count
-************************************************************************/
-int CSettings::getMinThreadCount() const
-{
-    return m_minThreadCount;
-}
-
-
-/************************************************************************
-*    DESC:  Get the maximum thread count
-*           Value of zero means use max hardware threads to no of cores
-************************************************************************/
-int CSettings::getMaxThreadCount() const
-{
-    return m_maxThreadCount;
 }
 
 

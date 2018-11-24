@@ -40,9 +40,6 @@ public:
         return strategyMgr;
     }
     
-    // Init the default camera
-    void initDefaultCamera();
-    
     // Load the group
     void loadGroup( const XMLNode & node, const std::string & strategyId ) override;
     

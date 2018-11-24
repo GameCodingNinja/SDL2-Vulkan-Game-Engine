@@ -98,10 +98,16 @@ public:
 
     // Is the stencil buffer activated by default
     bool activateStencilBuffer() const;
-
-    // Do we clear the target buffer
-    bool getClearTargetBuffer() const;
-
+    
+    // Get the script list table
+    const std::string & getScriptListTable() const;
+    
+    // Get the script group
+    const std::string & getScriptGroup() const;
+    
+    // Get the script main function
+    const std::string & getScriptMain() const;
+    
     // Get the sound frequency
     int getFrequency() const;
 
@@ -113,12 +119,6 @@ public:
 
     // Get the chunk size.
     int getChunkSize() const;
-
-    // Get the minimum thread count
-    int getMinThreadCount() const;
-
-    // Get the maximum thread count
-    int getMaxThreadCount() const;
 
     // Get the sector size
     int getSectorSize() const;
@@ -222,13 +222,6 @@ private:
     // Do we clear the target buffer
     bool m_clearTargetBuffer;
 
-    // Minimum thread count
-    int m_minThreadCount;
-
-    // Max thread count
-    // Value of zero means use max hardware threads to cores
-    int m_maxThreadCount;
-
     // the sector size
     float m_sectorSize;
     float m_sectorSizeHalf;
@@ -247,7 +240,11 @@ private:
     
     // Triple buffering flag
     bool m_tripleBuffering;
-
+    
+    // Scripting string members
+    std::string m_scriptListTable;
+    std::string m_scriptGroup;
+    std::string m_scriptMain;
 };
 
-#endif  // __settings_h__
+#endif
