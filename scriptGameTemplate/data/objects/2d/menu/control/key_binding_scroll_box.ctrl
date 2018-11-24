@@ -22,10 +22,13 @@
             <filePath file="data/objects/2d/menu/control/key_binding_slider.ctrl"/>
             <position x="510" y="0" z="0"/>
             <settings orientation="VERT"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
             <scroll startDelay="750" scrollDelay="100" up="true" down="true"/>
             <!-- size modifier for collision rect -->
             <rect x1="40" y1="30" x2="55" y2="30"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
     </subControlList>
@@ -50,7 +53,10 @@
             <fontStringLst>
                 <string text="Menu Select"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Menu Escape Key Binding Button -->
@@ -59,7 +65,10 @@
             <fontStringLst>
                 <string text="Menu Escape"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Menu Back Key Binding Button -->
@@ -68,7 +77,10 @@
             <fontStringLst>
                 <string text="Menu Back"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Menu Toggle Key Binding Button -->
@@ -77,7 +89,10 @@
             <fontStringLst>
                 <string text="Menu Toggle"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
         <!-- Menu Tab Left Key Binding Button -->
@@ -86,7 +101,10 @@
             <fontStringLst>
                 <string text="Menu Tab Left"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
         <!-- Menu Tab Right Key Binding Button -->
@@ -95,7 +113,10 @@
             <fontStringLst>
                 <string text="Menu Tab Right"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Menu Seperator - Game Controls -->
@@ -112,7 +133,10 @@
             <fontStringLst>
                 <string text="Up"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
         <!-- Down Key Binding Button -->
@@ -121,7 +145,10 @@
             <fontStringLst>
                 <string text="Down"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
         <!-- Left Key Binding Button -->
@@ -130,7 +157,10 @@
             <fontStringLst>
                 <string text="Left"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
         <!-- Right Key Binding Button -->
@@ -139,7 +169,10 @@
             <fontStringLst>
                 <string text="Right"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Shoot Key Binding Button -->
@@ -148,7 +181,10 @@
             <fontStringLst>
                 <string text="Shoot"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
         <!-- Deccelerate Key Binding Button -->
@@ -157,7 +193,10 @@
             <fontStringLst>
                 <string text="Deccelerate"/>
             </fontStringLst>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Menu Seperator - Key Binding Option(s) -->
@@ -175,7 +214,10 @@
                 <string text="Reset To Default"/>
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
     </scrollBoxControlList>

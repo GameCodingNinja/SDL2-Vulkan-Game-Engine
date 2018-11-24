@@ -85,15 +85,23 @@ void CUIControl::loadFromNode( const XMLNode & node )
     }
 
     // Setup the script functions for this control
-    XMLNode stateScriptNode = node.getChildNode( "stateScript" );
-    if( !stateScriptNode.isEmpty() )
+    XMLNode scriptLstNode = node.getChildNode( "scriptLst" );
+    if( !scriptLstNode.isEmpty() )
     {
-        std::vector<std::string> stateScriptStr =
-            {"onInit", "onDisabled", "onInactive", "onActive", "onSelect", "onExecute" };
+        // Internal support for "init", "disabled", "inactive", "active", "select", "execute"
+        for( int i = 0; i < scriptLstNode.nChildNode(); ++i )
+        {
+            const XMLNode scriptNode = scriptLstNode.getChildNode(i);
 
-        for( auto & iter : stateScriptStr )
-            if( stateScriptNode.isAttributeSet( iter.c_str() ) )
-                setScriptStateFunc( iter.c_str(), stateScriptNode.getAttribute( iter.c_str() ) );
+            // Only the first attribute is used
+            const XMLAttribute attribute = scriptNode.getAttribute(0);
+            const std::string attrName = attribute.lpszName;
+            const std::string attrValue = attribute.lpszValue;
+
+            // Add the attribute name and value to the map
+            if( !attrValue.empty() )
+                setScriptStateFunc( attrName, attrValue );
+        }
     }
 
     // Load the scroll data from node
@@ -124,22 +132,22 @@ void CUIControl::setScriptStateFunc( const std::string & scriptStateStr, const s
 ************************************************************************/
 NUIControl::EControlState CUIControl::getScriptState( const std::string & scriptStateStr )
 {
-    if( scriptStateStr == "onInit" )
+    if( scriptStateStr == "init" )
         return NUIControl::ECS_INIT;
 
-    else if( scriptStateStr == "onDisabled" )
+    else if( scriptStateStr == "disabled" )
         return NUIControl::ECS_DISABLED;
 
-    else if( scriptStateStr == "onInactive" )
+    else if( scriptStateStr == "inactive" )
         return NUIControl::ECS_INACTIVE;
 
-    else if( scriptStateStr == "onActive" )
+    else if( scriptStateStr == "active" )
         return NUIControl::ECS_ACTIVE;
 
-    else if( scriptStateStr == "onSelect" )
+    else if( scriptStateStr == "select" )
         return NUIControl::ECS_SELECTED;
 
-    else if( scriptStateStr == "onExecute" )
+    else if( scriptStateStr == "execute" )
         return NUIControl::ECS_EXECUTE;
 
     return NUIControl::ECS_NULL;

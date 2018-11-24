@@ -3,8 +3,8 @@
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
     <scriptLst>
-        <script onTransIn="Menu_TransIn"/>
-        <script onTransOut="Menu_TransOut"/>
+        <script transIn="Menu_TransIn"/>
+        <script transOut="Menu_TransOut"/>
     </scriptLst>
 
     <staticMenuControls>
@@ -30,7 +30,10 @@
                 <string text="x"/>
             </fontStringLst>
             <action actionType="close"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
     
     </mouseOnlyControls>
@@ -46,7 +49,10 @@
             </fontStringLst>
             <action actionType="back"/>
             <navigate up="exit_btn" down="settings_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Settings Button -->
@@ -58,7 +64,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="resume_btn" down="key_binding_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Key Bindings Button -->
@@ -70,7 +79,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
             <navigate up="settings_btn" down="main_menu_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Main Menu Button -->
@@ -82,7 +94,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="key_binding_btn" down="exit_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Exit Game Button -->
@@ -94,18 +109,17 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="main_menu_btn" down="resume_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control> 
 
     </menuControls>
 
     <spriteList>
 
-        <sprite objectName="pause_menu_bg">
-            <script>
-                <transition in="Menu_TransIn" out="Menu_TransOut"/>
-            </script>
-        </sprite>
+        <sprite objectName="pause_menu_bg"/>
     
     </spriteList>
   

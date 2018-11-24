@@ -113,7 +113,7 @@ void CStartUpState::init()
     auto strategy = CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() );
     strategy->init( cmdBuf, true );
     
-    // Add the logo
+    // Create the actor(s)
     strategy->create( "waffles" );
 
     // Start the fade in

@@ -5,6 +5,7 @@
       <file path="data/scripts/library/shared_sprite_utilities.ang"/>
       <file path="data/scripts/library/menu_defs.ang"/>
       <file path="data/scripts/library/menu.ang"/>
+      <file path="data/scripts/library/smartgui.ang"/>
     </groupList>
 
     <groupList groupName="(state)">

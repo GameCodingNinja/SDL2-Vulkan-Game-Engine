@@ -31,7 +31,10 @@
         <control controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_arrow.ctrl"/>
             <position x="-110" y="0" z="0"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Increment Button -->
@@ -39,7 +42,10 @@
             <filePath file="data/objects/2d/menu/control/button_arrow.ctrl"/>
             <position x="110" y="0" z="0"/>
             <rotation z="180"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
     </subControlList>

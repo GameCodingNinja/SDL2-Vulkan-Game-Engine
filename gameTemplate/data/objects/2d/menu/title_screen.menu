@@ -3,8 +3,8 @@
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
     <scriptLst>
-        <script onTransIn="Menu_TransIn"/>
-        <script onTransOut="Menu_TransOut"/>
+        <script transIn="Menu_TransIn"/>
+        <script transOut="Menu_TransOut"/>
     </scriptLst>
 
     <menuControls>
@@ -18,7 +18,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="exit_btn" down="new_game_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- New Game Button -->
@@ -30,7 +33,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="continue_btn" down="load_game_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Load Game Button -->
@@ -42,7 +48,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="new_game_btn" down="settings_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
       
         <!-- Settings Button -->
@@ -54,7 +63,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="load_game_btn" down="key_binding_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Key Bindings Button -->
@@ -66,7 +78,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
             <navigate up="settings_btn" down="exit_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control>
 
         <!-- Exit Game Button -->
@@ -78,7 +93,10 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="key_binding_btn" down="continue_btn"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
         </control> 
 
     </menuControls>
