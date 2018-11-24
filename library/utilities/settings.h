@@ -35,6 +35,11 @@ public:
 
     // Load settings data from xml file
     void loadXML();
+    
+    // Get debug info
+    bool isDebugMode() const;
+    bool isDebugAsMobile() const;
+    bool isMobileDevice() const;
 
     // Get game info
     const std::string & getGameName() const;
@@ -99,13 +104,9 @@ public:
     // Is the stencil buffer activated by default
     bool activateStencilBuffer() const;
     
-    // Get the script list table
+    // Get the script info
     const std::string & getScriptListTable() const;
-    
-    // Get the script group
     const std::string & getScriptGroup() const;
-    
-    // Get the script main function
     const std::string & getScriptMain() const;
     
     // Get the sound frequency
@@ -156,14 +157,19 @@ private:
     // xml node
     XMLNode m_mainNode;
 
+    // file path string
+    std::string m_filePath;
+    
+    // debug members
+    bool m_debugMode;
+    bool m_debugAsMobile;
+    bool m_mobileDevice;
+    
     // The game/engine info
     std::string m_gameName;
     std::string m_engineName;
     uint32_t m_gameVersion;
     uint32_t m_engineVersion;
-
-    // file path string
-    std::string m_filePath;
 
     // with and height of game window
     CSize<float> m_size;

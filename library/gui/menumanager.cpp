@@ -9,7 +9,6 @@
 #include <gui/menumanager.h>
 
 // Game lib dependencies
-#include <common/build_defs.h>
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
@@ -64,7 +63,7 @@ void CMenuMgr::loadGroup( const std::string & group, const bool doInit )
 {
     // Check for a hardware extension
     std::string ext;
-    if( !m_mobileExt.empty() && NBDefs::IsMobileDevice() )
+    if( !m_mobileExt.empty() && CSettings::Instance().isMobileDevice() )
         if( m_listTableMap.find( group + m_mobileExt ) != m_listTableMap.end() )
             ext = m_mobileExt;
 

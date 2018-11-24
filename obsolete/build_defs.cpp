@@ -34,11 +34,4 @@ namespace NBDefs
         #endif
     }
     
-}   // NBDefs
-
-
-
-
-
-
-
+}

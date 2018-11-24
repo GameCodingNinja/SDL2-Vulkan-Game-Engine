@@ -16,7 +16,6 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
-#include <common/build_defs.h>
 #include <common/defs.h>
 #include <common/pipeline.h>
 #include <common/quad2d.h>
@@ -66,7 +65,7 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
     const XMLNode visualNode = objectNode.getChildNode( "visual" );
     if( !visualNode.isEmpty() )
     {
-        if( NBDefs::IsMobileDevice() )
+        if( CSettings::Instance().isMobileDevice() )
         {
             // See if we are to swap graphics based on screen resolution
             const XMLNode resSwapNode = visualNode.getChildNode("graphicResSwap");
@@ -77,7 +76,7 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
                     // Get the object data node
                     const XMLNode resNode = resSwapNode.getChildNode(i);
 
-                    // Get the value of the height that is compaired against the render resolution of the device
+                    // Get the value of the height that is compared against the render resolution of the device
                     const int heightOrLess = std::atoi( resNode.getAttribute( "heightOrLess" ) );
 
                     // If the current render resolution is less then or equil to the heightOrLess value, we found the swap res

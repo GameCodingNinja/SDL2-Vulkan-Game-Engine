@@ -24,6 +24,9 @@
 ************************************************************************/
 CSettings::CSettings() :
     m_filePath("data/settings/settings.cfg"),
+    m_debugMode(true),
+    m_debugAsMobile(false),
+    m_mobileDevice(false),
     m_size(1280,768),
     m_default_size(1280,768),
     m_orientation(NDefs::EO_LANDSCAPE),
@@ -51,6 +54,10 @@ CSettings::CSettings() :
     m_tripleBuffering(false)
 {
     CWorldValue::setSectorSize( 512 );
+    
+    #if defined(__IOS__) || defined(__ANDROID__)
+    m_mobileDevice = true;
+    #endif
 }
 
 
@@ -85,6 +92,22 @@ void CSettings::loadXML()
 
     if( !m_mainNode.isEmpty() )
     {
+        const XMLNode debugNode = m_mainNode.getChildNode("debug");
+        if( !debugNode.isEmpty() )
+        {
+            // Do we enable debug mode
+            if( debugNode.isAttributeSet("debugMode") )
+                m_debugMode = ( std::strcmp( debugNode.getAttribute("debugMode"), "true" ) == 0 );
+            
+            // Do we force mobile debug mode
+            if( debugNode.isAttributeSet("debugAsMobile") )
+                m_debugAsMobile = ( m_debugMode && std::strcmp( debugNode.getAttribute("debugAsMobile"), "true" ) == 0 );
+            
+            // Pretend this is a mobile device if we are to debug as one on the PC
+            if( m_debugAsMobile )
+                m_mobileDevice = true;
+        }
+
         const XMLNode infoNode = m_mainNode.getChildNode("info");
         if( !infoNode.isEmpty() )
         {
@@ -298,6 +321,26 @@ void CSettings::loadXML()
         }
     }
 }
+
+
+/************************************************************************
+*    DESC:  Get debug info
+************************************************************************/
+bool CSettings::isDebugMode() const
+{
+    return m_debugMode;
+}
+
+bool CSettings::isDebugAsMobile() const
+{
+    return m_debugAsMobile;
+}
+
+bool CSettings::isMobileDevice() const
+{
+    return m_mobileDevice;
+}
+
 
 
 /************************************************************************
@@ -544,26 +587,18 @@ bool CSettings::activateStencilBuffer() const
 
 
 /************************************************************************
-*    DESC:  Get the script list table
+*    DESC:  Get the script members
 ************************************************************************/
 const std::string & CSettings::getScriptListTable() const
 {
     return m_scriptListTable;
 }
 
-
-/************************************************************************
-*    DESC:  Get the script group
-************************************************************************/
 const std::string & CSettings::getScriptGroup() const
 {
     return m_scriptGroup;
 }
 
-
-/************************************************************************
-*    DESC:  Get the script main function
-************************************************************************/
 const std::string & CSettings::getScriptMain() const
 {
     return m_scriptMain;

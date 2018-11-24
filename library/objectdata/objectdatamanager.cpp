@@ -9,11 +9,11 @@
 #include <objectdata/objectdatamanager.h>
 
 // Game lib dependencies
-#include <common/build_defs.h>
 #include <common/pipeline.h>
 #include <sprite/spritedata.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
+#include <utilities/settings.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdata3d.h>
 #include <managers/spritesheetmanager.h>
@@ -48,7 +48,7 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
 {
     // Check for a hardware extension
     std::string ext;
-    if( !m_mobileExt.empty() && NBDefs::IsMobileDevice() )
+    if( !m_mobileExt.empty() && CSettings::Instance().isMobileDevice() )
         if( m_listTableMap.find( group + m_mobileExt ) != m_listTableMap.end() )
             ext = m_mobileExt;
 

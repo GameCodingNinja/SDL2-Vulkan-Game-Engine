@@ -11,7 +11,6 @@
 // Game lib dependencies
 #include <utilities/highresolutiontimer.h>
 #include <utilities/settings.h>
-#include <common/build_defs.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>

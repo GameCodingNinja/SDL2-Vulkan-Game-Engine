@@ -9,7 +9,6 @@
 #include "game.h"
 
 // Game lib dependencies
-#include <common/build_defs.h>
 #include <system/device.h>
 #include <utilities/settings.h>
 #include <utilities/statcounter.h>
@@ -53,11 +52,11 @@
 ************************************************************************/
 CGame::CGame()
 {
-    if( NBDefs::IsDebugMode() )
-        CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
-    
-    // Init the device
+    // Init the device. NOTE: This always needs to be first
     CDevice::Instance().init( std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
+    
+    if( CSettings::Instance().isDebugMode() )
+        CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
 }
 
 
@@ -164,7 +163,13 @@ bool CGame::gameLoop()
     CHighResTimer::Instance().calcElapsedTime();
 
     // Main script update
-    return CScriptMgr::Instance().update();
+    const bool result = CScriptMgr::Instance().update();
+    
+    // Inc the stat cycle
+    if( CSettings::Instance().isDebugMode() )
+        CStatCounter::Instance().incCycle();
+    
+    return result;
 }
 
 

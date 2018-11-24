@@ -32,7 +32,6 @@
 #include <utilities/settings.h>
 #include <utilities/statcounter.h>
 #include <utilities/highresolutiontimer.h>
-#include <common/build_defs.h>
 #include <sprite/sprite.h>
 
 // Boost lib dependencies
@@ -48,15 +47,15 @@
 CGame::CGame() :
     m_gameRunning(false)
 {
+    // Init the device. NOTE: This always needs to be first
+    CDevice::Instance().init( std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
+    
     CSignalMgr::Instance().connect_smartGui( boost::bind(&CGame::smartGuiControlCreateCallBack, this, _1) );
     CSignalMgr::Instance().connect_smartMenu( boost::bind(&CGame::smartMenuCreateCallBack, this, _1) );
     CSignalMgr::Instance().connect_aICreate( boost::bind(&CGame::aICreateCallBack, this, _1, _2) );
 
-    if( NBDefs::IsDebugMode() )
+    if( CSettings::Instance().isDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
-    
-    // Init the device
-    CDevice::Instance().init( std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
 }
 
 
@@ -276,8 +275,8 @@ bool CGame::gameLoop()
         // Do the rendering
         CDevice::Instance().render();
 
-        // Inc the cycle
-        if( NBDefs::IsDebugMode() )
+        // Inc the stat cycle
+        if( CSettings::Instance().isDebugMode() )
             CStatCounter::Instance().incCycle();
     }
 
