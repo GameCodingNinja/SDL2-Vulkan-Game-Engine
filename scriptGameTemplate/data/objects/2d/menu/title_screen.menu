@@ -2,6 +2,7 @@
   
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
+    <!-- Supports init, transIn & transOut -->
     <scriptLst>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -18,6 +19,7 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="exit_btn" down="new_game_btn"/>
+            <!-- Supports init, disabled, inactive, active, select & execute -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -33,6 +35,7 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="continue_btn" down="load_game_btn"/>
+            <!-- Supports init, disabled, inactive, active, select & execute -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -48,6 +51,7 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="new_game_btn" down="settings_btn"/>
+            <!-- Supports init, disabled, inactive, active, select & execute -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -63,6 +67,7 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="load_game_btn" down="key_binding_btn"/>
+            <!-- Supports init, disabled, inactive, active, select & execute -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -78,6 +83,7 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
             <navigate up="settings_btn" down="exit_btn"/>
+            <!-- Supports init, disabled, inactive, active, select & execute -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -93,6 +99,7 @@
             </fontStringLst>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="key_binding_btn" down="continue_btn"/>
+            <!-- Supports init, disabled, inactive, active, select & execute -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

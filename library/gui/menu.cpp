@@ -905,8 +905,6 @@ void CMenu::smartHandleEvent( const SDL_Event & rEvent )
 {
     if( m_upSmartGui )
         m_upSmartGui->handleEvent( rEvent );
-    
-    prepare( "onEvent" );
 }
 
 
