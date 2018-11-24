@@ -7,7 +7,7 @@
 
 class CCommonState : iGameState
 {
-    dictionary m_gameStateDict;
+    dictionary mGameStateDict;
     
     //
     //  Constructor
@@ -16,8 +16,8 @@ class CCommonState : iGameState
     {
         super( gameState, nextState );
         
-        m_gameStateDict.set("title_screen_state", NStateDefs::EGS_TITLE_SCREEN);
-        m_gameStateDict.set("run_state", NStateDefs::EGS_RUN);
+        mGameStateDict.set("title_screen_state", NStateDefs::EGS_TITLE_SCREEN);
+        mGameStateDict.set("run_state", NStateDefs::EGS_RUN);
     }
     
     //
@@ -25,6 +25,13 @@ class CCommonState : iGameState
     //
     void handleEvent() override
     {
+        if( ActionMgr.wasEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
+        {
+            MenuMgr.allow( false );
+            getStateMessage().setMsg(
+                NStateDefs::EGameState(mGameStateDict[MenuMgr.getActiveMenu().getActiveControl().getExecutionAction()]),
+                getState() );
+        }
     }
     
     //
@@ -32,6 +39,7 @@ class CCommonState : iGameState
     //
     void update() override
     {
+        MenuMgr.update();
         StrategyMgr.update();
     }
     
@@ -40,6 +48,7 @@ class CCommonState : iGameState
     //
     void transform() override
     {
+        MenuMgr.transform();
         StrategyMgr.transform();
     }
 };

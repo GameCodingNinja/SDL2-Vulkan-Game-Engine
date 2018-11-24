@@ -44,7 +44,7 @@ namespace NScriptiStrategy
     }*/
     
     /************************************************************************
-    *    DESC:  Create a basic stage strategy                                                            
+    *    DESC:  Set the command buffers
     ************************************************************************/
     void SetCommandBuffer( const std::string & cmdBufPoolId, iStrategy & rStrategy )
     {

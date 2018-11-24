@@ -24,16 +24,19 @@ final class CStartUpState : CCommonState
         ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
         StrategyMgr.loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
         
+        // Load group specific assets
         ScriptMgr.loadGroup( "(state)" );
-        
-        // Load the start up group
         ObjectDataMgr.loadGroup2D( "(startup)" );
+        
+        // Add the command buffers to the menu manager
+        MenuMgr.setCommandBuffer( "(menu)" );
         
         // Create the needed strategies
         iStrategy @strategy = StrategyMgr.createActorStrategy( "(startup)" );
         strategy.setCommandBuffer( "(startup)" );
         strategy.enable();
         
+        // Create the actor(s)
         strategy.create( "waffles" );
         
         // Do the fade in

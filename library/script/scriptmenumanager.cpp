@@ -13,6 +13,7 @@
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
 #include <utilities/exceptionhandling.h>
+#include <system/device.h>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
@@ -84,6 +85,26 @@ namespace NScriptMenuManager
         try
         {
             rMenuMgr.freeGroup( group );
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+    }
+    
+    /************************************************************************
+    *    DESC:  Set the command buffers                                                          
+    ************************************************************************/
+    void SetCommandBuffer( const std::string & cmdBufPoolId, CMenuMgr & rMenuMgr )
+    {
+        try
+        {
+            auto cmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPoolId );
+            rMenuMgr.setCommandBuffers( cmdBufVec );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -293,6 +314,11 @@ namespace NScriptMenuManager
         
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void resetDynamicOffset()",      asMETHOD(CMenuMgr, resetDynamicOffset), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void allow(bool allow = true)",  asMETHOD(CMenuMgr, allow), asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void update()",                  asMETHOD(CMenuMgr, update), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void transform()",               asMETHOD(CMenuMgr, transform), asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void setCommandBuffer(string &in)",   asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CMenuMgr MenuMgr", &CMenuMgr::Instance()) );

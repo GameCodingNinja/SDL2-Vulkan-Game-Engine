@@ -1,30 +1,31 @@
 <listTable>
     
     <groupList groupName="(menu)">
-      <file path="data/objects/scripts/shared_utilities.ang"/>
-      <file path="data/objects/scripts/shared_sprite_utilities.ang"/>
-      <file path="data/objects/scripts/menu_defs.ang"/>
-      <file path="data/objects/scripts/menu.ang"/>
+      <file path="data/scripts/library/shared_utilities.ang"/>
+      <file path="data/scripts/library/shared_sprite_utilities.ang"/>
+      <file path="data/scripts/library/menu_defs.ang"/>
+      <file path="data/scripts/library/menu.ang"/>
     </groupList>
 
     <groupList groupName="(state)">
-        <file path="data/objects/scripts/state_defs.ang"/>
-        <file path="data/objects/scripts/shared_utilities.ang"/>
-        <file path="data/objects/scripts/shared_sprite_utilities.ang"/>
-        <file path="data/objects/scripts/shared_visual_utilities.ang"/>
-        <file path="data/objects/scripts/state.ang"/>
+        <file path="data/scripts/library/state_defs.ang"/>
+        <file path="data/scripts/library/shared_utilities.ang"/>
+        <file path="data/scripts/library/shared_sprite_utilities.ang"/>
+        <file path="data/scripts/library/shared_visual_utilities.ang"/>
+        <file path="data/scripts/library/state.ang"/>
     </groupList>
     
     <groupList groupName="(main)">
-        <file path="data/scripts/game/main.ang"/>
-        <file path="data/scripts/game/game.ang"/>
-        <file path="data/objects/scripts/state_defs.ang"/>
-        <file path="data/scripts/game/game_defs.ang"/>
-        <file path="data/scripts/state/igamestate.ang"/>
-        <file path="data/scripts/state/statemessage.ang"/>
-        <file path="data/scripts/state/commonstate.ang"/>
-        <file path="data/scripts/state/startupstate.ang"/>
-        <file path="data/scripts/state/titlescreenstate.ang"/>
+        <file path="data/scripts/library/menu_defs.ang"/>
+        <file path="data/scripts/library/state_defs.ang"/>
+        <file path="data/scripts/source/game/main.ang"/>
+        <file path="data/scripts/source/game/game.ang"/>
+        <file path="data/scripts/source/game/game_defs.ang"/>
+        <file path="data/scripts/source/state/igamestate.ang"/>
+        <file path="data/scripts/source/state/statemessage.ang"/>
+        <file path="data/scripts/source/state/commonstate.ang"/>
+        <file path="data/scripts/source/state/startupstate.ang"/>
+        <file path="data/scripts/source/state/titlescreenstate.ang"/>
     </groupList>
   
     <!--

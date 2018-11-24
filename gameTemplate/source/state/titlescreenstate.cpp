@@ -56,7 +56,7 @@ CTitleScreenState::~CTitleScreenState()
 ************************************************************************/
 void CTitleScreenState::init()
 {
-    // Unblock the menu messaging and activate needed trees
+    // Activate the needed tree(s)
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
     
     // Enable the strategy for rendering

@@ -14,9 +14,8 @@ final class CTitleScreenState : CCommonState
     {
         super( NStateDefs::EGS_TITLE_SCREEN, NStateDefs::EGS_GAME_LOAD );
 
-        // Unblock the menu messaging and activate needed trees
-        //MenuMgr.allow();
-        //MenuMgr.activateTree( "title_screen_tree" );
+        // Activate the needed tree(s)
+        MenuMgr.activateTree( "title_screen_tree" );
     }
 
     //
@@ -34,19 +33,6 @@ final class CTitleScreenState : CCommonState
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
-        
-        /*StrategyMgr.createSprite( "strategyFor2D", "(title_screen)", "background" );
-
-        iStrategy @strategy = StrategyMgr.getStrategy( "strategyFor3D" );
-        strategy.setCameraId( "camera3D" );
-
-        CCamera @camera = CameraMgr.createPerspective("camera3D");
-        camera.setPos( 0, 0, 20 );
-
-        @cube = strategy.createSprite( "(cube)", "cube" );
-        cube.setScale(3,3,3);
-
-        Spawn("Screen_FadeIn");*/
     }
     
     //
@@ -69,8 +55,10 @@ final class CTitleScreenState : CCommonState
     //
     void handleEvent() override
     {
-        //if( ActionMgr.wasEvent(EGE_MENU_GAME_STATE_CHANGE, ETC_BEGIN) )
-        //    getStateMessage().setMsg( EGameState(m_gameStateDict[MenuMgr.getActiveMenu().getActiveControl().getExecutionAction()]), getState() );
+        CCommonState::handleEvent();
+        
+        if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
+            MenuMgr.allow();
     }
 };
 

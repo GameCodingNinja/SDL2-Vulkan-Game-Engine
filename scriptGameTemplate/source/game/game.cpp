@@ -180,6 +180,7 @@ bool CGame::gameLoop()
 void CGame::recordCommandBuffer( uint32_t cmdBufIndex )
 {
     CStrategyMgr::Instance().recordCommandBuffer( cmdBufIndex );
+    CMenuMgr::Instance().recordCommandBuffer( cmdBufIndex );
 }
 
 

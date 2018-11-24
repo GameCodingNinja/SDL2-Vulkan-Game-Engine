@@ -85,9 +85,7 @@ void CCommonState::update()
 ****************************************************************************/
 void CCommonState::transform()
 {
-    if( !CMenuMgr::Instance().isActive() || m_gameState == NStateDefs::EGS_TITLE_SCREEN )
-        CStrategyMgr::Instance().transform();
-
+    CStrategyMgr::Instance().transform();
     CMenuMgr::Instance().transform();
 }
 
