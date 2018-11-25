@@ -40,25 +40,19 @@ final class CTitleScreenState : CCommonState
         // Unblock the menu messaging and activate needed trees(s)
         MenuMgr.activateTree( "title_screen_tree" );
         
-        iStrategy @strategy = StrategyMgr.getStrategy( "(title)" );
-        strategy.setCommandBuffer( "(title)" );
-        strategy.enable();
-        
-        @strategy = StrategyMgr.getStrategy( "(cube)" );
-        strategy.setCommandBuffer( "(title)" );
-        strategy.enable();
+        // Activate the strategy and set their command buffers
+        StrategyMgr.activateStrategy( "(title)" ).setCommandBuffer( "(title)" );
+        StrategyMgr.activateStrategy( "(cube)" ).setCommandBuffer( "(title)" );
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
     }
     
-    int counter = 0;
     //
     //  Handle events
     //
     void handleEvent() override
     {
-        Print("handleEvent: " + ++counter);
         CCommonState::handleEvent();
         
         // Check for the "game change state" message
@@ -88,12 +82,8 @@ void LoadTitleScreenAssets()
     ObjectDataMgr.loadGroup3D( "(cube)" );
     
     // Create the needed strategies
-    iStrategy @titleStrategy = StrategyMgr.createActorStrategy( "(title)" );
-    iStrategy @cubeStrategy = StrategyMgr.createActorStrategy( "(cube)" );
-    
-    // Add the actors
-    titleStrategy.create( "background" );
-    cubeStrategy.create( "cube" ).getSprite().prepare( "rotate" );
+    StrategyMgr.createActorStrategy( "(title)" ).create( "background" );
+    StrategyMgr.createActorStrategy( "(cube)" ).create( "cube" ).getSprite().prepare( "rotate" );
     
     // Set the camera for the cube strategy
     StrategyMgr.setCamera( "(cube)", "cube" );

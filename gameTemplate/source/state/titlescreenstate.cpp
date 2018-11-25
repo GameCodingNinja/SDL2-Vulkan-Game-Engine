@@ -62,11 +62,11 @@ void CTitleScreenState::init()
     // Enable the strategy for rendering
     // Command buffers can only be used in the thread they are created
     auto titleCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().getStrategy( "(title)" )->init( titleCmdBufVec, true );
+    CStrategyMgr::Instance().activateStrategy( "(title)" )->setCommandBuffers( titleCmdBufVec );
     
     // Command buffers can only be used in the thread they are created
     auto cubeCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().getStrategy( "(cube)" )->init( cubeCmdBufVec, true );
+    CStrategyMgr::Instance().activateStrategy( "(cube)" )->setCommandBuffers( cubeCmdBufVec );
     
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );

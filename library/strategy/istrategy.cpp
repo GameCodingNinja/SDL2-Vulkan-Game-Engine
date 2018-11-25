@@ -16,19 +16,8 @@ int iStrategy::m_idInc = 0;
 iStrategy::iStrategy() :
     m_idOffset(0),
     m_idDir(1),
-    m_enable(false),
     m_pCamera(nullptr)
 {
-}
-
-
-/***************************************************************************
-*    DESC:  Init this strategy
-****************************************************************************/
-void iStrategy::init( std::vector<VkCommandBuffer> & commandBufVec, bool enable )
-{
-    m_commandBufVec = commandBufVec;
-    m_enable = enable;
 }
 
 
@@ -79,13 +68,4 @@ void iStrategy::setIdOffset( int offset )
 void iStrategy::setIdDir( int dir )
 {
     m_idDir = dir;
-}
-
-
-/************************************************************************
-*    DESC:  Enable this strategy
-************************************************************************/
-void iStrategy::enable( bool enable )
-{
-    m_enable = enable;
 }

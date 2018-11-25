@@ -40,8 +40,8 @@ void CPhysicsWorldManager3D::createWorld( const std::string & group )
     // Make sure the group we are looking has been defined in the list table file
     auto listTableIter = m_listTableMap.find( group );
     if( listTableIter == m_listTableMap.end() )
-        throw NExcept::CCriticalException("Obj Data List 3D Load Group Data Error!",
-            boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")
+        throw NExcept::CCriticalException("Physics 3D Data List Load Group Data Error!",
+            boost::str( boost::format("Physics 3D data list group name can't be found (%s).\n\n%s\nLine: %s")
                 % group % __FUNCTION__ % __LINE__ ));
 
     // Load the group data if it doesn't already exist

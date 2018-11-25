@@ -34,7 +34,6 @@ CPhysicsWorld2D::CPhysicsWorld2D() :
     m_posStepCount(2)
 {
     setFPS(30);
-
 }
 
 
@@ -70,7 +69,7 @@ void CPhysicsWorld2D::loadFromNode( const XMLNode & node )
         m_world.SetGravity( gravity );
     }
 
-    // Get the stepping which determins how accurate the physics are
+    // Get the stepping which determines how accurate the physics are
     XMLNode steppingNode = node.getChildNode( "stepping" );
     if( !steppingNode.isEmpty() )
     {

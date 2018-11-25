@@ -69,12 +69,11 @@ void CLoadState::init()
     // Add the actor strategy
     // Command buffers can only be used in the thread they are created
     auto cmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(load)" );
-    auto strategy = CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy() );
-    strategy->init( cmdBufVec, true );
+    CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy() )->setCommandBuffers( cmdBufVec );
+    CStrategyMgr::Instance().activateStrategy( "(load)" )->create( "loadAnim" )->getSprite()->prepare( "loadAnimationLoop" );
     
     // Start the fade in and animation
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
-    strategy->create( "loadAnim" )->getSprite()->prepare( "loadAnimationLoop" );
 
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();

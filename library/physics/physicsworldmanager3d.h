@@ -56,7 +56,6 @@ private:
 
     // Map of physics worlds
     std::map<const std::string, CPhysicsWorld3D> m_pWorld3dMap;
-
 };
 
-#endif  // __physics_world_manager_h__
+#endif

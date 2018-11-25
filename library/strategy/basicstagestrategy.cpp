@@ -72,11 +72,8 @@ void CBasicStageStrategy::loadFromNode( const XMLNode & node )
 ****************************************************************************/
 void CBasicStageStrategy::update()
 {
-    if( m_enable )
-    {
-        for( auto & iter : m_sectorDeq )
-            iter.update();
-    }
+    for( auto & iter : m_sectorDeq )
+        iter.update();
 }
 
 
@@ -85,11 +82,8 @@ void CBasicStageStrategy::update()
 ************************************************************************/
 void CBasicStageStrategy::transform()
 {
-    if( m_enable )
-    {
-        for( auto & iter : m_sectorDeq )
-            iter.transform();
-    }
+    for( auto & iter : m_sectorDeq )
+        iter.transform();
 }
 
 
@@ -99,17 +93,14 @@ void CBasicStageStrategy::transform()
 ****************************************************************************/
 void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
 {
-    if( m_enable )
-    {
-        auto cmdBuf( m_commandBufVec[index] );
+    auto cmdBuf( m_commandBufVec[index] );
 
-        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
-        for( auto & iter : m_sectorDeq )
-            iter.recordCommandBuffer( index, cmdBuf, camera );
+    for( auto & iter : m_sectorDeq )
+        iter.recordCommandBuffer( index, cmdBuf, camera );
 
-        CDevice::Instance().endCommandBuffer( cmdBuf );
-    }
+    CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
 

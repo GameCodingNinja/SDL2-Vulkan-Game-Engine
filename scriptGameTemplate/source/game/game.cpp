@@ -20,17 +20,14 @@
 #include <script/scriptmanager.h>
 #include <script/scriptcolor.h>
 #include <script/scriptsound.h>
-#include <script/scriptplaylist.h>
 #include <script/scriptpoint.h>
 #include <script/scriptsize.h>
 #include <script/scriptglobals.h>
 #include <script/scriptsprite.h>
-#include <script/scriptsoundmanager.h>
 #include <script/scriptcamera.h>
 #include <script/scriptmenu.h>
 #include <script/scriptobjectdatamanager.h>
-#include <script/scriptstrategymanager.h>
-#include <script/scriptistrategy.h>
+#include <script/scriptstrategy.h>
 #include <script/scriptactionmanager.h>
 #include <script/scriptsettings.h>
 #include <script/scripthighresolutiontimer.h>
@@ -40,7 +37,7 @@
 #include <script/scriptuicontrol.h>
 #include <script/scriptdevice.h>
 #include <script/scriptvisual.h>
-#include <script/scriptinode.h>
+#include <script/scriptphysics2d.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -109,12 +106,8 @@ void CGame::init()
     NScriptCamera::Register();
     NScriptSprite::Register();
     NScriptSound::Register();
-    NScriptPlayLst::Register();
-    NScriptiNode::Register();
-    NScriptiStrategy::Register();
-    NScriptSoundManager::Register();
+    NScriptStrategy::Register();
     NScriptObjectDataManager::Register();
-    NScriptStrategyManager::Register();
     NScriptSettings::Register();
     NScriptHighResolutionTimer::Register();
     NScriptUIControl::Register();
@@ -124,6 +117,7 @@ void CGame::init()
     NScriptScriptManager::Register();
     NScriptDevice::Register();
     NScriptVisual::Register();
+    NScriptPhysics2d::Register();
 
     CScriptMgr::Instance().loadGroup( CSettings::Instance().getScriptGroup() );
     CScriptMgr::Instance().prepare(

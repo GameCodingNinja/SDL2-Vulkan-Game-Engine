@@ -124,11 +124,68 @@ iStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, iStrategy
     if( listTableIter != m_listTableMap.end() )
         for( auto & filePathIter : listTableIter->second )
             mapIter.first->second->loadFromFile( filePathIter );
-
-    // Add the strategy pointer to the vector for rendering
-    m_pStrategyVec.push_back( pSpriteStrategy );
     
     return pSpriteStrategy;
+}
+
+
+/************************************************************************
+ *    DESC:  activate strategy
+ ************************************************************************/
+iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
+{
+    // Make sure the strategy we are looking for is available
+    auto mapIter = m_pStrategyMap.find( strategyId );
+    if( mapIter != m_pStrategyMap.end() )
+    {
+        // See if the strategy is already in the vector
+        auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), mapIter->second );
+        if( strategyIter != m_pStrategyVec.end() )
+            throw NExcept::CCriticalException("Strategy Manager Activate Error!",
+            boost::str( boost::format("Strategy is already active (%s).\n\n%s\nLine: %s")
+                % strategyId % __FUNCTION__ % __LINE__ ));
+        
+        // Add the strategy pointer to the vector for rendering
+        m_pStrategyVec.push_back( mapIter->second );
+    }
+    else
+    {
+        throw NExcept::CCriticalException("Strategy Manager Activate Error!",
+            boost::str( boost::format("Strategy id can't be found (%s).\n\n%s\nLine: %s")
+                % strategyId % __FUNCTION__ % __LINE__ ));
+    }
+    
+    return mapIter->second;
+}
+
+
+/************************************************************************
+ *    DESC:  deactivate strategy
+ ************************************************************************/
+iStrategy * CStrategyMgr::deactivateStrategy( const std::string & strategyId )
+{
+    // Make sure the strategy we are looking for is available
+    auto mapIter = m_pStrategyMap.find( strategyId );
+    if( mapIter != m_pStrategyMap.end() )
+    {
+        // See if the strategy is already in the vector
+        auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), mapIter->second );
+        if( strategyIter == m_pStrategyVec.end() )
+            throw NExcept::CCriticalException("Strategy Manager Deactivate Error!",
+            boost::str( boost::format("Strategy is not active (%s).\n\n%s\nLine: %s")
+                % strategyId % __FUNCTION__ % __LINE__ ));
+        
+        // Remove the strategy from the render vector
+        m_pStrategyVec.erase( strategyIter );
+    }
+    else
+    {
+        throw NExcept::CCriticalException("Strategy Manager Activate Error!",
+            boost::str( boost::format("Strategy id can't be found (%s).\n\n%s\nLine: %s")
+                % strategyId % __FUNCTION__ % __LINE__ ));
+    }
+    
+    return mapIter->second;
 }
 
 

@@ -57,9 +57,6 @@ public:
 
     virtual iNode * create( const std::string & name ){ return nullptr; }
     
-    // Do any init
-    virtual void init( std::vector<VkCommandBuffer> & commandBufVec, bool enable = false );
-    
     // Set the command buffers
     void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
 
@@ -81,9 +78,6 @@ public:
     // Customize sprite id generation by defining a direction
     void setIdDir( int dir );
     
-    // Enable this strategy
-    void enable( bool enable = true );
-    
 protected:
     
     // Delete any sprites scheduled to die
@@ -96,9 +90,6 @@ protected:
     
     // ID Direction
     int m_idDir;
-    
-    // Enable strategy
-    bool m_enable;
     
     // Id increment member
     static int m_idInc;

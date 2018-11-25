@@ -45,12 +45,8 @@ final class CStartUpState : CCommonState
         MenuMgr.setCommandBuffer( "(menu)" );
         
         // Create the needed strategies
-        iStrategy @strategy = StrategyMgr.createActorStrategy( "(startup)" );
-        strategy.setCommandBuffer( "(startup)" );
-        strategy.enable();
-        
-        // Create the actor(s)
-        strategy.create( "waffles" );
+        StrategyMgr.createActorStrategy( "(startup)" ).create( "waffles" );
+        StrategyMgr.activateStrategy( "(startup)" ).setCommandBuffer( "(startup)" );
         
         // Do the fade in
         Spawn("State_StartUpFadeIn", "(state)");
@@ -81,6 +77,7 @@ void LoadStartUpAssets()
     ObjectDataMgr.loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
     MenuMgr.loadListTable( "data/objects/2d/menu/menuListTable.lst" );
     SoundMgr.loadListTable( "data/sound/soundListTable.lst" );
+    PhysicsWorldManager2D.loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
 
     // Load the menu scripts
     ScriptMgr.loadGroup( "(menu)" );

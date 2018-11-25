@@ -87,4 +87,4 @@ private:
     float m_timeRatio;
 };
 
-#endif  // __physics_world_3d_h__
+#endif

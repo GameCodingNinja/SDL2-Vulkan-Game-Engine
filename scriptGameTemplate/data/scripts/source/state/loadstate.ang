@@ -37,13 +37,11 @@ final class CLoadState : CCommonState
         ObjectDataMgr.loadGroup2D( "(load)" );
         
         // Create the needed strategies
-        iStrategy @strategy = StrategyMgr.createActorStrategy( "(load)" );
-        strategy.setCommandBuffer( "(load)" );
-        strategy.enable();
+        StrategyMgr.createActorStrategy( "(load)" ).setCommandBuffer( "(load)" );
+        StrategyMgr.activateStrategy( "(load)" ).create( "loadAnim" ).getSprite().prepare( "loadAnimationLoop" );
         
         // Start the fade in and animation
         Spawn("State_FadeIn", "(state)");
-        strategy.create( "loadAnim" ).getSprite().prepare( "loadAnimationLoop" );
     }
     
     //

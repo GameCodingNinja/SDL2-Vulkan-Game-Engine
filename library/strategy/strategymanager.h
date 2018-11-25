@@ -46,6 +46,10 @@ public:
     // Add strategy
     iStrategy * addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy );
     
+    // activate/deactivate strategy
+    iStrategy * activateStrategy( const std::string & strategyId );
+    iStrategy * deactivateStrategy( const std::string & strategyId );
+    
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
     

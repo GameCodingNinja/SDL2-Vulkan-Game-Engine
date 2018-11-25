@@ -97,7 +97,6 @@ private:
     
     // pixels per meter scaler
     float m_pixelsPerMeter;
-
 };
 
-#endif  // __physics_world_2d_h__
+#endif

@@ -276,14 +276,11 @@ void CActorStrategy::deleteObj( int id )
 ****************************************************************************/
 void CActorStrategy::update()
 {
-    if( m_enable )
-    {
-        for( auto iter : m_pNodeVec )
-            iter->update();
-        
-        handleDelete();
-        handleCreate();
-    }
+    for( auto iter : m_pNodeVec )
+        iter->update();
+
+    handleDelete();
+    handleCreate();
 }
 
 
@@ -292,14 +289,11 @@ void CActorStrategy::update()
 ************************************************************************/
 void CActorStrategy::transform()
 {
-    if( m_enable )
-    {
-        for( auto iter : m_pNodeVec )
-            iter->transform();
-        
-        if( m_pCamera )
-            m_pCamera->transform();
-    }
+    for( auto iter : m_pNodeVec )
+        iter->transform();
+
+    if( m_pCamera )
+        m_pCamera->transform();
 }
 
 
@@ -309,27 +303,24 @@ void CActorStrategy::transform()
 ****************************************************************************/
 void CActorStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
 {
-    if( m_enable )
+    auto cmdBuf( m_commandBufVec.at(index) );
+
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+
+    if( m_pCamera )
     {
-        auto cmdBuf( m_commandBufVec.at(index) );
+        const CCamera & strategyCamera = *m_pCamera;
 
-        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-
-        if( m_pCamera )
-        {
-            const CCamera & strategyCamera = *m_pCamera;
-            
-            for( auto iter : m_pNodeVec )
-                iter->recordCommandBuffer( index, cmdBuf, strategyCamera );
-        }
-        else
-        {
-            for( auto iter : m_pNodeVec )
-                iter->recordCommandBuffer( index, cmdBuf, camera );
-        }
-
-        CDevice::Instance().endCommandBuffer( cmdBuf );
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuf, strategyCamera );
     }
+    else
+    {
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuf, camera );
+    }
+
+    CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
 

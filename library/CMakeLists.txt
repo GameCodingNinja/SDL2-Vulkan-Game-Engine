@@ -37,23 +37,20 @@ add_library(
         script/scriptpoint.cpp
         script/scriptsprite.cpp
         script/scriptsound.cpp
-        script/scriptplaylist.cpp
-        script/scriptsoundmanager.cpp
         script/scriptobjectdatamanager.cpp
         script/scriptactionmanager.cpp
         script/scriptsettings.cpp
         script/scriptsize.cpp
         script/scripthighresolutiontimer.cpp
         script/scriptfontmanager.cpp
-        script/scriptstrategymanager.cpp
-        script/scriptistrategy.cpp
+        script/scriptstrategy.cpp
         script/scriptmenumanager.cpp
         script/scriptscriptmanager.cpp
         script/scriptmenu.cpp
         script/scriptuicontrol.cpp
         script/scriptvisual.cpp
         script/scriptdevice.cpp
-        script/scriptinode.cpp
+        script/scriptphysics2d.cpp
         system/devicevulkan.cpp
         system/device.cpp
         utilities/xmlparsehelper.cpp

@@ -7,6 +7,8 @@
 
 final class CRunState : CCommonState
 {
+    CPhysicsWorld2D @physicsWorld;
+    
     //
     //  Constructor
     //
@@ -24,16 +26,10 @@ final class CRunState : CCommonState
         Device.waitForIdle();
         
         ObjectDataMgr.freeGroup2D( "(run)" );
+        StrategyMgr.deleteStrategy( "(stage)" );
         StrategyMgr.deleteStrategy( "(run)" );
         Device.deleteCommandPoolGroup( "(run)" );
-        
-        /*Device.deleteCommandPoolGroup( "(title)" );
-        
-        StrategyMgr.deleteStrategy( "(title)" );
-        StrategyMgr.deleteStrategy( "(cube)" );
-        
-        ObjectDataMgr.freeGroup2D( "(title)" );
-        ObjectDataMgr.freeGroup3D( "(cube)" );*/
+        PhysicsWorldManager2D.clear();
     }
 
     //
@@ -44,23 +40,15 @@ final class CRunState : CCommonState
         // Unblock the menu messaging and activate needed trees(s)
         MenuMgr.activateTree( "pause_tree" );
         
-        //iStrategy @strategy = StrategyMgr.getStrategy( "(stage)" );
-        //strategy.setCommandBuffer( "(run)" );
-        //strategy.enable();
+        // Enable the strategy for rendering
+        StrategyMgr.activateStrategy( "(stage)" ).setCommandBuffer( "(run)" );
+        StrategyMgr.activateStrategy( "(run)" ).setCommandBuffer( "(run)" );
+        
+        // Get the physics world
+        @physicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
-        
-        /*iStrategy @strategy = StrategyMgr.getStrategy( "(title)" );
-        strategy.setCommandBuffer( "(title)" );
-        strategy.enable();
-        
-        @strategy = StrategyMgr.getStrategy( "(cube)" );
-        strategy.setCommandBuffer( "(title)" );
-        strategy.enable();
-        
-        // Do the fade in
-        Spawn("State_FadeIn", "(state)");*/
     }
     
     //
@@ -86,6 +74,14 @@ final class CRunState : CCommonState
             mChangeState = true;
         }
     }
+    
+    //
+    //  Handle the physics
+    //
+    void physics() override
+    {
+        //physicsWorld.variableTimeStep();
+    }
 };
 
 //
@@ -95,22 +91,17 @@ void LoadRunAssets()
 {
     ObjectDataMgr.loadGroup2D( "(run)" );
     
-    // Create the needed strategies
-    //iStrategy @titleStrategy = StrategyMgr.createBasicStageStrategy( "(stage)" );
-    
-    /*ObjectDataMgr.loadGroup2D( "(title)" );
-    ObjectDataMgr.loadGroup3D( "(cube)" );
+    // Create the physics world
+    PhysicsWorldManager2D.createWorld( "(game)" );
     
     // Create the needed strategies
-    iStrategy @titleStrategy = StrategyMgr.createActorStrategy( "(title)" );
-    iStrategy @cubeStrategy = StrategyMgr.createActorStrategy( "(cube)" );
+    StrategyMgr.createBasicStageStrategy( "(stage)" );
+    iStrategy @runStrategy = StrategyMgr.createActorStrategy( "(run)" );
     
-    // Add the actors
-    titleStrategy.create( "background" );
-    cubeStrategy.create( "cube" ).getSprite().prepare( "rotate" );
-    
-    // Set the camera for the cube strategy
-    StrategyMgr.setCamera( "(cube)", "cube" );*/
+    // Add the sprites to the strategy
+    array<string> shapes = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
+    for( int i = 0; i < 24; ++i )
+        runStrategy.create( shapes[i % 6] );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

@@ -22,12 +22,10 @@
 #include <script/scriptmanager.h>
 #include <script/scriptcolor.h>
 #include <script/scriptsound.h>
-#include <script/scriptplaylist.h>
 #include <script/scriptpoint.h>
 #include <script/scriptsize.h>
 #include <script/scriptglobals.h>
 #include <script/scriptsprite.h>
-#include <script/scriptsoundmanager.h>
 #include <script/scriptuicontrol.h>
 #include <script/scriptmenu.h>
 #include <script/scriptvisual.h>
@@ -111,11 +109,8 @@ void CStartUpState::init()
     // Create the group command buffers and add the actor strategy
     // Command buffers can only be used in the thread they are created
     auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-    auto strategy = CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() );
-    strategy->init( cmdBuf, true );
-    
-    // Create the actor(s)
-    strategy->create( "waffles" );
+    CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() )->setCommandBuffers( cmdBuf );
+    CStrategyMgr::Instance().activateStrategy( "(startup)" )->create( "waffles" );
 
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_StartUpFadeIn" );
@@ -177,8 +172,6 @@ void CStartUpState::assetLoad()
 
         // Register the script items
         NScriptSound::Register();
-        NScriptPlayLst::Register();
-        NScriptSoundManager::Register();
         NScriptUIControl::Register();
         NScriptMenu::Register();
 

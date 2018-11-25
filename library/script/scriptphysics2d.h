@@ -1,14 +1,14 @@
 
 /************************************************************************
-*    FILE NAME:       scriptistrategy.h
+*    FILE NAME:       scriptphysics2d.h
 *
-*    DESCRIPTION:     iStrategy script object registration
+*    DESCRIPTION:     CPhysicsWorld2D & CPhysicsWorldManager2D script object registration
 ************************************************************************/
 
-#ifndef __script_istrategy_h__
-#define __script_istrategy_h__
+#ifndef __script_physics_2d_h__
+#define __script_physics_2d_h__
 
-namespace NScriptiStrategy
+namespace NScriptPhysics2d
 {
     // Register Script Object
     void Register();
