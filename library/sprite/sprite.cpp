@@ -115,6 +115,16 @@ void CSprite::load( const CSpriteData & spriteData )
 
 
 /************************************************************************
+*    DESC:  Init the physics
+************************************************************************/
+void CSprite::initPhysics()
+{
+    if( m_upPhysicsComponent )
+        m_upPhysicsComponent->init(*this);
+}
+
+
+/************************************************************************
 *    DESC:  Init the sprite
 *           NOTE: Do not call from a constructor!
 ************************************************************************/
@@ -159,9 +169,6 @@ void CSprite::initScriptFunctions( const XMLNode & node )
                 }
             
                 m_scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
-
-                if( attrName == "update" )
-                    m_upObject->getParameters().add( NDefs::SCRIPT_UPDATE );
             }
         }
     }
@@ -196,22 +203,7 @@ bool CSprite::prepare( const std::string & scriptFuncId, bool forceUpdate )
 void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string>> & scriptFunctionMap )
 {
     for( auto & iter : scriptFunctionMap )
-    {
         m_scriptFunctionMap.emplace( iter );
-
-        if( iter.first == "update" )
-            m_upObject->getParameters().add( NDefs::SCRIPT_UPDATE );
-    }
-}
-
-
-/************************************************************************
-*    DESC:  Init the physics
-************************************************************************/
-void CSprite::initPhysics()
-{
-    if( m_upPhysicsComponent )
-        m_upPhysicsComponent->init(*this);
 }
 
 
@@ -231,9 +223,8 @@ void CSprite::handleEvent( const SDL_Event & rEvent )
 void CSprite::update()
 {
     m_scriptComponent.update();
-
-    if( m_upObject->getParameters().isSet( NDefs::SCRIPT_UPDATE ) )
-        prepare( "update" );
+    
+    prepare( "update", true );
 
     if( m_upAI )
         m_upAI->update();

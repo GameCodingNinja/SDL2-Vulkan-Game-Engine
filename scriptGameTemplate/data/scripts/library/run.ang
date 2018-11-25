@@ -1,0 +1,33 @@
+
+//
+//  FILE NAME:  run.ang
+//
+//  DESC:       Scripts specifically for the run state
+//
+
+
+//
+//  AI Init script
+//
+void Run_Init( CSprite & sprite )
+{
+    InitPhysics( sprite );
+}
+
+
+//
+//  AI Update script
+//
+void Run_Update( CSprite & sprite )
+{
+    if( sprite.getPos().y > 600.f )
+        InitPhysics( sprite );
+}
+
+//
+//  Init the ball placement
+//
+void InitPhysics( CSprite & sprite )
+{
+    sprite.setPhysicsTransform( RandInt(-700,700), -RandInt(600,1000), RandInt(0,360) );
+}

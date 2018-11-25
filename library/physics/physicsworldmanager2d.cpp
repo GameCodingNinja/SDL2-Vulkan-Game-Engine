@@ -88,8 +88,6 @@ CPhysicsWorld2D & CPhysicsWorldManager2D::getWorld( const std::string & group )
 {
     // Find the world
     auto iter = m_pWorld2dMap.find( group );
-
-    // If we found it, return it. If not, we have a problem
     if( iter == m_pWorld2dMap.end() )
         throw NExcept::CCriticalException("Physics World 2D Manager Error!",
             boost::str( boost::format("Physics World 2D doesn't exist (%s).\n\n%s\nLine: %s")
@@ -104,10 +102,8 @@ CPhysicsWorld2D & CPhysicsWorldManager2D::getWorld( const std::string & group )
 ************************************************************************/
 void CPhysicsWorldManager2D::destroyWorld( const std::string & group )
 {
-    // Find the world
-    auto iter = m_pWorld2dMap.find( group );
-
     // If we find it, delete it.
+    auto iter = m_pWorld2dMap.find( group );
     if( iter != m_pWorld2dMap.end() )
     {
         NDelFunc::Delete( iter->second );

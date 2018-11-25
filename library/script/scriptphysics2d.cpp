@@ -61,7 +61,7 @@ namespace NScriptPhysics2d
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "void loadListTable(string &in)",         asFUNCTION(LoadListTable), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "void createWorld(string &in)",           asMETHOD(CPhysicsWorldManager2D, createWorld), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "void destroyWorld(string &in)",          asMETHOD(CPhysicsWorldManager2D, destroyWorld), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "CPhysicsWorld2D & getWorld(string &in)", asMETHOD(CPhysicsWorldManager2D, destroyWorld), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "CPhysicsWorld2D & getWorld(string &in)", asMETHOD(CPhysicsWorldManager2D, getWorld), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "void clear()",                           asMETHOD(CPhysicsWorldManager2D, clear), asCALL_THISCALL) );
 
         // Set this object registration as a global property to simulate a singleton

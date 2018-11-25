@@ -51,8 +51,10 @@ class CCommonState : iGameState
     //
     void update() override
     {
+        if( !MenuMgr.isActive() || mGameState == NStateDefs::EGS_TITLE_SCREEN )
+            StrategyMgr.update();
+        
         MenuMgr.update();
-        StrategyMgr.update();
     }
     
     //

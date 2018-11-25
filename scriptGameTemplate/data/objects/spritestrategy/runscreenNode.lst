@@ -4,37 +4,66 @@
         
         <sprite2d objectName="square_red">
             <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
         </sprite2d>
 
     </node>
     
     <node name="triangle_green" type="spriteNode">
         
-        <sprite2d objectName="triangle_green"/>
+        <sprite2d objectName="triangle_green">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
 
     </node>
     
     <node name="triangle_blue" type="spriteNode">
         
-        <sprite2d objectName="triangle_blue"/>
+        <sprite2d objectName="triangle_blue">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
 
     </node>
     
     <node name="circle_green" type="spriteNode">
         
-        <sprite2d objectName="circle_green"/>
+        <sprite2d objectName="circle_green">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
 
     </node>
     
     <node name="circle_blue" type="spriteNode">
         
-        <sprite2d objectName="circle_blue"/>
+        <sprite2d objectName="circle_blue">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
 
     </node>
     
     <node name="circle_red" type="spriteNode">
         
-        <sprite2d objectName="circle_red"/>
+        <sprite2d objectName="circle_red">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
 
     </node>
 

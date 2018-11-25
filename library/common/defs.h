@@ -88,9 +88,6 @@ namespace NDefs
 
         // Visible bit
         VISIBLE             = 0x100,
-        
-        // Script update flag
-        SCRIPT_UPDATE       = 0x200,
     };
     
     enum ESpriteType

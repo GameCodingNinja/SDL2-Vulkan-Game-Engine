@@ -31,25 +31,8 @@
         <file path="data/scripts/source/state/runstate.ang"/>
     </groupList>
   
-    <!--
-  <groupList groupName="(main)">
-    <file path="data/scripts/game/shared_defs.ang"/>
-    <file path="data/scripts/game/main.ang"/>
-    <file path="data/scripts/game/game.ang"/>
-    <file path="data/scripts/game/shared_utilities.ang"/>
-    <file path="data/scripts/state/statedefs.ang"/>
-    <file path="data/scripts/state/statemessage.ang"/>
-    <file path="data/scripts/state/igamestate.ang"/>
-    <file path="data/scripts/state/startupstate.ang"/>
-    <file path="data/scripts/state/titlescreenstate.ang"/>
-  </groupList>
-  
-  <groupList groupName="(menu)">
-    <file path="data/scripts/game/shared_defs.ang"/>
-    <file path="data/scripts/game/shared_utilities.ang"/>
-    <file path="data/scripts/menu/menu.ang"/>
-    <file path="data/scripts/menu/smartgui.ang"/>
-  </groupList>
-  -->
+    <groupList groupName="(run)">
+        <file path="data/scripts/library/run.ang"/>
+    </groupList>
 
 </listTable>

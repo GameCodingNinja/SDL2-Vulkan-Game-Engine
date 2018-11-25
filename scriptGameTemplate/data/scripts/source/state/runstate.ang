@@ -7,7 +7,7 @@
 
 final class CRunState : CCommonState
 {
-    CPhysicsWorld2D @physicsWorld;
+    CPhysicsWorld2D @mPhysicsWorld;
     
     //
     //  Constructor
@@ -25,6 +25,7 @@ final class CRunState : CCommonState
         // Wait for all rendering to be finished
         Device.waitForIdle();
         
+        ScriptMgr.freeGroup( "(run)" );
         ObjectDataMgr.freeGroup2D( "(run)" );
         StrategyMgr.deleteStrategy( "(stage)" );
         StrategyMgr.deleteStrategy( "(run)" );
@@ -45,7 +46,7 @@ final class CRunState : CCommonState
         StrategyMgr.activateStrategy( "(run)" ).setCommandBuffer( "(run)" );
         
         // Get the physics world
-        @physicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
+        @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
@@ -80,7 +81,8 @@ final class CRunState : CCommonState
     //
     void physics() override
     {
-        //physicsWorld.variableTimeStep();
+        if( !MenuMgr.isActive() )
+            mPhysicsWorld.variableTimeStep();
     }
 };
 
@@ -90,6 +92,7 @@ final class CRunState : CCommonState
 void LoadRunAssets()
 {
     ObjectDataMgr.loadGroup2D( "(run)" );
+    ScriptMgr.loadGroup( "(run)" );
     
     // Create the physics world
     PhysicsWorldManager2D.createWorld( "(game)" );

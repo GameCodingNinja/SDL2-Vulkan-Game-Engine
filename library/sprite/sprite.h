@@ -54,11 +54,11 @@ public:
     void load( const XMLNode & node );
     void load( const CSpriteData & spriteData );
     
-    // Init the sprite
-    void init();
-    
     // Init the physics
     void initPhysics();
+    
+    // Init the sprite
+    void init();
     
     // React to what the player is doing
     void handleEvent( const SDL_Event & rEvent );

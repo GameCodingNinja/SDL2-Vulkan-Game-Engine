@@ -17,6 +17,9 @@
 #include <scriptarray/scriptarray.h>
 #include <common/size.h>
 
+// Standard lib dependencies
+#include <random>
+
 // SDL lib dependencies
 #include <SDL.h>
 
@@ -28,6 +31,18 @@
 
 namespace NScriptGlobals
 {
+    std::default_random_engine defaultGenerator(std::random_device{}());
+    
+    /************************************************************************
+    *    DESC:  Generate a random number
+    ************************************************************************/
+    int RandInt( int min, int max )
+    {
+        std::uniform_int_distribution<int> randInt(min, max);
+        
+        return randInt(defaultGenerator);
+    }
+    
     /************************************************************************
     *    DESC:  Throw an exception for values less then 0
     ************************************************************************/
@@ -99,6 +114,7 @@ namespace NScriptGlobals
     {
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
 
+        Throw( pEngine->RegisterGlobalFunction("int RandInt(int, int)", asFUNCTION(RandInt), asCALL_CDECL) );
         Throw( pEngine->RegisterGlobalFunction("void Print(string &in)", asFUNCTION(NGenFunc::PostDebugMsg), asCALL_CDECL) );
         Throw( pEngine->RegisterGlobalFunction("void Suspend()", asFUNCTION(Suspend), asCALL_CDECL) );
         Throw( pEngine->RegisterGlobalFunction("int UniformRandomInt(int startRange, int endRange, int seed = 0)", asFUNCTION( NGenFunc::UniformRandomInt), asCALL_CDECL ) );
