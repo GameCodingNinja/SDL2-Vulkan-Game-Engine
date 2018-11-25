@@ -233,8 +233,8 @@ iStrategy * CStrategyMgr::getStrategy( const std::string & strategyId )
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pStrategyMap.find( strategyId );
     if( mapIter == m_pStrategyMap.end() )
-        throw NExcept::CCriticalException("Sprite Strategy Manager Id Get Error!",
-            boost::str( boost::format("Sprite Manager strategy Id can't be found (%s).\n\n%s\nLine: %s")
+        throw NExcept::CCriticalException("Strategy Manager Id Get Error!",
+            boost::str( boost::format("Strategy Id can't be found (%s).\n\n%s\nLine: %s")
                 % strategyId % __FUNCTION__ % __LINE__ ));
 
     return mapIter->second;

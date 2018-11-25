@@ -21,13 +21,25 @@ class CCommonState : iGameState
     }
     
     //
+    //  Constructor
+    //
+    CCommonState( const NStateDefs::EGameState gameState, const CStateMessage & stateMsg )
+    {
+        super( gameState, stateMsg );
+    }
+    
+    //
     //  Handle the events
     //
     void handleEvent() override
     {
+        // Check for the "game change state" message
         if( ActionMgr.wasEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
         {
+            // Block all message processing in the menu manager
             MenuMgr.allow( false );
+            
+            // Set the message to load and unload the states
             getStateMessage().setMsg(
                 NStateDefs::EGameState(mGameStateDict[MenuMgr.getActiveMenu().getActiveControl().getExecutionAction()]),
                 getState() );

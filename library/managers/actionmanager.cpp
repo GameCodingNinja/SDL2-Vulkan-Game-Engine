@@ -857,6 +857,15 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
 
 
 /************************************************************************
+*    DESC:  Is the queue empty
+************************************************************************/
+bool CActionMgr::queueEmpty()
+{
+    return m_eventQueue.empty();
+}
+
+
+/************************************************************************
 *    DESC:  Clear the queue
 ************************************************************************/
 void CActionMgr::clearQueue()

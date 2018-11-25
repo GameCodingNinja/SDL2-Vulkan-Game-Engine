@@ -1,18 +1,18 @@
 
 //
-//  FILE NAME:  titlescreenstate.ang
+//  FILE NAME:  runstate.ang
 //
-//  DESC:       Title screen state
+//  DESC:       Run state
 //
 
-final class CTitleScreenState : CCommonState
+final class CRunState : CCommonState
 {
     //
     //  Constructor
     //
-    CTitleScreenState()
+    CRunState()
     {
-        super( NStateDefs::EGS_TITLE_SCREEN, NStateDefs::EGS_GAME_LOAD );
+        super( NStateDefs::EGS_RUN, NStateDefs::EGS_GAME_LOAD );
     }
     
     //
@@ -23,13 +23,17 @@ final class CTitleScreenState : CCommonState
         // Wait for all rendering to be finished
         Device.waitForIdle();
         
-        Device.deleteCommandPoolGroup( "(title)" );
+        ObjectDataMgr.freeGroup2D( "(run)" );
+        StrategyMgr.deleteStrategy( "(run)" );
+        Device.deleteCommandPoolGroup( "(run)" );
+        
+        /*Device.deleteCommandPoolGroup( "(title)" );
         
         StrategyMgr.deleteStrategy( "(title)" );
         StrategyMgr.deleteStrategy( "(cube)" );
         
         ObjectDataMgr.freeGroup2D( "(title)" );
-        ObjectDataMgr.freeGroup3D( "(cube)" );
+        ObjectDataMgr.freeGroup3D( "(cube)" );*/
     }
 
     //
@@ -38,9 +42,16 @@ final class CTitleScreenState : CCommonState
     void init() override
     {
         // Unblock the menu messaging and activate needed trees(s)
-        MenuMgr.activateTree( "title_screen_tree" );
+        MenuMgr.activateTree( "pause_tree" );
         
-        iStrategy @strategy = StrategyMgr.getStrategy( "(title)" );
+        //iStrategy @strategy = StrategyMgr.getStrategy( "(stage)" );
+        //strategy.setCommandBuffer( "(run)" );
+        //strategy.enable();
+        
+        // Do the fade in
+        Spawn("State_FadeIn", "(state)");
+        
+        /*iStrategy @strategy = StrategyMgr.getStrategy( "(title)" );
         strategy.setCommandBuffer( "(title)" );
         strategy.enable();
         
@@ -49,16 +60,14 @@ final class CTitleScreenState : CCommonState
         strategy.enable();
         
         // Do the fade in
-        Spawn("State_FadeIn", "(state)");
+        Spawn("State_FadeIn", "(state)");*/
     }
     
-    int counter = 0;
     //
     //  Handle events
     //
     void handleEvent() override
     {
-        Print("handleEvent: " + ++counter);
         CCommonState::handleEvent();
         
         // Check for the "game change state" message
@@ -82,9 +91,14 @@ final class CTitleScreenState : CCommonState
 //
 //  Functions for loading the assets for this state
 //
-void LoadTitleScreenAssets()
+void LoadRunAssets()
 {
-    ObjectDataMgr.loadGroup2D( "(title)" );
+    ObjectDataMgr.loadGroup2D( "(run)" );
+    
+    // Create the needed strategies
+    //iStrategy @titleStrategy = StrategyMgr.createBasicStageStrategy( "(stage)" );
+    
+    /*ObjectDataMgr.loadGroup2D( "(title)" );
     ObjectDataMgr.loadGroup3D( "(cube)" );
     
     // Create the needed strategies
@@ -96,7 +110,7 @@ void LoadTitleScreenAssets()
     cubeStrategy.create( "cube" ).getSprite().prepare( "rotate" );
     
     // Set the camera for the cube strategy
-    StrategyMgr.setCamera( "(cube)", "cube" );
+    StrategyMgr.setCamera( "(cube)", "cube" );*/
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

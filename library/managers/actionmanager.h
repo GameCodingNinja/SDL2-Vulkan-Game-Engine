@@ -103,6 +103,9 @@ public:
     bool wasKeyboard( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
     bool wasMouse( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
     bool wasGamepad( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    
+    // Is the queue empty
+    bool queueEmpty();
 
 private:
 

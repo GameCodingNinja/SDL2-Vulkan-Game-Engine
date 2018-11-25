@@ -74,11 +74,11 @@ class CGame
             if( nextState == NStateDefs::EGS_TITLE_SCREEN )
                 @mGameState = CTitleScreenState();
 
-            //else if( nextState == NGameDefs::EGS_GAME_LOAD )
-            //    mGameState.reset( new CLoadState( stateMessage ) );
+            else if( nextState == NStateDefs::EGS_GAME_LOAD )
+                @mGameState = CLoadState( stateMessage );
 
-            //else if( nextState == NGameDefs::EGS_RUN )
-                //mGameState.reset( new CRunState );
+            else if( nextState == NStateDefs::EGS_RUN )
+                @mGameState = CRunState();
 
             // Do any pre-game loop init's
             mGameState.init();
@@ -90,18 +90,21 @@ class CGame
     //
     void handleEvent()
     {
-        // Is it time to quit?
-        if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||
-            ActionMgr.wasEvent( NGameDefs::EGE_APP_TERMINATING ) )
+        if( !ActionMgr.queueEmpty() )
         {
-            mGameRunning = false;
-            
-            // Show the window
-            Device.showWindow(false);
+            // Is it time to quit?
+            if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||
+                ActionMgr.wasEvent( NGameDefs::EGE_APP_TERMINATING ) )
+            {
+                mGameRunning = false;
+
+                // Show the window
+                Device.showWindow(false);
+            }
+
+            if( mGameState !is null )
+                mGameState.handleEvent();
         }
-            
-        if( mGameState !is null )
-            mGameState.handleEvent();
     }
     
     //

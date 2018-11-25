@@ -301,7 +301,7 @@ namespace NScriptMenuManager
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void deactivateTree(string &in, string &in)",           asFUNCTION(DeactivateTree1),   asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void deactivateTree(string &in)",                       asFUNCTION(DeactivateTree2),   asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void clearActiveTrees(string &in)",                     asMETHOD(CMenuMgr, clearActiveTrees),  asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void clearActiveTrees()",                               asMETHOD(CMenuMgr, clearActiveTrees),  asCALL_THISCALL) );
 
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "CMenu & getMenu(string &in)",                           asFUNCTION(GetMenu),   asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "CMenu & getActiveMenu()",                               asFUNCTION(GetActiveMenu),   asCALL_CDECL_OBJLAST) );

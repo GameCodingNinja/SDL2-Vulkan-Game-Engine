@@ -7,18 +7,18 @@
 
 class CStateMessage
 {
-    private NStateDefs::EGameState m_loadState = NStateDefs::EGS_NULL;
-    private NStateDefs::EGameState m_unloadState = NStateDefs::EGS_NULL;
+    private NStateDefs::EGameState mLoadState = NStateDefs::EGS_NULL;
+    private NStateDefs::EGameState mUnloadState = NStateDefs::EGS_NULL;
 
     NStateDefs::EGameState getLoadState()
-    { return m_loadState; }
+    { return mLoadState; }
 
     NStateDefs::EGameState getUnloadState()
-    { return m_unloadState; }
+    { return mUnloadState; }
 
     void setMsg( const NStateDefs::EGameState loadState, const NStateDefs::EGameState unloadState )
     {
-        m_loadState = loadState;
-        m_unloadState = unloadState;
+        mLoadState = loadState;
+        mUnloadState = unloadState;
     }
 }

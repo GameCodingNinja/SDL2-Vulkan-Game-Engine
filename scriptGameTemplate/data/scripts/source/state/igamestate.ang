@@ -33,6 +33,16 @@ class iGameState
         mGameState = gameState;
         mNextState = nextState;
     }
+    
+    //
+    //  Constructor
+    //
+    iGameState( const NStateDefs::EGameState gameState, const CStateMessage & stateMsg )
+    {
+        mGameState = gameState;
+        mNextState = NStateDefs::EGS_GAME_LOAD;
+        mStateMessage = stateMsg;
+    }
 
     void init()
     {

@@ -43,6 +43,7 @@ namespace NScriptActionManager
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasLastDeviceGamepad()",                       asMETHOD(CActionMgr, wasLastDeviceGamepad),  asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasLastDeviceKeyboard()",                      asMETHOD(CActionMgr, wasLastDeviceKeyboard), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasLastDeviceMouse()",                         asMETHOD(CActionMgr, wasLastDeviceMouse),    asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool queueEmpty()",                                 asMETHOD(CActionMgr, queueEmpty),    asCALL_THISCALL) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CActionMgr ActionMgr", &CActionMgr::Instance()) );

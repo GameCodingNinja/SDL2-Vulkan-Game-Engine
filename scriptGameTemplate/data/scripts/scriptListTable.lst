@@ -27,6 +27,8 @@
         <file path="data/scripts/source/state/commonstate.ang"/>
         <file path="data/scripts/source/state/startupstate.ang"/>
         <file path="data/scripts/source/state/titlescreenstate.ang"/>
+        <file path="data/scripts/source/state/loadstate.ang"/>
+        <file path="data/scripts/source/state/runstate.ang"/>
     </groupList>
   
     <!--

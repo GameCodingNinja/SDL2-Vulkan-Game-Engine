@@ -14,6 +14,19 @@ final class CStartUpState : CCommonState
     {
         super( NStateDefs::EGS_STARTUP, NStateDefs::EGS_TITLE_SCREEN );
     }
+    
+    //
+    //  Destroy the state
+    //
+    void destroy() override
+    {
+        // Wait for all rendering to be finished
+        Device.waitForIdle();
+        
+        Device.deleteCommandPoolGroup( "(startup)" );
+        ObjectDataMgr.freeGroup2D( "(startup)" );
+        StrategyMgr.deleteStrategy( "(startup)" );
+    }
 
     //
     //  Init the state
@@ -41,19 +54,6 @@ final class CStartUpState : CCommonState
         
         // Do the fade in
         Spawn("State_StartUpFadeIn", "(state)");
-    }
-    
-    //
-    //  Destroy the state
-    //
-    void destroy() override
-    {
-        Print( "Start Up Destroy" );
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
-        
-        ObjectDataMgr.freeGroup2D( "(startup)" );
-        StrategyMgr.deleteStrategy( "(startup)" );
     }
     
     //
@@ -105,8 +105,5 @@ void LoadStartUpAssets()
 
     // Load the next states assets
     LoadTitleScreenAssets();
-
-    // Send a message to indicate the load is done
-    DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
 }
     
