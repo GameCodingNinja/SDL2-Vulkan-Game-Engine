@@ -102,8 +102,7 @@ class CGame
                 Device.showWindow(false);
             }
 
-            if( mGameState !is null )
-                mGameState.handleEvent();
+            mGameState.handleEvent();
         }
     }
     

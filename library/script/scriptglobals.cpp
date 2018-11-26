@@ -72,10 +72,8 @@ namespace NScriptGlobals
     ************************************************************************/
     CScriptArray * GetScreenResolutions()
     {
-        // The script array needs to know its type to properly handle the elements.
-        // Note that the object type should be cached to avoid performance issues
-        // if the function is called frequently.
-        asITypeInfo * arrayType = CScriptMgr::Instance().getEnginePtr()->GetTypeInfoByDecl("array<CSize>");
+        // Get a pointer to type declaration
+        asITypeInfo * arrayType = CScriptMgr::Instance().getPtrToTypeInfo( "array<CSize>" );
         
         std::vector< CSize<int> > resVec;
         int displayCount = SDL_GetNumDisplayModes(0);

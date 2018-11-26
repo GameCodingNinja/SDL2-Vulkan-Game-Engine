@@ -25,6 +25,7 @@ class asIScriptContext;
 class asIScriptModule;
 class asIScriptContext;
 class asIScriptFunction;
+class asITypeInfo;
 struct asSMessageInfo;
 
 class CScriptMgr : public CManagerBase
@@ -64,6 +65,9 @@ public:
 
     // Get pointer to function
     asIScriptFunction * getPtrToFunc( const std::string & group, const std::string & name );
+    
+    // Get pointer to type declaration
+    asITypeInfo * getPtrToTypeInfo( const std::string & typeDecl );
     
     // Prepare the script function to run
     void prepare(
@@ -117,8 +121,11 @@ private:
     // Smart com pointer to AngelScript script engine
     NSmart::scoped_com_ptr<asIScriptEngine> scpEngine;
 
-    // Map containing a group of function pointers
+    // Get a pointer to type declaration
     std::map< const std::string, std::map< const std::string, asIScriptFunction * > > m_scriptFunctMapMap;
+    
+    // Holds the pointer to type declaration
+    std::map<const std::string, asITypeInfo *> m_pTypeDeclMap;
 
     // Holds the pool of script contexts
     std::vector<asIScriptContext *> m_pContextPoolVec;

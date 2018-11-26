@@ -216,6 +216,24 @@ asIScriptFunction * CScriptMgr::getPtrToFunc( const std::string & group, const s
 
 
 /************************************************************************
+*    DESC:  Get a pointer to type declaration
+************************************************************************/
+asITypeInfo * CScriptMgr::getPtrToTypeInfo( const std::string & typeDecl )
+{
+    // See if this declaration pointer has already been saved
+    auto mapIter = m_pTypeDeclMap.find( typeDecl );
+    if( mapIter == m_pTypeDeclMap.end() )
+    {
+        // Generate a type info pointer and store it for quick recall
+        auto pTypeInfo = scpEngine->GetTypeInfoByDecl( typeDecl.c_str() );
+        mapIter = m_pTypeDeclMap.emplace( typeDecl, pTypeInfo ).first;
+    }
+    
+    return mapIter->second;
+}
+
+
+/************************************************************************
 *    DESC:  Call back to display AngelScript messages
 ************************************************************************/
 void CScriptMgr::messageCallback(const asSMessageInfo & msg)
