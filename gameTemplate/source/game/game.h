@@ -13,7 +13,7 @@
 
 // Forward declaration(s)
 class CSprite;
-class CUIControl;
+class iControl;
 class iGameState;
 class CMenu;
 class iSprite;
@@ -51,7 +51,7 @@ private:
     void recordCommandBuffer( uint32_t cmdBufIndex );
 
     // Callback for when a smart gui control is created
-    void smartGuiControlCreateCallBack( CUIControl * pUIControl );
+    void smartGuiControlCreateCallBack( iControl * piControl );
     
     // Callback for when a smart menu is created
     void smartMenuCreateCallBack( CMenu * pMenu );

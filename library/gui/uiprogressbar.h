@@ -40,21 +40,23 @@ public:
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera ) override;
     
-    // Calculate the progress bar size and position
-    void setSizePos();
-    
     // Set/Get current value
-    void setCurValue( float value );
-    float getCurValue();
-    void incCurValue( float value );
+    void setCurValue( float value ) override;
+    float getCurValue() override;
+    void incCurValue( float value ) override;
     
     // Set/Get min value
-    void setMinValue( float value );
-    float getMinValue();
+    void setMinValue( float value ) override;
+    float getMinValue() override;
     
     // Set/Get max value
-    void setMaxValue( float value );
-    float getMaxValue();
+    void setMaxValue( float value ) override;
+    float getMaxValue() override;
+    
+private:
+    
+    // Calculate the progress bar size and position
+    void setSizePos();
     
 private:
     

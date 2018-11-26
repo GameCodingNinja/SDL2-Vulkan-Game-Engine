@@ -10,10 +10,9 @@
 
 // Game dependencies
 #include "smartresetkeybind.h"
-//#include "smartnewgamesavebtn.h"
 
 // Game lib dependencies
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/menumanager.h>
 #include <gui/menu.h>
 
@@ -21,43 +20,43 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartConfirmBtn::CSmartConfirmBtn( CUIControl * pUIControl ) :
-    CSmartGuiControl( pUIControl )
+CSmartConfirmBtn::CSmartConfirmBtn( iControl * piControl ) :
+    CSmartGuiControl( piControl )
 {
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is executed
+*    DESC:  Called when the control is executed
 ****************************************************************************/
 void CSmartConfirmBtn::execute()
 {
     CMenu & rMenu = CMenuMgr::Instance().getMenu("confirmation_menu");
-    CUIControl * pYesBtn = rMenu.getPtrToControl("yes_btn");
-    CUIControl * pMegLbl = rMenu.getPtrToControl("message_lbl");
+    iControl * pYesBtn = rMenu.getPtrToControl("yes_btn");
+    iControl * pMegLbl = rMenu.getPtrToControl("message_lbl");
 
     CSmartGuiControl * pSmartGuiCtrl(NULL);
     std::string conformationMsg;
     std::string executionAction;
     NUIControl::EControlActionType actionType(NUIControl::ECAT_BACK);
 
-    if( m_pUIControl->getName() == "exit_btn" )
+    if( m_piControl->getName() == "exit_btn" )
     {
         actionType = NUIControl::ECAT_QUIT_GAME;
         conformationMsg = "Do you want to|quit the game?";
     }
-    else if( m_pUIControl->getName() == "main_menu_btn" )
+    else if( m_piControl->getName() == "main_menu_btn" )
     {
         conformationMsg = "Are you sure you|want to go back to|the main menu?";
         actionType = NUIControl::ECAT_GAME_STATE_CHANGE;
         executionAction = "title_screen_state";
     }
-    else if( m_pUIControl->getName() == "Key_Binding_reset_btn" )
+    else if( m_piControl->getName() == "Key_Binding_reset_btn" )
     {
         pSmartGuiCtrl = new CSmartResetKeyBindBtn( pYesBtn );
         conformationMsg = "Reset all key bindings|to their default settings?";
     }
-    else if( m_pUIControl->getName() == "continue_btn" )
+    else if( m_piControl->getName() == "continue_btn" )
     {
         conformationMsg = "Are you sure you|want to continue|on to the next state?";
         actionType = NUIControl::ECAT_GAME_STATE_CHANGE;

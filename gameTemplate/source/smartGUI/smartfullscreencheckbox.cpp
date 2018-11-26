@@ -16,24 +16,24 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartScrnCheckBox::CSmartScrnCheckBox( CUIControl * pUIControl ) :
-    CSmartSettingsMenuBtn( pUIControl )
+CSmartScrnCheckBox::CSmartScrnCheckBox( iControl * piControl ) :
+    CSmartSettingsMenuBtn( piControl )
 {
 }
 
 
 /***************************************************************************
-*    decs:  Handle events
+*    DESC:  Handle events
 ****************************************************************************/
 void CSmartScrnCheckBox::handleEvent( const SDL_Event & rEvent )
 {
     if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
-        (*dynamic_cast<CUICheckBox *>(m_pUIControl)).setToggleState( CSettings::Instance().getFullScreen() );
+        m_piControl->setToggleState( CSettings::Instance().getFullScreen() );
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is executed - Enable/disable the apply btn
+*    DESC:  Called when the control is executed - Enable/disable the apply btn
 ****************************************************************************/
 void CSmartScrnCheckBox::execute()
 {

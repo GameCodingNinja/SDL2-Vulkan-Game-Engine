@@ -40,13 +40,13 @@ public:
     void setMaxValue( float value );
 
     // Set the slider position
-    void setSlider( float value = 0 );
+    void setSlider( float value = 0 ) override;
 
     // Set the slider inc value
     void incSlider( float value = 0 );
 
     // Get the current value
-    float getValue();
+    float getValue() override;
     
     // Is the mouse down
     bool isMouseDown();

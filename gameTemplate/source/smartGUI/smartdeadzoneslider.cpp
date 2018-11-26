@@ -16,24 +16,24 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartDeadZoneSlider::CSmartDeadZoneSlider( CUIControl * pUIControl ) :
-    CSmartSettingsMenuBtn( pUIControl )
+CSmartDeadZoneSlider::CSmartDeadZoneSlider( iControl * piControl ) :
+    CSmartSettingsMenuBtn( piControl )
 {
 }
 
 
 /***************************************************************************
-*    decs:  Handle events
+*    DESC:  Handle events
 ****************************************************************************/
 void CSmartDeadZoneSlider::handleEvent( const SDL_Event & rEvent )
 {
     if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
-        (*dynamic_cast<CUISlider *>(m_pUIControl)).setSlider( CSettings::Instance().getGamePadStickDeadZone() );
+        m_piControl->setSlider( CSettings::Instance().getGamePadStickDeadZone() );
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is executed - Enable/disable the apply btn
+*    DESC:  Called when the control is executed - Enable/disable the apply btn
 ****************************************************************************/
 void CSmartDeadZoneSlider::execute()
 {

@@ -1,21 +1,21 @@
 
 /************************************************************************
-*    FILE NAME:       uicontrolnavnode.h
+*    FILE NAME:       icontrolnavnode.h
 *
-*    DESCRIPTION:     UI Control Navigation Node
+*    DESCRIPTION:     iControl Navigation Node
 *                     This class does NOT own any of then pointers
 ************************************************************************/
 
-#ifndef __uicontrol_nav_node_h__
-#define __uicontrol_nav_node_h__
+#ifndef __icontrol_nav_node_h__
+#define __icontrol_nav_node_h__
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
 // Forward declaration(s)
-class CUIControl;
+class iControl;
 
-class CUIControlNavNode : public boost::noncopyable
+class iControlNavNode : public boost::noncopyable
 {
 public:
 
@@ -28,8 +28,8 @@ public:
     };
 
     // Constructor
-    CUIControlNavNode( CUIControl * pControl )
-        : m_pUIControl( pControl ),
+    iControlNavNode( iControl * pControl )
+        : m_piControl( pControl ),
           m_pUpNode(nullptr),
           m_pDownNode(nullptr),
           m_pLeftNode(nullptr),
@@ -37,11 +37,11 @@ public:
     {}
 
     // Get UI Control
-    CUIControl * getControl()
-    { return m_pUIControl; }
+    iControl * getControl()
+    { return m_piControl; }
 
     // Set/Get Right Node
-    void setNode( ENavNode navNode, CUIControlNavNode * pNode )
+    void setNode( ENavNode navNode, iControlNavNode * pNode )
     {
         if( navNode == ENAV_NODE_UP )
             m_pUpNode = pNode;
@@ -53,7 +53,7 @@ public:
             m_pRightNode = pNode;
     }
 
-    CUIControlNavNode * getNode( ENavNode navNode )
+    iControlNavNode * getNode( ENavNode navNode )
     {
         if( navNode == ENAV_NODE_UP )
             return m_pUpNode;
@@ -70,13 +70,13 @@ public:
 private:
 
     // UI Control pointer
-    CUIControl * m_pUIControl;
+    iControl * m_piControl;
 
     // Navigation node pointers
-    CUIControlNavNode * m_pUpNode;
-    CUIControlNavNode * m_pDownNode;
-    CUIControlNavNode * m_pLeftNode;
-    CUIControlNavNode * m_pRightNode;
+    iControlNavNode * m_pUpNode;
+    iControlNavNode * m_pDownNode;
+    iControlNavNode * m_pLeftNode;
+    iControlNavNode * m_pRightNode;
 };
 
 #endif

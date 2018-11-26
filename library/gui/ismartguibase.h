@@ -13,7 +13,7 @@
 #include <string>
 
 // Forward declaration(s)
-class CUIControl;
+class iControl;
 class CMenu;
 union SDL_Event;
 
@@ -58,7 +58,7 @@ class CSmartGuiControl : public iSmartGui
 public:
 
     // Constructor
-    CSmartGuiControl( CUIControl * pUIControl );
+    CSmartGuiControl( iControl * piControl );
 
     // Called when the control is executed
     virtual void execute(){}
@@ -67,7 +67,7 @@ protected:
 
     // Pointer to UI Control class.
     // NOTE: We do not own this pointer. Don't try to free it!
-    CUIControl * m_pUIControl;
+    iControl * m_piControl;
 };
 
 #endif

@@ -26,7 +26,7 @@
 #include <system/device.h>
 #include <managers/signalmanager.h>
 #include <gui/menumanager.h>
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/menu.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
@@ -105,28 +105,28 @@ void CGame::create()
 /************************************************************************
 *    DESC:  Callback for when a smart gui control is created
 ************************************************************************/
-void CGame::smartGuiControlCreateCallBack( CUIControl * pUIControl )
+void CGame::smartGuiControlCreateCallBack( iControl * piControl )
 {
-    if( pUIControl->getFaction() == "decision_btn" )
-        pUIControl->setSmartGui( new CSmartConfirmBtn( pUIControl ) );
+    if( piControl->getFaction() == "decision_btn" )
+        piControl->setSmartGui( new CSmartConfirmBtn( piControl ) );
 
-    else if( pUIControl->getFaction() == "key_binding_btn" )
-        pUIControl->setSmartGui( new CSmartKeyBindBtn( pUIControl ) );
+    else if( piControl->getFaction() == "key_binding_btn" )
+        piControl->setSmartGui( new CSmartKeyBindBtn( piControl ) );
 
-    else if( pUIControl->getName() == "resolution_btn_lst" )
-        pUIControl->setSmartGui( new CSmartResolutionBtn( pUIControl ) );
+    else if( piControl->getName() == "resolution_btn_lst" )
+        piControl->setSmartGui( new CSmartResolutionBtn( piControl ) );
 
-    else if( pUIControl->getName() == "settings_apply_btn" )
-        pUIControl->setSmartGui( new CSmartApplySettingsBtn( pUIControl ) );
+    else if( piControl->getName() == "settings_apply_btn" )
+        piControl->setSmartGui( new CSmartApplySettingsBtn( piControl ) );
 
-    else if( pUIControl->getName() == "full_screen_check_box" )
-        pUIControl->setSmartGui( new CSmartScrnCheckBox( pUIControl ) );
+    else if( piControl->getName() == "full_screen_check_box" )
+        piControl->setSmartGui( new CSmartScrnCheckBox( piControl ) );
 
-    else if( pUIControl->getName() == "v-sync_check_box" )
-            pUIControl->setSmartGui( new CSmartVSyncCheckBox( pUIControl ) );
+    else if( piControl->getName() == "v-sync_check_box" )
+        piControl->setSmartGui( new CSmartVSyncCheckBox( piControl ) );
 
-    else if( pUIControl->getName() == "settings_dead_zone_slider" )
-            pUIControl->setSmartGui( new CSmartDeadZoneSlider( pUIControl ) );
+    else if( piControl->getName() == "settings_dead_zone_slider" )
+        piControl->setSmartGui( new CSmartDeadZoneSlider( piControl ) );
 }
 
 

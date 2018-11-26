@@ -16,7 +16,7 @@ class CSmartDeadZoneSlider : public CSmartSettingsMenuBtn
 public:
 
     // Constructor
-    CSmartDeadZoneSlider( CUIControl * pUIControl );
+    CSmartDeadZoneSlider( iControl * piControl );
     
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
@@ -25,6 +25,4 @@ public:
     void execute() override;
 };
 
-#endif  // __smart_dead_zone_slider_h__
-
-
+#endif

@@ -2,7 +2,7 @@
 # Add the files to the library
 add_library(
     library STATIC
-        gui/controlbase.cpp
+        gui/icontrol.cpp
         gui/uibutton.cpp
         gui/menumanager.cpp
         gui/menutree.cpp

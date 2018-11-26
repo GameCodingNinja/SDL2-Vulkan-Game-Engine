@@ -284,8 +284,6 @@ namespace NScriptMenuManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CMenuMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "CUIControl & getMenuControl(string &in, string &in)", asMETHOD(CMenuMgr, getPtrToMenuControl), asCALL_THISCALL) );
-
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void loadListTable(string &in)",                 asFUNCTION(LoadListTable),              asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void loadMenuAction(string &in)",                asMETHOD(CMenuMgr, loadMenuAction), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void loadGroup(string &in, bool doInit = true)", asFUNCTION(LoadGroup),              asCALL_CDECL_OBJLAST) );

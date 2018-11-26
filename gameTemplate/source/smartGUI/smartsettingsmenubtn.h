@@ -16,7 +16,7 @@ class CSmartSettingsMenuBtn : public CSmartGuiControl
 public:
 
     // Constructor
-    CSmartSettingsMenuBtn( CUIControl * pUIControl );
+    CSmartSettingsMenuBtn( iControl * piControl );
 
 protected:
 
@@ -27,6 +27,4 @@ protected:
     bool wasSettingsButtonsChanged();
 };
 
-#endif  // __smart_btn_h__
-
-
+#endif

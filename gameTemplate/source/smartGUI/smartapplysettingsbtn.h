@@ -16,7 +16,7 @@ class CSmartApplySettingsBtn : public CSmartSettingsMenuBtn
 public:
 
     // Constructor
-    CSmartApplySettingsBtn( CUIControl * pUIControl );
+    CSmartApplySettingsBtn( iControl * piControl );
     
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
@@ -25,6 +25,4 @@ public:
     void execute() override;
 };
 
-#endif  // __smart_apply_settings_btn_h__
-
-
+#endif

@@ -13,7 +13,7 @@
 
 // Game lib dependencies
 #include <gui/menumanager.h>
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/uicheckbox.h>
 #include <gui/uibuttonlist.h>
 #include <gui/menu.h>
@@ -24,14 +24,14 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartSettingsMenuBtn::CSmartSettingsMenuBtn( CUIControl * pUIControl ) :
-    CSmartGuiControl( pUIControl )
+CSmartSettingsMenuBtn::CSmartSettingsMenuBtn( CiControl * piControl ) :
+    CSmartGuiControl( piControl )
 {
 }
 
 
 /***************************************************************************
-*    decs:  Enable/disable the apply btn
+*    DESC:  Enable/disable the apply btn
 ****************************************************************************/
 void CSmartSettingsMenuBtn::enableDisableApplyBtn()
 {
@@ -46,7 +46,7 @@ void CSmartSettingsMenuBtn::enableDisableApplyBtn()
 
 
 /***************************************************************************
-*    decs:  Were the buttons in the settings menu changed
+*    DESC:  Were the buttons in the settings menu changed
 ****************************************************************************/
 bool CSmartSettingsMenuBtn::wasSettingsButtonsChanged()
 {
@@ -54,7 +54,7 @@ bool CSmartSettingsMenuBtn::wasSettingsButtonsChanged()
     CMenu & rMenu = CMenuMgr::Instance().getActiveMenu();
 
     // Get the control
-    CUIControl * pControl;
+    iControl * pControl;
 
     // Check for the resolution button list
     pControl = rMenu.getPtrToControl( "resolution_btn_lst" );

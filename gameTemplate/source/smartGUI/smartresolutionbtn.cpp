@@ -10,7 +10,7 @@
 
 // Game lib dependencies
 #include <gui/uibuttonlist.h>
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
 #include <strategy/strategymanager.h>
@@ -24,15 +24,15 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartResolutionBtn::CSmartResolutionBtn( CUIControl * pUIControl ) :
-    CSmartSettingsMenuBtn( pUIControl ),
+CSmartResolutionBtn::CSmartResolutionBtn( iControl * piControl ) :
+    CSmartSettingsMenuBtn( piControl ),
     m_resIndex(-1)
 {
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is created - Set the resolution strings
+*    DESC:  Called when the control is created - Set the resolution strings
 ****************************************************************************/
 void CSmartResolutionBtn::create()
 {
@@ -67,7 +67,7 @@ void CSmartResolutionBtn::create()
     int counter(0);
     for( auto & iter : resVec )
     {
-        m_pUIControl->setStringToList( boost::str( boost::format("%d x %d") % iter.w % iter.h ) );
+        m_piControl->setStringToList( boost::str( boost::format("%d x %d") % iter.w % iter.h ) );
 
         m_resVec.push_back( iter );
 
@@ -85,7 +85,7 @@ void CSmartResolutionBtn::create()
 void CSmartResolutionBtn::handleEvent( const SDL_Event & rEvent )
 {
     if( (m_resIndex > -1) && (rEvent.type == NMenuDefs::EME_MENU_TRANS_IN) )
-        (*dynamic_cast<CUIButtonList *>(m_pUIControl)).updateDisplay( m_resIndex );
+        m_piControl->updateDisplay( m_resIndex );
 }
 
 
@@ -103,7 +103,7 @@ void CSmartResolutionBtn::execute()
 ****************************************************************************/
 void CSmartResolutionBtn::setResolutionChange()
 {
-    m_resIndex = (*dynamic_cast<CUIButtonList *>(m_pUIControl)).getActiveIndex();
+    m_resIndex = m_piControl->getActiveIndex();
 
     CSettings::Instance().setSize( m_resVec[m_resIndex] );
     CSettings::Instance().calcRatio();
@@ -116,7 +116,7 @@ void CSmartResolutionBtn::setResolutionChange()
 ****************************************************************************/
 bool CSmartResolutionBtn::wasResolutionChanged()
 {
-    if( m_resIndex != (*dynamic_cast<CUIButtonList *>(m_pUIControl)).getActiveIndex() )
+    if( m_resIndex != m_piControl->getActiveIndex() )
         return true;
 
     return false;

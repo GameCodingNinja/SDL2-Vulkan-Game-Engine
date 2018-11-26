@@ -16,7 +16,7 @@ class CSmartKeyBindBtn : public CSmartGuiControl
 public:
 
     // Constructor
-    CSmartKeyBindBtn( CUIControl * pUIControl );
+    CSmartKeyBindBtn( iControl * piControl );
 
     // Called when the control is created
     // Sets the action ID string for the given device
@@ -29,6 +29,4 @@ public:
     void handleEvent( const SDL_Event & rEvent ) override;
 };
 
-#endif  // __smart_key_bind_btn_h__
-
-
+#endif

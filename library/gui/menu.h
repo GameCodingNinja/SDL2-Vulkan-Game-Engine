@@ -13,8 +13,8 @@
 
 // Game lib dependencies
 #include <gui/menudefs.h>
-#include <gui/uicontrolnavnode.h>
-#include <gui/uicontrol.h>
+#include <gui/icontrolnavnode.h>
+#include <gui/icontrol.h>
 #include <gui/scrollparam.h>
 #include <script/scriptcomponent.h>
 #include <common/dynamicoffset.h>
@@ -38,7 +38,7 @@ class CMenu : public CObject2D, boost::noncopyable
 public:
 
     // Define the navigation helper map
-    typedef std::map<const std::string, CUIControlNavNode *> NavHelperMap;
+    typedef std::map<const std::string, iControlNavNode *> NavHelperMap;
 
     CMenu( const std::string & name, const std::string & group );
     virtual ~CMenu();
@@ -72,10 +72,10 @@ public:
     void reset();
 
     // Get the pointer to the control in question
-    CUIControl * getPtrToControl( const std::string & nameStr );
+    iControl * getPtrToControl( const std::string & nameStr );
 
     // Get the pointer to the active control
-    CUIControl * getPtrToActiveControl();
+    iControl * getPtrToActiveControl();
 
     // Load the dynamic offset data from node
     void loadDynamicOffsetFromNode( const XMLNode & node );
@@ -136,11 +136,11 @@ private:
         const XMLNode & node,
         int nodeIndex,
         std::string attr,
-        CUIControlNavNode::ENavNode navNode,
+        iControlNavNode::ENavNode navNode,
         NavHelperMap & navNodeMap );
 
     // Navigate the menu
-    void navigateMenu( CUIControlNavNode::ENavNode navNodeAction );
+    void navigateMenu( iControlNavNode::ENavNode navNodeAction );
 
     // Message handlers
     void onUpAction( const SDL_Event & rEvent );
@@ -175,23 +175,23 @@ private:
     std::deque<CSprite> m_spriteDeq;
 
     // Vector list of static controls
-    std::vector<CUIControl *> m_pStaticControlVec;
+    std::vector<iControl *> m_pStaticControlVec;
 
     // Vector list of mouse only controls
-    std::vector<CUIControl *> m_pMouseOnlyControlVec;
+    std::vector<iControl *> m_pMouseOnlyControlVec;
 
     // Vector list of controls
-    std::vector<CUIControl *> m_pControlVec;
+    std::vector<iControl *> m_pControlVec;
 
     // Vector list of navigation nodes
-    std::vector<CUIControlNavNode *> m_pControlNodeVec;
+    std::vector<iControlNavNode *> m_pControlNodeVec;
 
     // Map container of controls for easy name access
     // NOTE: This container does not own it's pointers.
-    std::map<const std::string, CUIControl *> m_pControlMap;
+    std::map<const std::string, iControl *> m_pControlMap;
 
     // Current active node
-    CUIControlNavNode * m_pActiveNode;
+    iControlNavNode * m_pActiveNode;
 
     // menu state
     NMenuDefs::EMenuState m_state;

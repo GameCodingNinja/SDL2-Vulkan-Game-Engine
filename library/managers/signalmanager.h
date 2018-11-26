@@ -17,7 +17,7 @@
 #include <map>
 
 // Forward declaration(s)
-class CUIControl;
+class iControl;
 class CMenu;
 class CSprite;
 
@@ -26,7 +26,7 @@ class CSignalMgr
 public:
 
     // Define the boost signals
-    typedef boost::signals2::signal<void (CUIControl *)> SmartGuiControlSignal;
+    typedef boost::signals2::signal<void (iControl *)> SmartGuiControlSignal;
     typedef boost::signals2::signal<void (CMenu *)> SmartMenuSignal;
     typedef boost::signals2::signal<void (const std::string &, CSprite *)> AICreateSignal;
     typedef boost::signals2::signal<void ()> BasicFunction;
@@ -65,7 +65,7 @@ public:
     void disconnect_resolutionChange();
 
     // Broadcast smart gui control signal
-    void broadcast( CUIControl * pControl );
+    void broadcast( iControl * pControl );
 
     // Broadcast smart menu signal
     void broadcast( CMenu * pMenu );

@@ -90,22 +90,11 @@ public:
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index );
 
-    // Get reference to the menu in questionn
+    // Get reference to the menu in question
     CMenu & getMenu( const std::string & nameStr );
     
     // Get reference to the active menu
     CMenu & getActiveMenu();
-    
-    // Get the pointer to the menu control
-    CUIControl * getPtrToMenuControl( const std::string & menuName, const std::string & controlName );
-
-    // Get the reference to the control in question
-    template <typename Target>
-    Target & getMenuControl( const std::string & menuName, const std::string & controlName );
-
-    // Get the pointer to the active control - can return null
-    template <typename Target>
-    Target * getPtrToActiveControl( const std::string & menuName );
 
     // Is this menu system active
     bool isActive();
@@ -218,19 +207,19 @@ private:
 /************************************************************************
 *    desc:  Get the reference to the control in question
 ************************************************************************/
-template <typename Target>
+/*template <typename Target>
 Target & CMenuMgr::getMenuControl( const std::string & menuName, const std::string & controlName )
 {
     Target * pControl = NGenFunc::DynCast<Target>(getPtrToMenuControl(menuName, controlName));
     assert( pControl != nullptr );
 
     return *pControl;
-}
+}*/
 
 /************************************************************************
 *    desc:  Get the pointer to the active control - can return null
 ************************************************************************/
-template <typename Target>
+/*template <typename Target>
 Target * CMenuMgr::getPtrToActiveControl( const std::string & menuName )
 {
     CMenu & rMenu = getMenu(menuName);
@@ -238,6 +227,6 @@ Target * CMenuMgr::getPtrToActiveControl( const std::string & menuName )
     assert( pControl != nullptr );
 
     return pControl;
-}
+}*/
 
 #endif

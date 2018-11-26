@@ -34,7 +34,7 @@ public:
     void updateDisplay( int index ) override;
 
     // Get the active index
-    int getActiveIndex() const;
+    int getActiveIndex() const override;
 
 protected:
 

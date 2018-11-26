@@ -22,7 +22,6 @@
 #include <gui/menu.h>
 #include <gui/uislider.h>
 #include <common/defs.h>
-//#include <managers/hudmanager.h>
 #include <utilities/genfunc.h>
 #include <utilities/settings.h>
 
@@ -32,24 +31,24 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartApplySettingsBtn::CSmartApplySettingsBtn( CUIControl * pUIControl ) :
-    CSmartSettingsMenuBtn( pUIControl )
+CSmartApplySettingsBtn::CSmartApplySettingsBtn( iControl * piControl ) :
+    CSmartSettingsMenuBtn( piControl )
 {
 }
 
 
 /***************************************************************************
-*    decs:  Handle events
+*    DESC:  Handle events
 ****************************************************************************/
 void CSmartApplySettingsBtn::handleEvent( const SDL_Event & rEvent )
 {
     if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
-        m_pUIControl->changeState(NUIControl::ECS_DISABLED);
+        m_piControl->changeState(NUIControl::ECS_DISABLED);
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is executed - Applies the settings
+*    DESC:  Called when the control is executed - Applies the settings
 ****************************************************************************/
 void CSmartApplySettingsBtn::execute()
 {
@@ -69,11 +68,11 @@ void CSmartApplySettingsBtn::execute()
     }
     
     // Get the control
-    CUIControl * pControl;
+    iControl * pControl;
 
     // Check for the full screen check box
     pControl = rMenu.getPtrToControl( "full_screen_check_box" );
-    const bool fullScreenState = (*dynamic_cast<CUICheckBox *>(pControl)).getToggleState();
+    const bool fullScreenState = pControl->getToggleState();
     const bool oldFullScreenState = CSettings::Instance().getFullScreen();
     if( CSettings::Instance().getFullScreen() != fullScreenState )
     {
@@ -84,7 +83,7 @@ void CSmartApplySettingsBtn::execute()
 
     // Check for the v-sync check box
     pControl = rMenu.getPtrToControl( "v-sync_check_box" );
-    const bool vsyncState = (*dynamic_cast<CUICheckBox *>(pControl)).getToggleState();
+    const bool vsyncState = pControl->getToggleState();
     if( CSettings::Instance().getVSync() != vsyncState )
     {
         CSettings::Instance().setVSync( vsyncState );
@@ -94,7 +93,7 @@ void CSmartApplySettingsBtn::execute()
 
     // Check for dead zone slider
     pControl = rMenu.getPtrToControl( "settings_dead_zone_slider" );
-    int sliderValue = (*dynamic_cast<CUISlider *>(pControl)).getValue();
+    int sliderValue = pControl->getValue();
     if( CSettings::Instance().getGamePadStickDeadZone() != sliderValue )
     {
         CSettings::Instance().setGamePadStickDeadZone( sliderValue );
@@ -148,7 +147,7 @@ void CSmartApplySettingsBtn::execute()
     if( settingsChangeMade )
         CSettings::Instance().saveSettings();
 
-    m_pUIControl->changeState(NUIControl::ECS_DISABLED);
+    m_piControl->changeState(NUIControl::ECS_DISABLED);
 
     // Reactivate the menu now that we are done
     NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );

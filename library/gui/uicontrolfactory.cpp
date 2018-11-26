@@ -29,9 +29,9 @@ namespace NUIControlFactory
     /************************************************************************
     *    DESC:  Load the control info from XML node
     ************************************************************************/
-    CUIControl * Create( const XMLNode & node, const std::string & group )
+    iControl * Create( const XMLNode & node, const std::string & group )
     {
-        CUIControl * pControl;
+        iControl * pControl;
 
         // Get the control type. This is required
         std::string ctrlType = node.getAttribute( "controlType" );
@@ -80,5 +80,4 @@ namespace NUIControlFactory
 
         return pControl;
     }
-
-}   // NUIControlFactory
+}

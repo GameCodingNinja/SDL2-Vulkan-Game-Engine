@@ -11,7 +11,7 @@
 // Game lib dependencies
 #include <managers/actionmanager.h>
 #include <gui/menumanager.h>
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/menu.h>
 #include <gui/uiscrollbox.h>
 #include <utilities/genfunc.h>
@@ -19,14 +19,14 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartResetKeyBindBtn::CSmartResetKeyBindBtn( CUIControl * pUIControl ) :
-    CSmartGuiControl( pUIControl )
+CSmartResetKeyBindBtn::CSmartResetKeyBindBtn( iControl * piControl ) :
+    CSmartGuiControl( piControl )
 {
 }   // constructor
 
 
 /***************************************************************************
-*    decs:  Called when the control is executed - quits the game
+*    DESC:  Called when the control is executed - quits the game
 ****************************************************************************/
 void CSmartResetKeyBindBtn::execute()
 {

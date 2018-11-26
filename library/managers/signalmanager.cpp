@@ -12,7 +12,7 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
 #include <common/defs.h>
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/menu.h>
 #include <sprite/sprite.h>
 
@@ -97,7 +97,7 @@ void CSignalMgr::disconnect_resolutionChange()
 /************************************************************************
 *    DESC:  Broadcast smart gui control signal
 ************************************************************************/
-void CSignalMgr::broadcast( CUIControl * pControl )
+void CSignalMgr::broadcast( iControl * pControl )
 {
     m_smartGuiControlSignal(pControl);
 }

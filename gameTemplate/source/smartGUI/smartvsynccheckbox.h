@@ -16,7 +16,7 @@ class CSmartVSyncCheckBox : public CSmartSettingsMenuBtn
 public:
 
     // Constructor
-    CSmartVSyncCheckBox( CUIControl * pUIControl );
+    CSmartVSyncCheckBox( iControl * piControl );
 
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
@@ -25,6 +25,4 @@ public:
     void execute() override;
 };
 
-#endif  // __smart_vsync_check_box_h__
-
-
+#endif

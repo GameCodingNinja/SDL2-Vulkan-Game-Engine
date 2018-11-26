@@ -143,10 +143,10 @@ void CUIScrollBox::loadControlFromNode( const XMLNode & node )
 *           NOTE: This function recalulates the scroll box members because
 *                 it is also used for run-time dynamic scroll boxes
 ************************************************************************/
-CUIControl * CUIScrollBox::addScrollControlFromNode( const XMLNode & node )
+iControl * CUIScrollBox::addScrollControlFromNode( const XMLNode & node )
 {
     // The pointer is placed within a vector for all controls
-    CUIControl * pCtrl = NUIControlFactory::Create( node, getGroup() );
+    iControl * pCtrl = NUIControlFactory::Create( node, getGroup() );
     m_pScrollControlVec.push_back( pCtrl );
 
     // Get the position for this control
@@ -742,9 +742,9 @@ bool CUIScrollBox::inView( int scrollIndex, int scrollVector )
 /************************************************************************
 *    DESC:  Get the pointer to the subcontrol if found
 ************************************************************************/
-CUIControl * CUIScrollBox::findSubControl( const std::string & name )
+iControl * CUIScrollBox::findSubControl( const std::string & name )
 {
-    CUIControl * pCtrl = CUISubControl::findSubControl( name );
+    iControl * pCtrl = CUISubControl::findSubControl( name );
 
     for( int i = m_visStartPos; i < m_visEndPos && (pCtrl == nullptr); ++i )
         pCtrl = m_pScrollControlVec[i]->findControl( name );
@@ -756,9 +756,9 @@ CUIControl * CUIScrollBox::findSubControl( const std::string & name )
 /************************************************************************
 *    DESC:  Find the sub control via is pointer
 ************************************************************************/
-CUIControl * CUIScrollBox::findSubControl( void * pVoid )
+iControl * CUIScrollBox::findSubControl( void * pVoid )
 {
-    CUIControl * pCtrl = CUISubControl::findSubControl( pVoid );
+    iControl * pCtrl = CUISubControl::findSubControl( pVoid );
 
     for( int i = m_visStartPos; i < m_visEndPos && (pCtrl == nullptr); ++i )
         if( (void *)m_pScrollControlVec[i] == pVoid )
@@ -873,7 +873,7 @@ void CUIScrollBox::deactivateControl()
 /************************************************************************
 *    DESC:  Get the scroll control vector
 ************************************************************************/
-const std::vector<CUIControl *> & CUIScrollBox::getScrollCtrlVec()
+const std::vector<iControl *> & CUIScrollBox::getScrollCtrlVec()
 {
     return m_pScrollControlVec;
 } 
@@ -894,9 +894,9 @@ void CUIScrollBox::setAlpha( float alpha )
 /************************************************************************
 *    DESC:  Get the pointer to the active control
 ************************************************************************/
-CUIControl * CUIScrollBox::getPtrToActiveControl()
+iControl * CUIScrollBox::getPtrToActiveControl()
 {
-    CUIControl * pResult( CUISubControl::getPtrToActiveControl() );
+    iControl * pResult( CUISubControl::getPtrToActiveControl() );
 
     if( pResult == nullptr )
     {

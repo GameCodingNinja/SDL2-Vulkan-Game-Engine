@@ -61,13 +61,13 @@ public:
     void deactivateControl() override;
 
     // Get the scroll control vector
-    const std::vector<CUIControl *> & getScrollCtrlVec();
+    const std::vector<iControl *> & getScrollCtrlVec();
     
     // Set the alpha value of this menu
     void setAlpha( float alpha ) override;
     
     // Get the pointer to the active control
-    CUIControl * getPtrToActiveControl() override;
+    iControl * getPtrToActiveControl() override;
 
 protected:
 
@@ -75,7 +75,7 @@ protected:
     virtual void loadControlFromNode( const XMLNode & node ) override;
 
     // Add the scroll control from node
-    CUIControl * addScrollControlFromNode( const XMLNode & node );
+    iControl * addScrollControlFromNode( const XMLNode & node );
     
     // Handle Action messages
     void onUpAction( const SDL_Event & rEvent ) override;
@@ -102,10 +102,10 @@ protected:
     bool onSubControlMouseMove( const SDL_Event & rEvent ) override;
     
     // Get the pointer to the subcontrol if found
-    CUIControl * findSubControl( const std::string & name ) override;
+    iControl * findSubControl( const std::string & name ) override;
     
     // Find the sub control via is pointer
-    CUIControl * findSubControl( void * pVoid ) override;
+    iControl * findSubControl( void * pVoid ) override;
     
     // Deactivate the sub control
     void deactivateSubControl() override;
@@ -157,7 +157,7 @@ private:
     const uint NEW_ACTIVE_CTRL;
 
     // Vector list of controls in scroll box
-    std::vector<CUIControl *> m_pScrollControlVec;
+    std::vector<iControl *> m_pScrollControlVec;
 
     // Initial scroll box control offset
     CPoint<float> m_initialOffset;

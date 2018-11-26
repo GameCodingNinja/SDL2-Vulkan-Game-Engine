@@ -36,7 +36,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CUIControl::CUIControl( const std::string & group ) :
-    CControlBase( group ),
+    iControl( group ),
     m_state(NUIControl::ECS_NULL),
     m_lastState(NUIControl::ECS_NULL),
     m_actionType(NUIControl::ECAT_NULL),
@@ -60,7 +60,7 @@ CUIControl::~CUIControl()
 ************************************************************************/
 void CUIControl::loadFromNode( const XMLNode & node )
 {
-    CControlBase::loadFromNode( node );
+    iControl::loadFromNode( node );
 
     // Set the default state of the control
     if( node.isAttributeSet( "defaultState" ) )
@@ -967,7 +967,7 @@ bool CUIControl::isPointInControl( const CPoint<float> & pos )
 *
 *    NOTE: These function is mainly for sub controls
 ************************************************************************/
-CUIControl * CUIControl::findControl( const std::string & name )
+iControl * CUIControl::findControl( const std::string & name )
 {
     if( m_name == name )
         return this;
@@ -975,7 +975,7 @@ CUIControl * CUIControl::findControl( const std::string & name )
     return nullptr;
 }
 
-CUIControl * CUIControl::findControl( void * pVoid )
+iControl * CUIControl::findControl( void * pVoid )
 {
     if( pVoid == (void *)this )
         return this;
@@ -1074,7 +1074,7 @@ void CUIControl::setAlpha( float alpha )
 *    DESC:  Get the pointer to the active control
 *           This is mostly needed for sub controls
 ************************************************************************/
-CUIControl * CUIControl::getPtrToActiveControl()
+iControl * CUIControl::getPtrToActiveControl()
 {
     return this;
 }

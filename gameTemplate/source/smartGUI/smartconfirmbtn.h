@@ -16,12 +16,10 @@ class CSmartConfirmBtn : public CSmartGuiControl
 public:
 
     // Constructor
-    CSmartConfirmBtn( CUIControl * pUIControl );
+    CSmartConfirmBtn( iControl * piControl );
 
     // Called when the control is executed
     void execute() override;
 };
 
-#endif  // __smart_exit_btn_h__
-
-
+#endif

@@ -9,7 +9,7 @@
 #include "smartkeybindbtn.h"
 
 // Game lib dependencies
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/uisubcontrol.h>
 #include <common/defs.h>
 #include <managers/actionmanager.h>
@@ -22,22 +22,22 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartKeyBindBtn::CSmartKeyBindBtn( CUIControl * pUIControl ) :
-    CSmartGuiControl( pUIControl )
+CSmartKeyBindBtn::CSmartKeyBindBtn( iControl * piControl ) :
+    CSmartGuiControl( piControl )
 {
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is created
+*    DESC:  Called when the control is created
 *           Sets the action ID string for the given device
 ****************************************************************************/
 void CSmartKeyBindBtn::create()
 {
     uint disableCounter(0);
-    const std::string actionNameStr = m_pUIControl->getStringVec().back();
+    const std::string actionNameStr = m_piControl->getStringVec().back();
     
-    CUISubControl * pSubControl = NGenFunc::DynCast<CUISubControl>(m_pUIControl);
+    CUISubControl * pSubControl = NGenFunc::DynCast<CUISubControl>(m_piControl);
     
     for( uint i = 0; i < NDefs::MAX_UNIQUE_DEVICES; ++i )
     {
@@ -68,12 +68,12 @@ void CSmartKeyBindBtn::create()
     
     // If all 3 device types are not configuable, disable the button
     if( disableCounter == NDefs::MAX_UNIQUE_DEVICES )
-        m_pUIControl->setState( NUIControl::ECS_DISABLED );
+        m_piControl->setState( NUIControl::ECS_DISABLED );
 }
 
 
 /***************************************************************************
-*    decs:  Called when the control is executed
+*    DESC:  Called when the control is executed
 ****************************************************************************/
 void CSmartKeyBindBtn::execute()
 {
@@ -84,11 +84,11 @@ void CSmartKeyBindBtn::execute()
 
 
 /***************************************************************************
-*    decs:  Handle events
+*    DESC:  Handle events
 ****************************************************************************/
 void CSmartKeyBindBtn::handleEvent( const SDL_Event & rEvent )
 {
-    if( m_pUIControl->isSelected() && 
+    if( m_piControl->isSelected() && 
         ((rEvent.type == SDL_KEYUP) ||
          (rEvent.type == SDL_MOUSEBUTTONUP) ||
          (rEvent.type == SDL_CONTROLLERBUTTONUP)) )
@@ -105,13 +105,13 @@ void CSmartKeyBindBtn::handleEvent( const SDL_Event & rEvent )
         else
         {
             std::string idStr;
-            const std::string actionNameStr = m_pUIControl->getStringVec().back();
+            const std::string actionNameStr = m_piControl->getStringVec().back();
             NDefs::EDeviceId deviceId = CActionMgr::Instance().resetAction( rEvent, actionNameStr, idStr );
 
             if( deviceId != NDefs::DEVICE_NULL )
             {
                 // Get the sub control holding the string
-                CUISubControl * pSubControl = NGenFunc::DynCast<CUISubControl>(m_pUIControl);
+                CUISubControl * pSubControl = NGenFunc::DynCast<CUISubControl>(m_piControl);
                 CUIControl * pControl = pSubControl->getSubControl( deviceId );
 
                 // Reset the string Id

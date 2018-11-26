@@ -12,7 +12,7 @@
 #include <gui/uicontrol.h>
 
 // Game lib dependencies
-#include <gui/uicontrolnavnode.h>
+#include <gui/icontrolnavnode.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -23,7 +23,7 @@ class CUISubControl : public CUIControl
 public:
 
     // Define the navigation helper map
-    typedef std::map<const std::string, CUIControlNavNode *> NavHelperMap;
+    typedef std::map<const std::string, iControlNavNode *> NavHelperMap;
 
     // Constructor
     CUISubControl( const std::string & group );
@@ -59,15 +59,15 @@ public:
     virtual void deactivateControl() override;
 
     // Get the pointer to the control if found
-    virtual CUIControl * findControl( const std::string & name ) override;
-    virtual CUIControl * findControl( void * pVoid ) override;
+    virtual iControl * findControl( const std::string & name ) override;
+    virtual iControl * findControl( void * pVoid ) override;
     
     // Get the pointer to the subcontrol if found
-    virtual CUIControl * findSubControl( const std::string & name );
-    virtual CUIControl * findSubControl( void * pVoid );
+    virtual iControl * findSubControl( const std::string & name );
+    virtual iControl * findSubControl( void * pVoid );
 
     // Get the sub control via index
-    virtual CUIControl * getSubControl( uint index = 0 );
+    virtual iControl * getSubControl( uint index = 0 );
     
     // Handle the mouse move
     virtual bool onMouseMove( const SDL_Event & rEvent ) override;
@@ -85,7 +85,7 @@ public:
     virtual void setAlpha( float alpha ) override;
     
     // Get the pointer to the active control
-    virtual CUIControl * getPtrToActiveControl() override;
+    virtual iControl * getPtrToActiveControl() override;
 
 protected:
 
@@ -130,25 +130,25 @@ private:
         const XMLNode & node,
         int nodeIndex,
         std::string attr,
-        CUIControlNavNode::ENavNode navNode,
+        iControlNavNode::ENavNode navNode,
         NavHelperMap & navNodeMap );
 
 private:
 
     // Navigate the menu
-    void navigateMenu( CUIControlNavNode::ENavNode navNode );
+    void navigateMenu( iControlNavNode::ENavNode navNode );
 
 protected:
 
     // Vector list of sub-controls
-    std::vector<CUIControl *> m_pSubControlVec;
+    std::vector<iControl *> m_pSubControlVec;
 
     // Vector list of navigation nodes
-    std::vector<CUIControlNavNode *> m_pControlNodeVec;
+    std::vector<iControlNavNode *> m_pControlNodeVec;
 
     // Current active node
     // NOTE: This variable does not own it's pointers.
-    CUIControlNavNode * m_pActiveNode;
+    iControlNavNode * m_pActiveNode;
 
     // A sub control is a container for other controls so normally
     // it doesn't respond to select messages. There can be a case

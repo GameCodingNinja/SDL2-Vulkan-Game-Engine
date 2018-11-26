@@ -16,12 +16,10 @@ class CSmartResetKeyBindBtn : public CSmartGuiControl
 public:
 
     // Constructor
-    CSmartResetKeyBindBtn( CUIControl * pUIControl );
+    CSmartResetKeyBindBtn( iControl * piControl );
 
     // Called when the control is executed
     void execute() override;
 };
 
-#endif  // __smart_exit_btn_h__
-
-
+#endif

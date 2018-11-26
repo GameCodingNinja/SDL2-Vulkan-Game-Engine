@@ -9,14 +9,14 @@
 #include <gui/ismartguibase.h>
 
 // Game lib dependencies
-#include <gui/uicontrol.h>
+#include <gui/icontrol.h>
 #include <gui/menu.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartGuiControl::CSmartGuiControl( CUIControl * pUIControl ) :
-    m_pUIControl(pUIControl)
+CSmartGuiControl::CSmartGuiControl( iControl * piControl ) :
+    m_piControl(piControl)
 {
 }   // constructor
 

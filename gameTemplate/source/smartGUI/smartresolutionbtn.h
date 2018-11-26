@@ -22,7 +22,7 @@ class CSmartResolutionBtn : public CSmartSettingsMenuBtn
 public:
 
     // Constructor
-    CSmartResolutionBtn( CUIControl * pUIControl );
+    CSmartResolutionBtn( iControl * piControl );
 
     // Called when the control is created
     void create() override;
@@ -48,6 +48,4 @@ private:
     int m_resIndex;
 };
 
-#endif  // __smart_resolution_btn_h__
-
-
+#endif

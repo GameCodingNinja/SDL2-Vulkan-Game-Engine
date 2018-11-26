@@ -10,8 +10,8 @@
 //
 void ControlConfirm_OnExecute( CUIControl & control )
 {
-    CUIControl @yesBtn = MenuMgr.getMenuControl( "confirmation_menu", "yes_btn" );
-    CUIControl @msgLbl = MenuMgr.getMenuControl( "confirmation_menu", "message_lbl" );
+    CUIControl @yesBtn = MenuMgr.getMenu( "confirmation_menu" ).getControl( "yes_btn" );
+    CUIControl @msgLbl = MenuMgr.getMenu( "confirmation_menu" ).getControl( "message_lbl" );
     
     string actionType;
     string executionAction;

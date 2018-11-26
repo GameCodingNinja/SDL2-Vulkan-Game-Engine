@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       controlbase.cpp
+*    FILE NAME:       icontrol.cpp
 *
-*    DESCRIPTION:     Control base class
+*    DESCRIPTION:     Control Interface class
 ************************************************************************/
 
 // Physical component dependency
-#include <gui/controlbase.h>
+#include <gui/icontrol.h>
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
@@ -17,7 +17,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CControlBase::CControlBase( const std::string & group ) :
+iControl::iControl( const std::string & group ) :
     m_group(group),
     m_type(NUIControl::ECT_NULL),
     m_alpha(0.f)
@@ -28,7 +28,7 @@ CControlBase::CControlBase( const std::string & group ) :
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CControlBase::~CControlBase()
+iControl::~iControl()
 {
 }
 
@@ -38,7 +38,7 @@ CControlBase::~CControlBase()
 *
 *    param: node - XML node
 ************************************************************************/
-void CControlBase::loadFromNode( const XMLNode & node )
+void iControl::loadFromNode( const XMLNode & node )
 {
     // Set the controls name
     if( node.isAttributeSet( "name" ) )
@@ -80,7 +80,7 @@ void CControlBase::loadFromNode( const XMLNode & node )
 /************************************************************************
 *    DESC:  Load the dynamic offset data from node
 ************************************************************************/
-void CControlBase::loadDynamicOffsetFromNode( const XMLNode & node )
+void iControl::loadDynamicOffsetFromNode( const XMLNode & node )
 {
     // Load the dynamic offset
     bool dummy;
@@ -94,7 +94,7 @@ void CControlBase::loadDynamicOffsetFromNode( const XMLNode & node )
 /************************************************************************
 *    DESC:  Set the dynamic position
 ************************************************************************/
-void CControlBase::setDynamicPos()
+void iControl::setDynamicPos()
 {
     // Position the menu based on the dynamic offset
     if( !m_dynamicOffset.isEmpty() )
@@ -105,7 +105,7 @@ void CControlBase::setDynamicPos()
 /************************************************************************
 *    DESC:  Get the object group name
 ************************************************************************/
-const std::string & CControlBase::getGroup() const
+const std::string & iControl::getGroup() const
 {
     return m_group;
 }
@@ -114,7 +114,7 @@ const std::string & CControlBase::getGroup() const
 /************************************************************************
 *    DESC:  Get the control name
 ************************************************************************/
-const std::string & CControlBase::getName() const
+const std::string & iControl::getName() const
 {
     return m_name;
 }
@@ -123,7 +123,7 @@ const std::string & CControlBase::getName() const
 /************************************************************************
 *    DESC:  Get the control type
 ************************************************************************/
-NUIControl::EControlType CControlBase::getType() const
+NUIControl::EControlType iControl::getType() const
 {
     return m_type;
 }
@@ -132,7 +132,7 @@ NUIControl::EControlType CControlBase::getType() const
 /************************************************************************
 *    DESC:  Get the faction name
 ************************************************************************/
-const std::string & CControlBase::getFaction() const
+const std::string & iControl::getFaction() const
 {
     return m_faction;
 }
@@ -141,7 +141,7 @@ const std::string & CControlBase::getFaction() const
 /************************************************************************
 *    DESC:  Get the alpha value of this control
 ************************************************************************/
-float CControlBase::getAlpha() const
+float iControl::getAlpha() const
 {
     return m_alpha;
 }

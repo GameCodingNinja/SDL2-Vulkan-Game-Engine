@@ -22,8 +22,8 @@ public:
     virtual ~CUICheckBox();
 
     // Set or get the Select state of this control
-    void setToggleState( bool value );
-    bool getToggleState();
+    void setToggleState( bool value ) override;
+    bool getToggleState() override;
 
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera ) override;

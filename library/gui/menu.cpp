@@ -253,7 +253,7 @@ void CMenu::loadControlFromNode( XMLNode & node, NavHelperMap & navNodeMap )
         }
 
         // Add a node to the vector with it's control
-        m_pControlNodeVec.push_back( new CUIControlNavNode( m_pControlVec.back() ) );
+        m_pControlNodeVec.push_back( new iControlNavNode( m_pControlVec.back() ) );
 
         // Map of menu control nodes
         navNodeMap.emplace( controlName, m_pControlNodeVec.back() );
@@ -315,10 +315,10 @@ void CMenu::findNodes(
     const XMLNode navNode = node.getChildNode( "navigate" );
     if( !navNode.isEmpty() )
     {
-        setNodes( navNode, nodeIndex, "up",    CUIControlNavNode::ENAV_NODE_UP,    navNodeMap );
-        setNodes( navNode, nodeIndex, "down",  CUIControlNavNode::ENAV_NODE_DOWN,  navNodeMap );
-        setNodes( navNode, nodeIndex, "left",  CUIControlNavNode::ENAV_NODE_LEFT,  navNodeMap );
-        setNodes( navNode, nodeIndex, "right", CUIControlNavNode::ENAV_NODE_RIGHT, navNodeMap );
+        setNodes( navNode, nodeIndex, "up",    iControlNavNode::ENAV_NODE_UP,    navNodeMap );
+        setNodes( navNode, nodeIndex, "down",  iControlNavNode::ENAV_NODE_DOWN,  navNodeMap );
+        setNodes( navNode, nodeIndex, "left",  iControlNavNode::ENAV_NODE_LEFT,  navNodeMap );
+        setNodes( navNode, nodeIndex, "right", iControlNavNode::ENAV_NODE_RIGHT, navNodeMap );
     }
 }
 
@@ -330,7 +330,7 @@ void CMenu::setNodes(
     const XMLNode & node,
     int nodeIndex,
     std::string attr,
-    CUIControlNavNode::ENavNode navNode,
+    iControlNavNode::ENavNode navNode,
     NavHelperMap & navNodeMap )
 {
     if( node.isAttributeSet( attr.c_str() ) )
@@ -569,7 +569,7 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onUpAction( const SDL_Event & rEvent )
 {
-    navigateMenu( CUIControlNavNode::ENAV_NODE_UP );
+    navigateMenu( iControlNavNode::ENAV_NODE_UP );
 }
 
 /************************************************************************
@@ -577,7 +577,7 @@ void CMenu::onUpAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onDownAction( const SDL_Event & rEvent )
 {
-    navigateMenu( CUIControlNavNode::ENAV_NODE_DOWN );
+    navigateMenu( iControlNavNode::ENAV_NODE_DOWN );
 }
 
 /************************************************************************
@@ -585,7 +585,7 @@ void CMenu::onDownAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onLeftAction( const SDL_Event & rEvent )
 {
-    navigateMenu( CUIControlNavNode::ENAV_NODE_LEFT );
+    navigateMenu( iControlNavNode::ENAV_NODE_LEFT );
 }
 
 /************************************************************************
@@ -593,7 +593,7 @@ void CMenu::onLeftAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onRightAction( const SDL_Event & rEvent )
 {
-    navigateMenu( CUIControlNavNode::ENAV_NODE_RIGHT );
+    navigateMenu( iControlNavNode::ENAV_NODE_RIGHT );
 }
 
 
@@ -601,11 +601,11 @@ void CMenu::onRightAction( const SDL_Event & rEvent )
 *    DESC:  Navigate the menu. Find the next control node that isn't
 *           disabled and make it the active control node
 ************************************************************************/
-void CMenu::navigateMenu( CUIControlNavNode::ENavNode navNodeAction )
+void CMenu::navigateMenu( iControlNavNode::ENavNode navNodeAction )
 {
     if( m_pActiveNode != nullptr )
     {
-        CUIControlNavNode * pNavNode = m_pActiveNode;
+        iControlNavNode * pNavNode = m_pActiveNode;
 
         do
         {
@@ -819,7 +819,7 @@ void CMenu::reset()
 /************************************************************************
 *    DESC:  Get the pointer to the control in question
 ************************************************************************/
-CUIControl * CMenu::getPtrToControl( const std::string & name )
+iControl * CMenu::getPtrToControl( const std::string & name )
 {
     // See if the control can be found
     auto iter = m_pControlMap.find( name );
@@ -838,9 +838,9 @@ CUIControl * CMenu::getPtrToControl( const std::string & name )
 /************************************************************************
 *    DESC:  Get the pointer to the active control
 ************************************************************************/
-CUIControl * CMenu::getPtrToActiveControl()
+iControl * CMenu::getPtrToActiveControl()
 {
-    CUIControl * pResult(nullptr);
+    iControl * pResult(nullptr);
 
     for( auto iter : m_pControlVec )
     {

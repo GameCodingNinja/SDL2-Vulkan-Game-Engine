@@ -11,13 +11,13 @@
 #include <string>
 
 // Forward declaration(s)
-class CUIControl;
+class iControl;
 struct XMLNode;
 
 namespace NUIControlFactory
 {
     // Create the control
-    CUIControl * Create( const XMLNode & node, const std::string & group );
+    iControl * Create( const XMLNode & node, const std::string & group );
 };
 
 #endif

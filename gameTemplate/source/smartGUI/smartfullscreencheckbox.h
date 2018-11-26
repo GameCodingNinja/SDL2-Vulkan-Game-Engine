@@ -19,7 +19,7 @@ class CSmartScrnCheckBox : public CSmartSettingsMenuBtn
 public:
 
     // Constructor
-    CSmartScrnCheckBox( CUIControl * pUIControl );
+    CSmartScrnCheckBox( iControl * piControl );
 
     // Handle events
     void handleEvent( const SDL_Event & rEvent ) override;
@@ -28,6 +28,4 @@ public:
     void execute() override;
 };
 
-#endif  // __smart_full_screen_check_box_h__
-
-
+#endif
