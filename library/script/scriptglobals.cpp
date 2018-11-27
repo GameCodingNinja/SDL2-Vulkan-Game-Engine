@@ -14,7 +14,6 @@
 #include <utilities/exceptionhandling.h>
 #include <managers/signalmanager.h>
 #include <script/scriptmanager.h>
-#include <scriptarray/scriptarray.h>
 #include <common/size.h>
 
 // Standard lib dependencies
@@ -28,6 +27,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <scriptarray/scriptarray.h>
 
 namespace NScriptGlobals
 {

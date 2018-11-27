@@ -65,7 +65,7 @@ void AlphaTo( float time, float final, CMenu & menu )
 /************************************************************************
 *    DESC:  Sound to play when the menu control becomes active
 ************************************************************************/
-void Control_OnActive( CUIControl & control )
+void Control_OnActive( uiControl & control )
 {
     SoundMgr.play( "(menu)", "active" );
 }
@@ -74,7 +74,7 @@ void Control_OnActive( CUIControl & control )
 /************************************************************************
 *    DESC:  Sound to play when the menu control is selected
 ************************************************************************/
-void Control_OnSelect( CUIControl & control )
+void Control_OnSelect( uiControl & control )
 {
     SoundMgr.play( "(menu)", "select" );
 }

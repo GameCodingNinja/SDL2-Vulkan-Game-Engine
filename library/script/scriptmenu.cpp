@@ -121,13 +121,13 @@ namespace NScriptMenu
         // Register type
         Throw( pEngine->RegisterObjectType(  "CMenu", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setAlpha(float alpha)",  asMETHOD(CMenu, setAlpha), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "float getAlpha()",            asMETHOD(CMenu, getAlpha), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setAlpha(float alpha)",                            asMETHOD(CMenu, setAlpha), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "float getAlpha()",                                      asMETHOD(CMenu, getAlpha), asCALL_THISCALL) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "CUIControl & getControl(string &in)", asMETHOD(CMenu, getPtrToControl),       asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "CUIControl & getActiveControl()",     asMETHOD(CMenu, getPtrToActiveControl), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getControl(string &in)",                    asMETHOD(CMenu, getPtrToControl),       asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getActiveControl()",                        asMETHOD(CMenu, getPtrToActiveControl), asCALL_THISCALL) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "bool isActive()",                     asMETHOD(CMenu, isActive), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "bool isActive()",                                       asMETHOD(CMenu, isActive), asCALL_THISCALL) );
 
         // Object pos, rot & scale
         Throw( pEngine->RegisterObjectMethod("CMenu", "void setVisible(bool)",                                 asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );

@@ -40,7 +40,7 @@ public:
     virtual void update() override;
     
     // Set the amount to the meter without banging up
-    void set( const double amount ) override;
+    void setMeterValue( const double amount ) override;
     
     // Start the bang range
     void startBangUp( const double amount ) override;
@@ -52,7 +52,7 @@ public:
     bool isBanging() override;
     
     // Clear the meter
-    void clear() override;
+    void clearMeter() override;
     
 protected:
 

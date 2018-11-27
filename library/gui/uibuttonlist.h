@@ -30,11 +30,9 @@ public:
     // Set the first inactive control to be active
     bool activateFirstInactiveControl() override;
 
-    // Update the display
-    void updateDisplay( int index ) override;
-
     // Get the active index
     int getActiveIndex() const override;
+    void setActiveIndex( int index ) override;
 
 protected:
 
@@ -73,6 +71,9 @@ private:
     // Inc/Dec the list
     void incList();
     void decList();
+    
+    // Update the display
+    void updateDisplay();
 
 private:
 

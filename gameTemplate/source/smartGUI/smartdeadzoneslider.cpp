@@ -28,7 +28,7 @@ CSmartDeadZoneSlider::CSmartDeadZoneSlider( iControl * piControl ) :
 void CSmartDeadZoneSlider::handleEvent( const SDL_Event & rEvent )
 {
     if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
-        m_piControl->setSlider( CSettings::Instance().getGamePadStickDeadZone() );
+        m_piControl->setSliderPosValue( CSettings::Instance().getGamePadStickDeadZone() );
 }
 
 

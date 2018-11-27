@@ -71,8 +71,8 @@ void CUIScrollBox::loadFromNode( const XMLNode & node )
     CUISubControl::loadFromNode( node );
 
     // Init the slider
-    NGenFunc::DynCast<CUISlider>(getSubControl())->setMaxValue(m_maxMoveAmount);
-    NGenFunc::DynCast<CUISlider>(getSubControl())->setSlider();
+    getSubControl()->setSliderMaxValue(m_maxMoveAmount);
+    getSubControl()->setSliderPosValue();
 
     // Get the scrolling info
     const XMLNode scrollNode = node.getChildNode( "scroll" );
@@ -269,10 +269,10 @@ bool CUIScrollBox::onMouseMove( const SDL_Event & rEvent )
     // Invalidate the active control
     m_activeScrollCtrl = NUIControl::NO_ACTIVE_CONTROL;
 
-    if( NGenFunc::DynCast<CUISlider>(getSubControl())->isMouseDown() )
+    if( getSubControl()->isSliderMouseDown() )
     {
         // Get the current scroll position
-        m_scrollCurPos = NGenFunc::DynCast<CUISlider>(getSubControl())->getValue();
+        m_scrollCurPos = getSubControl()->getSliderPosValue();
 
         // Set the bounds
         setStartEndPos();
@@ -373,7 +373,7 @@ bool CUIScrollBox::handleSelectAction( const CSelectMsgCracker & msgCracker )
     if( msgCracker.isDeviceMouse() && msgCracker.isPressDown() )
     {
         // Get the current scroll position
-        m_scrollCurPos = NGenFunc::DynCast<CUISlider>(getSubControl())->getValue();
+        m_scrollCurPos = getSubControl()->getSliderPosValue();
 
         // Set the bounds
         setStartEndPos();
@@ -677,7 +677,7 @@ void CUIScrollBox::handleScrollUpdate()
         else
             m_scrollCurPos -= dist;
 
-        NGenFunc::DynCast<CUISlider>(getSubControl())->setSlider(m_scrollCurPos);
+        getSubControl()->setSliderPosValue(m_scrollCurPos);
 
         m_scrollCounter += dist;
 

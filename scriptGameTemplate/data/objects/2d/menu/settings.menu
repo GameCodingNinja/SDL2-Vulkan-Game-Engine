@@ -110,6 +110,7 @@
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script init="ControlDeadZoneSlider_OnInit"/>
             </scriptLst>
         </control>
 

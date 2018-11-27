@@ -261,13 +261,13 @@ void CUIControl::transformCollision()
 
         CQuad quad;
         quad.point[0].x = -halfwidth + -m_sizeModifier.x1;
-        quad.point[0].y = -halfHeight + m_sizeModifier.y1;
+        quad.point[0].y = -halfHeight + -m_sizeModifier.y1;
         quad.point[1].x = halfwidth + m_sizeModifier.x2;
-        quad.point[1].y = -halfHeight + m_sizeModifier.y1;
+        quad.point[1].y = -halfHeight + -m_sizeModifier.y1;
         quad.point[2].x = halfwidth + m_sizeModifier.x2;
-        quad.point[2].y = halfHeight + -m_sizeModifier.y2;
+        quad.point[2].y = halfHeight + m_sizeModifier.y2;
         quad.point[3].x = -halfwidth + -m_sizeModifier.x1;
-        quad.point[3].y = halfHeight + -m_sizeModifier.y2;
+        quad.point[3].y = halfHeight + m_sizeModifier.y2;
 
         finalMatrix.transform( m_collisionQuad, quad );
 

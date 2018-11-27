@@ -48,8 +48,17 @@ namespace NScriptSettings
         Throw( pEngine->RegisterObjectMethod("CSettings", "int getSectorSize()",                  asMETHOD(CSettings, getSectorSize),        asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "int getSectorSizeHalf()",              asMETHOD(CSettings, getSectorSizeHalf),    asCALL_THISCALL) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "int getAnisotropicLevel()",            asMETHOD(CSettings, getVSync),             asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setAnisotropicLevel(int)",        asMETHOD(CSettings, setVSync),             asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "int getAnisotropicLevel()",            asMETHOD(CSettings, getAnisotropicLevel),  asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setAnisotropicLevel(int)",        asMETHOD(CSettings, setAnisotropicLevel),  asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugMode()",                   asMETHOD(CSettings, isDebugMode),          asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugAsMobile()",               asMETHOD(CSettings, isDebugAsMobile),      asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isMobileDevice()",                asMETHOD(CSettings, isMobileDevice),       asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CSettings", "int getGamePadStickDeadZone()",        asMETHOD(CSettings, getGamePadStickDeadZone), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setGamePadStickDeadZone(int)",    asMETHOD(CSettings, setGamePadStickDeadZone), asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void saveSettings()",                  asMETHOD(CSettings, saveSettings), asCALL_THISCALL) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CSettings Settings", &CSettings::Instance()) );

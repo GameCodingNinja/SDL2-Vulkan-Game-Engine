@@ -193,7 +193,7 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
             decList();
 
             // Update the display
-            updateDisplay( m_activeIndex );
+            updateDisplay();
 
             // Execute smart gui
             smartExecuteAction();
@@ -204,7 +204,7 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
             incList();
 
             // Update the display
-            updateDisplay( m_activeIndex );
+            updateDisplay();
 
             // Execute smart gui
             smartExecuteAction();
@@ -237,10 +237,8 @@ void CUIButtonList::decList()
 /************************************************************************
 *    DESC:  Update the display
 ************************************************************************/
-void CUIButtonList::updateDisplay( int index )
+void CUIButtonList::updateDisplay()
 {
-    m_activeIndex = index;
-
     createFontString( m_activeIndex );
 
     if( m_imageLstIndex > -1 )
@@ -259,9 +257,17 @@ bool CUIButtonList::activateFirstInactiveControl()
 
 
 /************************************************************************
-*    DESC:  Get the active index
+*    DESC:  Get/Set the active index
 ************************************************************************/
 int CUIButtonList::getActiveIndex() const
 {
     return m_activeIndex;
+}
+
+void CUIButtonList::setActiveIndex( int index )
+{
+    m_activeIndex = index;
+    
+    // Update the display
+    updateDisplay();
 }

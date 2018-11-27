@@ -34,23 +34,18 @@ public:
     virtual void init() override;
 
     // Set the slider min value
-    void setMinValue( float value );
+    void setSliderMinValue( float value ) override;
 
     // Set the slider max value
-    void setMaxValue( float value );
+    void setSliderMaxValue( float value ) override;
 
-    // Set the slider position
-    void setSlider( float value = 0 ) override;
-
-    // Set the slider inc value
-    void incSlider( float value = 0 );
-
-    // Get the current value
-    float getValue() override;
+    // Get/Set the slider position value
+    void setSliderPosValue( float value = 0 ) override;
+    float getSliderPosValue() override;
     
     // Is the mouse down
-    bool isMouseDown();
-    
+    bool isSliderMouseDown() override;
+
     // Deactivate the control
     virtual void deactivateControl() override;
     
@@ -58,6 +53,9 @@ public:
     virtual bool onMouseMove( const SDL_Event & rEvent ) override;
 
 protected:
+    
+    // Inc the slider inc value
+    void incSlider( float value = 0 );
 
     // Load the control info from XML node
     virtual void loadControlFromNode( const XMLNode & node ) override;

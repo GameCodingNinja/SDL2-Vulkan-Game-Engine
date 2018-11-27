@@ -93,7 +93,7 @@ void CSmartApplySettingsBtn::execute()
 
     // Check for dead zone slider
     pControl = rMenu.getPtrToControl( "settings_dead_zone_slider" );
-    int sliderValue = pControl->getValue();
+    int sliderValue = pControl->getSliderPosValue();
     if( CSettings::Instance().getGamePadStickDeadZone() != sliderValue )
     {
         CSettings::Instance().setGamePadStickDeadZone( sliderValue );

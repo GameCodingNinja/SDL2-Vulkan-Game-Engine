@@ -45,7 +45,7 @@ void CSmartKeyBindBtn::create()
         bool configurable;
         
         // Get the pointer to the sub control label associated with the device
-        CUIControl * pControl = pSubControl->getSubControl(i);
+        iControl * pControl = pSubControl->getSubControl(i);
     
         // If the ID is defined in the controller mapping XML, set it's string Id
         if( CActionMgr::Instance().getDeviceActionStr(NDefs::EDeviceId(i), actionNameStr, idStr, configurable) )
@@ -112,7 +112,7 @@ void CSmartKeyBindBtn::handleEvent( const SDL_Event & rEvent )
             {
                 // Get the sub control holding the string
                 CUISubControl * pSubControl = NGenFunc::DynCast<CUISubControl>(m_piControl);
-                CUIControl * pControl = pSubControl->getSubControl( deviceId );
+                iControl * pControl = pSubControl->getSubControl( deviceId );
 
                 // Reset the string Id
                 pControl->createFontString( idStr );

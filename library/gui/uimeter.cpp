@@ -125,7 +125,7 @@ void CUIMeter::loadControlFromNode( const XMLNode & controlNode )
 /************************************************************************
 *    DESC:  Set the amount to the meter without banging up
 ************************************************************************/
-void CUIMeter::set( const double amount )
+void CUIMeter::setMeterValue( const double amount )
 {
     if( ((int64_t)amount > 0) && ((int64_t)amount != (int64_t)m_currentValue) )
     {
@@ -359,7 +359,7 @@ bool CUIMeter::isBanging()
 /************************************************************************
 *    DESC:  Clear the meter
 ************************************************************************/
-void CUIMeter::clear()
+void CUIMeter::clearMeter()
 {
     m_lastValue = m_currentValue = m_targetValue = 0;
     m_bangUp = false;

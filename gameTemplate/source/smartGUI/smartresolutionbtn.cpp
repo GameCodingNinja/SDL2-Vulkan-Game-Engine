@@ -85,7 +85,7 @@ void CSmartResolutionBtn::create()
 void CSmartResolutionBtn::handleEvent( const SDL_Event & rEvent )
 {
     if( (m_resIndex > -1) && (rEvent.type == NMenuDefs::EME_MENU_TRANS_IN) )
-        m_piControl->updateDisplay( m_resIndex );
+        m_piControl->setActiveIndex( m_resIndex );
 }
 
 

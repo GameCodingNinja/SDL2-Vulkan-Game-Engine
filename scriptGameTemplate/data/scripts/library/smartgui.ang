@@ -8,10 +8,10 @@
 //
 //  Execution script for the menu control to change to the confirmation menu
 //
-void ControlConfirm_OnExecute( CUIControl & control )
+void ControlConfirm_OnExecute( uiControl & control )
 {
-    CUIControl @yesBtn = MenuMgr.getMenu( "confirmation_menu" ).getControl( "yes_btn" );
-    CUIControl @msgLbl = MenuMgr.getMenu( "confirmation_menu" ).getControl( "message_lbl" );
+    uiControl @yesBtn = MenuMgr.getMenu( "confirmation_menu" ).getControl( "yes_btn" );
+    uiControl @msgLbl = MenuMgr.getMenu( "confirmation_menu" ).getControl( "message_lbl" );
     
     string actionType;
     string executionAction;
@@ -43,7 +43,7 @@ void ControlConfirm_OnExecute( CUIControl & control )
 //
 //  Execution script for the menu control to fill it with display resolutions
 //
-void ControlResolution_OnInit( CUIControl & control )
+void ControlResolution_OnInit( uiControl & control )
 {
     // Get the screen resolutions
     array<CSize> @ resAry = GetScreenResolutions();
@@ -61,8 +61,16 @@ void ControlResolution_OnInit( CUIControl & control )
         // If we found our current game res, set it
         if( int(resAry[i].w) == int(curRes.w) && int(resAry[i].h) == int(curRes.h) )
         {
-            control.updateDisplay( i );
+            control.setActiveIndex( i );
             break;
         }
     }
+}
+
+//
+//  Execution script to set the saved position of the dead zone slider
+//
+void ControlDeadZoneSlider_OnInit( uiControl & control )
+{
+    control.setSliderPosValue( Settings.getGamePadStickDeadZone() );
 }

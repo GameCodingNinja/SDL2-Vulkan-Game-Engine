@@ -195,22 +195,20 @@ public:
     
     // Interface to button list
     
-    // Update the display
-    virtual void updateDisplay( int index ){}
-    
     // Get the active index
     virtual int getActiveIndex() const { return 0; }
+    virtual void setActiveIndex( int index ){}
     
     // Interface to check box
     
     // Set or get the Select state of this control
-    virtual void setToggleState( bool value ){}
     virtual bool getToggleState(){ return false; }
+    virtual void setToggleState( bool value ){}
     
     // Interface to meter
     
     // Set the amount to the meter without banging up
-    virtual void set( const double amount ){}
+    virtual void setMeterValue( const double amount ){}
     
     // Start the bang range
     virtual void startBangUp( const double amount ){}
@@ -222,31 +220,36 @@ public:
     virtual bool isBanging(){ return false; }
     
     // Clear the meter
-    virtual void clear(){}
+    virtual void clearMeter(){}
     
     // Interface to progress bar
     
     // Set/Get current value
-    virtual void setCurValue( float value ){}
-    virtual float getCurValue(){ return 0.f; }
-    virtual void incCurValue( float value ){}
+    virtual void setProgressBarValue( float value ){}
+    virtual float getProgressBarValue(){ return 0.f; }
+    virtual void incProgressBarValue( float value ){}
     
     // Set/Get min value
-    virtual void setMinValue( float value ){}
-    virtual float getMinValue(){ return 0.f; }
+    virtual void setProgressBarMinValue( float value ){}
+    virtual float getProgressBarMinValue(){ return 0.f; }
     
     // Set/Get max value
-    virtual void setMaxValue( float value ){}
-    virtual float getMaxValue(){ return 0.f; }
+    virtual void setProgressBarMaxValue( float value ){}
+    virtual float getProgressBarMaxValue(){ return 0.f; }
     
     // Interface to slider
 
-    // Set the slider position
-    virtual void setSlider( float value = 0 ){}
-
-    // Get the current value
-    virtual float getValue(){ return 0.f; }
+    // Set/Get the slider position
+    virtual void setSliderPosValue( float value = 0 ){}
+    virtual float getSliderPosValue(){ return 0.f; }
     
+    // Set/Get the slider min value
+    virtual void setSliderMinValue( float value ){}
+    virtual void setSliderMaxValue( float value ){}
+    
+    // Is the mouse down
+    virtual bool isSliderMouseDown(){ return false; }
+
 private:
     
     // Load the dynamic offset data from node

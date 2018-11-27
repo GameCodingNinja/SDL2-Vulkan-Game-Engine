@@ -250,7 +250,7 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
 /************************************************************************
 *    DESC:  Set the slider min value
 ************************************************************************/
-void CUISlider::setMinValue( float value )
+void CUISlider::setSliderMinValue( float value )
 {
     m_minValue = value;
 }
@@ -259,7 +259,7 @@ void CUISlider::setMinValue( float value )
 /************************************************************************
 *    DESC:  Set the slider max value
 ************************************************************************/
-void CUISlider::setMaxValue( float value )
+void CUISlider::setSliderMaxValue( float value )
 {
     m_maxValue = value;
 }
@@ -268,12 +268,20 @@ void CUISlider::setMaxValue( float value )
 /************************************************************************
 *    DESC:  Set the slider inc value
 ************************************************************************/
-void CUISlider::setSlider( float value )
+void CUISlider::setSliderPosValue( float value )
 {
     m_curValue = value;
 
     // Update the slider
     updateSlider();
+}
+
+/************************************************************************
+*    DESC:  Cap the slider value
+************************************************************************/
+float CUISlider::getSliderPosValue()
+{
+    return m_curValue;
 }
 
 
@@ -365,18 +373,9 @@ void CUISlider::setSliderPos()
 
 
 /************************************************************************
-*    DESC:  Cap the slider value
-************************************************************************/
-float CUISlider::getValue()
-{
-    return m_curValue;
-}
-
-
-/************************************************************************
 *    DESC:  Is the mouse down
 ************************************************************************/
-bool CUISlider::isMouseDown()
+bool CUISlider::isSliderMouseDown()
 {
     return (m_pressType == NDefs::EAP_DOWN);
 }

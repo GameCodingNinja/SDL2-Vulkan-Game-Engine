@@ -237,17 +237,17 @@ void CUIProgressBar::setSizePos()
 /************************************************************************
 *    DESC:  Set/Get/Inc current value
 ************************************************************************/
-void CUIProgressBar::setCurValue( float value )
+void CUIProgressBar::setProgressBarValue( float value )
 {
     m_curValue = value;
 }
 
-float CUIProgressBar::getCurValue()
+float CUIProgressBar::getProgressBarValue()
 {
     return m_curValue;
 }
 
-void CUIProgressBar::incCurValue( float value )
+void CUIProgressBar::incProgressBarValue( float value )
 {
     m_curValue += value;
 }
@@ -256,12 +256,12 @@ void CUIProgressBar::incCurValue( float value )
 /************************************************************************
 *    DESC:  Set/Get min value
 ************************************************************************/
-void CUIProgressBar::setMinValue( float value )
+void CUIProgressBar::setProgressBarMinValue( float value )
 {
     m_minValue = value;
 }
 
-float CUIProgressBar::getMinValue()
+float CUIProgressBar::getProgressBarMinValue()
 {
     return m_minValue;
 }
@@ -270,12 +270,12 @@ float CUIProgressBar::getMinValue()
 /************************************************************************
 *    DESC:  Set/Get max value
 ************************************************************************/
-void CUIProgressBar::setMaxValue( float value )
+void CUIProgressBar::setProgressBarMaxValue( float value )
 {
     m_maxValue = value;
 }
 
-float CUIProgressBar::getMaxValue()
+float CUIProgressBar::getProgressBarMaxValue()
 {
     return m_maxValue;
 }

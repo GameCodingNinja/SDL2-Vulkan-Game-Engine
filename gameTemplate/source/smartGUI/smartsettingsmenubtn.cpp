@@ -24,7 +24,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSmartSettingsMenuBtn::CSmartSettingsMenuBtn( CiControl * piControl ) :
+CSmartSettingsMenuBtn::CSmartSettingsMenuBtn( iControl * piControl ) :
     CSmartGuiControl( piControl )
 {
 }
@@ -63,17 +63,17 @@ bool CSmartSettingsMenuBtn::wasSettingsButtonsChanged()
 
     // Check for the full screen check box
     pControl = rMenu.getPtrToControl( "full_screen_check_box" );
-    if( CSettings::Instance().getFullScreen() != (*dynamic_cast<CUICheckBox *>(pControl)).getToggleState() )
+    if( CSettings::Instance().getFullScreen() != pControl->getToggleState() )
         return true;
 
     // Check for the v-sync check box
     pControl = rMenu.getPtrToControl( "v-sync_check_box" );
-    if( CSettings::Instance().getVSync() != (*dynamic_cast<CUICheckBox *>(pControl)).getToggleState() )
+    if( CSettings::Instance().getVSync() != pControl->getToggleState() )
         return true;
 
     // Check for dead zone slider
     pControl = rMenu.getPtrToControl( "settings_dead_zone_slider" );
-    if( CSettings::Instance().getGamePadStickDeadZone() != (int)(*dynamic_cast<CUISlider *>(pControl)).getValue() )
+    if( CSettings::Instance().getGamePadStickDeadZone() != (int)pControl->getSliderPosValue() )
         return true;
 
     return false;

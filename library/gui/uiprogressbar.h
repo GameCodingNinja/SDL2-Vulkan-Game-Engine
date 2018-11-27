@@ -41,17 +41,17 @@ public:
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera ) override;
     
     // Set/Get current value
-    void setCurValue( float value ) override;
-    float getCurValue() override;
-    void incCurValue( float value ) override;
+    void setProgressBarValue( float value ) override;
+    float getProgressBarValue() override;
+    void incProgressBarValue( float value ) override;
     
     // Set/Get min value
-    void setMinValue( float value ) override;
-    float getMinValue() override;
+    void setProgressBarMinValue( float value ) override;
+    float getProgressBarMinValue() override;
     
     // Set/Get max value
-    void setMaxValue( float value ) override;
-    float getMaxValue() override;
+    void setProgressBarMaxValue( float value ) override;
+    float getProgressBarMaxValue() override;
     
 private:
     
