@@ -155,6 +155,25 @@ namespace NScriptStrategy
     }
     
     /************************************************************************
+    *    DESC:  Clear all the strategies
+    ************************************************************************/
+    void Clear( CStrategyMgr & rStrategyMgr )
+    {
+        try
+        {
+            rStrategyMgr.clear();
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+    }
+    
+    /************************************************************************
     *    DESC:  Register the class with AngelScript
     ************************************************************************/
     void Register()
@@ -198,6 +217,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                    asMETHOD(CStrategyMgr, update), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                                 asMETHOD(CStrategyMgr, transform), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void setCamera(string &in, string &in)",           asMETHOD(CStrategyMgr, setCamera), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void clear()",                                     asFUNCTION(Clear), asCALL_CDECL_OBJLAST) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );

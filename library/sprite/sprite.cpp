@@ -133,7 +133,11 @@ void CSprite::init()
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->createFontString();
 
+    // Execute the init now
     prepare( "init", true );
+    
+    // This assume a looping update script that will kick in next frame
+    prepare( "update", false );
 }
 
 
@@ -167,7 +171,7 @@ void CSprite::initScriptFunctions( const XMLNode & node )
                     if( group.empty() )
                         group = m_rObjectData.getGroup();
                 }
-            
+
                 m_scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
             }
         }
@@ -223,8 +227,6 @@ void CSprite::handleEvent( const SDL_Event & rEvent )
 void CSprite::update()
 {
     m_scriptComponent.update();
-    
-    prepare( "update", true );
 
     if( m_upAI )
         m_upAI->update();

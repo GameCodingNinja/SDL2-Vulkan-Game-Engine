@@ -1,0 +1,534 @@
+Scanning dependencies of target bulletPhysics
+[  0%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftBody.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp: In member function ‘void btSoftBody::addAeroForceToFace(const btVector3&, int)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:662:57: warning: enum constant in boolean context [-Wint-in-bool-context]
+                 if ( btSoftBody::eAeroModel::F_TwoSided )
+                                                         ^
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h: In instantiation of ‘void ZeroInitialize(T&) [with T = btSoftBody::Node]’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:44:25:   required from here
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:196:11: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSoftBody::Node’; use assignment or value-initialization instead [-Wclass-memaccess]
+     memset(&value, 0, sizeof (T));
+     ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:20,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.h:222:9: note: ‘struct btSoftBody::Node’ declared here
+  struct Node : Feature
+         ^~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h: In instantiation of ‘void ZeroInitialize(T&) [with T = btSoftBody::Material]’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:186:27:   required from here
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:196:11: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSoftBody::Material’; use assignment or value-initialization instead [-Wclass-memaccess]
+     memset(&value, 0, sizeof (T));
+     ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:20,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.h:208:9: note: ‘struct btSoftBody::Material’ declared here
+  struct Material : Element
+         ^~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h: In instantiation of ‘void ZeroInitialize(T&) [with T = btSoftBody::Note]’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:202:21:   required from here
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:196:11: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSoftBody::Note’; use assignment or value-initialization instead [-Wclass-memaccess]
+     memset(&value, 0, sizeof (T));
+     ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:20,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.h:297:9: note: ‘struct btSoftBody::Note’ declared here
+  struct Note : Element
+         ^~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h: In instantiation of ‘void ZeroInitialize(T&) [with T = btSoftBody::Link]’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:283:25:   required from here
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:196:11: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSoftBody::Link’; use assignment or value-initialization instead [-Wclass-memaccess]
+     memset(&value, 0, sizeof (T));
+     ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:20,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.h:235:9: note: ‘struct btSoftBody::Link’ declared here
+  struct Link : Feature
+         ^~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h: In instantiation of ‘void ZeroInitialize(T&) [with T = btSoftBody::Face]’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:328:25:   required from here
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:196:11: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSoftBody::Face’; use assignment or value-initialization instead [-Wclass-memaccess]
+     memset(&value, 0, sizeof (T));
+     ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:20,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.h:246:9: note: ‘struct btSoftBody::Face’ declared here
+  struct Face : Feature
+         ^~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h: In instantiation of ‘void ZeroInitialize(T&) [with T = btSoftBody::Tetra]’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:368:25:   required from here
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:196:11: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSoftBody::Tetra’; use assignment or value-initialization instead [-Wclass-memaccess]
+     memset(&value, 0, sizeof (T));
+     ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:20,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBody.h:254:9: note: ‘struct btSoftBody::Tetra’ declared here
+  struct Tetra : Feature
+         ^~~~~
+[  0%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.cpp.o
+[  1%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftBodyHelpers.cpp.o
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyHelpers.cpp:17:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:540:13: warning: ‘void EvaluateMedium(const btSoftBodyWorldInfo*, const btVector3&, btSoftBody::sMedium&)’ defined but not used [-Wunused-function]
+ static void EvaluateMedium(const btSoftBodyWorldInfo* wfi,
+             ^~~~~~~~~~~~~~
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletSoftBody/btSoftBodyInternals.h:457:17: warning: ‘btScalar ImplicitSolve(btSoftBody::ImplicitFn*, const btVector3&, const btVector3&, btScalar, int)’ defined but not used [-Wunused-function]
+ static btScalar ImplicitSolve(btSoftBody::ImplicitFn* fn,
+                 ^~~~~~~~~~~~~
+[  1%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftBodyRigidBodyCollisionConfiguration.cpp.o
+[  1%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftRigidCollisionAlgorithm.cpp.o
+[  1%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftRigidDynamicsWorld.cpp.o
+[  2%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btSoftSoftCollisionAlgorithm.cpp.o
+[  2%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletSoftBody/btDefaultSoftBodySolver.cpp.o
+[  2%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Character/btKinematicCharacterController.cpp.o
+[  3%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btConeTwistConstraint.cpp.o
+[  3%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btContactConstraint.cpp.o
+[  3%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btFixedConstraint.cpp.o
+[  3%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btGearConstraint.cpp.o
+[  4%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.cpp.o
+[  4%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.cpp.o
+[  4%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btGeneric6DofSpring2Constraint.cpp.o
+[  4%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btHinge2Constraint.cpp.o
+[  5%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btHingeConstraint.cpp.o
+[  5%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btPoint2PointConstraint.cpp.o
+[  5%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp: In member function ‘virtual btScalar btSequentialImpulseConstraintSolver::solveGroupCacheFriendlySetup(btCollisionObject**, int, btPersistentManifold**, int, btTypedConstraint**, int, const btContactSolverInfo&, btIDebugDraw*)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp:1376:67: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct btSolverConstraint’; use assignment or value-initialization instead [-Wclass-memaccess]
+       memset(&currentConstraintRow[j],0,sizeof(btSolverConstraint));
+                                                                   ^
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/../bulletPhysics/src/BulletDynamics/ConstraintSolver/btTypedConstraint.h:21,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h:23,
+                 from /home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.cpp:21:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/../bulletPhysics/src/BulletDynamics/ConstraintSolver/btSolverConstraint.h:30:30: note: ‘struct btSolverConstraint’ declared here
+ ATTRIBUTE_ALIGNED16 (struct) btSolverConstraint
+                              ^~~~~~~~~~~~~~~~~~
+[  5%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btNNCGConstraintSolver.cpp.o
+[  6%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btSliderConstraint.cpp.o
+[  6%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btSolve2LinearConstraint.cpp.o
+[  6%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btTypedConstraint.cpp.o
+[  6%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/ConstraintSolver/btUniversalConstraint.cpp.o
+[  7%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp.o
+[  7%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Dynamics/btRigidBody.cpp.o
+[  7%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Dynamics/btSimpleDynamicsWorld.cpp.o
+[  7%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Vehicle/btRaycastVehicle.cpp.o
+[  8%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Vehicle/btWheelInfo.cpp.o
+[  8%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBody.cpp.o
+[  8%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBodyConstraintSolver.cpp.o
+[  8%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.cpp.o
+[  9%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBodyJointLimitConstraint.cpp.o
+[  9%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBodyConstraint.cpp.o
+[  9%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBodyPoint2Point.cpp.o
+[ 10%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/Featherstone/btMultiBodyJointMotor.cpp.o
+[ 10%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/MLCPSolvers/btDantzigLCP.cpp.o
+[ 10%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/MLCPSolvers/btMLCPSolver.cpp.o
+[ 10%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletDynamics/MLCPSolvers/btLemkeAlgorithm.cpp.o
+[ 11%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btAxisSweep3.cpp.o
+[ 11%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btBroadphaseProxy.cpp.o
+[ 11%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btCollisionAlgorithm.cpp.o
+[ 11%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btDbvt.cpp.o
+[ 12%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btDbvtBroadphase.cpp.o
+[ 12%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btDispatcher.cpp.o
+[ 12%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btMultiSapBroadphase.cpp.o
+[ 12%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btOverlappingPairCache.cpp.o
+[ 13%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btQuantizedBvh.cpp.o
+[ 13%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/BroadphaseCollision/btSimpleBroadphase.cpp.o
+[ 13%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btActivatingCollisionAlgorithm.cpp.o
+[ 13%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btBoxBoxCollisionAlgorithm.cpp.o
+[ 14%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp: In function ‘btScalar EdgeSeparation(const btBox2dShape*, const btTransform&, int, const btBox2dShape*, const btTransform&)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp:154:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+     if( count2 > 0 )
+     ^~
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp:157:2: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  btVector3 v1 = b2Mul(xf1, vertices1[edge1]);
+  ^~~~~~~~~
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp: In function ‘btScalar FindMaxSeparation(int*, const btBox2dShape*, const btTransform&, const btBox2dShape*, const btTransform&)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp:178:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+     if( count1 > 0 )
+     ^~
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btBox2dBox2dCollisionAlgorithm.cpp:182:2: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  btScalar s = EdgeSeparation(poly1, xf1, edge, poly2, xf2);
+  ^~~~~~~~
+[ 14%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btBoxBoxDetector.cpp.o
+[ 14%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btCollisionDispatcher.cpp.o
+[ 14%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btCollisionObject.cpp.o
+[ 15%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btCollisionWorld.cpp.o
+[ 15%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btCollisionWorldImporter.cpp.o
+[ 15%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.cpp: In member function ‘virtual void btCompoundCollisionAlgorithm::processCollision(const btCollisionObjectWrapper*, const btCollisionObjectWrapper*, const btDispatcherInfo&, btManifoldResult*)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.cpp:235:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+     if (m_childCollisionAlgorithms.size()==0)
+     ^~
+/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics/src/BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.cpp:238:2: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  const btDbvt* tree = compoundShape->getDynamicAabbTree();
+  ^~~~~
+[ 16%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btCompoundCompoundCollisionAlgorithm.cpp.o
+[ 16%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btConvexConcaveCollisionAlgorithm.cpp.o
+[ 16%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btConvexConvexAlgorithm.cpp.o
+[ 16%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btConvexPlaneCollisionAlgorithm.cpp.o
+[ 17%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btConvex2dConvex2dAlgorithm.cpp.o
+[ 17%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.cpp.o
+[ 17%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btEmptyCollisionAlgorithm.cpp.o
+[ 17%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btGhostObject.cpp.o
+[ 18%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btHashedSimplePairCache.cpp.o
+[ 18%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btInternalEdgeUtility.cpp.o
+[ 18%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btManifoldResult.cpp.o
+[ 18%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btSimulationIslandManager.cpp.o
+[ 19%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btSphereBoxCollisionAlgorithm.cpp.o
+[ 19%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btSphereSphereCollisionAlgorithm.cpp.o
+[ 19%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btSphereTriangleCollisionAlgorithm.cpp.o
+[ 19%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/btUnionFind.cpp.o
+[ 20%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionDispatch/SphereTriangleDetector.cpp.o
+[ 20%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btBoxShape.cpp.o
+[ 20%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btBox2dShape.cpp.o
+[ 20%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btBvhTriangleMeshShape.cpp.o
+[ 21%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btCapsuleShape.cpp.o
+[ 21%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btCollisionShape.cpp.o
+[ 21%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btCompoundShape.cpp.o
+[ 22%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConcaveShape.cpp.o
+[ 22%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConeShape.cpp.o
+[ 22%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvexHullShape.cpp.o
+[ 22%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvexInternalShape.cpp.o
+[ 23%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvexPointCloudShape.cpp.o
+[ 23%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvexPolyhedron.cpp.o
+[ 23%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvexShape.cpp.o
+[ 23%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvex2dShape.cpp.o
+[ 24%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btConvexTriangleMeshShape.cpp.o
+[ 24%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btCylinderShape.cpp.o
+[ 24%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btEmptyShape.cpp.o
+[ 24%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.cpp.o
+[ 25%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btMinkowskiSumShape.cpp.o
+[ 25%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btMultimaterialTriangleMeshShape.cpp.o
+[ 25%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btMultiSphereShape.cpp.o
+[ 25%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btOptimizedBvh.cpp.o
+[ 26%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btPolyhedralConvexShape.cpp.o
+[ 26%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btScaledBvhTriangleMeshShape.cpp.o
+[ 26%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btShapeHull.cpp.o
+[ 26%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btSphereShape.cpp.o
+[ 27%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btStaticPlaneShape.cpp.o
+[ 27%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btStridingMeshInterface.cpp.o
+[ 27%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTetrahedronShape.cpp.o
+[ 28%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTriangleBuffer.cpp.o
+[ 28%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTriangleCallback.cpp.o
+[ 28%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTriangleIndexVertexArray.cpp.o
+[ 28%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTriangleIndexVertexMaterialArray.cpp.o
+[ 29%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTriangleMesh.cpp.o
+[ 29%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btTriangleMeshShape.cpp.o
+[ 29%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/CollisionShapes/btUniformScalingShape.cpp.o
+[ 29%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btContactProcessing.cpp.o
+[ 30%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btGenericPoolAllocator.cpp.o
+[ 30%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btGImpactBvh.cpp.o
+[ 30%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.cpp.o
+[ 30%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btGImpactQuantizedBvh.cpp.o
+[ 31%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btGImpactShape.cpp.o
+[ 31%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/btTriangleShapeEx.cpp.o
+[ 31%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/gim_box_set.cpp.o
+[ 31%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/gim_contact.cpp.o
+[ 32%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/gim_memory.cpp.o
+[ 32%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/Gimpact/gim_tri_collision.cpp.o
+[ 32%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btContinuousConvexCollision.cpp.o
+[ 32%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btConvexCast.cpp.o
+[ 33%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btGjkConvexCast.cpp.o
+[ 33%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btGjkEpa2.cpp.o
+[ 33%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btGjkEpaPenetrationDepthSolver.cpp.o
+[ 33%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btGjkPairDetector.cpp.o
+[ 34%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btMinkowskiPenetrationDepthSolver.cpp.o
+[ 34%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btPersistentManifold.cpp.o
+[ 34%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btRaycastCallback.cpp.o
+[ 35%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btSubSimplexConvexCast.cpp.o
+[ 35%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.cpp.o
+[ 35%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/BulletCollision/NarrowPhaseCollision/btPolyhedralContactClipping.cpp.o
+[ 35%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btAlignedAllocator.cpp.o
+[ 36%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btConvexHull.cpp.o
+[ 36%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btConvexHullComputer.cpp.o
+[ 36%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btGeometryUtil.cpp.o
+[ 36%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btPolarDecomposition.cpp.o
+[ 37%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btQuickprof.cpp.o
+[ 37%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btSerializer.cpp.o
+[ 37%] Building CXX object bulletPhysics/CMakeFiles/bulletPhysics.dir/src/LinearMath/btVector3.cpp.o
+[ 37%] Linking CXX static library libbulletPhysics.a
+[ 37%] Built target bulletPhysics
+Scanning dependencies of target angelscript
+[ 37%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_atomic.cpp.o
+[ 37%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_builder.cpp.o
+[ 38%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_bytecode.cpp.o
+[ 38%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript/source/as_callfunc.cpp: In function ‘int DetectCallingConvention(bool, const asSFuncPtr&, int, void*, asSSystemFunctionInterface*)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript/source/as_callfunc.cpp:58:56: warning: ‘void* memset(void*, int, size_t)’ clearing an object of type ‘struct asSSystemFunctionInterface’ with no trivial copy-assignment; use assignment or value-initialization instead [-Wclass-memaccess]
+  memset(internal, 0, sizeof(asSSystemFunctionInterface));
+                                                        ^
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript/source/as_callfunc.cpp:41:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript/source/as_callfunc.h:98:8: note: ‘struct asSSystemFunctionInterface’ declared here
+ struct asSSystemFunctionInterface
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 38%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc_mips.cpp.o
+[ 38%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc_arm.cpp.o
+[ 39%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc_x86.cpp.o
+[ 39%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc_x64_gcc.cpp.o
+[ 39%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc_x64_msvc.cpp.o
+[ 39%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_callfunc_x64_mingw.cpp.o
+[ 40%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_compiler.cpp.o
+[ 40%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_configgroup.cpp.o
+[ 40%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_context.cpp.o
+[ 40%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_datatype.cpp.o
+[ 41%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_gc.cpp.o
+[ 41%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_generic.cpp.o
+[ 41%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_globalproperty.cpp.o
+[ 41%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_memory.cpp.o
+[ 42%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_module.cpp.o
+[ 42%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_objecttype.cpp.o
+[ 42%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_outputbuffer.cpp.o
+[ 42%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_parser.cpp.o
+[ 43%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_restore.cpp.o
+[ 43%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_scriptcode.cpp.o
+[ 43%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_scriptengine.cpp.o
+[ 44%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_scriptfunction.cpp.o
+[ 44%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_scriptnode.cpp.o
+[ 44%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_scriptobject.cpp.o
+[ 44%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_string.cpp.o
+[ 45%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_string_util.cpp.o
+[ 45%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_thread.cpp.o
+[ 45%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_tokenizer.cpp.o
+[ 45%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_typeinfo.cpp.o
+[ 46%] Building CXX object angelscript/CMakeFiles/angelscript.dir/source/as_variablescope.cpp.o
+[ 46%] Building CXX object angelscript/CMakeFiles/angelscript.dir/add_on/scriptstdstring/scriptstdstring.cpp.o
+[ 46%] Building CXX object angelscript/CMakeFiles/angelscript.dir/add_on/scriptarray/scriptarray.cpp.o
+[ 46%] Building CXX object angelscript/CMakeFiles/angelscript.dir/add_on/scriptdictionary/scriptdictionary.cpp.o
+[ 47%] Building CXX object angelscript/CMakeFiles/angelscript.dir/add_on/scriptmath/scriptmath.cpp.o
+[ 47%] Linking CXX static library libangelscript.a
+[ 47%] Built target angelscript
+Scanning dependencies of target Box2D
+[ 47%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2DistanceJoint.cpp.o
+[ 47%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2FrictionJoint.cpp.o
+[ 47%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2GearJoint.cpp.o
+[ 48%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2Joint.cpp.o
+[ 48%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2MotorJoint.cpp.o
+[ 48%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2MouseJoint.cpp.o
+[ 48%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2PrismaticJoint.cpp.o
+[ 49%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2PulleyJoint.cpp.o
+[ 49%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2RevoluteJoint.cpp.o
+[ 49%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2RopeJoint.cpp.o
+[ 49%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2WeldJoint.cpp.o
+[ 50%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Joints/b2WheelJoint.cpp.o
+[ 50%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2CircleContact.cpp.o
+[ 50%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2Contact.cpp.o
+[ 50%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2ContactSolver.cpp.o
+[ 51%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2PolygonAndCircleContact.cpp.o
+[ 51%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2EdgeAndCircleContact.cpp.o
+[ 51%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp.o
+[ 51%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2ChainAndCircleContact.cpp.o
+[ 52%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2ChainAndPolygonContact.cpp.o
+[ 52%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/Contacts/b2PolygonContact.cpp.o
+[ 52%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/b2Body.cpp.o
+[ 52%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/b2ContactManager.cpp.o
+[ 53%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/b2Fixture.cpp.o
+[ 53%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/b2Island.cpp.o
+[ 53%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/b2World.cpp.o
+[ 54%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Dynamics/b2WorldCallbacks.cpp.o
+[ 54%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Common/b2BlockAllocator.cpp.o
+[ 54%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Common/b2Draw.cpp.o
+[ 54%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Common/b2Math.cpp.o
+[ 55%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Common/b2Settings.cpp.o
+[ 55%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Common/b2StackAllocator.cpp.o
+[ 55%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Common/b2Timer.cpp.o
+[ 55%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/Shapes/b2CircleShape.cpp.o
+[ 56%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/Shapes/b2EdgeShape.cpp.o
+[ 56%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/Shapes/b2ChainShape.cpp.o
+[ 56%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/Shapes/b2PolygonShape.cpp.o
+[ 56%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2BroadPhase.cpp.o
+[ 57%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2CollideCircle.cpp.o
+[ 57%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2CollideEdge.cpp.o
+[ 57%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2CollidePolygon.cpp.o
+[ 57%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2Collision.cpp.o
+[ 58%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2Distance.cpp.o
+[ 58%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2DynamicTree.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D/Collision/b2DynamicTree.cpp: In constructor ‘b2DynamicTree::b2DynamicTree()’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D/Collision/b2DynamicTree.cpp:29:56: warning: ‘void* memset(void*, int, size_t)’ clearing an object of non-trivial type ‘struct b2TreeNode’; use assignment or value-initialization instead [-Wclass-memaccess]
+  memset(m_nodes, 0, m_nodeCapacity * sizeof(b2TreeNode));
+                                                        ^
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D/Collision/b2DynamicTree.cpp:19:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/../Box2D/Collision/b2DynamicTree.h:28:8: note: ‘struct b2TreeNode’ declared here
+ struct b2TreeNode
+        ^~~~~~~~~~
+[ 58%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Collision/b2TimeOfImpact.cpp.o
+[ 58%] Building CXX object Box2D/CMakeFiles/Box2D.dir/Rope/b2Rope.cpp.o
+[ 59%] Linking CXX static library libBox2D.a
+[ 59%] Built target Box2D
+Scanning dependencies of target library
+[ 59%] Building CXX object library/CMakeFiles/library.dir/gui/icontrol.cpp.o
+[ 60%] Building CXX object library/CMakeFiles/library.dir/gui/uibutton.cpp.o
+[ 60%] Building CXX object library/CMakeFiles/library.dir/gui/menumanager.cpp.o
+[ 60%] Building CXX object library/CMakeFiles/library.dir/gui/menutree.cpp.o
+[ 60%] Building CXX object library/CMakeFiles/library.dir/gui/uicontrol.cpp.o
+[ 61%] Building CXX object library/CMakeFiles/library.dir/gui/uicontrolfactory.cpp.o
+[ 61%] Building CXX object library/CMakeFiles/library.dir/gui/menu.cpp.o
+[ 61%] Building CXX object library/CMakeFiles/library.dir/gui/uilabel.cpp.o
+[ 62%] Building CXX object library/CMakeFiles/library.dir/gui/uisubcontrol.cpp.o
+[ 62%] Building CXX object library/CMakeFiles/library.dir/gui/ismartguibase.cpp.o
+[ 62%] Building CXX object library/CMakeFiles/library.dir/gui/uibuttonlist.cpp.o
+[ 62%] Building CXX object library/CMakeFiles/library.dir/gui/uicheckbox.cpp.o
+[ 63%] Building CXX object library/CMakeFiles/library.dir/gui/uislider.cpp.o
+[ 63%] Building CXX object library/CMakeFiles/library.dir/gui/uiscrollbox.cpp.o
+[ 63%] Building CXX object library/CMakeFiles/library.dir/gui/uimeter.cpp.o
+[ 63%] Building CXX object library/CMakeFiles/library.dir/gui/uiprogressbar.cpp.o
+[ 64%] Building CXX object library/CMakeFiles/library.dir/gui/scrollparam.cpp.o
+[ 64%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectdata2d.cpp.o
+[ 64%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectdata3d.cpp.o
+[ 64%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectdatamanager.cpp.o
+[ 65%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectphysicsdata2d.cpp.o
+[ 65%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectphysicsdata3d.cpp.o
+[ 65%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectvisualdata2d.cpp.o
+[ 65%] Building CXX object library/CMakeFiles/library.dir/objectdata/objectvisualdata3d.cpp.o
+[ 66%] Building CXX object library/CMakeFiles/library.dir/objectdata/iobjectdata.cpp.o
+[ 66%] Building CXX object library/CMakeFiles/library.dir/objectdata/iobjectvisualdata.cpp.o
+[ 66%] Building CXX object library/CMakeFiles/library.dir/objectdata/iobjectphysicsdata.cpp.o
+[ 66%] Building CXX object library/CMakeFiles/library.dir/script/scriptmanager.cpp.o
+[ 67%] Building CXX object library/CMakeFiles/library.dir/script/scriptglobals.cpp.o
+[ 67%] Building CXX object library/CMakeFiles/library.dir/script/scriptcolor.cpp.o
+[ 67%] Building CXX object library/CMakeFiles/library.dir/script/scriptcamera.cpp.o
+[ 68%] Building CXX object library/CMakeFiles/library.dir/script/scriptcomponent.cpp.o
+[ 68%] Building CXX object library/CMakeFiles/library.dir/script/scriptpoint.cpp.o
+[ 68%] Building CXX object library/CMakeFiles/library.dir/script/scriptsprite.cpp.o
+[ 68%] Building CXX object library/CMakeFiles/library.dir/script/scriptsound.cpp.o
+[ 69%] Building CXX object library/CMakeFiles/library.dir/script/scriptobjectdatamanager.cpp.o
+[ 69%] Building CXX object library/CMakeFiles/library.dir/script/scriptactionmanager.cpp.o
+[ 69%] Building CXX object library/CMakeFiles/library.dir/script/scriptsettings.cpp.o
+[ 69%] Building CXX object library/CMakeFiles/library.dir/script/scriptsize.cpp.o
+[ 70%] Building CXX object library/CMakeFiles/library.dir/script/scripthighresolutiontimer.cpp.o
+[ 70%] Building CXX object library/CMakeFiles/library.dir/script/scriptfontmanager.cpp.o
+[ 70%] Building CXX object library/CMakeFiles/library.dir/script/scriptstrategy.cpp.o
+[ 70%] Building CXX object library/CMakeFiles/library.dir/script/scriptmenumanager.cpp.o
+[ 71%] Building CXX object library/CMakeFiles/library.dir/script/scriptscriptmanager.cpp.o
+[ 71%] Building CXX object library/CMakeFiles/library.dir/script/scriptmenu.cpp.o
+[ 71%] Building CXX object library/CMakeFiles/library.dir/script/scriptuicontrol.cpp.o
+[ 71%] Building CXX object library/CMakeFiles/library.dir/script/scriptvisual.cpp.o
+[ 72%] Building CXX object library/CMakeFiles/library.dir/script/scriptdevice.cpp.o
+[ 72%] Building CXX object library/CMakeFiles/library.dir/script/scriptphysics2d.cpp.o
+[ 72%] Building CXX object library/CMakeFiles/library.dir/system/devicevulkan.cpp.o
+[ 72%] Building CXX object library/CMakeFiles/library.dir/system/device.cpp.o
+[ 73%] Building CXX object library/CMakeFiles/library.dir/utilities/xmlparsehelper.cpp.o
+[ 73%] Building CXX object library/CMakeFiles/library.dir/utilities/statcounter.cpp.o
+[ 73%] Building CXX object library/CMakeFiles/library.dir/utilities/genfunc.cpp.o
+[ 74%] Building CXX object library/CMakeFiles/library.dir/utilities/settings.cpp.o
+[ 74%] Building CXX object library/CMakeFiles/library.dir/utilities/highresolutiontimer.cpp.o
+[ 74%] Building CXX object library/CMakeFiles/library.dir/utilities/timer.cpp.o
+[ 74%] Building CXX object library/CMakeFiles/library.dir/utilities/xmlParser.cpp.o
+/home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.cpp: In static member function ‘static void XMLNode::exactMemory(XMLNode::XMLNodeData*)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.cpp:1336:87: warning: ‘void* realloc(void*, size_t)’ moving an object of non-trivially copyable type ‘struct XMLNode’; use ‘new’ and ‘delete’ instead [-Wclass-memaccess]
+     if (d->pChild)     d->pChild=(XMLNode*)realloc(d->pChild,d->nChild*sizeof(XMLNode));
+                                                                                       ^
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.cpp:64:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.h:228:28: note: ‘struct XMLNode’ declared here
+ typedef struct XMLDLLENTRY XMLNode
+                            ^~~~~~~
+/home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.cpp: In static member function ‘static int XMLNode::detachFromParent(XMLNode::XMLNodeData*)’:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.cpp:2241:87: warning: ‘void* memmove(void*, const void*, size_t)’ writing to an object of type ‘struct XMLNode’ with no trivial copy-assignment; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+     if (d->pParent->nChild) memmove(pa+i,pa+i+1,(d->pParent->nChild-i)*sizeof(XMLNode));
+                                                                                       ^
+In file included from /home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.cpp:64:
+/home/howie/Development/SDL2-Vulkan-Game-Engine/library/utilities/xmlParser.h:228:28: note: ‘struct XMLNode’ declared here
+ typedef struct XMLDLLENTRY XMLNode
+                            ^~~~~~~
+[ 75%] Building CXX object library/CMakeFiles/library.dir/utilities/mathfunc.cpp.o
+[ 75%] Building CXX object library/CMakeFiles/library.dir/utilities/threadpool.cpp.o
+[ 75%] Building CXX object library/CMakeFiles/library.dir/utilities/xmlpreloader.cpp.o
+[ 75%] Building CXX object library/CMakeFiles/library.dir/utilities/matrix.cpp.o
+[ 76%] Building CXX object library/CMakeFiles/library.dir/utilities/exceptionhandling.cpp.o
+[ 76%] Building CXX object library/CMakeFiles/library.dir/managers/soundmanager.cpp.o
+[ 76%] Building CXX object library/CMakeFiles/library.dir/managers/managerbase.cpp.o
+[ 76%] Building CXX object library/CMakeFiles/library.dir/managers/fontmanager.cpp.o
+[ 77%] Building CXX object library/CMakeFiles/library.dir/managers/actionmanager.cpp.o
+[ 77%] Building CXX object library/CMakeFiles/library.dir/managers/spritesheetmanager.cpp.o
+[ 77%] Building CXX object library/CMakeFiles/library.dir/managers/signalmanager.cpp.o
+[ 77%] Building CXX object library/CMakeFiles/library.dir/physics/physicsworldmanager2d.cpp.o
+[ 78%] Building CXX object library/CMakeFiles/library.dir/physics/physicsworldmanager3d.cpp.o
+[ 78%] Building CXX object library/CMakeFiles/library.dir/physics/physicsworld2d.cpp.o
+[ 78%] Building CXX object library/CMakeFiles/library.dir/physics/physicsworld3d.cpp.o
+[ 78%] Building CXX object library/CMakeFiles/library.dir/physics/physicscomponent2d.cpp.o
+[ 79%] Building CXX object library/CMakeFiles/library.dir/physics/physicscomponent3d.cpp.o
+[ 79%] Building CXX object library/CMakeFiles/library.dir/sprite/sprite.cpp.o
+[ 79%] Building CXX object library/CMakeFiles/library.dir/sprite/spritesheet.cpp.o
+[ 79%] Building CXX object library/CMakeFiles/library.dir/sprite/spritedata.cpp.o
+[ 80%] Building CXX object library/CMakeFiles/library.dir/node/node.cpp.o
+[ 80%] Building CXX object library/CMakeFiles/library.dir/node/spritenodemultilist.cpp.o
+[ 80%] Building CXX object library/CMakeFiles/library.dir/node/spritenode.cpp.o
+[ 81%] Building CXX object library/CMakeFiles/library.dir/node/nodedata.cpp.o
+[ 81%] Building CXX object library/CMakeFiles/library.dir/node/nodedatalist.cpp.o
+[ 81%] Building CXX object library/CMakeFiles/library.dir/2d/font.cpp.o
+[ 81%] Building CXX object library/CMakeFiles/library.dir/2d/visualcomponentquad.cpp.o
+[ 82%] Building CXX object library/CMakeFiles/library.dir/2d/visualcomponentspritesheet.cpp.o
+[ 82%] Building CXX object library/CMakeFiles/library.dir/2d/visualcomponentscaledframe.cpp.o
+[ 82%] Building CXX object library/CMakeFiles/library.dir/2d/visualcomponentfont.cpp.o
+[ 82%] Building CXX object library/CMakeFiles/library.dir/2d/visualcomponentnull.cpp.o
+[ 83%] Building CXX object library/CMakeFiles/library.dir/2d/object2d.cpp.o
+[ 83%] Building CXX object library/CMakeFiles/library.dir/3d/object3d.cpp.o
+[ 83%] Building CXX object library/CMakeFiles/library.dir/3d/light.cpp.o
+[ 83%] Building CXX object library/CMakeFiles/library.dir/3d/lightlist.cpp.o
+[ 84%] Building CXX object library/CMakeFiles/library.dir/3d/visualcomponent3d.cpp.o
+[ 84%] Building CXX object library/CMakeFiles/library.dir/strategy/sector.cpp.o
+[ 84%] Building CXX object library/CMakeFiles/library.dir/strategy/actorstrategy.cpp.o
+[ 84%] Building CXX object library/CMakeFiles/library.dir/strategy/basicstagestrategy.cpp.o
+[ 85%] Building CXX object library/CMakeFiles/library.dir/strategy/strategymanager.cpp.o
+[ 85%] Building CXX object library/CMakeFiles/library.dir/strategy/istrategy.cpp.o
+[ 85%] Building CXX object library/CMakeFiles/library.dir/strategy/basestrategy.cpp.o
+[ 85%] Building CXX object library/CMakeFiles/library.dir/common/sound.cpp.o
+[ 86%] Building CXX object library/CMakeFiles/library.dir/common/playlist.cpp.o
+[ 86%] Building CXX object library/CMakeFiles/library.dir/common/worldvalue.cpp.o
+[ 86%] Building CXX object library/CMakeFiles/library.dir/common/camera.cpp.o
+[ 87%] Building CXX object library/CMakeFiles/library.dir/common/object.cpp.o
+[ 87%] Building CXX object library/CMakeFiles/library.dir/common/fontdata.cpp.o
+[ 87%] Building CXX object library/CMakeFiles/library.dir/common/fontproperties.cpp.o
+[ 87%] Building CXX object library/CMakeFiles/library.dir/common/ivisualcomponent.cpp.o
+[ 88%] Building CXX object library/CMakeFiles/library.dir/common/visual.cpp.o
+[ 88%] Building CXX object library/CMakeFiles/library.dir/common/vertex.cpp.o
+[ 88%] Building CXX object library/CMakeFiles/library.dir/common/uniformbufferobject.cpp.o
+[ 88%] Building CXX object library/CMakeFiles/library.dir/common/pushdescriptorset.cpp.o
+[ 89%] Building CXX object library/CMakeFiles/library.dir/common/dynamicoffset.cpp.o
+[ 89%] Building CXX object library/CMakeFiles/library.dir/common/cameradata.cpp.o
+[ 89%] Building CXX object library/CMakeFiles/library.dir/slot/symbol2d.cpp.o
+[ 89%] Building CXX object library/CMakeFiles/library.dir/slot/symbolsetview.cpp.o
+[ 90%] Building CXX object library/CMakeFiles/library.dir/slot/symbolsetviewmanager.cpp.o
+[ 90%] Building CXX object library/CMakeFiles/library.dir/slot/slotmathmanager.cpp.o
+[ 90%] Building CXX object library/CMakeFiles/library.dir/slot/slotmath.cpp.o
+[ 90%] Building CXX object library/CMakeFiles/library.dir/slot/mathsymbol.cpp.o
+[ 91%] Building CXX object library/CMakeFiles/library.dir/slot/paycombo.cpp.o
+[ 91%] Building CXX object library/CMakeFiles/library.dir/slot/valuetable.cpp.o
+[ 91%] Building CXX object library/CMakeFiles/library.dir/slot/weightedtable.cpp.o
+[ 91%] Building CXX object library/CMakeFiles/library.dir/slot/slotgroup.cpp.o
+[ 92%] Building CXX object library/CMakeFiles/library.dir/slot/paylineset.cpp.o
+[ 92%] Building CXX object library/CMakeFiles/library.dir/slot/slotgroupmodel.cpp.o
+[ 92%] Building CXX object library/CMakeFiles/library.dir/slot/slotstripmodel.cpp.o
+[ 93%] Building CXX object library/CMakeFiles/library.dir/slot/slotgroupview.cpp.o
+[ 93%] Building CXX object library/CMakeFiles/library.dir/slot/reelgroupview.cpp.o
+[ 93%] Building CXX object library/CMakeFiles/library.dir/slot/reelstripview.cpp.o
+[ 93%] Building CXX object library/CMakeFiles/library.dir/slot/spinprofile.cpp.o
+[ 94%] Building CXX object library/CMakeFiles/library.dir/slot/playresult.cpp.o
+[ 94%] Building CXX object library/CMakeFiles/library.dir/slot/slotresults.cpp.o
+[ 94%] Building CXX object library/CMakeFiles/library.dir/slot/basegamemusic.cpp.o
+[ 94%] Building CXX object library/CMakeFiles/library.dir/slot/pay.cpp.o
+[ 95%] Building CXX object library/CMakeFiles/library.dir/slot/slotgame.cpp.o
+[ 95%] Building CXX object library/CMakeFiles/library.dir/slot/paytableset.cpp.o
+[ 95%] Building CXX object library/CMakeFiles/library.dir/slot/stripset.cpp.o
+[ 95%] Building CXX object library/CMakeFiles/library.dir/slot/stripstop.cpp.o
+[ 96%] Building CXX object library/CMakeFiles/library.dir/slot/betmanager.cpp.o
+[ 96%] Building CXX object library/CMakeFiles/library.dir/slot/wheelgroupview.cpp.o
+[ 96%] Building CXX object library/CMakeFiles/library.dir/slot/wheelview.cpp.o
+[ 96%] Building CXX object library/CMakeFiles/library.dir/slot/simplecycleresults.cpp.o
+[ 97%] Building CXX object library/CMakeFiles/library.dir/slot/icycleresults.cpp.o
+[ 97%] Building CXX object library/CMakeFiles/library.dir/slot/slotgroupfactory.cpp.o
+[ 97%] Building CXX object library/CMakeFiles/library.dir/slot/animatedcycleresults.cpp.o
+[ 97%] Building C object library/CMakeFiles/library.dir/soil/stb_image_aug.c.o
+[ 98%] Building C object library/CMakeFiles/library.dir/soil/SOIL.c.o
+[ 98%] Building C object library/CMakeFiles/library.dir/soil/image_helper.c.o
+[ 98%] Building C object library/CMakeFiles/library.dir/soil/image_DXT.c.o
+[ 99%] Linking CXX static library liblibrary.a
+[ 99%] Built target library
+Scanning dependencies of target gametemplate
+[100%] Building CXX object source/CMakeFiles/gametemplate.dir/game/game.cpp.o
+[100%] Building CXX object source/CMakeFiles/gametemplate.dir/game/main.cpp.o
+[100%] Linking CXX executable gametemplate
+[100%] Built target gametemplate

@@ -83,7 +83,7 @@ void LoadTitleScreenAssets()
     
     // Create the needed strategies
     StrategyMgr.createActorStrategy( "(title)" ).create( "background" );
-    StrategyMgr.createActorStrategy( "(cube)" ).create( "cube" ).getSprite().prepare( "rotate" );
+    StrategyMgr.createActorStrategy( "(cube)" ).create( "cube" );
     
     // Set the camera for the cube strategy
     StrategyMgr.setCamera( "(cube)", "cube" );

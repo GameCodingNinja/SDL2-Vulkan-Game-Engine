@@ -137,7 +137,6 @@ private:
     
     // Script function map. Execute scripts with an id
     std::map<const std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;
-
 };
 
 #endif

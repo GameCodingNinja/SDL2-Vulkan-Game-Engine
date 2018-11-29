@@ -1,0 +1,225 @@
+<UIControl>
+
+    <spriteList>
+
+        <sprite objectName="key_binding_scroll_box_frame">
+            <scriptLst>
+                <script disabled="Control_Disabled"/>
+                <script inactive="Control_Inactive"/>
+                <script active="Control_Active"/>
+            </scriptLst>
+        </sprite>
+
+    </spriteList>
+
+    <!-- Scroll box mask -->
+    <stencilMask objectName="key_binding_scroll_box_mask"/>
+
+    <subControlList>
+
+        <!-- slider Control -->
+        <control controlType="slider" defaultState="inactive" mouseSelectDown="true">
+            <filePath file="data/objects/2d/menu/control/key_binding_slider.ctrl"/>
+            <position x="510" y="0" z="0"/>
+            <settings orientation="VERT"/>
+            <scroll startDelay="750" scrollDelay="100" up="true" down="true"/>
+            <!-- size modifier for collision rect -->
+            <rect x1="40" y1="30" x2="55" y2="30"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+    </subControlList>
+
+    <scrollBoxControlList>
+
+        <!-- initial offset -->
+        <position x="0" y="250" z="0"/>
+        <controlInfo height="50" visibleInScrollBox="11"/>
+
+        <!-- Menu Seperator - Menu Navigation -->
+        <control controlType="button" defaultState="disabled">
+            <filePath file="data/objects/2d/menu/control/key_binding_seperator.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Navigation"/>
+            </fontStringLst>
+        </control>
+
+        <!-- Menu Select Key Binding Button -->
+        <control name="menu_select" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Select"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+        <!-- Menu Escape Key Binding Button -->
+        <control name="menu_escape" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Escape"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+        <!-- Menu Back Key Binding Button -->
+        <control name="menu_back" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Back"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+        <!-- Menu Toggle Key Binding Button -->
+        <control name="menu_toggle" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Toggle"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+    
+        <!-- Menu Tab Left Key Binding Button -->
+        <control name="menu_tab_left" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Tab Left"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+    
+        <!-- Menu Tab Right Key Binding Button -->
+        <control name="menu_tab_right" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Menu Tab Right"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+        <!-- Menu Seperator - Game Controls -->
+        <control controlType="button" defaultState="disabled">
+            <filePath file="data/objects/2d/menu/control/key_binding_seperator.ctrl"/>
+            <fontStringLst>
+                <string text="Game Controls"/>
+            </fontStringLst>
+        </control>
+    
+        <!-- Up Key Binding Button -->
+        <control name="up" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Up"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+    
+        <!-- Down Key Binding Button -->
+        <control name="down" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Down"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+    
+        <!-- Left Key Binding Button -->
+        <control name="left" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Left"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+    
+        <!-- Right Key Binding Button -->
+        <control name="right" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Right"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+        <!-- Shoot Key Binding Button -->
+        <control name="shoot" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Shoot"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+    
+        <!-- Deccelerate Key Binding Button -->
+        <control name="deccelerate" faction="key_binding_btn" controlType="sub_control" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_button.ctrl"/>
+            <fontStringLst>
+                <string text="Deccelerate"/>
+            </fontStringLst>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+        <!-- Menu Seperator - Key Binding Option(s) -->
+        <control controlType="button" defaultState="disabled">
+            <filePath file="data/objects/2d/menu/control/key_binding_seperator.ctrl"/>
+            <fontStringLst>
+                <string text="Key Binding Option(s)"/>
+            </fontStringLst>
+        </control>
+
+        <!-- Reset Defaults Button -->
+        <control name="Key_Binding_reset_btn" faction="decision_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/key_binding_reset_button.ctrl"/>
+            <fontStringLst>
+                <string text="Reset To Default"/>
+            </fontStringLst>
+            <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+    </scrollBoxControlList>
+
+</UIControl>
