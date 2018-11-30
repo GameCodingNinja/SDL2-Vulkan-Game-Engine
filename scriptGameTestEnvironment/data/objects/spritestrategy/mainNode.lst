@@ -1,0 +1,190 @@
+<node defaultGroup="(main)">
+    
+    <!--<node name="multiListNode" type="spriteNodeMultiList">
+
+        <sprite2d name="background" objectName="background">
+            <position x="0" y="0" z="0"/>
+        </sprite2d>
+            
+        <node type="spriteNodeMultiList">
+            
+            <sprite2d name="logo" objectName="logo">
+                <position x="-500" y="0" z="0"/>
+            </sprite2d>
+            
+            <node type="spriteNodeMultiList">
+                    
+                <sprite2d name="square_red" objectName="square_red">
+                    <position x="100" y="100" z="0"/>
+                </sprite2d>
+
+            </node>
+
+            <node type="spriteNodeMultiList">
+                
+                <sprite2d name="waffles" objectName="waffles">
+                    <position x="300" y="0" z="0"/>
+                </sprite2d>
+                
+                <node type="spriteNodeMultiList">
+                    
+                    <sprite2d name="square_red" objectName="square_red">
+                        <position x="120" y="-100" z="0"/>
+                    </sprite2d>
+
+                </node>
+
+                <node type="spriteNodeMultiList">
+                    
+                    <sprite2d name="logo" objectName="logo">
+                        <position x="300" y="0" z="0"/>
+                    </sprite2d>
+                    
+                </node>
+            </node>
+        </node>
+        
+        <node type="spriteNodeMultiList">
+            
+            <sprite2d name="circle_green" objectName="circle_green">
+                <position x="200" y="400" z="0"/>
+            </sprite2d>
+            
+            <node type="spriteNodeMultiList">
+            
+                <sprite2d name="triangle_blue" objectName="triangle_blue">
+                    <position x="50" y="0" z="0"/>
+                </sprite2d>
+
+            </node>
+        </node>
+        
+        <node type="spriteNodeMultiList">
+            
+            <sprite2d name="square_red" objectName="square_red">
+                <position x="-200" y="400" z="0"/>
+            </sprite2d>
+            
+            <node type="spriteNodeMultiList">
+            
+                <sprite2d name="triangle_blue" objectName="triangle_blue">
+                    <position x="-50" y="0" z="0"/>
+                </sprite2d>
+
+            </node>
+            
+        </node>
+    </node>-->
+    
+    <node name="ship" type="objectNodeMultiList">
+        
+        <object2d>
+        </object2d>
+
+        <node name="player_fire_tail" type="spriteNodeMultiList">
+        
+            <sprite2d objectName="player_fire_tail">
+            </sprite2d>
+
+        </node>
+        
+        <node name="player_ship" type="spriteNodeMultiList">
+        
+            <sprite2d objectName="player_ship">
+            </sprite2d>
+
+        </node>
+        
+        <node name="ship_gun" type="spriteNodeMultiList">
+        
+            <sprite2d objectName="ship_gun">
+            </sprite2d>
+
+        </node>
+
+    </node>
+    
+    <node name="square_red" type="spriteNode">
+        
+        <sprite2d objectName="square_red">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    
+    <node name="triangle_green" type="spriteNode">
+        
+        <sprite2d objectName="triangle_green">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    
+    <node name="triangle_blue" type="spriteNode">
+        
+        <sprite2d objectName="triangle_blue">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    
+    <node name="circle_green" type="spriteNode">
+        
+        <sprite2d objectName="circle_green">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    
+    <node name="circle_blue" type="spriteNode">
+        
+        <sprite2d objectName="circle_blue">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    
+    <node name="circle_red" type="spriteNode">
+        
+        <sprite2d objectName="circle_red">
+            <scriptLst>
+                <script init="Run_Init"/>
+                <script update="Run_Update"/>
+            </scriptLst>
+        </sprite2d>
+
+    </node>
+    
+    <node name="waffles" type="spriteNode">
+        
+        <sprite2d objectName="waffles">
+            <position x="0" y="0" z="0"/>
+        </sprite2d>
+
+    </node>
+    
+    <node name="logo" type="spriteNode">
+        
+        <sprite2d objectName="logo">
+            <position x="0" y="0" z="0"/>
+        </sprite2d>
+
+    </node>
+
+</node>

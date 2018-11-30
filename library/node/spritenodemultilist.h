@@ -1,25 +1,24 @@
 
 /************************************************************************
-*    FILE NAME:       spriteheadnodemultilist.h
+*    FILE NAME:       spritenodemultilist.h
 *
-*    DESCRIPTION:     Sprite head node multi link list class
+*    DESCRIPTION:     Sprite node multi link list class
 ************************************************************************/
 
 #ifndef __sprite_node_multi_list_h__
 #define __sprite_node_multi_list_h__
 
 // Physical component dependency
-#include <node/node.h>
+#include <node/nodemultilist.h>
 
 // Game lib dependencies
 #include <sprite/sprite.h>
 
 // Forward declaration(s)
-class CMatrix;
 class CObjectData2D;
 class CObjectData3D;
 
-class CSpriteNodeMultiLst : public CNode
+class CSpriteNodeMultiLst : public CNodeMultiLst
 {
 public:
     
@@ -44,14 +43,11 @@ public:
     
     // Transform the nodes
     void transform() override;
-    void transform( const CMatrix & matrix, bool tranformWorldPos );
+    void transform( const CMatrix & matrix, bool tranformWorldPos ) override;
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
-    
-    // Add a node
-    bool addNode( iNode * pNode ) override;
     
     // Get the sprite
     CSprite * getSprite() override;
@@ -61,28 +57,8 @@ public:
     
 private:
     
-    // Reset the iterators
-    void resetIterators() override;
-    
-    // Update the nodes
-    void update( iNode * pNode );
-    
-    // Update the nodes recursive function
-    void transform( iNode * pNode );
-    
-    // Record command buffer recursive function
-    void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
-    
-private:
-    
     // Node data
     CSprite m_sprite;
-    
-    // List of all nodes.
-    // This is only used by the head node and even though
-    // every node will have one of these, it simplifies
-    // the code and is minimal overhead
-    std::vector<iNode *> m_allNodeVec;
 };
 
 #endif

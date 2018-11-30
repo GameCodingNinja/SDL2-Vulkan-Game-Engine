@@ -61,7 +61,7 @@ CSpriteData::CSpriteData(
         m_spriteType = NDefs::EST_OBJECT2D;
     
     else if( nodeName == "object3d" )
-        m_spriteType = NDefs::EST_OBJECT2D;
+        m_spriteType = NDefs::EST_OBJECT3D;
     
     else if( nodeName == "sprite2d" )
         m_spriteType = NDefs::EST_SPRITE2D;

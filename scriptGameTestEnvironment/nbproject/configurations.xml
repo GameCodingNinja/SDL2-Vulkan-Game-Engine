@@ -146,6 +146,12 @@
         <itemPath>../library/node/nodedata.h</itemPath>
         <itemPath>../library/node/nodedatalist.cpp</itemPath>
         <itemPath>../library/node/nodedatalist.h</itemPath>
+        <itemPath>../library/node/nodefactory.cpp</itemPath>
+        <itemPath>../library/node/nodefactory.h</itemPath>
+        <itemPath>../library/node/nodemultilist.cpp</itemPath>
+        <itemPath>../library/node/nodemultilist.h</itemPath>
+        <itemPath>../library/node/objectnodemultilist.cpp</itemPath>
+        <itemPath>../library/node/objectnodemultilist.h</itemPath>
         <itemPath>../library/node/spritenode.cpp</itemPath>
         <itemPath>../library/node/spritenode.h</itemPath>
         <itemPath>../library/node/spritenodemultilist.cpp</itemPath>
@@ -2909,6 +2915,21 @@
         <ccTool flags="0">
         </ccTool>
       </item>
+      <item path="../library/node/nodefactory.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../library/node/nodemultilist.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../library/node/objectnodemultilist.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
       <item path="../library/node/spritenode.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
@@ -3323,13 +3344,13 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="../library/soil/SOIL.c" ex="false" tool="0" flavor2="0">
+      <item path="../library/soil/SOIL.c" ex="false" tool="0" flavor2="2">
       </item>
-      <item path="../library/soil/image_DXT.c" ex="false" tool="0" flavor2="0">
+      <item path="../library/soil/image_DXT.c" ex="false" tool="0" flavor2="2">
       </item>
-      <item path="../library/soil/image_helper.c" ex="false" tool="0" flavor2="0">
+      <item path="../library/soil/image_helper.c" ex="false" tool="0" flavor2="2">
       </item>
-      <item path="../library/soil/stb_image_aug.c" ex="false" tool="0" flavor2="0">
+      <item path="../library/soil/stb_image_aug.c" ex="false" tool="0" flavor2="2">
       </item>
       <item path="../library/sprite/sprite.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">

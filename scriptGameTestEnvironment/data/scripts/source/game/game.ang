@@ -49,11 +49,11 @@ class CGame
         StrategyMgr.loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
         
         // Load group specific assets
-        ObjectDataMgr.loadGroup2D( "(test)" );
+        ObjectDataMgr.loadGroup2D( "(main)" );
         
         // Create the needed strategies
-        StrategyMgr.createActorStrategy( "(test)" ).create( "waffles" );
-        StrategyMgr.activateStrategy( "(test)" ).setCommandBuffer( "(test)" );
+        StrategyMgr.createActorStrategy( "(main)" ).create( "ship" );
+        StrategyMgr.activateStrategy( "(main)" ).setCommandBuffer( "(main)" );
     }
     
     //

@@ -17,8 +17,7 @@
 #include <objectdata/objectdata2d.h>
 #include <managers/signalmanager.h>
 #include <common/camera.h>
-#include <node/spritenodemultilist.h>
-#include <node/spritenode.h>
+#include <node/nodefactory.h>
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
@@ -74,49 +73,26 @@ void CSector::loadFromNode( const XMLNode & node )
             const XMLNode childNode = sectorNode.getChildNode( i );
             
             CNodeDataList data( childNode, defGroup, defObjName, defAIName, defId );
-            const auto & rNodeDataList = data.getData();
+            const auto & rNodeDataVec = data.getData();
             
             // See if the head nodes has a name
-            nodeName = rNodeDataList.front().getNodeName();
+            nodeName = rNodeDataVec.front().getNodeName();
             
             iNode * pHeadNode = nullptr;
             
             // Build the node list
-            for( auto & iter : rNodeDataList )
+            for( auto & iter : rNodeDataVec )
             {
-                if( iter.getNodeType() == NDefs::ENT_SPRITE )
-                {
-                    auto * pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ), iter.getSpriteId() );
-
-                    loadSprite( pSpriteNode->getSprite(), iter );
-
-                    if( pHeadNode == nullptr )
-                        pHeadNode = pSpriteNode;
-                }
-                else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
-                {
-                    auto * pSpriteNode = new CSpriteNodeMultiLst(
-                        CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ),
-                        iter.getSpriteId(),
-                        iter.getNodeId(),
-                        iter.getParentNodeId() );
-
-                    loadSprite( pSpriteNode->getSprite(), iter );
-
-                    if( pHeadNode == nullptr )
-                        pHeadNode = pSpriteNode;
-
-                    else if( !pHeadNode->addNode( pSpriteNode ) )
-                        throw NExcept::CCriticalException("Node Create Error!",
-                            boost::str( boost::format("Parent node not found when adding child node (%s).\n\n%s\nLine: %s")
-                                % iter.getSpriteId() % __FUNCTION__ % __LINE__ ));
-                }
-                else
-                {
+                // Create the node from the factory function
+                iNode * pNode = NNodeFactory::Create( iter, iter.getSpriteId() );
+                
+                if( pHeadNode == nullptr )
+                    pHeadNode = pNode;
+        
+                else if( !pHeadNode->addNode( pNode ) )
                     throw NExcept::CCriticalException("Node Create Error!",
-                        boost::str( boost::format("Node type not defined (%s).\n\n%s\nLine: %s")
-                            % iter.getSpriteId() % __FUNCTION__ % __LINE__ ));
-                }
+                        boost::str( boost::format("Parent node not found or node does not support adding children (%s).\n\n%s\nLine: %s")
+                            % nodeName % __FUNCTION__ % __LINE__ ));
             }
 
             // Add the node pointer to the vector for rendering

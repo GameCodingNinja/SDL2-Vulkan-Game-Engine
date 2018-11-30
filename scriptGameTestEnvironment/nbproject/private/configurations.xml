@@ -193,15 +193,6 @@
               <in>main.ang</in>
               <in>menu_defs.ang</in>
             </df>
-            <df name="state">
-              <in>commonstate.ang</in>
-              <in>igamestate.ang</in>
-              <in>loadstate.ang</in>
-              <in>runstate.ang</in>
-              <in>startupstate.ang</in>
-              <in>statemessage.ang</in>
-              <in>titlescreenstate.ang</in>
-            </df>
           </df>
         </df>
         <df name="settings">

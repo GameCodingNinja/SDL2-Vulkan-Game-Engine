@@ -28,6 +28,7 @@
 class CNodeDataList;
 class CSpriteData;
 class CSprite;
+class CObject2D;
 class CMatrix;
 
 class CActorStrategy : public CBaseStrategy, boost::noncopyable
@@ -75,8 +76,15 @@ public:
 protected:
     
     // Load the node
-    void loadSprite(
-        CSprite * sprite,
+    void load(
+        CSprite * pSprite,
+        const CSpriteData & rSpriteData,
+        const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
+        const CPoint<float> & rot = CPoint<float>(),
+        const CPoint<float> & scale = CPoint<float>(1,1,1) );
+    
+    void load(
+        CObject2D * pObject,
         const CSpriteData & rSpriteData,
         const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
         const CPoint<float> & rot = CPoint<float>(),

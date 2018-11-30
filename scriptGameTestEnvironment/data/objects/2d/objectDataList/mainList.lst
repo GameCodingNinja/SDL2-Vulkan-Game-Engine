@@ -27,6 +27,12 @@
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
   
     <objectList>
+        
+        <!--<object name="background">
+            <visual>
+                <texture file="data/textures/titleScreen/title_background.png"/>
+            </visual>
+        </object>-->
     
         <object name="player_ship">
             <visual>

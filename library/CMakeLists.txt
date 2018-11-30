@@ -82,9 +82,12 @@ add_library(
         sprite/spritedata.cpp
         node/node.cpp
         node/spritenodemultilist.cpp
+        node/objectnodemultilist.cpp
+        node/nodemultilist.cpp
         node/spritenode.cpp
         node/nodedata.cpp
         node/nodedatalist.cpp
+        node/nodefactory.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp

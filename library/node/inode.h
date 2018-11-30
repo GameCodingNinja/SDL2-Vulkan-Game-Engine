@@ -24,6 +24,7 @@
 class CMatrix;
 class CSprite;
 class CCamera;
+class CObject2D;
 
 class iNode
 {
@@ -76,6 +77,10 @@ public:
     // Get the node type
     virtual NDefs::ENodeType getType() const
     { return m_type; }
+    
+    // Get the object
+    virtual CObject2D * getObject()
+    { return nullptr; }
     
     // Get the sprite
     virtual CSprite * getSprite()

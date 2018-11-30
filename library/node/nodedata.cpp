@@ -34,6 +34,9 @@ CNodeData::CNodeData(
     if( nodeType == "spriteNode" )
         m_nodeType = NDefs::ENT_SPRITE;
     
+    else if( nodeType == "objectNodeMultiList" )
+        m_nodeType = NDefs::ENT_OBJECT_MULTI_LIST;
+    
     else if( nodeType == "spriteNodeMultiList" )
         m_nodeType = NDefs::ENT_SPRITE_MULTI_LIST;
 }

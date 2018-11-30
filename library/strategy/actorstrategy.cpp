@@ -17,8 +17,7 @@
 #include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
-#include <node/spritenodemultilist.h>
-#include <node/spritenode.h>
+#include <node/nodefactory.h>
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
@@ -132,62 +131,23 @@ iNode * CActorStrategy::create(
                 % dataName % nodeId % __FUNCTION__ % __LINE__ ));
     }
 
-    const auto & rNodeDataList = getData( dataName ).getData();
+    const auto & rNodeDataVec = getData( dataName ).getData();
 
-    iNode * pHeadNode = nullptr;
+    iNode * pHeadNode(nullptr);
 
     // Build the node list
-    for( auto & iter : rNodeDataList )
+    for( auto & iter : rNodeDataVec )
     {
-        if( iter.getNodeType() == NDefs::ENT_SPRITE )
-        {
-            CSpriteNode * pSpriteNode(nullptr);
-            
-            if( iter.getSpriteType() == NDefs::EST_SPRITE2D )
-                pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ), nodeId );
-            
-            else if( iter.getSpriteType() == NDefs::EST_SPRITE3D )
-                pSpriteNode = new CSpriteNode( CObjectDataMgr::Instance().getData3D( iter.getGroup(), iter.getObjectName() ), nodeId );
-
-            loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
-            
-            if( pHeadNode == nullptr )
-                pHeadNode = pSpriteNode;
-        }
-        else if( iter.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
-        {
-            CSpriteNodeMultiLst * pSpriteNode(nullptr);
-            
-            if( iter.getSpriteType() == NDefs::EST_SPRITE2D )
-                pSpriteNode = new CSpriteNodeMultiLst(
-                        CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ),
-                        nodeId,
-                        iter.getNodeId(),
-                        iter.getParentNodeId() );
-            
-            else if( iter.getSpriteType() == NDefs::EST_SPRITE3D )
-                pSpriteNode = new CSpriteNodeMultiLst(
-                        CObjectDataMgr::Instance().getData3D( iter.getGroup(), iter.getObjectName() ),
-                        nodeId,
-                        iter.getNodeId(),
-                        iter.getParentNodeId() );
-                
-            loadSprite( pSpriteNode->getSprite(), iter, pos, rot, scale );
-            
-            if( pHeadNode == nullptr )
-                pHeadNode = pSpriteNode;
-            
-            else if( !pHeadNode->addNode( pSpriteNode ) )
-                throw NExcept::CCriticalException("Node Create Error!",
-                    boost::str( boost::format("Parent node not found when adding child node (%s).\n\n%s\nLine: %s")
-                        % dataName % __FUNCTION__ % __LINE__ ));
-        }
-        else
-        {
+        // Create the node from the factory function
+        iNode * pNode = NNodeFactory::Create( iter, nodeId, pos, rot, scale );
+        
+        if( pHeadNode == nullptr )
+            pHeadNode = pNode;
+        
+        else if( !pHeadNode->addNode( pNode ) )
             throw NExcept::CCriticalException("Node Create Error!",
-                boost::str( boost::format("Node type not defined (%s).\n\n%s\nLine: %s")
+                boost::str( boost::format("Parent node not found or node does not support adding children (%s).\n\n%s\nLine: %s")
                     % dataName % __FUNCTION__ % __LINE__ ));
-        }
     }
 
     // Add the node pointer to the vector for rendering
@@ -206,35 +166,57 @@ iNode * CActorStrategy::create(
 /***************************************************************************
 *    DESC:  Load the node
 ****************************************************************************/
-void CActorStrategy::loadSprite(
-    CSprite * sprite,
+void CActorStrategy::load(
+    CSprite * pSprite,
     const CSpriteData & rSpriteData,
     const CPoint<CWorldValue> & pos,
     const CPoint<float> & rot,
     const CPoint<float> & scale )
 {
     // Load the rest from sprite data
-    sprite->load( rSpriteData );
+    pSprite->load( rSpriteData );
 
     // Use passed in transforms if specified
     if( !pos.isEmpty() )
-        sprite->getObject()->setPos(pos);
+        pSprite->getObject()->setPos(pos);
 
     if( !rot.isEmpty() )
-        sprite->getObject()->setRot(rot, false);
+        pSprite->getObject()->setRot(rot, false);
 
     if( scale != CPoint<float>(1,1,1) )
-        sprite->getObject()->setScale(scale);
+        pSprite->getObject()->setScale(scale);
 
     // Init the physics
-    sprite->initPhysics();
+    pSprite->initPhysics();
 
     // Init the sprite
-    sprite->init();
+    pSprite->init();
 
     // Broadcast the signal to create the sprite AI
     if( !rSpriteData.getAIName().empty() )
-        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), sprite );
+        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), pSprite );
+}
+
+
+void CActorStrategy::load(
+    CObject2D * pObject,
+    const CSpriteData & rSpriteData,
+    const CPoint<CWorldValue> & pos,
+    const CPoint<float> & rot,
+    const CPoint<float> & scale )
+{
+    // Load the rest from sprite data
+    pObject->copyTransform( &rSpriteData );
+
+    // Use passed in transforms if specified
+    if( !pos.isEmpty() )
+        pObject->setPos(pos);
+
+    if( !rot.isEmpty() )
+        pObject->setRot(rot, false);
+
+    if( scale != CPoint<float>(1,1,1) )
+        pObject->setScale(scale);
 }
 
 
