@@ -10,7 +10,7 @@
 #define __linear_stage_strategy_h__
 
 // Physical component dependency
-#include <strategy/basicstagestrategy.h>
+#include <strategy/stagestrategy.h>
 
 // Game lib dependencies
 #include <strategy/sector.h>
@@ -23,7 +23,7 @@
 class CObject2D;
 class CMatrix;
 
-class CLinearStageStrategy : public CBasicStageStrategy
+class CLinearStageStrategy : public CStageStrategy
 {
 public:
 
@@ -80,4 +80,4 @@ protected:
     EStageDirection m_dirType;
 };
 
-#endif  // __linear_stage_strategy_h__
+#endif

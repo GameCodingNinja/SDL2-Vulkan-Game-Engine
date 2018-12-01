@@ -11,6 +11,10 @@
 // Physical component dependency
 #include <node/node.h>
 
+// Standard lib dependencies
+#include <map>
+#include <string>
+
 class CNodeMultiLst : public CNode
 {
 public:
@@ -33,7 +37,10 @@ public:
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
     
     // Add a node
-    bool addNode( iNode * pNode ) override;
+    bool addNode( iNode * pNode, const std::string & nodeName = "" ) override;
+    
+    // Get the child node
+    iNode * getChildNode( const std::string & nodeName ) override;
     
 private:
     
@@ -56,7 +63,7 @@ private:
     // every node will have one of these, it simplifies
     // the code and is minimal overhead
     // This class OWNES these pointers
-    std::vector<iNode *> m_allNodeVec;
+    std::map<const std::string, iNode *> m_allNodeMap;
 };
 
 #endif

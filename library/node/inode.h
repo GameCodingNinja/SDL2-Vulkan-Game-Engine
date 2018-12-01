@@ -16,6 +16,7 @@
 
 // Standard lib dependencies
 #include <vector>
+#include <string>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -42,7 +43,7 @@ public:
     { return nullptr; }
 
     // Add a node
-    virtual bool addNode( iNode * pNode )
+    virtual bool addNode( iNode * pNode, const std::string & nodeName = "" )
     { return false; }
     
     // Reset the iterator
@@ -77,6 +78,10 @@ public:
     // Get the node type
     virtual NDefs::ENodeType getType() const
     { return m_type; }
+    
+    // Get the child node
+    virtual iNode * getChildNode( const std::string & nodeName )
+    { return nullptr; }
     
     // Get the object
     virtual CObject2D * getObject()

@@ -835,22 +835,26 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
             m_mouseAbsolutePos.x = rEvent.motion.x;
             m_mouseAbsolutePos.y = rEvent.motion.y;
 
-            m_mouseRelativePos.x += rEvent.motion.xrel;
-            m_mouseRelativePos.y += rEvent.motion.yrel;
+            m_mouseRelativePos.x = rEvent.motion.xrel;
+            m_mouseRelativePos.y = rEvent.motion.yrel;
+            
+            m_lastDeviceUsed = NDefs::MOUSE;
         }
         else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
         {
             if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
-                m_lastAnalogLeft.x += rEvent.caxis.value;
+                m_lastAnalogLeft.x = rEvent.caxis.value;
 
             else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
-                m_lastAnalogLeft.y += rEvent.caxis.value;
+                m_lastAnalogLeft.y = rEvent.caxis.value;
 
             if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
-                m_lastAnalogRight.x += rEvent.caxis.value;
+                m_lastAnalogRight.x = rEvent.caxis.value;
 
             else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
-                m_lastAnalogRight.y += rEvent.caxis.value;
+                m_lastAnalogRight.y = rEvent.caxis.value;
+            
+            m_lastDeviceUsed = NDefs::GAMEPAD;
         }
     }
 }
@@ -871,10 +875,6 @@ bool CActionMgr::queueEmpty()
 void CActionMgr::clearQueue()
 {
     m_eventQueue.clear();
-
-    m_lastAnalogLeft.clear();
-    m_lastAnalogRight.clear();
-    m_mouseRelativePos.clear();
 }
 
 

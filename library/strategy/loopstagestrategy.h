@@ -49,4 +49,4 @@ private:
     CObject2D m_loopOffset;
 };
 
-#endif  // __loop_stage_strategy_h__
+#endif

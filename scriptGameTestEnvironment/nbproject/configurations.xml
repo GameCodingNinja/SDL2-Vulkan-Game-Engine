@@ -338,8 +338,6 @@
         <itemPath>../library/strategy/actorstrategy.h</itemPath>
         <itemPath>../library/strategy/basestrategy.cpp</itemPath>
         <itemPath>../library/strategy/basestrategy.h</itemPath>
-        <itemPath>../library/strategy/basicstagestrategy.cpp</itemPath>
-        <itemPath>../library/strategy/basicstagestrategy.h</itemPath>
         <itemPath>../library/strategy/istrategy.cpp</itemPath>
         <itemPath>../library/strategy/istrategy.h</itemPath>
         <itemPath>../library/strategy/linearstagestrategy.cpp</itemPath>
@@ -348,6 +346,8 @@
         <itemPath>../library/strategy/loopstagestrategy.h</itemPath>
         <itemPath>../library/strategy/sector.cpp</itemPath>
         <itemPath>../library/strategy/sector.h</itemPath>
+        <itemPath>../library/strategy/stagestrategy.cpp</itemPath>
+        <itemPath>../library/strategy/stagestrategy.h</itemPath>
         <itemPath>../library/strategy/strategymanager.cpp</itemPath>
         <itemPath>../library/strategy/strategymanager.h</itemPath>
       </logicalFolder>
@@ -3378,18 +3378,18 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="../library/strategy/basicstagestrategy.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
       <item path="../library/strategy/istrategy.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">
         </ccTool>
       </item>
       <item path="../library/strategy/sector.cpp" ex="false" tool="1" flavor2="11">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="../library/strategy/stagestrategy.cpp"
+            ex="false"
+            tool="1"
+            flavor2="11">
         <ccTool flags="0">
         </ccTool>
       </item>

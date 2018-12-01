@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       basicstagestrategy.cpp
+*    FILE NAME:       stagestrategy.cpp
 *
-*    DESCRIPTION:     Basic stage strategy
+*    DESCRIPTION:     Stage strategy
 ************************************************************************/
 
 // Physical component dependency
-#include <strategy/basicstagestrategy.h>
+#include <strategy/stagestrategy.h>
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
@@ -15,7 +15,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CBasicStageStrategy::CBasicStageStrategy()
+CStageStrategy::CStageStrategy()
 {
 }
 
@@ -23,7 +23,7 @@ CBasicStageStrategy::CBasicStageStrategy()
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CBasicStageStrategy::~CBasicStageStrategy()
+CStageStrategy::~CStageStrategy()
 {
 }
 
@@ -31,7 +31,7 @@ CBasicStageStrategy::~CBasicStageStrategy()
 /************************************************************************
 *    DESC:  Load the sector data from file
 ************************************************************************/
-void CBasicStageStrategy::loadFromFile( const std::string & file )
+void CStageStrategy::loadFromFile( const std::string & file )
 {
     // open and parse the XML file:
     XMLNode node = XMLNode::openFileHelper( file.c_str(), "stage" );
@@ -48,7 +48,7 @@ void CBasicStageStrategy::loadFromFile( const std::string & file )
 /************************************************************************
 *    DESC:  Load thes sector data from node
 ************************************************************************/
-void CBasicStageStrategy::loadFromNode( const XMLNode & node )
+void CStageStrategy::loadFromNode( const XMLNode & node )
 {
     XMLNode sectorsNode = node.getChildNode( "sectors" );
     if( !sectorsNode.isEmpty() )
@@ -70,7 +70,7 @@ void CBasicStageStrategy::loadFromNode( const XMLNode & node )
 /***************************************************************************
 *    DESC:  Update the sector
 ****************************************************************************/
-void CBasicStageStrategy::update()
+void CStageStrategy::update()
 {
     for( auto & iter : m_sectorDeq )
         iter.update();
@@ -80,7 +80,7 @@ void CBasicStageStrategy::update()
 /************************************************************************
 *    DESC:  Transform the sector
 ************************************************************************/
-void CBasicStageStrategy::transform()
+void CStageStrategy::transform()
 {
     for( auto & iter : m_sectorDeq )
         iter.transform();
@@ -91,7 +91,7 @@ void CBasicStageStrategy::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
+void CStageStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
 {
     auto cmdBuf( m_commandBufVec[index] );
 
@@ -107,7 +107,7 @@ void CBasicStageStrategy::recordCommandBuffer( uint32_t index, const CCamera & c
 /************************************************************************
 *    DESC:  Get the default camera position
 ************************************************************************/
-CObject & CBasicStageStrategy::getDefaultCameraPos()
+CObject & CStageStrategy::getDefaultCameraPos()
 {
     return m_defaultCameraPos;
 }

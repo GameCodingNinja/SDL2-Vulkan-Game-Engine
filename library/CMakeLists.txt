@@ -101,10 +101,9 @@ add_library(
         3d/visualcomponent3d.cpp
         strategy/sector.cpp
         strategy/actorstrategy.cpp
-        strategy/basicstagestrategy.cpp
+        strategy/stagestrategy.cpp
         strategy/strategymanager.cpp
         strategy/istrategy.cpp
-        strategy/basestrategy.cpp
         common/sound.cpp
         common/playlist.cpp
         common/worldvalue.cpp

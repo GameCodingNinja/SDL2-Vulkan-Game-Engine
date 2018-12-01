@@ -50,12 +50,11 @@ public:
     
     // Create the sprite
     virtual iNode * create(
-        const std::string & name,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale ){ return nullptr; }
-
-    virtual iNode * create( const std::string & name ){ return nullptr; }
+        const std::string & dataName,
+        const std::string & instanceName = "" ){ return nullptr; }
+    
+    // Create the node
+    virtual void destroy( int id ){};
     
     // Set the command buffers
     void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );

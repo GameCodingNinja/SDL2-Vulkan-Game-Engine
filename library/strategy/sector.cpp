@@ -89,7 +89,7 @@ void CSector::loadFromNode( const XMLNode & node )
                 if( pHeadNode == nullptr )
                     pHeadNode = pNode;
         
-                else if( !pHeadNode->addNode( pNode ) )
+                else if( !pHeadNode->addNode( pNode, iter.getNodeName()  ) )
                     throw NExcept::CCriticalException("Node Create Error!",
                         boost::str( boost::format("Parent node not found or node does not support adding children (%s).\n\n%s\nLine: %s")
                             % nodeName % __FUNCTION__ % __LINE__ ));
@@ -100,7 +100,12 @@ void CSector::loadFromNode( const XMLNode & node )
             
             // If there is a node with a name, add it to the map
             if( !nodeName.empty() )
-                m_pNodeMap.emplace( nodeName, pHeadNode );
+            {
+                if( !m_pNodeMap.emplace( nodeName, pHeadNode ).second )
+                    throw NExcept::CCriticalException("Node create Error!",
+                    boost::str( boost::format("Duplicate node name (%s).\n\n%s\nLine: %s")
+                        % nodeName % __FUNCTION__ % __LINE__ ));
+            }
         }
     }
 }

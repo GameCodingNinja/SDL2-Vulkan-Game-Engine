@@ -47,7 +47,7 @@ namespace NScriptSprite
         sprite.getObject()->setPos(x,y,z);
     }
 
-    void IncPos1(const CPoint<float> & pos, CSprite & sprite)
+    void IncPos1(CPoint<float> & pos, CSprite & sprite)
     {
         sprite.getObject()->incPos(pos);
     }
@@ -60,6 +60,18 @@ namespace NScriptSprite
     const CPoint<float> & GetPos(CSprite & sprite)
     {
         point = sprite.getObject()->getPos();
+        return point;
+    }
+    
+    const CPoint<float> & GetWorldPos(CSprite & sprite)
+    {
+        point = sprite.getObject()->getWorldPos();
+        return point;
+    }
+    
+    const CPoint<float> & GetCenterPos(CSprite & sprite)
+    {
+        point = sprite.getObject()->getCenterPos();
         return point;
     }
 
@@ -213,16 +225,16 @@ namespace NScriptSprite
         // Visual component functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(const CColor &in)",                   asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(float, float, float, float)",         asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getColor()",                         asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CColor & getColor()",                               asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultColor()",                            asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getDefaultColor()",                  asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CColor & getDefaultColor()",                        asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setAlpha(float, bool allowToExceed = false)",  asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "float getAlpha()",                                  asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultAlpha()",                            asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
         Throw( pEngine->RegisterObjectMethod("CSprite", "float getDefaultAlpha()",                           asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void createFontString(string &in)",                 asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const string & getFontString()",                    asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CSize & getFontSize()",                       asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "string & getFontString()",                          asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize & getFontSize()",                             asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite()",                               asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
 
         // Physics component functions
@@ -249,7 +261,9 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(CPoint & in)",                            asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getPos()",                             asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getPos()",                                    asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getWorldPos()",                               asFUNCTION(GetWorldPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getCenterPos()",                              asFUNCTION(GetCenterPos),  asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
@@ -257,7 +271,7 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot()",                               asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getRot()",                               asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
@@ -265,6 +279,6 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale()",                             asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getScale()",                             asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
     }
 }

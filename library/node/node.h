@@ -19,6 +19,7 @@
 
 // Standard lib dependencies
 #include <vector>
+#include <string>
 
 class CNode : public iNode
 {
@@ -34,7 +35,7 @@ public:
     iNode * next() override;
 
     // Add a node
-    bool addNode( iNode * pNode ) override;
+    bool addNode( iNode * pNode, const std::string & nodeName = "" ) override;
 
     // Find the parent
     // NOTE: This is a recursive function

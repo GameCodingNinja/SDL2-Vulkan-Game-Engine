@@ -38,4 +38,4 @@ public:
     std::deque<VkDescriptorImageInfo> m_descriptorImageInfoDeq;
 };
 
-#endif  // __push_descriptor_set_h__
+#endif

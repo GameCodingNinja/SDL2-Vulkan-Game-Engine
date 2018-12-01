@@ -103,8 +103,12 @@ void CNodeDataList::loadNode(
     for( int i = 0; i < xmlNode.nChildNode("node"); ++i )
     {
         const XMLNode & childXMLNode = xmlNode.getChildNode("node", i);
+        
+        std::string nodeName;
+        if( childXMLNode.isAttributeSet( "name" ) )
+            nodeName = childXMLNode.getAttribute( "name" );
 
-        m_dataVec.emplace_back( childXMLNode, "", idCounter++, nodeData.getNodeId(), defGroup, defObjName, defAIName, defId );
+        m_dataVec.emplace_back( childXMLNode, nodeName, idCounter++, nodeData.getNodeId(), defGroup, defObjName, defAIName, defId );
 
         loadNode( childXMLNode, m_dataVec.back(), idCounter, defGroup, defObjName, defAIName, defId );
     }

@@ -33,7 +33,7 @@ CObject2D::~CObject2D()
 /************************************************************************
 *    DESC:  Get the object's translated position
 ************************************************************************/
-const CPoint<float> & CObject2D::getTransPos() const
+const CPoint<float> & CObject2D::getWorldPos() const
 {
     return m_transPos;
 }

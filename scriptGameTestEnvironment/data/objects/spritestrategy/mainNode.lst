@@ -76,31 +76,53 @@
         </node>
     </node>-->
     
-    <node name="ship" type="objectNodeMultiList">
+    <node name="player_ship" type="objectNodeMultiList">
         
         <object2d>
+            <position x="-400" y="200" z="0"/>
+            <scale x="1.5" y="1.5" z="1.5"/>
         </object2d>
 
-        <node name="player_fire_tail" type="spriteNodeMultiList">
+        <node name="fire_tail" type="spriteNode">
         
-            <sprite2d objectName="player_fire_tail">
+            <sprite2d objectName="fire_tail">
+                <position x="-120" y="-3" z="0"/>
+                <scriptLst>
+                    <script update="loopAnimation"/>
+                </scriptLst>
             </sprite2d>
 
         </node>
         
-        <node name="player_ship" type="spriteNodeMultiList">
+        <node name="ship_body" type="spriteNode">
         
             <sprite2d objectName="player_ship">
             </sprite2d>
 
         </node>
         
-        <node name="ship_gun" type="spriteNodeMultiList">
+        <node name="ship_gun" type="spriteNode">
         
             <sprite2d objectName="ship_gun">
+                <centerPos x="10" y="0" z="0"/>
+                <position x="20" y="0" z="0"/>
+                <scriptLst>
+                    <script update="rotateGun"/>
+                </scriptLst>
             </sprite2d>
 
         </node>
+
+    </node>
+    
+    <node name="projectile" type="spriteNode">
+        
+        <sprite2d objectName="projectile">
+            <position x="0" y="0" z="0"/>
+            <scriptLst>
+                <script update="MoveProjectile"/>
+            </scriptLst>
+        </sprite2d>
 
     </node>
     

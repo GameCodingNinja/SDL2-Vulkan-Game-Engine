@@ -29,7 +29,7 @@ CLinearStageStrategy::CLinearStageStrategy() :
 }
 
 CLinearStageStrategy::CLinearStageStrategy( const std::string & file ) :
-    CBasicStageStrategy( file ),
+    CStageStrategy( file ),
     m_startIndex(0),
     m_dirType(ESD_NULL)
 {
@@ -49,7 +49,7 @@ CLinearStageStrategy::~CLinearStageStrategy()
 ************************************************************************/
 void CLinearStageStrategy::loadFromNode( const XMLNode & node )
 {
-    CBasicStageStrategy::loadFromNode( node );
+    CStageStrategy::loadFromNode( node );
 
     const XMLNode linearStageNode = node.getChildNode( "linearStage" );
     if( !linearStageNode.isEmpty() )

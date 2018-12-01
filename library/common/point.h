@@ -24,7 +24,7 @@ public:
     type x, y, z;
 
     /************************************************************************
-    *    desc:  Constructor
+    *    DESC:  Constructor
     ************************************************************************/
     CPoint() : x(0), y(0), z(0)
     {
@@ -46,7 +46,7 @@ public:
 
 
     /************************************************************************
-    *    desc:  Get functions for const calls
+    *    DESC:  Get functions for const calls
     ************************************************************************/
     type getX() const
     {
@@ -65,7 +65,7 @@ public:
 
 
     /************************************************************************
-    *    desc:  Clear the x
+    *    DESC:  Clear the x
     ************************************************************************/
     void clearX()
     {
@@ -73,7 +73,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Clear the y
+    *    DESC:  Clear the y
     ************************************************************************/
     void clearY()
     {
@@ -81,7 +81,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Clear the z
+    *    DESC:  Clear the z
     ************************************************************************/
     void clearZ()
     {
@@ -89,7 +89,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Clear the values
+    *    DESC:  Clear the values
     ************************************************************************/
     void clear()
     {
@@ -99,7 +99,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The equality operator
+    *    DESC:  The equality operator
     ************************************************************************/
     bool operator == ( const CPoint & point ) const
     {
@@ -110,7 +110,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The inequality operator
+    *    DESC:  The inequality operator
     ************************************************************************/
     bool operator != ( const CPoint & point ) const
     {
@@ -122,7 +122,7 @@ public:
     
     
     /************************************************************************
-    *    desc:  Greater than operator
+    *    DESC:  Greater than operator
     ************************************************************************/
     bool operator > ( const CPoint & point ) const
     {
@@ -142,7 +142,7 @@ public:
     
     
     /************************************************************************
-    *    desc:  Greater than or equal to operator
+    *    DESC:  Greater than or equal to operator
     ************************************************************************/
     bool operator >= ( const CPoint & point ) const
     {
@@ -162,7 +162,7 @@ public:
     
     
     /************************************************************************
-    *    desc:  Less than or equal to operator
+    *    DESC:  Less than or equal to operator
     ************************************************************************/
     bool operator < ( const CPoint & point ) const
     {
@@ -182,7 +182,7 @@ public:
     
     
     /************************************************************************
-    *    desc:  Less than or equal to operator
+    *    DESC:  Less than or equal to operator
     ************************************************************************/
     bool operator <= ( const CPoint & point ) const
     {
@@ -202,7 +202,7 @@ public:
     
     
     /************************************************************************
-    *    desc:  The subtraction operator
+    *    DESC:  The subtraction operator
     ************************************************************************/
     CPoint operator - ( const CPoint & point ) const
     {
@@ -225,7 +225,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The addition operator
+    *    DESC:  The addition operator
     ************************************************************************/
     CPoint operator + ( const CPoint & point ) const
     {
@@ -248,7 +248,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The division operator
+    *    DESC:  The division operator
     ************************************************************************/
     CPoint operator / ( const CPoint & point ) const
     {
@@ -271,7 +271,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The addition operator
+    *    DESC:  The addition operator
     ************************************************************************/
     CPoint operator += ( const CPoint & point )
     {
@@ -283,7 +283,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The addition operator
+    *    DESC:  The addition operator
     ************************************************************************/
     CPoint operator += ( type value )
     {
@@ -295,7 +295,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The addition operator
+    *    DESC:  The addition operator
     ************************************************************************/
     CPoint operator -= ( const CPoint & point )
     {
@@ -307,7 +307,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The addition operator
+    *    DESC:  The addition operator
     ************************************************************************/
     CPoint operator -= ( type value )
     {
@@ -319,7 +319,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The multiplication operator
+    *    DESC:  The multiplication operator
     ************************************************************************/
     CPoint operator * ( const CPoint & point ) const
     {
@@ -332,7 +332,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The multiplication operator
+    *    DESC:  The multiplication operator
     ************************************************************************/
     CPoint operator * ( type value ) const
     {
@@ -345,7 +345,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The multiplication operator
+    *    DESC:  The multiplication operator
     ************************************************************************/
     CPoint operator * ( type * pMat ) const
     {
@@ -359,7 +359,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The multiplication operator
+    *    DESC:  The multiplication operator
     ************************************************************************/
     CPoint operator *= ( const CPoint & point )
     {
@@ -371,7 +371,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The multiplication operator
+    *    DESC:  The multiplication operator
     ************************************************************************/
     CPoint operator *= ( type value )
     {
@@ -383,7 +383,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The multiplication operator
+    *    DESC:  The multiplication operator
     ************************************************************************/
     CPoint operator *= ( type * pMat )
     {
@@ -401,7 +401,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The division operator
+    *    DESC:  The division operator
     ************************************************************************/
     CPoint operator /= ( const CPoint & point )
     {
@@ -413,7 +413,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  The division operator
+    *    DESC:  The division operator
     ************************************************************************/
     CPoint operator /= ( type value )
     {
@@ -426,7 +426,7 @@ public:
     
 
     /************************************************************************
-    *    desc:  Set the point data
+    *    DESC:  Set the point data
     ************************************************************************/
     void set( type _x, type _y, type _z )
     {
@@ -444,7 +444,7 @@ public:
     
     
     /************************************************************************
-    *    desc:  Inc the point data
+    *    DESC:  Inc the point data
     ************************************************************************/
     void inc( type _x, type _y, type _z )
     {
@@ -454,7 +454,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Cap the value
+    *    DESC:  Cap the value
     ************************************************************************/
     void cap( type value )
     {
@@ -518,14 +518,8 @@ public:
         }
     }
 
-    // For AngelScript
-    void capFloat( float value )
-    {
-        cap( value );
-    }
-
     /************************************************************************
-    *    desc:  Does this point not have any data?
+    *    DESC:  Does this point not have any data?
     ************************************************************************/
     bool isEmpty() const
     {
@@ -552,7 +546,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Check if two floating points are equil enough
+    *    DESC:  Check if two floating points are equil enough
     ************************************************************************/
     bool isEquilEnough( const CPoint & point, type range )
     {
@@ -564,14 +558,8 @@ public:
         return false;
     }
 
-    // For AngelScript
-    bool isEquilEnoughFloat( const CPoint & point, float range )
-    {
-        return isEquilEnough( point, range );
-    }
-
     /************************************************************************
-    *    desc:  Invert the values of this point
+    *    DESC:  Invert the values of this point
     ************************************************************************/
     void invert()
     {
@@ -581,7 +569,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Invert a copy of this point and return it
+    *    DESC:  Invert a copy of this point and return it
     ************************************************************************/
     CPoint getInvert()
     {
@@ -592,7 +580,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Invert the values of this point
+    *    DESC:  Invert the values of this point
     ************************************************************************/
     void invertX()
     {
@@ -600,7 +588,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Invert the values of this point
+    *    DESC:  Invert the values of this point
     ************************************************************************/
     void invertY()
     {
@@ -608,7 +596,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Invert the values of this point
+    *    DESC:  Invert the values of this point
     ************************************************************************/
     void invertZ()
     {
@@ -616,7 +604,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Get the length of the point from the origin
+    *    DESC:  Get the length of the point from the origin
     ************************************************************************/
     type getLength() const
     {
@@ -625,7 +613,7 @@ public:
 
 
     /************************************************************************
-    *    desc:  Get the length between two points
+    *    DESC:  Get the length between two points
     ************************************************************************/
     type getLength( const CPoint & point ) const
     {
@@ -634,7 +622,7 @@ public:
 
 
     /************************************************************************
-    *    desc:  Get the length of the point from the origin along the x and y
+    *    DESC:  Get the length of the point from the origin along the x and y
     *			axis
     ************************************************************************/
     type getLength2D() const
@@ -648,7 +636,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Get the squared length between two points
+    *    DESC:  Get the squared length between two points
     ************************************************************************/
     type getLengthSquared( const CPoint & point ) const
     {
@@ -656,7 +644,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Get the squared length of the point from the origin
+    *    DESC:  Get the squared length of the point from the origin
     ************************************************************************/
     type getLengthSquared() const
     {
@@ -664,7 +652,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Get the squared length of the point from the origin
+    *    DESC:  Get the squared length of the point from the origin
     ************************************************************************/
     type getLengthSquared2D() const
     {
@@ -677,11 +665,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Get the dot product
-    *
-    *    param:  CPoint & point
-    *
-    *    return: type - distance between two points
+    *    DESC:  Get the dot product
     ************************************************************************/
     type getDotProduct( const CPoint & point ) const
     {
@@ -695,18 +679,8 @@ public:
 
     }
 
-    // For AngelScript
-    float getDotProductFloat( const CPoint & point ) const
-    {
-        return getDotProduct( point );
-    }
-    float getDotProduct2DFloat( const CPoint & point ) const
-    {
-        return getDotProductFloat( point );
-    }
-
     /************************************************************************
-    *    desc:  normalize this point
+    *    DESC:  normalize this point
     ************************************************************************/
     void normalize()
     {
@@ -732,7 +706,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Get the cross product
+    *    DESC:  Get the cross product
     ************************************************************************/
     CPoint getCrossProduct( const CPoint & point ) const
     {
@@ -746,7 +720,7 @@ public:
     }
 
     /************************************************************************
-    *    desc:  Create a displacement vector
+    *    DESC:  Create a displacement vector
     ************************************************************************/
     CPoint getDisplacement( const CPoint & point, type amount ) const
     {
@@ -762,7 +736,7 @@ public:
     *	NEGATIVE OPERATOR
     ***********************************************************************************/
     /************************************************************************
-    *    desc:  Return a copy of the point with its signs flipped
+    *    DESC:  Return a copy of the point with its signs flipped
     ************************************************************************/
     CPoint operator - () const
     {

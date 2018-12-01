@@ -9,7 +9,7 @@
 #define __actor_strategy_h__
 
 // Physical component dependency
-#include <strategy/basestrategy.h>
+#include <strategy/istrategy.h>
 
 // Game lib dependencies
 #include <common/point.h>
@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 // Forward Declarations
 class CNodeDataList;
@@ -31,7 +32,7 @@ class CSprite;
 class CObject2D;
 class CMatrix;
 
-class CActorStrategy : public CBaseStrategy, boost::noncopyable
+class CActorStrategy : public iStrategy, boost::noncopyable
 {
 public:
 
@@ -45,14 +46,12 @@ public:
     void loadFromFile( const std::string & file ) override;
 
     // Create the node
-    virtual iNode * create(
+    iNode * create(
         const std::string & dataName,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale ) override;
-
-    virtual iNode * create(
-        const std::string & dataName ) override;
+        const std::string & instanceName = "" ) override;
+    
+    // Destroy the node
+    void destroy( int id ) override;
 
     // Update the nodes
     void update() override;
@@ -74,27 +73,6 @@ public:
     bool isActive( const int id );
 
 protected:
-    
-    // Load the node
-    void load(
-        CSprite * pSprite,
-        const CSpriteData & rSpriteData,
-        const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
-        const CPoint<float> & rot = CPoint<float>(),
-        const CPoint<float> & scale = CPoint<float>(1,1,1) );
-    
-    void load(
-        CObject2D * pObject,
-        const CSpriteData & rSpriteData,
-        const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
-        const CPoint<float> & rot = CPoint<float>(),
-        const CPoint<float> & scale = CPoint<float>(1,1,1) );
-
-    // Handle the deleting of any nodes
-    void deleteObj( const int id ) override;
-
-    // Handle the creating of any object by name
-    void createObj( const std::string & name ) override;
 
     // Get the pointer to the sprite
     iNode * getNode( const int id );
@@ -107,8 +85,17 @@ protected:
     // Map of the node data
     std::map<const std::string, CNodeDataList> m_dataMap;
 
-    // Vector of iNode pointers
+    // Active vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;
+    
+    // Vector of iNode pointers to be added to the active vector
+    std::vector<iNode *> m_pCreateVec;
+    
+    // Set of indexes to delete
+    std::vector<int> m_deleteVec;
+    
+    // Nodes with names
+    std::map<const std::string, iNode *> m_pNodeMap;
 };
 
 #endif

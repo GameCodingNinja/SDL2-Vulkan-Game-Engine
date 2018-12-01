@@ -34,6 +34,9 @@ void CPushDescriptorSet::cmdPushDescriptorSet(
 ************************************************************************/
 void CPushDescriptorSet::updateTexture( const CTexture & texture )
 {
-    m_descriptorImageInfoDeq.back().imageView = texture.m_textureImageView;
-    m_descriptorImageInfoDeq.back().sampler = texture.m_textureSampler;
+    for( auto & iter : m_descriptorImageInfoDeq )
+    {
+        iter.imageView = texture.m_textureImageView;
+        iter.sampler = texture.m_textureSampler;
+    }
 }

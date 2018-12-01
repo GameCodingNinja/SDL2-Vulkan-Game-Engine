@@ -42,7 +42,7 @@ public:
     void forceTransform();
     
     // Get the object's translated position
-    const CPoint<float> & getTransPos() const;
+    const CPoint<float> & getWorldPos() const;
     
     // Use a point to set a column
     virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){}

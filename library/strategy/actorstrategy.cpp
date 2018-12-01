@@ -108,13 +108,10 @@ CNodeDataList & CActorStrategy::getData( const std::string & name )
 
 /************************************************************************
 *    DESC:  create the node
-*           NOTE: Function assumes radians
 ************************************************************************/
 iNode * CActorStrategy::create(
     const std::string & dataName,
-    const CPoint<CWorldValue> & pos,
-    const CPoint<float> & rot,
-    const CPoint<float> & scale )
+    const std::string & instanceName )
 {
     // If the node defined a unique id then use that
     const int nodeId( ((m_idInc++) + m_idOffset) * m_idDir );
@@ -124,6 +121,7 @@ iNode * CActorStrategy::create(
         m_pNodeVec.end(),
         [nodeId](const iNode * pNode){ return pNode->getId() == nodeId; });
 
+    // Sanity check that there is no duplicate node id's
     if( iter != m_pNodeVec.end() )
     {
         throw NExcept::CCriticalException("Node Create Error!",
@@ -139,117 +137,39 @@ iNode * CActorStrategy::create(
     for( auto & iter : rNodeDataVec )
     {
         // Create the node from the factory function
-        iNode * pNode = NNodeFactory::Create( iter, nodeId, pos, rot, scale );
+        iNode * pNode = NNodeFactory::Create( iter, nodeId );
         
         if( pHeadNode == nullptr )
             pHeadNode = pNode;
         
-        else if( !pHeadNode->addNode( pNode ) )
+        else if( !pHeadNode->addNode( pNode, iter.getNodeName() ) )
             throw NExcept::CCriticalException("Node Create Error!",
                 boost::str( boost::format("Parent node not found or node does not support adding children (%s).\n\n%s\nLine: %s")
                     % dataName % __FUNCTION__ % __LINE__ ));
     }
 
     // Add the node pointer to the vector for rendering
-    m_pNodeVec.push_back( pHeadNode );
+    m_pCreateVec.push_back( pHeadNode );
+    
+    // If there is an instance name with this node, add it to the map
+    if( !instanceName.empty() )
+    {
+        if( !m_pNodeMap.emplace( instanceName, pHeadNode ).second )
+            throw NExcept::CCriticalException("Node create Error!",
+            boost::str( boost::format("Duplicate node instance name (%s).\n\n%s\nLine: %s")
+                % instanceName % __FUNCTION__ % __LINE__ ));
+    }
 
     return pHeadNode;
 }
 
-iNode * CActorStrategy::create(
-    const std::string & dataName )
+
+/************************************************************************
+*    DESC:  destroy the node
+************************************************************************/
+void CActorStrategy::destroy( int id )
 {
-    return create( dataName, CPoint<CWorldValue>(), CPoint<float>(), CPoint<float>(1,1,1) );
-}
-
-
-/***************************************************************************
-*    DESC:  Load the node
-****************************************************************************/
-void CActorStrategy::load(
-    CSprite * pSprite,
-    const CSpriteData & rSpriteData,
-    const CPoint<CWorldValue> & pos,
-    const CPoint<float> & rot,
-    const CPoint<float> & scale )
-{
-    // Load the rest from sprite data
-    pSprite->load( rSpriteData );
-
-    // Use passed in transforms if specified
-    if( !pos.isEmpty() )
-        pSprite->getObject()->setPos(pos);
-
-    if( !rot.isEmpty() )
-        pSprite->getObject()->setRot(rot, false);
-
-    if( scale != CPoint<float>(1,1,1) )
-        pSprite->getObject()->setScale(scale);
-
-    // Init the physics
-    pSprite->initPhysics();
-
-    // Init the sprite
-    pSprite->init();
-
-    // Broadcast the signal to create the sprite AI
-    if( !rSpriteData.getAIName().empty() )
-        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), pSprite );
-}
-
-
-void CActorStrategy::load(
-    CObject2D * pObject,
-    const CSpriteData & rSpriteData,
-    const CPoint<CWorldValue> & pos,
-    const CPoint<float> & rot,
-    const CPoint<float> & scale )
-{
-    // Load the rest from sprite data
-    pObject->copyTransform( &rSpriteData );
-
-    // Use passed in transforms if specified
-    if( !pos.isEmpty() )
-        pObject->setPos(pos);
-
-    if( !rot.isEmpty() )
-        pObject->setRot(rot, false);
-
-    if( scale != CPoint<float>(1,1,1) )
-        pObject->setScale(scale);
-}
-
-
-/***************************************************************************
-*    DESC:  Handle the deleting of any nodes
-****************************************************************************/
-void CActorStrategy::createObj( const std::string & name )
-{
-    create( name, CPoint<float>(), CPoint<float>(), CPoint<float>(1,1,1) );
-}
-
-
-/***************************************************************************
-*    DESC:  Handle the deleting of any nodes
-*           NOTE: Do not call from a destructor!
-****************************************************************************/
-void CActorStrategy::deleteObj( int id )
-{
-    const auto iter = std::find_if(
-        m_pNodeVec.begin(),
-        m_pNodeVec.end(),
-        [id](const iNode * pNode) { return pNode->getId() == id;} );
-
-    if( iter != m_pNodeVec.end() )
-    {
-        NDelFunc::Delete( *iter );
-        m_pNodeVec.erase( iter );
-    }
-    else
-    {
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Node index can't be found (%s).\n\n%s\nLine: %s")
-            % id % __FUNCTION__ % __LINE__ ) );
-    }
+    m_deleteVec.push_back( id );
 }
 
 
@@ -260,9 +180,43 @@ void CActorStrategy::update()
 {
     for( auto iter : m_pNodeVec )
         iter->update();
+    
+    // Add new nodes created during the update
+    if( !m_pCreateVec.empty() )
+    {
+        for( auto iter : m_pCreateVec )
+        {
+            iter->update();
+            m_pNodeVec.push_back( iter );
+        }
+        
+        m_pCreateVec.clear();
+    }
+    
+    // Delete nodes destroyed during the update
+    if( !m_deleteVec.empty() )
+    {
+        for( auto id : m_deleteVec )
+        {
+            const auto iter = std::find_if(
+            m_pNodeVec.begin(),
+            m_pNodeVec.end(),
+            [id](const iNode * pNode) { return pNode->getId() == id;} );
 
-    handleDelete();
-    handleCreate();
+            if( iter != m_pNodeVec.end() )
+            {
+                NDelFunc::Delete( *iter );
+                m_pNodeVec.erase( iter );
+            }
+            else
+            {
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
+                    % id % __FUNCTION__ % __LINE__ ) );
+            }
+        }
+        
+        m_deleteVec.clear();
+    }
 }
 
 

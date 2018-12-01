@@ -51,7 +51,7 @@ iNode * CNode::next()
 /************************************************************************
 *    DESC:  Add a node
 ************************************************************************/
-bool CNode::addNode( iNode * pNode )
+bool CNode::addNode( iNode * pNode, const std::string & nodeName )
 {
     // Call a recursive function to find the parent node
     iNode * pParentNode = findParent( pNode );

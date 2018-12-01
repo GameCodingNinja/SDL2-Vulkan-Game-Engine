@@ -10,8 +10,12 @@
 
 // Game lib dependencies
 #include <utilities/deletefuncs.h>
+#include <utilities/exceptionhandling.h>
 #include <2d/object2d.h>
 #include <sprite/sprite.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -27,7 +31,7 @@ CNodeMultiLst::CNodeMultiLst( int nodeId, int parentId ) :
 ************************************************************************/
 CNodeMultiLst::~CNodeMultiLst()
 {
-    NDelFunc::DeleteVectorPointers( m_allNodeVec );
+    NDelFunc::DeleteMapPointers( m_allNodeMap );
 }
 
 
@@ -169,9 +173,19 @@ void CNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkComman
 /************************************************************************
 *    DESC:  Add a node
 ************************************************************************/
-bool CNodeMultiLst::addNode( iNode * pNode )
+bool CNodeMultiLst::addNode( iNode * pNode, const std::string & nodeName )
 {
-    m_allNodeVec.push_back( pNode );
+    std::string name = nodeName;
+    
+    // If a name is not given, generate one for the map
+    if( name.empty() )
+        name = "blank_" + std::to_string(m_allNodeMap.size());
+    
+    // Check for duplicate names
+    if( !m_allNodeMap.emplace( name, pNode ).second )
+        throw NExcept::CCriticalException("Node create Error!",
+                boost::str( boost::format("Duplicate node name (%s).\n\n%s\nLine: %s")
+                    % nodeName % __FUNCTION__ % __LINE__ ));
 
     const bool result = CNode::addNode( pNode );
 
@@ -182,12 +196,28 @@ bool CNodeMultiLst::addNode( iNode * pNode )
 
 
 /************************************************************************
+*    DESC:  Get the child node
+************************************************************************/
+iNode * CNodeMultiLst::getChildNode( const std::string & nodeName )
+{
+    // Make sure the node we are looking for is available
+    auto mapIter = m_allNodeMap.find( nodeName );
+    if( mapIter == m_allNodeMap.end() )
+        throw NExcept::CCriticalException("Get child node Error!",
+            boost::str( boost::format("Child node can't be found (%s).\n\n%s\nLine: %s")
+                % nodeName % __FUNCTION__ % __LINE__ ));
+    
+    return mapIter->second;
+}
+
+
+/************************************************************************
 *    DESC:  Reset the iterators
 ************************************************************************/
 void CNodeMultiLst::resetIterators()
 {
     reset();
 
-    for( auto iter : m_allNodeVec )
-        iter->reset();
+    for( auto & iter : m_allNodeMap )
+        iter.second->reset();
 }

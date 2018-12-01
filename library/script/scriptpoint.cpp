@@ -51,6 +51,45 @@ namespace NScriptPoint
     {
         ((CPoint<float>*)pThisPointer)->~CPoint();
     }
+    
+    /************************************************************************
+    *    DESC:  Wrapper function due to type being a template
+    ************************************************************************/
+    float GetLengthSquared2D(CPoint<float> & point)
+    {
+        return point.getLengthSquared2D();
+    }
+    
+    float GetLengthSquared(CPoint<float> & point)
+    {
+        return point.getLengthSquared();
+    }
+    
+    bool IsEquilEnough(CPoint<float> & in, float val, CPoint<float> & point)
+    {
+        return point.isEquilEnough( in, val );
+    }
+
+    float GetDotProduct(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getDotProduct( in );
+    }
+    
+    float GetDotProduct2D(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getDotProduct2D( in );
+    }
+    
+    CPoint<float> GetCrossProduct(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getCrossProduct( in );
+    }
+    
+    void Cap(float value, CPoint<float> & point)
+    {
+        point.cap(value);
+    }
+
 
     /************************************************************************
      *    DESC:  Register the class with AngelScript
@@ -72,13 +111,13 @@ namespace NScriptPoint
         Throw( pEngine->RegisterObjectBehaviour("CPoint", asBEHAVE_DESTRUCT, "void f()",                     asFUNCTION(Destructor), asCALL_CDECL_OBJLAST) );
 
         // assignment operator
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint & opAssign(const CPoint & in)", asMETHODPR(CPoint<float>, operator =, (const CPoint<float> &), CPoint<float> &), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint & opAssign(CPoint & in)", asMETHODPR(CPoint<float>, operator =, (const CPoint<float> &), CPoint<float> &), asCALL_THISCALL) );
 
         // binary operators
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAdd ( const CPoint & in )", asMETHODPR(CPoint<float>, operator +, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opSub ( const CPoint & in )", asMETHODPR(CPoint<float>, operator -, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opMul ( const CPoint & in )", asMETHODPR(CPoint<float>, operator *, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opDiv ( const CPoint & in )", asMETHODPR(CPoint<float>, operator /, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAdd ( CPoint & in )", asMETHODPR(CPoint<float>, operator +, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opSub ( CPoint & in )", asMETHODPR(CPoint<float>, operator -, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opMul ( CPoint & in )", asMETHODPR(CPoint<float>, operator *, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opDiv ( CPoint & in )", asMETHODPR(CPoint<float>, operator /, (const CPoint<float> &) const, CPoint<float>), asCALL_THISCALL) );
 
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAdd ( float )", asMETHODPR(CPoint<float>, operator +, (float) const, CPoint<float>), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opSub ( float )", asMETHODPR(CPoint<float>, operator -, (float) const, CPoint<float>), asCALL_THISCALL) );
@@ -86,10 +125,10 @@ namespace NScriptPoint
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opDiv ( float )", asMETHODPR(CPoint<float>, operator /, (float) const, CPoint<float>), asCALL_THISCALL) );
 
         // compound assignment operators
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAddAssign ( const CPoint & in )", asMETHODPR(CPoint<float>, operator +=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opSubAssign ( const CPoint & in )", asMETHODPR(CPoint<float>, operator -=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opMulAssign ( const CPoint & in )", asMETHODPR(CPoint<float>, operator *=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opDivAssign ( const CPoint & in )", asMETHODPR(CPoint<float>, operator /=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAddAssign ( CPoint & in )", asMETHODPR(CPoint<float>, operator +=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opSubAssign ( CPoint & in )", asMETHODPR(CPoint<float>, operator -=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opMulAssign ( CPoint & in )", asMETHODPR(CPoint<float>, operator *=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opDivAssign ( CPoint & in )", asMETHODPR(CPoint<float>, operator /=, (const CPoint<float> &), CPoint<float>), asCALL_THISCALL) );
 
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAddAssign ( float )", asMETHODPR(CPoint<float>, operator +=, (float) , CPoint<float>), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opSubAssign ( float )", asMETHODPR(CPoint<float>, operator -=, (float) , CPoint<float>), asCALL_THISCALL) );
@@ -106,7 +145,6 @@ namespace NScriptPoint
         Throw( pEngine->RegisterObjectMethod("CPoint", "void clearY()",       asMETHOD(CPoint<float>, clearY), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void clearZ()",       asMETHOD(CPoint<float>, clearZ), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void clear()",        asMETHOD(CPoint<float>, clear), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "void cap( float x )", asMETHOD(CPoint<float>, capFloat), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "bool isEmpty()",      asMETHOD(CPoint<float>, isEmpty), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "bool isXEmpty()",     asMETHOD(CPoint<float>, isXEmpty), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "bool isYEmpty()",     asMETHOD(CPoint<float>, isYEmpty), asCALL_THISCALL) );
@@ -118,11 +156,14 @@ namespace NScriptPoint
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getInvert()",  asMETHOD(CPoint<float>, getInvert), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void normalize()",    asMETHOD(CPoint<float>, normalize), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void normalize2D()",  asMETHOD(CPoint<float>, normalize2D), asCALL_THISCALL) );
-
-        Throw( pEngine->RegisterObjectMethod("CPoint", "bool isEquilEnough( const CPoint & in, float val )", asMETHOD(CPoint<float>, isEquilEnoughFloat), asCALL_THISCALL) );
-
-        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct( const CPoint & in )",    asMETHOD(CPoint<float>, getDotProductFloat), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct2D( const CPoint & in )",  asMETHOD(CPoint<float>, getDotProduct2DFloat), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getCrossProduct( const CPoint & in )", asMETHOD(CPoint<float>, getCrossProduct), asCALL_THISCALL) );
+        
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared2D()", asFUNCTION(GetLengthSquared2D), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared()",   asFUNCTION(GetLengthSquared), asCALL_CDECL_OBJLAST) );
+        
+        Throw( pEngine->RegisterObjectMethod("CPoint", "bool isEquilEnough(CPoint & in, float val)", asFUNCTION(IsEquilEnough), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct(CPoint & in)",           asFUNCTION(GetDotProduct), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct2D(CPoint & in)",         asFUNCTION(GetDotProduct2D), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getCrossProduct(CPoint & in)",        asFUNCTION(GetCrossProduct), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "void cap(float)",                            asFUNCTION(Cap), asCALL_CDECL_OBJLAST) );
     }
 }

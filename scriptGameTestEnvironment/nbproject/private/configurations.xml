@@ -175,6 +175,8 @@
         </df>
         <df name="scripts">
           <df name="library">
+            <in>defs.ang</in>
+            <in>functions.ang</in>
             <in>menu.ang</in>
             <in>menu_defs.ang</in>
             <in>run.ang</in>

@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       basicstagestrategy.h
+*    FILE NAME:       stagestrategy.h
 *
-*    DESCRIPTION:     Basic stage strategy
+*    DESCRIPTION:     Stage strategy
 ************************************************************************/
 
-#ifndef __basic_stage_strategy_h__
-#define __basic_stage_strategy_h__
+#ifndef __stage_strategy_h__
+#define __stage_strategy_h__
 
 // Physical component dependency
 #include <strategy/istrategy.h>
@@ -25,15 +25,15 @@
 class CObject2D;
 class CMatrix;
 
-class CBasicStageStrategy : public iStrategy, boost::noncopyable
+class CStageStrategy : public iStrategy, boost::noncopyable
 {
 public:
 
     // Constructor
-    CBasicStageStrategy();
+    CStageStrategy();
 
     // Destructor
-    virtual ~CBasicStageStrategy();
+    virtual ~CStageStrategy();
 
     // Load the sector data from file
     virtual void loadFromFile( const std::string & file ) override;

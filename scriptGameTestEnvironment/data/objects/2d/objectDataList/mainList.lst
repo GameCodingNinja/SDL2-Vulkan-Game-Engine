@@ -46,9 +46,15 @@
             </visual>
         </object>
         
-        <object name="player_fire_tail">
+        <object name="fire_tail">
             <visual>
                 <texture count="12" file="data/textures/playerShip/firetail%d.png"/>
+            </visual>
+        </object>
+        
+        <object name="projectile">
+            <visual>
+                <texture file="data/textures/playerShip/projectile.png"/>
             </visual>
         </object>
         
