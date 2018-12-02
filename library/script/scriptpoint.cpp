@@ -55,14 +55,44 @@ namespace NScriptPoint
     /************************************************************************
     *    DESC:  Wrapper function due to type being a template
     ************************************************************************/
-    float GetLengthSquared2D(CPoint<float> & point)
+    float GetLengthSquared2D1(CPoint<float> & point)
     {
         return point.getLengthSquared2D();
     }
     
-    float GetLengthSquared(CPoint<float> & point)
+    float GetLengthSquared2D2(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getLengthSquared2D( in );
+    }
+    
+    float GetLength2D1(CPoint<float> & point)
+    {
+        return point.getLength2D();
+    }
+    
+    float GetLength2D2(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getLength2D( in );
+    }
+    
+    float GetLengthSquared1(CPoint<float> & point)
     {
         return point.getLengthSquared();
+    }
+    
+    float GetLengthSquared2(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getLengthSquared( in );
+    }
+    
+    float GetLength1(CPoint<float> & point)
+    {
+        return point.getLength();
+    }
+    
+    float GetLength2(CPoint<float> & in, CPoint<float> & point)
+    {
+        return point.getLength( in );
     }
     
     bool IsEquilEnough(CPoint<float> & in, float val, CPoint<float> & point)
@@ -153,17 +183,23 @@ namespace NScriptPoint
         Throw( pEngine->RegisterObjectMethod("CPoint", "void invertX()",      asMETHOD(CPoint<float>, invert), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void invertY()",      asMETHOD(CPoint<float>, invert), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void invertZ()",      asMETHOD(CPoint<float>, invert), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getInvert()",  asMETHOD(CPoint<float>, getInvert), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getInvert() const",  asMETHOD(CPoint<float>, getInvert), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void normalize()",    asMETHOD(CPoint<float>, normalize), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void normalize2D()",  asMETHOD(CPoint<float>, normalize2D), asCALL_THISCALL) );
         
-        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared2D()", asFUNCTION(GetLengthSquared2D), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared()",   asFUNCTION(GetLengthSquared), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared2D() const",            asFUNCTION(GetLengthSquared2D1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared2D(CPoint & in) const", asFUNCTION(GetLengthSquared2D2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared() const",              asFUNCTION(GetLengthSquared1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLengthSquared(CPoint & in) const",   asFUNCTION(GetLengthSquared2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLength2D() const",                   asFUNCTION(GetLength2D1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLength2D(CPoint & in) const",        asFUNCTION(GetLength2D2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLength() const",                     asFUNCTION(GetLength1), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getLength(CPoint & in) const",          asFUNCTION(GetLength2), asCALL_CDECL_OBJLAST) );
         
         Throw( pEngine->RegisterObjectMethod("CPoint", "bool isEquilEnough(CPoint & in, float val)", asFUNCTION(IsEquilEnough), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct(CPoint & in)",           asFUNCTION(GetDotProduct), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct2D(CPoint & in)",         asFUNCTION(GetDotProduct2D), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getCrossProduct(CPoint & in)",        asFUNCTION(GetCrossProduct), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct(CPoint & in) const",           asFUNCTION(GetDotProduct), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "float getDotProduct2D(CPoint & in) const",         asFUNCTION(GetDotProduct2D), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint getCrossProduct(CPoint & in) const",        asFUNCTION(GetCrossProduct), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CPoint", "void cap(float)",                            asFUNCTION(Cap), asCALL_CDECL_OBJLAST) );
     }
 }

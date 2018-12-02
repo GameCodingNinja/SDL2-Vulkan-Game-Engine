@@ -21,9 +21,6 @@
 #include <utilities/statcounter.h>
 #include <2d/object2d.h>
 
-// Boost lib dependencies
-#include <boost/format.hpp>
-
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
@@ -526,9 +523,9 @@ void CVisualComponentFont::setFontString( const std::string & fontString )
 
 
 /************************************************************************
-*    DESC:  Get the font size
+*    DESC:  Get the size
 ************************************************************************/
-const CSize<float> & CVisualComponentFont::getFontSize() const
+const CSize<float> & CVisualComponentFont::getSize() const
 {
     return m_fontData.m_fontStrSize;
 }

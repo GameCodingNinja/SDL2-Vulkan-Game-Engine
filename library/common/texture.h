@@ -33,30 +33,28 @@ class CTexture
 public:
     
     // Mip levels
-    uint32_t m_mipLevels = 1;
+    uint32_t mipLevels = 1;
 
     // Texture image handle
-    VkImage m_textureImage = VK_NULL_HANDLE;
+    VkImage textureImage = VK_NULL_HANDLE;
 
     // Texture memory handle
-    VkDeviceMemory m_textureImageMemory = VK_NULL_HANDLE;
+    VkDeviceMemory textureImageMemory = VK_NULL_HANDLE;
 
     // Texture Image View
-    VkImageView m_textureImageView = VK_NULL_HANDLE;
+    VkImageView textureImageView = VK_NULL_HANDLE;
 
     // Texture shader sampler
-    VkSampler m_textureSampler = VK_NULL_HANDLE;
+    VkSampler textureSampler = VK_NULL_HANDLE;
 
     // Texture size - mostly needed for 2D
-    CSize<int32_t> m_size;
+    CSize<int32_t> size;
     
     // Texture type
-    ETextureType m_type = ETT_DIFFUSE;
+    ETextureType type = ETT_DIFFUSE;
     
     // Texture file path
-    std::string m_textFilePath;
+    std::string textFilePath;
 };
 
-#endif  // __texture_h__
-
-
+#endif

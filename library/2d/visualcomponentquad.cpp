@@ -128,8 +128,15 @@ void CVisualComponentQuad::setFrame( uint index )
 {
     iVisualComponent::setFrame( index );
     
+    const auto & rVisualData( m_rObjectData.getVisualData() );
+    const auto & rTexture( rVisualData.getTexture( index ) );
+    const float defScale( rVisualData.getDefaultUniformScale() );
+    
+    m_quadVertScale.w = rTexture.size.w * defScale;
+    m_quadVertScale.h = rTexture.size.h * defScale;
+    
     // Update the texture
-    m_pushDescSet.updateTexture( m_rObjectData.getVisualData().getTexture( index ) );
+    m_pushDescSet.updateTexture( rTexture );
 }
 
 

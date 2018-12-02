@@ -23,6 +23,7 @@
 #include <physics/physicscomponent3d.h>
 #include <utilities/xmlParser.h>
 #include <utilities/matrix.h>
+#include <utilities/exceptionhandling.h>
 #include <common/iaibase.h>
 #include <sprite/spritedata.h>
 
@@ -352,4 +353,16 @@ void CSprite::setAI( iAIBase * pAIBase )
 
     // Handle any initialization in a separate function
     m_upAI->init();
+}
+
+
+/************************************************************************
+*    DESC:  Get the size
+************************************************************************/
+CSize<float> CSprite::getSize() const
+{
+    auto & objScale = m_upObject->getScale();
+    CSize<float> scale( objScale.x, objScale.y );
+    
+    return m_upVisualComponent->getSize() * scale;
 }

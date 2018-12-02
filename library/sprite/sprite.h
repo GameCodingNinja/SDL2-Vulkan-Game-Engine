@@ -10,6 +10,7 @@
 
 // Game lib dependencies
 #include <common/defs.h>
+#include <common/size.h>
 #include <script/scriptcomponent.h>
 
 // Boost lib dependencies
@@ -111,6 +112,9 @@ public:
     
     // Get the unique id number
     int getId() const;
+    
+    // Get the size
+    CSize<float> getSize() const;
     
 private:
     

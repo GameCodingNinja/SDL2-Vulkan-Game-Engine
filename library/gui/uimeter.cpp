@@ -323,7 +323,7 @@ void CUIMeter::displayValue()
     m_pSprite->getVisualComponent()->createFontString( boost::lexical_cast<std::string>((int64_t)m_currentValue ) );
 
     // Get the font size
-    const CSize<float> & size = m_pSprite->getVisualComponent()->getFontSize();
+    const CSize<float> & size = m_pSprite->getSize();
 
     // Check if the font string size is greater then what is allowed
     if( size > m_maxFontStrSize )

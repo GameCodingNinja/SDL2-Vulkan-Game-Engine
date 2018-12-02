@@ -13,6 +13,8 @@
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
 #include <utilities/matrix.h>
+#include <utilities/xmlParser.h>
+#include <utilities/smartpointers.h>
 #include <common/texture.h>
 #include <common/color.h>
 #include <common/model.h>
@@ -22,8 +24,6 @@
 #include <common/pipeline.h>
 #include <common/pushdescriptorset.h>
 #include <common/meshbinaryfileheader.h>
-#include <utilities/xmlParser.h>
-#include <utilities/smartpointers.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -165,10 +165,10 @@ void CDevice::destroyAssets()
         {
             for( auto & iter : mapIter.second )
             {
-                vkDestroyImage( m_logicalDevice, iter.second.m_textureImage, nullptr );
-                vkFreeMemory( m_logicalDevice, iter.second.m_textureImageMemory, nullptr );
-                vkDestroyImageView( m_logicalDevice, iter.second.m_textureImageView, nullptr );
-                vkDestroySampler( m_logicalDevice, iter.second.m_textureSampler, nullptr );
+                vkDestroyImage( m_logicalDevice, iter.second.textureImage, nullptr );
+                vkFreeMemory( m_logicalDevice, iter.second.textureImageMemory, nullptr );
+                vkDestroyImageView( m_logicalDevice, iter.second.textureImageView, nullptr );
+                vkDestroySampler( m_logicalDevice, iter.second.textureSampler, nullptr );
             }
         }
 
@@ -447,7 +447,7 @@ CTexture & CDevice::createTexture( const std::string & group, const std::string 
     if( iter == mapIter->second.end() )
     {
         CTexture texture;
-        texture.m_textFilePath = filePath;
+        texture.textFilePath = filePath;
 
         // Load the image from file path
         CDeviceVulkan::createTexture( texture, mipMap );
@@ -548,8 +548,8 @@ void CDevice::createPushDescriptorSet(
             {
                 VkDescriptorImageInfo imageInfo = {};
                 imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                imageInfo.imageView = texture.m_textureImageView;
-                imageInfo.sampler = texture.m_textureSampler;
+                imageInfo.imageView = texture.textureImageView;
+                imageInfo.sampler = texture.textureSampler;
 
                 pushDescSet.m_descriptorImageInfoDeq.push_back( imageInfo );
 
@@ -816,10 +816,10 @@ void CDevice::deleteTextureGroup( const std::string & group )
         // Delete all the textures in this group
         for( auto & iter : mapIter->second )
         {
-            vkDestroyImage( m_logicalDevice, iter.second.m_textureImage, nullptr );
-            vkFreeMemory( m_logicalDevice, iter.second.m_textureImageMemory, nullptr );
-            vkDestroyImageView( m_logicalDevice, iter.second.m_textureImageView, nullptr );
-            vkDestroySampler( m_logicalDevice, iter.second.m_textureSampler, nullptr );
+            vkDestroyImage( m_logicalDevice, iter.second.textureImage, nullptr );
+            vkFreeMemory( m_logicalDevice, iter.second.textureImageMemory, nullptr );
+            vkDestroyImageView( m_logicalDevice, iter.second.textureImageView, nullptr );
+            vkDestroySampler( m_logicalDevice, iter.second.textureSampler, nullptr );
         }
 
         // Erase this group
@@ -1297,7 +1297,7 @@ void CDevice::load3DM(
 
         // Load the texture
         CTexture texture = createTexture( group, btext.path );
-        texture.m_type = ETextureType(btext.type);
+        texture.type = ETextureType(btext.type);
 
         textureVec.emplace_back( texture );
     }

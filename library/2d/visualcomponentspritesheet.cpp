@@ -16,9 +16,6 @@
 #include <system/device.h>
 #include <2d/object2d.h>
 
-// Boost lib dependencies
-#include <boost/format.hpp>
-
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/

@@ -248,16 +248,15 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> 
 
     // Create the texture from loaded image data
     createTexture( group, texture, rSize );
+    
+    // Calculate the final size based on the default scale
+    m_vertexScale = rSize * m_defaultUniformScale;
+    rSize = m_vertexScale;
 
     if( m_genType == NDefs::EGT_QUAD )
     {
         // Generate a quad
         generateQuad( group );
-
-        // For this generation type, the image size is the default scale
-        // Size is an int and needs to handled this way
-        m_vertexScale = rSize * m_defaultUniformScale;
-        rSize = m_vertexScale;
     }
     // Load object data defined as a sprite sheet
     else if( m_genType == NDefs::EGT_SPRITE_SHEET )
@@ -281,16 +280,16 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> 
 
             // Create the scaled frame using glyph info
             if( m_meshFilePath.empty() )
-                generateScaledFrame( group, texture.m_size, rGlyph.getSize(), rSize, rGlyph.getUV() );
+                generateScaledFrame( group, texture.size, rGlyph.getSize(), rSize, rGlyph.getUV() );
             else
-                generateScaledFrameMeshFile( group, texture.m_size, rGlyph.getSize(), rSize, rGlyph.getUV() );
+                generateScaledFrameMeshFile( group, texture.size, rGlyph.getSize(), rSize, rGlyph.getUV() );
         }
         // Generate a scaled frame
         else if( m_meshFilePath.empty() )
-            generateScaledFrame( group, texture.m_size, texture.m_size, rSize, CRect<float>() );
+            generateScaledFrame( group, texture.size, texture.size, rSize, CRect<float>() );
 
         else
-            generateScaledFrameMeshFile( group, texture.m_size, texture.m_size, rSize, CRect<float>() );
+            generateScaledFrameMeshFile( group, texture.size, texture.size, rSize, CRect<float>() );
     }
 }
 
@@ -399,7 +398,7 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
 
         // If the passed in size reference is empty, set it to the texture size
         if( rSize.isEmpty() )
-            rSize = rTexture.m_size;
+            rSize = rTexture.size;
     }
 }
 

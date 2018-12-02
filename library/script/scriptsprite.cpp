@@ -180,11 +180,6 @@ namespace NScriptSprite
         return sprite.getVisualComponent()->getFontString();
     }
 
-    const CSize<float> & GetFontSize(CSprite & sprite)
-    {
-        return sprite.getVisualComponent()->getFontSize();
-    }
-
     bool IsFontSprite(CSprite & sprite)
     {
         return sprite.getVisualComponent()->isFontSprite();
@@ -225,17 +220,16 @@ namespace NScriptSprite
         // Visual component functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(const CColor &in)",                   asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(float, float, float, float)",         asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CColor & getColor()",                               asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getColor() const",                   asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultColor()",                            asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CColor & getDefaultColor()",                        asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getDefaultColor() const",            asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setAlpha(float, bool allowToExceed = false)",  asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "float getAlpha()",                                  asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "float getAlpha() const",                            asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultAlpha()",                            asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "float getDefaultAlpha()",                           asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "float getDefaultAlpha() const",                     asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void createFontString(string &in)",                 asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "string & getFontString()",                          asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize & getFontSize()",                             asFUNCTION(GetFontSize), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite()",                               asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const string & getFontString() const",              asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite() const",                         asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
 
         // Physics component functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", asFUNCTION(SetTransform), asCALL_CDECL_OBJLAST) );
@@ -244,16 +238,17 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",      asFUNCTION(ApplyAngularImpulse), asCALL_CDECL_OBJLAST) );
 
         // Sprite specific functions
-        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount()",                               asMETHOD(CSprite, getFrameCount),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setFrame(uint)",                                asMETHOD(CSprite, setFrame),             asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getCurrentFrame()",                             asMETHOD(CSprite, getCurrentFrame),      asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               asMETHOD(CSprite, getSize),        asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount() const",                          asMETHOD(CSprite, getFrameCount),        asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setFrame(uint)",                                 asMETHOD(CSprite, setFrame),             asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getCurrentFrame() const",                        asMETHOD(CSprite, getCurrentFrame),      asCALL_THISCALL) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "int getId()",                                        asMETHOD(CSprite,   getId),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "int getId() const",                                   asMETHOD(CSprite,   getId),            asCALL_THISCALL) );
         
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool prepare(string &in, bool forceUpdate = false)", asMETHOD(CSprite,   prepare),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool prepare(string &in, bool forceUpdate = false)",  asMETHOD(CSprite,   prepare),            asCALL_THISCALL) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                              asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible()",                                   asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(CPoint &in)",                             asFUNCTION(SetPos1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(SetPos2), asCALL_CDECL_OBJLAST) );
@@ -261,9 +256,9 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(CPoint & in)",                            asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getPos()",                                    asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getWorldPos()",                               asFUNCTION(GetWorldPos),  asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getCenterPos()",                              asFUNCTION(GetCenterPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getPos() const",                       asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getWorldPos() const",                  asFUNCTION(GetWorldPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getCenterPos() const",                 asFUNCTION(GetCenterPos),  asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
@@ -271,7 +266,7 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getRot()",                               asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot() const",                         asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
@@ -279,6 +274,6 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CPoint & getScale()",                             asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                      asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
     }
 }

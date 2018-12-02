@@ -1552,16 +1552,16 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
 {
     int channels(0);
     unsigned char * pixels = SOIL_load_image(
-        texture.m_textFilePath.c_str(),
-        &texture.m_size.w,
-        &texture.m_size.h,
+        texture.textFilePath.c_str(),
+        &texture.size.w,
+        &texture.size.h,
         &channels,
         SOIL_LOAD_RGBA );
 
     if( pixels == nullptr )
         throw NExcept::CCriticalException( "SOIL Error!", "Error loading image!");
 
-    VkDeviceSize imageSize = texture.m_size.w * texture.m_size.h * SOIL_LOAD_RGBA;
+    VkDeviceSize imageSize = texture.size.w * texture.size.h * SOIL_LOAD_RGBA;
 
     VkBuffer stagingBuffer;
     VkDeviceMemory stagingBufferMemory;
@@ -1585,36 +1585,36 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
     if( mipMap )
     {
         imageUsageFlags |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
-        texture.m_mipLevels = std::floor(std::log2(std::max(texture.m_size.w, texture.m_size.h))) + 1;
+        texture.mipLevels = std::floor(std::log2(std::max(texture.size.w, texture.size.h))) + 1;
     }
 
     createImage(
-        texture.m_size.w,
-        texture.m_size.h,
-        texture.m_mipLevels,
+        texture.size.w,
+        texture.size.h,
+        texture.mipLevels,
         VK_FORMAT_R8G8B8A8_UNORM,
         VK_IMAGE_TILING_OPTIMAL,
         imageUsageFlags,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        texture.m_textureImage,
-        texture.m_textureImageMemory );
+        texture.textureImage,
+        texture.textureImageMemory );
 
-    transitionImageLayout( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texture.m_mipLevels );
-    copyBufferToImage( stagingBuffer, texture.m_textureImage, static_cast<uint32_t>(texture.m_size.w), static_cast<uint32_t>(texture.m_size.h) );
+    transitionImageLayout( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texture.mipLevels );
+    copyBufferToImage( stagingBuffer, texture.textureImage, static_cast<uint32_t>(texture.size.w), static_cast<uint32_t>(texture.size.h) );
 
     if( mipMap )
-        generateMipmaps( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.m_size.w, texture.m_size.h, texture.m_mipLevels );
+        generateMipmaps( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.size.w, texture.size.h, texture.mipLevels );
     else
-        transitionImageLayout( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, texture.m_mipLevels );
+        transitionImageLayout( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, texture.mipLevels );
 
     vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
     vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
 
     // create the image view
-    texture.m_textureImageView = createImageView( texture.m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.m_mipLevels, VK_IMAGE_ASPECT_COLOR_BIT );
+    texture.textureImageView = createImageView( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.mipLevels, VK_IMAGE_ASPECT_COLOR_BIT );
 
     // Create the texture sampler
-    texture.m_textureSampler = createTextureSampler( texture.m_mipLevels );
+    texture.textureSampler = createTextureSampler( texture.mipLevels );
 }
 
 
@@ -1880,8 +1880,8 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
             {
                 VkDescriptorImageInfo imageInfo = {};
                 imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                imageInfo.imageView = texture.m_textureImageView;
-                imageInfo.sampler = texture.m_textureSampler;
+                imageInfo.imageView = texture.textureImageView;
+                imageInfo.sampler = texture.textureSampler;
 
                 descriptorImageInfoVec.emplace_back( imageInfo );
 

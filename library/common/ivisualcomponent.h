@@ -91,8 +91,8 @@ public:
     virtual const std::string & getFontString() { return m_null_string; };
     virtual void setFontString( const std::string & fontString ){}
     
-    // Get the font size
-    virtual const CSize<float> & getFontSize() const;
+    // Get the size
+    virtual const CSize<float> & getSize() const;
     
     // Is this a font sprite
     bool isFontSprite() const;
@@ -122,7 +122,6 @@ protected:
     
     // Static null data members
     static std::string m_null_string;
-    static CSize<float> m_null_float_size;
     static CSize<int> m_null_int_size;
 };
 

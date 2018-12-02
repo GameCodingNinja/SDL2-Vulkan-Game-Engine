@@ -46,7 +46,7 @@ public:
     void setFontString( const std::string & fontString ) override;
     
     // Get the font size
-    const CSize<float> & getFontSize() const override;
+    const CSize<float> & getSize() const override;
     
     // Record the command buffers
     void recordCommandBuffer( 

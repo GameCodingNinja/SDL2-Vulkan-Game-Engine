@@ -17,7 +17,6 @@
 
 // Declare some statics
 std::string iVisualComponent::m_null_string;
-CSize<float> iVisualComponent::m_null_float_size;
 CSize<int> iVisualComponent::m_null_int_size;
 
 /************************************************************************
@@ -155,9 +154,9 @@ bool iVisualComponent::isFontSprite() const
 /************************************************************************
 *    DESC:  Get the font size
 ************************************************************************/
-const CSize<float> & iVisualComponent::getFontSize() const
+const CSize<float> & iVisualComponent::getSize() const
 {
-    return m_null_float_size;
+    return m_quadVertScale;
 }
 
 

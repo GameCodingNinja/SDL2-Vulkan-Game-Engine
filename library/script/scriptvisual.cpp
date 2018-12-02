@@ -68,6 +68,6 @@ namespace NScriptVisual
         // Class members
         Throw( pEngine->RegisterObjectMethod("CVisual", "void setAdditiveColor(const CColor &in)",           asFUNCTION(SetAdditiveColor1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CVisual", "void setAdditiveColor(float, float, float, float)", asFUNCTION(SetAdditiveColor2), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CVisual", "const CColor & getAdditiveColor()",                 asFUNCTION(GetAdditiveColor),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CVisual", "const CColor & getAdditiveColor() const",           asFUNCTION(GetAdditiveColor),  asCALL_CDECL_OBJLAST) );
     }
 }

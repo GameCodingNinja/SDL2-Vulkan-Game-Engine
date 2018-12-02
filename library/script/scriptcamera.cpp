@@ -123,7 +123,7 @@ namespace NScriptCamera
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incPos(CPoint & in)",                            asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
         
-        Throw( pEngine->RegisterObjectMethod("CCamera", "CPoint getPos()",                                     asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "CPoint getPos() const",                                asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("CCamera", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CCamera", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
@@ -131,7 +131,7 @@ namespace NScriptCamera
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
         
-        Throw( pEngine->RegisterObjectMethod("CCamera", "const CPoint & getRot()",                               asFUNCTION(GetRot),               asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "const CPoint & getRot() const",                         asFUNCTION(GetRot),               asCALL_CDECL_OBJLAST) );
         
         Throw( pEngine->RegisterObjectMethod("CCamera", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CCamera", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
@@ -139,7 +139,7 @@ namespace NScriptCamera
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
 
-        Throw( pEngine->RegisterObjectMethod("CCamera", "const CPoint & getScale()",     asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "const CPoint & getScale() const",     asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
         
         Throw( pEngine->RegisterObjectMethod("CCamera", "void transform()",  asFUNCTION(Transform), asCALL_CDECL_OBJLAST) );
     }

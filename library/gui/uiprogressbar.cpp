@@ -123,7 +123,7 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
             m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
 
             // Get the size
-            m_size = m_upStencilMaskSprite->getObjectData().getSize();
+            m_size = m_upStencilMaskSprite->getSize();
 
             // Get the initial position
             m_pos = m_upStencilMaskSprite->getObject()->getPos();
@@ -134,7 +134,7 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
         else
         {
             // Get the size
-            m_size = m_spriteDeq.at(m_spriteApplyIndex).getObjectData().getSize();
+            m_size = m_spriteDeq.at(m_spriteApplyIndex).getSize();
 
             // Get the initial position
             m_pos = m_spriteDeq.at(m_spriteApplyIndex).getObject()->getPos();

@@ -17,7 +17,7 @@
 #include <script/scriptmanager.h>
 #include <physics/physicsworldmanager2d.h>
 #include <physics/physicsworld2d.h>
-#include <strategy/basicstagestrategy.h>
+#include <strategy/stagestrategy.h>
 #include <strategy/actorstrategy.h>
 #include <strategy/strategymanager.h>
 
@@ -130,7 +130,7 @@ void CRunState::load()
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
     
     // Add the strategies
-    CStrategyMgr::Instance().addStrategy( "(stage)", new CBasicStageStrategy() );
+    CStrategyMgr::Instance().addStrategy( "(stage)", new CStageStrategy() );
     auto strategy = CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy() );
     
     // Add the sprites to the strategy

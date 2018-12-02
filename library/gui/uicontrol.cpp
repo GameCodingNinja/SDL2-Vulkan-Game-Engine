@@ -204,8 +204,8 @@ void CUIControl::loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCo
     else
     {
         // Find the largest size width and height of the different sprites for the controls size
-        const float width( rSprite.getObjectData().getSize().w + std::fabs( rSprite.getObject()->getPos().x ) );
-        const float height( rSprite.getObjectData().getSize().h + std::fabs( rSprite.getObject()->getPos().y ) );
+        const float width( rSprite.getSize().w + std::fabs( rSprite.getObject()->getPos().x ) );
+        const float height( rSprite.getSize().h + std::fabs( rSprite.getObject()->getPos().y ) );
 
         if( width > m_size.w )
             m_size.w = width;

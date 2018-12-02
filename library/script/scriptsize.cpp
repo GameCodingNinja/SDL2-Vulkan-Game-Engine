@@ -97,8 +97,8 @@ namespace NScriptSize
         // Class members
         Throw( pEngine->RegisterObjectMethod("CSize", "void clear()",        asMETHOD(CSize<float>, clear), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSize", "void round()",        asMETHOD(CSize<float>, round), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSize", "bool isEmpty()",      asMETHOD(CSize<float>, isEmpty), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSize", "bool isWEmpty()",     asMETHOD(CSize<float>, isWEmpty), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSize", "bool isHEmpty()",     asMETHOD(CSize<float>, isHEmpty), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSize", "bool isEmpty() const",      asMETHOD(CSize<float>, isEmpty), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSize", "bool isWEmpty() const",     asMETHOD(CSize<float>, isWEmpty), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSize", "bool isHEmpty() const",     asMETHOD(CSize<float>, isHEmpty), asCALL_THISCALL) );
     }
 }
