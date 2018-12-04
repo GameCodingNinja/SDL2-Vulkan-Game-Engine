@@ -33,7 +33,7 @@ public:
     {}
 
     // Create the object from data
-    virtual void createFromData( const std::string & group, CSize<int> & rSize )
+    virtual void createFromData( const std::string & group, CSize<float> & rSize )
     {}
 
     // Get the gne type
@@ -51,10 +51,6 @@ public:
     // Get the color
     virtual const CColor & getColor() const
     { return m_null_color; }
-
-    // Get the vertex scale
-    virtual const CSize<float> & getVertexScale() const
-    { return m_null_size; }
 
     // Get the VBO
     virtual const CMemoryBuffer & getVBO() const
@@ -96,7 +92,6 @@ private:
     
     static CTexture m_null_texture;
     static CColor m_null_color;
-    static CSize<float> m_null_size;
     static CMemoryBuffer m_null_memoryBuffer;
     static CSpriteSheet m_null_spriteSheet;
     static CModel m_null_model;

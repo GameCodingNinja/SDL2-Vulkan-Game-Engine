@@ -46,7 +46,7 @@ void CVisualComponentSpriteSheet::updateUBO(
 {
     // Setup the uniform buffer object
     NUBO::model_viewProj_color_additive_glyph ubo;
-    ubo.model.setScale( rVisualData.getVertexScale() );
+    ubo.model.setScale( m_quadVertScale );
     ubo.model *= pObject->getMatrix();
     ubo.viewProj = camera.getFinalMatrix();
     ubo.color = m_color;

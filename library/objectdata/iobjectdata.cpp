@@ -12,7 +12,7 @@
 #include <objectdata/iobjectvisualdata.h>
 #include <objectdata/iobjectphysicsdata.h>
 
-CSize<int> iObjectData::m_null_size;
+CSize<float> iObjectData::m_null_size;
 std::string iObjectData::m_null_string;
 iObjectVisualData iObjectData::m_null_objectVisualData;
 iObjectPhysicsData iObjectData::m_null_objectPhysicsData;

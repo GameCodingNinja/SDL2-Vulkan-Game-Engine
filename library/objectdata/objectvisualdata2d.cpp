@@ -40,7 +40,6 @@ CObjectVisualData2D::CObjectVisualData2D() :
     m_textureSequenceCount(0),
     m_compressed(false),
     m_iboCount(0),
-    m_vertexScale(1,1),
     m_defaultUniformScale(1),
     m_mirror(NDefs::EM_NULL)
 {
@@ -242,17 +241,13 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
 /************************************************************************
 *    DESC:  Create the object from data
 ************************************************************************/
-void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> & rSize )
+void CObjectVisualData2D::createFromData( const std::string & group, CSize<float> & rSize )
 {
     CTexture texture;
 
     // Create the texture from loaded image data
     createTexture( group, texture, rSize );
     
-    // Calculate the final size based on the default scale
-    m_vertexScale = rSize * m_defaultUniformScale;
-    rSize = m_vertexScale;
-
     if( m_genType == NDefs::EGT_QUAD )
     {
         // Generate a quad
@@ -269,7 +264,7 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<int> 
         generateQuad( group );
 
         // For this generation type, the glyph size is the default scale
-        rSize = m_vertexScale = m_spriteSheet.getGlyph().getSize() * m_defaultUniformScale;
+        rSize = m_spriteSheet.getGlyph().getSize();
     }
     else if( m_genType == NDefs::EGT_SCALED_FRAME )
     {
@@ -362,7 +357,7 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
 /************************************************************************
 *    DESC:  Create the texture from loaded image data
 ************************************************************************/
-void CObjectVisualData2D::createTexture( const std::string & group, CTexture & rTexture, CSize<int> & rSize )
+void CObjectVisualData2D::createTexture( const std::string & group, CTexture & rTexture, CSize<float> & rSize )
 {
     if( !m_textureFilePath.empty() )
     {
@@ -896,15 +891,6 @@ size_t CObjectVisualData2D::getFrameCount() const
         return m_spriteSheet.getCount();
 
     return m_textureVec.size();
-}
-
-
-/************************************************************************
-*    DESC:  Get the vertex scale
-************************************************************************/
-const CSize<float> & CObjectVisualData2D::getVertexScale() const
-{
-    return m_vertexScale;
 }
 
 

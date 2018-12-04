@@ -24,6 +24,9 @@ public:
     // Destructor
     virtual ~CVisualComponentScaledFrame();
     
+    // Get the size
+    const CSize<float> & getSize() const override;
+    
 private:
     
     // Update the UBO buffer

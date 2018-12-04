@@ -55,3 +55,12 @@ void CVisualComponentScaledFrame::updateUBO(
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
+
+
+/************************************************************************
+*    DESC:  Get the size
+************************************************************************/
+const CSize<float> & CVisualComponentScaledFrame::getSize() const
+{
+    return m_rObjectData.getSize();
+}

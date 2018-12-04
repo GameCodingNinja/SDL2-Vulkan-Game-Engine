@@ -47,7 +47,7 @@ public:
     { return 0.f; }
     
     // Access functions for the size
-    virtual const CSize<int> & getSize() const
+    virtual const CSize<float> & getSize() const
     { return m_null_size; }
     
     // Is the generation type font
@@ -58,7 +58,7 @@ private:
     
     static iObjectVisualData m_null_objectVisualData;
     static iObjectPhysicsData m_null_objectPhysicsData;
-    static CSize<int> m_null_size;
+    static CSize<float> m_null_size;
     static std::string m_null_string;
 };
 

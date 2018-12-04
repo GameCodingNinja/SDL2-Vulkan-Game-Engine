@@ -18,13 +18,13 @@
 // Declare some statics
 std::string iVisualComponent::m_null_string;
 CSize<int> iVisualComponent::m_null_int_size;
+CSize<float> iVisualComponent::m_null_float_size;
 
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
 iVisualComponent::iVisualComponent( const CObjectData2D & objectData ) :
     GENERATION_TYPE( objectData.getVisualData().getGenerationType() ),
-    m_quadVertScale( objectData.getVisualData().getVertexScale() ),
     m_color( objectData.getVisualData().getColor() ),
     m_rDefaultColor( objectData.getVisualData().getColor() ),
     m_frameIndex(0)
@@ -148,15 +148,6 @@ uint iVisualComponent::getCurrentFrame() const
 bool iVisualComponent::isFontSprite() const
 {
     return (GENERATION_TYPE == NDefs::EGT_FONT);
-}
-
-
-/************************************************************************
-*    DESC:  Get the font size
-************************************************************************/
-const CSize<float> & iVisualComponent::getSize() const
-{
-    return m_quadVertScale;
 }
 
 

@@ -27,7 +27,8 @@
 ************************************************************************/
 CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
     iVisualComponent( objectData ),
-    m_rObjectData( objectData )
+    m_rObjectData( objectData ),
+    m_quadVertScale( objectData.getSize() * objectData.getVisualData().getDefaultUniformScale() )
 {
     auto & device( CDevice::Instance() );
     const uint32_t pipelineIndex( objectData.getVisualData().getPipelineIndex() );
@@ -110,7 +111,7 @@ void CVisualComponentQuad::updateUBO(
 {
     // Setup the uniform buffer object
     NUBO::model_viewProj_color_additive ubo;
-    ubo.model.setScale( rVisualData.getVertexScale() );
+    ubo.model.setScale( m_quadVertScale );
     ubo.model *= pObject->getMatrix();
     ubo.viewProj = camera.getFinalMatrix();
     ubo.color = m_color;
@@ -146,4 +147,13 @@ void CVisualComponentQuad::setFrame( uint index )
 bool CVisualComponentQuad::allowCommandRecording()
 {
     return ((GENERATION_TYPE > NDefs::EGT_NULL) && (GENERATION_TYPE < NDefs::EGT_FONT));
+}
+
+
+/************************************************************************
+*    DESC:  Get the size
+************************************************************************/
+const CSize<float> & CVisualComponentQuad::getSize() const
+{
+    return m_quadVertScale;
 }

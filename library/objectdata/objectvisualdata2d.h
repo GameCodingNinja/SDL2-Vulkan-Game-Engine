@@ -44,7 +44,7 @@ public:
     void loadFromNode( const XMLNode & objectNode, const std::string & name ) override;
 
     // Create the object from data
-    void createFromData( const std::string & group, CSize<int> & rSize ) override;
+    void createFromData( const std::string & group, CSize<float> & rSize ) override;
 
     // Get the gne type
     NDefs::EGenerationType getGenerationType() const override;
@@ -57,9 +57,6 @@ public:
 
     // Get the color
     const CColor & getColor() const override;
-
-    // Get the vertex scale
-    const CSize<float> & getVertexScale() const override;
 
     // Get the VBO
     const CMemoryBuffer & getVBO() const override;
@@ -88,7 +85,7 @@ public:
 private:
     
     // Create the texture from loaded image data
-    void createTexture( const std::string & group, CTexture & rTexture, CSize<int> & rSize );
+    void createTexture( const std::string & group, CTexture & rTexture, CSize<float> & rSize );
     
     // Generate a quad
     void generateQuad( const std::string & group );
@@ -182,9 +179,6 @@ private:
 
     // ibo count
     int m_iboCount;
-
-    // The vertex scale of the object
-    CSize<float> m_vertexScale;
 
     // Scaled frame
     CScaledFrame m_scaledFrame;

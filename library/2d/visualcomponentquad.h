@@ -43,6 +43,9 @@ public:
     // Set the frame index
     virtual void setFrame( uint index ) override;
     
+    // Get the size
+    virtual const CSize<float> & getSize() const override;
+    
 protected:
     
     // Is recording the command buffer allowed?
@@ -68,6 +71,9 @@ protected:
 
     // Push Descriptor set
     CPushDescriptorSet m_pushDescSet;
+    
+    // The scale of the quad
+    CSize<float> m_quadVertScale;
 };
 
 #endif

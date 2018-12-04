@@ -50,7 +50,7 @@ public:
     const std::string & getGroup() const override;
 
     // Access functions for the size
-    const CSize<int> & getSize() const override;
+    const CSize<float> & getSize() const override;
 
     // Access functions for the radius
     float getRadius() const override;
@@ -76,7 +76,7 @@ private:
     std::string m_group;
 
     // The initial size of the object
-    CSize<int> m_size;
+    CSize<float> m_size;
 
     // Square rooted and un-square rooted radius
     float m_radius;

@@ -92,7 +92,7 @@ public:
     virtual void setFontString( const std::string & fontString ){}
     
     // Get the size
-    virtual const CSize<float> & getSize() const;
+    virtual const CSize<float> & getSize() const { return m_null_float_size; };
     
     // Is this a font sprite
     bool isFontSprite() const;
@@ -107,9 +107,6 @@ protected:
 
     // Generation type
     const NDefs::EGenerationType GENERATION_TYPE;
-
-    // The scale of the quad
-    CSize<float> m_quadVertScale;
     
     // Color
     CColor m_color;
@@ -123,6 +120,7 @@ protected:
     // Static null data members
     static std::string m_null_string;
     static CSize<int> m_null_int_size;
+    static CSize<float> m_null_float_size;
 };
 
 #endif

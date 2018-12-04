@@ -114,7 +114,7 @@ const std::string & CObjectData2D::getGroup() const
 /************************************************************************
 *    DESC:  Access functions for the size
 ************************************************************************/
-const CSize<int> & CObjectData2D::getSize() const
+const CSize<float> & CObjectData2D::getSize() const
 {
     return m_size;
 }
