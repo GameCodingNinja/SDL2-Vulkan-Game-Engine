@@ -276,6 +276,11 @@ iVisualComponent * CSprite::getVisualComponent()
     return m_upVisualComponent.get();
 }
 
+const iVisualComponent * CSprite::getVisualComponent() const
+{
+    return m_upVisualComponent.get();
+}
+
 
 /************************************************************************
 *    DESC:  Get the physics component
@@ -353,16 +358,4 @@ void CSprite::setAI( iAIBase * pAIBase )
 
     // Handle any initialization in a separate function
     m_upAI->init();
-}
-
-
-/************************************************************************
-*    DESC:  Get the size
-************************************************************************/
-CSize<float> CSprite::getSize() const
-{
-    auto & objScale = m_upObject->getScale();
-    CSize<float> scale( objScale.x, objScale.y );
-    
-    return m_upVisualComponent->getSize() * scale;
 }

@@ -91,6 +91,7 @@ public:
     
     // Get the visual component
     iVisualComponent * getVisualComponent();
+    const iVisualComponent * getVisualComponent() const;
     
     // Get the physics component
     iPhysicsComponent * getPhysicsComponent();
@@ -112,9 +113,6 @@ public:
     
     // Get the unique id number
     int getId() const;
-    
-    // Get the size
-    CSize<float> getSize() const;
     
 private:
     

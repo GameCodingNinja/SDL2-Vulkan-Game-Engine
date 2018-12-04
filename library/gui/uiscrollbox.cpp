@@ -11,6 +11,7 @@
 // Game lib dependencies
 #include <sprite/sprite.h>
 #include <common/size.h>
+#include <common/ivisualcomponent.h>
 #include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>
 #include <utilities/deletefuncs.h>
@@ -130,7 +131,7 @@ void CUIScrollBox::loadControlFromNode( const XMLNode & node )
         m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData2D( getGroup(), objectName ) ) );
 
         // Get the cull height
-        m_cullHeight = (m_upStencilMaskSprite->getSize().getW() + m_controlHeight) / 2;
+        m_cullHeight = (m_upStencilMaskSprite->getVisualComponent()->getSize().w + m_controlHeight) / 2;
 
         // Load the transform data
         m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );

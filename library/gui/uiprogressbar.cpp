@@ -13,6 +13,7 @@
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 #include <utilities/xmlParser.h>
+#include <common/ivisualcomponent.h>
 
 // Standard lib dependencies
 #include <cstring>
@@ -123,7 +124,7 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
             m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
 
             // Get the size
-            m_size = m_upStencilMaskSprite->getSize();
+            m_size = m_upStencilMaskSprite->getVisualComponent()->getSize();
 
             // Get the initial position
             m_pos = m_upStencilMaskSprite->getObject()->getPos();
@@ -134,7 +135,7 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
         else
         {
             // Get the size
-            m_size = m_spriteDeq.at(m_spriteApplyIndex).getSize();
+            m_size = m_spriteDeq.at(m_spriteApplyIndex).getVisualComponent()->getSize();
 
             // Get the initial position
             m_pos = m_spriteDeq.at(m_spriteApplyIndex).getObject()->getPos();

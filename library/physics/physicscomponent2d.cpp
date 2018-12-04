@@ -12,6 +12,7 @@
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
 #include <objectdata/iobjectphysicsdata.h>
+#include <common/ivisualcomponent.h>
 #include <physics/physicsworldmanager2d.h>
 #include <physics/physicsworld2d.h>
 #include <sprite/sprite.h>
@@ -157,7 +158,7 @@ void CPhysicsComponent2D::createEdgeShapeFixture( const CSprite & sprite, const 
 
     // Apply scale to the size and divide by 2
     // Object data holds size as int so need to convert it to a float
-    const CSize<float> objectSize = sprite.getSize();
+    const CSize<float> objectSize = sprite.getVisualComponent()->getSize();
     const CSize<float> scale( sprite.getObject()->getScale().getX(), sprite.getObject()->getScale().getY() );
     const CSize<float> size = objectSize * scale * 0.5f;
 
@@ -191,7 +192,7 @@ void CPhysicsComponent2D::createPolygonShapeFixture( const CSprite & sprite, con
 
     // Apply scale to the size and divide by 2
     // Object data holds size as int so need to convert it to a float
-    const CSize<float> objectSize = sprite.getSize();
+    const CSize<float> objectSize = sprite.getVisualComponent()->getSize();
     const CSize<float> scale( sprite.getObject()->getScale().getX(), sprite.getObject()->getScale().getY() );
     const CSize<float> size = objectSize * scale * 0.5f;
 
@@ -261,7 +262,7 @@ void CPhysicsComponent2D::createChainShapeFixture( const CSprite & sprite, const
 
     // Apply scale to the size and divide by 2
     // Object data holds size as int so need to convert it to a float
-    const CSize<float> objectSize = sprite.getSize();
+    const CSize<float> objectSize = sprite.getVisualComponent()->getSize();
     const CSize<float> scale( sprite.getObject()->getScale().getX(), sprite.getObject()->getScale().getY() );
     const CSize<float> size = objectSize * scale * 0.5f;
 

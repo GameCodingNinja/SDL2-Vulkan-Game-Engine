@@ -74,6 +74,11 @@ namespace NScriptSprite
         point = sprite.getObject()->getCenterPos();
         return point;
     }
+    
+    const CSize<float> & GetSize(CSprite & sprite)
+    {
+        return sprite.getVisualComponent()->getSize();
+    }
 
     void SetRot1(const CPoint<float> & rot, bool convertToRadians, CSprite & sprite)
     {
@@ -238,7 +243,7 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",      asFUNCTION(ApplyAngularImpulse), asCALL_CDECL_OBJLAST) );
 
         // Sprite specific functions
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               asMETHOD(CSprite, getSize),        asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               asFUNCTION(GetSize), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount() const",                          asMETHOD(CSprite, getFrameCount),        asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setFrame(uint)",                                 asMETHOD(CSprite, setFrame),             asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "uint getCurrentFrame() const",                        asMETHOD(CSprite, getCurrentFrame),      asCALL_THISCALL) );
