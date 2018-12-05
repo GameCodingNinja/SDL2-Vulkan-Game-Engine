@@ -336,14 +336,8 @@
       <logicalFolder name="strategy" displayName="strategy" projectFiles="true">
         <itemPath>../library/strategy/actorstrategy.cpp</itemPath>
         <itemPath>../library/strategy/actorstrategy.h</itemPath>
-        <itemPath>../library/strategy/basestrategy.cpp</itemPath>
-        <itemPath>../library/strategy/basestrategy.h</itemPath>
         <itemPath>../library/strategy/istrategy.cpp</itemPath>
         <itemPath>../library/strategy/istrategy.h</itemPath>
-        <itemPath>../library/strategy/linearstagestrategy.cpp</itemPath>
-        <itemPath>../library/strategy/linearstagestrategy.h</itemPath>
-        <itemPath>../library/strategy/loopstagestrategy.cpp</itemPath>
-        <itemPath>../library/strategy/loopstagestrategy.h</itemPath>
         <itemPath>../library/strategy/sector.cpp</itemPath>
         <itemPath>../library/strategy/sector.h</itemPath>
         <itemPath>../library/strategy/stagestrategy.cpp</itemPath>
@@ -3365,13 +3359,6 @@
         </ccTool>
       </item>
       <item path="../library/strategy/actorstrategy.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/strategy/basestrategy.cpp"
             ex="false"
             tool="1"
             flavor2="11">

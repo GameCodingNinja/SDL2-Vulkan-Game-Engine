@@ -2,7 +2,7 @@
 
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
     <default  name="">
-        <visual>
+        <visual defaultUniformScale="1">
             <texture count="0" file="" compressed="false"/>
             <mesh genType="quad" file="" >
                 <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file="">

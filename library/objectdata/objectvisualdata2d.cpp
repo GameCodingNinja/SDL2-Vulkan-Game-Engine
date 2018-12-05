@@ -64,33 +64,8 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
     const XMLNode visualNode = objectNode.getChildNode( "visual" );
     if( !visualNode.isEmpty() )
     {
-        if( CSettings::Instance().isMobileDevice() )
-        {
-            // See if we are to swap graphics based on screen resolution
-            const XMLNode resSwapNode = visualNode.getChildNode("graphicResSwap");
-            if( !resSwapNode.isEmpty() )
-            {
-                for( int i = 0; i < resSwapNode.nChildNode(); ++i )
-                {
-                    // Get the object data node
-                    const XMLNode resNode = resSwapNode.getChildNode(i);
-
-                    // Get the value of the height that is compared against the render resolution of the device
-                    const int heightOrLess = std::atoi( resNode.getAttribute( "heightOrLess" ) );
-
-                    // If the current render resolution is less then or equil to the heightOrLess value, we found the swap res
-                    if( static_cast<int>(CSettings::Instance().getSize().getH()) <= heightOrLess )
-                    {
-                        m_defaultUniformScale = std::atof( resNode.getAttribute( "defaultUniformScale" ) );
-
-                        // File extension for these graphics
-                        m_resExt = resNode.getAttribute( "ext" );
-
-                        break;
-                    }
-                }
-            }
-        }
+        if( visualNode.isAttributeSet("defaultUniformScale") )
+            m_defaultUniformScale = std::atof( visualNode.getAttribute( "defaultUniformScale" ) );
 
         // See if we have a texture to load
         const XMLNode textureNode = visualNode.getChildNode("texture");
