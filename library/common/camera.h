@@ -34,8 +34,8 @@ public:
     // Init the camera
     void init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist );
 
-    // Build the projection matrix
-    void buildProjectionMatrix();
+    // Create the projection matrix
+    void createProjectionMatrix();
 
     // Set/Inc the camera's world position
     void setPos( const CPoint<CWorldValue> & position );
@@ -47,15 +47,6 @@ public:
     // Get the projected matrix
     const CMatrix & getProjectionMatrix() const;
 
-    // Height and width screen ratio for render 2D objects
-    float getOrthoHeightAspectRatio() const;
-
-    // Get the orthographic projected size
-    const CSize<float> & getOrthoProjSize() const;
-
-    // Get the orthographic projected size half
-    const CSize<float> & getOrthoProjSizeHalf() const;
-
     // Transform - One call for those objects that don't have parents
     virtual void transform();
 
@@ -63,12 +54,6 @@ public:
     const CMatrix & getFinalMatrix() const;
 
 private:
-    
-    // Generate a custom perspective projection for this camera
-    void generatePerspectiveProjection( float angle, float minZDist, float maxZDist );
-
-    // Generate a custom orthographic projection for this camera
-    void generateOrthographicProjection( float minZDist, float maxZDist );
 
     // Calculate the final matrix
     void calcFinalMatrix();
@@ -80,13 +65,6 @@ private:
 
     // Custom projection matrix
     CMatrix m_finalMatrix;
-
-    // Pre-calculated aspect ratios for orthographic projection
-    float m_orthoHeightAspectRatio;
-
-    // Orthographic projection size
-    CSize<float> m_orthoProjSize;
-    CSize<float> m_orthoProjSizeHalf;
 
     // The projection type
     NDefs::EProjectionType m_projType;

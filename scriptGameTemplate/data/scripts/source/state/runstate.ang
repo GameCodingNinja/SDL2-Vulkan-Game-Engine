@@ -98,7 +98,7 @@ void LoadRunAssets()
     PhysicsWorldManager2D.createWorld( "(game)" );
     
     // Create the needed strategies
-    StrategyMgr.createBasicStageStrategy( "(stage)" );
+    StrategyMgr.createStageStrategy( "(stage)" );
     iStrategy @runStrategy = StrategyMgr.createActorStrategy( "(run)" );
     
     // Add the sprites to the strategy

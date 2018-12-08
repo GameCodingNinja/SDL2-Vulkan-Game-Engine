@@ -10,14 +10,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/scripts/library/functions.ang</file>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/source/game/main.cpp</file>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/objects/spritestrategy/mainNode.lst</file>
             <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/scripts/source/game/game.ang</file>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/strategy/stagestrategy.cpp</file>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/strategy/sector.cpp</file>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/source/game/game.cpp</file>
             <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/scripts/scriptListTable.lst</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/scripts/library/functions.ang</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/script/scriptcolor.cpp</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/source/game/main.cpp</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/source/game/game.cpp</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/script/scriptsize.cpp</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/objects/spritestrategy/mainNode.lst</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/script/scriptpoint.cpp</file>
         </group>
     </open-files>
 </project-private>

@@ -35,12 +35,6 @@ CMenuMgr::CMenuMgr() :
     m_scrollTimerId(0),
     m_allow(false)
 {
-    m_camera.init(
-        CSettings::Instance().getProjectionType(),
-        CSettings::Instance().getViewAngle(),
-        CSettings::Instance().getMinZdist(),
-        CSettings::Instance().getMaxZdist() );
-    
     // Set the default position which allows everything to render
     m_camera.setPos( 0, 0, 100 );
     m_camera.transform();

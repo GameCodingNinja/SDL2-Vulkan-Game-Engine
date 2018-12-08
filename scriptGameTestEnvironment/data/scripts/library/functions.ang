@@ -80,19 +80,11 @@ void MoveProjectile( CSprite & sprite )
     
     // Hold on to the stating position to calculate length
     CPoint startPos = sprite.getWorldPos();
-    
-CPoint point1(5, 2, 7);
-CPoint point2(3, 4, 9);
-CPoint result;
-result = point1 * point2;
-Print( "point1: " + point1.x + ", " + point1.y + ", " + point1.z );
-Print( "point2: " + point2.x + ", " + point2.y + ", " + point2.z );
-Print( "Result: " + result.x + ", " + result.y + ", " + result.z );
 
     while( true )
     {
-        float time = HighResTimer.getElapsedTime();
-        sprite.incPos( velocity.x * time, velocity.y * time );
+        //float time = HighResTimer.getElapsedTime();
+        sprite.incPos( velocity * HighResTimer.getElapsedTime() );
         
         // Delete if goes out of view
         if( sprite.getWorldPos().getLengthSquared2D() > 1300000.f )

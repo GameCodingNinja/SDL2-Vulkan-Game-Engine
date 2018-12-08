@@ -15,42 +15,39 @@
 *    DESC:  Constructor
 ************************************************************************/
 CCamera::CCamera() :
-    m_orthoHeightAspectRatio(0.f),
-    m_projType(NDefs::EPT_NULL),
-    m_angle(0),
-    m_minZDist(0),
-    m_maxZDist(0)
+    m_projType(CSettings::Instance().getProjectionType()),
+    m_angle(CSettings::Instance().getViewAngle()),
+    m_minZDist(CSettings::Instance().getMinZdist()),
+    m_maxZDist(CSettings::Instance().getMaxZdist())
 {
+    createProjectionMatrix();
 }
 
 CCamera::CCamera( float minZDist, float maxZDist ) :
-    m_orthoHeightAspectRatio(0.f),
     m_projType(NDefs::EPT_ORTHOGRAPHIC),
     m_angle(0),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
-    generateOrthographicProjection( minZDist, maxZDist ); 
+    createProjectionMatrix(); 
 }
 
 CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
-    m_orthoHeightAspectRatio(0.f),
     m_projType(NDefs::EPT_PERSPECTIVE),
     m_angle(angle),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
-    generatePerspectiveProjection( angle, minZDist, maxZDist );
+    createProjectionMatrix();
 }
 
 CCamera::CCamera( const CCameraData & cameraData ) :
-    m_orthoHeightAspectRatio(0.f),
     m_projType( cameraData.getProjectionType() ),
     m_angle( cameraData.getViewAngle() ),
     m_minZDist( cameraData.getMinZdist() ),
     m_maxZDist( cameraData.getMaxZdist() )
 {
-    buildProjectionMatrix();
+    createProjectionMatrix();
     
     copyTransform( &cameraData );
 }
@@ -65,18 +62,6 @@ CCamera::~CCamera()
 
 
 /************************************************************************
-*    DESC:  Build the projection matrix
-************************************************************************/
-void CCamera::buildProjectionMatrix()
-{
-    if( m_projType == NDefs::EPT_PERSPECTIVE )
-        generatePerspectiveProjection( m_angle, m_minZDist, m_maxZDist );
-    else
-        generateOrthographicProjection( m_minZDist, m_maxZDist );
-}
-
-
-/************************************************************************
 *    DESC:  Init the camera
 ************************************************************************/  
 void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist )
@@ -86,74 +71,35 @@ void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist
     m_minZDist = minZDist;
     m_maxZDist = maxZDist;
     
-    buildProjectionMatrix();
+    createProjectionMatrix();
 }
 
 
 /************************************************************************
-*    DESC:  Generate a custom perspective projection for this camera
-************************************************************************/  
-void CCamera::generatePerspectiveProjection( float angle, float minZDist, float maxZDist )
+*    DESC:  Create the projection matrix
+************************************************************************/
+void CCamera::createProjectionMatrix()
 {
-    m_projectionMatrix.perspectiveFovRH(
-        angle,
-        CSettings::Instance().getScreenAspectRatio().w,
-        minZDist,
-        maxZDist );
+    if( m_projType == NDefs::EPT_PERSPECTIVE )
+    {
+        m_projectionMatrix.perspectiveFovRH(
+            m_angle,
+            CSettings::Instance().getScreenAspectRatio().w,
+            m_minZDist,
+            m_maxZDist );
+    }
+    else
+    {
+        const auto defSize = CSettings::Instance().getDefaultSize();
+        
+        m_projectionMatrix.orthographicRH(
+            defSize.w,
+            defSize.h,
+            m_minZDist,
+            m_maxZDist );
+    }
     
     calcFinalMatrix();
-}
-
-
-/************************************************************************
-*    DESC:  Generate a custom orthographic projection for this camera
-************************************************************************/  
-void CCamera::generateOrthographicProjection( float minZDist, float maxZDist )
-{
-    const auto defSize = CSettings::Instance().getDefaultSize();
-    
-    // Calc the new width and height
-    m_orthoProjSize.set( defSize.getW(), defSize.getH() );
-    m_orthoProjSizeHalf = m_orthoProjSize / 2.f;
-    
-    // Calc the new height aspect ratio
-    m_orthoHeightAspectRatio = CSettings::Instance().getSize().h / m_orthoProjSize.h;
-
-    m_projectionMatrix.orthographicRH(
-        m_orthoProjSize.w,
-        m_orthoProjSize.h,
-        minZDist,
-        maxZDist );
-    
-    calcFinalMatrix();
-}
-
-
-/************************************************************************
-*    DESC:  Get the orthographic projected size
-************************************************************************/
-const CSize<float> & CCamera::getOrthoProjSize() const
-{
-    return m_orthoProjSize;
-}
-
-
-/************************************************************************
-*    DESC:  Get the orthographic projected size half
-************************************************************************/
-const CSize<float> & CCamera::getOrthoProjSizeHalf() const
-{
-    return m_orthoProjSizeHalf;
-}
-
-
-/************************************************************************
-*    DESC:  Height and width screen ratio for render 2D objects
-*           The difference between screen height and the default height
-************************************************************************/
-float CCamera::getOrthoHeightAspectRatio() const
-{
-    return m_orthoHeightAspectRatio; 
 }
 
 

@@ -131,7 +131,7 @@ namespace NScriptPoint
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
         
         // Register type
-        Throw( pEngine->RegisterObjectType("CPoint", sizeof(CPoint<float>), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS | asOBJ_APP_CLASS_CONSTRUCTOR | asOBJ_APP_CLASS_COPY_CONSTRUCTOR | asOBJ_APP_CLASS_DESTRUCTOR ) );
+        Throw( pEngine->RegisterObjectType("CPoint", sizeof(CPoint<float>), asOBJ_VALUE | asOBJ_POD | asGetTypeTraits<CPoint<float>>() | asOBJ_APP_CLASS_ALLFLOATS ) );
 
         // Register the object operator overloads
         Throw( pEngine->RegisterObjectBehaviour("CPoint", asBEHAVE_CONSTRUCT, "void f()",                    asFUNCTION(Constructor), asCALL_CDECL_OBJLAST) );
