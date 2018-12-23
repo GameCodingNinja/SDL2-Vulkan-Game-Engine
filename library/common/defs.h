@@ -152,6 +152,7 @@ namespace NDefs
     enum ENodeType
     {
         ENT_NULL = 0,
+        ENT_OBJECT,
         ENT_SPRITE,
         ENT_OBJECT_MULTI_LIST,
         ENT_SPRITE_MULTI_LIST,

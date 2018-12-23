@@ -19,11 +19,13 @@
 CSpriteNode::CSpriteNode( const CObjectData2D & objectData, int spriteId ) :
     m_sprite(objectData, spriteId)
 {
+    m_type = NDefs::ENT_SPRITE;
 }
 
 CSpriteNode::CSpriteNode( const CObjectData3D & objectData, int spriteId ) :
     m_sprite(objectData, spriteId)
 {
+    m_type = NDefs::ENT_SPRITE;
 }
 
 
@@ -36,7 +38,7 @@ CSpriteNode::~CSpriteNode()
 
 
 /***************************************************************************
-*    DESC:  Update the nodes.
+*    DESC:  Update the sprite.
 ****************************************************************************/
 void CSpriteNode::update()
 {
@@ -46,7 +48,7 @@ void CSpriteNode::update()
 
 
 /***************************************************************************
-*    DESC:  Update the nodes
+*    DESC:  Transform the sprite
 ****************************************************************************/
 void CSpriteNode::transform()
 {

@@ -30,7 +30,6 @@ public:
     
     // Transform the nodes
     virtual void transform() override;
-    virtual void transform( const CMatrix & matrix, bool tranformWorldPos ) override;
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered

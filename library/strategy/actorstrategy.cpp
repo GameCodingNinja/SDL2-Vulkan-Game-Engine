@@ -113,7 +113,7 @@ iNode * CActorStrategy::create(
     const std::string & dataName,
     const std::string & instanceName )
 {
-    // If the node defined a unique id then use that
+    // Create a unique node id
     const int nodeId( ((m_idInc++) + m_idOffset) * m_idDir );
     
     const auto iter = std::find_if(
@@ -148,7 +148,7 @@ iNode * CActorStrategy::create(
                     % dataName % __FUNCTION__ % __LINE__ ));
     }
 
-    // Add the node pointer to the vector for rendering
+    // Add the node pointer to the vector for adding to the list
     m_pCreateVec.push_back( pHeadNode );
     
     // If there is an instance name with this node, add it to the map

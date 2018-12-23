@@ -84,13 +84,6 @@ void CNodeMultiLst::transform()
     resetIterators();
 }
 
-void CNodeMultiLst::transform( const CMatrix & matrix, bool tranformWorldPos )
-{
-    transform( this );
-    
-    resetIterators();
-}
-
 void CNodeMultiLst::transform( iNode * pNode )
 {
     if( pNode != nullptr )
