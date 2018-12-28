@@ -69,6 +69,7 @@ void CSpriteNodeMultiLst::transform()
     CNodeMultiLst::transform();
 }
 
+// Used to transform object on a sector
 void CSpriteNodeMultiLst::transform( const CMatrix & matrix, bool tranformWorldPos )
 {
     m_sprite.getObject()->transform( matrix, tranformWorldPos );

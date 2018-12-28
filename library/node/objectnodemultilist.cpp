@@ -41,6 +41,7 @@ void CObjectNodeMultiLst::transform()
     CNodeMultiLst::transform();
 }
 
+// Used to transform object on a sector
 void CObjectNodeMultiLst::transform( const CMatrix & matrix, bool tranformWorldPos )
 {
     m_object.transform( matrix, tranformWorldPos );

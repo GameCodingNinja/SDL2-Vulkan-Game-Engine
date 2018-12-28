@@ -55,6 +55,7 @@ void CSpriteNode::transform()
     m_sprite.getObject()->transform();
 }
 
+// Used to transform object on a sector
 void CSpriteNode::transform( const CMatrix & matrix, bool tranformWorldPos )
 {
     m_sprite.getObject()->transform( matrix, tranformWorldPos );

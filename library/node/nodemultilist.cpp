@@ -112,7 +112,7 @@ void CNodeMultiLst::transform( iNode * pNode )
                 else if( pNode->getObject() != nullptr )
                     pObj = pNode->getObject();
                 
-                // Transform the child node
+                // Transform the object
                 pNextObj->transform(
                     pObj->getMatrix(),
                     pObj->wasWorldPosTranformed() );

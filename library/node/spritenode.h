@@ -40,6 +40,7 @@ public:
 
     // Transform the nodes
     void transform() override;
+    // Used to transform object on a sector
     void transform( const CMatrix & matrix, bool tranformWorldPos = false ) override;
 
     // Record the command buffer vector in the device

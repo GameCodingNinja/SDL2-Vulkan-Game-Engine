@@ -59,17 +59,18 @@ public:
 
     // Get the unique head node id number
     virtual int getId() const
-    { return 0; }
+    { return -1; }
 
     // Get the parent id
     virtual int getParentId() const
-    { return 0; }
+    { return -1; }
 
     // Update the nodes
     virtual void update(){}
 
     // Transform the nodes
     virtual void transform(){}
+    // Used to transform object on a sector
     virtual void transform( const CMatrix & matrix, bool tranformWorldPos = false ){}
 
     // Record the command buffer
