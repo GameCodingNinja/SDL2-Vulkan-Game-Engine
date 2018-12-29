@@ -113,9 +113,7 @@ void CNodeMultiLst::transform( iNode * pNode )
                     pObj = pNode->getObject();
                 
                 // Transform the object
-                pNextObj->transform(
-                    pObj->getMatrix(),
-                    pObj->wasWorldPosTranformed() );
+                pNextObj->transform( *pObj );
 
                 // Call a recursive function again
                 transform( pNextNode );

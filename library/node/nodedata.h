@@ -19,8 +19,8 @@ public:
     CNodeData(
         const XMLNode & node,
         const std::string & nodeName,
-        int nodeId,
-        int parenNodetId,
+        int nodeId = defs_NODE_DEFAULT_ID,
+        int parenNodetId = defs_PARENT_NODE_DEFAULT_ID,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
         const std::string & defAIName = std::string(),

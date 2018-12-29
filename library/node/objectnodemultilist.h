@@ -20,16 +20,16 @@ public:
     
     // Constructor
     CObjectNodeMultiLst(
-        int objectId = -1,
-        int nodeId = -1,
-        int parentId = -1 );
+        int objectId = defs_OBJECT_DEFAULT_ID,
+        int nodeId = defs_NODE_DEFAULT_ID,
+        int parentId = defs_PARENT_NODE_DEFAULT_ID );
 
     // Destructor
     virtual ~CObjectNodeMultiLst();
     
     // Transform the nodes
     void transform() override;
-    void transform( const CMatrix & matrix, bool tranformWorldPos );
+    void transform( const CObject2D & object );
     
     // Get the sprite
     CObject2D * getObject() override;

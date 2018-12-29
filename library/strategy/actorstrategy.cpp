@@ -144,8 +144,8 @@ iNode * CActorStrategy::create(
         
         else if( !pHeadNode->addNode( pNode, iter.getNodeName() ) )
             throw NExcept::CCriticalException("Node Create Error!",
-                boost::str( boost::format("Parent node not found or node does not support adding children (%s).\n\n%s\nLine: %s")
-                    % dataName % __FUNCTION__ % __LINE__ ));
+                boost::str( boost::format("Parent node not found or node does not support adding children (%s, %d).\n\n%s\nLine: %s")
+                    % dataName % pNode->getParentId() % __FUNCTION__ % __LINE__ ));
     }
 
     // Add the node pointer to the vector for adding to the list

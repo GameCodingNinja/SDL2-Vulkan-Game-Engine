@@ -20,7 +20,10 @@ typedef unsigned int uint;
 #define defs_EPSILON 8.854187817e-12
 #define defs_RGB_TO_DEC 0.00390625f
 
-#define defs_SPRITE_DEFAULT_ID -1
+#define defs_SPRITE_DEFAULT_ID       -1
+#define defs_OBJECT_DEFAULT_ID       -1
+#define defs_NODE_DEFAULT_ID         -1
+#define defs_PARENT_NODE_DEFAULT_ID  -1
 
 // Analog stick max values -32768 to 32767 but to simplify it, we'll just use 32767
 #define defs_MAX_ANALOG_AXIS_VALUE 32767

@@ -316,7 +316,7 @@ void CUIScrollBox::transform( const CObject2D & object )
         m_pScrollControlVec[i]->transform( *this );
 
     // Transform the mask
-    m_upStencilMaskSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upStencilMaskSprite->getObject()->transform( *this );
 }
 
 

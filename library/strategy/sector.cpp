@@ -149,7 +149,7 @@ void CSector::transform()
     CObject3D::transform();
     
     for( auto iter : m_pNodeVec )
-        iter->transform( getMatrix(), wasWorldPosTranformed() );
+        iter->transform( *this );
 }
 
 

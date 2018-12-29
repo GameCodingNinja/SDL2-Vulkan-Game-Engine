@@ -155,7 +155,7 @@ void CUIProgressBar::transform( const CObject2D & object )
     CUIControl::transform( object );
 
     if( m_upStencilMaskSprite )
-        m_upStencilMaskSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+        m_upStencilMaskSprite->getObject()->transform( *this );
 }
 
 

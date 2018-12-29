@@ -86,25 +86,20 @@ void CObject2D::transform()
     }
 }
 
-void CObject2D::transform( const CMatrix & matrix, bool tranformWorldPos )
+void CObject2D::transform( const CObject2D & object )
 {
     m_parameters.remove( NDefs::WAS_TRANSFORMED );
     
-    if( m_parameters.isSet( NDefs::TRANSFORM ) || tranformWorldPos )
+    if( m_parameters.isSet( NDefs::TRANSFORM ) || object.wasWorldPosTranformed() )
     {
         CMatrix localMatrix;
     
         transformLocal( localMatrix );
     
-        m_matrix = localMatrix * matrix;
+        m_matrix = localMatrix * object.getMatrix();
 
         m_matrix.transform( m_transPos, CPoint<float>() );
     }
-}
-
-void CObject2D::transform( const CObject2D & object )
-{
-    CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
 }
 
 

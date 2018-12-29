@@ -27,7 +27,6 @@ public:
     // Transform - One call for those objects that don't have parents
     virtual void transform();
     virtual void transform( const CObject2D & object );
-    virtual void transform( const CMatrix & matrix, bool tranformWorldPos = false );
 
     // Get the object's matrix
     const CMatrix & getMatrix() const;

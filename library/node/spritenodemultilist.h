@@ -26,14 +26,14 @@ public:
     CSpriteNodeMultiLst(
         const CObjectData2D & objectData,
         int spriteId = defs_SPRITE_DEFAULT_ID,
-        int nodeId = -1,
-        int parentId = -1 );
+        int nodeId = defs_NODE_DEFAULT_ID,
+        int parentId = defs_PARENT_NODE_DEFAULT_ID );
 
     CSpriteNodeMultiLst(
         const CObjectData3D & objectData,
         int spriteId = defs_SPRITE_DEFAULT_ID,
-        int nodeId = -1,
-        int parentId = -1 );
+        int nodeId = defs_NODE_DEFAULT_ID,
+        int parentId = defs_PARENT_NODE_DEFAULT_ID );
 
     // Destructor
     virtual ~CSpriteNodeMultiLst();
@@ -43,7 +43,7 @@ public:
     
     // Transform the nodes
     void transform() override;
-    void transform( const CMatrix & matrix, bool tranformWorldPos ) override;
+    void transform( const CObject2D & object ) override;
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered

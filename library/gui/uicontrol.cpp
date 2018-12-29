@@ -233,10 +233,10 @@ void CUIControl::update()
 ************************************************************************/
 void CUIControl::transform( const CObject2D & object )
 {
-    CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
+    CObject2D::transform( object );
 
     for( auto & iter : m_spriteDeq )
-        iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+        iter.getObject()->transform( *this );
 
     transformCollision();
 }

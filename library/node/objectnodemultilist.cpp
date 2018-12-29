@@ -42,9 +42,9 @@ void CObjectNodeMultiLst::transform()
 }
 
 // Used to transform object on a sector
-void CObjectNodeMultiLst::transform( const CMatrix & matrix, bool tranformWorldPos )
+void CObjectNodeMultiLst::transform( const CObject2D & object )
 {
-    m_object.transform( matrix, tranformWorldPos );
+    m_object.transform( object );
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();

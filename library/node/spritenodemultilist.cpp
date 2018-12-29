@@ -70,9 +70,9 @@ void CSpriteNodeMultiLst::transform()
 }
 
 // Used to transform object on a sector
-void CSpriteNodeMultiLst::transform( const CMatrix & matrix, bool tranformWorldPos )
+void CSpriteNodeMultiLst::transform( const CObject2D & object )
 {
-    m_sprite.getObject()->transform( matrix, tranformWorldPos );
+    m_sprite.getObject()->transform( object );
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();

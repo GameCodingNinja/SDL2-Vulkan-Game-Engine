@@ -36,7 +36,7 @@ CNodeDataList::CNodeDataList( const XMLNode & node )
     if( node.isAttributeSet( "name" ) )
         nodeName = node.getAttribute( "name" );
     
-    int idCounter = 0;
+    int idCounter = defs_NODE_DEFAULT_ID;
 
     // Load the node data into the vector
     m_dataVec.emplace_back( node, nodeName, idCounter++, -1, defGroup, defObjName, defAIName );
@@ -70,7 +70,7 @@ CNodeDataList::CNodeDataList(
     if( node.isAttributeSet( "name" ) )
         nodeName = node.getAttribute( "name" );
     
-    int idCounter = 0;
+    int idCounter = defs_NODE_DEFAULT_ID;
 
     // Load the node data into the vector
     m_dataVec.emplace_back( node, nodeName, idCounter++, -1, defGroup, defObjName, defAIName, defId );

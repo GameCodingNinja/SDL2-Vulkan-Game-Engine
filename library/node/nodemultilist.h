@@ -20,7 +20,7 @@ class CNodeMultiLst : public CNode
 public:
     
     // Constructor
-    CNodeMultiLst( int nodeId = -1, int parentId = -1 );
+    CNodeMultiLst( int nodeId = defs_NODE_DEFAULT_ID, int parentId = defs_PARENT_NODE_DEFAULT_ID );
 
     // Destructor
     virtual ~CNodeMultiLst();

@@ -415,7 +415,7 @@ void CMenu::transform()
         CObject2D::transform();
 
         for( auto & iter : m_spriteDeq )
-            iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+            iter.getObject()->transform( *this );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );
@@ -432,10 +432,10 @@ void CMenu::transform( const CObject2D & object )
 {
     if( isVisible() )
     {
-        CObject2D::transform( object.getMatrix(), object.wasWorldPosTranformed() );
+        CObject2D::transform( object );
 
         for( auto & iter : m_spriteDeq )
-            iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+            iter.getObject()->transform( *this );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );

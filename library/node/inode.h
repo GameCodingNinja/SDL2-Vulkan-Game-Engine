@@ -59,11 +59,11 @@ public:
 
     // Get the unique head node id number
     virtual int getId() const
-    { return -1; }
+    { return defs_NODE_DEFAULT_ID; }
 
     // Get the parent id
     virtual int getParentId() const
-    { return -1; }
+    { return defs_PARENT_NODE_DEFAULT_ID; }
 
     // Update the nodes
     virtual void update(){}
@@ -71,7 +71,7 @@ public:
     // Transform the nodes
     virtual void transform(){}
     // Used to transform object on a sector
-    virtual void transform( const CMatrix & matrix, bool tranformWorldPos = false ){}
+    virtual void transform( const CObject2D & object ){}
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}

@@ -41,7 +41,7 @@ public:
     // Transform the nodes
     void transform() override;
     // Used to transform object on a sector
-    void transform( const CMatrix & matrix, bool tranformWorldPos = false ) override;
+    void transform( const CObject2D & object ) override;
 
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered

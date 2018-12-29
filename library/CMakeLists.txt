@@ -1,3 +1,36 @@
+#        slot/symbol2d.cpp
+#        slot/symbolsetview.cpp
+#        slot/symbolsetviewmanager.cpp
+#        slot/slotmathmanager.cpp
+#        slot/slotmath.cpp
+#        slot/mathsymbol.cpp
+#        slot/paycombo.cpp
+#        slot/valuetable.cpp
+#        slot/weightedtable.cpp
+#        slot/slotgroup.cpp
+#        slot/paylineset.cpp
+#        slot/slotgroupmodel.cpp
+#        slot/slotstripmodel.cpp
+#        slot/slotgroupview.cpp
+#        slot/reelgroupview.cpp
+#        slot/reelstripview.cpp
+#        slot/spinprofile.cpp
+#        slot/playresult.cpp
+#        slot/slotresults.cpp
+#        slot/basegamemusic.cpp
+#        slot/pay.cpp
+#        slot/slotgame.cpp
+#        slot/paytableset.cpp
+#        slot/stripset.cpp
+#        slot/stripstop.cpp
+#        slot/betmanager.cpp
+#        slot/wheelgroupview.cpp
+#        slot/wheelview.cpp
+#        slot/simplecycleresults.cpp
+#        slot/icycleresults.cpp
+#        slot/slotgroupfactory.cpp
+#        slot/animatedcycleresults.cpp
+
 
 # Add the files to the library
 add_library(
@@ -119,38 +152,6 @@ add_library(
         common/dynamicoffset.cpp
         common/camera.cpp
         common/cameradata.cpp
-        slot/symbol2d.cpp
-        slot/symbolsetview.cpp
-        slot/symbolsetviewmanager.cpp
-        slot/slotmathmanager.cpp
-        slot/slotmath.cpp
-        slot/mathsymbol.cpp
-        slot/paycombo.cpp
-        slot/valuetable.cpp
-        slot/weightedtable.cpp
-        slot/slotgroup.cpp
-        slot/paylineset.cpp
-        slot/slotgroupmodel.cpp
-        slot/slotstripmodel.cpp
-        slot/slotgroupview.cpp
-        slot/reelgroupview.cpp
-        slot/reelstripview.cpp
-        slot/spinprofile.cpp
-        slot/playresult.cpp
-        slot/slotresults.cpp
-        slot/basegamemusic.cpp
-        slot/pay.cpp
-        slot/slotgame.cpp
-        slot/paytableset.cpp
-        slot/stripset.cpp
-        slot/stripstop.cpp
-        slot/betmanager.cpp
-        slot/wheelgroupview.cpp
-        slot/wheelview.cpp
-        slot/simplecycleresults.cpp
-        slot/icycleresults.cpp
-        slot/slotgroupfactory.cpp
-        slot/animatedcycleresults.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c
