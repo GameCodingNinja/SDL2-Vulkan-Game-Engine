@@ -41,15 +41,6 @@ CNodeData::CNodeData(
         m_nodeType = NDefs::ENT_SPRITE_MULTI_LIST;
 }
 
-CNodeData::CNodeData( const CNodeData & data ) :
-    CSpriteData( data ),
-    m_nodeName(data.m_nodeName),
-    m_nodeId( data.m_nodeId ),
-    m_parenNodetId( data.m_parenNodetId ),
-    m_nodeType( data.m_nodeType )
-{
-}
-
 
 /************************************************************************
 *    DESC:  destructor                                                             

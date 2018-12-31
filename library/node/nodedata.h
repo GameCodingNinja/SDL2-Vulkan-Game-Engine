@@ -26,8 +26,6 @@ public:
         const std::string & defAIName = std::string(),
         int defId = defs_SPRITE_DEFAULT_ID );
     
-    CNodeData( const CNodeData & data );
-    
     // Destructor
     virtual ~CNodeData();
     

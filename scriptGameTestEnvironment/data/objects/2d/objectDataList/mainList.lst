@@ -101,6 +101,24 @@
             </visual>
         </object>
         
+        <object name="square_green">
+            <visual>
+                <texture file="data/textures/run/square_green.png"/>
+            </visual>
+        </object>
+        
+        <object name="square_blue">
+            <visual>
+                <texture file="data/textures/run/square_blue.png"/>
+            </visual>
+        </object>
+        
+        <object name="triangle_red">
+            <visual>
+                <texture file="data/textures/run/triangle_red.png"/>
+            </visual>
+        </object>
+        
         <object name="triangle_green">
             <visual>
                 <texture file="data/textures/run/triangle_green.png"/>

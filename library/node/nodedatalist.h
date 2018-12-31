@@ -2,7 +2,8 @@
 /************************************************************************
 *    FILE NAME:       nodedatalist.h
 *
-*    DESCRIPTION:     Node Data list Class
+*    DESCRIPTION:     Based on how the XML is written, creates a node
+*                     list so that the Parent/child nodes can be created
 ************************************************************************/
 
 #ifndef __node_data_list_h__
@@ -24,7 +25,6 @@ class CNodeDataList
 public:
 
     // Constructor
-    CNodeDataList( const XMLNode & node );
     CNodeDataList(
         const XMLNode & node,
         const std::string & _defGroup,
@@ -44,7 +44,6 @@ private:
     void loadNode(
         const XMLNode & xmlNode,
         CNodeData & nodeData,
-        int & idCounter,
         const std::string & defGroup,
         const std::string & defObjName,
         const std::string & defAIName,
@@ -52,7 +51,10 @@ private:
     
 private:
     
-    // Map of the node data
+    // id counter
+    int m_idCounter;
+    
+    // Vector of the node data
     std::vector<CNodeData> m_dataVec;
 };
 

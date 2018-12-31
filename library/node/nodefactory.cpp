@@ -26,73 +26,15 @@
 
 namespace NNodeFactory
 {
-    /***************************************************************************
-    *    DESC:  Load the sprite data
-    ****************************************************************************/
-    void Load(
-        CSprite * pSprite,
-        const CSpriteData & rSpriteData,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale )
-    {
-        // Load the rest from sprite data
-        pSprite->load( rSpriteData );
-
-        // Use passed in transforms if specified
-        if( !pos.isEmpty() )
-            pSprite->getObject()->setPos(pos);
-
-        if( !rot.isEmpty() )
-            pSprite->getObject()->setRot(rot, false);
-
-        if( scale != CPoint<float>(1,1,1) )
-            pSprite->getObject()->setScale(scale);
-
-        // Init the physics
-        pSprite->initPhysics();
-
-        // Init the sprite
-        pSprite->init();
-
-        // Broadcast the signal to create the sprite AI
-        if( !rSpriteData.getAIName().empty() )
-            CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), pSprite );
-    }
-
-    /************************************************************************
-    *    DESC:  Load the object data
-    ************************************************************************/
-    void Load(
-        CObject2D * pObject,
-        const CSpriteData & rSpriteData,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale )
-    {
-        // Load the rest from sprite data
-        pObject->copyTransform( &rSpriteData );
-
-        // Use passed in transforms if specified
-        if( !pos.isEmpty() )
-            pObject->setPos(pos);
-
-        if( !rot.isEmpty() )
-            pObject->setRot(rot, false);
-
-        if( scale != CPoint<float>(1,1,1) )
-            pObject->setScale(scale);
-    }
+    // Declare the function prototypes
+    iNode * Create( const CNodeData & rNodeData, const int nodeId );
+    void Load( CSprite * pSprite, const CSpriteData & rSpriteData );
+    void Load( CObject2D * pObject, const CSpriteData & rSpriteData );
     
     /************************************************************************
     *    DESC:  Create the node from the node data list
     ************************************************************************/
-    iNode * Create(
-        const CNodeData & rNodeData,
-        const int nodeId,
-        const CPoint<CWorldValue> & pos,
-        const CPoint<float> & rot,
-        const CPoint<float> & scale )
+    iNode * Create( const CNodeData & rNodeData, const int nodeId )
     {
         iNode * pNode(nullptr);
 
@@ -105,13 +47,13 @@ namespace NNodeFactory
             else if( rNodeData.getSpriteType() == NDefs::EST_SPRITE3D )
                 pNode = new CSpriteNode( CObjectDataMgr::Instance().getData3D( rNodeData.getGroup(), rNodeData.getObjectName() ), nodeId );
 
-            Load( pNode->getSprite(), rNodeData, pos, rot, scale );
+            Load( pNode->getSprite(), rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT_MULTI_LIST )
         {
             pNode = new CObjectNodeMultiLst( nodeId, rNodeData.getNodeId(), rNodeData.getParentNodeId() );
 
-            Load( pNode->getObject(), rNodeData, pos, rot, scale );
+            Load( pNode->getObject(), rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
         {
@@ -129,7 +71,7 @@ namespace NNodeFactory
                         rNodeData.getNodeId(),
                         rNodeData.getParentNodeId() );
                 
-            Load( pNode->getSprite(), rNodeData, pos, rot, scale );
+            Load( pNode->getSprite(), rNodeData );
         }
         else
         {
@@ -139,5 +81,33 @@ namespace NNodeFactory
         }
 
         return pNode;
+    }
+
+    /***************************************************************************
+    *    DESC:  Load the sprite data
+    ****************************************************************************/
+    void Load( CSprite * pSprite, const CSpriteData & rSpriteData )
+    {
+        // Load the rest from sprite data
+        pSprite->load( rSpriteData );
+
+        // Init the physics
+        pSprite->initPhysics();
+
+        // Init the sprite
+        pSprite->init();
+
+        // Broadcast the signal to create the sprite AI
+        if( !rSpriteData.getAIName().empty() )
+            CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), pSprite );
+    }
+
+    /************************************************************************
+    *    DESC:  Load the object data
+    ************************************************************************/
+    void Load( CObject2D * pObject, const CSpriteData & rSpriteData )
+    {
+        // Load the rest from sprite data
+        pObject->copyTransform( &rSpriteData );
     }
 }

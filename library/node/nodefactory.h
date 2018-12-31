@@ -20,12 +20,7 @@ class CNodeDataList;
 namespace NNodeFactory
 {
     // Create the control
-    iNode * Create(
-    const CNodeData & rNodeData,
-    const int nodeId,
-    const CPoint<CWorldValue> & pos = CPoint<CWorldValue>(),
-    const CPoint<float> & rot = CPoint<float>(),
-    const CPoint<float> & scale = CPoint<float>(1,1,1) );
+    iNode * Create( const CNodeData & rNodeData, const int nodeId );
 };
 
 #endif

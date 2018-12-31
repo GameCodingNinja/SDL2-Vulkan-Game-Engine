@@ -55,7 +55,9 @@ class CGame
         ObjectDataMgr.loadGroup2D( "(main)" );
         
         // Create the needed strategies
-        StrategyMgr.createActorStrategy( "(main)" ).create( "player_ship" );
+        iStrategy @strategy = StrategyMgr.createActorStrategy( "(main)" );
+        strategy.create( "player_ship" );
+        strategy.create( "multiListTestNode" );
         StrategyMgr.activateStrategy( "(main)" ).setCommandBuffer( "(main)" );
     }
     
