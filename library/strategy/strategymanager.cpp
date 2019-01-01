@@ -241,7 +241,6 @@ void CStrategyMgr::clear()
     NDelFunc::DeleteMapPointers(m_pStrategyMap);
     m_pStrategyMap.clear();
     m_pStrategyVec.clear();
-    iStrategy::clearSpriteCounter();
 }
 
 

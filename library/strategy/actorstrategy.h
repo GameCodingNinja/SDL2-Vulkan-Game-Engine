@@ -71,14 +71,23 @@ public:
 
     // Find if the node is active
     bool isActive( const int id );
+    
+    // Get the pointer to the node
+    iNode * getNode( const int id );
+    iNode * getNode( const std::string & instanceName );
 
 protected:
 
-    // Get the pointer to the sprite
-    iNode * getNode( const int id );
-    
     // Get the node data by name
     CNodeDataList & getData( const std::string & name );
+    
+private:
+    
+    // Add created nodes to the active list
+    void addToActiveList();
+    
+    // Remove deleted nodes from the active list
+    void removeFromActiveList();
 
 protected:
 

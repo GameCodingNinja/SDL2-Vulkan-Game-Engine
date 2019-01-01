@@ -68,27 +68,7 @@ public:
     // Record the command buffer for all the sprite objects that are to be rendered
     virtual void recordCommandBuffer( uint32_t index, const CCamera & camera ){}
     
-    // Clear the sprite Id counter
-    static void clearSpriteCounter();
-    
-    // Customize sprite id generation by defining an offset
-    void setIdOffset( int offset );
-    
-    // Customize sprite id generation by defining a direction
-    void setIdDir( int dir );
-    
 protected:
-    
-    // Delete any sprites scheduled to die
-    virtual void handleDelete(){}
-    
-protected:
-    
-    // ID Offset for this strategy 
-    int m_idOffset;
-    
-    // ID Direction
-    int m_idDir;
     
     // Id increment member
     static int m_idInc;

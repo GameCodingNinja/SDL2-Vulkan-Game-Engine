@@ -197,8 +197,6 @@ namespace NScriptStrategy
         // Register type
         Throw( pEngine->RegisterObjectType("iStrategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void setIdOffset(int)",                       asMETHOD(iStrategy, setIdOffset),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void setIdDir(int)",                          asMETHOD(iStrategy, setIdDir),      asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCommandBuffer(string &in)",           asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in, string &in = '')", asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void destroy(int)",                           asMETHOD(iStrategy, destroy),   asCALL_THISCALL) );

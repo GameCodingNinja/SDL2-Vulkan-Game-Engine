@@ -10,8 +10,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/objects/spritestrategy/mainNode.lst</file>
-            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/data/objects/2d/objectDataList/mainList.lst</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/2d/font.cpp</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/strategy/actorstrategy.h</file>
+            <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/library/strategy/actorstrategy.cpp</file>
             <file>file:/home/howie/Development/SDL2-Vulkan-Game-Engine/scriptGameTestEnvironment/source/game/main.cpp</file>
         </group>
     </open-files>

@@ -114,20 +114,7 @@ iNode * CActorStrategy::create(
     const std::string & instanceName )
 {
     // Create a unique node id
-    const int nodeId( ((m_idInc++) + m_idOffset) * m_idDir );
-    
-    const auto iter = std::find_if(
-        m_pNodeVec.begin(),
-        m_pNodeVec.end(),
-        [nodeId](const iNode * pNode){ return pNode->getId() == nodeId; });
-
-    // Sanity check that there is no duplicate node id's
-    if( iter != m_pNodeVec.end() )
-    {
-        throw NExcept::CCriticalException("Node Create Error!",
-            boost::str( boost::format("Duplicate node id (%s - %d).\n\n%s\nLine: %s")
-                % dataName % nodeId % __FUNCTION__ % __LINE__ ));
-    }
+    const int nodeId( m_idInc++ );
 
     const auto & rNodeDataVec = getData( dataName ).getData();
 
@@ -181,42 +168,11 @@ void CActorStrategy::update()
     for( auto iter : m_pNodeVec )
         iter->update();
     
-    // Add new nodes created during the update
-    if( !m_pCreateVec.empty() )
-    {
-        for( auto iter : m_pCreateVec )
-        {
-            iter->update();
-            m_pNodeVec.push_back( iter );
-        }
-        
-        m_pCreateVec.clear();
-    }
+    // Add created nodes to the active list
+    addToActiveList();
     
-    // Delete nodes destroyed during the update
-    if( !m_deleteVec.empty() )
-    {
-        for( auto id : m_deleteVec )
-        {
-            const auto iter = std::find_if(
-            m_pNodeVec.begin(),
-            m_pNodeVec.end(),
-            [id](const iNode * pNode) { return pNode->getId() == id;} );
-
-            if( iter != m_pNodeVec.end() )
-            {
-                NDelFunc::Delete( *iter );
-                m_pNodeVec.erase( iter );
-            }
-            else
-            {
-                NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
-                    % id % __FUNCTION__ % __LINE__ ) );
-            }
-        }
-        
-        m_deleteVec.clear();
-    }
+    // Remove deleted nodes from the active list
+    removeFromActiveList();
 }
 
 
@@ -270,14 +226,23 @@ iNode * CActorStrategy::getNode( const int id )
         m_pNodeVec.end(),
         [id](const iNode * pNode) { return pNode->getId() == id; } );
 
-    if( iter != m_pNodeVec.end() )
-        return *iter;
-
-    else
+    if( iter == m_pNodeVec.end() )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
             % id % __FUNCTION__ % __LINE__ ) );
 
-    return nullptr;
+    return *iter;
+}
+
+iNode * CActorStrategy::getNode( const std::string & instanceName )
+{
+    auto iter = m_pNodeMap.find( instanceName );
+    
+    if( iter == m_pNodeMap.end() )
+        throw NExcept::CCriticalException("Get Node Error!",
+            boost::str( boost::format("Node can't be found by instance name (%s).\n\n%s\nLine: %s")
+                % instanceName % __FUNCTION__ % __LINE__ ));
+    
+    return iter->second;
 }
 
 
@@ -296,4 +261,54 @@ bool CActorStrategy::isActive( const int id )
         return true;
 
     return false;
+}
+
+
+/************************************************************************
+*    DESC:  Add created nodes to the active list
+************************************************************************/
+void CActorStrategy::addToActiveList()
+{
+    // Add new nodes created during the update
+    if( !m_pCreateVec.empty() )
+    {
+        for( auto iter : m_pCreateVec )
+        {
+            iter->update();
+            m_pNodeVec.push_back( iter );
+        }
+        
+        m_pCreateVec.clear();
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Remove deleted nodes from the active list
+************************************************************************/
+void CActorStrategy::removeFromActiveList()
+{
+    if( !m_deleteVec.empty() )
+    {
+        for( auto id : m_deleteVec )
+        {
+            const auto iter = std::find_if(
+            m_pNodeVec.begin(),
+            m_pNodeVec.end(),
+            [id](const iNode * pNode) { return pNode->getId() == id;} );
+
+            if( iter != m_pNodeVec.end() )
+            {
+                NDelFunc::Delete( *iter );
+                m_pNodeVec.erase( iter );
+            }
+            else
+            {
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
+                    % id % __FUNCTION__ % __LINE__ ) );
+            }
+        }
+        
+        m_deleteVec.clear();
+    }
 }
