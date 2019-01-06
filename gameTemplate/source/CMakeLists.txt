@@ -55,15 +55,16 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
         ${CMAKE_BINARY_DIR}/library/liblibrary.a )
 else()
     # List all the libraries to link against
+    # These need to be listed in order of dependency
     target_link_libraries(
         ${PROJECT_NAME}
-        ${SDL2_LIBRARIES}
-        ${SDL2MIXER_LIBRARIES}
-        ${Vulkan_LIBRARY}
+        ${CMAKE_BINARY_DIR}/library/liblibrary.a
         ${CMAKE_BINARY_DIR}/angelscript/libangelscript.a
         ${CMAKE_BINARY_DIR}/Box2D/libBox2D.a
         ${CMAKE_BINARY_DIR}/bulletPhysics/libbulletPhysics.a
-        ${CMAKE_BINARY_DIR}/library/liblibrary.a )
+        ${Vulkan_LIBRARY}
+        ${SDL2_LIBRARY}
+        ${SDL2MIXER_LIBRARY} )
 endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR})
