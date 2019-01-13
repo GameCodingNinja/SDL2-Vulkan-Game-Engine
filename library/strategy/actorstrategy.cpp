@@ -292,20 +292,33 @@ void CActorStrategy::removeFromActiveList()
     {
         for( auto id : m_deleteVec )
         {
-            const auto iter = std::find_if(
+            const auto vecIter = std::find_if(
             m_pNodeVec.begin(),
             m_pNodeVec.end(),
             [id](const iNode * pNode) { return pNode->getId() == id;} );
 
-            if( iter != m_pNodeVec.end() )
+            if( vecIter != m_pNodeVec.end() )
             {
-                NDelFunc::Delete( *iter );
-                m_pNodeVec.erase( iter );
+                NDelFunc::Delete( *vecIter );
+                m_pNodeVec.erase( vecIter );
             }
             else
             {
                 NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
                     % id % __FUNCTION__ % __LINE__ ) );
+            }
+            
+            // If this same node is in the map, delete it here too.
+            auto mapIter = m_pNodeMap.begin();
+            while( mapIter != m_pNodeMap.end() )
+            {
+                if( mapIter->second->getId() == id )
+                {
+                    m_pNodeMap.erase( mapIter );
+                    break;
+                }
+                
+                mapIter++;
             }
         }
         
