@@ -87,7 +87,7 @@ void CStrategyMgr::loadGroup( const XMLNode & node, const std::string & strategy
 
 
 /************************************************************************
- *    DESC:  Add strategy
+ *    DESC:  Add strategy which will load it's data from XML node
  ************************************************************************/
 iStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy )
 {
@@ -135,12 +135,11 @@ iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
         // See if the strategy is already in the vector
         auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), mapIter->second );
         if( strategyIter != m_pStrategyVec.end() )
-            throw NExcept::CCriticalException("Strategy Manager Activate Error!",
-            boost::str( boost::format("Strategy is already active (%s).\n\n%s\nLine: %s")
-                % strategyId % __FUNCTION__ % __LINE__ ));
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy is already active (%s)!") % strategyId ) );
         
-        // Add the strategy pointer to the vector for rendering
-        m_pStrategyVec.push_back( mapIter->second );
+        else
+            // Add the strategy pointer to the vector for rendering
+            m_pStrategyVec.push_back( mapIter->second );
     }
     else
     {
@@ -156,7 +155,7 @@ iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
 /************************************************************************
  *    DESC:  deactivate strategy
  ************************************************************************/
-iStrategy * CStrategyMgr::deactivateStrategy( const std::string & strategyId )
+void CStrategyMgr::deactivateStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pStrategyMap.find( strategyId );
@@ -165,21 +164,14 @@ iStrategy * CStrategyMgr::deactivateStrategy( const std::string & strategyId )
         // See if the strategy is already in the vector
         auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), mapIter->second );
         if( strategyIter == m_pStrategyVec.end() )
-            throw NExcept::CCriticalException("Strategy Manager Deactivate Error!",
-            boost::str( boost::format("Strategy is not active (%s).\n\n%s\nLine: %s")
-                % strategyId % __FUNCTION__ % __LINE__ ));
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy is not active (%s)!") % strategyId ) );
         
-        // Remove the strategy from the render vector
-        m_pStrategyVec.erase( strategyIter );
+        else
+            // Remove the strategy from the render vector
+            m_pStrategyVec.erase( strategyIter );
     }
     else
-    {
-        throw NExcept::CCriticalException("Strategy Manager Activate Error!",
-            boost::str( boost::format("Strategy id can't be found (%s).\n\n%s\nLine: %s")
-                % strategyId % __FUNCTION__ % __LINE__ ));
-    }
-    
-    return mapIter->second;
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy id can't be found to deactivate (%s)!") % strategyId ) );
 }
 
 
@@ -292,7 +284,7 @@ iStrategy * CStrategyMgr::getStrategy( const std::string & strategyId )
 
 
 /************************************************************************
-*    DESC:  Build all the camera
+*    DESC:  Build all the cameras
 ************************************************************************/
 void CStrategyMgr::buildCameras()
 {

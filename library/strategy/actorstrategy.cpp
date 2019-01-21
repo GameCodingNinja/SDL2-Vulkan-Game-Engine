@@ -136,7 +136,7 @@ iNode * CActorStrategy::create(
     }
 
     // Add the node pointer to the vector for adding to the list
-    m_pCreateVec.push_back( pHeadNode );
+    m_pActivateVec.push_back( pHeadNode );
     
     // If there is an instance name with this node, add it to the map
     if( !instanceName.empty() )
@@ -148,6 +148,58 @@ iNode * CActorStrategy::create(
     }
 
     return pHeadNode;
+}
+
+
+/************************************************************************
+ *    DESC:  activate node
+ ************************************************************************/
+iNode * CActorStrategy::activateNode( const std::string & instanceName )
+{
+    // Make sure the strategy we are looking for is available
+    auto mapIter = m_pNodeMap.find( instanceName );
+    if( mapIter != m_pNodeMap.end() )
+    {
+        // See if the node is already in the vector
+        auto nodeIter = std::find( m_pNodeVec.begin(), m_pNodeVec.end(), mapIter->second );
+        if( nodeIter != m_pNodeVec.end() )
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node is already active (%s)!") % instanceName ) );
+        
+        else
+            // Add the node pointer to the activate vector
+            m_pActivateVec.push_back( mapIter->second );
+    }
+    else
+    {
+        throw NExcept::CCriticalException("Actor Strategy Node Activate Error!",
+            boost::str( boost::format("Node instance name can't be found (%s).\n\n%s\nLine: %s")
+                % instanceName % __FUNCTION__ % __LINE__ ));
+    }
+    
+    return mapIter->second;
+}
+
+
+/************************************************************************
+ *    DESC:  deactivate node
+ ************************************************************************/
+void CActorStrategy::deactivateNode( const std::string & instanceName )
+{
+    // Make sure the strategy we are looking for is available
+    auto mapIter = m_pNodeMap.find( instanceName );
+    if( mapIter != m_pNodeMap.end() )
+    {
+        // See if the node is already in the vector
+        auto nodeIter = std::find( m_pNodeVec.begin(), m_pNodeVec.end(), mapIter->second );
+        if( nodeIter == m_pNodeVec.end() )
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node is not active (%s)!") % instanceName ) );
+        
+        else
+            // Add the node pointer to the deactivate vector
+            m_pDeactivateVec.push_back( mapIter->second );
+    }
+    else
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node can't be found to deactivate (%s)!") % instanceName ) );
 }
 
 
@@ -168,11 +220,14 @@ void CActorStrategy::update()
     for( auto iter : m_pNodeVec )
         iter->update();
     
-    // Add created nodes to the active list
+    // Add nodes to the active list
     addToActiveList();
     
-    // Remove deleted nodes from the active list
+    // Remove nodes from the active list
     removeFromActiveList();
+    
+    // Remove and deleted nodes from the active list and map
+    deleteFromActiveList();
 }
 
 
@@ -270,23 +325,47 @@ bool CActorStrategy::isActive( const int id )
 void CActorStrategy::addToActiveList()
 {
     // Add new nodes created during the update
-    if( !m_pCreateVec.empty() )
+    if( !m_pActivateVec.empty() )
     {
-        for( auto iter : m_pCreateVec )
+        for( auto iter : m_pActivateVec )
         {
             iter->update();
             m_pNodeVec.push_back( iter );
         }
         
-        m_pCreateVec.clear();
+        m_pActivateVec.clear();
     }
 }
 
 
 /************************************************************************
-*    DESC:  Remove deleted nodes from the active list
+*    DESC:  Remove deactivated nodes from the active list
 ************************************************************************/
 void CActorStrategy::removeFromActiveList()
+{
+    if( !m_pDeactivateVec.empty() )
+    {
+        for( auto pNode : m_pDeactivateVec )
+        {
+            auto iter = std::find( m_pNodeVec.begin(), m_pNodeVec.end(), pNode );
+
+            if( iter != m_pNodeVec.end() )
+                m_pNodeVec.erase( iter );
+
+            else
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found to be deactivated (%s).\n\n%s\nLine: %s")
+                    % pNode->getId() % __FUNCTION__ % __LINE__ ) );
+        }
+        
+        m_pDeactivateVec.clear();
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Remove and deleted nodes from the active list and map
+************************************************************************/
+void CActorStrategy::deleteFromActiveList()
 {
     if( !m_deleteVec.empty() )
     {
@@ -304,7 +383,7 @@ void CActorStrategy::removeFromActiveList()
             }
             else
             {
-                NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found to delete (%s).\n\n%s\nLine: %s")
                     % id % __FUNCTION__ % __LINE__ ) );
             }
             

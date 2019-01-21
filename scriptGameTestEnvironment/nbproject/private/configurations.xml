@@ -80,7 +80,7 @@
           </df>
         </df>
         <df name="CMakeFiles">
-          <df name="3.12.2">
+          <df name="3.13.2">
             <df name="CompilerIdC">
               <df name="tmp">
               </df>
@@ -117,8 +117,6 @@
               <df name="physics">
               </df>
               <df name="script">
-              </df>
-              <df name="slot">
               </df>
               <df name="soil">
               </df>
@@ -282,8 +280,6 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
-        <gdb_signals>
-        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>

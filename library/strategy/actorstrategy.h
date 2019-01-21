@@ -50,6 +50,10 @@ public:
         const std::string & dataName,
         const std::string & instanceName = "" ) override;
     
+    // activate/deactivate node
+    iNode * activateNode( const std::string & instanceName );
+    void deactivateNode( const std::string & instanceName );
+    
     // Destroy the node
     void destroy( int id ) override;
 
@@ -86,8 +90,11 @@ private:
     // Add created nodes to the active list
     void addToActiveList();
     
-    // Remove deleted nodes from the active list
+    // Remove deactivated nodes from the active list
     void removeFromActiveList();
+    
+    // Remove and deleted nodes from the active list and map
+    void deleteFromActiveList();
 
 protected:
 
@@ -98,7 +105,10 @@ protected:
     std::vector<iNode *> m_pNodeVec;
     
     // Vector of iNode pointers to be added to the active vector
-    std::vector<iNode *> m_pCreateVec;
+    std::vector<iNode *> m_pActivateVec;
+    
+    // Vector of iNode pointers to be removed from the active vector
+    std::vector<iNode *> m_pDeactivateVec;
     
     // Set of indexes to delete
     std::vector<int> m_deleteVec;

@@ -209,7 +209,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createActorStrategy(string &in)",  asFUNCTION(CreateActorStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createStageStrategy(string &in)",  asFUNCTION(CreateStageStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & activateStrategy(string &in)",     asMETHOD(CStrategyMgr, activateStrategy), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & deactivateStrategy(string &in)",   asMETHOD(CStrategyMgr, deactivateStrategy), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deactivateStrategy(string &in)",          asMETHOD(CStrategyMgr, deactivateStrategy), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",          asFUNCTION(GetStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",              asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                asMETHOD(CStrategyMgr, update), asCALL_THISCALL) );

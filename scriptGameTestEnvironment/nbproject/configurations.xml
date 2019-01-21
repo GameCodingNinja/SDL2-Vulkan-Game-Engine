@@ -1052,7 +1052,7 @@
           <buildCommandWorkingDir>build</buildCommandWorkingDir>
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-          <executablePath>build/source/gametemplate</executablePath>
+          <executablePath></executablePath>
           <cTool>
             <incDir>
               <pElem>/usr/include/SDL2</pElem>
@@ -3186,165 +3186,13 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="../library/slot/animatedcycleresults.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
+      <item path="../library/soil/SOIL.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="../library/slot/basegamemusic.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
+      <item path="../library/soil/image_DXT.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="../library/slot/betmanager.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
+      <item path="../library/soil/image_helper.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="../library/slot/icycleresults.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/mathsymbol.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/pay.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/paycombo.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/paylineset.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/paytableset.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/playresult.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/reelgroupview.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/reelstripview.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/simplecycleresults.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotgame.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotgroup.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotgroupfactory.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotgroupmodel.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotgroupview.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotmath.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotmathmanager.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotresults.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/slotstripmodel.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/spinprofile.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/stripset.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/stripstop.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/symbol2d.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/symbolsetview.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/symbolsetviewmanager.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/valuetable.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/weightedtable.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/wheelgroupview.cpp"
-            ex="false"
-            tool="1"
-            flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/slot/wheelview.cpp" ex="false" tool="1" flavor2="11">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="../library/soil/SOIL.c" ex="false" tool="0" flavor2="2">
-      </item>
-      <item path="../library/soil/image_DXT.c" ex="false" tool="0" flavor2="2">
-      </item>
-      <item path="../library/soil/image_helper.c" ex="false" tool="0" flavor2="2">
-      </item>
-      <item path="../library/soil/stb_image_aug.c" ex="false" tool="0" flavor2="2">
+      <item path="../library/soil/stb_image_aug.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="../library/sprite/sprite.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">

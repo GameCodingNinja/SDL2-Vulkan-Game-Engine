@@ -43,12 +43,12 @@ public:
     // Load the group
     void loadGroup( const XMLNode & node, const std::string & strategyId ) override;
     
-    // Add strategy
+    // Add strategy which will load it's data from XML node
     iStrategy * addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy );
     
     // activate/deactivate strategy
     iStrategy * activateStrategy( const std::string & strategyId );
-    iStrategy * deactivateStrategy( const std::string & strategyId );
+    void deactivateStrategy( const std::string & strategyId );
     
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
@@ -71,7 +71,7 @@ public:
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );
     
-    // Build all the camera
+    // Build all the cameras
     void buildCameras();
     
     // Get a reference to the strategy

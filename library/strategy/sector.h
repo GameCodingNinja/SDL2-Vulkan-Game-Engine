@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       sector2d.h
 *
-*    DESCRIPTION:     Class the creates & renders all the sector sprites
+*    DESCRIPTION:     Class the creates & renders all the sector nodes
 ************************************************************************/
 
 #ifndef __sector_h__
@@ -46,7 +46,7 @@ public:
     // Transform the actor
     void transform() override;
     
-    // Record the command buffer for all the sprite objects that are to be rendered
+    // Record the command buffer for all the node objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
     
     // Remove

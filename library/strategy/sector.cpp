@@ -89,7 +89,7 @@ void CSector::loadFromNode( const XMLNode & node )
                 if( pHeadNode == nullptr )
                     pHeadNode = pNode;
         
-                else if( !pHeadNode->addNode( pNode, iter.getNodeName()  ) )
+                else if( !pHeadNode->addNode( pNode, iter.getNodeName() ) )
                     throw NExcept::CCriticalException("Node Create Error!",
                         boost::str( boost::format("Parent node not found or node does not support adding children (%s).\n\n%s\nLine: %s")
                             % nodeName % __FUNCTION__ % __LINE__ ));
@@ -154,7 +154,7 @@ void CSector::transform()
 
 
 /***************************************************************************
-*    DESC:  Record the command buffer for all the sprite
+*    DESC:  Record the command buffer for all the nodes
 *           objects that are to be rendered
 ****************************************************************************/
 void CSector::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
@@ -223,7 +223,7 @@ bool CSector::inPerspectiveView()
 
 
 /************************************************************************
-*    DESC:  Get the pointer to the sprite
+*    DESC:  Get the pointer to the node
 ************************************************************************/
 iNode * CSector::get( const std::string & nodeName )
 {
