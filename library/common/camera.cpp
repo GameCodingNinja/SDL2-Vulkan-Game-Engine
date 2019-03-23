@@ -20,7 +20,11 @@ CCamera::CCamera() :
     m_minZDist(CSettings::Instance().getMinZdist()),
     m_maxZDist(CSettings::Instance().getMaxZdist())
 {
+    // Create the projection matrix
     createProjectionMatrix();
+    
+    // Calculate the final matrix
+    calcFinalMatrix();
 }
 
 CCamera::CCamera( float minZDist, float maxZDist ) :
@@ -29,7 +33,11 @@ CCamera::CCamera( float minZDist, float maxZDist ) :
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
-    createProjectionMatrix(); 
+    // Create the projection matrix
+    createProjectionMatrix();
+    
+    // Calculate the final matrix
+    calcFinalMatrix(); 
 }
 
 CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
@@ -38,7 +46,11 @@ CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
+    // Create the projection matrix
     createProjectionMatrix();
+    
+    // Calculate the final matrix
+    calcFinalMatrix();
 }
 
 CCamera::CCamera( const CCameraData & cameraData ) :
@@ -47,9 +59,16 @@ CCamera::CCamera( const CCameraData & cameraData ) :
     m_minZDist( cameraData.getMinZdist() ),
     m_maxZDist( cameraData.getMaxZdist() )
 {
+    copyTransform( &cameraData );
+    
+    // Create the projection matrix
     createProjectionMatrix();
     
-    copyTransform( &cameraData );
+    // Do the initial transform
+    CObject3D::transform();
+    
+    // Calculate the final matrix
+    calcFinalMatrix();
 }
 
 
@@ -71,7 +90,14 @@ void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist
     m_minZDist = minZDist;
     m_maxZDist = maxZDist;
     
+    // Create the projection matrix
     createProjectionMatrix();
+    
+    // Do the initial transform
+    CObject3D::transform();
+    
+    // Calculate the final matrix
+    calcFinalMatrix();
 }
 
 
@@ -98,8 +124,6 @@ void CCamera::createProjectionMatrix()
             m_minZDist,
             m_maxZDist );
     }
-    
-    calcFinalMatrix();
 }
 
 
