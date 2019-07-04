@@ -106,11 +106,11 @@ void CUIMeter::loadControlFromNode( const XMLNode & controlNode )
     CUIControl::loadControlFromNode( controlNode );
 
     // Find the sprite that renders the font
-    for( auto & iter : m_spriteDeq )
+    for( auto iter : m_pSpriteVec )
     {
-        if( iter.getVisualComponent()->isFontSprite() )
+        if( iter->getVisualComponent()->isFontSprite() )
         {
-            m_pSprite = &iter;
+            m_pSprite = iter;
             break;
         }
     }

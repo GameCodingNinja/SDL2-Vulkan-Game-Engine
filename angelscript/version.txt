@@ -1,2 +1,1 @@
-AngelScript SDK 2.32.0
-(2016, 1.87 MB) 
+Version 2.33.0 - 2018/12/22

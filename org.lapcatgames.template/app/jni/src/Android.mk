@@ -16,7 +16,7 @@ ASCRIPT_PATH := $(LOCAL_PATH)/../angelscript
 LOCAL_C_INCLUDES := \
 	$(SDL_PATH)/include \
 	$(LOCAL_PATH)/library \
-	$(LOCAL_PATH)/../boost \
+	$(LOCAL_PATH)/../libboost \
 	$(ASCRIPT_PATH)/add_on
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES)
@@ -39,9 +39,9 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(LOCAL_PATH)/library/sprite/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/2d/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/3d/*.cpp) \
+	$(wildcard $(LOCAL_PATH)/library/node/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/common/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/utilities/*.cpp) \
-	$(wildcard $(LOCAL_PATH)/library/slot/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/soil/*.c) \
 	$(wildcard $(LOCAL_PATH)/library/script/*.cpp))
 

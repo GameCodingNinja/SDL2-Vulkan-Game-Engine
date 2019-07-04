@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <objectDataList2D>
 
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
@@ -55,7 +56,6 @@
 
         <object name="logo">
             <visual>
-                <pipeline id="2d_quad"/>
                 <texture file="data/textures/startup/logo.png"/>
             </visual>
         </object>
@@ -66,7 +66,7 @@
             </visual>
         </object>
 
-        <object name="background">
+        <!--<object name="background">
             <visual>
                 <texture file="data/textures/titleScreen/title_background.png"/>
             </visual>
@@ -102,7 +102,7 @@
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
             <size width="500" height="200"/>
-        </object>
+        </object>-->
 
         <!--<object name="spriteSheetTest4">
             <visual>

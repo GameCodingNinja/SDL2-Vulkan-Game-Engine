@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/library"
+		},
+		{
+			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript"
+		},
+		{
+			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics"
+		},
+		{
+			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D"
+		}
+	],
+	"settings": {}
+}

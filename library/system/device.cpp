@@ -344,7 +344,7 @@ void CDevice::render()
     if( (m_lastResult = vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, m_frameFenceVec[m_currentFrame] )) )
         throw NExcept::CCriticalException(
             "Vulkan Error!",
-            boost::str( boost::format("Could not submit draw command buffer! %s") % getError() ) );
+            boost::str( boost::format("Could not submit draw command buffer! %s - %d") % getError() % m_lastResult ) );
 
     VkPresentInfoKHR presentInfo = {};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;

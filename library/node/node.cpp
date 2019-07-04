@@ -15,7 +15,6 @@
 *    DESC:  Constructor
 ************************************************************************/
 CNode::CNode( int id, int parentId ) :
-    m_Iter(nullptr),
     m_id(id),
     m_parentId(parentId)
 {

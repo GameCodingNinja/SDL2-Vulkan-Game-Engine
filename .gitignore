@@ -1,3 +1,7 @@
+/org.lapcatgames.templateOld
+/org.libsdl.testgles
+
+/gameTemplate/.vscode/ipch
 /gameTemplate/Win32/
 /gameTemplate/AS_DEBUG/
 /gameTemplate/.vs/
@@ -69,14 +73,16 @@
 /com.hugheswhoproductions.hugheswhoslots/app/.externalNativeBuild
 
 /org.lapcatgames.template/build
-/org.lapcatgames.template/gradle
 /org.lapcatgames.template/app/build
 /org.lapcatgames.template/.gradle
 /org.lapcatgames.template/.idea
 /org.lapcatgames.template/app/.externalNativeBuild
+/org.lapcatgames.template/.idea
 
+/library/.vscode/ipch
 /library/Win32/
 
+/angelscript/.vscode/ipch
 /angelscript/projects/msvc2015/Win32/
 /angelscript/projects/msvc2015/angelscript.vcxproj.user
 

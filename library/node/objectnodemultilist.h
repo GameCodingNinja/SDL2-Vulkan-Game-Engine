@@ -29,7 +29,7 @@ public:
     
     // Transform the nodes
     void transform() override;
-    void transform( const CObject2D & object );
+    void transform( const CObject2D & object ) override;
     
     // Get the sprite
     CObject2D * getObject() override;

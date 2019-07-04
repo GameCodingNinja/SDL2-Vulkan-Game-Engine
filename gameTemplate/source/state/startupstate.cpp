@@ -115,9 +115,6 @@ void CStartUpState::init()
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_StartUpFadeIn" );
     
-    // This data no longer needed so free it
-    CObjectDataMgr::Instance().freeDataGroup2D( "(startup)" );
-    
     // Reset the elapsed time before entering the render loop
     CHighResTimer::Instance().calcElapsedTime();
 }
@@ -179,15 +176,15 @@ void CStartUpState::assetLoad()
         CScriptMgr::Instance().loadGroup("(menu)");
 
         // Load all of the meshes and materials in these groups
-        CObjectDataMgr::Instance().loadGroup2D("(menu)");
+        //CObjectDataMgr::Instance().loadGroup2D("(menu)");
 
         // Load the menu group
-        CMenuMgr::Instance().loadGroup("(menu)");
+        //CMenuMgr::Instance().loadGroup("(menu)");
 
         // Do the state specific load
-        CTitleScreenState::load();
+        //CTitleScreenState::load();
 
-        NGenFunc::DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
+        //NGenFunc::DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
     }
     catch( NExcept::CCriticalException & ex )
     {

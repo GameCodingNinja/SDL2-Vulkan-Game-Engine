@@ -34,7 +34,7 @@ namespace NScriptSize
         new(pThisPointer) CSize<float>(other);
     }
 
-    void ConstructorFromTwoFloats(float w, float h, void * pThisPointer)
+    static void ConstructorFromTwoFloats(float w, float h, void * pThisPointer)
     {
         new(pThisPointer) CSize<float>(w, h);
     }

@@ -135,13 +135,13 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
         else
         {
             // Get the size
-            m_size = m_spriteDeq.at(m_spriteApplyIndex).getVisualComponent()->getSize();
+            m_size = m_pSpriteVec.at(m_spriteApplyIndex)->getVisualComponent()->getSize();
 
             // Get the initial position
-            m_pos = m_spriteDeq.at(m_spriteApplyIndex).getObject()->getPos();
+            m_pos = m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->getPos();
 
             // Get the initial scale
-            m_scale = m_spriteDeq.at(m_spriteApplyIndex).getObject()->getScale();
+            m_scale = m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->getScale();
         }
     }
 }
@@ -167,7 +167,7 @@ void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf
 {
     if( m_upStencilMaskSprite )
     {
-        for( size_t i  = 0; i < m_spriteDeq.size(); ++i )
+        for( size_t i  = 0; i < m_pSpriteVec.size(); ++i )
         {
             if( static_cast<int>(i) == m_spriteApplyIndex )
             {
@@ -175,10 +175,10 @@ void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf
                 m_upStencilMaskSprite->recordCommandBuffer( index, cmdBuf, camera );
 
                 // Record the command buffer for the inside of the stencil mask
-                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, camera );
+                m_pSpriteVec[i]->recordCommandBuffer( index, cmdBuf, camera );
             }
             else
-                m_spriteDeq[i].recordCommandBuffer( index, cmdBuf, camera );
+                m_pSpriteVec[i]->recordCommandBuffer( index, cmdBuf, camera );
         }
     }
     else
@@ -229,8 +229,8 @@ void CUIProgressBar::setSizePos()
     }
     else
     {
-        m_spriteDeq.at(m_spriteApplyIndex).getObject()->setScale( scale );
-        m_spriteDeq.at(m_spriteApplyIndex).getObject()->setPos( pos );
+        m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->setScale( scale );
+        m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->setPos( pos );
     }
 }
 

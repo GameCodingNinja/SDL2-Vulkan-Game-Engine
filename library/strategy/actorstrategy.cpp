@@ -116,7 +116,7 @@ iNode * CActorStrategy::create(
     // Create a unique node id
     const int nodeId( m_idInc++ );
 
-    const auto & rNodeDataVec = getData( dataName ).getData();
+    auto & rNodeDataVec = getData( dataName ).getData();
 
     iNode * pHeadNode(nullptr);
 

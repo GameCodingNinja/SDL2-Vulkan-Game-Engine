@@ -25,7 +25,6 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
-#include <deque>
 #include <map>
 #include <memory>
 
@@ -172,7 +171,7 @@ private:
     std::string m_group;
 
     // Deque of menu static sprites
-    std::deque<CSprite> m_spriteDeq;
+    std::vector<CSprite *> m_pSpriteVec;
 
     // Vector list of static controls
     std::vector<iControl *> m_pStaticControlVec;

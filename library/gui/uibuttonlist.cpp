@@ -89,9 +89,9 @@ void CUIButtonList::loadControlFromNode( const XMLNode & node )
     CUISubControl::loadControlFromNode( node );
 
     // See if there is an image list
-    for( size_t i = 0; i < m_spriteDeq.size(); ++i )
+    for( size_t i = 0; i < m_pSpriteVec.size(); ++i )
     {
-	if( m_spriteDeq[i].getObjectData().getVisualData().getFrameCount() > 1 )
+	if( m_pSpriteVec[i]->getObjectData().getVisualData().getFrameCount() > 1 )
         {
             m_imageLstIndex = i;
             break;
@@ -242,7 +242,7 @@ void CUIButtonList::updateDisplay()
     createFontString( m_activeIndex );
 
     if( m_imageLstIndex > -1 )
-        m_spriteDeq.at(m_imageLstIndex).getVisualComponent()->setFrame( m_activeIndex );
+        m_pSpriteVec.at(m_imageLstIndex)->getVisualComponent()->setFrame( m_activeIndex );
 }
 
 

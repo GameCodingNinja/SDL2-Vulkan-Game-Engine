@@ -29,7 +29,7 @@ public:
     const CMatrix & getRotMatrix() const override;
     
     // Use a point to set a column
-    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z );
+    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ) override;
     
 protected:
     

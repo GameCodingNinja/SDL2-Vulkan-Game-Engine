@@ -23,7 +23,7 @@
 // Standard lib dependencies
 #include <memory>
 #include <map>
-#include <deque>
+#include <vector>
 
 // Forward declaration(s)
 class CSmartGuiControl;
@@ -222,7 +222,7 @@ private:
 protected:
     
     // sprite deque
-    std::deque<CSprite> m_spriteDeq;
+    std::vector<CSprite *> m_pSpriteVec;
 
 private:
 

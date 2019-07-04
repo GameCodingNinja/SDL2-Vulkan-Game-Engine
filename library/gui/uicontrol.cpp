@@ -14,6 +14,7 @@
 #include <utilities/genfunc.h>
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
+#include <utilities/deletefuncs.h>
 #include <gui/menudefs.h>
 #include <gui/ismartguibase.h>
 #include <gui/messagecracker.h>
@@ -50,6 +51,7 @@ CUIControl::CUIControl( const std::string & group ) :
 ************************************************************************/
 CUIControl::~CUIControl()
 {
+    NDelFunc::DeleteVectorPointers( m_pSpriteVec );
 }
 
 
@@ -186,26 +188,26 @@ void CUIControl::loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCo
     std::string objectName = node.getAttribute( "objectName" );
 
     // Internally allocate the sprite in the deque
-    m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData2D( m_group, objectName ) );
-    auto & rSprite = m_spriteDeq.back();
+    m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( m_group, objectName ) ) );
+    auto pSprite = m_pSpriteVec.back();
 
     // Load the sprite data
-    rSprite.load( node );
+    pSprite->load( node );
 
     // See if this sprite is used for rendering a font string
-    if( rSprite.getVisualComponent()->isFontSprite() )
+    if( pSprite->getVisualComponent()->isFontSprite() )
     {
         // Set the font string to be created later
         if( !m_stringVec.empty() && (fontSpriteCount < m_stringVec.size()) )
-            rSprite.getVisualComponent()->setFontString( m_stringVec.at(fontSpriteCount) );
+            pSprite->getVisualComponent()->setFontString( m_stringVec.at(fontSpriteCount) );
 
         ++fontSpriteCount;
     }
     else
     {
         // Find the largest size width and height of the different sprites for the controls size
-        const float width( rSprite.getVisualComponent()->getSize().w + std::fabs( rSprite.getObject()->getPos().x ) );
-        const float height( rSprite.getVisualComponent()->getSize().h + std::fabs( rSprite.getObject()->getPos().y ) );
+        const float width( pSprite->getVisualComponent()->getSize().w + std::fabs( pSprite->getObject()->getPos().x ) );
+        const float height( pSprite->getVisualComponent()->getSize().h + std::fabs( pSprite->getObject()->getPos().y ) );
 
         if( width > m_size.w )
             m_size.w = width;
@@ -223,8 +225,8 @@ void CUIControl::update()
 {
     m_scriptComponent.update();
 
-    for( auto & iter : m_spriteDeq )
-        iter.update();
+    for( auto iter : m_pSpriteVec )
+        iter->update();
 }
 
 
@@ -235,8 +237,8 @@ void CUIControl::transform( const CObject2D & object )
 {
     CObject2D::transform( object );
 
-    for( auto & iter : m_spriteDeq )
-        iter.getObject()->transform( *this );
+    for( auto iter : m_pSpriteVec )
+        iter->getObject()->transform( *this );
 
     transformCollision();
 }
@@ -296,8 +298,8 @@ void CUIControl::transformCollision()
 ****************************************************************************/
 void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
-    for( auto & iter : m_spriteDeq )
-        iter.recordCommandBuffer( index, cmdBuf, camera );
+    for( auto iter : m_pSpriteVec )
+        iter->recordCommandBuffer( index, cmdBuf, camera );
 }
 
 
@@ -592,8 +594,8 @@ void CUIControl::init()
 {
     // Create any font strings
     // This allows for delayed VBO create so that the fonts can be allocated during the load screen
-    for( auto & iter : m_spriteDeq )
-        iter.init();
+    for( auto iter : m_pSpriteVec )
+        iter->init();
     
     // Prepare script functions associated with this event
     prepareControlScriptFunction( NUIControl::ECS_INIT );
@@ -648,8 +650,8 @@ void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlS
 ************************************************************************/
 void CUIControl::callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate )
 {
-    for( auto & iter : m_spriteDeq )
-        iter.prepare( scriptFuncMapKey, forceUpdate );
+    for( auto iter : m_pSpriteVec )
+        iter->prepare( scriptFuncMapKey, forceUpdate );
 }
 
 
@@ -682,8 +684,8 @@ void CUIControl::reset( bool complete )
 ************************************************************************/
 void CUIControl::recycleContext()
 {
-    for( auto & iter : m_spriteDeq )
-        iter.getScriptComponent().resetAndRecycle();
+    for( auto iter : m_pSpriteVec )
+        iter->getScriptComponent().resetAndRecycle();
 }
 
 
@@ -843,13 +845,13 @@ void CUIControl::createFontString( const std::string & fontString, int spriteInd
 {
     int fontSpriteCounter(0);
 
-    for( auto & iter : m_spriteDeq )
+    for( auto iter : m_pSpriteVec )
     {
-        if( iter.getVisualComponent()->isFontSprite() )
+        if( iter->getVisualComponent()->isFontSprite() )
         {
             if( fontSpriteCounter == spriteIndex )
             {
-                iter.getVisualComponent()->createFontString( fontString );
+                iter->getVisualComponent()->createFontString( fontString );
                 break;
             }
 
@@ -872,13 +874,13 @@ void CUIControl::setFontString( const std::string & fontString, int spriteIndex 
 {
     int fontSpriteCounter(0);
 
-    for( auto & iter : m_spriteDeq )
+    for( auto iter : m_pSpriteVec )
     {
-        if( iter.getVisualComponent()->isFontSprite() )
+        if( iter->getVisualComponent()->isFontSprite() )
         {
             if( fontSpriteCounter == spriteIndex )
             {
-                iter.getVisualComponent()->setFontString( fontString );
+                iter->getVisualComponent()->setFontString( fontString );
                 break;
             }
 
@@ -1063,8 +1065,8 @@ void CUIControl::connect_executionAction( const ExecutionActionSignal::slot_type
 ************************************************************************/
 void CUIControl::setAlpha( float alpha )
 {
-    for( auto & iter : m_spriteDeq )
-        iter.getVisualComponent()->setAlpha( alpha );
+    for( auto iter : m_pSpriteVec )
+        iter->getVisualComponent()->setAlpha( alpha );
 
     m_alpha = alpha;
 }

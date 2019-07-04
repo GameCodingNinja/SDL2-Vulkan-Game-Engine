@@ -29,10 +29,10 @@ public:
     virtual ~CVisualComponentFont();
     
     // Set the font data
-    void setFontData( const CFontData & fontData );
+    void setFontData( const CFontData & fontData ) override;
     
     // Load the font properties from XML node
-    void loadFontPropFromNode( const XMLNode & node );
+    void loadFontPropFromNode( const XMLNode & node ) override;
 
     // Set the font properties
     void setFontProperties( const CFontProperties & fontProp ) override;

@@ -58,6 +58,7 @@ CMenu::~CMenu()
 
     NDelFunc::DeleteVectorPointers( m_pControlNodeVec );
     NDelFunc::DeleteVectorPointers( m_pControlVec );
+    NDelFunc::DeleteVectorPointers( m_pSpriteVec );
 }
 
 
@@ -186,13 +187,13 @@ void CMenu::loadStaticSpriteFromNode( const XMLNode & node )
     std::string objectName = node.getAttribute( "objectName" );
 
     // Allocate the static sprite in the container
-    m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData2D( m_group, objectName ) );
+    m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( m_group, objectName ) ) );
 
     // Load the transform data
-    m_spriteDeq.back().getObject()->loadTransFromNode( node );
+    m_pSpriteVec.back()->getObject()->loadTransFromNode( node );
 
     // Init the script functions
-    m_spriteDeq.back().initScriptFunctions( node );
+    m_pSpriteVec.back()->initScriptFunctions( node );
 }
 
 
@@ -390,8 +391,8 @@ void CMenu::update()
 
     if( isVisible() )
     {
-        for( auto & iter : m_spriteDeq )
-            iter.update();
+        for( auto iter : m_pSpriteVec )
+            iter->update();
 
         for( auto iter : m_pStaticControlVec )
             iter->update();
@@ -414,8 +415,8 @@ void CMenu::transform()
     {
         CObject2D::transform();
 
-        for( auto & iter : m_spriteDeq )
-            iter.getObject()->transform( *this );
+        for( auto iter : m_pSpriteVec )
+            iter->getObject()->transform( *this );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );
@@ -434,8 +435,8 @@ void CMenu::transform( const CObject2D & object )
     {
         CObject2D::transform( object );
 
-        for( auto & iter : m_spriteDeq )
-            iter.getObject()->transform( *this );
+        for( auto iter : m_pSpriteVec )
+            iter->getObject()->transform( *this );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );
@@ -457,8 +458,8 @@ void CMenu::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const C
 {
     if( isVisible() )
     {
-        for( auto & iter : m_spriteDeq )
-            iter.recordCommandBuffer( index, cmdBuf, camera );
+        for( auto iter : m_pSpriteVec )
+            iter->recordCommandBuffer( index, cmdBuf, camera );
 
         for( auto iter : m_pStaticControlVec )
             iter->recordCommandBuffer( index, cmdBuf, camera );
@@ -915,8 +916,8 @@ void CMenu::setAlpha( float alpha )
 {
     if( isVisible() )
     {
-        for( auto & iter : m_spriteDeq )
-            iter.getVisualComponent()->setAlpha( alpha );
+        for( auto iter : m_pSpriteVec )
+            iter->getVisualComponent()->setAlpha( alpha );
 
         for( auto iter : m_pStaticControlVec )
             iter->setAlpha( alpha );
