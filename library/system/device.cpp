@@ -101,7 +101,9 @@ void CDevice::create( const std::string & pipelineCfg )
     // If we want validation, add it and debug reporting extension
     if( CSettings::Instance().isValidationLayers() )
     {
+        #if !defined(__ANDROID__)
         validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
+        #endif
         instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
 
         // Print out extension list for validation layers
@@ -253,15 +255,17 @@ void CDevice::updateCommandBuffer( VkCommandBuffer cmdBuf )
 ****************************************************************************/
 void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 {
+    VkResult vkResult(VK_SUCCESS);
+
     // Start command buffer recording
     VkCommandBufferBeginInfo beginInfo = {};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
 
-    if( (m_lastResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
+    if( (vkResult = vkBeginCommandBuffer( m_primaryCmdBufVec[cmdBufIndex], &beginInfo )) )
         throw NExcept::CCriticalException(
             "Vulkan Error!",
-            boost::str( boost::format("Could not begin recording command buffer! %s") % getError() ) );
+            boost::str( boost::format("Could not begin recording command buffer! %s") % getError(vkResult) ) );
 
     // Accessed by attachment index. Current attachments are color and depth
     std::vector<VkClearValue> clearValues(2);
@@ -292,10 +296,10 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 
     vkCmdEndRenderPass( m_primaryCmdBufVec[cmdBufIndex] );
 
-    if( (m_lastResult = vkEndCommandBuffer( m_primaryCmdBufVec[cmdBufIndex] )) )
+    if( (vkResult = vkEndCommandBuffer( m_primaryCmdBufVec[cmdBufIndex] )) )
         throw NExcept::CCriticalException(
             "Vulkan Error!",
-            boost::str( boost::format("Could not record command buffer! %s") % getError() ) );
+            boost::str( boost::format("Could not record command buffer! %s") % getError(vkResult) ) );
 }
 
 
@@ -304,22 +308,24 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 ****************************************************************************/
 void CDevice::render()
 {
+    VkResult vkResult(VK_SUCCESS);
+
     vkWaitForFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame], VK_TRUE, UINT64_MAX );
 
     uint32_t imageIndex(0);
-    m_lastResult = vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
-    if( (m_lastResult == VK_ERROR_OUT_OF_DATE_KHR) || (m_lastResult == VK_SUBOPTIMAL_KHR) )
+    vkResult = vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
+    if( (vkResult == VK_ERROR_OUT_OF_DATE_KHR) || (vkResult == VK_SUBOPTIMAL_KHR) )
     {
         recreateSwapChain();
         return;
     }
-    else if( m_lastResult == VK_ERROR_SURFACE_LOST_KHR )
+    else if( vkResult == VK_ERROR_SURFACE_LOST_KHR )
         createSurface();
 
-    else if( m_lastResult != VK_SUCCESS )
+    else if( vkResult != VK_SUCCESS )
         throw NExcept::CCriticalException(
             "Vulkan Error!",
-            boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
+            boost::str( boost::format("Could not present swap chain image! %s") % getError(vkResult) ) );
 
     // Record the command buffers
     recordCommandBuffers( imageIndex );
@@ -341,10 +347,12 @@ void CDevice::render()
 
     vkResetFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame] );
 
-    if( (m_lastResult = vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, m_frameFenceVec[m_currentFrame] )) )
+    if( (vkResult = vkQueueSubmit( m_graphicsQueue, 1, &submitInfo, m_frameFenceVec[m_currentFrame] )) )
+        // NGenFunc::PostDebugMsg(boost::str(
+        //         boost::format("Could not submit draw command buffer! %s") % getError(vkResult)));
         throw NExcept::CCriticalException(
             "Vulkan Error!",
-            boost::str( boost::format("Could not submit draw command buffer! %s - %d") % getError() % m_lastResult ) );
+            boost::str( boost::format("Could not submit draw command buffer! %s") % getError(vkResult) ) );
 
     VkPresentInfoKHR presentInfo = {};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -357,17 +365,18 @@ void CDevice::render()
     presentInfo.pImageIndices = &imageIndex;
 
     // Present the swap chain
-    m_lastResult = vkQueuePresentKHR( m_presentQueue, &presentInfo );
-    if( (m_lastResult == VK_ERROR_OUT_OF_DATE_KHR) || (m_lastResult == VK_SUBOPTIMAL_KHR) )
+    vkResult = vkQueuePresentKHR(m_presentQueue, &presentInfo);
+    if ((vkResult == VK_ERROR_OUT_OF_DATE_KHR) || (vkResult == VK_SUBOPTIMAL_KHR))
         recreateSwapChain();
 
-    else if( m_lastResult == VK_ERROR_SURFACE_LOST_KHR )
+    else if (vkResult == VK_ERROR_SURFACE_LOST_KHR)
         createSurface();
 
-    else if( m_lastResult != VK_SUCCESS )
+    else if (vkResult != VK_SUCCESS)
         throw NExcept::CCriticalException(
-            "Vulkan Error!",
-            boost::str( boost::format("Could not present swap chain image! %s") % getError() ) );
+                "Vulkan Error!",
+                boost::str(boost::format("Could not present swap chain image! %s") %
+                           getError(vkResult)));
 
     m_currentFrame = (m_currentFrame + 1) % m_framebufferVec.size();
     
@@ -446,6 +455,8 @@ CTexture & CDevice::createTexture( const std::string & group, const std::string 
     // If it's not found, load the texture and add it to the list
     if( iter == mapIter->second.end() )
     {
+        //NGenFunc::PostDebugMsg( boost::str( boost::format("Create texture (%s - %s)") % group % filePath ));
+
         CTexture texture;
         texture.textFilePath = filePath;
 
@@ -1400,4 +1411,14 @@ void CDevice::tagCheck( SDL_RWops * file, const std::string & filePath )
             boost::str( boost::format( "Tag check mismatch (%s).\n\n%s\nLine: %s" )
                 % filePath % __FUNCTION__ % __LINE__ ) );
 
+}
+
+
+/************************************************************************
+ *    DESC: Is the transfer queue unique to allow for loading and
+ *          rendering at the same time?
+ ************************************************************************/
+bool CDevice::isTransferQueueUnique()
+{
+    return (m_transferQueue != m_graphicsQueue);
 }

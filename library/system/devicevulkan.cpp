@@ -62,7 +62,6 @@ CDeviceVulkan::CDeviceVulkan() :
     m_primaryCmdPool(VK_NULL_HANDLE),
     m_transferCmdPool(VK_NULL_HANDLE),
     m_currentFrame(0),
-    m_lastResult(VK_SUCCESS),
     m_depthImage(VK_NULL_HANDLE),
     m_depthImageMemory(VK_NULL_HANDLE),
     m_depthImageView(VK_NULL_HANDLE),
@@ -283,6 +282,8 @@ void CDeviceVulkan::createVulkanInstance(
     const std::vector<const char*> & validationNameVec,
     const std::vector<const char*> & instanceExtensionNameVec )
 {
+    VkResult vkResult(VK_SUCCESS);
+
     VkApplicationInfo appInfo = {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     appInfo.pApplicationName = CSettings::Instance().getGameName().c_str();
@@ -300,8 +301,8 @@ void CDeviceVulkan::createVulkanInstance(
     instCreateInfo.ppEnabledExtensionNames = instanceExtensionNameVec.data();
 
     // Try to create the instance
-    if( (m_lastResult = vkCreateInstance( &instCreateInfo, nullptr, &m_vulkanInstance )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create instance! %s") % getError() ) );
+    if( (vkResult = vkCreateInstance( &instCreateInfo, nullptr, &m_vulkanInstance )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create instance! %s") % getError(vkResult) ) );
 
     // Get a function pointer to the vulkan vkDestroySwapchainKHR
     if( !(vkDestroySwapchainKHR = (PFN_vkDestroySwapchainKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkDestroySwapchainKHR" )) )
@@ -332,26 +333,29 @@ void CDeviceVulkan::createVulkanInstance(
         dbgCreateInfo.pfnCallback = ValidationLayerCallback;
         dbgCreateInfo.pUserData = nullptr;
 
-        if( (m_lastResult = CreateDebugReportCallback( m_vulkanInstance, &dbgCreateInfo, nullptr, &vkDebugReportCallbackEXT )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create debug report callback! %s") % getError() ) );
+        if( (vkResult = CreateDebugReportCallback( m_vulkanInstance, &dbgCreateInfo, nullptr, &vkDebugReportCallbackEXT )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create debug report callback! %s") % getError(vkResult) ) );
     }
 }
 
 
 /***************************************************************************
 *   DESC:  Select a physical device (GPU)
+*          NOTE: This involves picking the GPU with the graphics bit
 ****************************************************************************/
 void CDeviceVulkan::selectPhysicalDevice()
 {
+    VkResult vkResult(VK_SUCCESS);
+
     // Select a graphics device
     uint32_t gpuCount(0);
-    if( (m_lastResult = vkEnumeratePhysicalDevices(m_vulkanInstance, &gpuCount, nullptr )) || (gpuCount == 0) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate physical device count! %s") % getError() ) );
+    if( (vkResult = vkEnumeratePhysicalDevices(m_vulkanInstance, &gpuCount, nullptr )) || (gpuCount == 0) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate physical device count! %s") % getError(vkResult) ) );
 
     std::vector<VkPhysicalDevice> physicalDeviceHandleVec(gpuCount);
 
-    if( (m_lastResult = vkEnumeratePhysicalDevices(m_vulkanInstance, &gpuCount, physicalDeviceHandleVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate physical device info! %s") % getError() ) );
+    if( (vkResult = vkEnumeratePhysicalDevices(m_vulkanInstance, &gpuCount, physicalDeviceHandleVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate physical device info! %s") % getError(vkResult) ) );
 
     // Select the discrete GPU if one is available that supports the graphics bit
     m_graphicsQueueFamilyIndex = UINT32_MAX;
@@ -389,18 +393,24 @@ void CDeviceVulkan::selectPhysicalDevice()
         throw NExcept::CCriticalException( "Vulkan Error!", "No swap chain support!" );
 
     // Find the remaining queue families for present and transfer
+    // There might not be a specific transfer queue bit so just use the graphics queue index instead
     m_presentQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice );
-    m_transferQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice, VK_QUEUE_TRANSFER_BIT );
+    if( (m_transferQueueFamilyIndex = findQueueFamilyIndex( m_physicalDevice, VK_QUEUE_TRANSFER_BIT ) ) == UINT32_MAX )
+        m_transferQueueFamilyIndex = m_graphicsQueueFamilyIndex;
 }
 
 
 /***************************************************************************
 *   DESC:  Create the logical device
+*          NOTE: Creating the logical device involves determining the queues
+*                it will use based on queue families.
 ****************************************************************************/
 void CDeviceVulkan::createLogicalDevice(
     const std::vector<const char*> & validationNameVec,
     const std::vector<const char*> & physicalDeviceExtensionNameVec )
 {
+    VkResult vkResult(VK_SUCCESS);
+
     // Need a structure to hold members for organizing
     struct queueFamilyIndexStruct
     {
@@ -416,7 +426,25 @@ void CDeviceVulkan::createLogicalDevice(
         std::string m_typeStr;
     };
 
-    // Setup the initial structure
+    // NOTE: A queue family is one or more queues that based on their queueFlags that defines what
+    //       type of queue they are ie. graphics, present & transfer. A graphics queue can also
+    //       be used and reused as a present or a transfer queue.
+
+    // Pack the vector with all the queues we'll need
+    // NOTE: !!DO NOT CHANGE THE BELOW ORDER OF THE queueFamilyIndexVec. Read further to understand why!!
+    //       The transfer queue is second in the list because that guarantees a unique queue if they are
+    //       all within the same family that has atleast 2 queues available. In this case, the present
+    //       queue will be the same as the graphics queue and that's ok because graphics and present can
+    //       share the same queue without any problems. Transfer needs it's own queue so that loading
+    //       and rendering can happen at the same time and this guarantees it will get it's own queue
+    //       if one is available
+    std::vector<queueFamilyIndexStruct> queueFamilyIndexVec;
+    queueFamilyIndexVec.emplace_back(m_graphicsQueueFamilyIndex, 0, &m_graphicsQueue, "graphics");
+    queueFamilyIndexVec.emplace_back(m_transferQueueFamilyIndex, 0, &m_transferQueue, "transfer");
+    queueFamilyIndexVec.emplace_back(m_presentQueueFamilyIndex, 0, &m_presentQueue, "present");
+
+    // This vector is for organizing unique families into separate vector indexes
+    // to inform the logical device as to what families and indexes are to be used
     float queuePriority = 1.0f;
     VkDeviceQueueCreateInfo deviceQueueInfo = {};
     deviceQueueInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -424,38 +452,46 @@ void CDeviceVulkan::createLogicalDevice(
     deviceQueueInfo.queueCount = 1;
     deviceQueueInfo.pQueuePriorities = &queuePriority;
 
-    // This vector is for organizing unique families into separate vector indexes
-    std::vector<VkDeviceQueueCreateInfo> devQueueVec = {deviceQueueInfo};
+    // This vector is for organizing unique queue families into separate vector indexes 
+    // for incrememting their queue counts
+    std::vector<VkDeviceQueueCreateInfo> devQueueCreateInfoVec = {deviceQueueInfo};
 
-    // Pack the vector with all the queues we'll need
-    std::vector<queueFamilyIndexStruct> queueFamilyIndexVec;
-    queueFamilyIndexVec.emplace_back(m_graphicsQueueFamilyIndex, 0, &m_graphicsQueue, "graphics");
-    queueFamilyIndexVec.emplace_back(m_presentQueueFamilyIndex, 0, &m_presentQueue, "present");
-    queueFamilyIndexVec.emplace_back(m_transferQueueFamilyIndex, 0, &m_transferQueue, "transfer");
+    // Get a copy of the queue family information
+    uint32_t queueFamilyCount = 0;
+    std::vector<VkQueueFamilyProperties> queueFamiliesVec;
+    vkGetPhysicalDeviceQueueFamilyProperties( m_physicalDevice, &queueFamilyCount, nullptr );
+    queueFamiliesVec.resize(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties( m_physicalDevice, &queueFamilyCount, queueFamiliesVec.data() );
 
-    // Organize two vectors. One to create x number of queues per family and the
-    // other to get the handle based on queue family index
+    // This fills a vector (queueFamiliesVec) for counting how many queues are needed for 
+    // each family when the logical device is created.
     for( size_t i = 1; i < queueFamilyIndexVec.size(); ++i )
     {
         bool found = false;
 
-        for( auto & iter : devQueueVec )
+        for( auto & iter : devQueueCreateInfoVec )
         {
             // If this is the same family, get the family index and inc the queue count
             if( iter.queueFamilyIndex == queueFamilyIndexVec[i].m_queueFamilyIndex )
             {
                 queueFamilyIndexVec[i].m_queueIndex = iter.queueCount;
-                iter.queueCount += 1;
-                found = true;
+
+                // Increment the queue index if the family has enough queues available
+                if( iter.queueCount < queueFamiliesVec.at(iter.queueFamilyIndex).queueCount )
+                {
+                    iter.queueCount++;
+                    found = true;
+                }
+
                 break;
             }
         }
 
-        // If no prior family has been found, start a new one
+        // If the family queue index has not been found, add a new entry for the new index
         if( !found )
         {
-            devQueueVec.emplace_back( deviceQueueInfo );
-            devQueueVec.back().queueFamilyIndex = queueFamilyIndexVec[i].m_queueFamilyIndex;
+            devQueueCreateInfoVec.emplace_back( deviceQueueInfo );
+            devQueueCreateInfoVec.back().queueFamilyIndex = queueFamilyIndexVec[i].m_queueFamilyIndex;
         }
     }
 
@@ -465,8 +501,8 @@ void CDeviceVulkan::createLogicalDevice(
 
     VkDeviceCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-    createInfo.queueCreateInfoCount = devQueueVec.size();
-    createInfo.pQueueCreateInfos = devQueueVec.data();
+    createInfo.queueCreateInfoCount = devQueueCreateInfoVec.size();
+    createInfo.pQueueCreateInfos = devQueueCreateInfoVec.data();
     createInfo.enabledLayerCount = validationNameVec.size();
     createInfo.ppEnabledLayerNames = validationNameVec.data();
     createInfo.enabledExtensionCount = physicalDeviceExtensionNameVec.size();
@@ -480,14 +516,13 @@ void CDeviceVulkan::createLogicalDevice(
     }
 
     // Create the logical device
-    if( (m_lastResult = vkCreateDevice( m_physicalDevice, &createInfo, nullptr, &m_logicalDevice )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create logical device! %s") % getError() ) );
+    if( (vkResult = vkCreateDevice( m_physicalDevice, &createInfo, nullptr, &m_logicalDevice )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create logical device! %s") % getError(vkResult) ) );
 
     if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCmdPushDescriptorSetKHR!" );
 
     // Get a handle to the queue family for graphics, present & transfer - Could be different but most likely in the same queue family
-
     for( auto & iter : queueFamilyIndexVec )
     {
         vkGetDeviceQueue( m_logicalDevice, iter.m_queueFamilyIndex, iter.m_queueIndex, iter.m_pQueue );
@@ -503,6 +538,7 @@ void CDeviceVulkan::createLogicalDevice(
 ****************************************************************************/
 VkShaderModule CDeviceVulkan::createShader( const std::string & filePath )
 {
+    VkResult vkResult(VK_SUCCESS);
     std::vector<char> shaderVec = NGenFunc::FileToVec( filePath );
 
     VkShaderModuleCreateInfo shaderInfo = {};
@@ -511,8 +547,8 @@ VkShaderModule CDeviceVulkan::createShader( const std::string & filePath )
     shaderInfo.pCode = reinterpret_cast<const uint32_t*>(shaderVec.data());
 
     VkShaderModule shaderModule;
-    if( (m_lastResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &shaderModule )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create shader! %s-%s") % filePath % getError() ) );
+    if( (vkResult = vkCreateShaderModule( m_logicalDevice, &shaderInfo, nullptr, &shaderModule )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create shader! %s-%s") % filePath % getError(vkResult) ) );
 
     return shaderModule;
 }
@@ -523,6 +559,7 @@ VkShaderModule CDeviceVulkan::createShader( const std::string & filePath )
 ****************************************************************************/
 void CDeviceVulkan::setupSwapChain()
 {
+    VkResult vkResult(VK_SUCCESS);
     PFN_vkGetPhysicalDeviceSurfaceFormatsKHR GetPhysicalDeviceSurfaceFormats = nullptr;
     PFN_vkGetPhysicalDeviceSurfacePresentModesKHR GetPhysicalDeviceSurfacePresentModes = nullptr;
     PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR GetPhysicalDeviceSurfaceCapabilities = nullptr;
@@ -538,19 +575,19 @@ void CDeviceVulkan::setupSwapChain()
 
     // Get the device surface capabilities
     VkSurfaceCapabilitiesKHR surfCapabilities = {};
-    if( (m_lastResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &surfCapabilities )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface capabilities! %s") % getError() ) );
+    if( (vkResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &surfCapabilities )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface capabilities! %s") % getError(vkResult) ) );
 
     // Get the best surface format
     VkSurfaceFormatKHR surfaceFormat;
     uint32_t surfaceFormatCount;
-    if( (m_lastResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, nullptr)) || (surfaceFormatCount == 0) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface format count! %s") % getError() ) );
+    if( (vkResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, nullptr)) || (surfaceFormatCount == 0) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface format count! %s") % getError(vkResult) ) );
 
     std::vector<VkSurfaceFormatKHR> surfaceFormatVec(surfaceFormatCount);
 
-    if( (m_lastResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, surfaceFormatVec.data())) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface formats! %s") % getError() ) );
+    if( (vkResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, surfaceFormatVec.data())) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface formats! %s") % getError(vkResult) ) );
 
     // Init to the first format in the event the below two fail
     surfaceFormat = surfaceFormatVec.front();
@@ -575,13 +612,13 @@ void CDeviceVulkan::setupSwapChain()
     // Get the best presentation mode
     VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_FIFO_KHR;
     uint32_t surfacePresModeCount;
-    if( (m_lastResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError() ) );
+    if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError(vkResult) ) );
 
     std::vector<VkPresentModeKHR> surfacePresModeVec(surfacePresModeCount);
 
-    if( (m_lastResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation modes! %s") % getError() ) );
+    if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation modes! %s") % getError(vkResult) ) );
 
     for( const auto & presentMode : surfacePresModeVec )
     {
@@ -606,11 +643,20 @@ void CDeviceVulkan::setupSwapChain()
     m_swapchainInfo.imageArrayLayers = 1;
     m_swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     m_swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    m_swapchainInfo.queueFamilyIndexCount = 0;
     m_swapchainInfo.preTransform = preTransform;
     m_swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
     m_swapchainInfo.presentMode = surfacePresMode;
     m_swapchainInfo.clipped = true;
+
+    // In the event the graphics and present queue family doesn't match
+    if( m_graphicsQueueFamilyIndex != m_presentQueueFamilyIndex )
+    {
+        m_queueFamilySwapChainIndiceVec = {m_graphicsQueueFamilyIndex, m_presentQueueFamilyIndex};
+
+        m_swapchainInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+        m_swapchainInfo.queueFamilyIndexCount = m_queueFamilySwapChainIndiceVec.size();
+        m_swapchainInfo.pQueueFamilyIndices = m_queueFamilySwapChainIndiceVec.data();
+    }
 
     // Determine the number of VkImage's to use in the swap chain.
     uint32_t minImageCount = surfCapabilities.minImageCount;
@@ -657,15 +703,6 @@ void CDeviceVulkan::setupSwapChain()
     }
 
     m_swapchainInfo.imageExtent = swapchainExtent;
-
-    // In the event the graphics and present queue family doesn't match
-    std::vector<uint32_t> queueFamilyIndiceVec = {m_graphicsQueueFamilyIndex, m_presentQueueFamilyIndex};
-    if( m_graphicsQueueFamilyIndex != m_presentQueueFamilyIndex )
-    {
-        m_swapchainInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
-        m_swapchainInfo.queueFamilyIndexCount = queueFamilyIndiceVec.size();
-        m_swapchainInfo.pQueueFamilyIndices = queueFamilyIndiceVec.data();
-    }
 }
 
 
@@ -674,23 +711,24 @@ void CDeviceVulkan::setupSwapChain()
 ****************************************************************************/
 void CDeviceVulkan::createSwapChain()
 {
+    VkResult vkResult(VK_SUCCESS);
     PFN_vkCreateSwapchainKHR CreateSwapchain = nullptr;
     if( !(CreateSwapchain = (PFN_vkCreateSwapchainKHR)vkGetInstanceProcAddr( m_vulkanInstance, "vkCreateSwapchainKHR")) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCreateSwapchainKHR!" );
 
     // Create the swap chain
-    if( (m_lastResult = CreateSwapchain( m_logicalDevice, &m_swapchainInfo, nullptr, &m_swapchain)) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create swap chain! %s") % getError() ) );
+    if( (vkResult = CreateSwapchain( m_logicalDevice, &m_swapchainInfo, nullptr, &m_swapchain)) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create swap chain! %s") % getError(vkResult) ) );
 
     // get the swap chain images. NOTE: Swap chain images are destroyed when the swap chain is destroyed.
     uint32_t swapChainImageCount;
-    if( (m_lastResult = vkGetSwapchainImagesKHR( m_logicalDevice, m_swapchain, &swapChainImageCount, nullptr)) || (swapChainImageCount == 0) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate swap chain image count! %s") % getError() ) );
+    if( (vkResult = vkGetSwapchainImagesKHR( m_logicalDevice, m_swapchain, &swapChainImageCount, nullptr)) || (swapChainImageCount == 0) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate swap chain image count! %s") % getError(vkResult) ) );
 
     std::vector<VkImage> swapChainImage(swapChainImageCount);
 
-    if( (m_lastResult = vkGetSwapchainImagesKHR( m_logicalDevice, m_swapchain, &swapChainImageCount, swapChainImage.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not get swap chain images! %s") % getError() ) );
+    if( (vkResult = vkGetSwapchainImagesKHR( m_logicalDevice, m_swapchain, &swapChainImageCount, swapChainImage.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not get swap chain images! %s") % getError(vkResult) ) );
 
     // Print out info if the swap images don't match
     if( m_swapchainInfo.minImageCount != swapChainImageCount )
@@ -708,6 +746,8 @@ void CDeviceVulkan::createSwapChain()
 ****************************************************************************/
 void CDeviceVulkan::createRenderPass()
 {
+    VkResult vkResult(VK_SUCCESS);
+
     // Create the render pass
     VkAttachmentDescription colorAttachment = {};
     colorAttachment.format = m_swapchainInfo.imageFormat;
@@ -768,8 +808,8 @@ void CDeviceVulkan::createRenderPass()
     renderPassInfo.dependencyCount = 1;
     renderPassInfo.pDependencies = &dependency;
 
-    if( (m_lastResult = vkCreateRenderPass( m_logicalDevice, &renderPassInfo, nullptr, &m_renderPass )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError() ) );
+    if( (vkResult = vkCreateRenderPass( m_logicalDevice, &renderPassInfo, nullptr, &m_renderPass )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError(vkResult) ) );
 }
 
 
@@ -778,6 +818,7 @@ void CDeviceVulkan::createRenderPass()
 ****************************************************************************/
 VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData & descData )
 {
+    VkResult vkResult(VK_SUCCESS);
     int bindingOffset = 0;
     std::vector<VkDescriptorSetLayoutBinding> bindings;
 
@@ -819,8 +860,8 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
     layoutInfo.pBindings = bindings.data();
 
     VkDescriptorSetLayout descriptorSetLayout;
-    if( (m_lastResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &descriptorSetLayout)) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError() ) );
+    if( (vkResult = vkCreateDescriptorSetLayout( m_logicalDevice, &layoutInfo, nullptr, &descriptorSetLayout)) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create descriptor set layout! %s") % getError(vkResult) ) );
 
     return descriptorSetLayout;
 }
@@ -831,14 +872,15 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
 ****************************************************************************/
 VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout descriptorSetLayout )
 {
+    VkResult vkResult(VK_SUCCESS);
     VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.setLayoutCount = 1;
     pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
 
     VkPipelineLayout pipelineLayout;
-    if( (m_lastResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineLayout )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError() ) );
+    if( (vkResult = vkCreatePipelineLayout( m_logicalDevice, &pipelineLayoutInfo, nullptr, &pipelineLayout )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create pipeline layout! %s") % getError(vkResult) ) );
 
     return pipelineLayout;
 }
@@ -849,6 +891,8 @@ VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout desc
 ****************************************************************************/
 void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
 {
+    VkResult vkResult(VK_SUCCESS);
+
     // Make sure our states are setup correctly
     if( pipelineData.m_enableDepthTest && !CSettings::Instance().activateDepthBuffer() )
         throw NExcept::CCriticalException(
@@ -991,8 +1035,8 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     if( CSettings::Instance().activateDepthBuffer() )
         pipelineInfo.pDepthStencilState = &depthStencil;
 
-    if( (m_lastResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineData.m_pipeline )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError() ) );
+    if( (vkResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineData.m_pipeline )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError(vkResult) ) );
 }
 
 
@@ -1046,6 +1090,7 @@ void CDeviceVulkan::createDepthResources()
 ****************************************************************************/
 void CDeviceVulkan::createFrameBuffer()
 {
+    VkResult vkResult(VK_SUCCESS);
     m_framebufferVec.resize( m_swapChainImageViewVec.size() );
 
     for( size_t i = 0; i < m_swapChainImageViewVec.size(); ++i )
@@ -1065,8 +1110,8 @@ void CDeviceVulkan::createFrameBuffer()
         framebufferInfo.height = m_swapchainInfo.imageExtent.height;
         framebufferInfo.layers = 1;
 
-        if( (m_lastResult = vkCreateFramebuffer( m_logicalDevice, &framebufferInfo, nullptr, &m_framebufferVec[i] )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create frame buffer! %s") % getError() ) );
+        if( (vkResult = vkCreateFramebuffer( m_logicalDevice, &framebufferInfo, nullptr, &m_framebufferVec[i] )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create frame buffer! %s") % getError(vkResult) ) );
     }
 }
 
@@ -1076,6 +1121,7 @@ void CDeviceVulkan::createFrameBuffer()
 ****************************************************************************/
 void CDeviceVulkan::createSyncObjects()
 {
+    VkResult vkResult(VK_SUCCESS);
     m_imageAvailableSemaphoreVec.resize( m_framebufferVec.size() );
     m_renderFinishedSemaphoreVec.resize( m_framebufferVec.size() );
     m_frameFenceVec.resize( m_framebufferVec.size() );
@@ -1089,10 +1135,10 @@ void CDeviceVulkan::createSyncObjects()
 
     for( size_t i = 0; i < m_framebufferVec.size(); ++i )
     {
-        if( (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_imageAvailableSemaphoreVec[i] )) ||
-            (m_lastResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_renderFinishedSemaphoreVec[i] )) ||
-            (m_lastResult = vkCreateFence( m_logicalDevice, &fenceInfo, nullptr, &m_frameFenceVec[i] )) )
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create synchronization objects! %s") % getError() ) );
+        if( (vkResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_imageAvailableSemaphoreVec[i] )) ||
+            (vkResult = vkCreateSemaphore( m_logicalDevice, &semaphoreInfo, nullptr, &m_renderFinishedSemaphoreVec[i] )) ||
+            (vkResult = vkCreateFence( m_logicalDevice, &fenceInfo, nullptr, &m_frameFenceVec[i] )) )
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create synchronization objects! %s") % getError(vkResult) ) );
     }
 }
 
@@ -1102,6 +1148,7 @@ void CDeviceVulkan::createSyncObjects()
 ****************************************************************************/
 void CDeviceVulkan::createPrimaryCommandBuffers()
 {
+    VkResult vkResult(VK_SUCCESS);
     m_primaryCmdBufVec.resize( m_framebufferVec.size() );
 
     VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
@@ -1110,8 +1157,8 @@ void CDeviceVulkan::createPrimaryCommandBuffers()
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     commandBufferAllocateInfo.commandBufferCount = (uint32_t) m_primaryCmdBufVec.size();
 
-    if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, m_primaryCmdBufVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
+    if( (vkResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, m_primaryCmdBufVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError(vkResult) ) );
 }
 
 
@@ -1120,6 +1167,7 @@ void CDeviceVulkan::createPrimaryCommandBuffers()
 ****************************************************************************/
 std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCommandPool cmdPool )
 {
+    VkResult vkResult(VK_SUCCESS);
     std::vector<VkCommandBuffer>cmdBufVec( m_framebufferVec.size() );
 
     VkCommandBufferAllocateInfo commandBufferAllocateInfo = {};
@@ -1128,8 +1176,8 @@ std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCom
     commandBufferAllocateInfo.level = VK_COMMAND_BUFFER_LEVEL_SECONDARY;
     commandBufferAllocateInfo.commandBufferCount = (uint32_t) cmdBufVec.size();
 
-    if( (m_lastResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, cmdBufVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
+    if( (vkResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, cmdBufVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError(vkResult) ) );
 
     return cmdBufVec;
 }
@@ -1189,14 +1237,15 @@ uint32_t CDeviceVulkan::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlag
 ****************************************************************************/
 bool CDeviceVulkan::isDeviceExtension( VkPhysicalDevice physicalDevice, const char* extenName )
 {
+    VkResult vkResult(VK_SUCCESS);
     uint32_t deviceExtensionCount = 0;
-    if( (m_lastResult = vkEnumerateDeviceExtensionProperties( physicalDevice, nullptr, &deviceExtensionCount, nullptr )) || (deviceExtensionCount == 0 ) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate device extension count! %s") % getError() ) );
+    if( (vkResult = vkEnumerateDeviceExtensionProperties( physicalDevice, nullptr, &deviceExtensionCount, nullptr )) || (deviceExtensionCount == 0 ) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate device extension count! %s") % getError(vkResult) ) );
 
     std::vector<VkExtensionProperties> availableExtensions(deviceExtensionCount);
 
-    if( (m_lastResult = vkEnumerateDeviceExtensionProperties( physicalDevice, nullptr, &deviceExtensionCount, availableExtensions.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate device extension info! %s") % getError() ) );
+    if( (vkResult = vkEnumerateDeviceExtensionProperties( physicalDevice, nullptr, &deviceExtensionCount, availableExtensions.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate device extension info! %s") % getError(vkResult) ) );
 
     for( auto iter : availableExtensions )
         if( std::strcmp( iter.extensionName, extenName ) == 0 )
@@ -1220,6 +1269,7 @@ uint32_t CDeviceVulkan::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, u
         std::vector<VkQueueFamilyProperties> queueFamiliesVec(queueFamilyCount);
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamiliesVec.data());
 
+        // Presentation queue support is handled differently. Doesn't have it's own enum at the time of writing this code
         if( queueMask == VK_QUEUE_FLAG_BITS_MAX_ENUM )
         {
             // Find family present index
@@ -1228,10 +1278,31 @@ uint32_t CDeviceVulkan::findQueueFamilyIndex( VkPhysicalDevice physicalDevice, u
                 VkBool32 presentSupport = false;
                 vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, m_vulkanSurface, &presentSupport);
 
-                if( (queueFamiliesVec[i].queueCount > 0) && presentSupport )
+                if( presentSupport && (queueFamiliesVec[i].queueCount > 0) )
                     return i;
             }
         }
+        // If searching for the graphics queue bit, pick the family with the most queues. Normally this
+        // should be the first one but in the event it's not, check all of them
+        else if ( queueMask == VK_QUEUE_GRAPHICS_BIT )
+        {
+            uint32_t lastFamilyIndex = 0;
+            uint32_t lastQueueCount = 0;
+
+            for( uint32_t i = 0; i < queueFamiliesVec.size(); ++i )
+            {
+                if( (queueFamiliesVec[i].queueFlags & queueMask) && 
+                    (queueFamiliesVec[i].queueCount > lastQueueCount) )
+                {
+                    lastQueueCount = queueFamiliesVec[i].queueCount;
+                    lastFamilyIndex = i;
+                }
+            }
+
+            if( lastQueueCount > 0 )
+                return lastFamilyIndex;
+        }
+        // For all other queue searches
         else
         {
             // Find family based on bit flag
@@ -1303,6 +1374,7 @@ void CDeviceVulkan::createImage(
     VkImage & image,
     VkDeviceMemory & imageMemory )
 {
+    VkResult vkResult(VK_SUCCESS);
     VkImageCreateInfo imageInfo = {};
     imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     imageInfo.imageType = VK_IMAGE_TYPE_2D;
@@ -1318,8 +1390,8 @@ void CDeviceVulkan::createImage(
     imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
     imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-    if( (m_lastResult = vkCreateImage( m_logicalDevice, &imageInfo, nullptr, &image )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create image! %s") % getError() ) );
+    if( (vkResult = vkCreateImage( m_logicalDevice, &imageInfo, nullptr, &image )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create image! %s") % getError(vkResult) ) );
 
     VkMemoryRequirements memRequirements;
     vkGetImageMemoryRequirements( m_logicalDevice, image, &memRequirements );
@@ -1329,10 +1401,11 @@ void CDeviceVulkan::createImage(
     allocInfo.allocationSize = memRequirements.size;
     allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-    if( (m_lastResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &imageMemory )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate image memory! %s") % getError() ) );
+    if( (vkResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &imageMemory )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate image memory! %s") % getError(vkResult) ) );
 
-    vkBindImageMemory( m_logicalDevice, image, imageMemory, 0 );
+    if( (vkResult = vkBindImageMemory( m_logicalDevice, image, imageMemory, 0 ) ) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not bind image memory! %s") % getError(vkResult) ) );
 }
 
 
@@ -1346,14 +1419,15 @@ void CDeviceVulkan::createBuffer(
     VkBuffer & buffer,
     VkDeviceMemory & bufferMemory )
 {
+    VkResult vkResult(VK_SUCCESS);
     VkBufferCreateInfo bufferInfo = {};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     bufferInfo.size = size;
     bufferInfo.usage = usage;
     bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-    if( (m_lastResult = vkCreateBuffer( m_logicalDevice, &bufferInfo, nullptr, &buffer )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create buffer! %s") % getError() ) );
+    if( (vkResult = vkCreateBuffer( m_logicalDevice, &bufferInfo, nullptr, &buffer )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create buffer! %s") % getError(vkResult) ) );
 
     VkMemoryRequirements memRequirements;
     vkGetBufferMemoryRequirements( m_logicalDevice, buffer, &memRequirements );
@@ -1363,10 +1437,11 @@ void CDeviceVulkan::createBuffer(
     allocInfo.allocationSize = memRequirements.size;
     allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-    if( (m_lastResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &bufferMemory )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate buffer memory! %s") % getError() ) );
+    if( (vkResult = vkAllocateMemory( m_logicalDevice, &allocInfo, nullptr, &bufferMemory )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate buffer memory! %s") % getError(vkResult) ) );
 
-    vkBindBufferMemory( m_logicalDevice, buffer, bufferMemory, 0);
+    if( (vkResult = vkBindBufferMemory( m_logicalDevice, buffer, bufferMemory, 0) ) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not bind buffer memory! %s") % getError(vkResult) ) );
 }
 
 
@@ -1532,14 +1607,15 @@ void CDeviceVulkan::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t 
 ****************************************************************************/
 VkCommandPool CDeviceVulkan::createCommandPool( uint32_t queueFamilyIndex )
 {
+    VkResult vkResult(VK_SUCCESS);
     VkCommandPoolCreateInfo poolInfo = {};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.queueFamilyIndex = queueFamilyIndex;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     VkCommandPool commandPool;
-    if( (m_lastResult = vkCreateCommandPool( m_logicalDevice, &poolInfo, nullptr, &commandPool )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create command pool! %s") % getError() ) );
+    if( (vkResult = vkCreateCommandPool( m_logicalDevice, &poolInfo, nullptr, &commandPool )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create command pool! %s") % getError(vkResult) ) );
 
     return commandPool;
 }
@@ -1609,7 +1685,7 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
 
     vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
     vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
-
+    
     // create the image view
     texture.textureImageView = createImageView( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.mipLevels, VK_IMAGE_ASPECT_COLOR_BIT );
 
@@ -1714,6 +1790,7 @@ void CDeviceVulkan::generateMipmaps( VkImage image, VkFormat imageFormat, int32_
 ****************************************************************************/
 VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
 {
+    VkResult vkResult(VK_SUCCESS);
     VkSamplerCreateInfo samplerInfo = {};
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
     samplerInfo.magFilter = VK_FILTER_LINEAR;
@@ -1734,8 +1811,8 @@ VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
 
     VkSampler textureSampler;
 
-    if( (m_lastResult = vkCreateSampler( m_logicalDevice, &samplerInfo, nullptr, &textureSampler )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture sampler! %s") % getError() ) );
+    if( (vkResult = vkCreateSampler( m_logicalDevice, &samplerInfo, nullptr, &textureSampler )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture sampler! %s") % getError(vkResult) ) );
 
     return textureSampler;
 }
@@ -1746,6 +1823,7 @@ VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
 ****************************************************************************/
 VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint32_t mipLevels, VkImageAspectFlags aspectFlags )
 {
+    VkResult vkResult(VK_SUCCESS);
     VkImageViewCreateInfo viewInfo = {};
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     viewInfo.image = image;
@@ -1762,8 +1840,8 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
     viewInfo.subresourceRange.layerCount = 1;
 
     VkImageView imageView;
-    if( (m_lastResult = vkCreateImageView( m_logicalDevice, &viewInfo, nullptr, &imageView )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture image view! %s") % getError() ) );
+    if( (vkResult = vkCreateImageView( m_logicalDevice, &viewInfo, nullptr, &imageView )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not create texture image view! %s") % getError(vkResult) ) );
 
     return imageView;
 }
@@ -1774,6 +1852,7 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 ****************************************************************************/
 VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData, size_t setCount )
 {
+    VkResult vkResult(VK_SUCCESS);
     std::vector<VkDescriptorPoolSize> descriptorPoolVec;
 
     for( auto & descIdIter : descData.m_descriptorVec )
@@ -1810,8 +1889,8 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
 
     VkDescriptorPool descriptorPool;
 
-    if( (m_lastResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &descriptorPool )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError() ) );
+    if( (vkResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &descriptorPool )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError(vkResult) ) );
 
     return descriptorPool;
 }
@@ -1827,6 +1906,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
     const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDescriptorPool descriptorPool )
 {
+    VkResult vkResult(VK_SUCCESS);
     std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), pipelineData.m_descriptorSetLayout );
 
     VkDescriptorSetAllocateInfo allocInfo = {};
@@ -1837,8 +1917,8 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
 
     std::vector<VkDescriptorSet> descriptorSetVec( m_framebufferVec.size() );
 
-    if( (m_lastResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, descriptorSetVec.data() )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError() ) );
+    if( (vkResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, descriptorSetVec.data() )) )
+        throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError(vkResult) ) );
 
     for( size_t i = 0; i < descriptorSetVec.size(); ++i )
     {
@@ -1931,9 +2011,11 @@ std::vector<CMemoryBuffer> CDeviceVulkan::createUniformBufferVec( VkDeviceSize s
 /***************************************************************************
 *   DESC:  Get Vulkan error
 ****************************************************************************/
-const char * CDeviceVulkan::getError()
+const char * CDeviceVulkan::getError( VkResult result )
 {
-    auto iter = m_vulkanErrorMap.find( m_lastResult );
+    std::unique_lock<std::mutex> lock( m_mutex );
+
+    auto iter = m_vulkanErrorMap.find( result );
     if( iter != m_vulkanErrorMap.end() )
         return iter->second;
 

@@ -127,15 +127,7 @@ void CSettings::loadXML()
         const XMLNode displayListNode = m_mainNode.getChildNode("display");
         if( !displayListNode.isEmpty() )
         {
-            #if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
-
-            SDL_DisplayMode dm;
-            SDL_GetDesktopDisplayMode(0, &dm);
-
-            m_size.w = dm.w;
-            m_size.h = dm.h;
-
-            #else
+            #if !(defined(__IOS__) || defined(__ANDROID__))
 
             // Get the attributes from the "resolution" node
             const XMLNode resolutionNode = displayListNode.getChildNode("resolution");
@@ -195,6 +187,7 @@ void CSettings::loadXML()
                 if( vulkanNode.isAttributeSet("minor") )
                     m_minor = std::atoi( vulkanNode.getAttribute("minor") );
                 
+                // Android validation layers need to be added in the app.buildGradle
                 #if !defined(__ANDROID__) // Android doesn't support validation layers
                 if( vulkanNode.isAttributeSet("validationLayers") )
                     m_validationLayers = ( std::strcmp( vulkanNode.getAttribute("validationLayers"), "true" ) == 0 );
@@ -372,6 +365,16 @@ uint32_t CSettings::getEngineVersion() const
 ************************************************************************/
 void CSettings::calcRatio()
 {
+    #if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
+
+    SDL_DisplayMode dm;
+    SDL_GetDesktopDisplayMode(0, &dm);
+
+    m_size.w = dm.w;
+    m_size.h = dm.h;
+
+    #endif
+
     // Height and width screen ratio for perspective projection
     m_screenAspectRatio.w = m_size.w / m_size.h;
     m_screenAspectRatio.h = m_size.h / m_size.w;

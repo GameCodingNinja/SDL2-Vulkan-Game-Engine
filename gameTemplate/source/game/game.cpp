@@ -93,6 +93,9 @@ void CGame::create()
     // Handle some events on startup
     pollEvents();
 
+    // Calculate the ratio after a bit of startup
+    CSettings::Instance().calcRatio();
+
     // Create the startup state
     upGameState.reset( new CStartUpState );
     upGameState->init();
@@ -153,8 +156,12 @@ void CGame::aICreateCallBack( const std::string & aiName, CSprite * pSprite )
 ************************************************************************/
 void CGame::statStringCallBack( const std::string & statStr )
 {
+    #if !defined(__ANDROID__)
     if( !CSettings::Instance().getFullScreen() )
         CDevice::Instance().setWindowTitle( statStr );
+    #else
+    NGenFunc::PostDebugMsg(statStr);
+    #endif
 }
 
 

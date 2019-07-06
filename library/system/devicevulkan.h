@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <mutex>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -91,7 +92,7 @@ protected:
     void createPipeline( CPipelineData & pipelineData );
     
     // Get Vulkan error
-    const char * getError();
+    const char * getError( VkResult result );
     
     // Load a buffer into video card memory
     template <typename T>
@@ -259,6 +260,10 @@ protected:
     
     // Present queue handle
     VkQueue m_transferQueue;
+
+    // Vector of queue families indices used when creating the swap chain
+    // when the graphic and present queue families are not the same
+    std::vector<uint32_t> m_queueFamilySwapChainIndiceVec;
     
     // Swap chain
     VkSwapchainKHR m_swapchain;
@@ -294,9 +299,6 @@ protected:
     // The current frame
     size_t m_currentFrame;
     
-    // Last error result
-    VkResult m_lastResult;
-    
     // Swap chain images
     std::vector<VkImageView> m_swapChainImageViewVec;
     
@@ -311,6 +313,9 @@ protected:
     VkDebugReportCallbackEXT vkDebugReportCallbackEXT;
     PFN_vkDestroyDebugReportCallbackEXT vkDestroyDebugReportCallbackEXT;
     PFN_vkCmdPushDescriptorSetKHR vkCmdPushDescriptorSetKHR;
+
+    // General purpose mutex
+    std::mutex m_mutex;
 };
 
 #endif

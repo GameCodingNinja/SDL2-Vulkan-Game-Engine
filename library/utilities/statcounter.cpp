@@ -25,7 +25,7 @@ CStatCounter::CStatCounter() :
     m_cycleCounter(0),
     m_scriptContexCounter(0),
     m_activeContexCounter(0),
-    m_statsDisplayTimer(1000)
+    m_statsDisplayTimer(2000)
 {
     resetCounters();
 }
@@ -70,7 +70,7 @@ void CStatCounter::incCycle()
 
     ++m_cycleCounter;
 
-    // update the stats every 500 miliseconds
+    // update the stats every 1000 miliseconds
     if( m_statsDisplayTimer.expired(CTimer::RESTART_ON_EXPIRE) )
     {
         formatStatString();

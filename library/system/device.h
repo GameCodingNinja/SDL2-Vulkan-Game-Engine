@@ -207,6 +207,9 @@ public:
         const std::string & group,
         const std::string & filePath,
         CModel & model );
+    
+    // Is the transfer queue unique to allow for loading and rendering at the same time?
+    bool isTransferQueueUnique();
 
 private:
 
