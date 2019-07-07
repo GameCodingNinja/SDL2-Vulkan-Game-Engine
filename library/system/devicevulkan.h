@@ -135,8 +135,14 @@ private:
     // Create the Vulkan surface
     virtual void createSurface() = 0;
     
-    // Find the queue family index
-    uint32_t findQueueFamilyIndex( VkPhysicalDevice physicalDevice, uint32_t queueMask = VK_QUEUE_FLAG_BITS_MAX_ENUM );
+    // get the queue family index and decrement the queue count
+    uint32_t getQueueFamilyIndex( uint32_t queueMask );
+
+    // get the present queue family index and decrement the queue count
+    uint32_t getPresentQueueFamilyIndex();
+
+    // Find the graphics queue family index. This is used to determine which physical device to select
+    uint32_t findGraphicsQueueFamilyIndex( VkPhysicalDevice physicalDevice );
     
     // Find the GPU memory type
     uint32_t findMemoryType( uint32_t typeFilter, VkMemoryPropertyFlags properties );
@@ -260,6 +266,9 @@ protected:
     
     // Present queue handle
     VkQueue m_transferQueue;
+
+    // Vector for tracking to alloocation of queues
+    std::vector<VkQueueFamilyProperties> m_queueFamilyPropVec;
 
     // Vector of queue families indices used when creating the swap chain
     // when the graphic and present queue families are not the same
