@@ -364,9 +364,20 @@ void CDeviceVulkan::selectPhysicalDevice()
         auto props = VkPhysicalDeviceProperties{};
         vkGetPhysicalDeviceProperties(iter, &props);
 
-        // Print out the GPU if validation layers is enabled
+        // Print out the GPU if validation layers is enabled getDeviceType
         if( CSettings::Instance().isValidationLayers() )
-            NGenFunc::PostDebugMsg( "GPU: " + std::string(props.deviceName));
+        {
+            NGenFunc::PostDebugMsg( "Physical Device Properties...");
+            NGenFunc::PostDebugMsg( "  GPU Name: " + std::string(props.deviceName));
+            NGenFunc::PostDebugMsg( "  GPU Type: " + std::string(getDeviceType(props.deviceType)));
+            NGenFunc::PostDebugMsg( "  GPU Driver Version: " + std::to_string(props.driverVersion));
+            NGenFunc::PostDebugMsg( "  GPU Vender Id: " + std::to_string(props.vendorID));
+            NGenFunc::PostDebugMsg( "  GPU Device Id: " + std::to_string(props.deviceID));
+            NGenFunc::PostDebugMsg( "  Max Image 1D: " + std::to_string(props.limits.maxImageDimension1D));
+            NGenFunc::PostDebugMsg( "  Max Image 2D: " + std::to_string(props.limits.maxImageDimension2D));
+            NGenFunc::PostDebugMsg( "  Max Image 3D: " + std::to_string(props.limits.maxImageDimension3D));
+            NGenFunc::PostDebugMsg( "  Max Viewports: " + std::to_string(props.limits.maxViewports));
+        }
 
         // Find the queue family on this graphics device
         m_graphicsQueueFamilyIndex = findGraphicsQueueFamilyIndex( iter );
@@ -394,8 +405,8 @@ void CDeviceVulkan::selectPhysicalDevice()
 
     // Find the remaining queue families for present and transfer
     m_presentQueueFamilyIndex = getPresentQueueFamilyIndex();
-    // If a transfer family queue index can't be found, use a graphics family queue index
-    if( (m_transferQueueFamilyIndex = getQueueFamilyIndex( VK_QUEUE_TRANSFER_BIT )) == UINT32_MAX )
+    // If a generic transfer family queue index can't be found, use a graphics family queue index
+    if( (m_transferQueueFamilyIndex = getQueueFamilyIndex( VK_QUEUE_TRANSFER_BIT | VK_QUEUE_GRAPHICS_BIT )) == UINT32_MAX )
         m_transferQueueFamilyIndex = getQueueFamilyIndex( VK_QUEUE_GRAPHICS_BIT );
 }
 
@@ -2045,4 +2056,25 @@ const char * CDeviceVulkan::getError( VkResult result )
         return iter->second;
 
     return "Vulkan Unknown Error";
+}
+
+
+/***************************************************************************
+*   DESC:  Get the GPU type
+****************************************************************************/
+const char * CDeviceVulkan::getDeviceType( VkPhysicalDeviceType deviceType )
+{
+    if( deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU )
+        return "Integrated GPU";
+
+    else if( deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )
+        return "Descrete GPU";
+
+    else if( deviceType == VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU )
+        return "Virtual GPU";
+
+    else if( deviceType == VK_PHYSICAL_DEVICE_TYPE_CPU )
+        return "CPU";
+
+    return "Unknown";
 }
