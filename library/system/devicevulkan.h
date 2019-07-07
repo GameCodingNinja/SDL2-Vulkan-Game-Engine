@@ -235,6 +235,9 @@ private:
     // Find the depth format
     VkFormat findDepthFormat();
 
+    // Get the GPU type
+    const char * getDeviceType( VkPhysicalDeviceType deviceType );
+
 protected:
     
     // Vulkan instance

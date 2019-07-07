@@ -187,11 +187,11 @@ void CSettings::loadXML()
                 if( vulkanNode.isAttributeSet("minor") )
                     m_minor = std::atoi( vulkanNode.getAttribute("minor") );
                 
-                // Android validation layers need to be added in the app.buildGradle
-                #if !defined(__ANDROID__) // Android doesn't support validation layers
+                // Android validation layers need to be loaded on the device
+                //#if !defined(__ANDROID__)
                 if( vulkanNode.isAttributeSet("validationLayers") )
                     m_validationLayers = ( std::strcmp( vulkanNode.getAttribute("validationLayers"), "true" ) == 0 );
-                #endif
+                //#endif
             }
 
             // Get the projection info
