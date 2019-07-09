@@ -482,7 +482,7 @@ void CDevice::createDescriptorPoolGroup(
     if( mapIter == m_descriptorPoolMapMap.end() )
         mapIter = m_descriptorPoolMapMap.emplace( group, std::map< const std::string, VkDescriptorPool >() ).first;
 
-    // See if this texture has already been loaded
+    // See if this descriptor pool group has already been loaded
     auto iter = mapIter->second.find( descrId );
 
     // If it's not found, create the descriptor pool

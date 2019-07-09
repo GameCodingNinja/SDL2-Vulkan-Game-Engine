@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <node>
     
     <node name="loadAnim" type="spriteNode" defaultGroup="(load)">

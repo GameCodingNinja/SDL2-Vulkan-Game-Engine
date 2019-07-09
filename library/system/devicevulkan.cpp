@@ -1834,7 +1834,7 @@ VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
     samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-    samplerInfo.anisotropyEnable = VK_FALSE;
+    samplerInfo.anisotropyEnable = VK_TRUE;
     samplerInfo.maxAnisotropy = CSettings::Instance().getAnisotropicLevel();
     samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
     samplerInfo.unnormalizedCoordinates = VK_FALSE;
