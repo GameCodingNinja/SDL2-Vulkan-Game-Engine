@@ -13,7 +13,8 @@
 
 // Game lib dependencies
 #include <utilities/matrix.h>
-#include <common/pushdescriptorset.h>
+#include <system/descriptorset.h>
+//#include <common/pushdescriptorset.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -66,8 +67,11 @@ private:
     // Uniform buffers
     std::vector<CMemoryBuffer> m_uniformBufVec;
 
+    // Descriptor Set for this image
+    std::vector<CDescriptorSet *> m_pDescriptorSetVec;
+
     // Push Descriptor set
-    std::vector<CPushDescriptorSet> m_pushDescSetVec;
+    //std::vector<CPushDescriptorSet> m_pushDescSetVec;
     
     // Is the active
     const bool m_active;

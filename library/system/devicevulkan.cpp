@@ -61,7 +61,6 @@ CDeviceVulkan::CDeviceVulkan() :
     m_renderPass(VK_NULL_HANDLE),
     m_primaryCmdPool(VK_NULL_HANDLE),
     m_transferCmdPool(VK_NULL_HANDLE),
-    m_currentFrame(0),
     m_depthImage(VK_NULL_HANDLE),
     m_depthImageMemory(VK_NULL_HANDLE),
     m_depthImageView(VK_NULL_HANDLE),
@@ -985,7 +984,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
 
     VkDescriptorSetLayoutCreateInfo layoutInfo = {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutInfo.flags = VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR;
+    //layoutInfo.flags = VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR; // For enabling push descriptors
     layoutInfo.bindingCount = bindings.size();
     layoutInfo.pBindings = bindings.data();
 
@@ -1920,7 +1919,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = descriptorPoolVec.size();
     poolInfo.pPoolSizes = descriptorPoolVec.data();
-    poolInfo.maxSets = descriptorPoolVec.size() * setCount;
+    poolInfo.maxSets = m_framebufferVec.size() * setCount;
     poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 
     VkDescriptorPool descriptorPool;
@@ -1933,13 +1932,10 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
 
 
 /***************************************************************************
-*   DESC:  Create descriptor sets
+*   DESC:  Allocate the descriptor sets
 ****************************************************************************/
-std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
-    const CTexture & texture,
-    const CDescriptorData & descData,
+std::vector<VkDescriptorSet> CDeviceVulkan::allocateDescriptorSetVec(
     const CPipelineData & pipelineData,
-    const std::vector<CMemoryBuffer> & uniformBufVec,
     VkDescriptorPool descriptorPool )
 {
     VkResult vkResult(VK_SUCCESS);
@@ -1956,6 +1952,19 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
     if( (vkResult = vkAllocateDescriptorSets( m_logicalDevice, &allocInfo, descriptorSetVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate descriptor sets! %s") % getError(vkResult) ) );
 
+    return descriptorSetVec;
+}
+
+
+/***************************************************************************
+*   DESC:  update descriptor sets
+****************************************************************************/
+void CDeviceVulkan::updateDescriptorSetVec(
+    std::vector<VkDescriptorSet> & descriptorSetVec,
+    const CTexture & texture,
+    const CDescriptorData & descData,
+    const std::vector<CMemoryBuffer> & uniformBufVec )
+{
     for( size_t i = 0; i < descriptorSetVec.size(); ++i )
     {
         std::vector<VkWriteDescriptorSet> writeDescriptorSetVec;
@@ -2020,8 +2029,6 @@ std::vector<VkDescriptorSet> CDeviceVulkan::createDescriptorSetVec(
 
         vkUpdateDescriptorSets( m_logicalDevice, writeDescriptorSetVec.size(), writeDescriptorSetVec.data(), 0, nullptr );
     }
-
-    return descriptorSetVec;
 }
 
 

@@ -74,22 +74,6 @@ void CObjectDataMgr::loadGroup2D( const std::string & group )
             boost::str( boost::format("Object data list group has already been loaded (%s).\n\n%s\nLine: %s")
                 % group % __FUNCTION__ % __LINE__ ));
     }
-    
-    // Get the descriptor data map to find out how many unique descriptors need to be allocated
-    /*auto & rDescDataMap = CDevice::Instance().getDescriptorDataMap();
-    
-    auto objDataIter = m_objectData2DMapMap.find(group);
-    
-    for( auto & descIter : rDescDataMap )
-    {
-        std::set<std::string> descUniqueSet;
-        
-        for( auto & objIter : objDataIter->second )
-            objIter.second.getVisualData().addToDescSet( descIter.first, descUniqueSet );
-        
-        if( !descUniqueSet.empty() )
-            CDevice::Instance().createDescriptorPoolGroup( group, descIter.first, descIter.second, descUniqueSet.size() );
-    }*/
 
     // Create the assets from data
     createFromData2D( group );

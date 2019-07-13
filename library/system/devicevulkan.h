@@ -70,14 +70,18 @@ protected:
     
     // Create descriptor pool
     VkDescriptorPool createDescriptorPool( const CDescriptorData & descData, size_t setCount );
+
+    // Allocate the descriptor sets
+    std::vector<VkDescriptorSet> allocateDescriptorSetVec(
+        const CPipelineData & pipelineData,
+        VkDescriptorPool descriptorPool );
     
     // Create descriptor sets
-    std::vector<VkDescriptorSet> createDescriptorSetVec(
+    void updateDescriptorSetVec(
+        std::vector<VkDescriptorSet> & descriptorSetVec,
         const CTexture & texture,
         const CDescriptorData & descData,
-        const CPipelineData & pipelineData,
-        const std::vector<CMemoryBuffer> & uniformBufVec,
-        VkDescriptorPool descriptorPool );
+        const std::vector<CMemoryBuffer> & uniformBufVec );
     
     // Create the shader
     VkShaderModule createShader( const std::string & filePath );
@@ -307,9 +311,6 @@ protected:
     
     // Frame fence
     std::vector<VkFence> m_frameFenceVec;
-    
-    // The current frame
-    size_t m_currentFrame;
     
     // Swap chain images
     std::vector<VkImageView> m_swapChainImageViewVec;

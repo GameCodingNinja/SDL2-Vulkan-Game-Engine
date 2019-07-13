@@ -94,8 +94,13 @@ void CVisualComponentFont::recordCommandBuffer(
         // Bind the index buffer
         vkCmdBindIndexBuffer( cmdBuffer, device.getSharedFontIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
 
+        // With the regular descriptor set implementation, objects that use the same texture and UBO can't share the same
+        // descriptor set because the translation matrix is part of the UBO the objects sharing this will render ontop of each other
+        vkCmdBindDescriptorSets( 
+            cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipelineLayout, 0, 1, &m_pDescriptorSet->m_descriptorVec[index], 0, nullptr );
+
         // Use the push descriptors
-        m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+        //m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
 
         // Do the draw
         vkCmdDrawIndexed( cmdBuffer, m_iboCount, 1, 0, 0, 0 );
@@ -373,14 +378,23 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
         // This updates the current IBO if it exceeds the current max
         if( BUILD_FONT_IBO )
             device.createSharedFontIBO( iboVec );
-        
-        const uint32_t pipelineIndex( m_rObjectData.getVisualData().getPipelineIndex() );
-        
-        device.createPushDescriptorSet(
+
+        // Recycle if the descriptor set is not null
+        // Can't update the descriptor set because it could be actuve in the command buffer.
+        // The strategy is to recycle the current one and grab a fresh one
+        if( m_pDescriptorSet != nullptr )
+            CDevice::Instance().recycleDescriptorSet( m_pDescriptorSet );
+            
+        m_pDescriptorSet = device.getDescriptorSet(
+            m_rObjectData.getVisualData().getPipelineIndex(),
+            font.getTexture(),
+            m_uniformBufVec );
+
+        /*device.createPushDescriptorSet(
             pipelineIndex,
             font.getTexture(),
             m_uniformBufVec,
-            m_pushDescSet );
+            m_pushDescSet );*/
     }
     else if( fontString.empty() &&
              (fontString != m_fontData.m_fontString) &&

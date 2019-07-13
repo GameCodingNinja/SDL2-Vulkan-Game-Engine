@@ -52,13 +52,13 @@
                 <color r="48" g="97" b="153" a="217"/>
             </visual>
             <size width="500" height="500"/>
-        </object>-->
+        </object>
 
         <object name="logo">
             <visual>
                 <texture file="data/textures/startup/logo.png"/>
             </visual>
-        </object>
+        </object>-->
 
         <object name="waffles">
             <visual>

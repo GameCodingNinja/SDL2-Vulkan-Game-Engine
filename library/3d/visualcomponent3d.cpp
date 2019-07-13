@@ -12,6 +12,7 @@
 #include <objectdata/objectdata3d.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <system/device.h>
+#include <system/descriptorset.h>
 #include <utilities/statcounter.h>
 #include <common/uniformbufferobject.h>
 #include <common/pipeline.h>
@@ -31,7 +32,7 @@ CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
     iVisualComponent( objectData ),
     m_rObjectData( objectData ),
     m_rModel( objectData.getVisualData().getModel() ),
-    m_pushDescSetVec( objectData.getVisualData().getModel().m_meshVec.size() ),
+    //m_pushDescSetVec( objectData.getVisualData().getModel().m_meshVec.size() ),
     m_active( objectData.getVisualData().isActive() )
 {
     auto & device( CDevice::Instance() );
@@ -41,12 +42,18 @@ CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
     m_uniformBufVec = device.createUniformBufferVec( pipelineIndex );
     
     // Create the push descriptor set
-    for( size_t i = 0; i < m_rModel.m_meshVec.size(); ++i )
-        device.createPushDescriptorSet(
-            pipelineIndex,
-            m_rModel.m_meshVec[i].m_textureVec.back(),
-            m_uniformBufVec,
-            m_pushDescSetVec[i] );
+    for( auto & iter : m_rModel.m_meshVec )
+        m_pDescriptorSetVec.push_back( 
+            device.getDescriptorSet(
+                pipelineIndex,
+                iter.m_textureVec.back(),
+                m_uniformBufVec ));
+
+    /*device.createPushDescriptorSet(
+        pipelineIndex,
+        m_rModel.m_meshVec[i].m_textureVec.back(),
+        m_uniformBufVec,
+        m_pushDescSetVec[i] );*/
 }
 
 
@@ -56,6 +63,9 @@ CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
 CVisualComponent3D::~CVisualComponent3D()
 {
     CDevice::Instance().AddToDeleteQueue( m_uniformBufVec );
+
+    for( auto iter : m_pDescriptorSetVec )
+        CDevice::Instance().recycleDescriptorSet( iter );
 }
 
 
@@ -95,8 +105,13 @@ void CVisualComponent3D::recordCommandBuffer(
             // Bind the index buffer
             vkCmdBindIndexBuffer( cmdBuffer, m_rModel.m_meshVec[i].m_iboBuffer.m_buffer, 0, VK_INDEX_TYPE_UINT16 );
 
+            // With the regular descriptor set implementation, objects that use the same texture and UBO can't share the same
+            // descriptor set because the translation matrix is part of the UBO the objects sharing this will render ontop of each other
+            vkCmdBindDescriptorSets( 
+                cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipelineLayout, 0, 1, &m_pDescriptorSetVec[i]->m_descriptorVec[index], 0, nullptr );
+
             // Use the push descriptors
-            m_pushDescSetVec[i].cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+            //m_pushDescSetVec[i].cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
 
             // Do the draw
             vkCmdDrawIndexed( cmdBuffer, m_rModel.m_meshVec[i].m_iboCount, 1, 0, 0, 0 );

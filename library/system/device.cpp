@@ -177,11 +177,11 @@ void CDevice::destroyAssets()
         m_textureMapMap.clear();
 
         // Free all descriptor pool groups
-        for( auto & mapIter : m_descriptorPoolMapMap )
-            for( auto & iter : mapIter.second )
-                vkDestroyDescriptorPool( m_logicalDevice, iter.second, nullptr );
+        for( auto & mapIter : m_descriptorAllocatorMap )
+            for( auto & iter : mapIter.second.m_descriptorPoolVec )
+                vkDestroyDescriptorPool( m_logicalDevice, iter, nullptr );
 
-        m_descriptorPoolMapMap.clear();
+        m_descriptorAllocatorMap.clear();
 
         // Free all memory buffer groups
         for( auto & mapIter : m_memoryBufferMapMap )
@@ -377,15 +377,28 @@ void CDevice::render()
                 "Vulkan Error!",
                 boost::str(boost::format("Could not present swap chain image! %s") %
                            getError(vkResult)));
-
-    m_currentFrame = (m_currentFrame + 1) % m_framebufferVec.size();
     
-    // Delete the memory buffer if it's been in the queue for one cycle
-    // NOTE: This needs to be done after the current frame increment
+    // Handle memory operations based on frame counter
+    frameCounterMemoryOperations();
+
+    // Increment the current frame
+    m_currentFrame = (m_currentFrame + 1) % m_framebufferVec.size();
+
+    // Increment the frame counter
+    m_frameCounter++;
+}
+
+
+/************************************************************************
+ *    DESC: Handle memory operations based on frame counter
+ ************************************************************************/
+void CDevice::frameCounterMemoryOperations()
+{
+    // Delete the memory buffer if it's been in the queue long enough
     auto mapIter = m_memoryDeleteMap.begin();
     while( mapIter != m_memoryDeleteMap.end() )
     {
-        if( mapIter->first == m_currentFrame )
+        if( mapIter->first < m_frameCounter )
         {
             for( auto & vecIter : mapIter->second )
                 freeMemoryBuffer( vecIter );
@@ -471,32 +484,6 @@ CTexture & CDevice::createTexture( const std::string & group, const std::string 
 }
 
 
-/************************************************************************
-*    DESC:  Create the descriptor pool group for the textures
-************************************************************************/
-void CDevice::createDescriptorPoolGroup(
-    const std::string & group, const std::string & descrId, const CDescriptorData & descData, size_t count )
-{
-    // Create the map group if it doesn't already exist
-    auto mapIter = m_descriptorPoolMapMap.find( group );
-    if( mapIter == m_descriptorPoolMapMap.end() )
-        mapIter = m_descriptorPoolMapMap.emplace( group, std::map< const std::string, VkDescriptorPool >() ).first;
-
-    // See if this descriptor pool group has already been loaded
-    auto iter = mapIter->second.find( descrId );
-
-    // If it's not found, create the descriptor pool
-    if( iter == mapIter->second.end() )
-    {
-        // Create the descriptor pool with enough allocations for this group of specific descriptors
-        VkDescriptorPool descriptorPool = CDeviceVulkan::createDescriptorPool( descData, count );
-
-        // Add the pool to the map
-        mapIter->second.emplace( descrId, descriptorPool );
-    }
-}
-
-
 /***************************************************************************
 *   DESC:  Create the uniform buffer
 ****************************************************************************/
@@ -579,6 +566,128 @@ void CDevice::createPushDescriptorSet(
             }
         }
         pushDescSet.m_pushDescriptorSetVec.push_back(writeDescriptorSetVec);
+    }
+}
+
+
+/***************************************************************************
+*   DESC:  Get the descriptor sets
+****************************************************************************/
+CDescriptorSet * CDevice::getDescriptorSet(
+    int pipelineIndex,
+    const CTexture & texture,
+    const std::vector<CMemoryBuffer> & uniformBufVec )
+{
+    const size_t MAX_POOL_SIZE( CSettings::Instance().getMaxDescriptoSetsPerPool() );
+
+    auto & rPipelineData = getPipelineData( pipelineIndex );
+    auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+
+    // Create the descriptor pool group if it doesn't already exist
+    auto allocIter = m_descriptorAllocatorMap.find( rPipelineData.m_descriptorId );
+    if( allocIter == m_descriptorAllocatorMap.end() )
+    {
+        allocIter = m_descriptorAllocatorMap.emplace( rPipelineData.m_descriptorId, CDescriptorAllocator() ).first;
+        return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData, MAX_POOL_SIZE );
+    }
+
+    // See if there are any free descriptors sets available to reuse and return
+    for( auto & descVecIter : allocIter->second.m_descriptorSetDeqVec )
+    {
+        if( !descVecIter.empty() )
+        {
+            for( auto & descSetIter : descVecIter )
+            {
+                if( descSetIter.m_frameRecycleOffset < m_frameCounter && !descSetIter.m_active )
+                {
+                    // Set the active state to indicate this descriptor set is in use
+                    descSetIter.m_active = true;
+
+                    // Update it with the new info
+                    CDeviceVulkan::updateDescriptorSetVec( descSetIter.m_descriptorVec, texture, rDescData, uniformBufVec );
+
+                    return &descSetIter;
+                }
+            }
+        }
+    }
+
+    // See if there are any open spots that can be allocated
+    for( size_t i = 0; i < allocIter->second.m_descriptorSetDeqVec.size(); ++i )
+    {
+        if( allocIter->second.m_descriptorSetDeqVec[i].size() < MAX_POOL_SIZE )
+        {
+            // Get the pool for this descriptor index
+            auto descPool = allocIter->second.m_descriptorPoolVec.at(i);
+
+            // Allocate another descriptor set
+            auto descSetVec = CDeviceVulkan::allocateDescriptorSetVec( rPipelineData, descPool );
+            CDeviceVulkan::updateDescriptorSetVec( descSetVec, texture, rDescData, uniformBufVec );
+            allocIter->second.m_descriptorSetDeqVec[i].emplace_back( descSetVec );
+
+            return &allocIter->second.m_descriptorSetDeqVec[i].back();
+        }
+    }
+
+    // If we made it this far, we need to allocate a new pool for more descriptor sets
+    return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData, MAX_POOL_SIZE );
+}
+
+
+/***************************************************************************
+*   DESC:  Allocate the descriptor pool and first sets
+****************************************************************************/
+CDescriptorSet * CDevice::allocateDescriptorPoolSet(
+    std::map< const std::string, CDescriptorAllocator >::iterator & allocIter,
+    const CTexture & texture,
+    const std::vector<CMemoryBuffer> & uniformBufVec,
+    const CPipelineData & rPipelineData,
+    const CDescriptorData & rDescData,
+    const size_t MAX_POOL_SIZE )
+{
+    // Allocate a new descriptor pool and add it to the list
+    auto descPool = CDeviceVulkan::createDescriptorPool( rDescData, MAX_POOL_SIZE );
+    allocIter->second.m_descriptorPoolVec.push_back( descPool );
+
+    // Allocate the first descriptor set of this new pool
+    auto descSetVec = CDeviceVulkan::allocateDescriptorSetVec( rPipelineData, descPool );
+    CDeviceVulkan::updateDescriptorSetVec( descSetVec, texture, rDescData, uniformBufVec );
+
+    // Allocate a new spot for more descriptor sets and add the first one
+    // NOTE: Reserve the vec so that the memory location doesn't change after a push_back
+    allocIter->second.m_descriptorSetDeqVec.emplace_back();
+    allocIter->second.m_descriptorSetDeqVec.back().reserve( MAX_POOL_SIZE );
+    allocIter->second.m_descriptorSetDeqVec.back().emplace_back( descSetVec );
+
+    return &allocIter->second.m_descriptorSetDeqVec.back().back();
+}
+
+
+/***************************************************************************
+*   DESC:  Update the descriptor set
+****************************************************************************/
+void CDevice::updateDescriptorSet(
+    CDescriptorSet * pDescriptorSet,
+    int pipelineIndex,
+    const CTexture & texture,
+    const std::vector<CMemoryBuffer> & uniformBufVec )
+{
+    auto & rPipelineData = getPipelineData( pipelineIndex );
+    auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+
+    CDeviceVulkan::updateDescriptorSetVec( pDescriptorSet->m_descriptorVec, texture, rDescData, uniformBufVec );
+}
+
+
+/***************************************************************************
+*   DESC:  Recycle the descriptor set
+****************************************************************************/
+void CDevice::recycleDescriptorSet( CDescriptorSet * pDescriptorSet )
+{
+    if( pDescriptorSet != nullptr )
+    {
+        pDescriptorSet->m_active = false;
+        pDescriptorSet->m_frameRecycleOffset = m_frameCounter + m_framebufferVec.size();
     }
 }
 
@@ -804,9 +913,6 @@ void CDevice::deleteGroupAssets( const std::string & group )
     // Delete all textures and related assets
     deleteTextureGroup( group );
 
-    // This also deletes all the descriptor sets
-    deleteDescriptorPoolGroup( group );
-
     // Delete the memory buffers
     deleteMemoryBufferGroup( group );
     
@@ -852,24 +958,6 @@ void CDevice::deleteCommandPoolGroup( const std::string & group )
 
         // Erase this group
         m_commandPoolMap.erase( iter );
-    }
-}
-
-
-/************************************************************************
-*    DESC:  Delete the Descriptor Pool group
-************************************************************************/
-void CDevice::deleteDescriptorPoolGroup( const std::string & group )
-{
-    // Free the descriptor pool group if it exists
-    auto mapIter = m_descriptorPoolMapMap.find( group );
-    if( mapIter != m_descriptorPoolMapMap.end() )
-    {
-        for( auto & iter : mapIter->second )
-            vkDestroyDescriptorPool( m_logicalDevice, iter.second, nullptr );
-
-        // Erase this group
-        m_descriptorPoolMapMap.erase( mapIter );
     }
 }
 
@@ -965,8 +1053,8 @@ void CDevice::setWindowTitle( const std::string & title )
 void CDevice::initStartupGamepads()
 {
     // May not need this anymore
-    int newMappings = SDL_GameControllerAddMappingsFromFile("data/settings/gamecontrollerdb.txt");
-    NGenFunc::PostDebugMsg( boost::str( boost::format("New controller mappings found: %d - Number of controllers found: %d") % newMappings % (int)SDL_NumJoysticks() ) );
+    //int newMappings = SDL_GameControllerAddMappingsFromFile("data/settings/gamecontrollerdb.txt");
+    //NGenFunc::PostDebugMsg( boost::str( boost::format("New controller mappings found: %d - Number of controllers found: %d") % newMappings % (int)SDL_NumJoysticks() ) );
 
     for( int i = 0; i < SDL_NumJoysticks(); ++i )
         addGamepad( i );
@@ -1090,7 +1178,7 @@ const CDescriptorData & CDevice::getDescriptorData( const std::string & id ) con
 ****************************************************************************/
 void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer )
 {
-    // Setup to begine recording the command buffer
+    // Setup to begin recording the command buffer
     VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
     cmdBufInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
     cmdBufInheritanceInfo.framebuffer = m_framebufferVec[index];
@@ -1200,14 +1288,14 @@ void CDevice::freeMemoryBuffer( CMemoryBuffer & memoryBuffer )
 ************************************************************************/
 void CDevice::AddToDeleteQueue( CMemoryBuffer & memBuff )
 {
-    auto mapIter = m_memoryDeleteMap.find( m_currentFrame );
+    auto mapIter = m_memoryDeleteMap.find( m_frameCounter + m_framebufferVec.size() );
     if( mapIter != m_memoryDeleteMap.end() )
     {
         mapIter->second.push_back( memBuff );
     }
     else
     {
-        auto iter = m_memoryDeleteMap.emplace( m_currentFrame, std::vector<CMemoryBuffer>() );
+        auto iter = m_memoryDeleteMap.emplace( m_frameCounter + m_framebufferVec.size(), std::vector<CMemoryBuffer>() );
         iter.first->second.push_back( memBuff );
     }
 }
@@ -1421,4 +1509,13 @@ void CDevice::tagCheck( SDL_RWops * file, const std::string & filePath )
 bool CDevice::isTransferQueueUnique()
 {
     return (m_transferQueue != m_graphicsQueue);
+}
+
+
+/************************************************************************
+ *    DESC: Get the number of frames since the start of the game
+ ************************************************************************/
+uint32_t CDevice::getFrameCounter()
+{
+    return m_frameCounter;
 }

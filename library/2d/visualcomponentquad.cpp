@@ -28,22 +28,30 @@
 CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
     iVisualComponent( objectData ),
     m_rObjectData( objectData ),
-    m_quadVertScale( objectData.getSize() * objectData.getVisualData().getDefaultUniformScale() )
+    m_quadVertScale( objectData.getSize() * objectData.getVisualData().getDefaultUniformScale() ),
+    m_pDescriptorSet(nullptr)
 {
     auto & device( CDevice::Instance() );
     const uint32_t pipelineIndex( objectData.getVisualData().getPipelineIndex() );
 
     // Create the uniform buffer
     m_uniformBufVec = device.createUniformBufferVec( pipelineIndex );
+
+    // Create the descriptor set
+    if( GENERATION_TYPE != NDefs::EGT_FONT )
+        m_pDescriptorSet = device.getDescriptorSet(
+            pipelineIndex,
+            objectData.getVisualData().getTexture(),
+            m_uniformBufVec );
     
     // Create the push descriptor set
     // This is just data and doesn't need to be freed
-    if( GENERATION_TYPE != NDefs::EGT_FONT )
-        device.createPushDescriptorSet(
-            pipelineIndex,
-            objectData.getVisualData().getTexture(),
-            m_uniformBufVec,
-            m_pushDescSet );
+    // if( GENERATION_TYPE != NDefs::EGT_FONT )
+    //     device.createPushDescriptorSet(
+    //         pipelineIndex,
+    //         objectData.getVisualData().getTexture(),
+    //         m_uniformBufVec,
+    //         m_pushDescSet );
 }
 
 
@@ -53,6 +61,7 @@ CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
 CVisualComponentQuad::~CVisualComponentQuad()
 {
     CDevice::Instance().AddToDeleteQueue( m_uniformBufVec );
+    CDevice::Instance().recycleDescriptorSet( m_pDescriptorSet );
 }
 
 
@@ -90,8 +99,13 @@ void CVisualComponentQuad::recordCommandBuffer(
         // Bind the index buffer
         vkCmdBindIndexBuffer( cmdBuffer, rVisualData.getIBO().m_buffer, 0, VK_INDEX_TYPE_UINT16 );
 
+        // With the regular descriptor set implementation, objects that use the same texture and UBO can't share the same
+        // descriptor set because the translation matrix is part of the UBO the objects sharing this will render ontop of each other
+        vkCmdBindDescriptorSets( 
+            cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipelineLayout, 0, 1, &m_pDescriptorSet->m_descriptorVec[index], 0, nullptr );
+
         // Use the push descriptors
-        m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+        //m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
 
         // Do the draw
         vkCmdDrawIndexed( cmdBuffer, rVisualData.getIBOCount(), 1, 0, 0, 0 );
@@ -135,9 +149,20 @@ void CVisualComponentQuad::setFrame( uint index )
     
     m_quadVertScale.w = rTexture.size.w * defScale;
     m_quadVertScale.h = rTexture.size.h * defScale;
+
+    // Recycle if the descriptor set is not null
+    // Can't update the descriptor set because it could be actuve in the command buffer.
+    // The strategy is to recycle the current one and grab a fresh one
+    if( m_pDescriptorSet != nullptr )
+        CDevice::Instance().recycleDescriptorSet( m_pDescriptorSet );
+        
+    m_pDescriptorSet = CDevice::Instance().getDescriptorSet(
+        m_rObjectData.getVisualData().getPipelineIndex(),
+        rTexture,
+        m_uniformBufVec );
     
     // Update the texture
-    m_pushDescSet.updateTexture( rTexture );
+    //m_pushDescSet.updateTexture( rTexture );
 }
 
 

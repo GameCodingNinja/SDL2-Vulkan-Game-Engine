@@ -80,10 +80,6 @@ public:
     virtual float getDefaultUniformScale() const
     { return 0.f; }
     
-    // Create a unique descriptor texture id to add to a list
-    virtual void addToDescSet( const std::string & descriptorId, std::set<std::string> & descUniqueLst ) const
-    {}
-    
     // Get the mesh3d vector
     virtual const CModel & getModel() const
     { return m_null_model; }

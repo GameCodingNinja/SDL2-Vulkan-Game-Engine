@@ -12,6 +12,9 @@
 #include <system/devicevulkan.h>
 
 // Standard lib dependencies
+#include <system/descriptorallocator.h>
+
+// Standard lib dependencies
 #include <functional>
 #include <string>
 #include <vector>
@@ -72,11 +75,17 @@ public:
         const std::vector<CMemoryBuffer> & uniformBufVec,
         CPushDescriptorSet & pushDescSet );
 
+    // Get the descriptor sets
+    CDescriptorSet * getDescriptorSet(
+        int pipelineIndex,
+        const CTexture & texture,
+        const std::vector<CMemoryBuffer> & uniformBufVec );
+
+    // Recycle the descriptor set
+    void recycleDescriptorSet( CDescriptorSet * pDescriptorSet );
+
     // Load the image from file path
     CTexture & createTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
-
-    // Create the descriptor pool group for the textures
-    void createDescriptorPoolGroup( const std::string & group, const std::string & descrId, const CDescriptorData & descData, size_t count );
 
     // Create uniform buffer
     std::vector<CMemoryBuffer> createUniformBufferVec( uint32_t pipelineIndex );
@@ -211,6 +220,9 @@ public:
     // Is the transfer queue unique to allow for loading and rendering at the same time?
     bool isTransferQueueUnique();
 
+    // Get the number of frames since the start of the game
+    uint32_t getFrameCounter();
+
 private:
 
     // Constructor
@@ -233,9 +245,6 @@ private:
 
     // Delete the texture in a group
     void deleteTextureGroup( const std::string & group );
-
-    // Delete the Descriptor Pool group
-    void deleteDescriptorPoolGroup( const std::string & group );
 
     // Delete the memory buffer group
     void deleteMemoryBufferGroup( const std::string & group );
@@ -272,6 +281,25 @@ private:
     // Do the tag check to insure we are in the correct spot
     void tagCheck( SDL_RWops * file, const std::string & filePath );
 
+    // Allocate the descriptor pool and first sets
+    CDescriptorSet * allocateDescriptorPoolSet(
+        std::map< const std::string, CDescriptorAllocator >::iterator & allocIter,
+        const CTexture & texture,
+        const std::vector<CMemoryBuffer> & uniformBufVec,
+        const CPipelineData & rPipelineData,
+        const CDescriptorData & rDescData,
+        const size_t MAX_POOL_SIZE );
+
+    // Update the descriptor set
+    void updateDescriptorSet(
+        CDescriptorSet * pDescriptorSet,
+        int pipelineIndex,
+        const CTexture & texture,
+        const std::vector<CMemoryBuffer> & uniformBufVec );
+
+    // Handle memory operations based on frame counter
+    void frameCounterMemoryOperations();
+
 private:
 
     // Record ommand buffer call back function
@@ -289,8 +317,8 @@ private:
     // Map containing a group of texture handles
     std::map< const std::string, std::map< const std::string, CTexture > > m_textureMapMap;
 
-    // Map containing a group of descriptor pools
-    std::map< const std::string, std::map< const std::string, VkDescriptorPool > > m_descriptorPoolMapMap;
+    // Map containing a group of descriptor allocator
+    std::map< const std::string, CDescriptorAllocator > m_descriptorAllocatorMap;
 
     // Map containing a group of memory buffer handles
     std::map< const std::string, std::map< const std::string, CMemoryBuffer > > m_memoryBufferMapMap;
@@ -330,6 +358,12 @@ private:
 
     // Shared font IBO
     CMemoryBuffer m_sharedFontIbo;
+
+    // counter that increments for each frame
+    uint32_t m_frameCounter = 0;
+
+    // The current frame
+    size_t m_currentFrame = 0;
 };
 
 #endif

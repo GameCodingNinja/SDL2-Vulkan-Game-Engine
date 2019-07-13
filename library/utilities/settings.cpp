@@ -36,6 +36,7 @@ CSettings::CSettings() :
     m_major(1),
     m_minor(0),
     m_validationLayers(false),
+    m_maxDescriptoSetsPerPool(20),
     m_viewAngle(45.f),
     m_minZdist(5.f),
     m_maxZdist(1000.f),
@@ -192,6 +193,9 @@ void CSettings::loadXML()
                 if( vulkanNode.isAttributeSet("validationLayers") )
                     m_validationLayers = ( std::strcmp( vulkanNode.getAttribute("validationLayers"), "true" ) == 0 );
                 //#endif
+
+                if( vulkanNode.isAttributeSet("maxDescriptoSetsPerPool") )
+                    m_maxDescriptoSetsPerPool = std::atoi( vulkanNode.getAttribute("maxDescriptoSetsPerPool") );
             }
 
             // Get the projection info
@@ -509,6 +513,15 @@ int CSettings::getMinorVersion() const
 bool CSettings::isValidationLayers() const
 {
     return m_validationLayers;
+}
+
+
+/************************************************************************
+*    DESC:  Get the max descriptor sets per pool
+************************************************************************/
+int CSettings::getMaxDescriptoSetsPerPool() const
+{
+    return m_maxDescriptoSetsPerPool;
 }
 
 

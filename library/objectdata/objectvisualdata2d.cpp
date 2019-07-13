@@ -894,27 +894,3 @@ float CObjectVisualData2D::getDefaultUniformScale() const
 {
     return m_defaultUniformScale;
 }
-
-
-/************************************************************************
-*    DESC:  Create a unique descriptor / texture id to add to a set
-*           Adding it to a set allows us to get a count of the unique entries
-*           This is all it's used for
-************************************************************************/
-void CObjectVisualData2D::addToDescSet( const std::string & rDescriptorId, std::set<std::string> & descUniqueLst ) const
-{
-    const std::string descriptorId = CDevice::Instance().getPipelineData( m_pipelineIndex ).m_descriptorId;
-
-    if( rDescriptorId == descriptorId )
-    {
-        if( m_textureSequenceCount > 0 )
-        {
-            for( int i = 0; i < m_textureSequenceCount; ++i )
-                descUniqueLst.insert( descriptorId + boost::str( boost::format(m_textureFilePath) % i ) );
-        }
-        else
-        {
-            descUniqueLst.insert( descriptorId + m_textureFilePath );
-        }
-    }
-}

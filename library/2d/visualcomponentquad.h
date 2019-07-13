@@ -12,7 +12,8 @@
 #include <common/ivisualcomponent.h>
 
 // Game lib dependencies
-#include <common/pushdescriptorset.h>
+//#include <common/pushdescriptorset.h>
+#include <system/descriptorset.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -68,12 +69,15 @@ protected:
     
     // Reference to object visual data
     const CObjectData2D & m_rObjectData;
-
-    // Push Descriptor set
-    CPushDescriptorSet m_pushDescSet;
     
     // The scale of the quad
     CSize<float> m_quadVertScale;
+
+    // Descriptor Set for this image
+    CDescriptorSet * m_pDescriptorSet;
+
+    // Push Descriptor set
+    //CPushDescriptorSet m_pushDescSet;
 };
 
 #endif
