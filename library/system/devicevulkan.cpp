@@ -1884,11 +1884,14 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 
 /***************************************************************************
 *   DESC:  Create descriptor pool
+*          NOTE: Each discriptor count must equal the total number needed in the pool
 ****************************************************************************/
 VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData )
 {
     VkResult vkResult(VK_SUCCESS);
     std::vector<VkDescriptorPoolSize> descriptorPoolVec;
+    descriptorPoolVec.reserve( descData.m_descriptorVec.size() );
+    const uint32_t MAX_POOL_SIZE( m_framebufferVec.size() * descData.m_descPoolMax );
 
     for( auto & descIdIter : descData.m_descriptorVec )
     {
@@ -1897,7 +1900,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
         {
             VkDescriptorPoolSize uniformBufferPoolSize = {};
             uniformBufferPoolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-            uniformBufferPoolSize.descriptorCount = m_framebufferVec.size();
+            uniformBufferPoolSize.descriptorCount = MAX_POOL_SIZE;
 
             descriptorPoolVec.push_back( uniformBufferPoolSize );
         }
@@ -1905,7 +1908,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
         {
             VkDescriptorPoolSize combinedImageSamplerPoolSize = {};
             combinedImageSamplerPoolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-            combinedImageSamplerPoolSize.descriptorCount = m_framebufferVec.size();
+            combinedImageSamplerPoolSize.descriptorCount = MAX_POOL_SIZE;
 
             descriptorPoolVec.push_back( combinedImageSamplerPoolSize );
         }
@@ -1919,7 +1922,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = descriptorPoolVec.size();
     poolInfo.pPoolSizes = descriptorPoolVec.data();
-    poolInfo.maxSets = m_framebufferVec.size() * descData.m_descPoolMax;
+    poolInfo.maxSets = MAX_POOL_SIZE;
     poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 
     VkDescriptorPool descriptorPool( VK_NULL_HANDLE );
@@ -1944,7 +1947,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::allocateDescriptorSetVec(
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = descriptorPool;
-    allocInfo.descriptorSetCount = m_framebufferVec.size();
+    allocInfo.descriptorSetCount = layouts.size();
     allocInfo.pSetLayouts = layouts.data();
 
     std::vector<VkDescriptorSet> descriptorSetVec( m_framebufferVec.size() );
