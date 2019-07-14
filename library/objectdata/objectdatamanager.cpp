@@ -9,7 +9,6 @@
 #include <objectdata/objectdatamanager.h>
 
 // Game lib dependencies
-#include <common/pipeline.h>
 #include <sprite/spritedata.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
@@ -18,6 +17,7 @@
 #include <objectdata/objectdata3d.h>
 #include <managers/spritesheetmanager.h>
 #include <system/device.h>
+#include <system/pipeline.h>
 
 // Standard lib dependencies
 #include <set>

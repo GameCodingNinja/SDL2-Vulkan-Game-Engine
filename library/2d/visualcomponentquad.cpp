@@ -13,10 +13,10 @@
 #include <objectdata/iobjectvisualdata.h>
 #include <utilities/matrix.h>
 #include <utilities/statcounter.h>
-#include <common/uniformbufferobject.h>
-#include <common/pipeline.h>
 #include <common/camera.h>
 #include <system/device.h>
+#include <system/pipeline.h>
+#include <system/uniformbufferobject.h>
 #include <2d/object2d.h>
 
 // Boost lib dependencies

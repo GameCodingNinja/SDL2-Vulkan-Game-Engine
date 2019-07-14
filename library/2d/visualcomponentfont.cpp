@@ -11,11 +11,11 @@
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
 #include <objectdata/iobjectvisualdata.h>
-#include <common/uniformbufferobject.h>
 #include <common/quad2d.h>
-#include <common/pipeline.h>
 #include <common/camera.h>
 #include <system/device.h>
+#include <system/pipeline.h>
+#include <system/uniformbufferobject.h>
 #include <managers/fontmanager.h>
 #include <utilities/genfunc.h>
 #include <utilities/statcounter.h>

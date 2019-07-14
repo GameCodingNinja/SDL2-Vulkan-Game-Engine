@@ -12,10 +12,10 @@
 #include <common/defs.h>
 #include <common/size.h>
 #include <common/color.h>
-#include <common/memorybuffer.h>
 #include <common/texture.h>
 #include <common/model.h>
 #include <sprite/spritesheet.h>
+#include <system/memorybuffer.h>
 
 // Standard lib dependencies
 #include <string>

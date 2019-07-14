@@ -13,9 +13,9 @@
 #include <objectdata/iobjectvisualdata.h>
 #include <system/device.h>
 #include <system/descriptorset.h>
+#include <system/pipeline.h>
+#include <system/uniformbufferobject.h>
 #include <utilities/statcounter.h>
-#include <common/uniformbufferobject.h>
-#include <common/pipeline.h>
 #include <common/camera.h>
 #include <2d/object2d.h>
 

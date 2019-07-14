@@ -19,9 +19,9 @@
 #include <common/defs.h>
 #include <common/scaledframe.h>
 #include <common/texture.h>
-#include <common/memorybuffer.h>
 #include <common/vertex.h>
 #include <sprite/spritesheet.h>
+#include <system/memorybuffer.h>
 
 // Standard lib dependencies
 #include <string>

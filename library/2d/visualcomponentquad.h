@@ -12,7 +12,7 @@
 #include <common/ivisualcomponent.h>
 
 // Game lib dependencies
-//#include <common/pushdescriptorset.h>
+//#include <system/pushdescriptorset.h>
 #include <system/descriptorset.h>
 
 // Boost lib dependencies

@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/uniformbufferobject.h>
+#include <system/uniformbufferobject.h>
 
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>

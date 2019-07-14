@@ -287,8 +287,7 @@ private:
         const CTexture & texture,
         const std::vector<CMemoryBuffer> & uniformBufVec,
         const CPipelineData & rPipelineData,
-        const CDescriptorData & rDescData,
-        const size_t MAX_POOL_SIZE );
+        const CDescriptorData & rDescData );
 
     // Update the descriptor set
     void updateDescriptorSet(

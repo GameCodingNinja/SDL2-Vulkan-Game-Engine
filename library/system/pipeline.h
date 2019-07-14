@@ -45,7 +45,13 @@ public:
         std::string m_descrId;
     };
 
+    CDescriptorData( const size_t descPoolMax ) : m_descPoolMax( descPoolMax )
+    {}
+
     std::vector<CDescriptor> m_descriptorVec;
+
+    // Descriptor pool max
+    const size_t m_descPoolMax;
 };
 
 class CShader

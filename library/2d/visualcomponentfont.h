@@ -13,7 +13,7 @@
 
 // Game lib dependencies
 #include <common/fontdata.h>
-#include <common/memorybuffer.h>
+#include <system/memorybuffer.h>
 
 // Forward declaration(s)
 class CFont;

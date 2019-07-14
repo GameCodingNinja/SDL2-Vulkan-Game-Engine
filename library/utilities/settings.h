@@ -69,9 +69,6 @@ public:
     // Do we want validation layers
     bool isValidationLayers() const;
 
-    // Get the max descriptor sets per pool
-    int getMaxDescriptoSetsPerPool() const;
-
     // Get the view angle
     float getViewAngle() const;
 
@@ -203,7 +200,6 @@ private:
     int m_major;
     int m_minor;
     bool m_validationLayers;
-    int m_maxDescriptoSetsPerPool;
 
     // view angle
     float m_viewAngle;

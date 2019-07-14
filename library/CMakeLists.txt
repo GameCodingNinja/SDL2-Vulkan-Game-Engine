@@ -86,6 +86,8 @@ add_library(
         script/scriptphysics2d.cpp
         system/devicevulkan.cpp
         system/device.cpp
+        system/uniformbufferobject.cpp
+        system/pushdescriptorset.cpp
         utilities/xmlparsehelper.cpp
         utilities/statcounter.cpp
         utilities/genfunc.cpp
@@ -147,8 +149,6 @@ add_library(
         common/ivisualcomponent.cpp
         common/visual.cpp
         common/vertex.cpp
-        common/uniformbufferobject.cpp
-        common/pushdescriptorset.cpp
         common/dynamicoffset.cpp
         common/camera.cpp
         common/cameradata.cpp

@@ -8,7 +8,7 @@
 #define __mesh_h__
 
 // Game lib dependencies
-#include <common/memorybuffer.h>
+#include <system/memorybuffer.h>
 
 // Standard lib dependencies
 #include <vector>

@@ -11,9 +11,9 @@
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
 #include <objectdata/iobjectvisualdata.h>
-#include <common/uniformbufferobject.h>
 #include <common/camera.h>
 #include <system/device.h>
+#include <system/uniformbufferobject.h>
 #include <2d/object2d.h>
 
 // Boost lib dependencies

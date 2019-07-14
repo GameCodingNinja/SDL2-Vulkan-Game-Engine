@@ -18,12 +18,12 @@
 #include <common/texture.h>
 #include <common/color.h>
 #include <common/model.h>
-#include <common/memorybuffer.h>
-#include <common/uniformbufferobject.h>
 #include <common/vertex.h>
-#include <common/pipeline.h>
-#include <common/pushdescriptorset.h>
 #include <common/meshbinaryfileheader.h>
+#include <system/pipeline.h>
+#include <system/uniformbufferobject.h>
+#include <system/pushdescriptorset.h>
+#include <system/memorybuffer.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -578,8 +578,6 @@ CDescriptorSet * CDevice::getDescriptorSet(
     const CTexture & texture,
     const std::vector<CMemoryBuffer> & uniformBufVec )
 {
-    const size_t MAX_POOL_SIZE( CSettings::Instance().getMaxDescriptoSetsPerPool() );
-
     auto & rPipelineData = getPipelineData( pipelineIndex );
     auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
 
@@ -588,7 +586,7 @@ CDescriptorSet * CDevice::getDescriptorSet(
     if( allocIter == m_descriptorAllocatorMap.end() )
     {
         allocIter = m_descriptorAllocatorMap.emplace( rPipelineData.m_descriptorId, CDescriptorAllocator() ).first;
-        return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData, MAX_POOL_SIZE );
+        return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData );
     }
 
     // See if there are any free descriptors sets available to reuse and return
@@ -615,7 +613,7 @@ CDescriptorSet * CDevice::getDescriptorSet(
     // See if there are any open spots that can be allocated
     for( size_t i = 0; i < allocIter->second.m_descriptorSetDeqVec.size(); ++i )
     {
-        if( allocIter->second.m_descriptorSetDeqVec[i].size() < MAX_POOL_SIZE )
+        if( allocIter->second.m_descriptorSetDeqVec[i].size() < rDescData.m_descPoolMax )
         {
             // Get the pool for this descriptor index
             auto descPool = allocIter->second.m_descriptorPoolVec.at(i);
@@ -630,7 +628,7 @@ CDescriptorSet * CDevice::getDescriptorSet(
     }
 
     // If we made it this far, we need to allocate a new pool for more descriptor sets
-    return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData, MAX_POOL_SIZE );
+    return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData );
 }
 
 
@@ -642,12 +640,13 @@ CDescriptorSet * CDevice::allocateDescriptorPoolSet(
     const CTexture & texture,
     const std::vector<CMemoryBuffer> & uniformBufVec,
     const CPipelineData & rPipelineData,
-    const CDescriptorData & rDescData,
-    const size_t MAX_POOL_SIZE )
+    const CDescriptorData & rDescData )
 {
     // Allocate a new descriptor pool and add it to the list
-    auto descPool = CDeviceVulkan::createDescriptorPool( rDescData, MAX_POOL_SIZE );
+    auto descPool = CDeviceVulkan::createDescriptorPool( rDescData );
     allocIter->second.m_descriptorPoolVec.push_back( descPool );
+
+    NGenFunc::PostDebugMsg( boost::str( boost::format("Descriptor pool allocated: %s, %d") % rPipelineData.m_descriptorId % rDescData.m_descPoolMax ) );
 
     // Allocate the first descriptor set of this new pool
     auto descSetVec = CDeviceVulkan::allocateDescriptorSetVec( rPipelineData, descPool );
@@ -656,7 +655,7 @@ CDescriptorSet * CDevice::allocateDescriptorPoolSet(
     // Allocate a new spot for more descriptor sets and add the first one
     // NOTE: Reserve the vec so that the memory location doesn't change after a push_back
     allocIter->second.m_descriptorSetDeqVec.emplace_back();
-    allocIter->second.m_descriptorSetDeqVec.back().reserve( MAX_POOL_SIZE );
+    allocIter->second.m_descriptorSetDeqVec.back().reserve( rDescData.m_descPoolMax );
     allocIter->second.m_descriptorSetDeqVec.back().emplace_back( descSetVec );
 
     return &allocIter->second.m_descriptorSetDeqVec.back().back();
@@ -722,8 +721,9 @@ void CDevice::createPipelines( const std::string & filePath )
     {
         const XMLNode descriptorNode = descriptorLstNode.getChildNode(i);
         const std::string descId = descriptorNode.getAttribute("id");
+        const size_t descPoolMax = std::atoi(descriptorNode.getAttribute("maxDescriptorPool"));
 
-        CDescriptorData descriptorData;
+        CDescriptorData descriptorData( descPoolMax );
 
         // Populate with the descriptors with binding info
         for( int j = 0; j < descriptorNode.nChildNode("binding"); ++j )

@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/pushdescriptorset.h>
+#include <system/pushdescriptorset.h>
 
 // Game lib dependencies
 #include <common/texture.h>

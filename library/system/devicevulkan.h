@@ -10,7 +10,7 @@
 
 // Game lib dependencies
 #include <common/defs.h>
-#include <common/memorybuffer.h>
+#include <system/memorybuffer.h>
 
 // Standard lib dependencies
 #include <cstring>
@@ -69,7 +69,7 @@ protected:
     void createTexture( CTexture & texture, bool mipMap );
     
     // Create descriptor pool
-    VkDescriptorPool createDescriptorPool( const CDescriptorData & descData, size_t setCount );
+    VkDescriptorPool createDescriptorPool( const CDescriptorData & descData );
 
     // Allocate the descriptor sets
     std::vector<VkDescriptorSet> allocateDescriptorSetVec(

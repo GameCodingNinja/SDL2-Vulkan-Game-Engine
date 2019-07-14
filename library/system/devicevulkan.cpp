@@ -15,7 +15,7 @@
 #include <common/texture.h>
 #include <common/size.h>
 #include <common/vertex.h>
-#include <common/pipeline.h>
+#include <system/pipeline.h>
 #include <soil/SOIL.h>
 
 // Boost lib dependencies
@@ -1885,7 +1885,7 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 /***************************************************************************
 *   DESC:  Create descriptor pool
 ****************************************************************************/
-VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData, size_t setCount )
+VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData )
 {
     VkResult vkResult(VK_SUCCESS);
     std::vector<VkDescriptorPoolSize> descriptorPoolVec;
@@ -1919,10 +1919,10 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = descriptorPoolVec.size();
     poolInfo.pPoolSizes = descriptorPoolVec.data();
-    poolInfo.maxSets = m_framebufferVec.size() * setCount;
+    poolInfo.maxSets = m_framebufferVec.size() * descData.m_descPoolMax;
     poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 
-    VkDescriptorPool descriptorPool;
+    VkDescriptorPool descriptorPool( VK_NULL_HANDLE );
 
     if( (vkResult = vkCreateDescriptorPool( m_logicalDevice, &poolInfo, nullptr, &descriptorPool )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError(vkResult) ) );
