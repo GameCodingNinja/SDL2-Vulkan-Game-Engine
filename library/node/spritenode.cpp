@@ -16,13 +16,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteNode::CSpriteNode( const CObjectData2D & objectData, int spriteId ) :
-    m_sprite(objectData, spriteId)
-{
-    m_type = NDefs::ENT_SPRITE;
-}
-
-CSpriteNode::CSpriteNode( const CObjectData3D & objectData, int spriteId ) :
+CSpriteNode::CSpriteNode( const iObjectData & objectData, int spriteId ) :
     m_sprite(objectData, spriteId)
 {
     m_type = NDefs::ENT_SPRITE;

@@ -23,7 +23,7 @@
 #include <string>
 
 // Forward declaration(s)
-class CObjectData3D;
+class iObjectData;
 class CModel;
 class CDevice;
 class iObjectVisualData;
@@ -34,7 +34,7 @@ class CVisualComponent3D : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
-    CVisualComponent3D( const CObjectData3D & objectData );
+    CVisualComponent3D( const iObjectData & objectData );
 
     // Destructor
     ~CVisualComponent3D();
@@ -59,7 +59,7 @@ private:
 private:
 
     // Reference to object visual data
-    const CObjectData3D & m_rObjectData;
+    const iObjectData & m_rObjectData;
 
     // Copy of model data
     const CModel & m_rModel;

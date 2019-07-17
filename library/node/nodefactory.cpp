@@ -41,11 +41,7 @@ namespace NNodeFactory
         // Single node sprite that doesn't support children. Low overhead for when you only need one sprite with no children
         if( rNodeData.getNodeType() == NDefs::ENT_SPRITE )
         {
-            if( rNodeData.getSpriteType() == NDefs::EST_SPRITE2D )
-                pNode = new CSpriteNode( CObjectDataMgr::Instance().getData2D( rNodeData.getGroup(), rNodeData.getObjectName() ), nodeId );
-            
-            else if( rNodeData.getSpriteType() == NDefs::EST_SPRITE3D )
-                pNode = new CSpriteNode( CObjectDataMgr::Instance().getData3D( rNodeData.getGroup(), rNodeData.getObjectName() ), nodeId );
+            pNode = new CSpriteNode( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ), nodeId );
 
             Load( pNode->getSprite(), rNodeData );
         }
@@ -57,19 +53,11 @@ namespace NNodeFactory
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
         {
-            if( rNodeData.getSpriteType() == NDefs::EST_SPRITE2D )
-                pNode = new CSpriteNodeMultiLst(
-                        CObjectDataMgr::Instance().getData2D( rNodeData.getGroup(), rNodeData.getObjectName() ),
-                        nodeId,
-                        rNodeData.getNodeId(),
-                        rNodeData.getParentNodeId() );
-            
-            else if( rNodeData.getSpriteType() == NDefs::EST_SPRITE3D )
-                pNode = new CSpriteNodeMultiLst(
-                        CObjectDataMgr::Instance().getData3D( rNodeData.getGroup(), rNodeData.getObjectName() ),
-                        nodeId,
-                        rNodeData.getNodeId(),
-                        rNodeData.getParentNodeId() );
+            pNode = new CSpriteNodeMultiLst(
+                    CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
+                    nodeId,
+                    rNodeData.getNodeId(),
+                    rNodeData.getParentNodeId() );
                 
             Load( pNode->getSprite(), rNodeData );
         }

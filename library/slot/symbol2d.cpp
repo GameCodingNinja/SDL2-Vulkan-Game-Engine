@@ -24,7 +24,7 @@ CSymbol2d::CSymbol2d( const std::vector<CSpriteData> & rSpriteDataVec, const std
 {
     for( auto & iter : rSpriteDataVec )
     {
-        m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData2D( iter.getGroup(), iter.getObjectName() ) );
+        m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData( iter.getGroup(), iter.getObjectName() ) );
 
         m_spriteDeq.back().getObject()->setVisible( iter.isVisible() );
 

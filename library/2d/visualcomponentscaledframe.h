@@ -19,7 +19,7 @@ class CVisualComponentScaledFrame : public CVisualComponentQuad
 public:
 
     // Constructor
-    CVisualComponentScaledFrame( const CObjectData2D & objectData );
+    CVisualComponentScaledFrame( const iObjectData & objectData );
 
     // Destructor
     virtual ~CVisualComponentScaledFrame();
@@ -38,6 +38,4 @@ private:
         const CCamera & camera ) override;
 };
 
-#endif  // __visual_component_scaledframe_h__
-
-
+#endif

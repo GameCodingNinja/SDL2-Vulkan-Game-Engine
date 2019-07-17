@@ -54,7 +54,7 @@ CLoadState::~CLoadState()
     
     CStrategyMgr::Instance().deleteStrategy( "(load)" );
     CDevice::Instance().deleteCommandPoolGroup( "(load)" );
-    CObjectDataMgr::Instance().freeGroup2D( "(load)" );
+    CObjectDataMgr::Instance().freeGroup( "(load)" );
 }
 
 
@@ -64,7 +64,7 @@ CLoadState::~CLoadState()
 void CLoadState::init()
 {
     // Load group specific assets
-    CObjectDataMgr::Instance().loadGroup2D( "(load)" );
+    CObjectDataMgr::Instance().loadGroup( "(load)" );
     
     // Add the actor strategy
     // Command buffers can only be used in the thread they are created

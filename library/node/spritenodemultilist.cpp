@@ -15,18 +15,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CSpriteNodeMultiLst::CSpriteNodeMultiLst(
-    const CObjectData2D & objectData,
-    int spriteId,
-    int nodeId,
-    int parentId ) :
-        CNodeMultiLst(nodeId, parentId),
-        m_sprite(objectData, spriteId)
-{
-    m_type = NDefs::ENT_SPRITE_MULTI_LIST;
-}
-
-CSpriteNodeMultiLst::CSpriteNodeMultiLst(
-    const CObjectData3D & objectData,
+    const iObjectData & objectData,
     int spriteId,
     int nodeId,
     int parentId ) :

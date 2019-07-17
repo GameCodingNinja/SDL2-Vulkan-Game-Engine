@@ -12,7 +12,7 @@
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-CVisualComponentNull::CVisualComponentNull( const CObjectData2D & objectData ) :
+CVisualComponentNull::CVisualComponentNull( const iObjectData & objectData ) :
     iVisualComponent( objectData )
 {
 }

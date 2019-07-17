@@ -9,7 +9,7 @@
 #include <2d/visualcomponentscaledframe.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata2d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <common/camera.h>
 #include <system/device.h>
@@ -22,7 +22,7 @@
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-CVisualComponentScaledFrame::CVisualComponentScaledFrame( const CObjectData2D & objectData ) :
+CVisualComponentScaledFrame::CVisualComponentScaledFrame( const iObjectData & objectData ) :
     CVisualComponentQuad( objectData )
 {
 }

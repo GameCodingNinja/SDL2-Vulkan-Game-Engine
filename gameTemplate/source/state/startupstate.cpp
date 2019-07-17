@@ -73,7 +73,7 @@ CStartUpState::~CStartUpState()
     
     CStrategyMgr::Instance().deleteStrategy( "(startup)" );
     CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
-    CObjectDataMgr::Instance().freeGroup2D( "(startup)" );
+    CObjectDataMgr::Instance().freeGroup( "(startup)" );
 }
 
 
@@ -100,7 +100,7 @@ void CStartUpState::init()
 
     // Load group specific assets
     CScriptMgr::Instance().loadGroup("(state)");
-    CObjectDataMgr::Instance().loadGroup2D( "(startup)" );
+    CObjectDataMgr::Instance().loadGroup( "(startup)" );
     
     // Add the command buffers to the menu manager
     auto menuCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(menu)" );
@@ -176,7 +176,7 @@ void CStartUpState::assetLoad()
         CScriptMgr::Instance().loadGroup("(menu)");
 
         // Load all of the meshes and materials in these groups
-        CObjectDataMgr::Instance().loadGroup2D("(menu)");
+        CObjectDataMgr::Instance().loadGroup("(menu)");
 
         // Load the menu group
         CMenuMgr::Instance().loadGroup("(menu)");

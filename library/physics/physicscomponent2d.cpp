@@ -10,7 +10,7 @@
 #include <physics/physicscomponent2d.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata2d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/iobjectphysicsdata.h>
 #include <common/ivisualcomponent.h>
 #include <physics/physicsworldmanager2d.h>
@@ -29,7 +29,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CPhysicsComponent2D::CPhysicsComponent2D( const CObjectData2D & objectData ) :
+CPhysicsComponent2D::CPhysicsComponent2D( const iObjectData & objectData ) :
     BODY_TYPE( objectData.getPhysicsData().getBodyType() ),
     m_pBody(nullptr),
     PIXELS_TO_METERS(0),

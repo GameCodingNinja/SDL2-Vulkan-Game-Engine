@@ -9,6 +9,7 @@
 #include <objectdata/objectdata2d.h>
 
 // Game lib dependencies
+#include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>
 #include <objectdata/iobjectvisualdata.h>
 

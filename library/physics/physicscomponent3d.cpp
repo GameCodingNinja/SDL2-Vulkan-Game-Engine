@@ -10,7 +10,7 @@
 #include <physics/physicscomponent3d.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata3d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/objectphysicsdata3d.h>
 #include <physics/physicsworldmanager3d.h>
 #include <physics/physicsworld3d.h>
@@ -28,7 +28,7 @@
 /************************************************************************
  *    DESC:  Constructor
  ************************************************************************/
-CPhysicsComponent3D::CPhysicsComponent3D( const CObjectData3D & objectData ) :
+CPhysicsComponent3D::CPhysicsComponent3D( const iObjectData & objectData ) :
     m_pWorld(nullptr)
 {
     if( objectData.getPhysicsData().isActive() )

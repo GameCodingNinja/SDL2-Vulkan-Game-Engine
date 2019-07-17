@@ -8,6 +8,9 @@
 // Physical component dependency
 #include <objectdata/objectdata3d.h>
 
+// Game lib dependencies
+#include <utilities/xmlParser.h>
+
 // Standard lib dependencies
 #include <math.h>
 

@@ -188,7 +188,7 @@ void CUIControl::loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCo
     std::string objectName = node.getAttribute( "objectName" );
 
     // Internally allocate the sprite in the deque
-    m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( m_group, objectName ) ) );
+    m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData( m_group, objectName ) ) );
     auto pSprite = m_pSpriteVec.back();
 
     // Load the sprite data

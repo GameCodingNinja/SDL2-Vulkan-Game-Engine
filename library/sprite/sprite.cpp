@@ -30,47 +30,43 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSprite::CSprite( const CObjectData2D & objectData, int id ) :
+CSprite::CSprite( const iObjectData & objectData, int id ) :
     m_id( id ),
     m_rObjectData( objectData ),
     m_upObject( new CObject2D )
 {
-    // Create the visual component
-    if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
-        m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
+    if( objectData.is2D() )
+    {
+        // Create the visual component
+        if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
+            m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
 
-    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SPRITE_SHEET )
-        m_upVisualComponent.reset( new CVisualComponentSpriteSheet( objectData ) );
+        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SPRITE_SHEET )
+            m_upVisualComponent.reset( new CVisualComponentSpriteSheet( objectData ) );
 
-    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SCALED_FRAME )
-        m_upVisualComponent.reset( new CVisualComponentScaledFrame( objectData ) );
+        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SCALED_FRAME )
+            m_upVisualComponent.reset( new CVisualComponentScaledFrame( objectData ) );
 
-    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
-        m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
-    
-    else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_NULL )
-        m_upVisualComponent.reset( new CVisualComponentNull( objectData ) );
+        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
+            m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
+        
+        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_NULL )
+            m_upVisualComponent.reset( new CVisualComponentNull( objectData ) );
 
-    // Create the physics component
-    if( objectData.getPhysicsData().isActive() )
-        m_upPhysicsComponent.reset( new CPhysicsComponent2D( objectData ) );
+        // Create the physics component
+        if( objectData.getPhysicsData().isActive() )
+            m_upPhysicsComponent.reset( new CPhysicsComponent2D( objectData ) );
+    }
+    else if( objectData.is3D() )
+    {
+        // Create the visual component
+        if( objectData.getVisualData().isActive() )
+            m_upVisualComponent.reset( new CVisualComponent3D( objectData ) );
 
-    // If there's no visual data, set the hide flag
-    m_upObject->setVisible( objectData.getVisualData().isActive() );
-}
-
-CSprite::CSprite( const CObjectData3D & objectData, int id ) :
-    m_id( id ),
-    m_rObjectData( objectData ),
-    m_upObject( new CObject3D )
-{
-    // Create the visual component
-    if( objectData.getVisualData().isActive() )
-        m_upVisualComponent.reset( new CVisualComponent3D( objectData ) );
-
-    // Create the physics component
-    if( objectData.getPhysicsData().isActive() )
-        m_upPhysicsComponent.reset( new CPhysicsComponent3D( objectData ) );
+        // Create the physics component
+        if( objectData.getPhysicsData().isActive() )
+            m_upPhysicsComponent.reset( new CPhysicsComponent3D( objectData ) );
+    }
 
     // If there's no visual data, set the hide flag
     m_upObject->setVisible( objectData.getVisualData().isActive() );

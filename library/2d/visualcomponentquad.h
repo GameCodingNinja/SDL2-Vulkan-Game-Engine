@@ -19,7 +19,7 @@
 #include <boost/noncopyable.hpp>
 
 // Forward declaration(s)
-class CObjectData2D;
+class iObjectData;
 class iObjectVisualData;
 class CMemoryBuffer;
 class CDevice;
@@ -29,7 +29,7 @@ class CVisualComponentQuad : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
-    CVisualComponentQuad( const CObjectData2D & objectData );
+    CVisualComponentQuad( const iObjectData & objectData );
 
     // Destructor
     virtual ~CVisualComponentQuad();
@@ -68,7 +68,7 @@ protected:
     std::vector<CMemoryBuffer> m_uniformBufVec;
     
     // Reference to object visual data
-    const CObjectData2D & m_rObjectData;
+    const iObjectData & m_rObjectData;
     
     // The scale of the quad
     CSize<float> m_quadVertScale;

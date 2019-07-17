@@ -22,7 +22,7 @@ class CVisualComponentNull : public iVisualComponent, boost::noncopyable
 public:
 
     // Constructor
-    CVisualComponentNull( const CObjectData2D & objectData );
+    CVisualComponentNull( const iObjectData & objectData );
 
     // Destructor
     virtual ~CVisualComponentNull();

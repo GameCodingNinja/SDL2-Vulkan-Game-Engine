@@ -9,7 +9,7 @@
 #include <2d/visualcomponentspritesheet.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata2d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/objectvisualdata2d.h>
 #include <common/camera.h>
 #include <system/device.h>
@@ -19,7 +19,7 @@
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-CVisualComponentSpriteSheet::CVisualComponentSpriteSheet( const CObjectData2D & objectData ) :
+CVisualComponentSpriteSheet::CVisualComponentSpriteSheet( const iObjectData & objectData ) :
     CVisualComponentQuad( objectData )
 {
     m_glyphUV = objectData.getVisualData().getSpriteSheet().getGlyph().getUV();

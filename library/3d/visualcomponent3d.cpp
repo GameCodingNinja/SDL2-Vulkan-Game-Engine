@@ -9,7 +9,7 @@
 #include <3d/visualcomponent3d.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata3d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <system/device.h>
 #include <system/descriptorset.h>
@@ -28,7 +28,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CVisualComponent3D::CVisualComponent3D( const CObjectData3D & objectData ) :
+CVisualComponent3D::CVisualComponent3D( const iObjectData & objectData ) :
     iVisualComponent( objectData ),
     m_rObjectData( objectData ),
     m_rModel( objectData.getVisualData().getModel() ),

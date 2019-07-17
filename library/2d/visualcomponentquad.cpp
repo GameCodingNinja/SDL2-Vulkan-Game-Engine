@@ -9,7 +9,7 @@
 #include <2d/visualcomponentquad.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata2d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <utilities/matrix.h>
 #include <utilities/statcounter.h>
@@ -25,7 +25,7 @@
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-CVisualComponentQuad::CVisualComponentQuad( const CObjectData2D & objectData ) :
+CVisualComponentQuad::CVisualComponentQuad( const iObjectData & objectData ) :
     iVisualComponent( objectData ),
     m_rObjectData( objectData ),
     m_quadVertScale( objectData.getSize() * objectData.getVisualData().getDefaultUniformScale() ),

@@ -17,26 +17,29 @@
 // Forward Declarations
 class iObjectVisualData;
 class iObjectPhysicsData;
+struct XMLNode;
 
 class iObjectData
 {
 public:
+
+    // Load the object data from the passed in node
+    virtual void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name ) = 0;
+
+    // Create the objects from data
+    virtual void createFromData( const std::string & group ) = 0;
     
     // Access functions for the visual data
-    virtual const iObjectVisualData & getVisualData() const
-    { return m_null_objectVisualData; }
+    virtual const iObjectVisualData & getVisualData() const = 0;
     
     // Access functions for the physics data
-    virtual const iObjectPhysicsData & getPhysicsData() const
-    { return m_null_objectPhysicsData; }
+    virtual const iObjectPhysicsData & getPhysicsData() const = 0;
 
     // Access functions for the data name
-    virtual const std::string & getName() const
-    { return m_null_string; }
+    virtual const std::string & getName() const = 0;
 
     // Access functions for the data group
-    virtual const std::string & getGroup() const
-    { return m_null_string; }
+    virtual const std::string & getGroup() const = 0;
 
     // Access functions for the radius
     virtual float getRadius() const
@@ -53,15 +56,18 @@ public:
     // Is the generation type font
     virtual bool isGenTypeFont() const
     { return false; }
+
+    // Is the data type 2D?
+    virtual bool is2D() const
+    { return false; }
+
+    // Is the data type 3D?
+    virtual bool is3D() const
+    { return false; }
     
 private:
-    
-    static iObjectVisualData m_null_objectVisualData;
-    static iObjectPhysicsData m_null_objectPhysicsData;
+
     static CSize<float> m_null_size;
-    static std::string m_null_string;
 };
 
-#endif  // __iobjectdata_h__
-
-
+#endif

@@ -46,8 +46,8 @@ CTitleScreenState::~CTitleScreenState()
     CStrategyMgr::Instance().deleteStrategy( "(title)" );
     CStrategyMgr::Instance().deleteStrategy( "(cube)" );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
-    CObjectDataMgr::Instance().freeGroup2D( "(title)" );
-    CObjectDataMgr::Instance().freeGroup3D( "(cube)" );
+    CObjectDataMgr::Instance().freeGroup( "(title)" );
+    CObjectDataMgr::Instance().freeGroup( "(cube)" );
 }
 
 
@@ -113,8 +113,8 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 ****************************************************************************/
 void CTitleScreenState::load()
 {
-    CObjectDataMgr::Instance().loadGroup2D( "(title)" );
-    CObjectDataMgr::Instance().loadGroup3D( "(cube)" );
+    CObjectDataMgr::Instance().loadGroup( "(title)" );
+    CObjectDataMgr::Instance().loadGroup( "(cube)" );
     
     // Add the strategies
     auto titleStrategy = CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy() );

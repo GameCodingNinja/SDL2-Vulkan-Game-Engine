@@ -187,7 +187,7 @@ void CMenu::loadStaticSpriteFromNode( const XMLNode & node )
     std::string objectName = node.getAttribute( "objectName" );
 
     // Allocate the static sprite in the container
-    m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData2D( m_group, objectName ) ) );
+    m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData( m_group, objectName ) ) );
 
     // Load the transform data
     m_pSpriteVec.back()->getObject()->loadTransFromNode( node );

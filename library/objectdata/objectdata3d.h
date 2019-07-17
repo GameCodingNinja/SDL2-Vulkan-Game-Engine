@@ -30,10 +30,10 @@ public:
     ~CObjectData3D();
 
     // Load the object data from the passed in node
-    void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name );
+    void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name ) override;
 
     // Create the objects from data
-    void createFromData( const std::string & group );
+    void createFromData( const std::string & group ) override;
 
     // Access functions for the visual data
     const iObjectVisualData & getVisualData() const override;
@@ -52,6 +52,10 @@ public:
 
     // Access functions for the radius squared
     float getRadiusSquared() const override;
+
+    // Is the data type 3D?
+    bool is3D() const override
+    { return true; }
 
 private:
 

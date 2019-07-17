@@ -24,7 +24,7 @@
 #include <vector>
 
 // Forward declaration(s)
-class CObjectData2D;
+class iObjectData;
 class CSprite;
 class CPhysicsWorld2D;
 class b2Body;
@@ -35,7 +35,7 @@ class CPhysicsComponent2D : public iPhysicsComponent, boost::noncopyable
 public:
 
     // Constructor
-    CPhysicsComponent2D( const CObjectData2D & objectData );
+    CPhysicsComponent2D( const iObjectData & objectData );
 
     // Destructor
     ~CPhysicsComponent2D();

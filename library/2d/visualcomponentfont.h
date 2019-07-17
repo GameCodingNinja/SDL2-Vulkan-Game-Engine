@@ -23,7 +23,7 @@ class CVisualComponentFont : public CVisualComponentQuad
 public:
 
     // Constructor
-    CVisualComponentFont( const CObjectData2D & objectData );
+    CVisualComponentFont( const iObjectData & objectData );
 
     // Destructor
     virtual ~CVisualComponentFont();
@@ -94,6 +94,4 @@ private:
     size_t m_iboCount;
 };
 
-#endif  // __visual_component_font_h__
-
-
+#endif

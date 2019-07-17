@@ -45,7 +45,7 @@ CRunState::~CRunState()
     CStrategyMgr::Instance().deleteStrategy( "(run)" );
     CStrategyMgr::Instance().deleteStrategy( "(stage)" );
     CDevice::Instance().deleteCommandPoolGroup( "(run)" );
-    CObjectDataMgr::Instance().freeGroup2D( "(run)" );
+    CObjectDataMgr::Instance().freeGroup( "(run)" );
     CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
 }
 
@@ -124,7 +124,7 @@ void CRunState::physics()
 ****************************************************************************/
 void CRunState::load()
 {
-    CObjectDataMgr::Instance().loadGroup2D( "(run)");
+    CObjectDataMgr::Instance().loadGroup( "(run)");
     
     // Create the physics world
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );

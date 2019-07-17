@@ -19,7 +19,7 @@ class CVisualComponentSpriteSheet : public CVisualComponentQuad
 public:
 
     // Constructor
-    CVisualComponentSpriteSheet( const CObjectData2D & objectData );
+    CVisualComponentSpriteSheet( const iObjectData & objectData );
 
     // Destructor
     virtual ~CVisualComponentSpriteSheet();
@@ -46,6 +46,4 @@ private:
     CRect<float> m_glyphUV;
 };
 
-#endif  // __visual_component_spritesheet_h__
-
-
+#endif

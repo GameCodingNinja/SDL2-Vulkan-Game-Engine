@@ -118,7 +118,7 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
 
         if( !objectName.empty() )
         {
-            m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData2D( getGroup(), objectName ) ) );
+            m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData( getGroup(), objectName ) ) );
 
             // Load the transform data
             m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );

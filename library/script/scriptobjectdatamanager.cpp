@@ -41,27 +41,11 @@ namespace NScriptObjectDataManager
     /************************************************************************
     *    DESC:  Load all of the meshes and materials of a specific data group                                                           
     ************************************************************************/
-    void LoadGroup2D( const std::string & group, CObjectDataMgr & rObjectDataMgr )
+    void LoadGroup( const std::string & group, CObjectDataMgr & rObjectDataMgr )
     {
         try
         {
-            rObjectDataMgr.loadGroup2D( group );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-    }
-
-    void LoadGroup3D( const std::string & group, CObjectDataMgr & rObjectDataMgr )
-    {
-        try
-        {
-            rObjectDataMgr.loadGroup3D( group );
+            rObjectDataMgr.loadGroup( group );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -78,11 +62,11 @@ namespace NScriptObjectDataManager
     /************************************************************************
     *    DESC:  Free all of the meshes and materials of a specific data group                                                           
     ************************************************************************/
-    void FreeGroup2D( const std::string & group, CObjectDataMgr & rObjectDataMgr )
+    void FreeGroup( const std::string & group, CObjectDataMgr & rObjectDataMgr )
     {
         try
         {
-            rObjectDataMgr.freeGroup2D( group );
+            rObjectDataMgr.freeGroup( group );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -93,22 +77,7 @@ namespace NScriptObjectDataManager
             asGetActiveContext()->SetException(ex.what());
         }
     }
-    
-    void FreeGroup3D( const std::string & group, CObjectDataMgr & rObjectDataMgr )
-    {
-        try
-        {
-            rObjectDataMgr.freeGroup3D( group );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-    }
+
 
     
     /************************************************************************
@@ -123,11 +92,9 @@ namespace NScriptObjectDataManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CObjectDataMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadListTable(string &in)",  asFUNCTION(LoadListTable), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup2D(string &in)",    asFUNCTION(LoadGroup2D), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup3D(string &in)",    asFUNCTION(LoadGroup3D), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup2D(string &in)",    asFUNCTION(FreeGroup2D), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup3D(string &in)",    asFUNCTION(FreeGroup3D), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadListTable(string &in)", asFUNCTION(LoadListTable), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup(string &in)",     asFUNCTION(LoadGroup), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup(string &in)",     asFUNCTION(FreeGroup), asCALL_CDECL_OBJLAST) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CObjectDataMgr ObjectDataMgr", &CObjectDataMgr::Instance()) );

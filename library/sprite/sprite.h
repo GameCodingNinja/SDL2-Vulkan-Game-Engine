@@ -45,8 +45,7 @@ class CSprite : public boost::noncopyable
 public:
 
     // Constructor
-    CSprite( const CObjectData2D & objectData, int id = defs_SPRITE_DEFAULT_ID );
-    CSprite( const CObjectData3D & objectData, int id = defs_SPRITE_DEFAULT_ID );
+    CSprite( const iObjectData & objectData, int id = defs_SPRITE_DEFAULT_ID );
 
     // Destructor
     virtual ~CSprite();

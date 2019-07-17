@@ -24,8 +24,7 @@
 
 // Forward declaration(s)
 class CMatrix;
-class CObjectData2D;
-class CObjectData3D;
+class iObjectData;
 class CFontProperties;
 class CFontData;
 class CCamera;
@@ -37,8 +36,7 @@ class iVisualComponent : public CVisual
 public:
     
     // Constructor
-    iVisualComponent( const CObjectData2D & objectData );
-    iVisualComponent( const CObjectData3D & objectData );
+    iVisualComponent( const iObjectData & objectData );
     
     // Destructor
     virtual ~iVisualComponent() {}

@@ -9,8 +9,8 @@
 #include <common/ivisualcomponent.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata2d.h>
-#include <objectdata/objectdata3d.h>
+#include <objectdata/iobjectdata.h>
+#include <objectdata/iobjectvisualdata.h>
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -23,15 +23,7 @@ CSize<float> iVisualComponent::m_null_float_size;
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-iVisualComponent::iVisualComponent( const CObjectData2D & objectData ) :
-    GENERATION_TYPE( objectData.getVisualData().getGenerationType() ),
-    m_color( objectData.getVisualData().getColor() ),
-    m_rDefaultColor( objectData.getVisualData().getColor() ),
-    m_frameIndex(0)
-{
-}
-
-iVisualComponent::iVisualComponent( const CObjectData3D & objectData ) :
+iVisualComponent::iVisualComponent( const iObjectData & objectData ) :
     GENERATION_TYPE( objectData.getVisualData().getGenerationType() ),
     m_color( objectData.getVisualData().getColor() ),
     m_rDefaultColor( objectData.getVisualData().getColor() ),

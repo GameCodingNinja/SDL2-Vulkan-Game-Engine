@@ -16,8 +16,7 @@
 
 // Forward declaration(s)
 class CMatrix;
-class CObjectData2D;
-class CObjectData3D;
+class iObjectData;
 
 class CSpriteNode : public iNode
 {
@@ -25,11 +24,7 @@ public:
 
     // Constructor
     CSpriteNode(
-        const CObjectData2D & objectData,
-        int spriteId = defs_SPRITE_DEFAULT_ID );
-
-    CSpriteNode(
-        const CObjectData3D & objectData,
+        const iObjectData & objectData,
         int spriteId = defs_SPRITE_DEFAULT_ID );
 
     // Destructor

@@ -15,8 +15,7 @@
 #include <sprite/sprite.h>
 
 // Forward declaration(s)
-class CObjectData2D;
-class CObjectData3D;
+class iObjectData;
 
 class CSpriteNodeMultiLst : public CNodeMultiLst
 {
@@ -24,13 +23,7 @@ public:
     
     // Constructor
     CSpriteNodeMultiLst(
-        const CObjectData2D & objectData,
-        int spriteId = defs_SPRITE_DEFAULT_ID,
-        int nodeId = defs_NODE_DEFAULT_ID,
-        int parentId = defs_PARENT_NODE_DEFAULT_ID );
-
-    CSpriteNodeMultiLst(
-        const CObjectData3D & objectData,
+        const iObjectData & objectData,
         int spriteId = defs_SPRITE_DEFAULT_ID,
         int nodeId = defs_NODE_DEFAULT_ID,
         int parentId = defs_PARENT_NODE_DEFAULT_ID );

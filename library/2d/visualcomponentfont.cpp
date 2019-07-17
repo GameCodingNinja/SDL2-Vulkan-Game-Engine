@@ -9,7 +9,7 @@
 #include <2d/visualcomponentfont.h>
 
 // Game lib dependencies
-#include <objectdata/objectdata2d.h>
+#include <objectdata/iobjectdata.h>
 #include <objectdata/iobjectvisualdata.h>
 #include <common/quad2d.h>
 #include <common/camera.h>
@@ -24,7 +24,7 @@
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/
-CVisualComponentFont::CVisualComponentFont( const CObjectData2D & objectData ) :
+CVisualComponentFont::CVisualComponentFont( const iObjectData & objectData ) :
     CVisualComponentQuad( objectData )
 {
 }

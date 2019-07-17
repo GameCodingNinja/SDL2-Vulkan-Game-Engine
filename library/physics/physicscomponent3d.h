@@ -21,7 +21,7 @@
 #include <memory>
 
 // Forward declaration(s)
-class CObjectData3D;
+class iObjectData;
 class CSprite;
 class CPhysicsWorld3D;
 class btRigidBody;
@@ -32,7 +32,7 @@ class CPhysicsComponent3D : public iPhysicsComponent, boost::noncopyable
 public:
 
     // Constructor
-    CPhysicsComponent3D( const CObjectData3D & objectData );
+    CPhysicsComponent3D( const iObjectData & objectData );
 
     // Destructor
     ~CPhysicsComponent3D();

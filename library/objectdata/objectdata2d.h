@@ -32,10 +32,10 @@ public:
     ~CObjectData2D();
 
     // Load the object data from the passed in node
-    void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name );
+    void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name ) override;
 
     // Create the objects from data
-    void createFromData( const std::string & group );
+    void createFromData( const std::string & group ) override;
 
     // Access functions for the visual data
     const iObjectVisualData & getVisualData() const override;
@@ -60,6 +60,10 @@ public:
 
     // Is the generation type font
     bool isGenTypeFont() const override;
+
+    // Is the data type 2D?
+    bool is2D() const override
+    { return true; }
 
 private:
 
