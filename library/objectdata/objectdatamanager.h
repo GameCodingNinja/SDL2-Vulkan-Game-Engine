@@ -13,6 +13,7 @@
 
 // Standard lib dependencies
 #include <memory>
+#include <vector>
 
 // Forward declaration(s)
 class CObjectData2D;
@@ -37,12 +38,11 @@ public:
 
     // Load all of the meshes and materials of a specific data group
     void loadGroup( const std::string & group );
+    void loadGroupLst( const std::vector<std::string> & groupVec );
 
     // Free all of the meshes and materials of a specific data group
     void freeGroup( const std::string & group );
-    
-    // Free only the data of a specific group
-    void freeDataGroup( const std::string & group );
+    void freeGroupLst( const std::vector<std::string> & groupVec );
 
 private:
 
@@ -56,6 +56,9 @@ private:
 
     // Create the group's VBO, IBO, textures, etc
     void createFromData( const std::string & group );
+
+    // Free only the data of a specific group
+    void freeDataGroup( const std::string & group );
 
 private:
     

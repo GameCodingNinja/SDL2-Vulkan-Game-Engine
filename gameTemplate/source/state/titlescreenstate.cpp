@@ -113,8 +113,7 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 ****************************************************************************/
 void CTitleScreenState::load()
 {
-    CObjectDataMgr::Instance().loadGroup( "(title)" );
-    CObjectDataMgr::Instance().loadGroup( "(cube)" );
+    CObjectDataMgr::Instance().loadGroupLst( {"(title)", "(cube)"} );
     
     // Add the strategies
     auto titleStrategy = CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy() );

@@ -32,8 +32,7 @@
 ************************************************************************/
 CSprite::CSprite( const iObjectData & objectData, int id ) :
     m_id( id ),
-    m_rObjectData( objectData ),
-    m_upObject( new CObject2D )
+    m_rObjectData( objectData )
 {
     if( objectData.is2D() )
     {
@@ -56,6 +55,8 @@ CSprite::CSprite( const iObjectData & objectData, int id ) :
         // Create the physics component
         if( objectData.getPhysicsData().isActive() )
             m_upPhysicsComponent.reset( new CPhysicsComponent2D( objectData ) );
+        
+        m_upObject.reset( new CObject2D );
     }
     else if( objectData.is3D() )
     {
@@ -66,6 +67,8 @@ CSprite::CSprite( const iObjectData & objectData, int id ) :
         // Create the physics component
         if( objectData.getPhysicsData().isActive() )
             m_upPhysicsComponent.reset( new CPhysicsComponent3D( objectData ) );
+
+        m_upObject.reset( new CObject3D );
     }
 
     // If there's no visual data, set the hide flag

@@ -61,9 +61,16 @@ const iObjectData & CObjectDataMgr::getData( const std::string & group, const st
     return *iter->second.get();
 }
 
+
 /************************************************************************
  *    DESC:  Load all of the meshes and materials of a specific data group
  ************************************************************************/
+void CObjectDataMgr::loadGroupLst( const std::vector<std::string> & groupVec )
+{
+    for( auto & iter : groupVec )
+        loadGroup( iter );
+}
+
 void CObjectDataMgr::loadGroup( const std::string & group )
 {
     // Check for a hardware extension
@@ -276,6 +283,12 @@ void CObjectDataMgr::createFromData( const std::string & group )
 /************************************************************************
  *    DESC:  Free all of the meshes materials and data of a specific group
  ************************************************************************/
+void CObjectDataMgr::freeGroupLst( const std::vector<std::string> & groupVec )
+{
+    for( auto & iter : groupVec )
+        freeGroup( iter );
+}
+
 void CObjectDataMgr::freeGroup( const std::string & group )
 {
     // Free the data of a specific group

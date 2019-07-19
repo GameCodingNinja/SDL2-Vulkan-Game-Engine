@@ -105,4 +105,4 @@ protected:
     CSize<int16_t> m_cropOffset;
 };
 
-#endif  // __object_h__
+#endif

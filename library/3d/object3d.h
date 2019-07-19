@@ -44,4 +44,4 @@ protected:
 
 };
 
-#endif  // __object_3d_h__
+#endif
