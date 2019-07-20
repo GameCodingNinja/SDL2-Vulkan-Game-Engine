@@ -1,14 +1,15 @@
+<?xml version="1.0"?>
 <node>
 
-    <node name="cube" type="spriteNode" defaultGroup="(cube)">
+    <node name="cube" defaultGroup="(cube)">
         
-        <sprite3d objectName="cube">
+        <sprite objectName="cube">
             <position x="0" y="0" z="0"/>
             <scale x="3" y="3" z="3"/>
             <scriptLst>
                 <script update="State_RotateCube" group="(state)"/>
             </scriptLst>
-        </sprite3d>
+        </sprite>
 
     </node>
 

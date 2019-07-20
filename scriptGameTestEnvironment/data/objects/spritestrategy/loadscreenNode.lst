@@ -1,6 +1,7 @@
+<?xml version="1.0"?>
 <node>
     
-    <node name="loadAnim" type="spriteNode" defaultGroup="(load)">
+    <node name="loadAnim" defaultGroup="(load)">
         
         <sprite2d objectName="loadAnim">
             <dynamicOffset right="150" bottom="150"/>

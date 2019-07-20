@@ -18,7 +18,7 @@ CObjectNodeMultiLst::CObjectNodeMultiLst( int objectId, int nodeId, int parentId
     CNodeMultiLst(nodeId, parentId),
     m_objectId(objectId)
 {
-    m_type = NDefs::ENT_OBJECT_MULTI_LIST;
+    m_type = NDefs::ENT_OBJECT;
 }
 
 

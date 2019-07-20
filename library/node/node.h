@@ -41,9 +41,6 @@ public:
     // NOTE: This is a recursive function
     iNode * findParent( iNode * pSearchNode ) override;
     
-    // Get the parent id
-    int getParentId() const override;
-    
     // Push back node into vector
     void pushBackNode( iNode * pNode ) override;
     
@@ -57,12 +54,6 @@ protected:
 
     // next node iterator
     std::vector<iNode *>::iterator m_Iter;
-
-    // node id
-    int m_id;
-
-    // parent node id
-    int m_parentId;
 };
 
 #endif

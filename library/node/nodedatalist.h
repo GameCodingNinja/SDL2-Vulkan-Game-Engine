@@ -30,7 +30,7 @@ public:
         const std::string & _defGroup,
         const std::string & _defObjName,
         const std::string & _defAIName,
-        int defId = defs_SPRITE_DEFAULT_ID );
+        int defId = defs_DEFAULT_ID );
     
     // Destructor
     virtual ~CNodeDataList();
@@ -47,7 +47,7 @@ private:
         const std::string & defGroup,
         const std::string & defObjName,
         const std::string & defAIName,
-        int defId = defs_SPRITE_DEFAULT_ID );
+        int defId = defs_DEFAULT_ID );
     
 private:
     

@@ -52,7 +52,7 @@ class CGame
         ActionMgr.load( "data/settings/controllerMapping.cfg" );
         
         // Load group specific assets
-        ObjectDataMgr.loadGroup2D( "(main)" );
+        ObjectDataMgr.loadGroup( "(main)" );
         
         // Create the needed strategies
         iStrategy @strategy = StrategyMgr.createActorStrategy( "(main)" );

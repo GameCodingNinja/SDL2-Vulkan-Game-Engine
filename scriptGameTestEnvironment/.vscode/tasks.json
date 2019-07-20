@@ -8,7 +8,11 @@
                 "cwd": "${workspaceRoot}/build"
             },
             "command": "make",
-            "problemMatcher": []
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "CMake Debug",

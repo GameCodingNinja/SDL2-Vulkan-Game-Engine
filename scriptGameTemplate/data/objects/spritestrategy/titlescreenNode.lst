@@ -1,10 +1,11 @@
+<?xml version="1.0"?>
 <node>
     
-    <node name="background" type="spriteNode" defaultGroup="(title)">
+    <node name="background" defaultGroup="(title)">
         
-        <sprite2d objectName="background">
+        <sprite objectName="background">
             <position x="0" y="0" z="0"/>
-        </sprite2d>
+        </sprite>
 
     </node>
 

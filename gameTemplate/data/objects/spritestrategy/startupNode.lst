@@ -1,5 +1,22 @@
 <?xml version="1.0"?>
 <node>
+
+    <node name="waffles" defaultGroup="(startup)">
+        
+        <sprite objectName="waffles">
+            <position x="0" y="0" z="0"/>
+        </sprite>
+
+    </node>
+
+    <!--<node name="logo1" type="spriteNode" defaultGroup="(startup)">
+        
+        <sprite2d objectName="logo">
+            <position x="350" y="0" z="0"/>
+        </sprite2d>
+
+    </node>-->
+
 <!--
     <node name="multiListNode" type="spriteNodeMultiList" defaultGroup="(startup)">
 
@@ -77,37 +94,5 @@
         </node>
     </node>
     -->
-    
-    <node name="waffles" type="spriteNode" defaultGroup="(startup)">
-        
-        <sprite2d objectName="waffles">
-            <position x="0" y="0" z="0"/>
-        </sprite2d>
-
-    </node>
-
-    <!--<node name="logo1" type="spriteNode" defaultGroup="(startup)">
-        
-        <sprite2d objectName="logo">
-            <position x="350" y="0" z="0"/>
-        </sprite2d>
-
-    </node>
-
-    <node name="waffles2" type="spriteNode" defaultGroup="(startup)">
-        
-        <sprite2d objectName="waffles">
-            <position x="0" y="250" z="0"/>
-        </sprite2d>
-
-    </node>
-
-    <node name="logo2" type="spriteNode" defaultGroup="(startup)">
-        
-        <sprite2d objectName="logo">
-            <position x="0" y="-250" z="0"/>
-        </sprite2d>
-
-    </node>-->
 
 </node>

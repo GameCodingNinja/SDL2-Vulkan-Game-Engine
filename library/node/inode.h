@@ -32,7 +32,8 @@ class iNode
 public:
 
     // Constructor
-    iNode() : m_type(NDefs::ENT_NULL)
+    iNode( int id = defs_DEFAULT_ID, int parentId = defs_DEFAULT_ID ) :
+        m_type(NDefs::ENT_NULL), m_id(id), m_parentId(parentId)
     {}
 
     // Destructor
@@ -57,13 +58,13 @@ public:
     virtual iNode * findParent( iNode * pSearchNode )
     { return nullptr; }
 
-    // Get the unique head node id number
+    // Get the unique node id number
     virtual int getId() const
-    { return defs_NODE_DEFAULT_ID; }
+    { return m_id; }
 
     // Get the parent id
     virtual int getParentId() const
-    { return defs_PARENT_NODE_DEFAULT_ID; }
+    { return m_parentId; }
 
     // Update the nodes
     virtual void update(){}
@@ -99,6 +100,12 @@ protected:
 
     // Node type
     NDefs::ENodeType m_type;
+
+    // node id
+    int m_id;
+
+    // parent node id
+    int m_parentId;
 };
 
 #endif

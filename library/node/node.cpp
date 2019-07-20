@@ -15,8 +15,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CNode::CNode( int id, int parentId ) :
-    m_id(id),
-    m_parentId(parentId)
+    iNode( id, parentId )
 {
 }
 
@@ -119,13 +118,4 @@ void CNode::reset()
 {
     if( !m_nodeVec.empty() )
         m_Iter = m_nodeVec.begin();
-}
-
-
-/************************************************************************
-*    DESC:  Get the parent id
-************************************************************************/
-int CNode::getParentId() const
-{
-    return m_parentId;
 }

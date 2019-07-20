@@ -24,7 +24,7 @@ final class CLoadState : CCommonState
         Device.waitForIdle();
         
         Device.deleteCommandPoolGroup( "(load)" );
-        ObjectDataMgr.freeGroup2D( "(load)" );
+        ObjectDataMgr.freeGroup( "(load)" );
         StrategyMgr.deleteStrategy( "(load)" );
     }
 
@@ -34,7 +34,7 @@ final class CLoadState : CCommonState
     void init() override
     {
         // Load group specific assets
-        ObjectDataMgr.loadGroup2D( "(load)" );
+        ObjectDataMgr.loadGroup( "(load)" );
         
         // Create the needed strategies
         StrategyMgr.createActorStrategy( "(load)" ).setCommandBuffer( "(load)" );

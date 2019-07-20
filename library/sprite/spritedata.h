@@ -34,7 +34,7 @@ public:
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
         const std::string & defAIName = std::string(),
-        int defId = defs_SPRITE_DEFAULT_ID );
+        int defId = defs_DEFAULT_ID );
     
     CSpriteData( const CSpriteData & data );
     

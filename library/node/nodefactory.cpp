@@ -41,25 +41,26 @@ namespace NNodeFactory
         // Single node sprite that doesn't support children. Low overhead for when you only need one sprite with no children
         if( rNodeData.getNodeType() == NDefs::ENT_SPRITE )
         {
-            pNode = new CSpriteNode( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ), nodeId );
-
-            Load( pNode->getSprite(), rNodeData );
-        }
-        else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT_MULTI_LIST )
-        {
-            pNode = new CObjectNodeMultiLst( nodeId, rNodeData.getNodeId(), rNodeData.getParentNodeId() );
-
-            Load( pNode->getObject(), rNodeData );
-        }
-        else if( rNodeData.getNodeType() == NDefs::ENT_SPRITE_MULTI_LIST )
-        {
-            pNode = new CSpriteNodeMultiLst(
+            if( rNodeData.hasChildrenNodes() )
+                pNode = new CSpriteNodeMultiLst(
                     CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
                     nodeId,
                     rNodeData.getNodeId(),
                     rNodeData.getParentNodeId() );
-                
+            else
+                pNode = new CSpriteNode(
+                    CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
+                    nodeId,
+                    rNodeData.getNodeId(),
+                    rNodeData.getParentNodeId() );
+
             Load( pNode->getSprite(), rNodeData );
+        }
+        else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT )
+        {
+            pNode = new CObjectNodeMultiLst( nodeId, rNodeData.getNodeId(), rNodeData.getParentNodeId() );
+
+            Load( pNode->getObject(), rNodeData );
         }
         else
         {

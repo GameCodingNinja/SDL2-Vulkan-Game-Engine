@@ -19,12 +19,12 @@ public:
     CNodeData(
         const XMLNode & node,
         const std::string & nodeName,
-        int nodeId = defs_NODE_DEFAULT_ID,
-        int parenNodetId = defs_PARENT_NODE_DEFAULT_ID,
+        int nodeId = defs_DEFAULT_ID,
+        int parenNodetId = defs_DEFAULT_ID,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
         const std::string & defAIName = std::string(),
-        int defId = defs_SPRITE_DEFAULT_ID );
+        int defId = defs_DEFAULT_ID );
     
     // Destructor
     virtual ~CNodeData();
@@ -41,6 +41,9 @@ public:
     // Get the node type
     NDefs::ENodeType getNodeType() const;
 
+    // Does this node have children?
+    bool hasChildrenNodes() const;
+
 private:
     
     // node name
@@ -54,6 +57,9 @@ private:
     
     // Node type
     NDefs::ENodeType m_nodeType;
+
+    // Does this node have children nodes?
+    bool m_hasChildrenNodes;
 };
 
 #endif

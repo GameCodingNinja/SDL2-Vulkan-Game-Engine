@@ -26,7 +26,7 @@ CNodeDataList::CNodeDataList(
     const std::string & _defObjName,
     const std::string & _defAIName,
     int defId ) :
-        m_idCounter(defs_NODE_DEFAULT_ID)
+        m_idCounter(defs_DEFAULT_ID)
 {
     std::string defGroup(_defGroup), defObjName(_defObjName), defAIName(_defAIName), nodeName;
 
@@ -47,7 +47,7 @@ CNodeDataList::CNodeDataList(
         nodeName = node.getAttribute( "name" );
 
     // Load the node data into the vector
-    m_dataVec.emplace_back( node, nodeName, m_idCounter++, defs_PARENT_NODE_DEFAULT_ID, defGroup, defObjName, defAIName, defId );
+    m_dataVec.emplace_back( node, nodeName, m_idCounter++, defs_DEFAULT_ID, defGroup, defObjName, defAIName, defId );
     
     // Call the recursive function to load the children
     loadNode( node, m_dataVec.back(), defGroup, defObjName, defAIName, defId );

@@ -52,7 +52,7 @@ void CSector::loadFromNode( const XMLNode & node )
     if( !sectorNode.isEmpty() )
     {
         std::string defObjName, defGroup, defAIName, nodeName;
-        int defId(defs_SPRITE_DEFAULT_ID);
+        int defId(defs_DEFAULT_ID);
 
         // Check for any defaults
         if( sectorNode.isAttributeSet( "defaultGroup" ) )

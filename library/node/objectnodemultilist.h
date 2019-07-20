@@ -20,9 +20,9 @@ public:
     
     // Constructor
     CObjectNodeMultiLst(
-        int objectId = defs_OBJECT_DEFAULT_ID,
-        int nodeId = defs_NODE_DEFAULT_ID,
-        int parentId = defs_PARENT_NODE_DEFAULT_ID );
+        int objectId = defs_DEFAULT_ID,
+        int nodeId = defs_DEFAULT_ID,
+        int parentId = defs_DEFAULT_ID );
 
     // Destructor
     virtual ~CObjectNodeMultiLst();

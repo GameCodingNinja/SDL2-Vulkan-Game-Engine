@@ -24,7 +24,7 @@ final class CStartUpState : CCommonState
         Device.waitForIdle();
         
         Device.deleteCommandPoolGroup( "(startup)" );
-        ObjectDataMgr.freeGroup2D( "(startup)" );
+        ObjectDataMgr.freeGroup( "(startup)" );
         StrategyMgr.deleteStrategy( "(startup)" );
     }
 
@@ -39,7 +39,7 @@ final class CStartUpState : CCommonState
         
         // Load group specific assets
         ScriptMgr.loadGroup( "(state)" );
-        ObjectDataMgr.loadGroup2D( "(startup)" );
+        ObjectDataMgr.loadGroup( "(startup)" );
         
         // Add the command buffers to the menu manager
         MenuMgr.setCommandBuffer( "(menu)" );
@@ -92,7 +92,7 @@ void LoadStartUpAssets()
     MenuMgr.loadMenuAction( "data/objects/2d/menu/menu_action.list" );
 
     // Load the start up animation group
-    ObjectDataMgr.loadGroup2D( "(menu)" );
+    ObjectDataMgr.loadGroup( "(menu)" );
 
     // Load the menu sounds
     SoundMgr.loadGroup("(menu)");

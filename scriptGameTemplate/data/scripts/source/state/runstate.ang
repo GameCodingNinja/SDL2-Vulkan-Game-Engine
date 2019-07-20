@@ -26,7 +26,7 @@ final class CRunState : CCommonState
         Device.waitForIdle();
         
         ScriptMgr.freeGroup( "(run)" );
-        ObjectDataMgr.freeGroup2D( "(run)" );
+        ObjectDataMgr.freeGroup( "(run)" );
         StrategyMgr.deleteStrategy( "(stage)" );
         StrategyMgr.deleteStrategy( "(run)" );
         Device.deleteCommandPoolGroup( "(run)" );
@@ -91,7 +91,7 @@ final class CRunState : CCommonState
 //
 void LoadRunAssets()
 {
-    ObjectDataMgr.loadGroup2D( "(run)" );
+    ObjectDataMgr.loadGroup( "(run)" );
     ScriptMgr.loadGroup( "(run)" );
     
     // Create the physics world

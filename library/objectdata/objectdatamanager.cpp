@@ -21,6 +21,8 @@
 
 // Standard lib dependencies
 #include <set>
+#include <string>
+#include <cstring>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -110,13 +112,17 @@ void CObjectDataMgr::loadGroup( const std::string & group )
 void CObjectDataMgr::load( const std::string & group, const std::string & filePath )
 {
     // Open and parse the XML file:
-    const XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str() );
+    XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str() );
 
     if( !mainNode.isEmpty() )
     {
-        const XMLNode childNode = mainNode.getChildNode();
+        // if <?xml version="1.0"?> in not specified, will return pointing to the first tag
+        // Need to decide is we need to get the child or not
+        XMLNode childNode = mainNode;
+        if( std::string(childNode.getName()).find("objectDataList") == std::string::npos )
+            childNode = mainNode.getChildNode();
 
-        if( std::string(childNode.getName()) == "objectDataList2D" )
+        if( std::strcmp( childNode.getName(), "objectDataList2D" ) == 0 )
         {
             load2D( group, childNode );
 
@@ -129,7 +135,7 @@ void CObjectDataMgr::load( const std::string & group, const std::string & filePa
             return;
         }
 
-        else if( std::string(childNode.getName()) == "objectDataList3D" )
+        else if( std::strcmp( childNode.getName(), "objectDataList3D" ) == 0 )
         {
             load3D( group, childNode );
 

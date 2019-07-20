@@ -22,7 +22,7 @@ CSpriteNodeMultiLst::CSpriteNodeMultiLst(
         CNodeMultiLst(nodeId, parentId),
         m_sprite(objectData, spriteId)
 {
-    m_type = NDefs::ENT_SPRITE_MULTI_LIST;
+    m_type = NDefs::ENT_SPRITE;
 }
 
 

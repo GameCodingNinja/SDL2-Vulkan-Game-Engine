@@ -10,6 +10,13 @@
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
+#include <utilities/exceptionhandling.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
+
+// Standard lib dependencies
+#include <cstring>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -27,18 +34,34 @@ CNodeData::CNodeData(
         m_nodeName(nodeName),
         m_nodeId(nodeId),
         m_parenNodetId(parenNodetId),
-        m_nodeType(NDefs::ENT_NULL)
+        m_nodeType(NDefs::ENT_NULL),
+        m_hasChildrenNodes(false)
 {
+    // Does this node have children nodes?
+    if( node.nChildNode("node") > 0 )
+        m_hasChildrenNodes = true;
+
     // Get the node type
-    const std::string nodeType( node.getAttribute( "type" ) );
-    if( nodeType == "spriteNode" )
-        m_nodeType = NDefs::ENT_SPRITE;
-    
-    else if( nodeType == "objectNodeMultiList" )
-        m_nodeType = NDefs::ENT_OBJECT_MULTI_LIST;
-    
-    else if( nodeType == "spriteNodeMultiList" )
-        m_nodeType = NDefs::ENT_SPRITE_MULTI_LIST;
+    for( int i = 0; i < node.nChildNode(); ++i )
+    {
+        const XMLNode childNode = node.getChildNode( i );
+
+        if( std::strcmp( childNode.getName(), "object" ) == 0 )
+        {
+            m_nodeType = NDefs::ENT_OBJECT;
+            break;
+        }
+        else if( std::strcmp( childNode.getName(), "sprite" ) == 0 )
+        {
+            m_nodeType = NDefs::ENT_SPRITE;
+            break;
+        }
+    }
+
+    if( m_nodeType == NDefs::ENT_NULL )
+        throw NExcept::CCriticalException("Node Load Error!",
+                boost::str( boost::format("Node type not defined (%s).\n\n%s\nLine: %s")
+                    % nodeName % __FUNCTION__ % __LINE__ ));
 }
 
 
@@ -83,4 +106,13 @@ int CNodeData::getParentNodeId() const
 NDefs::ENodeType CNodeData::getNodeType() const
 {
     return m_nodeType;
+}
+
+
+/************************************************************************
+*    DESC:  Does this node have children?
+************************************************************************/
+bool CNodeData::hasChildrenNodes() const
+{
+    return m_hasChildrenNodes;
 }

@@ -15,6 +15,9 @@
 // Boost lib dependencies
 #include <boost/lexical_cast.hpp>
 
+// Standard lib dependencies
+#include <cstring>
+
 // SDL lib dependencies
 #include <SDL.h>
 #include <SDL_mixer.h>

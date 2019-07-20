@@ -28,8 +28,8 @@ final class CTitleScreenState : CCommonState
         StrategyMgr.deleteStrategy( "(title)" );
         StrategyMgr.deleteStrategy( "(cube)" );
         
-        ObjectDataMgr.freeGroup2D( "(title)" );
-        ObjectDataMgr.freeGroup3D( "(cube)" );
+        ObjectDataMgr.freeGroup( "(title)" );
+        ObjectDataMgr.freeGroup( "(cube)" );
     }
 
     //
@@ -78,8 +78,8 @@ final class CTitleScreenState : CCommonState
 //
 void LoadTitleScreenAssets()
 {
-    ObjectDataMgr.loadGroup2D( "(title)" );
-    ObjectDataMgr.loadGroup3D( "(cube)" );
+    ObjectDataMgr.loadGroup( "(title)" );
+    ObjectDataMgr.loadGroup( "(cube)" );
     
     // Create the needed strategies
     StrategyMgr.createActorStrategy( "(title)" ).create( "background" );

@@ -24,9 +24,9 @@ public:
     // Constructor
     CSpriteNodeMultiLst(
         const iObjectData & objectData,
-        int spriteId = defs_SPRITE_DEFAULT_ID,
-        int nodeId = defs_NODE_DEFAULT_ID,
-        int parentId = defs_PARENT_NODE_DEFAULT_ID );
+        int spriteId = defs_DEFAULT_ID,
+        int nodeId = defs_DEFAULT_ID,
+        int parentId = defs_DEFAULT_ID );
 
     // Destructor
     virtual ~CSpriteNodeMultiLst();

@@ -12,12 +12,16 @@
 #include <utilities/deletefuncs.h>
 #include <2d/object2d.h>
 
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteNode::CSpriteNode( const iObjectData & objectData, int spriteId ) :
-    m_sprite(objectData, spriteId)
+CSpriteNode::CSpriteNode(
+    const iObjectData & objectData,
+    int spriteId,
+    int nodeId,
+    int parentId ) :
+        iNode( nodeId, parentId ),
+        m_sprite( objectData, spriteId )
 {
     m_type = NDefs::ENT_SPRITE;
 }
