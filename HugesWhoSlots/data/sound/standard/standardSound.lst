@@ -1,9 +1,0 @@
-<soundList>
-
-  <soundFiles>
-    <!--<load id="generic_button" volume="100" file="data/sound/standard/Generic_Button.ogg"/>-->
-    <load id="reel_stop_1-4" volume="40" file="data/sound/standard/ReelStop_1.ogg"/>
-    <load id="reel_stop_5" volume="40" file="data/sound/standard/ReelStop_5.ogg"/>
-  </soundFiles>
-
-</soundList>
