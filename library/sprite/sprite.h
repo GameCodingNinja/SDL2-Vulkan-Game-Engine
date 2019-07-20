@@ -52,7 +52,6 @@ public:
     
     // Load the sprite data
     void load( const XMLNode & node );
-    void load( const CSpriteData & spriteData );
     
     // Init the physics
     void initPhysics();

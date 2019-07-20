@@ -117,7 +117,7 @@ void CSector::loadFromNode( const XMLNode & node )
 void CSector::loadSprite( CSprite * sprite, const CSpriteData & rSpriteData )
 {
     // Load the rest from sprite data
-    sprite->load( rSpriteData );
+    sprite->load( rSpriteData.getXMLNode() );
 
     // Init the physics
     sprite->initPhysics();

@@ -100,19 +100,6 @@ void CSprite::load( const XMLNode & node )
         m_upVisualComponent->loadFontPropFromNode( node );
 }
 
-void CSprite::load( const CSpriteData & spriteData )
-{
-    // Copy over the transform
-    m_upObject->copyTransform( &spriteData );
-
-    // Copy over the script functions
-    copyScriptFunctions( spriteData.getScriptFunctions() );
-
-    // See if this sprite is used for rendering a font string
-    if( m_upVisualComponent->isFontSprite() && (spriteData.getFontData() != nullptr) )
-        m_upVisualComponent->setFontData( *spriteData.getFontData() );
-}
-
 
 /************************************************************************
 *    DESC:  Init the physics

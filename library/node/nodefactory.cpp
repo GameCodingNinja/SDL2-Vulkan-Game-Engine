@@ -78,7 +78,7 @@ namespace NNodeFactory
     void Load( CSprite * pSprite, const CSpriteData & rSpriteData )
     {
         // Load the rest from sprite data
-        pSprite->load( rSpriteData );
+        pSprite->load( rSpriteData.getXMLNode() );
 
         // Init the physics
         pSprite->initPhysics();
@@ -96,7 +96,7 @@ namespace NNodeFactory
     ************************************************************************/
     void Load( CObject2D * pObject, const CSpriteData & rSpriteData )
     {
-        // Load the rest from sprite data
-        pObject->copyTransform( &rSpriteData );
+        // Load the transforms from sprite data
+        pObject->loadTransFromNode( rSpriteData.getXMLNode() );
     }
 }

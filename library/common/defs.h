@@ -90,15 +90,6 @@ namespace NDefs
         VISIBLE             = 0x100,
     };
     
-    enum ESpriteType
-    {
-        EST_NULL,
-        EST_OBJECT2D,
-        EST_OBJECT3D,
-        EST_SPRITE2D,
-        EST_SPRITE3D,
-    };
-    
     enum EAspectRatio
     {
         EAR_4_3,

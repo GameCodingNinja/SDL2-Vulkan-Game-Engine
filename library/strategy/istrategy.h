@@ -79,6 +79,7 @@ protected:
     // Command buffer
     // NOTE: command buffers don't to be freed because
     //       they are freed by deleting the pool they belong to
+    //       and the pool will be freed at the end of the state
     std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
