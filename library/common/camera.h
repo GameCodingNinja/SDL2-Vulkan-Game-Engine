@@ -11,12 +11,10 @@
 #include <3d/object3d.h>
 
 // Game lib dependencies
-#include <common/defs.h>
-#include <common/size.h>
 #include <utilities/matrix.h>
 
 // Forward Declarations
-class CCameraData;
+struct XMLNode;
 
 class CCamera : public CObject3D
 {
@@ -24,15 +22,19 @@ public:
 
     // Constructor
     CCamera();
+    CCamera( const XMLNode & node );
     CCamera( float minZDist, float maxZDist );
     CCamera( float angle, float minZDist, float maxZDist );
-    CCamera( const CCameraData & cameraData );
 
     // Destructor
     virtual ~CCamera();
+
+    // Load the camera from node
+    void loadFromNode( const XMLNode & node );
     
     // Init the camera
     void init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist );
+    void init();
 
     // Create the projection matrix
     void createProjectionMatrix();

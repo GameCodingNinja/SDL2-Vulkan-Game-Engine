@@ -36,10 +36,6 @@ void CStageStrategy::loadFromFile( const std::string & file )
     // open and parse the XML file:
     XMLNode node = XMLNode::openFileHelper( file.c_str(), "stage" );
 
-    XMLNode cameraNode = node.getChildNode( "cameraPosition" );
-    if( !cameraNode.isEmpty() )
-        m_defaultCameraPos.loadTransFromNode( cameraNode );
-
     // Load these sector data from node
     loadFromNode( node );
 }
@@ -91,23 +87,16 @@ void CStageStrategy::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CStageStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
+void CStageStrategy::recordCommandBuffer( uint32_t index )
 {
     auto cmdBuf( m_commandBufVec[index] );
 
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
+    const CCamera & rCamera = *m_pCamera;
+
     for( auto & iter : m_sectorDeq )
-        iter.recordCommandBuffer( index, cmdBuf, camera );
+        iter.recordCommandBuffer( index, cmdBuf, rCamera );
 
     CDevice::Instance().endCommandBuffer( cmdBuf );
-}
-
-
-/************************************************************************
-*    DESC:  Get the default camera position
-************************************************************************/
-CObject & CStageStrategy::getDefaultCameraPos()
-{
-    return m_defaultCameraPos;
 }

@@ -16,6 +16,7 @@
 #include <utilities/genfunc.h>
 #include <strategy/strategymanager.h>
 #include <managers/actionmanager.h>
+#include <managers/cameramanager.h>
 #include <gui/menumanager.h>
 #include <script/scriptmanager.h>
 #include <script/scriptcolor.h>
@@ -51,7 +52,12 @@
 CGame::CGame()
 {
     // Init the device. NOTE: This always needs to be first
+    // This call loads the settings XML
     CDevice::Instance().init( std::bind( &CGame::recordCommandBuffer, this, std::placeholders::_1) );
+
+    // Load the camera data early because many objects init the default camera in their constructor
+    // The above call to CDevice::Instance().init loads the settings which the camera relies on
+    CCameraMgr::Instance().load( "data/objects/camera.lst" );
     
     if( CSettings::Instance().isDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );

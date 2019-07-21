@@ -107,7 +107,6 @@ void CSmartResolutionBtn::setResolutionChange()
 
     CSettings::Instance().setSize( m_resVec[m_resIndex] );
     CSettings::Instance().calcRatio();
-    CStrategyMgr::Instance().buildCameras();
 }
 
 

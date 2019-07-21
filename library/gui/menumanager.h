@@ -200,8 +200,8 @@ private:
     //       they are freed by deleting the pool they belong to
     std::vector<VkCommandBuffer> m_commandBufVec;
     
-    // Default camera
-    CCamera m_camera;
+    // Menu camera
+    CCamera * m_pCamera;
 };
 
 /************************************************************************

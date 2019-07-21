@@ -18,40 +18,28 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CCameraData::CCameraData( const XMLNode & node )
+CCameraData::CCameraData() :
+    m_projType(CSettings::Instance().getProjectionType()),
+    m_minZDist(CSettings::Instance().getMinZdist()),
+    m_maxZDist(CSettings::Instance().getMaxZdist()),
+    m_angle(CSettings::Instance().getViewAngle())
 {
-    // Init with the defaults
-    m_minZdist = CSettings::Instance().getMinZdist();
-    m_maxZdist = CSettings::Instance().getMaxZdist();
-    m_viewAngle = CSettings::Instance().getViewAngle();
-    m_projectionType = CSettings::Instance().getProjectionType();
-    
-    if( node.isAttributeSet("minZDist") )
-        m_minZdist = std::atof(node.getAttribute("minZDist"));
+}
 
-    if( node.isAttributeSet("maxZDist") )
-        m_maxZdist = std::atof(node.getAttribute("maxZDist"));
-
-    if( node.isAttributeSet("view_angle") )
-        m_viewAngle = std::atof(node.getAttribute("view_angle"));
-
-    if( node.isAttributeSet("projectType") )
-    {
-        if( std::strcmp( node.getAttribute("projectType"), "orthographic" ) == 0 )
-            m_projectionType = NDefs::EPT_ORTHOGRAPHIC;
-        
-        else if( std::strcmp( node.getAttribute("projectType"), "perspective" ) == 0 )
-            m_projectionType = NDefs::EPT_PERSPECTIVE;
-    }
-    
-    loadTransFromNode( node );
+CCameraData::CCameraData( const XMLNode & node ) :
+    m_projType(CSettings::Instance().getProjectionType()),
+    m_minZDist(CSettings::Instance().getMinZdist()),
+    m_maxZDist(CSettings::Instance().getMaxZdist()),
+    m_angle(CSettings::Instance().getViewAngle())
+{
+    loadFromNode( node );
 }
 
 CCameraData::CCameraData( const CCameraData & data ) :
-    m_projectionType( data.m_projectionType ),
-    m_minZdist( data.m_minZdist ),
-    m_maxZdist( data.m_maxZdist ),
-    m_viewAngle( data.m_viewAngle )
+    m_projType( data.m_projType ),
+    m_minZDist( data.m_minZDist ),
+    m_maxZDist( data.m_maxZDist ),
+    m_angle( data.m_angle )
 {
     copyTransform( &data );
 }
@@ -66,11 +54,38 @@ CCameraData::~CCameraData()
 
 
 /************************************************************************
+*    DESC:  Load the camera data
+************************************************************************/
+void CCameraData::loadFromNode( const XMLNode & node )
+{
+    if( node.isAttributeSet("minZDist") )
+        m_minZDist = std::atof(node.getAttribute("minZDist"));
+
+    if( node.isAttributeSet("maxZDist") )
+        m_maxZDist = std::atof(node.getAttribute("maxZDist"));
+
+    if( node.isAttributeSet("view_angle") )
+        m_angle = std::atof(node.getAttribute("view_angle"));
+
+    if( node.isAttributeSet("projectType") )
+    {
+        if( std::strcmp( node.getAttribute("projectType"), "orthographic" ) == 0 )
+            m_projType = NDefs::EPT_ORTHOGRAPHIC;
+        
+        else if( std::strcmp( node.getAttribute("projectType"), "perspective" ) == 0 )
+            m_projType = NDefs::EPT_PERSPECTIVE;
+    }
+    
+    loadTransFromNode( node );
+}
+
+
+/************************************************************************
 *    DESC:  Get the projection type
 ************************************************************************/
 NDefs::EProjectionType CCameraData::getProjectionType() const
 {
-    return m_projectionType;
+    return m_projType;
 }
 
 
@@ -79,7 +94,7 @@ NDefs::EProjectionType CCameraData::getProjectionType() const
 ************************************************************************/
 float CCameraData::getMinZdist() const
 {
-    return m_minZdist;
+    return m_minZDist;
 }
 
 
@@ -88,7 +103,7 @@ float CCameraData::getMinZdist() const
 ************************************************************************/
 float CCameraData::getMaxZdist() const
 {
-    return m_maxZdist;
+    return m_maxZDist;
 }
 
 
@@ -97,5 +112,5 @@ float CCameraData::getMaxZdist() const
 ************************************************************************/
 float CCameraData::getViewAngle() const
 {
-    return m_viewAngle;
+    return m_angle;
 }

@@ -9,7 +9,10 @@
 
 // Game lib dependencies
 #include <utilities/settings.h>
-#include <common/cameradata.h>
+#include <utilities/xmlParser.h>
+
+// Standard lib dependencies
+#include <cstring>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -20,11 +23,17 @@ CCamera::CCamera() :
     m_minZDist(CSettings::Instance().getMinZdist()),
     m_maxZDist(CSettings::Instance().getMaxZdist())
 {
-    // Create the projection matrix
-    createProjectionMatrix();
-    
-    // Calculate the final matrix
-    calcFinalMatrix();
+    init();
+}
+
+CCamera::CCamera( const XMLNode & node ) :
+    m_projType(CSettings::Instance().getProjectionType()),
+    m_angle(CSettings::Instance().getViewAngle()),
+    m_minZDist(CSettings::Instance().getMinZdist()),
+    m_maxZDist(CSettings::Instance().getMaxZdist())
+{
+    loadFromNode( node );
+    init();
 }
 
 CCamera::CCamera( float minZDist, float maxZDist ) :
@@ -33,11 +42,7 @@ CCamera::CCamera( float minZDist, float maxZDist ) :
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
-    // Create the projection matrix
-    createProjectionMatrix();
-    
-    // Calculate the final matrix
-    calcFinalMatrix(); 
+    init();
 }
 
 CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
@@ -46,29 +51,7 @@ CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
-    // Create the projection matrix
-    createProjectionMatrix();
-    
-    // Calculate the final matrix
-    calcFinalMatrix();
-}
-
-CCamera::CCamera( const CCameraData & cameraData ) :
-    m_projType( cameraData.getProjectionType() ),
-    m_angle( cameraData.getViewAngle() ),
-    m_minZDist( cameraData.getMinZdist() ),
-    m_maxZDist( cameraData.getMaxZdist() )
-{
-    copyTransform( &cameraData );
-    
-    // Create the projection matrix
-    createProjectionMatrix();
-    
-    // Do the initial transform
-    CObject3D::transform();
-    
-    // Calculate the final matrix
-    calcFinalMatrix();
+    init();
 }
 
 
@@ -83,6 +66,36 @@ CCamera::~CCamera()
 /************************************************************************
 *    DESC:  Init the camera
 ************************************************************************/  
+void CCamera::loadFromNode( const XMLNode & node )
+{
+    if( node.isAttributeSet("minZDist") )
+        m_minZDist = std::atof(node.getAttribute("minZDist"));
+
+    if( node.isAttributeSet("maxZDist") )
+        m_maxZDist = std::atof(node.getAttribute("maxZDist"));
+
+    if( node.isAttributeSet("view_angle") )
+        m_angle = std::atof(node.getAttribute("view_angle"));
+
+    if( node.isAttributeSet("projectType") )
+    {
+        if( std::strcmp( node.getAttribute("projectType"), "orthographic" ) == 0 )
+            m_projType = NDefs::EPT_ORTHOGRAPHIC;
+        
+        else if( std::strcmp( node.getAttribute("projectType"), "perspective" ) == 0 )
+            m_projType = NDefs::EPT_PERSPECTIVE;
+    }
+    
+    loadTransFromNode( node );
+
+    if( m_parameters.isSet( NDefs::TRANSFORM ) )
+        invertPos();
+}
+
+
+/************************************************************************
+*    DESC:  Init the camera
+************************************************************************/
 void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist )
 {
     m_projType = projType;
@@ -90,6 +103,11 @@ void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist
     m_minZDist = minZDist;
     m_maxZDist = maxZDist;
     
+    init();
+}
+
+void CCamera::init()
+{
     // Create the projection matrix
     createProjectionMatrix();
     

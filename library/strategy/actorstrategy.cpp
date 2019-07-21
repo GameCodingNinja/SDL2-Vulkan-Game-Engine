@@ -238,9 +238,6 @@ void CActorStrategy::transform()
 {
     for( auto iter : m_pNodeVec )
         iter->transform();
-
-    if( m_pCamera )
-        m_pCamera->transform();
 }
 
 
@@ -248,24 +245,16 @@ void CActorStrategy::transform()
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CActorStrategy::recordCommandBuffer( uint32_t index, const CCamera & camera )
+void CActorStrategy::recordCommandBuffer( uint32_t index )
 {
     auto cmdBuf( m_commandBufVec.at(index) );
 
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
-    if( m_pCamera )
-    {
-        const CCamera & strategyCamera = *m_pCamera;
+    const CCamera & rCamera = *m_pCamera;
 
-        for( auto iter : m_pNodeVec )
-            iter->recordCommandBuffer( index, cmdBuf, strategyCamera );
-    }
-    else
-    {
-        for( auto iter : m_pNodeVec )
-            iter->recordCommandBuffer( index, cmdBuf, camera );
-    }
+    for( auto iter : m_pNodeVec )
+        iter->recordCommandBuffer( index, cmdBuf, rCamera );
 
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }

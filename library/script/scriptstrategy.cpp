@@ -200,6 +200,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCommandBuffer(string &in)",           asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in, string &in = '')", asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void destroy(int)",                           asMETHOD(iStrategy, destroy),   asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCamera(string &in)",                  asMETHOD(iStrategy, setCamera),   asCALL_THISCALL) );
         
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
@@ -214,7 +215,6 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",              asFUNCTION(DeleteStrategy), asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                asMETHOD(CStrategyMgr, update), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                             asMETHOD(CStrategyMgr, transform), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void setCamera(string &in, string &in)",       asMETHOD(CStrategyMgr, setCamera), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void clear()",                                 asFUNCTION(Clear), asCALL_CDECL_OBJLAST) );
 
         // Set this object registration as a global property to simulate a singleton

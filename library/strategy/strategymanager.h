@@ -14,7 +14,6 @@
 // Game lib dependencies
 #include <common/point.h>
 #include <common/worldvalue.h>
-#include <common/camera.h>
 
 // Standard lib dependencies
 #include <string>
@@ -23,7 +22,6 @@
 
 // Forward Declarations
 class iNode;
-class CCameraData;
 class iStrategy;
 class CMatrix;
 union SDL_Event;
@@ -40,9 +38,6 @@ public:
         return strategyMgr;
     }
     
-    // Load the group
-    void loadGroup( const XMLNode & node, const std::string & strategyId ) override;
-    
     // Add strategy which will load it's data from XML node
     iStrategy * addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy );
     
@@ -52,9 +47,6 @@ public:
     
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
-    
-    // Set the strategy camera
-    void setCamera( const std::string & strategyId, const std::string & cameraId );
 
     // Delete all the sprites
     void clear();
@@ -70,9 +62,6 @@ public:
     
     // Get the pointer to the strategy
     iStrategy * getStrategy( const std::string & strategyId );
-    
-    // Build all the cameras
-    void buildCameras();
     
     // Get a reference to the strategy
     template <typename target>
@@ -115,15 +104,6 @@ private:
     
     // Vector of strategy pointers
     std::vector<iStrategy *> m_pStrategyVec;
-    
-    // Camera data for camera creation
-    std::map< const std::string, std::map< const std::string, CCameraData > > m_cameraDataMapMap;
-    
-    // Strategy Camera map
-    std::map< const std::string, std::map< const std::string, CCamera > > m_cameraMapMap;
-    
-    // Default camera
-    CCamera m_defaultCamera;
 };
 
 #endif

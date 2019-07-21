@@ -41,6 +41,9 @@ public:
     void incPos( const CPoint<float> & position );
     void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
 
+    // Invert the object's position
+    void invertPos();
+
     // Set/Get the object's rotation
     // NOTE: Rotation is stored as radians
     void setRot( const CPoint<float> & rotation, bool convertToRadians = true );

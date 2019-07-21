@@ -19,6 +19,7 @@
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
 #include <managers/signalmanager.h>
+#include <managers/cameramanager.h>
 #include <system/device.h>
 
 // SDL lib dependencies
@@ -33,11 +34,9 @@
 CMenuMgr::CMenuMgr() :
     m_active(false),
     m_scrollTimerId(0),
-    m_allow(false)
+    m_allow(false),
+    m_pCamera( &CCameraMgr::Instance().getDefault() )
 {
-    // Set the default position which allows everything to render
-    m_camera.setPos( 0, 0, 100 );
-    m_camera.transform();
 }
 
 
@@ -816,8 +815,6 @@ void CMenuMgr::transform()
 
 void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec )
 {
-    m_camera.transform();
-    
     for( auto iter : activeTreeVec )
     {
         // See if there's an active menu
@@ -838,14 +835,16 @@ void CMenuMgr::recordCommandBuffer( uint32_t index )
         auto cmdBuf( m_commandBufVec[index] );
 
         CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+
+        const CCamera & rCamera = *m_pCamera;
     
         for( auto iter : m_pActiveInterTreeVec )
             if( iter->isActive() )
-                iter->recordCommandBuffer( index, cmdBuf, m_camera );
+                iter->recordCommandBuffer( index, cmdBuf, rCamera );
         
         for( auto iter : m_pActiveMenuTreeVec )
             if( iter->isActive() )
-                iter->recordCommandBuffer( index, cmdBuf, m_camera );
+                iter->recordCommandBuffer( index, cmdBuf, rCamera );
         
         CDevice::Instance().endCommandBuffer( cmdBuf );
     }

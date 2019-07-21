@@ -99,6 +99,15 @@ void CObject::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 
 
 /************************************************************************
+*    DESC:  Invert the object's position
+************************************************************************/
+void CObject::invertPos()
+{
+    m_pos.invert();
+}
+
+
+/************************************************************************
 *    DESC:  Set the object's rotation
 *           NOTE: Rotation is stored as radians
 ************************************************************************/

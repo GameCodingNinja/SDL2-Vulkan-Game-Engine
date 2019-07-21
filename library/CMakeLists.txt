@@ -66,6 +66,7 @@ add_library(
         script/scriptglobals.cpp
         script/scriptcolor.cpp
         script/scriptcamera.cpp
+        script/scriptcameramanager.cpp
         script/scriptcomponent.cpp
         script/scriptpoint.cpp
         script/scriptsprite.cpp
@@ -106,6 +107,7 @@ add_library(
         managers/actionmanager.cpp
         managers/spritesheetmanager.cpp
         managers/signalmanager.cpp
+        managers/cameramanager.cpp
         physics/physicsworldmanager2d.cpp
         physics/physicsworldmanager3d.cpp
         physics/physicsworld2d.cpp
@@ -150,8 +152,6 @@ add_library(
         common/visual.cpp
         common/vertex.cpp
         common/dynamicoffset.cpp
-        common/camera.cpp
-        common/cameradata.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c

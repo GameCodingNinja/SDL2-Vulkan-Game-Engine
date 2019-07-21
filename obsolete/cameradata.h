@@ -14,11 +14,15 @@
 // Standard lib dependencies
 #include <string>
 
+// Forward Declarations
+struct XMLNode;
+
 class CCameraData : public CObject
 {
 public:
 
     // Constructor
+    CCameraData();
     CCameraData( const XMLNode & node );
     CCameraData( const CCameraData & data );
     
@@ -37,19 +41,22 @@ public:
     // Get the view angle
     float getViewAngle() const;
 
+    // Load the camera data from XML node
+    void loadFromNode( const XMLNode & node );
+
 private:
     
     // The projection type
-    NDefs::EProjectionType m_projectionType;
+    NDefs::EProjectionType m_projType;
 
     // minimum Z distance
-    float m_minZdist;
+    float m_minZDist;
 
     // maximum Z distance
-    float m_maxZdist;
+    float m_maxZDist;
     
     // view angle
-    float m_viewAngle;
+    float m_angle;
 };
 
 #endif

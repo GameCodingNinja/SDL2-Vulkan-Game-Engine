@@ -83,10 +83,9 @@ void LoadTitleScreenAssets()
     
     // Create the needed strategies
     StrategyMgr.createActorStrategy( "(title)" ).create( "background" );
-    StrategyMgr.createActorStrategy( "(cube)" ).create( "cube" );
-    
-    // Set the camera for the cube strategy
-    StrategyMgr.setCamera( "(cube)", "cube" );
+    iStrategy @cubeStrategy = StrategyMgr.createActorStrategy( "(cube)" );
+    cubeStrategy.create( "cube" );
+    cubeStrategy.setCamera( "cubeCamera" );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

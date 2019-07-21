@@ -45,8 +45,8 @@ public:
     virtual void setToCreate( const std::string & name ){}
     
     // Set to create the sprite
-    void setCamera( CCamera * pCamera );
-    CCamera * getCamera();
+    void setCamera( const std::string & cameraId );
+    CCamera & getCamera();
     
     // Create the sprite
     virtual iNode * create(
@@ -66,7 +66,7 @@ public:
     virtual void transform(){}
     
     // Record the command buffer for all the sprite objects that are to be rendered
-    virtual void recordCommandBuffer( uint32_t index, const CCamera & camera ){}
+    virtual void recordCommandBuffer( uint32_t index ){}
     
 protected:
     
