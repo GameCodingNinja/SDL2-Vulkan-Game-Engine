@@ -1,14 +1,15 @@
+<?xml version="1.0"?>
 <listTable>
     
     <groupList groupName="(main)">
-        <file path="data/scripts/library/defs.ang"/>
-        <file path="data/scripts/source/game/main.ang"/>
-        <file path="data/scripts/source/game/game.ang"/>
-        <file path="data/scripts/source/game/game_defs.ang"/>
-        <file path="data/scripts/library/shared_utilities.ang"/>
-        <file path="data/scripts/library/shared_sprite_utilities.ang"/>
-        <file path="data/scripts/library/shared_visual_utilities.ang"/>
-        <file path="data/scripts/library/functions.ang"/>
+        <file path="data/scripts/library/defs.as"/>
+        <file path="data/scripts/source/game/main.as"/>
+        <file path="data/scripts/source/game/game.as"/>
+        <file path="data/scripts/source/game/game_defs.as"/>
+        <file path="data/scripts/library/shared_utilities.as"/>
+        <file path="data/scripts/library/shared_sprite_utilities.as"/>
+        <file path="data/scripts/library/shared_visual_utilities.as"/>
+        <file path="data/scripts/library/functions.as"/>
     </groupList>
 
 </listTable>

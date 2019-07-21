@@ -1,0 +1,106 @@
+
+//
+//  FILE NAME:  startupstate.as
+//
+//  DESC:       Start up game state
+//
+
+final class CStartUpState : CCommonState
+{
+    //
+    //  Constructor
+    //
+    CStartUpState()
+    {
+        super( NStateDefs::EGS_STARTUP, NStateDefs::EGS_TITLE_SCREEN );
+    }
+    
+    //
+    //  Destroy the state
+    //
+    void destroy() override
+    {
+        // Wait for all rendering to be finished
+        Device.waitForIdle();
+        
+        Device.deleteCommandPoolGroup( "(startup)" );
+        ObjectDataMgr.freeGroup( "(startup)" );
+        StrategyMgr.deleteStrategy( "(startup)" );
+    }
+
+    //
+    //  Init the state
+    //
+    void init() override
+    {
+        // Load the data lists
+        ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
+        StrategyMgr.loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
+        
+        // Load group specific assets
+        ScriptMgr.loadGroup( "(state)" );
+        ObjectDataMgr.loadGroup( "(startup)" );
+        
+        // Add the command buffers to the menu manager
+        MenuMgr.setCommandBuffer( "(menu)" );
+        
+        // Create the needed strategies
+        StrategyMgr.createActorStrategy( "(startup)" ).create( "waffles" );
+        StrategyMgr.activateStrategy( "(startup)" ).setCommandBuffer( "(startup)" );
+        
+        // Do the fade in
+        Spawn("State_StartUpFadeIn", "(state)");
+    }
+    
+    //
+    //  Handle the events
+    //
+    void handleEvent() override
+    {
+        if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
+            SpawnByThread("LoadStartUpAssets");
+        
+        else if( ActionMgr.wasEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE ) )
+            Spawn("State_FadeOut", "(state)");
+        
+        else if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
+            mChangeState = true;
+    }
+};
+
+//
+//  Load the assets
+//
+void LoadStartUpAssets()
+{
+    // Load the list tables
+    ObjectDataMgr.loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
+    MenuMgr.loadListTable( "data/objects/2d/menu/menuListTable.lst" );
+    SoundMgr.loadListTable( "data/sound/soundListTable.lst" );
+    PhysicsWorldManager2D.loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
+
+    // Load the menu scripts
+    ScriptMgr.loadGroup( "(menu)" );
+
+    // Load in any fonts
+    FontMgr.load( "data/textures/fonts/font.lst" );
+
+    // Load the action manager - Must be loaded before memu system
+    ActionMgr.load( "data/settings/controllerMapping.cfg" );
+
+    // Load the menu action list
+    MenuMgr.loadMenuAction( "data/objects/2d/menu/menu_action.list" );
+
+    // Load the start up animation group
+    ObjectDataMgr.loadGroup( "(menu)" );
+
+    // Load the menu sounds
+    SoundMgr.loadGroup("(menu)");
+
+    // Load the menu group
+    MenuMgr.loadGroup("(menu)");
+
+    // Load the next states assets
+    LoadTitleScreenAssets();
+}
+    

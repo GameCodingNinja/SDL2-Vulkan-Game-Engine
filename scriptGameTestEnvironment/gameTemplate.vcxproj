@@ -82,12 +82,12 @@
     <None Include="data\objects\2d\objectDataList\titleScreenDataList.lst" />
     <None Include="data\objects\2d\physics\gamePhysics.cfg" />
     <None Include="data\objects\2d\physics\physicsListTable.lst" />
-    <None Include="data\objects\2d\scripts\menu.ang" />
-    <None Include="data\objects\2d\scripts\menu_defs.ang" />
+    <None Include="data\objects\2d\scripts\menu.as" />
+    <None Include="data\objects\2d\scripts\menu_defs.as" />
     <None Include="data\objects\2d\scripts\scriptListTable.lst">
       <SubType>Designer</SubType>
     </None>
-    <None Include="data\objects\2d\scripts\shared_utilities.ang" />
+    <None Include="data\objects\2d\scripts\shared_utilities.as" />
     <None Include="data\objects\3d\objectDataList\cube.lst" />
     <None Include="data\objects\3d\objectDataList\dataListTable.lst" />
     <None Include="data\settings\controllerMapping.cfg">

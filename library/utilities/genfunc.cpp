@@ -100,7 +100,7 @@ namespace NGenFunc
         SDL_RWread( scpFile.get(), spChar.get(), 1, sizeInBytes-TERMINATOR_SIZE );
 
         /* Test Code to output contents of buffer
-        if( file == "data/objects/2d/scripts/menu.ang" )
+        if( file == "data/objects/2d/scripts/menu.as" )
         {
             NSmart::scoped_filehandle_ptr<FILE> scpFileTest( fopen("c:/test.txt", "wb") );
             if( !scpFileTest.isNull() )

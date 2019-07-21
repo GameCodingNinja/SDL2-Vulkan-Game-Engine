@@ -121,10 +121,10 @@
     <None Include="data\objects\2d\menu\tree.list">
       <Filter>data\objects\2d\menu</Filter>
     </None>
-    <None Include="data\objects\2d\scripts\menu.ang">
+    <None Include="data\objects\2d\scripts\menu.as">
       <Filter>data\objects\2d\scripts</Filter>
     </None>
-    <None Include="data\objects\2d\scripts\menu_defs.ang">
+    <None Include="data\objects\2d\scripts\menu_defs.as">
       <Filter>data\objects\2d\scripts</Filter>
     </None>
     <None Include="data\objects\2d\menu\control\menu_label.ctrl">
@@ -233,7 +233,7 @@
     <None Include="data\objects\3d\objectDataList\dataListTable.lst">
       <Filter>data\objects\3d\objectDataList</Filter>
     </None>
-    <None Include="data\objects\2d\scripts\shared_utilities.ang">
+    <None Include="data\objects\2d\scripts\shared_utilities.as">
       <Filter>data\objects\2d\scripts</Filter>
     </None>
   </ItemGroup>

@@ -1,38 +1,39 @@
+<?xml version="1.0"?>
 <listTable>
     
     <groupList groupName="(menu)">
-      <file path="data/scripts/library/shared_utilities.ang"/>
-      <file path="data/scripts/library/shared_sprite_utilities.ang"/>
-      <file path="data/scripts/library/menu_defs.ang"/>
-      <file path="data/scripts/library/menu.ang"/>
-      <file path="data/scripts/library/smartgui.ang"/>
+      <file path="data/scripts/library/shared_utilities.as"/>
+      <file path="data/scripts/library/shared_sprite_utilities.as"/>
+      <file path="data/scripts/library/menu_defs.as"/>
+      <file path="data/scripts/library/menu.as"/>
+      <file path="data/scripts/library/smartgui.as"/>
     </groupList>
 
     <groupList groupName="(state)">
-        <file path="data/scripts/library/state_defs.ang"/>
-        <file path="data/scripts/library/shared_utilities.ang"/>
-        <file path="data/scripts/library/shared_sprite_utilities.ang"/>
-        <file path="data/scripts/library/shared_visual_utilities.ang"/>
-        <file path="data/scripts/library/state.ang"/>
+        <file path="data/scripts/library/state_defs.as"/>
+        <file path="data/scripts/library/shared_utilities.as"/>
+        <file path="data/scripts/library/shared_sprite_utilities.as"/>
+        <file path="data/scripts/library/shared_visual_utilities.as"/>
+        <file path="data/scripts/library/state.as"/>
     </groupList>
     
     <groupList groupName="(main)">
-        <file path="data/scripts/library/menu_defs.ang"/>
-        <file path="data/scripts/library/state_defs.ang"/>
-        <file path="data/scripts/source/game/main.ang"/>
-        <file path="data/scripts/source/game/game.ang"/>
-        <file path="data/scripts/source/game/game_defs.ang"/>
-        <file path="data/scripts/source/state/igamestate.ang"/>
-        <file path="data/scripts/source/state/statemessage.ang"/>
-        <file path="data/scripts/source/state/commonstate.ang"/>
-        <file path="data/scripts/source/state/startupstate.ang"/>
-        <file path="data/scripts/source/state/titlescreenstate.ang"/>
-        <file path="data/scripts/source/state/loadstate.ang"/>
-        <file path="data/scripts/source/state/runstate.ang"/>
+        <file path="data/scripts/library/menu_defs.as"/>
+        <file path="data/scripts/library/state_defs.as"/>
+        <file path="data/scripts/source/game/main.as"/>
+        <file path="data/scripts/source/game/game.as"/>
+        <file path="data/scripts/source/game/game_defs.as"/>
+        <file path="data/scripts/source/state/igamestate.as"/>
+        <file path="data/scripts/source/state/statemessage.as"/>
+        <file path="data/scripts/source/state/commonstate.as"/>
+        <file path="data/scripts/source/state/startupstate.as"/>
+        <file path="data/scripts/source/state/titlescreenstate.as"/>
+        <file path="data/scripts/source/state/loadstate.as"/>
+        <file path="data/scripts/source/state/runstate.as"/>
     </groupList>
   
     <groupList groupName="(run)">
-        <file path="data/scripts/library/run.ang"/>
+        <file path="data/scripts/library/run.as"/>
     </groupList>
 
 </listTable>
