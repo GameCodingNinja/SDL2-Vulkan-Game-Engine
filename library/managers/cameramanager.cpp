@@ -158,3 +158,15 @@ void CCameraMgr::clearTransList()
 {
     m_transVec.clear();
 }
+
+
+/************************************************************************
+*    DESC:  Rebuild all camera's projection matrixes
+************************************************************************/
+void CCameraMgr::rebuildProjectionMatrix()
+{
+    m_defCamera.init();
+
+    for( auto & iter : m_cameraMap )
+        iter.second.init();
+}

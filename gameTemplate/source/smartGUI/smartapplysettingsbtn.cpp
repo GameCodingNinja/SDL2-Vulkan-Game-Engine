@@ -24,6 +24,7 @@
 #include <common/defs.h>
 #include <utilities/genfunc.h>
 #include <utilities/settings.h>
+#include <managers/cameramanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -135,8 +136,8 @@ void CSmartApplySettingsBtn::execute()
         // Reset the dynamic positions of menus
         CMenuMgr::Instance().resetDynamicOffset();
 
-        // Need to reset the view port the changing the resolution
-        //glViewport(0, 0, CSettings::Instance().getSize().getW(), CSettings::Instance().getSize().getH());
+        // Rebuild all the camera projection matrixes
+        CCameraMgr::Instance().rebuildProjectionMatrix();
     }
     else if( fullScreenChanged )
     {

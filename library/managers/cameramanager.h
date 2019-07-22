@@ -54,6 +54,9 @@ public:
     // Clear the transform list
     void clearTransList();
 
+    // Rebuild all camera's projection matrixes
+    void rebuildProjectionMatrix();
+
 private:
 
     CCameraMgr();
