@@ -415,7 +415,7 @@ void CUISubControl::onStateChange( const SDL_Event & rEvent )
             }
         }
         // The sub control doesn't respond to selected message
-        else if( state < NUIControl::ECS_SELECTED )
+        else if( state < NUIControl::ECS_SELECT )
             CUIControl::onStateChange( rEvent );
     }
 }

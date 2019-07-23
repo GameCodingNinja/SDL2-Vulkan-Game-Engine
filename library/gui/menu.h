@@ -208,7 +208,7 @@ private:
     CScriptComponent m_scriptComponent;
     
     // Script function map. Tie events to script functions
-    std::map<const std::string, std::string> m_scriptFunctionMap;
+    std::map<const std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;
     
     // menu alpha value
     float m_alpha;

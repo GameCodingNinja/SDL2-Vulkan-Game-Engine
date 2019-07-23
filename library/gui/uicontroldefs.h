@@ -42,10 +42,10 @@ namespace NUIControl
     {
         ECS_NULL=0,
         ECS_INIT,
-        ECS_DISABLED,
+        ECS_DISABLE,
         ECS_INACTIVE,
         ECS_ACTIVE,
-        ECS_SELECTED,
+        ECS_SELECT,
         ECS_EXECUTE,
         ECS_EVENT
     };

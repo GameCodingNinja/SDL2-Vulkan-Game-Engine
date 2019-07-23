@@ -41,7 +41,7 @@ void CSmartSettingsMenuBtn::enableDisableApplyBtn()
     if( wasSettingsButtonsChanged() )
         rMenu.getPtrToControl( "settings_apply_btn" )->changeState(NUIControl::ECS_INACTIVE);
     else
-        rMenu.getPtrToControl( "settings_apply_btn" )->changeState(NUIControl::ECS_DISABLED);
+        rMenu.getPtrToControl( "settings_apply_btn" )->changeState(NUIControl::ECS_DISABLE);
 }
 
 

@@ -56,7 +56,7 @@ bool CUICheckBox::getToggleState()
 ************************************************************************/
 void CUICheckBox::onSelectExecute( const SDL_Event & rEvent )
 {
-    if( getState() == NUIControl::ECS_SELECTED )
+    if( getState() == NUIControl::ECS_SELECT )
         m_toggleState = !m_toggleState;
 
     CUIControl::onSelectExecute( rEvent );

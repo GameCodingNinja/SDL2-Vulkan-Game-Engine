@@ -55,20 +55,20 @@ void CSmartKeyBindBtn::create()
             if( !configurable )
             {
                 disableCounter++;
-                pControl->setState( NUIControl::ECS_DISABLED );
+                pControl->setState( NUIControl::ECS_DISABLE );
             }
         }
         else
         {
             disableCounter++;
-            pControl->setState( NUIControl::ECS_DISABLED );
+            pControl->setState( NUIControl::ECS_DISABLE );
             pControl->createFontString( "NA" );
         }
     }
     
     // If all 3 device types are not configuable, disable the button
     if( disableCounter == NDefs::MAX_UNIQUE_DEVICES )
-        m_piControl->setState( NUIControl::ECS_DISABLED );
+        m_piControl->setState( NUIControl::ECS_DISABLE );
 }
 
 

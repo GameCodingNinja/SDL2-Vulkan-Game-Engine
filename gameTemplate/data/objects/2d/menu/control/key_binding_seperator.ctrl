@@ -9,7 +9,7 @@
             </font>
             <position x="-420" y="0" z="0"/>
             <scriptLst>
-                <script disabled="Control_Disabled"/>
+                <script disable="Control_Disabled"/>
             </scriptLst>
         </sprite>
     

@@ -157,24 +157,7 @@ void CMenu::load( const std::string & filePath )
 ************************************************************************/
 void CMenu::initScriptFunctions( const XMLNode & node )
 {
-    // Check for scripting - Add an empty string for scripts not defined
-    XMLNode scriptLstNode = node.getChildNode( "scriptLst" );
-    if( !scriptLstNode.isEmpty() )
-    {
-        for( int i = 0; i < scriptLstNode.nChildNode(); ++i )
-        {
-            const XMLNode scriptNode = scriptLstNode.getChildNode(i);
-
-            // Only the first attribute is used
-            const XMLAttribute attribute = scriptNode.getAttribute(0);
-            const std::string attrName = attribute.lpszName;
-            const std::string attrValue = attribute.lpszValue;
-
-            // Add the attribute name and value to the map
-            if( !attrValue.empty() )
-                m_scriptFunctionMap.emplace( attrName, attrValue );
-        }
-    }
+    NParseHelper::initScriptFunctions( node, m_scriptFunctionMap, m_group );
 }
 
 
@@ -776,7 +759,7 @@ void CMenu::prepare( const std::string & scriptFuncId )
 {
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
-        m_scriptComponent.prepare(m_group, iter->second, {this});
+        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
 }
 
 

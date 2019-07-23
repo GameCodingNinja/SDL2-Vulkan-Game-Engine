@@ -24,6 +24,7 @@
 #include <utilities/xmlParser.h>
 #include <utilities/matrix.h>
 #include <utilities/exceptionhandling.h>
+#include <utilities/xmlparsehelper.h>
 #include <common/iaibase.h>
 #include <sprite/spritedata.h>
 
@@ -134,35 +135,7 @@ void CSprite::init()
 ************************************************************************/
 void CSprite::initScriptFunctions( const XMLNode & node )
 {
-    // Check for scripting - Add an empty string for scripts not defined
-    XMLNode scriptLstNode = node.getChildNode( "scriptLst" );
-    if( !scriptLstNode.isEmpty() )
-    {
-        for( int i = 0; i < scriptLstNode.nChildNode(); ++i )
-        {
-            const XMLNode scriptNode = scriptLstNode.getChildNode(i);
-
-            // Only the first attribute is used
-            const XMLAttribute attribute = scriptNode.getAttribute(0);
-            const std::string attrName = attribute.lpszName;
-            const std::string attrValue = attribute.lpszValue;
-
-            // Add the attribute name and value to the map
-            if( !attrValue.empty() )
-            {
-                // Get the group for this script. Default it to the object data group
-                std::string group = m_rObjectData.getGroup();
-                if( scriptNode.isAttributeSet( "group" ) )
-                {
-                    group = scriptNode.getAttribute( "group" );
-                    if( group.empty() )
-                        group = m_rObjectData.getGroup();
-                }
-
-                m_scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
-            }
-        }
-    }
+    NParseHelper::initScriptFunctions( node, m_scriptFunctionMap, m_rObjectData.getGroup() );
 }
 
 

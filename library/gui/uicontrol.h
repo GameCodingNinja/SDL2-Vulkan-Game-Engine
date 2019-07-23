@@ -165,9 +165,6 @@ public:
     
     // an this control scroll?
     bool canScroll( int msg ) override;
-    
-    // Set the script state function
-    void setScriptStateFunc( const std::string & scriptStateStr, const std::string & scriptFuncStr ) override;
 
 protected:
 
@@ -203,9 +200,6 @@ protected:
     // Is the point in the control
     bool isPointInControl( int x, int y );
     bool isPointInControl( const CPoint<float> & pos );
-    
-    // Get the script state
-    NUIControl::EControlState getScriptState( const std::string & scriptStateStr );
 
 private:
 
@@ -262,7 +256,7 @@ private:
     NDefs::EActionPress m_mouseSelectType;
 
     // On state script function names
-    std::map< NUIControl::EControlState, std::string > m_scriptFunction;
+    std::map<const std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;
 
     // Scrolling parameters
     CScrollParam m_scrollParam;

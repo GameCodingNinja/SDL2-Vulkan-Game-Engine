@@ -87,24 +87,7 @@ void CUIControl::loadFromNode( const XMLNode & node )
     }
 
     // Setup the script functions for this control
-    XMLNode scriptLstNode = node.getChildNode( "scriptLst" );
-    if( !scriptLstNode.isEmpty() )
-    {
-        // Internal support for "init", "disabled", "inactive", "active", "select", "execute"
-        for( int i = 0; i < scriptLstNode.nChildNode(); ++i )
-        {
-            const XMLNode scriptNode = scriptLstNode.getChildNode(i);
-
-            // Only the first attribute is used
-            const XMLAttribute attribute = scriptNode.getAttribute(0);
-            const std::string attrName = attribute.lpszName;
-            const std::string attrValue = attribute.lpszValue;
-
-            // Add the attribute name and value to the map
-            if( !attrValue.empty() )
-                setScriptStateFunc( attrName, attrValue );
-        }
-    }
+    NParseHelper::initScriptFunctions( node, m_scriptFunctionMap, m_group );
 
     // Load the scroll data from node
     m_scrollParam.loadFromNode( node.getChildNode( "scroll" ) );
@@ -114,45 +97,6 @@ void CUIControl::loadFromNode( const XMLNode & node )
 
     // Init to the default state
     revertToDefaultState();
-}
-
-
-/************************************************************************
-*    DESC:  Set the script state function
-************************************************************************/
-void CUIControl::setScriptStateFunc( const std::string & scriptStateStr, const std::string & scriptFuncStr )
-{
-    auto ctrlState = getScriptState( scriptStateStr );
-
-    if( ctrlState != NUIControl::ECS_NULL )
-        m_scriptFunction.emplace( ctrlState, scriptFuncStr );
-}
-
-
-/************************************************************************
-*    DESC:  Get the script state
-************************************************************************/
-NUIControl::EControlState CUIControl::getScriptState( const std::string & scriptStateStr )
-{
-    if( scriptStateStr == "init" )
-        return NUIControl::ECS_INIT;
-
-    else if( scriptStateStr == "disabled" )
-        return NUIControl::ECS_DISABLED;
-
-    else if( scriptStateStr == "inactive" )
-        return NUIControl::ECS_INACTIVE;
-
-    else if( scriptStateStr == "active" )
-        return NUIControl::ECS_ACTIVE;
-
-    else if( scriptStateStr == "select" )
-        return NUIControl::ECS_SELECTED;
-
-    else if( scriptStateStr == "execute" )
-        return NUIControl::ECS_EXECUTE;
-
-    return NUIControl::ECS_NULL;
 }
 
 
@@ -388,7 +332,7 @@ void CUIControl::onStateChange( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onSelectExecute( const SDL_Event & rEvent )
 {
-    if( m_state == NUIControl::ECS_SELECTED )
+    if( m_state == NUIControl::ECS_SELECT )
     {
         if( m_actionType == NUIControl::ECAT_TO_TREE )
             NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TO_TREE, 0, &m_executionAction );
@@ -552,9 +496,9 @@ void CUIControl::deactivateControl()
 void CUIControl::disableControl()
 {
     if( (m_lastState == NUIControl::ECS_NULL) ||
-        (m_lastState > NUIControl::ECS_DISABLED) )
+        (m_lastState > NUIControl::ECS_DISABLE) )
     {
-        m_lastState = m_state = NUIControl::ECS_DISABLED;
+        m_lastState = m_state = NUIControl::ECS_DISABLE;
 
         recycleContext();
         setDisplayState();
@@ -567,7 +511,7 @@ void CUIControl::disableControl()
 ************************************************************************/
 void CUIControl::enableControl()
 {
-    if( m_lastState <= NUIControl::ECS_DISABLED )
+    if( m_lastState <= NUIControl::ECS_DISABLE )
     {
         m_lastState = m_state = NUIControl::ECS_INACTIVE;
 
@@ -612,8 +556,8 @@ void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlS
 
     switch( controlState )
     {
-        case NUIControl::ECS_DISABLED:
-            scriptFuncMapKey = "disabled";
+        case NUIControl::ECS_DISABLE:
+            scriptFuncMapKey = "disable";
             forceUpdate = true;
         break;
 
@@ -626,8 +570,8 @@ void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlS
             scriptFuncMapKey = "active";
         break;
 
-        case NUIControl::ECS_SELECTED:
-            scriptFuncMapKey = "selected";
+        case NUIControl::ECS_SELECT:
+            scriptFuncMapKey = "select";
         break;
 
         case NUIControl::ECS_INIT:
@@ -660,9 +604,46 @@ void CUIControl::callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, 
 ************************************************************************/
 void CUIControl::prepareControlScriptFunction( NUIControl::EControlState controlState )
 {
-    auto iter = m_scriptFunction.find( controlState );
-    if( iter != m_scriptFunction.end() )
-        m_scriptComponent.prepare(m_group, iter->second, {this});
+    std::string scriptFuncMapKey = "null";
+
+    switch( controlState )
+    {
+        case NUIControl::ECS_NULL:
+            scriptFuncMapKey = "null";
+        break;
+
+        case NUIControl::ECS_INIT:
+            scriptFuncMapKey = "init";
+        break;
+
+        case NUIControl::ECS_DISABLE:
+            scriptFuncMapKey = "disable";
+        break;
+
+        case NUIControl::ECS_INACTIVE:
+            scriptFuncMapKey = "inactive";
+        break;
+
+        case NUIControl::ECS_ACTIVE:
+            scriptFuncMapKey = "active";
+        break;
+
+        case NUIControl::ECS_SELECT:
+            scriptFuncMapKey = "select";
+        break;
+
+        case NUIControl::ECS_EXECUTE:
+            scriptFuncMapKey = "execute";
+        break;
+
+        case NUIControl::ECS_EVENT:
+            scriptFuncMapKey = "event";
+        break;
+    };
+
+    auto iter = m_scriptFunctionMap.find( scriptFuncMapKey );
+    if( iter != m_scriptFunctionMap.end() )
+        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
 }
 
 
@@ -701,10 +682,10 @@ void CUIControl::setDefaultState( const std::string & value )
         m_defaultState = NUIControl::ECS_ACTIVE;
 
     else if( value == "disabled" )
-        m_defaultState = NUIControl::ECS_DISABLED;
+        m_defaultState = NUIControl::ECS_DISABLE;
 
     else if( value == "selected" )
-        m_defaultState = NUIControl::ECS_SELECTED;
+        m_defaultState = NUIControl::ECS_SELECT;
 }
 
 void CUIControl::setDefaultState( NUIControl::EControlState value )
@@ -914,7 +895,7 @@ bool CUIControl::handleSelectAction( const CSelectMsgCracker & msgCracker )
     {
         NGenFunc::DispatchEvent(
             NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControl::ECS_SELECTED,
+            NUIControl::ECS_SELECT,
             (void *)this );
 
         return true;
@@ -1000,7 +981,7 @@ void CUIControl::setStringToList( const std::string & str )
 ************************************************************************/
 bool CUIControl::isDisabled()
 {
-    return m_state == NUIControl::ECS_DISABLED;
+    return m_state == NUIControl::ECS_DISABLE;
 }
 
 bool CUIControl::isInactive()
@@ -1015,7 +996,7 @@ bool CUIControl::isActive()
 
 bool CUIControl::isSelected()
 {
-    return (m_state == NUIControl::ECS_SELECTED);
+    return (m_state == NUIControl::ECS_SELECT);
 }
 
 bool CUIControl::isSelectable()

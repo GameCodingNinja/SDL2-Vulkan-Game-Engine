@@ -167,9 +167,6 @@ public:
     
     // an this control scroll?
     virtual bool canScroll( int msg ) = 0;
-    
-    // Set the script state function
-    virtual void setScriptStateFunc( const std::string & scriptStateStr, const std::string & scriptFuncStr ) = 0;
 
     // Get the object group name
     const std::string & getGroup() const;

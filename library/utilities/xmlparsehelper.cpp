@@ -408,4 +408,45 @@ namespace NParseHelper
         return dynamicOffset;
     }
 
+
+    /************************************************************************
+    *    DESC:  Init the script functions and add them to the map
+    *           This function loads the attribute info reguardless of what it is
+    ************************************************************************/
+    void initScriptFunctions(
+        const XMLNode & node,
+        std::map<const std::string, std::tuple<std::string, std::string>> & scriptFunctionMap,
+        const std::string & rGroup )
+    {
+        // Check for scripting - Add an empty string for scripts not defined
+        XMLNode scriptLstNode = node.getChildNode( "scriptLst" );
+        if( !scriptLstNode.isEmpty() )
+        {
+            for( int i = 0; i < scriptLstNode.nChildNode(); ++i )
+            {
+                const XMLNode scriptNode = scriptLstNode.getChildNode(i);
+
+                // Only the first attribute is used
+                const XMLAttribute attribute = scriptNode.getAttribute(0);
+                const std::string attrName = attribute.lpszName;
+                const std::string attrValue = attribute.lpszValue;
+
+                // Add the attribute name and value to the map
+                if( !attrValue.empty() )
+                {
+                    // Get the group for this script. Default it to the object data group
+                    std::string group = rGroup;
+                    if( scriptNode.isAttributeSet( "group" ) )
+                    {
+                        group = scriptNode.getAttribute( "group" );
+                        if( group.empty() )
+                            group = rGroup;
+                    }
+
+                    scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
+                }
+            }
+        }
+    }
+
 }

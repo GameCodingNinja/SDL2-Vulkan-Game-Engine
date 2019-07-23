@@ -107,7 +107,7 @@ void CUIButtonList::inc()
 {
     NGenFunc::DispatchEvent(
             NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControl::ECS_SELECTED,
+            NUIControl::ECS_SELECT,
             (void *)m_pSubControlVec[NUIControl::BTN_INC] );
 }
 
@@ -115,7 +115,7 @@ void CUIButtonList::dec()
 {
     NGenFunc::DispatchEvent(
         NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-        NUIControl::ECS_SELECTED,
+        NUIControl::ECS_SELECT,
         (void *)m_pSubControlVec[NUIControl::BTN_DEC] );
 }
 
@@ -185,7 +185,7 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
 
     NUIControl::EControlState state = NUIControl::EControlState(rEvent.user.code);
 
-    if( state == NUIControl::ECS_SELECTED )
+    if( state == NUIControl::ECS_SELECT )
     {
         if( (void *)m_pSubControlVec[NUIControl::BTN_DEC] == rEvent.user.data1 )
         {

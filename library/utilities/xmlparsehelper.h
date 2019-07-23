@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <utility>
 #include <string>
+#include <map>
 
 namespace NParseHelper
 {
@@ -66,6 +67,12 @@ namespace NParseHelper
 
     // Load the dynamic offset
     CDynamicOffset LoadDynamicOffset( const XMLNode & node, bool & loaded );
+
+    // Init the script functions and add them to the map
+    void initScriptFunctions(
+        const XMLNode & node,
+        std::map<const std::string, std::tuple<std::string, std::string>> & scriptFunctionMap,
+        const std::string & rGroup );
 }
 
 #endif  // __xml_parse_helper_h__

@@ -190,7 +190,7 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
 
         if( msgCracker.isPressDown() )
         {
-            prepareControlScriptFunction( NUIControl::ECS_SELECTED );
+            prepareControlScriptFunction( NUIControl::ECS_SELECT );
 
             CPoint<float> dif =
                 (msgCracker.getPos() - getSubControl()->getCollisionPos()) *
@@ -232,12 +232,12 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
     if( isActive() )
     {
         if( prepareOnSelect )
-            prepareControlScriptFunction( NUIControl::ECS_SELECTED );
+            prepareControlScriptFunction( NUIControl::ECS_SELECT );
 
         // Send a message to blink the button
         NGenFunc::DispatchEvent(
             NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControl::ECS_SELECTED,
+            NUIControl::ECS_SELECT,
             getSubControl() );
 
         incSlider(value);
