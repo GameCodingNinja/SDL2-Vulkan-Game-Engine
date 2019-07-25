@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/library"
+		},
+		{
+			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript"
 		}
 	],
 	"settings": {

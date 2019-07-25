@@ -35,7 +35,7 @@ final class CStartUpState : CCommonState
     {
         // Load the data lists
         ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
-        StrategyMgr.loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
+        StrategyMgr.loadListTable( "data/objects/strategy/strategyListTable.lst" );
         
         // Load group specific assets
         ScriptMgr.loadGroup( "(state)" );

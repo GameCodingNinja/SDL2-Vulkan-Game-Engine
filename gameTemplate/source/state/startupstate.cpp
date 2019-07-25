@@ -85,7 +85,7 @@ void CStartUpState::init()
     // Load list table data
     CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
     CScriptMgr::Instance().loadListTable( "data/objects/scripts/scriptListTable.lst" );
-    CStrategyMgr::Instance().loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
+    CStrategyMgr::Instance().loadListTable( "data/objects/strategy/strategyListTable.lst" );
 
     // Register the script items needed for startup animation
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );

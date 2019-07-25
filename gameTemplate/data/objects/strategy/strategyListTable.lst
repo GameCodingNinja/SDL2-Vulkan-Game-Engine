@@ -2,27 +2,27 @@
 <listTable>
 
     <groupList groupName="(stage)">
-        <file path="data/objects/spritestrategy/stage/stage.cfg"/>
+        <file path="data/objects/strategy/stage/stage.strategy"/>
     </groupList>
     
     <groupList groupName="(run)">
-        <file path="data/objects/spritestrategy/runscreenNode.lst"/>
+        <file path="data/objects/strategy/runscreen.strategy"/>
     </groupList>
     
     <groupList groupName="(startup)">
-        <file path="data/objects/spritestrategy/startupNode.lst"/>
+        <file path="data/objects/strategy/startup.strategy"/>
     </groupList>
     
     <groupList groupName="(title)">
-        <file path="data/objects/spritestrategy/titlescreenNode.lst"/>
+        <file path="data/objects/strategy/titlescreen.strategy"/>
     </groupList>
     
     <groupList groupName="(cube)">
-        <file path="data/objects/spritestrategy/cubeNode.lst"/>
+        <file path="data/objects/strategy/cube.strategy"/>
     </groupList>
     
     <groupList groupName="(load)">
-        <file path="data/objects/spritestrategy/loadscreenNode.lst"/>
+        <file path="data/objects/strategy/loadscreen.strategy"/>
     </groupList>
   
 </listTable>

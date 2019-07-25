@@ -46,7 +46,7 @@ class CGame
         
         // Load the data lists
         ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
-        StrategyMgr.loadListTable( "data/objects/spritestrategy/strategyListTable.lst" );
+        StrategyMgr.loadListTable( "data/objects/strategy/strategyListTable.lst" );
         
         // Load the action manager config settings
         ActionMgr.load( "data/settings/controllerMapping.cfg" );

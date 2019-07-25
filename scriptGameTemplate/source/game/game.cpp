@@ -25,6 +25,7 @@
 #include <script/scriptsize.h>
 #include <script/scriptglobals.h>
 #include <script/scriptsprite.h>
+#include <script/scriptcameramanager.h>
 #include <script/scriptcamera.h>
 #include <script/scriptmenu.h>
 #include <script/scriptobjectdatamanager.h>
@@ -110,6 +111,7 @@ void CGame::init()
     NScriptPoint::Register();
     NScriptActionManager::Register();
     NScriptCamera::Register();
+    NScriptCameraManager::Register();
     NScriptSprite::Register();
     NScriptSound::Register();
     NScriptStrategy::Register();
