@@ -86,3 +86,12 @@ CSprite * CSpriteNode::getSprite()
 {
     return &m_sprite;
 }
+
+
+/************************************************************************
+*    DESC:  Get the object
+************************************************************************/
+CObject2D * CSpriteNode::getObject()
+{
+    return m_sprite.getObject();
+}

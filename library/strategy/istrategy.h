@@ -51,7 +51,8 @@ public:
     // Create the sprite
     virtual iNode * create(
         const std::string & dataName,
-        const std::string & instanceName = "" ){ return nullptr; }
+        const std::string & instanceName = "",
+        bool makeActive = true ){ return nullptr; }
     
     // Create the node
     virtual void destroy( int id ){};

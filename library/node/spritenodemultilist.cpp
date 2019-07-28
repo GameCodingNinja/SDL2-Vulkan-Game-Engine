@@ -97,3 +97,12 @@ int CSpriteNodeMultiLst::getId() const
 {
     return m_sprite.getId();
 }
+
+
+/************************************************************************
+*    DESC:  Get the object
+************************************************************************/
+CObject2D * CSpriteNodeMultiLst::getObject()
+{
+    return m_sprite.getObject();
+}

@@ -13,6 +13,7 @@
 #include <strategy/istrategy.h>
 #include <strategy/stagestrategy.h>
 #include <strategy/actorstrategy.h>
+#include <strategy/strategyloader.h>
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
 #include <utilities/exceptionhandling.h>
@@ -219,5 +220,8 @@ namespace NScriptStrategy
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );
+
+        // Load the strategy
+        Throw( pEngine->RegisterGlobalFunction("void LoadStrategy(string &in)", asFUNCTION(NStrategyloader::load), asCALL_CDECL) );
     }
 }

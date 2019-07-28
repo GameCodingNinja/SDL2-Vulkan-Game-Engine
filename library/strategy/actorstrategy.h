@@ -48,7 +48,8 @@ public:
     // Create the node
     iNode * create(
         const std::string & dataName,
-        const std::string & instanceName = "" ) override;
+        const std::string & instanceName = "",
+        bool makeActive = true ) override;
     
     // activate/deactivate node
     iNode * activateNode( const std::string & instanceName );

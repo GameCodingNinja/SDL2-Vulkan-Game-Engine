@@ -20,6 +20,7 @@
 #include <strategy/stagestrategy.h>
 #include <strategy/actorstrategy.h>
 #include <strategy/strategymanager.h>
+#include <strategy/strategyloader.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -128,13 +129,7 @@ void CRunState::load()
     
     // Create the physics world
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
-    
-    // Add the strategies
-    CStrategyMgr::Instance().addStrategy( "(stage)", new CStageStrategy() );
-    auto strategy = CStrategyMgr::Instance().addStrategy( "(run)", new CActorStrategy() );
-    
-    // Add the sprites to the strategy
-    const char* shapes[] = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
-    for( int i = 0; i < 24; ++i )
-        strategy->create( shapes[i % 6] );
+
+    // Load the Strategies
+    NStrategyloader::load( "data/objects/strategy/level_1/strategy.loader" );
 }

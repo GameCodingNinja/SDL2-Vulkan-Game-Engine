@@ -141,6 +141,7 @@ add_library(
         strategy/stagestrategy.cpp
         strategy/strategymanager.cpp
         strategy/istrategy.cpp
+        strategy/strategyloader.cpp
         common/sound.cpp
         common/playlist.cpp
         common/worldvalue.cpp

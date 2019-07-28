@@ -41,6 +41,14 @@ CActorStrategy::CActorStrategy()
 ************************************************************************/
 CActorStrategy::~CActorStrategy()
 {
+    // See if any nodes in the map are not part of the node vec and delete
+    for( auto & mapIter : m_pNodeMap )
+    {
+        auto vecIter = std::find( m_pNodeVec.begin(), m_pNodeVec.end(), mapIter.second );
+        if( vecIter == m_pNodeVec.end() )
+            NDelFunc::Delete( mapIter.second );
+    }
+
     NDelFunc::DeleteVectorPointers( m_pNodeVec );
 }
 
@@ -111,7 +119,8 @@ CNodeDataList & CActorStrategy::getData( const std::string & name )
 ************************************************************************/
 iNode * CActorStrategy::create(
     const std::string & dataName,
-    const std::string & instanceName )
+    const std::string & instanceName,
+    bool makeActive )
 {
     // Create a unique node id
     const int nodeId( m_idInc++ );
@@ -136,7 +145,8 @@ iNode * CActorStrategy::create(
     }
 
     // Add the node pointer to the vector for adding to the list
-    m_pActivateVec.push_back( pHeadNode );
+    if( instanceName.empty() || makeActive )
+        m_pActivateVec.push_back( pHeadNode );
     
     // If there is an instance name with this node, add it to the map
     if( !instanceName.empty() )

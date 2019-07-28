@@ -50,6 +50,9 @@ public:
     // Get the sprite
     CSprite * getSprite() override;
 
+    // Get the object
+    CObject2D * getObject() override;
+
 private:
 
     // Update the nodes recursive function

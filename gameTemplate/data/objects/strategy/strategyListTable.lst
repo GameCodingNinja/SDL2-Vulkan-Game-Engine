@@ -2,27 +2,27 @@
 <listTable>
 
     <groupList groupName="(stage)">
-        <file path="data/objects/strategy/stage/stage.strategy"/>
+        <file path="data/objects/strategy/level_1/stage.strategy"/>
     </groupList>
     
     <groupList groupName="(run)">
-        <file path="data/objects/strategy/runscreen.strategy"/>
+        <file path="data/objects/strategy/level_1/actor.strategy"/>
     </groupList>
     
     <groupList groupName="(startup)">
-        <file path="data/objects/strategy/startup.strategy"/>
+        <file path="data/objects/strategy/state/startup.strategy"/>
     </groupList>
     
     <groupList groupName="(title)">
-        <file path="data/objects/strategy/titlescreen.strategy"/>
+        <file path="data/objects/strategy/state/titlescreen.strategy"/>
     </groupList>
     
     <groupList groupName="(cube)">
-        <file path="data/objects/strategy/cube.strategy"/>
+        <file path="data/objects/strategy/state/cube.strategy"/>
     </groupList>
     
     <groupList groupName="(load)">
-        <file path="data/objects/strategy/loadscreen.strategy"/>
+        <file path="data/objects/strategy/state/loadscreen.strategy"/>
     </groupList>
   
 </listTable>
