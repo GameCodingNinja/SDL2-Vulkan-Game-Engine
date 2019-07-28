@@ -11,7 +11,7 @@
 // Game dependencies
 #include "statedefs.h"
 #include "titlescreenstate.h"
-#include "runstate.h"
+#include "level1state.h"
 
 // Game lib dependencies
 #include <system/device.h>
@@ -25,6 +25,7 @@
 #include <utilities/genfunc.h>
 #include <strategy/strategymanager.h>
 #include <strategy/actorstrategy.h>
+#include <strategy/strategyloader.h>
 #include <common/color.h>
 #include <sprite/sprite.h>
 #include <node/inode.h>
@@ -52,7 +53,7 @@ CLoadState::~CLoadState()
     // Wait for all rendering to be finished
     CDevice::Instance().waitForIdle();
     
-    CStrategyMgr::Instance().deleteStrategy( "(load)" );
+    CStrategyMgr::Instance().deleteStrategy( "_load_" );
     CDevice::Instance().deleteCommandPoolGroup( "(load)" );
     CObjectDataMgr::Instance().freeGroup( "(load)" );
 }
@@ -65,12 +66,9 @@ void CLoadState::init()
 {
     // Load group specific assets
     CObjectDataMgr::Instance().loadGroup( "(load)" );
-    
-    // Add the actor strategy
-    // Command buffers can only be used in the thread they are created
-    auto cmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(load)" );
-    CStrategyMgr::Instance().addStrategy( "(load)", new CActorStrategy() )->setCommandBuffers( cmdBufVec );
-    CStrategyMgr::Instance().activateStrategy( "(load)" )->create( "loadAnim" )->getSprite()->prepare( "loadAnimationLoop" );
+
+    // Load the Strategy
+    NStrategyloader::load( "data/objects/strategy/state/loadscreen.loader" );
     
     // Start the fade in and animation
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -115,8 +113,8 @@ void CLoadState::assetLoad()
         if( m_stateMessage.getLoadState() == NStateDefs::EGS_TITLE_SCREEN )
             CTitleScreenState::load();
 
-        else if( m_stateMessage.getLoadState() == NStateDefs::EGS_RUN )
-            CRunState::load();
+        else if( m_stateMessage.getLoadState() == NStateDefs::EGS_LEVEL_1 )
+            CLevel1State::load();
 
         NGenFunc::DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
     }

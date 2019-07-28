@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <strategyLst>
 
-    <strategy name="(stage)" type="stage"/>
-    <strategy name="(run)" type="actor">
+    <strategy name="_stage_" type="stage" cmdBufPool="(level_1)"/>
+    <strategy name="_level_1_" type="actor" cmdBufPool="(level_1)">
     
-        <node name="triangle_blue" instance="test1" active="false">
+        <node name="triangle_blue">
             <sprite>
                 <script prepare="ball_ai"/>
             </sprite>
@@ -35,7 +35,7 @@
             </sprite>
         </node>
 
-        <node name="triangle_blue" instance="test2" active="false">
+        <node name="triangle_blue">
             <sprite>
                 <script prepare="ball_ai"/>
             </sprite>
@@ -66,7 +66,7 @@
             </sprite>
         </node>
 
-        <node name="triangle_blue" instance="test3" active="false">
+        <node name="triangle_blue">
             <sprite>
                 <script prepare="ball_ai"/>
             </sprite>
@@ -97,7 +97,7 @@
             </sprite>
         </node>
 
-        <node name="triangle_blue" instance="test4" active="false">
+        <node name="triangle_blue">
             <sprite>
                 <script prepare="ball_ai"/>
             </sprite>

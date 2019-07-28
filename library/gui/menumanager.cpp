@@ -393,6 +393,12 @@ void CMenuMgr::activateMenu( const std::string & group, const std::string & tree
 *    DESC:  Activate a tree to be used by tree name only
 *           NOTE: Assumes unique tree names
 ************************************************************************/
+void CMenuMgr::activateTreeLst( const std::vector<std::string> & treeStrVec )
+{
+    for( auto & iter : treeStrVec )
+        activateTree( iter );
+}
+
 void CMenuMgr::activateTree( const std::string & treeStr )
 {
     for( auto & groupIter : m_menuTreeMapMap )
@@ -413,9 +419,6 @@ void CMenuMgr::activateTree( const std::string & treeStr )
             % treeStr % __FUNCTION__ % __LINE__ ));
 }
 
-/************************************************************************
-*    DESC:  Activate a tree to be used
-************************************************************************/
 void CMenuMgr::activateTree( const std::string & group, const std::string & treeStr )
 {
     auto groupIter = m_menuTreeMapMap.find( group );
@@ -467,6 +470,12 @@ void CMenuMgr::activateTree( const std::string & group, const std::string & tree
 *    DESC:  Deactivate a tree to be used
 *           NOTE: Assumes unique tree names
 ************************************************************************/
+void CMenuMgr::deactivateTreeLst( const std::vector<std::string> & treeStrVec )
+{
+    for( auto & iter : treeStrVec )
+        deactivateTree( iter );
+}
+
 void CMenuMgr::deactivateTree( const std::string & treeStr )
 {
     for( auto & groupIter : m_menuTreeMapMap )
@@ -487,9 +496,6 @@ void CMenuMgr::deactivateTree( const std::string & treeStr )
             % treeStr % __FUNCTION__ % __LINE__ ));
 }
 
-/************************************************************************
-*    DESC:  Deactivate a tree that's in use
-************************************************************************/
 void CMenuMgr::deactivateTree( const std::string & group, const std::string & treeStr )
 {
     auto groupIter = m_menuTreeMapMap.find( group );
@@ -1044,6 +1050,11 @@ void CMenuMgr::allow( bool allow )
 /************************************************************************
 *    DESC:  Set the command buffer vec
 ************************************************************************/
+void CMenuMgr::setCommandBuffers( const std::string & cmdBufPool )
+{
+    m_commandBufVec = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPool );
+}
+
 void CMenuMgr::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
 {
     m_commandBufVec = commandBufVec;

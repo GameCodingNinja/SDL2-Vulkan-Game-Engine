@@ -17,7 +17,7 @@
 #include <utilities/xmlpreloader.h>
 #include <system/device.h>
 #include <strategy/strategymanager.h>
-#include <strategy/actorstrategy.h>
+#include <strategy/strategyloader.h>
 #include <script/scriptmanager.h>
 #include <gui/menumanager.h>
 #include <node/inode.h>
@@ -43,11 +43,9 @@ CTitleScreenState::~CTitleScreenState()
     // Wait for all rendering to be finished
     CDevice::Instance().waitForIdle();
     
-    CStrategyMgr::Instance().deleteStrategy( "(title)" );
-    CStrategyMgr::Instance().deleteStrategy( "(cube)" );
+    CStrategyMgr::Instance().deleteStrategyLst( {"_title_", "_cube_"} );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
-    CObjectDataMgr::Instance().freeGroup( "(title)" );
-    CObjectDataMgr::Instance().freeGroup( "(cube)" );
+    CObjectDataMgr::Instance().freeGroupLst( {"(title)", "(cube)"} );
 }
 
 
@@ -58,15 +56,9 @@ void CTitleScreenState::init()
 {
     // Activate the needed tree(s)
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
-    
-    // Enable the strategy for rendering
-    // Command buffers can only be used in the thread they are created
-    auto titleCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().activateStrategy( "(title)" )->setCommandBuffers( titleCmdBufVec );
-    
-    // Command buffers can only be used in the thread they are created
-    auto cubeCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(title)" );
-    CStrategyMgr::Instance().activateStrategy( "(cube)" )->setCommandBuffers( cubeCmdBufVec );
+
+    // Activaye the strategies
+    CStrategyMgr::Instance().activateStrategyLst( {"_title_", "_cube_"} );
     
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -114,13 +106,7 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 void CTitleScreenState::load()
 {
     CObjectDataMgr::Instance().loadGroupLst( {"(title)", "(cube)"} );
-    
-    // Add the strategies
-    auto titleStrategy = CStrategyMgr::Instance().addStrategy( "(title)", new CActorStrategy() );
-    auto cubeStrategy = CStrategyMgr::Instance().addStrategy( "(cube)", new CActorStrategy() );
-    cubeStrategy->setCamera( "cubeCamera" );
-    
-    // Add the actors
-    titleStrategy->create( "background" );
-    cubeStrategy->create( "cube" )->getSprite()->prepare( "rotate" );
+
+    // Load the Strategies
+    NStrategyloader::load( "data/objects/strategy/state/titlescreen.loader" );
 }

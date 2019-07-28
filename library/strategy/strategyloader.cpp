@@ -18,6 +18,7 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <utilities/genfunc.h>
+#include <system/device.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -46,25 +47,25 @@ namespace NStrategyloader
 
                 if( startegyXML.isAttributeSet("name") )
                 {
-                    const std::string name = startegyXML.getAttribute( "name" );
+                    const std::string strategyName = startegyXML.getAttribute( "name" );
 
-                    if( !name.empty() && startegyXML.isAttributeSet("type") )
+                    if( !strategyName.empty() && startegyXML.isAttributeSet("type") )
                     {
-                        const std::string type = startegyXML.getAttribute( "type" );
+                        const std::string strategyType = startegyXML.getAttribute( "type" );
 
-                        if( !type.empty() )
+                        if( !strategyType.empty() )
                         {
                             iStrategy * pStrategy(nullptr);
-                            if( type == "actor" )
-                                pStrategy = CStrategyMgr::Instance().addStrategy( name, new CActorStrategy );
+                            if( strategyType == "actor" )
+                                pStrategy = CStrategyMgr::Instance().addStrategy( strategyName, new CActorStrategy );
 
-                            else if( type == "stage" )
-                                pStrategy = CStrategyMgr::Instance().addStrategy( name, new CStageStrategy );
+                            else if( strategyType == "stage" )
+                                pStrategy = CStrategyMgr::Instance().addStrategy( strategyName, new CStageStrategy );
 
                             else
                                 throw NExcept::CCriticalException("Strategy Loader Error!",
-                                    boost::str( boost::format("Unknown strategy type (%s).\n\n%s\nLine: %s")
-                                        % type % __FUNCTION__ % __LINE__ ));
+                                    boost::str( boost::format("Unknown strategy type (%s, %s).\n\n%s\nLine: %s")
+                                        % strategyName % strategyType % __FUNCTION__ % __LINE__ ));
 
                             // Apply a camera if one is defined
                             if( startegyXML.isAttributeSet("camera") )
@@ -73,6 +74,18 @@ namespace NStrategyloader
 
                                 if( !cameraId.empty() )
                                     pStrategy->setCamera( cameraId );
+                            }
+
+                            // Create the command buffer if defined
+                            if( startegyXML.isAttributeSet("cmdBufPool") )
+                            {
+                                const std::string cmdBufPool = startegyXML.getAttribute( "cmdBufPool" );
+
+                                if( !cmdBufPool.empty() )
+                                {
+                                    auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPool );
+                                    pStrategy->setCommandBuffers( cmdBuf );
+                                }
                             }
 
                             // Load the nodes for the startegy
@@ -133,6 +146,13 @@ namespace NStrategyloader
                                         }
                                     }
                                 }
+                            }
+
+                            // Activate the strategy if defined
+                            if( startegyXML.isAttributeSet("activate") )
+                            {
+                                if( std::strcmp( startegyXML.getAttribute("activate"), "true" ) == 0 )
+                                    CStrategyMgr::Instance().activateStrategy( strategyName );
                             }
                         }
                     }

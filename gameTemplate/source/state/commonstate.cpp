@@ -26,7 +26,7 @@ CCommonState::CCommonState( const NStateDefs::EGameState gameState, const NState
     iGameState( gameState, nextState )
 {
     m_gameStateMap.emplace( "title_screen_state", NStateDefs::EGS_TITLE_SCREEN );
-    m_gameStateMap.emplace( "run_state", NStateDefs::EGS_RUN );
+    m_gameStateMap.emplace( "level_1_state", NStateDefs::EGS_LEVEL_1 );
 }
 
 CCommonState::CCommonState( const NStateDefs::EGameState gameState, const CStateMessage & stateMsg ) :

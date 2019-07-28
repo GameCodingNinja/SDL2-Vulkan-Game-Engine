@@ -18,7 +18,7 @@ add_executable(
     state/startupstate.cpp
     state/titlescreenstate.cpp
     state/loadstate.cpp
-    state/runstate.cpp )
+    state/level1state.cpp )
 
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
     # List all the libraries to link against

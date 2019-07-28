@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<strategyLst>
+
+    <strategy name="_startup_" type="actor" cmdBufPool="(startup)" activate="true">
+    
+        <node name="waffles"/>
+
+    </strategy>
+  
+</strategyLst>

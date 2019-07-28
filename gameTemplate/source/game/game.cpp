@@ -12,7 +12,7 @@
 #include "../state/startupstate.h"
 #include "../state/titlescreenstate.h"
 #include "../state/loadstate.h"
-#include "../state/runstate.h"
+#include "../state/level1state.h"
 #include "../ai/ballai.h"
 #include "../smartGUI/smartconfirmbtn.h"
 #include "../smartGUI/smartresolutionbtn.h"
@@ -203,8 +203,8 @@ void CGame::doStateChange()
         else if( nextState == NStateDefs::EGS_GAME_LOAD )
             upGameState.reset( new CLoadState( stateMessage ) );
 
-        else if( nextState == NStateDefs::EGS_RUN )
-            upGameState.reset( new CRunState );
+        else if( nextState == NStateDefs::EGS_LEVEL_1 )
+            upGameState.reset( new CLevel1State );
 
         else
             throw NExcept::CCriticalException("Error Invalid game state",

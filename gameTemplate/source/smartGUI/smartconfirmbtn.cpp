@@ -60,7 +60,7 @@ void CSmartConfirmBtn::execute()
     {
         conformationMsg = "Are you sure you|want to continue|on to the next state?";
         actionType = NUIControl::ECAT_GAME_STATE_CHANGE;
-        executionAction = "run_state";
+        executionAction = "level_1_state";
     }
     /*else if( m_pUIControl->GetName().find(".game_save") != string::npos )
     {

@@ -43,10 +43,13 @@ public:
     
     // activate/deactivate strategy
     iStrategy * activateStrategy( const std::string & strategyId );
+    void activateStrategyLst( const std::vector<std::string> & strategyIdVec );
     void deactivateStrategy( const std::string & strategyId );
+    void deactivateStrategyLst( const std::vector<std::string> & strategyIdVec );
     
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
+    void deleteStrategyLst( const std::vector<std::string> & strategyIdVec );
 
     // Delete all the sprites
     void clear();

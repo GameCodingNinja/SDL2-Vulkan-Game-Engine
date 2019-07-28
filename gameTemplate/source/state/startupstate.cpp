@@ -38,7 +38,7 @@
 #include <utilities/settings.h>
 #include <utilities/xmlParser.h>
 #include <physics/physicsworldmanager2d.h>
-#include <strategy/actorstrategy.h>
+#include <strategy/strategyloader.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -71,7 +71,7 @@ CStartUpState::~CStartUpState()
     // Wait for all rendering to be finished
     CDevice::Instance().waitForIdle();
     
-    CStrategyMgr::Instance().deleteStrategy( "(startup)" );
+    CStrategyMgr::Instance().deleteStrategy( "_startup_" );
     CDevice::Instance().deleteCommandPoolGroup( "(startup)" );
     CObjectDataMgr::Instance().freeGroup( "(startup)" );
 }
@@ -103,14 +103,10 @@ void CStartUpState::init()
     CObjectDataMgr::Instance().loadGroup( "(startup)" );
     
     // Add the command buffers to the menu manager
-    auto menuCmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(menu)" );
-    CMenuMgr::Instance().setCommandBuffers( menuCmdBuf );
+    CMenuMgr::Instance().setCommandBuffers( "(menu)" );
 
-    // Create the group command buffers and add the actor strategy
-    // Command buffers can only be used in the thread they are created
-    auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( "(startup)" );
-    CStrategyMgr::Instance().addStrategy( "(startup)", new CActorStrategy() )->setCommandBuffers( cmdBuf );
-    CStrategyMgr::Instance().activateStrategy( "(startup)" )->create( "waffles" );
+    // Load the Strategy
+    NStrategyloader::load( "data/objects/strategy/state/startup.loader" );
 
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_StartUpFadeIn" );

@@ -69,6 +69,12 @@ iStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, iStrategy
 /************************************************************************
  *    DESC:  activate strategy
  ************************************************************************/
+void CStrategyMgr::activateStrategyLst( const std::vector<std::string> & strategyIdVec )
+{
+    for( auto & iter : strategyIdVec )
+        activateStrategy( iter );
+}
+
 iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
@@ -98,6 +104,12 @@ iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
 /************************************************************************
  *    DESC:  deactivate strategy
  ************************************************************************/
+void CStrategyMgr::deactivateStrategyLst( const std::vector<std::string> & strategyIdVec )
+{
+    for( auto & iter : strategyIdVec )
+        deactivateStrategy( iter );
+}
+
 void CStrategyMgr::deactivateStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
@@ -121,6 +133,12 @@ void CStrategyMgr::deactivateStrategy( const std::string & strategyId )
 /************************************************************************
  *    DESC:  Delete strategy
  ************************************************************************/
+void CStrategyMgr::deleteStrategyLst( const std::vector<std::string> & strategyIdVec )
+{
+    for( auto & iter : strategyIdVec )
+        deleteStrategy( iter );
+}
+
 void CStrategyMgr::deleteStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
@@ -135,6 +153,8 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
         NDelFunc::Delete( mapIter->second );
         m_pStrategyMap.erase( mapIter );
     }
+    else
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy id can't be found to delete (%s)!") % strategyId ) );
 }
 
 

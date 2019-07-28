@@ -68,10 +68,12 @@ public:
     // Activate a tree to be used
     void activateTree( const std::string & group, const std::string & treeStr );
     void activateTree( const std::string & treeStr );
+    void activateTreeLst( const std::vector<std::string> & treeStrVec );
     
     // Deactivate a tree that's in use
     void deactivateTree( const std::string & group, const std::string & treeStr );
     void deactivateTree( const std::string & treeStr );
+    void deactivateTreeLst( const std::vector<std::string> & treeStrVec );
 
     // Clear the active trees
     void clearActiveTrees();
@@ -119,6 +121,7 @@ public:
     
     // Set the command buffer vec
     void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
+    void setCommandBuffers( const std::string & cmdBufPool );
 
 private:
     

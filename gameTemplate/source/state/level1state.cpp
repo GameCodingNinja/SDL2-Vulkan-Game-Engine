@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       runstate.cpp
+*    FILE NAME:       level1state.cpp
 *
-*    DESCRIPTION:     CRunState Class State
+*    DESCRIPTION:     CLevel1State Class State
 ************************************************************************/
 
 // Physical component dependency
-#include "runstate.h"
+#include "level1state.h"
 
 // Game lib dependencies
 #include <gui/menumanager.h>
@@ -28,8 +28,8 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CRunState::CRunState() :
-    CCommonState( NStateDefs::EGS_RUN, NStateDefs::EGS_GAME_LOAD ),
+CLevel1State::CLevel1State() :
+    CCommonState( NStateDefs::EGS_LEVEL_1, NStateDefs::EGS_GAME_LOAD ),
         m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
 {
 }
@@ -38,15 +38,14 @@ CRunState::CRunState() :
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CRunState::~CRunState()
+CLevel1State::~CLevel1State()
 {
     // Wait for all rendering to be finished
     CDevice::Instance().waitForIdle();
     
-    CStrategyMgr::Instance().deleteStrategy( "(run)" );
-    CStrategyMgr::Instance().deleteStrategy( "(stage)" );
-    CDevice::Instance().deleteCommandPoolGroup( "(run)" );
-    CObjectDataMgr::Instance().freeGroup( "(run)" );
+    CStrategyMgr::Instance().deleteStrategyLst( {"_level_1_", "_stage_"} );
+    CDevice::Instance().deleteCommandPoolGroup( "(level_1)" );
+    CObjectDataMgr::Instance().freeGroup( "(level_1)" );
     CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
 }
 
@@ -54,19 +53,13 @@ CRunState::~CRunState()
 /************************************************************************
 *    DESC:  Do any pre-game loop init's
 ************************************************************************/
-void CRunState::init()
+void CLevel1State::init()
 {
     // Unblock the menu messaging and activate needed trees
     CMenuMgr::Instance().activateTree("pause_tree");
 
-    // Enable the strategy for rendering
-    // Command buffers can only be used in the thread they are created
-    auto stageCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    CStrategyMgr::Instance().activateStrategy( "(stage)" )->setCommandBuffers( stageCmdBufVec );
-    
-    // Command buffers can only be used in the thread they are created
-    auto runCmdBufVec = CDevice::Instance().createSecondaryCommandBuffers( "(run)" );
-    CStrategyMgr::Instance().activateStrategy( "(run)" )->setCommandBuffers( runCmdBufVec );
+    // Activaye the strategies
+    CStrategyMgr::Instance().activateStrategyLst( {"_stage_", "_level_1_"} );
 
     // Start the fade
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -79,7 +72,7 @@ void CRunState::init()
 /************************************************************************
 *    DESC:  Handle events
 ************************************************************************/
-void CRunState::handleEvent( const SDL_Event & rEvent )
+void CLevel1State::handleEvent( const SDL_Event & rEvent )
 {
     CCommonState::handleEvent( rEvent );
     
@@ -110,7 +103,7 @@ void CRunState::handleEvent( const SDL_Event & rEvent )
 /***************************************************************************
 *    DESC:  Handle the physics
 ****************************************************************************/
-void CRunState::physics()
+void CLevel1State::physics()
 {
     if( !CMenuMgr::Instance().isActive() )
     {
@@ -123,13 +116,13 @@ void CRunState::physics()
 *    DESC:  Static function for loading the assets for this state
 *           NOTE: Only call when the class is not allocated
 ****************************************************************************/
-void CRunState::load()
+void CLevel1State::load()
 {
-    CObjectDataMgr::Instance().loadGroup( "(run)");
+    CObjectDataMgr::Instance().loadGroup( "(level_1)");
     
     // Create the physics world
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
 
-    // Load the Strategies
+    // Load the Strategy
     NStrategyloader::load( "data/objects/strategy/level_1/strategy.loader" );
 }

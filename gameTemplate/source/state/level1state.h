@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       runstate.h
+*    FILE NAME:       level1state.h
 *
-*    DESCRIPTION:     CRunState Class State
+*    DESCRIPTION:     CLevel1State Class State
 ************************************************************************/
 
-#ifndef __run_up_state_h__
-#define __run_up_state_h__
+#ifndef __level_1_state_h__
+#define __level_1_state_h__
 
 // Physical component dependency
 #include "commonstate.h"
@@ -14,15 +14,15 @@
 // Forward declaration(s)
 class CPhysicsWorld2D;
 
-class CRunState : public CCommonState
+class CLevel1State : public CCommonState
 {
 public:
 
     // Constructor
-    CRunState();
+    CLevel1State();
 
     // Destructor
-    virtual ~CRunState();
+    virtual ~CLevel1State();
     
     // Do any pre-game loop init's
     void init() override;
