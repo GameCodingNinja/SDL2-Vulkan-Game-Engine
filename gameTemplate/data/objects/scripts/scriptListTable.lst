@@ -16,4 +16,10 @@
       <file path="data/objects/scripts/menu.as"/>
     </groupList>
 
+    <groupList groupName="(level_1)">
+        <file path="data/objects/scripts/shared_utilities.as"/>
+        <file path="data/objects/scripts/shared_sprite_utilities.as"/>
+        <file path="data/objects/scripts/level1.as"/>
+    </groupList>
+
 </listTable>

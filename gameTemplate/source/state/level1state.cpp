@@ -47,6 +47,7 @@ CLevel1State::~CLevel1State()
     CDevice::Instance().deleteCommandPoolGroup( "(level_1)" );
     CObjectDataMgr::Instance().freeGroup( "(level_1)" );
     CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
+    CScriptMgr::Instance().freeGroup("(level_1)");
 }
 
 
@@ -118,6 +119,10 @@ void CLevel1State::physics()
 ****************************************************************************/
 void CLevel1State::load()
 {
+    // Load the level 1 script group
+    CScriptMgr::Instance().loadGroup("(level_1)");
+
+    // Load the level 1 art
     CObjectDataMgr::Instance().loadGroup( "(level_1)");
     
     // Create the physics world

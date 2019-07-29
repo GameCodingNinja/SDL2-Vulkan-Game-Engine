@@ -1,6 +1,6 @@
 
 /************************************************************************
-*    FILE NAME:       menu.ang
+*    FILE NAME:       menu.as
 *
 *    DESCRIPTION:     Scripts for controlling/animating menu interface
 ************************************************************************/

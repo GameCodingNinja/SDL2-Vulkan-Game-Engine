@@ -1,6 +1,6 @@
 
 /************************************************************************
-*    FILE NAME:       shared_sound_utilities.ang
+*    FILE NAME:       shared_sound_utilities.as
 *
 *    DESCRIPTION:     General purpose shared utility scripts
 *                     The keyword "shared" allows for only one copy to
