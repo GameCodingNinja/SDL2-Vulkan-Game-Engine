@@ -90,7 +90,7 @@ namespace NScriptColor
         Throw( pEngine->RegisterObjectMethod("CColor", "CColor opMulAssign ( float )", asMETHODPR(CColor, operator *=, (float), CColor), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CColor", "CColor opDivAssign ( float )", asMETHODPR(CColor, operator /=, (float), CColor), asCALL_THISCALL) );
 
-	// Register property
+	    // Register property
         Throw( pEngine->RegisterObjectProperty("CColor", "float r", asOFFSET(CColor, r)) );
         Throw( pEngine->RegisterObjectProperty("CColor", "float g", asOFFSET(CColor, g)) );
         Throw( pEngine->RegisterObjectProperty("CColor", "float b", asOFFSET(CColor, b)) );
@@ -99,6 +99,6 @@ namespace NScriptColor
         // Class members
         Throw( pEngine->RegisterObjectMethod("CColor", "void set( float r, float g, float b, float a )",       asMETHOD(CColor, set), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CColor", "void transformHSV( float hue, float sat, float val )", asMETHOD(CColor, transformHSV), asCALL_THISCALL) );
-	Throw( pEngine->RegisterObjectMethod("CColor", "void convert()", asMETHOD( CColor, convert ), asCALL_THISCALL ) );
+	    Throw( pEngine->RegisterObjectMethod("CColor", "void convert()",                                       asMETHOD(CColor, convert), asCALL_THISCALL ) );
     }
 }

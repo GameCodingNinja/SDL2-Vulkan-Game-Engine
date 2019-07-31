@@ -25,8 +25,8 @@ final class CTitleScreenState : CCommonState
         
         Device.deleteCommandPoolGroup( "(title)" );
         
-        StrategyMgr.deleteStrategy( "(title)" );
-        StrategyMgr.deleteStrategy( "(cube)" );
+        StrategyMgr.deleteStrategy( "_title_" );
+        StrategyMgr.deleteStrategy( "_cube_" );
         
         ObjectDataMgr.freeGroup( "(title)" );
         ObjectDataMgr.freeGroup( "(cube)" );
@@ -40,9 +40,9 @@ final class CTitleScreenState : CCommonState
         // Unblock the menu messaging and activate needed trees(s)
         MenuMgr.activateTree( "title_screen_tree" );
         
-        // Activate the strategy and set their command buffers
-        StrategyMgr.activateStrategy( "(title)" ).setCommandBuffer( "(title)" );
-        StrategyMgr.activateStrategy( "(cube)" ).setCommandBuffer( "(title)" );
+        // Activate the strategies
+        StrategyMgr.activateStrategy( "_title_" );
+        StrategyMgr.activateStrategy( "_cube_" );
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
@@ -82,10 +82,7 @@ void LoadTitleScreenAssets()
     ObjectDataMgr.loadGroup( "(cube)" );
     
     // Create the needed strategies
-    StrategyMgr.createActorStrategy( "(title)" ).create( "background" );
-    iStrategy @cubeStrategy = StrategyMgr.createActorStrategy( "(cube)" );
-    cubeStrategy.create( "cube" );
-    cubeStrategy.setCamera( "cubeCamera" );
+    LoadStrategy( "data/objects/strategy/state/titlescreen.loader" );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

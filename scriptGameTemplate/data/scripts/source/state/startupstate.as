@@ -25,7 +25,7 @@ final class CStartUpState : CCommonState
         
         Device.deleteCommandPoolGroup( "(startup)" );
         ObjectDataMgr.freeGroup( "(startup)" );
-        StrategyMgr.deleteStrategy( "(startup)" );
+        StrategyMgr.deleteStrategy( "_startup_" );
     }
 
     //
@@ -44,9 +44,8 @@ final class CStartUpState : CCommonState
         // Add the command buffers to the menu manager
         MenuMgr.setCommandBuffer( "(menu)" );
         
-        // Create the needed strategies
-        StrategyMgr.createActorStrategy( "(startup)" ).create( "waffles" );
-        StrategyMgr.activateStrategy( "(startup)" ).setCommandBuffer( "(startup)" );
+        // Create the needed strategy
+        LoadStrategy( "data/objects/strategy/state/startup.loader" );
         
         // Do the fade in
         Spawn("State_StartUpFadeIn", "(state)");

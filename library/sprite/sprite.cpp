@@ -120,12 +120,6 @@ void CSprite::init()
 {
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->createFontString();
-
-    // Execute the init now
-    prepare( "init", true );
-    
-    // This assume a looping update script that will kick in next frame
-    prepare( "update", false );
 }
 
 

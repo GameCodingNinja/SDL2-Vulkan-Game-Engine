@@ -25,7 +25,7 @@ final class CLoadState : CCommonState
         
         Device.deleteCommandPoolGroup( "(load)" );
         ObjectDataMgr.freeGroup( "(load)" );
-        StrategyMgr.deleteStrategy( "(load)" );
+        StrategyMgr.deleteStrategy( "_load_" );
     }
 
     //
@@ -36,9 +36,8 @@ final class CLoadState : CCommonState
         // Load group specific assets
         ObjectDataMgr.loadGroup( "(load)" );
         
-        // Create the needed strategies
-        StrategyMgr.createActorStrategy( "(load)" ).setCommandBuffer( "(load)" );
-        StrategyMgr.activateStrategy( "(load)" ).create( "loadAnim" ).getSprite().prepare( "loadAnimationLoop" );
+        // Create the needed strategy
+        LoadStrategy( "data/objects/strategy/state/loadscreen.loader" );
         
         // Start the fade in and animation
         Spawn("State_FadeIn", "(state)");

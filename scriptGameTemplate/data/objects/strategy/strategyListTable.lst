@@ -1,31 +1,28 @@
 <?xml version="1.0"?>
 <listTable>
 
-    <groupList groupName="(stage)">
-        <file path="data/objects/strategy/stage/stage.strategy"/>
+    <groupList groupName="_startup_">
+        <file path="data/objects/strategy/state/startup.strategy"/>
     </groupList>
     
-    <groupList groupName="(run)">
-        <file path="data/objects/strategy/runscreen.strategy"/>
+    <groupList groupName="_title_">
+        <file path="data/objects/strategy/state/titlescreen.strategy"/>
     </groupList>
     
-    <groupList groupName="(startup)">
-        <file path="data/objects/strategy/startup.strategy"/>
+    <groupList groupName="_cube_">
+        <file path="data/objects/strategy/state/cube.strategy"/>
+    </groupList>
+
+    <groupList groupName="_load_">
+        <file path="data/objects/strategy/state/loadscreen.strategy"/>
+    </groupList>
+
+    <groupList groupName="_stage_">
+        <file path="data/objects/strategy/level_1/stage.strategy"/>
     </groupList>
     
-    <groupList groupName="(title)">
-        <file path="data/objects/strategy/titlescreen.strategy"/>
-    </groupList>
-    
-    <groupList groupName="(cube)">
-        <file path="data/objects/strategy/cube.strategy"/>
-        <camera id="cube" projectType="perspective" minZDist="5" maxZDist="1000" view_angle="45.0">
-            <position x="0" y="0" z="-20"/>
-        </camera>
-    </groupList>
-    
-    <groupList groupName="(load)">
-        <file path="data/objects/strategy/loadscreen.strategy"/>
+    <groupList groupName="_level_1_">
+        <file path="data/objects/strategy/level_1/actor.strategy"/>
     </groupList>
   
 </listTable>

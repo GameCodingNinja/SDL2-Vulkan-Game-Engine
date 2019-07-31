@@ -29,11 +29,11 @@
         <file path="data/scripts/source/state/startupstate.as"/>
         <file path="data/scripts/source/state/titlescreenstate.as"/>
         <file path="data/scripts/source/state/loadstate.as"/>
-        <file path="data/scripts/source/state/runstate.as"/>
+        <file path="data/scripts/source/state/level1state.as"/>
     </groupList>
   
-    <groupList groupName="(run)">
-        <file path="data/scripts/library/run.as"/>
+    <groupList groupName="(level_1)">
+        <file path="data/scripts/library/level1.as"/>
     </groupList>
 
 </listTable>

@@ -1,8 +1,8 @@
 
 //
-//  FILE NAME:  runstate.as
+//  FILE NAME:  level1state.as
 //
-//  DESC:       Run state
+//  DESC:       Level 1 state
 //
 
 final class CRunState : CCommonState
@@ -25,11 +25,11 @@ final class CRunState : CCommonState
         // Wait for all rendering to be finished
         Device.waitForIdle();
         
-        ScriptMgr.freeGroup( "(run)" );
-        ObjectDataMgr.freeGroup( "(run)" );
-        StrategyMgr.deleteStrategy( "(stage)" );
-        StrategyMgr.deleteStrategy( "(run)" );
-        Device.deleteCommandPoolGroup( "(run)" );
+        ScriptMgr.freeGroup( "(level_1)" );
+        ObjectDataMgr.freeGroup( "(level_1)" );
+        StrategyMgr.deleteStrategy( "_stage_" );
+        StrategyMgr.deleteStrategy( "_level_1_" );
+        Device.deleteCommandPoolGroup( "(level_1)" );
         PhysicsWorldManager2D.clear();
     }
 
@@ -42,8 +42,8 @@ final class CRunState : CCommonState
         MenuMgr.activateTree( "pause_tree" );
         
         // Enable the strategy for rendering
-        StrategyMgr.activateStrategy( "(stage)" ).setCommandBuffer( "(run)" );
-        StrategyMgr.activateStrategy( "(run)" ).setCommandBuffer( "(run)" );
+        StrategyMgr.activateStrategy( "_stage_" );
+        StrategyMgr.activateStrategy( "_level_1_" );
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
@@ -91,20 +91,22 @@ final class CRunState : CCommonState
 //
 void LoadRunAssets()
 {
-    ObjectDataMgr.loadGroup( "(run)" );
-    ScriptMgr.loadGroup( "(run)" );
+    ObjectDataMgr.loadGroup( "(level_1)" );
+    ScriptMgr.loadGroup( "(level_1)" );
     
     // Create the physics world
     PhysicsWorldManager2D.createWorld( "(game)" );
     
     // Create the needed strategies
-    StrategyMgr.createStageStrategy( "(stage)" );
-    iStrategy @runStrategy = StrategyMgr.createActorStrategy( "(run)" );
+    LoadStrategy( "data/objects/strategy/level_1/strategy.loader" );
+
+    // StrategyMgr.createStageStrategy( "_stage_" );
+    // iStrategy @runStrategy = StrategyMgr.createActorStrategy( "_level_1_" );
     
-    // Add the sprites to the strategy
-    array<string> shapes = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
-    for( int i = 0; i < 24; ++i )
-        runStrategy.create( shapes[i % 6] );
+    // // Add the sprites to the strategy
+    // array<string> shapes = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
+    // for( int i = 0; i < 24; ++i )
+    //     runStrategy.create( shapes[i % 6] );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

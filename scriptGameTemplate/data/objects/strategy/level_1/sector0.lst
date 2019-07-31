@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<sector defaultGroup="(run)" defaultObjectName="peg" defaultId="-2">
+<sector defaultGroup="(level_1)" defaultObjectName="peg" defaultId="-2">
 
     <node>
         <sprite>

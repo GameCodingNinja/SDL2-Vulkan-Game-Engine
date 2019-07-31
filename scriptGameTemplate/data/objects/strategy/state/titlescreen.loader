@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<strategyLst>
+
+    <strategy name="_title_" type="actor" cmdBufPool="(title)">
+    
+        <node name="background"/>
+
+    </strategy>
+
+    <strategy name="_cube_" type="actor" camera="cubeCamera" cmdBufPool="(title)">
+    
+        <node name="cube">
+            <sprite>
+                <script prepare="rotate"/>
+            </sprite>
+        </node>
+
+    </strategy>
+  
+</strategyLst>
