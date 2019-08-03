@@ -24,7 +24,7 @@ public:
 
     // Constructor
     CObjectPhysicsData2D();
-    ~CObjectPhysicsData2D();
+    virtual ~CObjectPhysicsData2D();
 
     // Load thes object data from node
     void loadFromNode( const XMLNode & objectNode ) override;

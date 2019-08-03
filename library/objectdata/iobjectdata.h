@@ -23,6 +23,9 @@ class iObjectData
 {
 public:
 
+    // Destructor
+    virtual ~iObjectData(){};
+
     // Load the object data from the passed in node
     virtual void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name ) = 0;
 

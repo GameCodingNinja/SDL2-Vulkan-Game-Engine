@@ -26,7 +26,7 @@ public:
 
     // Constructor
     CObjectPhysicsData3D();
-    ~CObjectPhysicsData3D();
+    virtual ~CObjectPhysicsData3D();
 
     // Load thes object data from node
     void loadFromNode( const XMLNode & objectNode ) override;

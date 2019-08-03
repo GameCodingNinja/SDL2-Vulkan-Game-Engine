@@ -29,7 +29,7 @@ public:
     // Constructor/Destructor
     CObjectData2D();
     CObjectData2D( const CObjectData2D & obj );
-    ~CObjectData2D();
+    virtual ~CObjectData2D();
 
     // Load the object data from the passed in node
     void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name ) override;

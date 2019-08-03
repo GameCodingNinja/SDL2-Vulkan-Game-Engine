@@ -59,6 +59,9 @@ public:
 class iObjectPhysicsData
 {
 public:
+
+    // Destructor
+    virtual ~iObjectPhysicsData(){};
     
     // Load thes object data from node
     virtual void loadFromNode( const XMLNode & objectNode )

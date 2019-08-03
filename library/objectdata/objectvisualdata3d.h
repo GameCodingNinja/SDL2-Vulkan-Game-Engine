@@ -34,7 +34,7 @@ public:
 
     // Constructor/Destructor
     CObjectVisualData3D();
-    ~CObjectVisualData3D();
+    virtual ~CObjectVisualData3D();
 
     // Load thes object data from node
     void loadFromNode( const XMLNode & objectNode );

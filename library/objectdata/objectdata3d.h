@@ -27,7 +27,7 @@ public:
     // Constructor/Destructor
     CObjectData3D();
     CObjectData3D( const CObjectData3D & obj );
-    ~CObjectData3D();
+    virtual ~CObjectData3D();
 
     // Load the object data from the passed in node
     void loadFromNode( const XMLNode & node, const std::string & group, const std::string & name ) override;

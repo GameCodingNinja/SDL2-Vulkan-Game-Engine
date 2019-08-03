@@ -38,7 +38,7 @@ public:
 
     // Constructor/Destructor
     CObjectVisualData2D();
-    ~CObjectVisualData2D();
+    virtual ~CObjectVisualData2D();
 
     // Load thes object data from node
     void loadFromNode( const XMLNode & objectNode, const std::string & name ) override;
