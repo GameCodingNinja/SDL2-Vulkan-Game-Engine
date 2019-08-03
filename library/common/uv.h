@@ -7,6 +7,10 @@
 #ifndef __uv_h__
 #define __uv_h__
 
+#if defined(_WINDOWS)
+#pragma warning(disable : 4244)
+#endif
+
 class CUV
 {
 public:
@@ -30,5 +34,4 @@ public:
     }
 };
 
-#endif  // __uv_h__
-
+#endif

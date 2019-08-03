@@ -56,13 +56,13 @@ final class CTitleScreenState : CCommonState
         CCommonState::handleEvent();
         
         // Check for the "game change state" message
-        if( ActionMgr.wasEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
+        if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
             Spawn("State_FadeOut", "(state)");
         
-        else if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
+        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
             MenuMgr.allow();
         
-        else if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
+        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
         {
             // Clear out all the trees
             MenuMgr.clearActiveTrees();

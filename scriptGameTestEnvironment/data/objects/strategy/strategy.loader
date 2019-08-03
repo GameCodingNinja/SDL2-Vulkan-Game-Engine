@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<strategyLst>
+
+    <strategy name="_main_" type="actor" cmdBufPool="(main)" activate="true">
+    
+        <node name="multiListTestNode"/>
+        <node name="player_ship">
+            <node name="fire_tail">
+                <sprite>
+                    <script prepare="animate"/>
+                </sprite>
+            </node>
+            <node name="ship_gun">
+                <sprite>
+                    <script prepare="rotate"/>
+                </sprite>
+            </node>
+        </node>
+
+    </strategy>
+  
+</strategyLst>

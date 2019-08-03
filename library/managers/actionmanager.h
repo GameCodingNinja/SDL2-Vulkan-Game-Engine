@@ -16,6 +16,7 @@
 #include <common/keycodeaction.h>
 #include <common/defs.h>
 #include <common/point.h>
+#include <common/sensor.h>
 #include <gui/menudefs.h>
 
 // Boost lib dependencies
@@ -92,17 +93,23 @@ public:
     
     // Clear the queue
     void clearQueue();
+
+    // Generic call for any event
+    bool wasEvent( uint event );
     
-    // Was this action in the Queue
-    bool wasActionInQueue( const std::string & actionStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    // Was this an action event
+    bool wasActionEvent( const std::string & actionStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
     
-    // Was the event in the Queue
-    bool wasEventInQueue( uint type, int code );
+    // Was this a game specific event
+    bool wasGameEvent( uint type, int code );
     
     // Device specific key checks
-    bool wasKeyboard( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
-    bool wasMouse( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
-    bool wasGamepad( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    bool wasKeyboardEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    bool wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    bool wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+
+    // Was this a window event
+    bool wasWindowEvent( uint event );
     
     // Is the queue empty
     bool queueEmpty();
@@ -208,6 +215,9 @@ private:
     CPoint<float> m_lastAnalogLeft;
     CPoint<float> m_lastAnalogRight;
 
+    // Last Sensor values
+    std::map<int, CSensor> m_sensorMap;
+
     // Flag to indicate analog state as button
     std::array<NDefs::EActionPress,16> m_analogLXButtonStateAry;
     std::array<NDefs::EActionPress,16> m_analogLYButtonStateAry;
@@ -232,6 +242,4 @@ private:
     std::vector<SDL_Event> m_eventQueue;
 };
 
-#endif  // __action_manager_h__
-
-
+#endif

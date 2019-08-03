@@ -45,7 +45,7 @@ void rotateGun( CSprite & sprite )
             
             if( ActionMgr.wasAction("Shoot") )
             {
-                CSprite @ projectile = StrategyMgr.getStrategy( "(main)" ).create( "projectile" ).getSprite();
+                CSprite @ projectile = StrategyMgr.getStrategy( "_main_" ).create( "projectile" ).getSprite();
                 
                 CPoint pos = sprite.getWorldPos();
                 CPoint centerPos = sprite.getCenterPos();
@@ -56,6 +56,8 @@ void rotateGun( CSprite & sprite )
                 
                 projectile.setPos( projectileOffset );
                 projectile.setRot( 0, 0, gunRotation, false );
+
+                projectile.prepare("move");
             }
         }
         
@@ -89,7 +91,7 @@ void MoveProjectile( CSprite & sprite )
         // Delete if goes out of view
         if( sprite.getWorldPos().getLengthSquared2D() > 1300000.f )
         {
-            StrategyMgr.getStrategy( "(main)" ).destroy( sprite.getId() );
+            StrategyMgr.getStrategy( "_main_" ).destroy( sprite.getId() );
             break;
         }
         

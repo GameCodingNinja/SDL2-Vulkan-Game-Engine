@@ -856,6 +856,19 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
             
             m_lastDeviceUsed = NDefs::GAMEPAD;
         }
+        /*else if( rEvent.type == SDL_SENSORUPDATE )
+        {
+            auto iter = m_sensorMap.find( rEvent.sensor.which );
+            if( iter == m_sensorMap.end() )
+                iter = m_sensorMap.emplace( rEvent.sensor.which, CSensor() ).first;
+            
+            iter->second.v1 = rEvent.sensor.data[0];
+            iter->second.v2 = rEvent.sensor.data[1];
+            iter->second.v3 = rEvent.sensor.data[2];
+            iter->second.v4 = rEvent.sensor.data[3];
+            iter->second.v5 = rEvent.sensor.data[4];
+            iter->second.v6 = rEvent.sensor.data[5];
+        }*/
     }
 }
 
@@ -879,9 +892,9 @@ void CActionMgr::clearQueue()
 
 
 /************************************************************************
-*    DESC:  Was this action in the Queue
+*    DESC:  Was this an action event
 ************************************************************************/
-bool CActionMgr::wasActionInQueue( const std::string & actionStr, NDefs::EActionPress actionPress )
+bool CActionMgr::wasActionEvent( const std::string & actionStr, NDefs::EActionPress actionPress )
 {
     if( m_allowAction )
     {
@@ -895,9 +908,25 @@ bool CActionMgr::wasActionInQueue( const std::string & actionStr, NDefs::EAction
 
 
 /************************************************************************
-*    DESC:  Was the event in the Queue
+*    DESC:  Generic call for any event
 ************************************************************************/
-bool CActionMgr::wasEventInQueue( uint type, int code )
+bool CActionMgr::wasEvent( uint event )
+{
+    if( m_allowAction )
+    {
+        for( auto & iter : m_eventQueue )
+            if( iter.type == event )
+                return true;
+    }
+
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Was this a game specific event
+************************************************************************/
+bool CActionMgr::wasGameEvent( uint type, int code )
 {
     if( m_allowAction )
     {
@@ -913,27 +942,27 @@ bool CActionMgr::wasEventInQueue( uint type, int code )
 /************************************************************************
 *    DESC:  Device specific key checks
 ************************************************************************/
-bool CActionMgr::wasKeyboard( const std::string & componentIdStr, NDefs::EActionPress actionPress )
+bool CActionMgr::wasKeyboardEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
 {
     if( m_allowAction )
     {
         const auto keyCodeIter = m_keyboardKeyCodeMap.left.find( componentIdStr );
-
         if( keyCodeIter != m_keyboardKeyCodeMap.left.end() )
         {
             for( auto & iter : m_eventQueue )
             {
-                if( (actionPress == NDefs::EAP_DOWN) &&
-                    (iter.type == SDL_KEYDOWN) &&
-                    (iter.key.repeat == 0) &&
-                    (iter.key.keysym.sym == keyCodeIter->second) )
-                    return true;
+                if( iter.key.keysym.sym == keyCodeIter->second )
+                {
+                    if( (iter.type == SDL_KEYDOWN) &&
+                        (actionPress == NDefs::EAP_DOWN) &&
+                        (iter.key.repeat == 0) )
+                        return true;
 
-                else if( (actionPress == NDefs::EAP_UP) &&
-                    (iter.type == SDL_KEYUP) &&
-                    (iter.key.repeat == 0) &&
-                    (iter.key.keysym.sym == keyCodeIter->second) )
-                    return true;
+                    else if( (iter.type == SDL_KEYUP) &&
+                        (actionPress == NDefs::EAP_UP) &&
+                        (iter.key.repeat == 0) )
+                        return true;
+                }
             }
         }
     }
@@ -941,25 +970,25 @@ bool CActionMgr::wasKeyboard( const std::string & componentIdStr, NDefs::EAction
     return false;
 }
 
-bool CActionMgr::wasMouse( const std::string & componentIdStr, NDefs::EActionPress actionPress )
+bool CActionMgr::wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
 {
     if( m_allowAction )
     {
         const auto keyCodeIter = m_mouseKeyCodeMap.left.find( componentIdStr );
-
         if( keyCodeIter != m_mouseKeyCodeMap.left.end() )
         {
             for( auto & iter : m_eventQueue )
             {
-                if( (actionPress == NDefs::EAP_DOWN) &&
-                    (iter.type == SDL_MOUSEBUTTONDOWN) &&
-                    (iter.button.button == keyCodeIter->second) )
-                    return true;
+                if( iter.button.button == keyCodeIter->second )
+                {
+                    if( (actionPress == NDefs::EAP_DOWN) &&
+                        (iter.type == SDL_MOUSEBUTTONDOWN) )
+                        return true;
 
-                else if( (actionPress == NDefs::EAP_UP) &&
-                    (iter.type == SDL_MOUSEBUTTONUP) &&
-                    (iter.button.button == keyCodeIter->second) )
-                    return true;
+                    else if( (actionPress == NDefs::EAP_UP) &&
+                        (iter.type == SDL_MOUSEBUTTONUP) )
+                        return true;
+                }
             }
         }
     }
@@ -967,28 +996,45 @@ bool CActionMgr::wasMouse( const std::string & componentIdStr, NDefs::EActionPre
     return false;
 }
 
-bool CActionMgr::wasGamepad( const std::string & componentIdStr, NDefs::EActionPress actionPress )
+bool CActionMgr::wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
 {
     if( m_allowAction )
     {
         const auto keyCodeIter = m_gamepadKeyCodeMap.left.find( componentIdStr );
-
         if( keyCodeIter != m_gamepadKeyCodeMap.left.end() )
         {
             for( auto & iter : m_eventQueue )
             {
-                if( (actionPress == NDefs::EAP_DOWN) &&
-                    (iter.type == SDL_CONTROLLERBUTTONDOWN) &&
-                    (iter.cbutton.button == keyCodeIter->second) )
-                    return true;
+                if( iter.cbutton.button == keyCodeIter->second )
+                {
+                    if( (actionPress == NDefs::EAP_DOWN) &&
+                        (iter.type == SDL_CONTROLLERBUTTONDOWN) )
+                        return true;
 
-                else if( (actionPress == NDefs::EAP_UP) &&
-                    (iter.type == SDL_CONTROLLERBUTTONUP) &&
-                    (iter.cbutton.button == keyCodeIter->second) )
-                    return true;
+                    else if( (actionPress == NDefs::EAP_UP) &&
+                        (iter.type == SDL_CONTROLLERBUTTONUP) )
+                        return true;
+                }
             }
         }
     }
 
     return false;
 }
+
+
+/************************************************************************
+*    DESC:  Was this a window event
+************************************************************************/
+bool CActionMgr::wasWindowEvent( uint event )
+{
+    if( m_allowAction )
+    {
+        for( auto & iter : m_eventQueue )
+            if( (iter.type == SDL_WINDOWEVENT) && (iter.window.event == event) )
+                return true;
+    }
+
+    return false;
+}
+

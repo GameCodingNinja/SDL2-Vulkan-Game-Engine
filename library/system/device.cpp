@@ -54,7 +54,7 @@ CDevice::~CDevice()
 void CDevice::init( std::function<void(uint32_t)> callback )
 {
     // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
-    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER ) < 0 )
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER | SDL_INIT_SENSOR ) < 0 )
         throw NExcept::CCriticalException("SDL could not initialize!", SDL_GetError() );
 
     // All file I/O is handled by SDL and SDL_Init must be called before doing any I/O.
@@ -127,6 +127,7 @@ void CDevice::create( const std::string & pipelineCfg )
 
     // Init current gamepads plugged in at startup
     initStartupGamepads();
+    initSensors();
 }
 
 
@@ -1048,6 +1049,22 @@ void CDevice::setWindowTitle( const std::string & title )
 
 
 /***************************************************************************
+*   DESC:  Init the sensors
+****************************************************************************/
+void CDevice::initSensors()
+{
+    const int sensorCount = SDL_NumSensors();
+
+    NGenFunc::PostDebugMsg( boost::str( boost::format("Number of sensors: %d") % sensorCount ) );
+
+    for( int i = 0; i < sensorCount; ++i )
+    {
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Sensor Name: %s") % SDL_SensorGetDeviceName(i) ) );
+    }
+}
+
+
+/***************************************************************************
 *   DESC:  Init current gamepads plugged in at startup
 ****************************************************************************/
 void CDevice::initStartupGamepads()
@@ -1071,7 +1088,7 @@ void CDevice::addGamepad( int id )
         SDL_GameController * pGamePad = SDL_GameControllerOpen(id);
         if( pGamePad != NULL )
         {
-            //NGenFunc::PostDebugMsg( boost::str( boost::format("Game controller added: %d - %s") % id % SDL_GameControllerNameForIndex(id) ) );
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Game controller added: %d - %s") % id % SDL_GameControllerNameForIndex(id) ) );
             m_pGamepadMap.emplace( id, pGamePad );
         }
     }

@@ -1,15 +1,8 @@
 <?xml version="1.0"?>
 <listTable>
     
-    <groupList groupName="(main)">
+    <groupList groupName="_main_">
         <file path="data/objects/strategy/main.strategy"/>
-    </groupList>
-    
-    <groupList groupName="(cube)">
-        <file path="data/objects/strategy/cube.strategy"/>
-        <camera id="cube" projectType="perspective" minZDist="5" maxZDist="1000" view_angle="45.0">
-            <position x="0" y="0" z="-20"/>
-        </camera>
     </groupList>
   
 </listTable>

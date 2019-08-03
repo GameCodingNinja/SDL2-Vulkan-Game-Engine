@@ -53,12 +53,9 @@ class CGame
         
         // Load group specific assets
         ObjectDataMgr.loadGroup( "(main)" );
-        
+
         // Create the needed strategies
-        iStrategy @strategy = StrategyMgr.createActorStrategy( "(main)" );
-        strategy.create( "player_ship" );
-        strategy.create( "multiListTestNode" );
-        StrategyMgr.activateStrategy( "(main)" ).setCommandBuffer( "(main)" );
+        LoadStrategy( "data/objects/strategy/strategy.loader" );
     }
     
     //

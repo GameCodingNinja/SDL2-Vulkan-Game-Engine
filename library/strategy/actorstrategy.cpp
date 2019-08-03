@@ -41,15 +41,38 @@ CActorStrategy::CActorStrategy()
 ************************************************************************/
 CActorStrategy::~CActorStrategy()
 {
-    // See if any nodes in the map are not part of the node vec and delete
+    // Build a unique list of nodes and delete
+    std::vector<iNode *> deleteList;
+
     for( auto & mapIter : m_pNodeMap )
     {
-        auto vecIter = std::find( m_pNodeVec.begin(), m_pNodeVec.end(), mapIter.second );
-        if( vecIter == m_pNodeVec.end() )
-            NDelFunc::Delete( mapIter.second );
+        auto vecIter = std::find( deleteList.begin(), deleteList.end(), mapIter.second );
+        if( vecIter == deleteList.end() )
+            deleteList.push_back( mapIter.second );
     }
 
-    NDelFunc::DeleteVectorPointers( m_pNodeVec );
+    for( auto * iter : m_pNodeVec )
+    {
+        auto vecIter = std::find( deleteList.begin(), deleteList.end(), iter );
+        if( vecIter == deleteList.end() )
+            deleteList.push_back( iter );
+    }
+
+    for( auto * iter : m_pActivateVec )
+    {
+        auto vecIter = std::find( deleteList.begin(), deleteList.end(), iter );
+        if( vecIter == deleteList.end() )
+            deleteList.push_back( iter );
+    }
+
+    for( auto * iter : m_pDeactivateVec )
+    {
+        auto vecIter = std::find( deleteList.begin(), deleteList.end(), iter );
+        if( vecIter == deleteList.end() )
+            deleteList.push_back( iter );
+    }
+
+    NDelFunc::DeleteVectorPointers( deleteList );
 }
 
 
@@ -122,6 +145,11 @@ iNode * CActorStrategy::create(
     const std::string & instanceName,
     bool makeActive )
 {
+    if( instanceName.empty() && !makeActive )
+        throw NExcept::CCriticalException("Node Create Error!",
+                boost::str( boost::format("Need to supply an instance name if node is not active when created (%s).\n\n%s\nLine: %s")
+                    % dataName % __FUNCTION__ % __LINE__ ));
+
     // Create a unique node id
     const int nodeId( m_idInc++ );
 

@@ -60,13 +60,13 @@ final class CRunState : CCommonState
         CCommonState::handleEvent();
         
         // Check for the "game change state" message
-        if( ActionMgr.wasEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
+        if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
             Spawn("State_FadeOut", "(state)");
         
-        else if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
+        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
             MenuMgr.allow();
         
-        else if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
+        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
         {
             // Clear out all the trees
             MenuMgr.clearActiveTrees();
@@ -99,14 +99,6 @@ void LoadRunAssets()
     
     // Create the needed strategies
     LoadStrategy( "data/objects/strategy/level_1/strategy.loader" );
-
-    // StrategyMgr.createStageStrategy( "_stage_" );
-    // iStrategy @runStrategy = StrategyMgr.createActorStrategy( "_level_1_" );
-    
-    // // Add the sprites to the strategy
-    // array<string> shapes = {"triangle_blue", "triangle_green", "circle_blue", "circle_green", "circle_red", "square_red"};
-    // for( int i = 0; i < 24; ++i )
-    //     runStrategy.create( shapes[i % 6] );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

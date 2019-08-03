@@ -119,20 +119,20 @@ namespace NStrategyloader
                                         // Check if we are looking for a child node
                                         if( std::strcmp( childNodeXML.getName(), "node" ) == 0 )
                                         {
-                                            const XMLNode nodeChildNodeXML = childNodeXML.getChildNode();
-
-                                            if( nodeChildNodeXML.isAttributeSet("name") )
+                                            if( childNodeXML.isAttributeSet("name") )
                                             {
-                                                const std::string childName = nodeChildNodeXML.getAttribute( "name" );
+                                                const std::string childName = childNodeXML.getAttribute( "name" );
 
                                                 iNode * pChildNode = pHeadNode->getChildNode( childName );
                                                 if( pChildNode )
                                                 {
+                                                    const XMLNode nodeChildNodeXML = childNodeXML.getChildNode();
+
                                                     if( pChildNode->getType() == NDefs::ENT_OBJECT )
                                                         init( nodeChildNodeXML, pChildNode->getObject() );
 
                                                     else if( pChildNode->getType() == NDefs::ENT_SPRITE )
-                                                        init( childNodeXML, pChildNode->getSprite() );
+                                                        init( nodeChildNodeXML, pChildNode->getSprite() );
                                                 }
                                             }
                                         }

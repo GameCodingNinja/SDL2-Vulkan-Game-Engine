@@ -164,6 +164,9 @@ public:
     // Set window title
     void setWindowTitle( const std::string & title );
 
+    // Init the sensors
+    void initSensors();
+
     // Close out the game pads
     void closeGamepads();
 
