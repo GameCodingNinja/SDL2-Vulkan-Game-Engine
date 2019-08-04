@@ -374,6 +374,8 @@ NDefs::EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::
             {
                 if( m_analogLXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_IDLE )
                 {
+                    //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left X: %d") % ((int)rEvent.caxis.value) ) );
+
                     if( (rEvent.caxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_DOWN;
 
@@ -382,19 +384,29 @@ NDefs::EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::
                 }
                 else if( m_analogLXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < 0) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
+                    //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left X: %d") % ((int)rEvent.caxis.value) ) );
+
+                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > 0) && wasAction( ANALOG1_RIGHT, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_RIGHT, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
                 }
 
                 if( result != NDefs::EAP_IDLE )
                 {
-                    if( result == NDefs::EAP_DOWN )
+                    if( m_analogLXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_IDLE && result == NDefs::EAP_DOWN )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogLXButtonStateAry[rEvent.caxis.which] = NDefs::EAP_DOWN;
-                    else
+                    }
+                    else if( m_analogLXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN && result == NDefs::EAP_UP )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogLXButtonStateAry[rEvent.caxis.which] = NDefs::EAP_IDLE;
+                    }
+                    else
+                        result = NDefs::EAP_IDLE;
 
                     m_lastDeviceUsed = NDefs::GAMEPAD;
                 }
@@ -411,19 +423,27 @@ NDefs::EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::
                 }
                 else if( m_analogLYButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < 0) && wasAction( ANALOG1_UP, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_UP, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > 0) && wasAction( ANALOG1_DOWN, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_DOWN, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
                 }
 
                 if( result != NDefs::EAP_IDLE )
                 {
-                    if( result == NDefs::EAP_DOWN )
+                    if( m_analogLYButtonStateAry[rEvent.caxis.which] == NDefs::EAP_IDLE && result == NDefs::EAP_DOWN )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogLYButtonStateAry[rEvent.caxis.which] = NDefs::EAP_DOWN;
-                    else
+                    }
+                    else if( m_analogLYButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN && result == NDefs::EAP_UP )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogLYButtonStateAry[rEvent.caxis.which] = NDefs::EAP_IDLE;
+                    }
+                    else
+                        result = NDefs::EAP_IDLE;
 
                     m_lastDeviceUsed = NDefs::GAMEPAD;
                 }
@@ -440,19 +460,27 @@ NDefs::EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::
                 }
                 else if( m_analogRXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < 0) && wasAction( ANALOG2_LEFT, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_LEFT, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > 0) && wasAction( ANALOG2_RIGHT, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_RIGHT, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
                 }
 
                 if( result != NDefs::EAP_IDLE )
                 {
-                    if( result == NDefs::EAP_DOWN )
+                    if( m_analogRXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_IDLE && result == NDefs::EAP_DOWN )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogRXButtonStateAry[rEvent.caxis.which] = NDefs::EAP_DOWN;
-                    else
+                    }
+                    else if( m_analogRXButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN && result == NDefs::EAP_UP )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogRXButtonStateAry[rEvent.caxis.which] = NDefs::EAP_IDLE;
+                    }
+                    else
+                        result = NDefs::EAP_IDLE;
 
                     m_lastDeviceUsed = NDefs::GAMEPAD;
                 }
@@ -469,19 +497,27 @@ NDefs::EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::
                 }
                 else if( m_analogRYButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < 0) && wasAction( ANALOG2_UP, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_UP, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > 0) && wasAction( ANALOG2_DOWN, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_DOWN, actionStr, m_gamepadActionMap ) )
                         result = NDefs::EAP_UP;
                 }
 
                 if( result != NDefs::EAP_IDLE )
                 {
-                    if( result == NDefs::EAP_DOWN )
+                    if( m_analogRYButtonStateAry[rEvent.caxis.which] == NDefs::EAP_IDLE && result == NDefs::EAP_DOWN )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogRYButtonStateAry[rEvent.caxis.which] = NDefs::EAP_DOWN;
-                    else
+                    }
+                    else if( m_analogRYButtonStateAry[rEvent.caxis.which] == NDefs::EAP_DOWN && result == NDefs::EAP_UP )
+                    {
+                        //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
                         m_analogRYButtonStateAry[rEvent.caxis.which] = NDefs::EAP_IDLE;
+                    }
+                    else
+                        result = NDefs::EAP_IDLE;
 
                     m_lastDeviceUsed = NDefs::GAMEPAD;
                 }
