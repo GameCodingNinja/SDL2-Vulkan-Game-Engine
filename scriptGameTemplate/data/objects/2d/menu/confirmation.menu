@@ -1,5 +1,7 @@
+<?xml version="1.0"?>
 <menu>
     
+    <!-- Supports init, transIn, transOut, event -->
     <scriptLst>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -28,6 +30,7 @@
             </fontStringLst>
             <action actionType="back"/>
             <navigate left="yes_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -42,6 +45,7 @@
             </fontStringLst>
             <action actionType="back"/>
             <navigate right="no_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

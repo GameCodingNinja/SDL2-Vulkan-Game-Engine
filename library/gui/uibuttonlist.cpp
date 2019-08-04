@@ -195,6 +195,9 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
             // Update the display
             updateDisplay();
 
+            // Prepare script function associated with handling this game event
+            prepareControlScriptFunction( NUIControl::ECS_CHANGE );
+
             // Execute smart gui
             smartExecuteAction();
         }
@@ -205,6 +208,9 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
 
             // Update the display
             updateDisplay();
+
+            // Prepare script function associated with handling this game event
+            prepareControlScriptFunction( NUIControl::ECS_CHANGE );
 
             // Execute smart gui
             smartExecuteAction();

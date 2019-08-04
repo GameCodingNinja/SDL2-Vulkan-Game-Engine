@@ -1,5 +1,7 @@
+<?xml version="1.0"?>
 <menu>
     
+    <!-- Supports init, transIn, transOut, event -->
     <scriptLst>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -47,6 +49,7 @@
                 <string text="x"/>
             </fontStringLst>
             <action actionType="close"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -61,6 +64,7 @@
                 <string text="^"/>
             </fontStringLst>
             <action actionType="back"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

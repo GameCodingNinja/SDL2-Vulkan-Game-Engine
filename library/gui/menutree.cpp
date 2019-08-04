@@ -407,7 +407,7 @@ void CMenuTree::onTransIn( const SDL_Event & rEvent )
     {
         // m_toMenu is also used as a flag to indicate moving up the menu tree
         // When moving up the menu tree, activate the first control on the menu
-        // When backing out of the menu tree, activate the last control used
+        // When backing out of the menu tree, activate the last control used previously
         NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_SET_ACTIVE_CONTROL,
             (m_toMenu.empty()) ? NMenuDefs::EAC_LAST_ACTIVE_CONTROL : NMenuDefs::EAC_FIRST_ACTIVE_CONTROL );
 

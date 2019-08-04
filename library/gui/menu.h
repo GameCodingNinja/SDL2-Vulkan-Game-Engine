@@ -154,7 +154,7 @@ private:
     void onMouseMove( const SDL_Event & rEvent );
     
     // Prepare the script function to run
-    void prepare( const std::string & scriptFuncId );
+    void prepare( const std::string & scriptFuncId, uint type = 0, int code = 0 );
 
     // Set the first inactive control to be active
     void activateFirstInactiveControl();

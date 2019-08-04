@@ -180,8 +180,9 @@ namespace NScriptUIControl
         
         Throw( pEngine->RegisterObjectMethod("uiControl", "void createFontString(string &in, int spriteIndex = 0)",          asMETHODPR(iControl, createFontString, (const std::string &, int), void), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void createFontString(int stringIndex = 0, int spriteIndex = 0)", asMETHODPR(iControl, createFontString, (int, int), void), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setActionType(string &in)",      asMETHODPR(iControl, setActionType, (const std::string &), void), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setExecutionAction(string &in)", asMETHOD(iControl, setExecutionAction),   asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setActionType(string &in)",                                  asMETHODPR(iControl, setActionType, (const std::string &), void), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setExecutionAction(string &in)",                             asMETHOD(iControl, setExecutionAction),   asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void changeState(int)",                                           asMETHOD(iControl, changeState),   asCALL_THISCALL) );
         
         Throw( pEngine->RegisterObjectMethod("uiControl", "bool isDisabled() const",                   asMETHOD(iControl, isDisabled),   asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "bool isInactive() const",                   asMETHOD(iControl, isInactive),   asCALL_THISCALL) );
@@ -249,7 +250,7 @@ namespace NScriptUIControl
         
         // Interface to slider
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderPosValue(float)",                         asMETHOD(iControl, setSliderPosValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "float setSliderPosValue() const",                       asMETHOD(iControl, setSliderPosValue), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "float getSliderPosValue() const",                       asMETHOD(iControl, getSliderPosValue), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMinValue(float)",                         asMETHOD(iControl, setSliderMinValue), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMaxValue(float)",                         asMETHOD(iControl, setSliderMaxValue), asCALL_THISCALL) );
         

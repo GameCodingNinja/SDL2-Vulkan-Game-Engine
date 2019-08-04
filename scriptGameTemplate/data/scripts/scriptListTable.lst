@@ -5,8 +5,13 @@
       <file path="data/scripts/library/shared_utilities.as"/>
       <file path="data/scripts/library/shared_sprite_utilities.as"/>
       <file path="data/scripts/library/menu_defs.as"/>
+      <file path="data/scripts/library/control_defs.as"/>
       <file path="data/scripts/library/menu.as"/>
-      <file path="data/scripts/library/smartgui.as"/>
+      <file path="data/scripts/library/confirmbtn.as"/>
+      <file path="data/scripts/library/resolutionbtn.as"/>
+      <file path="data/scripts/library/fullscreencheckbox.as"/>
+      <file path="data/scripts/library/deadzoneslider.as"/>
+      <file path="data/scripts/library/applybtn.as"/>
     </groupList>
 
     <groupList groupName="(state)">

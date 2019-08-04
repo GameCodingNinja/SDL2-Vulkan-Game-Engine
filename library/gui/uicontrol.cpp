@@ -260,10 +260,13 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
     {
         onSelectExecute( rEvent );
     }
+    // Menu after trans in, makes a control active
     else if( rEvent.type == NMenuDefs::EME_MENU_SET_ACTIVE_CONTROL )
     {
         onSetActiveControl( rEvent );
     }
+    // Called by script to reactive a control after the select animation completes
+    // if this control and it's menu is designed to be selected again.
     else if( rEvent.type == NMenuDefs::EME_MENU_REACTIVATE )
     {
         onReactivate( rEvent );
@@ -276,6 +279,9 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
     {
         onTransOut( rEvent );
     }
+
+    // Prepare script function associated with handling this game event
+    prepareControlScriptFunction( NUIControl::ECS_EVENT, rEvent.type, rEvent.user.code );
 
     // Do any smart event handling
     smartHandleEvent( rEvent );
@@ -292,6 +298,9 @@ void CUIControl::onTransIn( const SDL_Event & rEvent )
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
             setDisplayState();
+
+        // Prepare script function associated with handling this game event
+        prepareControlScriptFunction( NUIControl::ECS_TRANS_IN );
     }
 }
 
@@ -311,6 +320,9 @@ void CUIControl::onTransOut( const SDL_Event & rEvent )
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
             setDisplayState();
+
+        // Prepare script function associated with handling this game event
+        prepareControlScriptFunction( NUIControl::ECS_TRANS_OUT );
     }
 }
 
@@ -358,7 +370,7 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
         // Boost signal execute action
         m_executionActionSignal(this);
 
-        // Prepare script functions associated with this event
+        // Prepare script function associated with handling this game event
         prepareControlScriptFunction( NUIControl::ECS_EXECUTE );
     }
 }
@@ -439,7 +451,7 @@ void CUIControl::changeState( NUIControl::EControlState state )
     {
         m_state = state;
 
-        // Prepare any script functions associated with the state change
+        // Prepare script function associated with handling this game event
         prepareControlScriptFunction( m_state );
 
         recycleContext();
@@ -541,7 +553,7 @@ void CUIControl::init()
     for( auto iter : m_pSpriteVec )
         iter->init();
     
-    // Prepare script functions associated with this event
+    // Prepare script function associated with handling this game event
     prepareControlScriptFunction( NUIControl::ECS_INIT );
 }
 
@@ -556,6 +568,19 @@ void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlS
 
     switch( controlState )
     {
+        case NUIControl::ECS_INIT:
+            scriptFuncMapKey = "init";
+            forceUpdate = true;
+        break;
+
+        case NUIControl::ECS_TRANS_IN:
+            scriptFuncMapKey = "transIn";
+        break;
+
+        case NUIControl::ECS_TRANS_OUT:
+            scriptFuncMapKey = "transOut";
+        break;
+
         case NUIControl::ECS_DISABLE:
             scriptFuncMapKey = "disable";
             forceUpdate = true;
@@ -574,10 +599,10 @@ void CUIControl::prepareSpriteScriptFunction( NUIControl::EControlState controlS
             scriptFuncMapKey = "select";
         break;
 
-        case NUIControl::ECS_INIT:
         case NUIControl::ECS_EXECUTE:
         case NUIControl::ECS_EVENT:
         case NUIControl::ECS_NULL:
+        case NUIControl::ECS_CHANGE:
             throw NExcept::CCriticalException("Control State NULL!",
                 boost::str( boost::format("Control state can't use this state for sprites (%s)!\n\n%s\nLine: %s")
                     % scriptFuncMapKey %  __FUNCTION__ % __LINE__ ));
@@ -602,7 +627,7 @@ void CUIControl::callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, 
 /************************************************************************
 *    DESC:  Prepare the script function to run
 ************************************************************************/
-void CUIControl::prepareControlScriptFunction( NUIControl::EControlState controlState )
+void CUIControl::prepareControlScriptFunction( NUIControl::EControlState controlState, uint type, int code )
 {
     std::string scriptFuncMapKey = "null";
 
@@ -614,6 +639,14 @@ void CUIControl::prepareControlScriptFunction( NUIControl::EControlState control
 
         case NUIControl::ECS_INIT:
             scriptFuncMapKey = "init";
+        break;
+
+        case NUIControl::ECS_TRANS_IN:
+            scriptFuncMapKey = "transIn";
+        break;
+
+        case NUIControl::ECS_TRANS_OUT:
+            scriptFuncMapKey = "transOut";
         break;
 
         case NUIControl::ECS_DISABLE:
@@ -632,6 +665,10 @@ void CUIControl::prepareControlScriptFunction( NUIControl::EControlState control
             scriptFuncMapKey = "select";
         break;
 
+        case NUIControl::ECS_CHANGE:
+            scriptFuncMapKey = "change";
+        break;
+
         case NUIControl::ECS_EXECUTE:
             scriptFuncMapKey = "execute";
         break;
@@ -643,7 +680,12 @@ void CUIControl::prepareControlScriptFunction( NUIControl::EControlState control
 
     auto iter = m_scriptFunctionMap.find( scriptFuncMapKey );
     if( iter != m_scriptFunctionMap.end() )
-        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+    {
+        if( controlState == NUIControl::ECS_EVENT )
+            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this, type, code} );
+        else
+            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+    }
 }
 
 

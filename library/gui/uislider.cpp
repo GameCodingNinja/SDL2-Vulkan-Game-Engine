@@ -169,6 +169,9 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
         else
             incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio );
 
+        // Prepare script function associated with handling this game event
+        prepareControlScriptFunction( NUIControl::ECS_CHANGE );
+
         smartExecuteAction();
     }
 
@@ -190,8 +193,6 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
 
         if( msgCracker.isPressDown() )
         {
-            prepareControlScriptFunction( NUIControl::ECS_SELECT );
-
             CPoint<float> dif =
                 (msgCracker.getPos() - getSubControl()->getCollisionPos()) *
                     (1.f / CSettings::Instance().getOrthoAspectRatio().getH());
@@ -200,6 +201,9 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
                 incSliderMovePos( dif.x );
             else
                 incSliderMovePos( dif.y );
+
+            // Prepare script function associated with handling this game event
+            prepareControlScriptFunction( NUIControl::ECS_SELECT );
 
             smartExecuteAction();
         }
@@ -231,9 +235,6 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
 {
     if( isActive() )
     {
-        if( prepareOnSelect )
-            prepareControlScriptFunction( NUIControl::ECS_SELECT );
-
         // Send a message to blink the button
         NGenFunc::DispatchEvent(
             NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
@@ -241,6 +242,10 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
             getSubControl() );
 
         incSlider(value);
+
+        // Prepare script function associated with handling this game event
+        if( prepareOnSelect )
+            prepareControlScriptFunction( NUIControl::ECS_SELECT );
 
         smartExecuteAction();
     }

@@ -544,6 +544,9 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
         }
     }
 
+    // Prepare script functions associated with handling game events
+    prepare( "event", rEvent.type, rEvent.user.code );
+
     // Handle any smart menu events
     smartHandleEvent( rEvent );
 }
@@ -755,11 +758,16 @@ void CMenu::onTransOut( const SDL_Event & rEvent )
 /************************************************************************
 *    DESC:  Prepare the script function to run
 ************************************************************************/
-void CMenu::prepare( const std::string & scriptFuncId )
+void CMenu::prepare( const std::string & scriptFuncId, uint type, int code )
 {
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
-        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+    {
+        if( scriptFuncId == "event" )
+            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this, type, code} );
+        else
+            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+    }
 }
 
 

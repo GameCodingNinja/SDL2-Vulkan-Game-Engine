@@ -175,7 +175,7 @@ protected:
     void prepareSpriteScriptFunction( NUIControl::EControlState controlState );
 
     // Prepare the control script function to run
-    void prepareControlScriptFunction( NUIControl::EControlState controlState );
+    void prepareControlScriptFunction( NUIControl::EControlState controlState, uint type = 0, int code = 0 );
 
     // Recycle the contexts
     void recycleContext();
