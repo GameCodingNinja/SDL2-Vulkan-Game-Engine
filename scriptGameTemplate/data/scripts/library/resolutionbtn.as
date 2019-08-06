@@ -8,7 +8,10 @@ final class CResolutionBtn
     uiControl @mControl;
 
     // Resolution index
-    int resIndex = 0;
+    int mResIndex = 0;
+
+    // Screen resolutions
+    array<CSize> @mResAry;
 
     //
     //  Constructor
@@ -18,22 +21,22 @@ final class CResolutionBtn
         @mControl = control;
 
         // Get the screen resolutions
-        array<CSize> @ resAry = GetScreenResolutions();
+        @mResAry = GetScreenResolutions();
         
         // Get the current game resolution
         CSize curRes = Settings.getResolution();
         
         // Add the strings to the control
-        for( uint i = 0; i < resAry.length(); ++i )
-            mControl.setStringToList( formatInt(int(resAry[i].w)) + " x "  + formatInt(int(resAry[i].h)) );
+        for( uint i = 0; i < mResAry.length(); ++i )
+            mControl.setStringToList( formatInt(int(mResAry[i].w)) + " x "  + formatInt(int(mResAry[i].h)) );
         
-        // Find the current resolution and set it
-        for( uint i = 0; i < resAry.length(); ++i )
+        // Find the current resolution and record the index
+        for( uint i = 0; i < mResAry.length(); ++i )
         {
             // If we found our current game res, set it
-            if( int(resAry[i].w) == int(curRes.w) && int(resAry[i].h) == int(curRes.h) )
+            if( int(mResAry[i].w) == int(curRes.w) && int(mResAry[i].h) == int(curRes.h) )
             {
-                resIndex = i;
+                mResIndex = i;
                 break;
             }
         }
@@ -44,7 +47,7 @@ final class CResolutionBtn
     //
     bool hasChanged()
     {
-        return resIndex != mControl.getActiveIndex();
+        return mResIndex != mControl.getActiveIndex();
     }
 
     //
@@ -52,7 +55,27 @@ final class CResolutionBtn
     //
     void setResIndex()
     {
-        mControl.setActiveIndex( resIndex );
+        mControl.setActiveIndex( mResIndex );
+    }
+
+    //
+    //  Change the resolution
+    //
+    void changeResolution()
+    {
+        Device.waitForIdle();
+
+        mResIndex = mControl.getActiveIndex();
+
+        Settings.setSize( mResAry[mResIndex] );
+        Settings.calcRatio();
+
+        MenuMgr.resetTransform();
+        MenuMgr.resetDynamicOffset();
+
+        CameraMgr.rebuildProjectionMatrix();
+
+        Device.changeResolution( mResAry[mResIndex], Settings.getFullScreen() );
     }
 };
 

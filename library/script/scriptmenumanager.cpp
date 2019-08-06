@@ -304,19 +304,19 @@ namespace NScriptMenuManager
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "CMenu & getMenu(string &in)",                           asFUNCTION(GetMenu),   asCALL_CDECL_OBJLAST) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "CMenu & getActiveMenu()",                               asFUNCTION(GetActiveMenu),   asCALL_CDECL_OBJLAST) );
         
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isActive()",                   asMETHOD(CMenuMgr, isActive), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isMenuActive()",               asMETHOD(CMenuMgr, isMenuActive), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isMenuItemActive()",           asMETHOD(CMenuMgr, isMenuItemActive), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isInterfaceItemActive()",      asMETHOD(CMenuMgr, isInterfaceItemActive), asCALL_THISCALL) );
         
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isActive()",                asMETHOD(CMenuMgr, isActive), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isMenuActive()",            asMETHOD(CMenuMgr, isMenuActive), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isMenuItemActive()",        asMETHOD(CMenuMgr, isMenuItemActive), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "bool isInterfaceItemActive()",   asMETHOD(CMenuMgr, isInterfaceItemActive), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void resetTransform()",             asMETHOD(CMenuMgr, resetTransform), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void resetDynamicOffset()",         asMETHOD(CMenuMgr, resetDynamicOffset), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void allow(bool allow = true)",     asMETHOD(CMenuMgr, allow), asCALL_THISCALL) );
         
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void resetDynamicOffset()",      asMETHOD(CMenuMgr, resetDynamicOffset), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void allow(bool allow = true)",  asMETHOD(CMenuMgr, allow), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void update()",                     asMETHOD(CMenuMgr, update), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void transform()",                  asMETHOD(CMenuMgr, transform), asCALL_THISCALL) );
         
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void update()",                  asMETHOD(CMenuMgr, update), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void transform()",               asMETHOD(CMenuMgr, transform), asCALL_THISCALL) );
-        
-        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void setCommandBuffer(string &in)",   asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void setCommandBuffer(string &in)", asFUNCTION(SetCommandBuffer), asCALL_CDECL_OBJLAST) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CMenuMgr MenuMgr", &CMenuMgr::Instance()) );

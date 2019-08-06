@@ -1536,3 +1536,36 @@ uint32_t CDevice::getFrameCounter()
 {
     return m_frameCounter;
 }
+
+
+/************************************************************************
+ *    DESC: Change the resolution
+ ************************************************************************/
+void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
+{
+    // SDL2 doesn't allow res change in full screen
+    // so take us out of full screen mode for res changes
+    if( CSettings::Instance().getFullScreen() && fullScreen )
+        CDevice::Instance().setFullScreen( false );
+
+    SDL_DisplayMode mode;
+    SDL_GetCurrentDisplayMode(0, &mode);
+
+    mode.w = size.getW();
+    mode.h = size.getH();
+    mode.refresh_rate = 0;
+
+    SDL_SetWindowDisplayMode( getWindow(), &mode );
+
+    setFullScreen( fullScreen );
+
+    SDL_SetWindowSize(
+        getWindow(),
+        size.getW(),
+        size.getH() );
+
+    SDL_SetWindowPosition(
+        getWindow(),
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED );
+}

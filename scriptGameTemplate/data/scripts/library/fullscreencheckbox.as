@@ -6,6 +6,8 @@ final class CFullScreenCheckbox
 {
     // control handle
     uiControl @mControl;
+
+    bool mToggleState = false;
     
     //
     //  Constructor
@@ -20,7 +22,33 @@ final class CFullScreenCheckbox
     //
     bool hasChanged()
     {
-        return mControl.getToggleState() != Settings.getFullScreen();
+        return mControl.getToggleState() != mToggleState;
+    }
+
+    //
+    //  Change the full screen setting
+    //
+    void setFullScreen()
+    {
+        Settings.setFullScreen( mControl.getToggleState() );
+    }
+
+    //
+    //  Change the full screen setting
+    //
+    void changeFullScreen()
+    {
+        Device.setFullScreen( Settings.getFullScreen() );
+        mToggleState = Settings.getFullScreen();
+    }
+
+    //
+    //  Change the full screen setting
+    //
+    void transIn()
+    {
+        mToggleState = Settings.getFullScreen();
+        mControl.setToggleState( mToggleState );
     }
 };
 
@@ -39,7 +67,7 @@ void FullScreenCheckbox_init( uiControl & control )
 //
 void FullScreenCheckbox_transIn( uiControl & control )
 {
-    control.setToggleState( Settings.getFullScreen() );
+    gFullScreenCheckbox.transIn();
 }
 
 //

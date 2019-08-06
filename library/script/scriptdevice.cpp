@@ -56,6 +56,8 @@ namespace NScriptDevice
         Throw( pEngine->RegisterObjectMethod("CDevice", "void waitForIdle()",                      asMETHOD(CDevice, waitForIdle), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CDevice", "void showWindow(bool visible = true)",    asMETHOD(CDevice, showWindow), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CDevice", "void render()",                           asMETHOD(CDevice, render), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void changeResolution(CSize & in, bool)", asMETHOD(CDevice, changeResolution), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void setFullScreen(bool)",                asMETHOD(CDevice, setFullScreen), asCALL_THISCALL) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CDevice Device", &CDevice::Instance()) );

@@ -388,7 +388,8 @@ void CUIControl::onSetActiveControl( const SDL_Event & rEvent )
         m_lastState = m_state = NUIControl::ECS_ACTIVE;
 
         // Don't animate the control if the mouse was used
-        if( !CActionMgr::Instance().wasLastDeviceMouse() )
+        if( !CActionMgr::Instance().wasLastDeviceMouse() ||
+            isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
         {
             recycleContext();
             setDisplayState();
@@ -962,6 +963,10 @@ bool CUIControl::activateFirstInactiveControl()
         {
             m_lastState = m_state = NUIControl::ECS_ACTIVE;
 
+            // Animate the control if the mouse just happens to be in it
+            if( isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
+                return activateControl();
+            
             return true;
         }
 

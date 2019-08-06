@@ -42,6 +42,24 @@ final class CApplyBtn
         else
             mControl.changeState( NControlDefs::ECS_DISABLE );
     }
+
+    //
+    //  Execute the button command
+    //
+    void execute()
+    {
+        gFullScreenCheckbox.setFullScreen();
+
+        if( gResolutionBtn.hasChanged() )
+            gResolutionBtn.changeResolution();
+
+        else if( gFullScreenCheckbox.hasChanged() )
+            gFullScreenCheckbox.changeFullScreen();
+
+        // Reactivate the menu now that we are done
+        mControl.changeState( NControlDefs::ECS_DISABLE );
+        DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
+    }
 };
 
 CApplyBtn @gApplyBtn;
@@ -60,4 +78,12 @@ void ApplyBtn_init( uiControl & control )
 void ApplyBtn_transIn( uiControl & control )
 {
     control.changeState( NControlDefs::ECS_DISABLE );
+}
+
+//
+//  Handle execute event
+//
+void ApplyBtn_execute( uiControl & control )
+{
+    gApplyBtn.execute();
 }

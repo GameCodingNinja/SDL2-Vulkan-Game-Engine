@@ -368,7 +368,7 @@ uint32_t CSettings::getEngineVersion() const
 ************************************************************************/
 void CSettings::calcRatio()
 {
-    #if defined(__IOS__) || defined(__ANDROID__) || defined(__arm__)
+    #if defined(__IOS__) || defined(__ANDROID__)
 
     SDL_DisplayMode dm;
     SDL_GetDesktopDisplayMode(0, &dm);

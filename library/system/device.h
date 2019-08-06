@@ -13,6 +13,7 @@
 
 // Standard lib dependencies
 #include <system/descriptorallocator.h>
+#include <common/size.h>
 
 // Standard lib dependencies
 #include <functional>
@@ -225,6 +226,9 @@ public:
 
     // Get the number of frames since the start of the game
     uint32_t getFrameCounter();
+
+    // Change the resolution
+    void changeResolution( const CSize<float> & size, bool fullScreen );
 
 private:
 

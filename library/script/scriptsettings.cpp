@@ -36,9 +36,10 @@ namespace NScriptSettings
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSizeHalf()",          asMETHOD(CSettings, getSizeHalf),          asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getNativeSize()",        asMETHOD(CSettings, getNativeSize),        asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSizeHalf()",   asMETHOD(CSettings, getDefaultSizeHalf),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setSize(const CSize & in)",       asMETHOD(CSettings, getDefaultSizeHalf),   asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setSize(const CSize & in)",       asMETHOD(CSettings, setSize),              asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getScreenAspectRatio()", asMETHOD(CSettings, getScreenAspectRatio), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getOrthoAspectRatio()",  asMETHOD(CSettings, getOrthoAspectRatio),  asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void calcRatio()",                     asMETHOD(CSettings, calcRatio),            asCALL_THISCALL) );
         
         Throw( pEngine->RegisterObjectMethod("CSettings", "bool getVSync()",                      asMETHOD(CSettings, getVSync),             asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "void setVSync(bool)",                  asMETHOD(CSettings, setVSync),             asCALL_THISCALL) );

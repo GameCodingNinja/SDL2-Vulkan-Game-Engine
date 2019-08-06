@@ -143,6 +143,7 @@
                 <script transIn="ApplyBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="ApplyBtn_execute"/>
             </scriptLst>
         </control>
     
