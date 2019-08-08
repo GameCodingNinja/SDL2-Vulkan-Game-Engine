@@ -67,14 +67,6 @@ final class CResolutionBtn
 
         mResIndex = mControl.getActiveIndex();
 
-        Settings.setSize( mResAry[mResIndex] );
-        Settings.calcRatio();
-
-        MenuMgr.resetTransform();
-        MenuMgr.resetDynamicOffset();
-
-        CameraMgr.rebuildProjectionMatrix();
-
         Device.changeResolution( mResAry[mResIndex], Settings.getFullScreen() );
     }
 };

@@ -676,12 +676,7 @@ void CDeviceVulkan::setupSwapChain()
         if( surfCapabilities.currentExtent.width != size.getW() ||
             surfCapabilities.currentExtent.height != size.getH() )
         {
-            CSettings::Instance().setSize(
-                CSize<float>(
-                    surfCapabilities.currentExtent.width,
-                    surfCapabilities.currentExtent.height) );
-
-            CSettings::Instance().calcRatio();
+            handleResolutionChange( surfCapabilities.currentExtent.width, surfCapabilities.currentExtent.height );
         }
 
         // If the surface size is defined, the swap chain size must match

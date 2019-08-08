@@ -21,6 +21,9 @@
 #include <vector>
 #include <map>
 
+// SDL lib dependencies
+#include <SDL.h>
+
 // Forward declaration(s)
 struct SDL_Window;
 struct _SDL_GameController;
@@ -305,6 +308,9 @@ private:
 
     // Handle memory operations based on frame counter
     void frameCounterMemoryOperations();
+
+    // Handle the resolution change
+    virtual void handleResolutionChange( int width, int height ) override;
 
 private:
 

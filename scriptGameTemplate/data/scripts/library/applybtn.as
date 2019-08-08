@@ -48,13 +48,30 @@ final class CApplyBtn
     //
     void execute()
     {
+        // NOTE: Works best when resolution is changed. 
+        //       Resets the display when coming back out of full screen
+        
+        // Change the full screen setting
         gFullScreenCheckbox.setFullScreen();
 
-        if( gResolutionBtn.hasChanged() )
-            gResolutionBtn.changeResolution();
+        // Set the dead zone value
+        gDeadZoneSlider.setGamePadStickDeadZone();
 
+        // Resolution has changed and possibly the full screen
+        if( gResolutionBtn.hasChanged() )
+        {
+            gResolutionBtn.changeResolution();
+        }
+        // Only full screen has changed
         else if( gFullScreenCheckbox.hasChanged() )
+        {
             gFullScreenCheckbox.changeFullScreen();
+        }
+
+        // Set the internal toggle to the current state
+        gFullScreenCheckbox.setToggleState();
+
+        Settings.saveSettings();
 
         // Reactivate the menu now that we are done
         mControl.changeState( NControlDefs::ECS_DISABLE );

@@ -38,8 +38,8 @@ final class CFullScreenCheckbox
     //
     void changeFullScreen()
     {
+        Device.waitForIdle();
         Device.setFullScreen( Settings.getFullScreen() );
-        mToggleState = Settings.getFullScreen();
     }
 
     //
@@ -49,6 +49,14 @@ final class CFullScreenCheckbox
     {
         mToggleState = Settings.getFullScreen();
         mControl.setToggleState( mToggleState );
+    }
+
+    //
+    //  Set the toggle state
+    //
+    void setToggleState()
+    {
+        mToggleState = mControl.getToggleState();
     }
 };
 

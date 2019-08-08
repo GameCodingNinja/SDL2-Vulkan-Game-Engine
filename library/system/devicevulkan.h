@@ -130,6 +130,9 @@ protected:
         vkDestroyBuffer( m_logicalDevice, stagingBuffer, nullptr );
         vkFreeMemory( m_logicalDevice, stagingBufferMemory, nullptr );
     }
+
+    // Handle the resolution change
+    virtual void handleResolutionChange( int width, int height ) = 0;
     
 private:
     

@@ -24,12 +24,13 @@
 #include <system/uniformbufferobject.h>
 #include <system/pushdescriptorset.h>
 #include <system/memorybuffer.h>
+#include <gui/menumanager.h>
+#include <managers/cameramanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL.h>
 #include <SDL_vulkan.h>
 
 /************************************************************************
@@ -144,7 +145,7 @@ void CDevice::destroy()
         SDL_DestroyWindow( m_pWindow );
         m_pWindow = nullptr;
     }
-    
+
     // Quit SDL subsystems
     SDL_Quit();
 }
@@ -1543,11 +1544,6 @@ uint32_t CDevice::getFrameCounter()
  ************************************************************************/
 void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
 {
-    // SDL2 doesn't allow res change in full screen
-    // so take us out of full screen mode for res changes
-    if( CSettings::Instance().getFullScreen() && fullScreen )
-        CDevice::Instance().setFullScreen( false );
-
     SDL_DisplayMode mode;
     SDL_GetCurrentDisplayMode(0, &mode);
 
@@ -1555,17 +1551,38 @@ void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
     mode.h = size.getH();
     mode.refresh_rate = 0;
 
-    SDL_SetWindowDisplayMode( getWindow(), &mode );
+    SDL_SetWindowDisplayMode( m_pWindow, &mode );
 
     setFullScreen( fullScreen );
 
     SDL_SetWindowSize(
-        getWindow(),
+        m_pWindow,
         size.getW(),
         size.getH() );
 
     SDL_SetWindowPosition(
-        getWindow(),
+        m_pWindow,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED );
+
+    handleResolutionChange( size.getW(), size.getH() );
+}
+
+
+/***************************************************************************
+*   DESC:  Handle the resolution change
+****************************************************************************/
+void CDevice::handleResolutionChange( int width, int height )
+{
+    CSettings::Instance().setSize( CSize<float>(width, height) );
+    CSettings::Instance().calcRatio();
+
+    // Reset the transform to recalculate mouse collision
+    CMenuMgr::Instance().resetTransform();
+
+    // Reset the dynamic positions of menus
+    CMenuMgr::Instance().resetDynamicOffset();
+
+    // Rebuild all the camera projection matrixes
+    CCameraMgr::Instance().rebuildProjectionMatrix();
 }

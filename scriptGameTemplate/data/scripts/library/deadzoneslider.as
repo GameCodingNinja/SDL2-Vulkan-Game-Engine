@@ -22,6 +22,14 @@ final class CDeadZoneSlider
     {
         return int(mControl.getSliderPosValue()) != Settings.getGamePadStickDeadZone();
     }
+
+    //
+    //  Set the dead zone value
+    //
+    void setGamePadStickDeadZone()
+    {
+        Settings.setGamePadStickDeadZone( int(mControl.getSliderPosValue()) );
+    }
 };
 
 CDeadZoneSlider @gDeadZoneSlider;
@@ -41,6 +49,7 @@ void DeadZoneSlider_transIn( uiControl & control )
 {
     control.setSliderPosValue( Settings.getGamePadStickDeadZone() );
 }
+
 
 //
 //  Handle select event
