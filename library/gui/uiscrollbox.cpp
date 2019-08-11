@@ -368,10 +368,23 @@ bool CUIScrollBox::handleSelectAction( const CSelectMsgCracker & msgCracker )
     bool result = CUISubControl::handleSelectAction( msgCracker );
 
     // Let the scroll controls handle any selection
-    for( size_t i = 0; i < m_pScrollControlVec.size(); ++i )
-        result |= m_pScrollControlVec[i]->handleSelectAction( msgCracker );
+    for( int i = m_visStartPos; i < m_visEndPos && !result; ++i )
+    {
+        result = m_pScrollControlVec[i]->handleSelectAction( msgCracker );
 
-    if( msgCracker.isDeviceMouse() && msgCracker.isPressDown() )
+        // Break when the message is handled
+        if( result )
+        {
+            // Set the active scroll control to the one the mouse clicked
+            if( msgCracker.isDeviceMouse() )
+                m_activeScrollCtrl = i;
+
+            break;
+        }
+    }
+
+    // This handles if the slider was clicked or dragged
+    if( result && msgCracker.isDeviceMouse() && msgCracker.isPressDown() )
     {
         // Get the current scroll position
         m_scrollCurPos = getSubControl()->getSliderPosValue();

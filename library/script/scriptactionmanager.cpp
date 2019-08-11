@@ -95,10 +95,8 @@ namespace NScriptActionManager
 
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "string getDeviceActionStr(int, string &in, bool &out)", asMETHOD(CActionMgr, getDeviceActionStr), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "string resetAction(int, string &in, int, bool &out)",   asMETHOD(CActionMgr, resetAction), asCALL_THISCALL) );
-
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateKeyboardEvent(uint, int &out, uint &out, uint startIndex = 0)", asMETHOD(CActionMgr, enumerateKeyboardEvent), asCALL_THISCALL) );
-
-
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateButtonEvents(uint &out, int &out, int &out, uint startIndex = 0)", asMETHOD(CActionMgr, enumerateButtonEvents), asCALL_THISCALL) );
+        
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CActionMgr ActionMgr", &CActionMgr::Instance()) );
     }

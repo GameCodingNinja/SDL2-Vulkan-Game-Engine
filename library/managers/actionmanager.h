@@ -76,12 +76,6 @@ public:
         int keyCode,
         bool & configurable );
     
-    // Reset the action
-    // NDefs::EDeviceId resetAction(
-    //     const SDL_Event & rEvent,
-    //     const std::string & actionNameStr,
-    //     std::string & componetIdStr );
-    
     // Enable/Disable action handling
     void enableAction( bool value = true );
     
@@ -108,14 +102,14 @@ public:
     
     // Was this a game specific event
     bool wasGameEvent( uint type, int code );
-    
+
     // Device specific key checks
     bool wasKeyboardEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
     bool wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
     bool wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
-
-    // Device specific enumeration
-    uint enumerateKeyboardEvent( uint type, int & keyCode, uint & repeat, uint startIndex = 0 );
+    
+    // Enumerate button events on all devices
+    uint enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex = 0 );
 
     // Was this a window event
     bool wasWindowEvent( uint event );

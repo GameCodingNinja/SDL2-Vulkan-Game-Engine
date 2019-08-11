@@ -1123,23 +1123,51 @@ bool CActionMgr::wasWindowEvent( uint event )
     return false;
 }
 
+
 /************************************************************************
-*    DESC:  Enumerate the keyboard events
+*    DESC:  Enumerate button events on all devices
 ************************************************************************/
-uint CActionMgr::enumerateKeyboardEvent( uint type, int & keyCode, uint & repeat, uint startIndex )
+uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex )
 {
     uint counter(0);
 
     for( auto & iter : m_eventQueue )
     {
-        if( iter.type == type )
+        if( iter.type == SDL_KEYDOWN || iter.type == SDL_KEYUP )
         {
             counter++;
 
             if( counter > startIndex )
             {
-                keyCode = iter.key.keysym.sym;
-                repeat = iter.key.repeat;
+                type = iter.type;
+                code = iter.key.keysym.sym;
+                data = iter.key.repeat;
+
+                return counter;
+            }
+        }
+        else if( iter.type == SDL_MOUSEBUTTONDOWN || iter.type == SDL_MOUSEBUTTONUP )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                type = iter.type;
+                code = iter.button.button;
+                data = iter.button.which;
+
+                return counter;
+            }
+        }
+        else if( iter.type == SDL_CONTROLLERBUTTONDOWN || iter.type == SDL_CONTROLLERBUTTONUP )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                type = iter.type;
+                code = iter.cbutton.button;
+                data = iter.cbutton.which;
 
                 return counter;
             }
