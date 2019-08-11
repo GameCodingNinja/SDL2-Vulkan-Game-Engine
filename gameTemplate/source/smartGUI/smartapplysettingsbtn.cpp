@@ -44,7 +44,7 @@ CSmartApplySettingsBtn::CSmartApplySettingsBtn( iControl * piControl ) :
 void CSmartApplySettingsBtn::handleEvent( const SDL_Event & rEvent )
 {
     if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
-        m_piControl->changeState(NUIControl::ECS_DISABLE);
+        m_piControl->changeState(NUIControlDefs::ECS_DISABLE);
 }
 
 
@@ -148,7 +148,7 @@ void CSmartApplySettingsBtn::execute()
     if( settingsChangeMade )
         CSettings::Instance().saveSettings();
 
-    m_piControl->changeState(NUIControl::ECS_DISABLE);
+    m_piControl->changeState(NUIControlDefs::ECS_DISABLE);
 
     // Reactivate the menu now that we are done
     NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
