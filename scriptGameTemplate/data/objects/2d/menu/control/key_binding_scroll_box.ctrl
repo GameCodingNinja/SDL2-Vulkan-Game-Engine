@@ -73,6 +73,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
 
@@ -86,6 +88,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
 
@@ -99,6 +103,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
     
@@ -112,6 +118,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
     
@@ -125,6 +133,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
 
@@ -146,6 +156,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
     
@@ -159,6 +171,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
     
@@ -172,6 +186,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
     
@@ -185,6 +201,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
 
@@ -198,6 +216,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
     
@@ -211,6 +231,8 @@
                 <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
 
