@@ -52,28 +52,28 @@ void KeyBindBtn_event( uiControl & control, uint type, int code )
 {
     if( !ActionMgr.isAction() && control.isSelected() )
     {
-        uint type = 0;
-        int code = 0;
+        uint eventType = 0;
+        int eventCode = 0;
         int data = 0;
         uint index = 0;
-        while( (index = ActionMgr.enumerateButtonEvents( type, code, data, index )) > 0 )
+        while( (index = ActionMgr.enumerateButtonEvents( eventType, eventCode, data, index )) > 0 )
         {
-            if( type == NDefs::SDL_KEYUP )
+            if( eventType == NDefs::SDL_KEYUP )
             {
-                Print("Type: KEYBOARD, code: "+code+", data: "+data+", index: "+index);
-                KeyBindBtn_bindButtonPress( control, type, NDefs::KEYBOARD, code );
+                Print("Type: KEYBOARD, code: "+eventCode+", data: "+data+", index: "+index);
+                KeyBindBtn_bindButtonPress( control, type, NDefs::KEYBOARD, eventCode );
                 break;
             }
-            else if( type == NDefs::SDL_MOUSEBUTTONUP )
+            else if( eventType == NDefs::SDL_MOUSEBUTTONUP )
             {
-                Print("Type: MOUSE, code: "+code+", data: "+data+", index: "+index);
-                KeyBindBtn_bindButtonPress( control, type, NDefs::MOUSE, code );
+                Print("Type: MOUSE, code: "+eventCode+", data: "+data+", index: "+index);
+                KeyBindBtn_bindButtonPress( control, type, NDefs::MOUSE, eventCode );
                 break;
             }
-            else if( type == NDefs::SDL_CONTROLLERBUTTONUP )
+            else if( eventType == NDefs::SDL_CONTROLLERBUTTONUP )
             {
-                Print("Type: GAMEPAD, code: "+code+", data: "+data+", index: "+index);
-                KeyBindBtn_bindButtonPress( control, type, NDefs::GAMEPAD, code );
+                Print("Type: GAMEPAD, code: "+eventCode+", data: "+data+", index: "+index);
+                KeyBindBtn_bindButtonPress( control, type, NDefs::GAMEPAD, eventCode );
                 break;
             }
         }
@@ -112,5 +112,34 @@ void KeyBindBtn_bindButtonPress( uiControl & control, uint type, int deviceId, i
     ActionMgr.enableAction();
 
     // Dispatch a message to clear the selected control and put it back into active state
+    DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
+}
+
+//
+//  Handle resettings of key bind buttons
+//
+void KeyBindBtn_reset( uiControl & control )
+{
+    // Reset the key bindings for all controls and save
+    ActionMgr.resetKeyBindingsToDefault();
+
+    // Since the above reset all the keybinding to the default value,
+    // Need to do the below to reload the data into the scroll box
+
+    // Get the scroll box control and the number of controls it contains
+    uiControl @scrollBoxCtrl = MenuMgr.getMenu( "key_bindings_menu" ).getControl( "key_binding_scroll_box" );
+    uint size = scrollBoxCtrl.size();
+
+    for( uint i = 0; i < size; ++i )
+    {
+        uiControl @scrollCtrl = scrollBoxCtrl.getScrollBoxControl(i);
+        if( scrollCtrl.getFaction() == "key_binding_btn" )
+        {
+            Print(scrollCtrl.getName());
+            KeyBindBtn_init( scrollCtrl );
+        }
+    }
+
+    // Dispatch the message to reactivate the menu
     DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
 }

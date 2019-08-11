@@ -250,10 +250,10 @@
             <fontStringLst>
                 <string text="Reset To Default"/>
             </fontStringLst>
-            <action actionType="to_menu" executionAction="confirmation_menu"/>
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_reset"/>
             </scriptLst>
         </control>
 

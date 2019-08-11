@@ -189,6 +189,11 @@ public:
     // Set the alpha value of this menu
     virtual void setAlpha( float alpha ) = 0;
     float getAlpha() const;
+
+    // Interface sub controls
+
+    // Number of sub controls
+    virtual size_t size() { return 0; }
     
     // Interface to button list
     
@@ -246,6 +251,11 @@ public:
     
     // Is the mouse down
     virtual bool isSliderMouseDown(){ return false; }
+
+    // Interface to scroll box
+
+    // Get the pointer to the scroll box control
+    virtual iControl * getPtrToScrollBoxControl( uint index ){ return nullptr; }
 
 private:
     

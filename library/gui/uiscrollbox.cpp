@@ -926,3 +926,24 @@ iControl * CUIScrollBox::getPtrToActiveControl()
 
     return pResult;
 }
+
+
+/************************************************************************
+*    DESC:  Number of controls in the list box
+************************************************************************/
+size_t CUIScrollBox::size()
+{
+    return m_pScrollControlVec.size();
+}
+
+
+/************************************************************************
+*    DESC:  Get the pointer to the scroll box control
+************************************************************************/
+iControl * CUIScrollBox::getPtrToScrollBoxControl( uint index )
+{
+    if( index < m_pScrollControlVec.size() )
+        return m_pScrollControlVec[index];
+
+    return nullptr;
+}

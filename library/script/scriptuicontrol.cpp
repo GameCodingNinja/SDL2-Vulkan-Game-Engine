@@ -26,29 +26,6 @@
 namespace NScriptUIControl
 {
     CPoint<float> point;
-    
-    /************************************************************************
-    *    DESC:  Get Resolutions
-    ************************************************************************/
-    CScriptArray * getScrollboxControls(iControl & control)
-    {
-        // Make sure this control is a scroll box
-        if( control.getType() != NUIControlDefs::ECT_SCROLL_BOX )
-            throw NExcept::CCriticalException("Scroll box array of controls error!",
-                boost::str( boost::format("Control is not a scroll box.\n\n%s\nLine: %s")
-                    % __FUNCTION__ % __LINE__ ));
-        
-        auto & scrollCtrlVec = NGenFunc::DynCast<CUIScrollBox>(&control)->getScrollCtrlVec();
-        
-        // Get a pointer to type declaration
-        asITypeInfo * arrayType = CScriptMgr::Instance().getPtrToTypeInfo( "array<uiControl>" );
-        
-        CScriptArray* ary = CScriptArray::Create(arrayType, scrollCtrlVec.size());
-        for( size_t i = 0; i < scrollCtrlVec.size(); ++i )
-            ary->SetValue(i, scrollCtrlVec[i]);
-        
-        return ary;
-    }
 
     /************************************************************************
     *    DESC:  Wrapper function due to virtual inheritance
@@ -228,6 +205,9 @@ namespace NScriptUIControl
         Throw( pEngine->RegisterObjectMethod("uiControl", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
 
         Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getScale() const",                       asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+
+        // Interface to sub sontrol
+        Throw( pEngine->RegisterObjectMethod("uiControl", "uint size()",                                           asMETHOD(iControl, size), asCALL_THISCALL) );
         
         // Interface to button list
         Throw( pEngine->RegisterObjectMethod("uiControl", "int getActiveIndex() const",                            asMETHOD(iControl, getActiveIndex), asCALL_THISCALL) );
@@ -261,6 +241,6 @@ namespace NScriptUIControl
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMaxValue(float)",                         asMETHOD(iControl, setSliderMaxValue), asCALL_THISCALL) );
         
         // Interface to scroll box
-        Throw( pEngine->RegisterObjectMethod("uiControl", "array<CSize> @ getScrollboxControls()",                 asFUNCTION(getScrollboxControls), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "uiControl & getScrollBoxControl(uint)",asMETHOD(iControl, getPtrToScrollBoxControl), asCALL_THISCALL) );
     }
 }

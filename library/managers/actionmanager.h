@@ -238,9 +238,6 @@ private:
     const int UNBOUND_KEYCODE_ID;
     const int UNDEFINED_ACTION;
     
-    // flag for xml action changes
-    bool m_xmlActionChange;
-    
     // Que of event message
     std::vector<SDL_Event> m_eventQueue;
 };

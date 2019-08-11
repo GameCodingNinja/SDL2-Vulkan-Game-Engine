@@ -277,3 +277,18 @@ void CUIButtonList::setActiveIndex( int index )
     // Update the display
     updateDisplay();
 }
+
+
+/************************************************************************
+*    DESC:  Number of items in the list box
+************************************************************************/
+size_t CUIButtonList::size()
+{
+    if( m_pSpriteVec.empty() )
+        return m_pSpriteVec.size();
+
+    else if( !m_stringVec.empty() )
+        return m_stringVec.size();
+
+    return 0;
+}

@@ -87,6 +87,9 @@ public:
     // Get the pointer to the active control
     virtual iControl * getPtrToActiveControl() override;
 
+    // Number of sub controls
+    virtual size_t size() override;
+
 protected:
 
     // Load the control specific info from XML node

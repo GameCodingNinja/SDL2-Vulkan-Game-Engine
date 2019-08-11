@@ -25,8 +25,7 @@ CActionMgr::CActionMgr() :
     m_allowAction(true),
     UNBOUND_KEYCODE_STR_ID("---"),
     UNBOUND_KEYCODE_ID(-1),
-    UNDEFINED_ACTION(-1),
-    m_xmlActionChange(false)
+    UNDEFINED_ACTION(-1)
 {
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type(UNBOUND_KEYCODE_STR_ID, UNBOUND_KEYCODE_ID) );
 
@@ -746,97 +745,12 @@ std::string CActionMgr::resetAction(
                 // Update the XML node with the change
                 XMLNode node = playerVisibleNode.getChildNode( "actionMap", xmlNodeIndex );
                 node.updateAttribute(componetIdStr.c_str(), "componetId", "componetId");
-
-                m_xmlActionChange = true;
             }
         }
     }
 
     return componetIdStr;
 }
-
-
-/************************************************************************
-*    DESC:  Reset the action
-************************************************************************/
-// NDefs::EDeviceId CActionMgr::resetAction(
-//     const SDL_Event & rEvent,
-//     const std::string & actionNameStr,
-//     std::string & componetIdStr )
-// {
-//     NDefs::EDeviceId deviceId(NDefs::DEVICE_NULL);
-//     std::string mappingName;
-//     int newKeyCodeId;
-//     keyCodeMapType * pKeyCodeMap;
-//     actionMapType * pActionMap;
-
-//     if( rEvent.type == SDL_KEYUP )
-//     {
-//         deviceId = NDefs::KEYBOARD;
-//         mappingName = "keyboardMapping";
-//         newKeyCodeId = rEvent.key.keysym.sym;
-//         pKeyCodeMap = &m_keyboardKeyCodeMap;
-//         pActionMap = &m_keyboardActionMap;
-//     }
-//     else if( rEvent.type == SDL_MOUSEBUTTONUP )
-//     {
-//         mappingName = "mouseMapping";
-//         deviceId = NDefs::MOUSE;
-//         newKeyCodeId = rEvent.button.button;
-//         pKeyCodeMap = &m_mouseKeyCodeMap;
-//         pActionMap = &m_mouseActionMap;
-//     }
-//     else if( rEvent.type == SDL_CONTROLLERBUTTONUP )
-//     {
-//         mappingName = "gamepadMapping";
-//         deviceId = NDefs::GAMEPAD;
-//         newKeyCodeId = rEvent.cbutton.button;
-//         pKeyCodeMap = &m_gamepadKeyCodeMap;
-//         pActionMap = &m_gamepadActionMap;
-//     }
-
-//     bool configurable;
-//     std::string oldIdStr;
-
-//     // If this action ID can be found and is configurable, reset it
-//     XMLNode playerVisibleNode = m_mainNode.getChildNode( mappingName.c_str() ).getChildNode( "playerVisible" );
-//     int xmlNodeIndex = getActionStr( playerVisibleNode, actionNameStr, oldIdStr, configurable );
-
-//     if( (xmlNodeIndex > UNDEFINED_ACTION) && configurable )
-//     {
-//         std::string newKeyCodeStr;
-//         if( getKeyCodeStr( *pKeyCodeMap, newKeyCodeId, newKeyCodeStr ) )
-//         {
-//             if( newKeyCodeStr != oldIdStr )
-//                 componetIdStr = newKeyCodeStr;
-//             else
-//                 componetIdStr = UNBOUND_KEYCODE_STR_ID;
-
-//             int oldKeyCodeId = getKeyCode( *pKeyCodeMap, oldIdStr );
-
-//             // Check for the action to remove the old key code
-//             auto iter = pActionMap->find( actionNameStr );
-//             if( iter != pActionMap->end() )
-//             {
-//                 // Remove the old key code Id
-//                 iter->second.removeId( oldKeyCodeId );
-
-//                 // Add the new key code Id
-//                 iter->second.setId( newKeyCodeId );
-
-//                 // Update the XML node with the change
-//                 XMLNode node = playerVisibleNode.getChildNode( "actionMap", xmlNodeIndex );
-//                 node.updateAttribute(componetIdStr.c_str(), "componetId", "componetId");
-
-//                 m_xmlActionChange = true;
-
-//                 return deviceId;
-//             }
-//         }
-//     }
-
-//     return NDefs::DEVICE_NULL;
-// }
 
 
 /************************************************************************
@@ -880,10 +794,7 @@ int CActionMgr::getKeyCode( keyCodeMapType & keyCodeMap, const std::string & com
 void CActionMgr::saveToFile()
 {
     // Save it to file
-    if( m_xmlActionChange )
-        m_mainNode.writeToFile(m_saveFilePath.c_str(), "utf-8");
-
-    m_xmlActionChange = false;
+    m_mainNode.writeToFile(m_saveFilePath.c_str(), "utf-8");
 }
 
 

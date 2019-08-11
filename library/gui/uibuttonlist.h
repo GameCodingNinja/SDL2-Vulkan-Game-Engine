@@ -34,6 +34,9 @@ public:
     int getActiveIndex() const override;
     void setActiveIndex( int index ) override;
 
+    // Number of items in the list box
+    size_t size() override;
+
 protected:
 
     // Load the control specific info from XML node

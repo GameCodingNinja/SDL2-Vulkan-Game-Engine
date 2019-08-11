@@ -673,3 +673,12 @@ iControl * CUISubControl::getPtrToActiveControl()
 
     return pResult;
 } 
+
+
+/************************************************************************
+*    DESC:  Number of sub controls
+************************************************************************/
+size_t CUISubControl::size()
+{
+    return m_pSubControlVec.size();
+}

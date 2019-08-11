@@ -69,6 +69,12 @@ public:
     // Get the pointer to the active control
     iControl * getPtrToActiveControl() override;
 
+    // Number of controls in the list box
+    size_t size() override;
+
+    // Get the pointer to the scroll box control
+    iControl * getPtrToScrollBoxControl( uint index ) override;
+
 protected:
 
     // Load the control specific info from XML node

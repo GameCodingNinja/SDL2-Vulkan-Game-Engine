@@ -72,9 +72,6 @@ namespace NScriptGlobals
     ************************************************************************/
     CScriptArray * GetScreenResolutions()
     {
-        // Get a pointer to type declaration
-        asITypeInfo * arrayType = CScriptMgr::Instance().getPtrToTypeInfo( "array<CSize>" );
-        
         std::vector< CSize<int> > resVec;
         int displayCount = SDL_GetNumDisplayModes(0);
         for( int i = 0; i < displayCount; i++ )
@@ -93,6 +90,9 @@ namespace NScriptGlobals
 
         // The resolutions are in greatest to smallest. We need the order reversed
         std::reverse(resVec.begin(), resVec.end());
+
+        // Get a pointer to type declaration
+        asITypeInfo * arrayType = CScriptMgr::Instance().getPtrToTypeInfo( "array<CSize>" );
         
         CScriptArray* ary = CScriptArray::Create(arrayType, resVec.size());
         for( size_t i = 0; i < resVec.size(); ++i )
