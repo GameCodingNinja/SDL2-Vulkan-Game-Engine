@@ -8,7 +8,6 @@
                 <script disable="Control_Hidden"/>
                 <script inactive="Control_Hidden"/>
                 <script active="Control_Active"/>
-                <script select="Control_Selected"/>
             </scriptLst>
         </sprite>
 
@@ -18,7 +17,6 @@
                 <script disable="Control_Disabled"/>
                 <script inactive="Control_Inactive"/>
                 <script active="Control_Active"/>
-                <script select="Control_Selected_Dispatch_Exe"/>
             </scriptLst>
         </sprite>
 

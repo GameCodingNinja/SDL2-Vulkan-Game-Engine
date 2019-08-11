@@ -62,11 +62,11 @@ public:
     void revertToDefaultState() override;
 
     // Get/Set the state of this control
-    NUIControl::EControlState getState() const override;
-    void setState( NUIControl::EControlState state, bool setLastState = false ) override;
+    NUIControlDefs::EControlState getState() const override;
+    void setState( NUIControlDefs::EControlState state, bool setLastState = false ) override;
 
     // Get the type of action
-    NUIControl::EControlActionType getActionType() override;
+    NUIControlDefs::EControlActionType getActionType() override;
 
     // Get the execution action
     const std::string & getExecutionAction() override;
@@ -82,7 +82,7 @@ public:
     void smartCreate() override;
 
     // Set the type of action
-    void setActionType( NUIControl::EControlActionType value ) override;
+    void setActionType( NUIControlDefs::EControlActionType value ) override;
     void setActionType( const std::string & value ) override;
 
     // Set the execution action
@@ -112,7 +112,7 @@ public:
     void setStringToList( const std::string & str ) override;
 
     // Change the control state
-    void changeState( NUIControl::EControlState state ) override;
+    void changeState( NUIControlDefs::EControlState state ) override;
 
     // Is this control active/selected
     bool isDisabled() override;
@@ -172,10 +172,10 @@ protected:
     void setDisplayState();
 
     // Prepare the sprite script function
-    void prepareSpriteScriptFunction( NUIControl::EControlState controlState );
+    void prepareSpriteScriptFunction( NUIControlDefs::EControlState controlState );
 
     // Prepare the control script function to run
-    void prepareControlScriptFunction( NUIControl::EControlState controlState, uint type = 0, int code = 0 );
+    void prepareControlScriptFunction( NUIControlDefs::EControlState controlState, uint type = 0, int code = 0 );
 
     // Recycle the contexts
     void recycleContext();
@@ -207,7 +207,7 @@ private:
     virtual void loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCount ) override;
 
     // Set the default state of this control
-    void setDefaultState( NUIControl::EControlState value );
+    void setDefaultState( NUIControlDefs::EControlState value );
     void setDefaultState( const std::string & value );
     
     // Transform the collision
@@ -224,17 +224,17 @@ private:
     CScriptComponent m_scriptComponent;
 
     // control's default state
-    NUIControl::EControlState m_defaultState;
+    NUIControlDefs::EControlState m_defaultState;
 
     // control's current state
-    NUIControl::EControlState m_state;
-    NUIControl::EControlState m_lastState;
+    NUIControlDefs::EControlState m_state;
+    NUIControlDefs::EControlState m_lastState;
 
     // Name of the action to perform under the correct circumstances
     std::string m_executionAction;
 
     // How the control should respond when selected
-    NUIControl::EControlActionType m_actionType;
+    NUIControlDefs::EControlActionType m_actionType;
 
     // This control's size
     CSize<float> m_size;

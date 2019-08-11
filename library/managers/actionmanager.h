@@ -64,20 +64,26 @@ public:
     const CPoint<float> & getControllerPosRight() const;
     
     // Get the action/component strings for the give device id
-    bool getDeviceActionStr( 
+    std::string getDeviceActionStr( 
         NDefs::EDeviceId deviceId,
         const std::string & actionNameStr,
-        std::string & componetIdStr,
+        bool & configurable );
+
+    // Reset the action
+    std::string resetAction(
+        NDefs::EDeviceId deviceId,
+        const std::string & actionNameStr,
+        int keyCode,
         bool & configurable );
     
     // Reset the action
-    NDefs::EDeviceId resetAction(
-        const SDL_Event & rEvent,
-        const std::string & actionNameStr,
-        std::string & componetIdStr );
+    // NDefs::EDeviceId resetAction(
+    //     const SDL_Event & rEvent,
+    //     const std::string & actionNameStr,
+    //     std::string & componetIdStr );
     
     // Enable/Disable action handling
-    void enableAction( bool value );
+    void enableAction( bool value = true );
     
     // Is action handling allowed
     bool isAction();
@@ -108,11 +114,14 @@ public:
     bool wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
     bool wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
 
+    // Device specific enumeration
+    uint enumerateKeyboardEvent( uint type, int & keyCode, uint & repeat, uint startIndex = 0 );
+
     // Was this a window event
     bool wasWindowEvent( uint event );
     
     // Is the queue empty
-    bool queueEmpty();
+    bool isQueueEmpty();
 
 private:
 

@@ -34,41 +34,35 @@ CSmartKeyBindBtn::CSmartKeyBindBtn( iControl * piControl ) :
 ****************************************************************************/
 void CSmartKeyBindBtn::create()
 {
-    uint disableCounter(0);
+    bool btnDisabled = true;
     const std::string actionNameStr = m_piControl->getStringVec().back();
     
     CUISubControl * pSubControl = NGenFunc::DynCast<CUISubControl>(m_piControl);
     
     for( uint i = 0; i < NDefs::MAX_UNIQUE_DEVICES; ++i )
     {
-        std::string idStr;
         bool configurable;
         
         // Get the pointer to the sub control label associated with the device
         iControl * pControl = pSubControl->getSubControl(i);
     
         // If the ID is defined in the controller mapping XML, set it's string Id
-        if( CActionMgr::Instance().getDeviceActionStr(NDefs::EDeviceId(i), actionNameStr, idStr, configurable) )
-        {
-            pControl->createFontString( idStr );
-            
-            if( !configurable )
-            {
-                disableCounter++;
-                pControl->setState( NUIControl::ECS_DISABLE );
-            }
-        }
-        else
-        {
-            disableCounter++;
-            pControl->setState( NUIControl::ECS_DISABLE );
+        std::string idStr = CActionMgr::Instance().getDeviceActionStr( NDefs::EDeviceId(i), actionNameStr, configurable );
+
+        if( idStr.empty() )
             pControl->createFontString( "NA" );
-        }
+        else
+            pControl->createFontString( idStr );
+
+        if( !configurable )
+            pControl->setState( NUIControlDefs::ECS_DISABLE );
+        else
+            btnDisabled = false;
     }
     
     // If all 3 device types are not configuable, disable the button
-    if( disableCounter == NDefs::MAX_UNIQUE_DEVICES )
-        m_piControl->setState( NUIControl::ECS_DISABLE );
+    if( btnDisabled )
+        m_piControl->setState( NUIControlDefs::ECS_DISABLE );
 }
 
 

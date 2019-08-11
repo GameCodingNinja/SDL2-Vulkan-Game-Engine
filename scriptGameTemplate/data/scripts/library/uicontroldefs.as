@@ -1,10 +1,10 @@
 /************************************************************************
-*    FILE NAME:       menu_defs.as
+*    FILE NAME:       uicontroldefs.as
 *
-*    DESCRIPTION:     Menu defines
+*    DESCRIPTION:     game ui control defines
 ************************************************************************/
 
-namespace NControlDefs
+namespace NUIControlDefs
 {
     shared enum EControlState
     {

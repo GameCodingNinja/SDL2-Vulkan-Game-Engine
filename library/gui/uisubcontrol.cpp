@@ -30,7 +30,7 @@ CUISubControl::CUISubControl( const std::string & group ) :
     m_pActiveNode(nullptr),
     m_respondsToSelectMsg(false)
 {
-    m_type = NUIControl::ECT_SUB_CONTROL;
+    m_type = NUIControlDefs::ECT_SUB_CONTROL;
 }
 
 
@@ -375,7 +375,7 @@ void CUISubControl::navigateMenu( iControlNavNode::ENavNode navNode )
 
                 NGenFunc::DispatchEvent(
                     NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-                    NUIControl::ECS_ACTIVE,
+                    NUIControlDefs::ECS_ACTIVE,
                     pNavNode->getControl() );
 
                 break;
@@ -397,13 +397,13 @@ void CUISubControl::onStateChange( const SDL_Event & rEvent )
     }
     else
     {
-        NUIControl::EControlState state = NUIControl::EControlState(rEvent.user.code);
+        NUIControlDefs::EControlState state = NUIControlDefs::EControlState(rEvent.user.code);
 
         iControl * pCtrl = findSubControl( rEvent.user.data1 );
 
         // Restart the active state of the sub control if something
         // changed in the child controls or their children controls
-        if( (state == NUIControl::ECS_ACTIVE) && (pCtrl != nullptr) )
+        if( (state == NUIControlDefs::ECS_ACTIVE) && (pCtrl != nullptr) )
         {
             if( pCtrl->getState() != state )
             {
@@ -415,7 +415,7 @@ void CUISubControl::onStateChange( const SDL_Event & rEvent )
             }
         }
         // The sub control doesn't respond to selected message
-        else if( state < NUIControl::ECS_SELECT )
+        else if( state < NUIControlDefs::ECS_SELECT )
             CUIControl::onStateChange( rEvent );
     }
 }
@@ -659,9 +659,12 @@ iControl * CUISubControl::getPtrToActiveControl()
 {
     iControl * pResult(nullptr);
 
+    if( m_respondsToSelectMsg )
+       pResult = this;
+
     for( auto iter : m_pSubControlVec )
     {
-        if( iter->getState() > NUIControl::ECS_INACTIVE )
+        if( iter->getState() > NUIControlDefs::ECS_INACTIVE )
         {
             pResult = iter->getPtrToActiveControl();
             break;

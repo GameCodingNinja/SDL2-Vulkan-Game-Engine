@@ -55,8 +55,11 @@
                 <string text="Menu Select"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="KeyBindBtn_execute"/>
+                <script event="KeyBindBtn_event"/>
             </scriptLst>
         </control>
 
@@ -67,6 +70,7 @@
                 <string text="Menu Escape"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -79,6 +83,7 @@
                 <string text="Menu Back"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -91,6 +96,7 @@
                 <string text="Menu Toggle"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -103,6 +109,7 @@
                 <string text="Menu Tab Left"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -115,6 +122,7 @@
                 <string text="Menu Tab Right"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -135,6 +143,7 @@
                 <string text="Up"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -147,6 +156,7 @@
                 <string text="Down"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -159,6 +169,7 @@
                 <string text="Left"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -171,6 +182,7 @@
                 <string text="Right"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -183,6 +195,7 @@
                 <string text="Shoot"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>
@@ -195,6 +208,7 @@
                 <string text="Deccelerate"/>
             </fontStringLst>
             <scriptLst>
+                <script init="KeyBindBtn_init"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
             </scriptLst>

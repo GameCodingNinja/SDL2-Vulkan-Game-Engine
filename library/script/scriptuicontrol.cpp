@@ -33,7 +33,7 @@ namespace NScriptUIControl
     CScriptArray * getScrollboxControls(iControl & control)
     {
         // Make sure this control is a scroll box
-        if( control.getType() != NUIControl::ECT_SCROLL_BOX )
+        if( control.getType() != NUIControlDefs::ECT_SCROLL_BOX )
             throw NExcept::CCriticalException("Scroll box array of controls error!",
                 boost::str( boost::format("Control is not a scroll box.\n\n%s\nLine: %s")
                     % __FUNCTION__ % __LINE__ ));
@@ -164,6 +164,11 @@ namespace NScriptUIControl
         return control.getFaction();
     }
 
+    iControl * FindControl(const std::string & name, iControl & control)
+    {
+        return control.findControl( name );
+    }
+
     /************************************************************************
     *    DESC:  Register the class with AngelScript
     ************************************************************************/
@@ -183,6 +188,7 @@ namespace NScriptUIControl
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setActionType(string &in)",                                  asMETHODPR(iControl, setActionType, (const std::string &), void), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setExecutionAction(string &in)",                             asMETHOD(iControl, setExecutionAction),   asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void changeState(int)",                                           asMETHOD(iControl, changeState),   asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "uiControl & findControl(string &in)",                             asFUNCTION(FindControl), asCALL_CDECL_OBJLAST) );
         
         Throw( pEngine->RegisterObjectMethod("uiControl", "bool isDisabled() const",                   asMETHOD(iControl, isDisabled),   asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "bool isInactive() const",                   asMETHOD(iControl, isInactive),   asCALL_THISCALL) );

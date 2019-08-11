@@ -67,11 +67,11 @@ public:
     virtual void revertToDefaultState() = 0;
     
     // Get/Set the state of this control
-    virtual NUIControl::EControlState getState() const = 0;
-    virtual void setState( NUIControl::EControlState state, bool setLastState = false ) = 0;
+    virtual NUIControlDefs::EControlState getState() const = 0;
+    virtual void setState( NUIControlDefs::EControlState state, bool setLastState = false ) = 0;
 
     // Get the type of action
-    virtual NUIControl::EControlActionType getActionType() = 0;
+    virtual NUIControlDefs::EControlActionType getActionType() = 0;
 
     // Get the execution action
     virtual const std::string & getExecutionAction() = 0;
@@ -87,7 +87,7 @@ public:
     virtual void smartCreate() = 0;
 
     // Set the type of action
-    virtual void setActionType( NUIControl::EControlActionType value ) = 0;
+    virtual void setActionType( NUIControlDefs::EControlActionType value ) = 0;
     virtual void setActionType( const std::string & value ) = 0;
 
     // Set the execution action
@@ -117,7 +117,7 @@ public:
     virtual void setStringToList( const std::string & str ) = 0;
 
     // Change the control state
-    virtual void changeState( NUIControl::EControlState state ) = 0;
+    virtual void changeState( NUIControlDefs::EControlState state ) = 0;
 
     // Is this control active/selected
     virtual bool isDisabled() = 0;
@@ -175,7 +175,7 @@ public:
     const std::string & getName() const;
     
     // Get the control type
-    NUIControl::EControlType getType() const;
+    NUIControlDefs::EControlType getType() const;
     
     // Load the control specific info from XML node
     virtual void loadControlFromNode( const XMLNode & node ) = 0;
@@ -264,7 +264,7 @@ protected:
     std::string m_name;
     
     // The type of control
-    NUIControl::EControlType m_type;
+    NUIControlDefs::EControlType m_type;
     
     // Control string list
     std::vector<std::string> m_stringVec;

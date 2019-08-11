@@ -72,6 +72,8 @@ namespace NScriptActionManager
         // assignment operator
         Throw( pEngine->RegisterObjectMethod("CSensor", "CSensor & opAssign(const CSensor & in)", asMETHODPR(CSensor, operator =, (const CSensor &), CSensor &), asCALL_THISCALL) );
         
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "void enableAction(bool value = true)",                     asMETHOD(CActionMgr, enableAction),          asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool isAction()",                                          asMETHOD(CActionMgr, isAction),              asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void load(string &in)",                                    asMETHOD(CActionMgr, loadActionFromXML),     asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasAction(string &in, int actionPress = 1)",          asMETHOD(CActionMgr, wasActionEvent),        asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasGameEvent(uint type, int code = 0)",               asMETHOD(CActionMgr, wasGameEvent),          asCALL_THISCALL) );
@@ -87,7 +89,15 @@ namespace NScriptActionManager
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasLastDeviceGamepad()",                              asMETHOD(CActionMgr, wasLastDeviceGamepad),  asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasLastDeviceKeyboard()",                             asMETHOD(CActionMgr, wasLastDeviceKeyboard), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasLastDeviceMouse()",                                asMETHOD(CActionMgr, wasLastDeviceMouse),    asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool queueEmpty()",                                        asMETHOD(CActionMgr, queueEmpty),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool isQueueEmpty()",                                      asMETHOD(CActionMgr, isQueueEmpty),          asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "void saveToFile()",                                        asMETHOD(CActionMgr, saveToFile),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "void resetKeyBindingsToDefault()",                         asMETHOD(CActionMgr, resetKeyBindingsToDefault), asCALL_THISCALL) );
+
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "string getDeviceActionStr(int, string &in, bool &out)", asMETHOD(CActionMgr, getDeviceActionStr), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "string resetAction(int, string &in, int, bool &out)",   asMETHOD(CActionMgr, resetAction), asCALL_THISCALL) );
+
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateKeyboardEvent(uint, int &out, uint &out, uint startIndex = 0)", asMETHOD(CActionMgr, enumerateKeyboardEvent), asCALL_THISCALL) );
+
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CActionMgr ActionMgr", &CActionMgr::Instance()) );

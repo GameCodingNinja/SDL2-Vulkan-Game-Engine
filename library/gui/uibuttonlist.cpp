@@ -31,7 +31,7 @@ CUIButtonList::CUIButtonList( const std::string & group ) :
     m_activeIndex(0),
     m_imageLstIndex(-1)
 {
-    m_type = NUIControl::ECT_BUTTON_LIST;
+    m_type = NUIControlDefs::ECT_BUTTON_LIST;
 
 }
 
@@ -107,16 +107,16 @@ void CUIButtonList::inc()
 {
     NGenFunc::DispatchEvent(
             NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControl::ECS_SELECT,
-            (void *)m_pSubControlVec[NUIControl::BTN_INC] );
+            NUIControlDefs::ECS_SELECT,
+            (void *)m_pSubControlVec[NUIControlDefs::BTN_INC] );
 }
 
 void CUIButtonList::dec()
 {
     NGenFunc::DispatchEvent(
         NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-        NUIControl::ECS_SELECT,
-        (void *)m_pSubControlVec[NUIControl::BTN_DEC] );
+        NUIControlDefs::ECS_SELECT,
+        (void *)m_pSubControlVec[NUIControlDefs::BTN_DEC] );
 }
 
 
@@ -183,11 +183,11 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
 {
     CUISubControl::onStateChange( rEvent );
 
-    NUIControl::EControlState state = NUIControl::EControlState(rEvent.user.code);
+    NUIControlDefs::EControlState state = NUIControlDefs::EControlState(rEvent.user.code);
 
-    if( state == NUIControl::ECS_SELECT )
+    if( state == NUIControlDefs::ECS_SELECT )
     {
-        if( (void *)m_pSubControlVec[NUIControl::BTN_DEC] == rEvent.user.data1 )
+        if( (void *)m_pSubControlVec[NUIControlDefs::BTN_DEC] == rEvent.user.data1 )
         {
             // Dec the list
             decList();
@@ -196,12 +196,12 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
             updateDisplay();
 
             // Prepare script function associated with handling this game event
-            prepareControlScriptFunction( NUIControl::ECS_CHANGE );
+            prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
 
             // Execute smart gui
             smartExecuteAction();
         }
-        else if( (void *)m_pSubControlVec[NUIControl::BTN_INC] == rEvent.user.data1 )
+        else if( (void *)m_pSubControlVec[NUIControlDefs::BTN_INC] == rEvent.user.data1 )
         {
             // Inc the list
             incList();
@@ -210,7 +210,7 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
             updateDisplay();
 
             // Prepare script function associated with handling this game event
-            prepareControlScriptFunction( NUIControl::ECS_CHANGE );
+            prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
 
             // Execute smart gui
             smartExecuteAction();

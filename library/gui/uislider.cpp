@@ -37,7 +37,7 @@ CUISlider::CUISlider( const std::string & group ) :
     m_sliderBtnHold(false),
     m_pressType( NDefs::EAP_IDLE)
 {
-    m_type = NUIControl::ECT_SLIDER;
+    m_type = NUIControlDefs::ECT_SLIDER;
 }
 
 
@@ -170,7 +170,7 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
             incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio );
 
         // Prepare script function associated with handling this game event
-        prepareControlScriptFunction( NUIControl::ECS_CHANGE );
+        prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
 
         smartExecuteAction();
     }
@@ -203,7 +203,7 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
                 incSliderMovePos( dif.y );
 
             // Prepare script function associated with handling this game event
-            prepareControlScriptFunction( NUIControl::ECS_SELECT );
+            prepareControlScriptFunction( NUIControlDefs::ECS_SELECT );
 
             smartExecuteAction();
         }
@@ -238,14 +238,14 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
         // Send a message to blink the button
         NGenFunc::DispatchEvent(
             NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControl::ECS_SELECT,
+            NUIControlDefs::ECS_SELECT,
             getSubControl() );
 
         incSlider(value);
 
         // Prepare script function associated with handling this game event
         if( prepareOnSelect )
-            prepareControlScriptFunction( NUIControl::ECS_SELECT );
+            prepareControlScriptFunction( NUIControlDefs::ECS_SELECT );
 
         smartExecuteAction();
     }

@@ -41,7 +41,7 @@ CUIMeter::CUIMeter( const std::string & group ) :
     m_pSprite(nullptr),
     m_scaleType(EST_AXIS)
 {
-    m_type = NUIControl::ECT_METER;
+    m_type = NUIControlDefs::ECT_METER;
 }
 
 

@@ -13,7 +13,7 @@
 CUIButton::CUIButton( const std::string & group ) :
     CUIControl( group )
 {
-    m_type = NUIControl::ECT_BUTTON;
+    m_type = NUIControlDefs::ECT_BUTTON;
 
 }   // Constructor
 

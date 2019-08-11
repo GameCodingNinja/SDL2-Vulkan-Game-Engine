@@ -79,7 +79,7 @@ void FullScreenCheckbox_transIn( uiControl & control )
 }
 
 //
-//  Handle select event
+//  Handle execute event
 //
 void FullScreenCheckbox_execute( uiControl & control )
 {

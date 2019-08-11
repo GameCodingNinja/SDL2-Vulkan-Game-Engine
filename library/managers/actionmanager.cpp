@@ -616,10 +616,9 @@ const CPoint<float> & CActionMgr::getControllerPosRight() const
 /************************************************************************
 *    DESC:  Get the action/component strings for the give device id
 ************************************************************************/
-bool CActionMgr::getDeviceActionStr(
+std::string CActionMgr::getDeviceActionStr(
     NDefs::EDeviceId deviceId,
     const std::string & actionNameStr,
-    std::string & componetIdStr,
     bool & configurable )
 {
     std::string mappingName("keyboardMapping");
@@ -633,8 +632,11 @@ bool CActionMgr::getDeviceActionStr(
         mappingName = "gamepadMapping";
     }
 
+    std::string componetIdStr;
     XMLNode playerVisibleNode = m_mainNode.getChildNode( mappingName.c_str() ).getChildNode( "playerVisible" );
-    return (getActionStr( playerVisibleNode, actionNameStr, componetIdStr, configurable ) > UNDEFINED_ACTION);
+    getActionStr( playerVisibleNode, actionNameStr, componetIdStr, configurable );
+
+    return componetIdStr;
 }
 
 
@@ -689,43 +691,30 @@ bool CActionMgr::isAction()
 /************************************************************************
 *    DESC:  Reset the action
 ************************************************************************/
-NDefs::EDeviceId CActionMgr::resetAction(
-    const SDL_Event & rEvent,
+std::string CActionMgr::resetAction(
+    NDefs::EDeviceId deviceId,
     const std::string & actionNameStr,
-    std::string & componetIdStr )
+    int keyCode,
+    bool & configurable )
 {
-    NDefs::EDeviceId deviceId(NDefs::DEVICE_NULL);
-    std::string mappingName;
-    int newKeyCodeId;
-    keyCodeMapType * pKeyCodeMap;
-    actionMapType * pActionMap;
+    std::string componetIdStr;
+    std::string mappingName("keyboardMapping");
+    keyCodeMapType * pKeyCodeMap = &m_keyboardKeyCodeMap;
+    actionMapType * pActionMap = &m_keyboardActionMap;
 
-    if( rEvent.type == SDL_KEYUP )
-    {
-        deviceId = NDefs::KEYBOARD;
-        mappingName = "keyboardMapping";
-        newKeyCodeId = rEvent.key.keysym.sym;
-        pKeyCodeMap = &m_keyboardKeyCodeMap;
-        pActionMap = &m_keyboardActionMap;
-    }
-    else if( rEvent.type == SDL_MOUSEBUTTONUP )
+    if( deviceId == NDefs::MOUSE )
     {
         mappingName = "mouseMapping";
-        deviceId = NDefs::MOUSE;
-        newKeyCodeId = rEvent.button.button;
         pKeyCodeMap = &m_mouseKeyCodeMap;
         pActionMap = &m_mouseActionMap;
     }
-    else if( rEvent.type == SDL_CONTROLLERBUTTONUP )
+    else if( deviceId == NDefs::GAMEPAD )
     {
         mappingName = "gamepadMapping";
-        deviceId = NDefs::GAMEPAD;
-        newKeyCodeId = rEvent.cbutton.button;
         pKeyCodeMap = &m_gamepadKeyCodeMap;
         pActionMap = &m_gamepadActionMap;
     }
 
-    bool configurable;
     std::string oldIdStr;
 
     // If this action ID can be found and is configurable, reset it
@@ -735,7 +724,7 @@ NDefs::EDeviceId CActionMgr::resetAction(
     if( (xmlNodeIndex > UNDEFINED_ACTION) && configurable )
     {
         std::string newKeyCodeStr;
-        if( getKeyCodeStr( *pKeyCodeMap, newKeyCodeId, newKeyCodeStr ) )
+        if( getKeyCodeStr( *pKeyCodeMap, keyCode, newKeyCodeStr ) )
         {
             if( newKeyCodeStr != oldIdStr )
                 componetIdStr = newKeyCodeStr;
@@ -752,21 +741,102 @@ NDefs::EDeviceId CActionMgr::resetAction(
                 iter->second.removeId( oldKeyCodeId );
 
                 // Add the new key code Id
-                iter->second.setId( newKeyCodeId );
+                iter->second.setId( keyCode );
 
                 // Update the XML node with the change
                 XMLNode node = playerVisibleNode.getChildNode( "actionMap", xmlNodeIndex );
                 node.updateAttribute(componetIdStr.c_str(), "componetId", "componetId");
 
                 m_xmlActionChange = true;
-
-                return deviceId;
             }
         }
     }
 
-    return NDefs::DEVICE_NULL;
+    return componetIdStr;
 }
+
+
+/************************************************************************
+*    DESC:  Reset the action
+************************************************************************/
+// NDefs::EDeviceId CActionMgr::resetAction(
+//     const SDL_Event & rEvent,
+//     const std::string & actionNameStr,
+//     std::string & componetIdStr )
+// {
+//     NDefs::EDeviceId deviceId(NDefs::DEVICE_NULL);
+//     std::string mappingName;
+//     int newKeyCodeId;
+//     keyCodeMapType * pKeyCodeMap;
+//     actionMapType * pActionMap;
+
+//     if( rEvent.type == SDL_KEYUP )
+//     {
+//         deviceId = NDefs::KEYBOARD;
+//         mappingName = "keyboardMapping";
+//         newKeyCodeId = rEvent.key.keysym.sym;
+//         pKeyCodeMap = &m_keyboardKeyCodeMap;
+//         pActionMap = &m_keyboardActionMap;
+//     }
+//     else if( rEvent.type == SDL_MOUSEBUTTONUP )
+//     {
+//         mappingName = "mouseMapping";
+//         deviceId = NDefs::MOUSE;
+//         newKeyCodeId = rEvent.button.button;
+//         pKeyCodeMap = &m_mouseKeyCodeMap;
+//         pActionMap = &m_mouseActionMap;
+//     }
+//     else if( rEvent.type == SDL_CONTROLLERBUTTONUP )
+//     {
+//         mappingName = "gamepadMapping";
+//         deviceId = NDefs::GAMEPAD;
+//         newKeyCodeId = rEvent.cbutton.button;
+//         pKeyCodeMap = &m_gamepadKeyCodeMap;
+//         pActionMap = &m_gamepadActionMap;
+//     }
+
+//     bool configurable;
+//     std::string oldIdStr;
+
+//     // If this action ID can be found and is configurable, reset it
+//     XMLNode playerVisibleNode = m_mainNode.getChildNode( mappingName.c_str() ).getChildNode( "playerVisible" );
+//     int xmlNodeIndex = getActionStr( playerVisibleNode, actionNameStr, oldIdStr, configurable );
+
+//     if( (xmlNodeIndex > UNDEFINED_ACTION) && configurable )
+//     {
+//         std::string newKeyCodeStr;
+//         if( getKeyCodeStr( *pKeyCodeMap, newKeyCodeId, newKeyCodeStr ) )
+//         {
+//             if( newKeyCodeStr != oldIdStr )
+//                 componetIdStr = newKeyCodeStr;
+//             else
+//                 componetIdStr = UNBOUND_KEYCODE_STR_ID;
+
+//             int oldKeyCodeId = getKeyCode( *pKeyCodeMap, oldIdStr );
+
+//             // Check for the action to remove the old key code
+//             auto iter = pActionMap->find( actionNameStr );
+//             if( iter != pActionMap->end() )
+//             {
+//                 // Remove the old key code Id
+//                 iter->second.removeId( oldKeyCodeId );
+
+//                 // Add the new key code Id
+//                 iter->second.setId( newKeyCodeId );
+
+//                 // Update the XML node with the change
+//                 XMLNode node = playerVisibleNode.getChildNode( "actionMap", xmlNodeIndex );
+//                 node.updateAttribute(componetIdStr.c_str(), "componetId", "componetId");
+
+//                 m_xmlActionChange = true;
+
+//                 return deviceId;
+//             }
+//         }
+//     }
+
+//     return NDefs::DEVICE_NULL;
+// }
 
 
 /************************************************************************
@@ -862,57 +932,54 @@ void CActionMgr::resetKeyBindingsToDefault()
 ************************************************************************/
 void CActionMgr::queueEvent( const SDL_Event & rEvent )
 {
-    if( m_allowAction )
+    m_eventQueue.emplace_back( rEvent );
+
+    if( rEvent.type == SDL_MOUSEMOTION )
     {
-        m_eventQueue.emplace_back( rEvent );
+        m_mouseAbsolutePos.x = rEvent.motion.x;
+        m_mouseAbsolutePos.y = rEvent.motion.y;
 
-        if( rEvent.type == SDL_MOUSEMOTION )
-        {
-            m_mouseAbsolutePos.x = rEvent.motion.x;
-            m_mouseAbsolutePos.y = rEvent.motion.y;
-
-            m_mouseRelativePos.x = rEvent.motion.xrel;
-            m_mouseRelativePos.y = rEvent.motion.yrel;
-            
-            m_lastDeviceUsed = NDefs::MOUSE;
-        }
-        else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
-        {
-            if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
-                m_lastAnalogLeft.x = rEvent.caxis.value;
-
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
-                m_lastAnalogLeft.y = rEvent.caxis.value;
-
-            if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
-                m_lastAnalogRight.x = rEvent.caxis.value;
-
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
-                m_lastAnalogRight.y = rEvent.caxis.value;
-            
-            m_lastDeviceUsed = NDefs::GAMEPAD;
-        }
-        /*else if( rEvent.type == SDL_SENSORUPDATE )
-        {
-            auto iter = m_sensorMap.find( rEvent.sensor.which );
-            if( iter == m_sensorMap.end() )
-                iter = m_sensorMap.emplace( rEvent.sensor.which, CSensor() ).first;
-            
-            iter->second.v1 = rEvent.sensor.data[0];
-            iter->second.v2 = rEvent.sensor.data[1];
-            iter->second.v3 = rEvent.sensor.data[2];
-            iter->second.v4 = rEvent.sensor.data[3];
-            iter->second.v5 = rEvent.sensor.data[4];
-            iter->second.v6 = rEvent.sensor.data[5];
-        }*/
+        m_mouseRelativePos.x = rEvent.motion.xrel;
+        m_mouseRelativePos.y = rEvent.motion.yrel;
+        
+        m_lastDeviceUsed = NDefs::MOUSE;
     }
+    else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
+    {
+        if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
+            m_lastAnalogLeft.x = rEvent.caxis.value;
+
+        else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
+            m_lastAnalogLeft.y = rEvent.caxis.value;
+
+        if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
+            m_lastAnalogRight.x = rEvent.caxis.value;
+
+        else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
+            m_lastAnalogRight.y = rEvent.caxis.value;
+        
+        m_lastDeviceUsed = NDefs::GAMEPAD;
+    }
+    /*else if( rEvent.type == SDL_SENSORUPDATE )
+    {
+        auto iter = m_sensorMap.find( rEvent.sensor.which );
+        if( iter == m_sensorMap.end() )
+            iter = m_sensorMap.emplace( rEvent.sensor.which, CSensor() ).first;
+        
+        iter->second.v1 = rEvent.sensor.data[0];
+        iter->second.v2 = rEvent.sensor.data[1];
+        iter->second.v3 = rEvent.sensor.data[2];
+        iter->second.v4 = rEvent.sensor.data[3];
+        iter->second.v5 = rEvent.sensor.data[4];
+        iter->second.v6 = rEvent.sensor.data[5];
+    }*/
 }
 
 
 /************************************************************************
 *    DESC:  Is the queue empty
 ************************************************************************/
-bool CActionMgr::queueEmpty()
+bool CActionMgr::isQueueEmpty()
 {
     return m_eventQueue.empty();
 }
@@ -948,12 +1015,9 @@ bool CActionMgr::wasActionEvent( const std::string & actionStr, NDefs::EActionPr
 ************************************************************************/
 bool CActionMgr::wasEvent( uint event )
 {
-    if( m_allowAction )
-    {
-        for( auto & iter : m_eventQueue )
-            if( iter.type == event )
-                return true;
-    }
+    for( auto & iter : m_eventQueue )
+        if( iter.type == event )
+            return true;
 
     return false;
 }
@@ -964,12 +1028,9 @@ bool CActionMgr::wasEvent( uint event )
 ************************************************************************/
 bool CActionMgr::wasGameEvent( uint type, int code )
 {
-    if( m_allowAction )
-    {
-        for( auto & iter : m_eventQueue )
-            if( (iter.type == type) && (iter.user.code == code) )
-                return true;
-    }
+    for( auto & iter : m_eventQueue )
+        if( (iter.type == type) && (iter.user.code == code) )
+            return true;
 
     return false;
 }
@@ -980,25 +1041,22 @@ bool CActionMgr::wasGameEvent( uint type, int code )
 ************************************************************************/
 bool CActionMgr::wasKeyboardEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
 {
-    if( m_allowAction )
+    const auto keyCodeIter = m_keyboardKeyCodeMap.left.find( componentIdStr );
+    if( keyCodeIter != m_keyboardKeyCodeMap.left.end() )
     {
-        const auto keyCodeIter = m_keyboardKeyCodeMap.left.find( componentIdStr );
-        if( keyCodeIter != m_keyboardKeyCodeMap.left.end() )
+        for( auto & iter : m_eventQueue )
         {
-            for( auto & iter : m_eventQueue )
+            if( iter.key.keysym.sym == keyCodeIter->second )
             {
-                if( iter.key.keysym.sym == keyCodeIter->second )
-                {
-                    if( (iter.type == SDL_KEYDOWN) &&
-                        (actionPress == NDefs::EAP_DOWN) &&
-                        (iter.key.repeat == 0) )
-                        return true;
+                if( (iter.type == SDL_KEYDOWN) &&
+                    (actionPress == NDefs::EAP_DOWN) &&
+                    (iter.key.repeat == 0) )
+                    return true;
 
-                    else if( (iter.type == SDL_KEYUP) &&
-                        (actionPress == NDefs::EAP_UP) &&
-                        (iter.key.repeat == 0) )
-                        return true;
-                }
+                else if( (iter.type == SDL_KEYUP) &&
+                    (actionPress == NDefs::EAP_UP) &&
+                    (iter.key.repeat == 0) )
+                    return true;
             }
         }
     }
@@ -1008,23 +1066,20 @@ bool CActionMgr::wasKeyboardEvent( const std::string & componentIdStr, NDefs::EA
 
 bool CActionMgr::wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
 {
-    if( m_allowAction )
+    const auto keyCodeIter = m_mouseKeyCodeMap.left.find( componentIdStr );
+    if( keyCodeIter != m_mouseKeyCodeMap.left.end() )
     {
-        const auto keyCodeIter = m_mouseKeyCodeMap.left.find( componentIdStr );
-        if( keyCodeIter != m_mouseKeyCodeMap.left.end() )
+        for( auto & iter : m_eventQueue )
         {
-            for( auto & iter : m_eventQueue )
+            if( iter.button.button == keyCodeIter->second )
             {
-                if( iter.button.button == keyCodeIter->second )
-                {
-                    if( (actionPress == NDefs::EAP_DOWN) &&
-                        (iter.type == SDL_MOUSEBUTTONDOWN) )
-                        return true;
+                if( (actionPress == NDefs::EAP_DOWN) &&
+                    (iter.type == SDL_MOUSEBUTTONDOWN) )
+                    return true;
 
-                    else if( (actionPress == NDefs::EAP_UP) &&
-                        (iter.type == SDL_MOUSEBUTTONUP) )
-                        return true;
-                }
+                else if( (actionPress == NDefs::EAP_UP) &&
+                    (iter.type == SDL_MOUSEBUTTONUP) )
+                    return true;
             }
         }
     }
@@ -1034,23 +1089,20 @@ bool CActionMgr::wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EA
 
 bool CActionMgr::wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
 {
-    if( m_allowAction )
+    const auto keyCodeIter = m_gamepadKeyCodeMap.left.find( componentIdStr );
+    if( keyCodeIter != m_gamepadKeyCodeMap.left.end() )
     {
-        const auto keyCodeIter = m_gamepadKeyCodeMap.left.find( componentIdStr );
-        if( keyCodeIter != m_gamepadKeyCodeMap.left.end() )
+        for( auto & iter : m_eventQueue )
         {
-            for( auto & iter : m_eventQueue )
+            if( iter.cbutton.button == keyCodeIter->second )
             {
-                if( iter.cbutton.button == keyCodeIter->second )
-                {
-                    if( (actionPress == NDefs::EAP_DOWN) &&
-                        (iter.type == SDL_CONTROLLERBUTTONDOWN) )
-                        return true;
+                if( (actionPress == NDefs::EAP_DOWN) &&
+                    (iter.type == SDL_CONTROLLERBUTTONDOWN) )
+                    return true;
 
-                    else if( (actionPress == NDefs::EAP_UP) &&
-                        (iter.type == SDL_CONTROLLERBUTTONUP) )
-                        return true;
-                }
+                else if( (actionPress == NDefs::EAP_UP) &&
+                    (iter.type == SDL_CONTROLLERBUTTONUP) )
+                    return true;
             }
         }
     }
@@ -1064,13 +1116,35 @@ bool CActionMgr::wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::
 ************************************************************************/
 bool CActionMgr::wasWindowEvent( uint event )
 {
-    if( m_allowAction )
-    {
-        for( auto & iter : m_eventQueue )
-            if( (iter.type == SDL_WINDOWEVENT) && (iter.window.event == event) )
-                return true;
-    }
+    for( auto & iter : m_eventQueue )
+        if( (iter.type == SDL_WINDOWEVENT) && (iter.window.event == event) )
+            return true;
 
     return false;
 }
 
+/************************************************************************
+*    DESC:  Enumerate the keyboard events
+************************************************************************/
+uint CActionMgr::enumerateKeyboardEvent( uint type, int & keyCode, uint & repeat, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( iter.type == type )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                keyCode = iter.key.keysym.sym;
+                repeat = iter.key.repeat;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}

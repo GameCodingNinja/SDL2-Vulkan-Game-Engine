@@ -19,7 +19,7 @@
 ************************************************************************/
 iControl::iControl( const std::string & group ) :
     m_group(group),
-    m_type(NUIControl::ECT_NULL),
+    m_type(NUIControlDefs::ECT_NULL),
     m_alpha(0.f)
 {
 }
@@ -123,7 +123,7 @@ const std::string & iControl::getName() const
 /************************************************************************
 *    DESC:  Get the control type
 ************************************************************************/
-NUIControl::EControlType iControl::getType() const
+NUIControlDefs::EControlType iControl::getType() const
 {
     return m_type;
 }

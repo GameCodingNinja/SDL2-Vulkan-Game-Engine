@@ -38,17 +38,17 @@ void CSmartConfirmBtn::execute()
     CSmartGuiControl * pSmartGuiCtrl(NULL);
     std::string conformationMsg;
     std::string executionAction;
-    NUIControl::EControlActionType actionType(NUIControl::ECAT_BACK);
+    NUIControlDefs::EControlActionType actionType(NUIControlDefs::ECAT_BACK);
 
     if( m_piControl->getName() == "exit_btn" )
     {
-        actionType = NUIControl::ECAT_QUIT_GAME;
+        actionType = NUIControlDefs::ECAT_QUIT_GAME;
         conformationMsg = "Do you want to|quit the game?";
     }
     else if( m_piControl->getName() == "main_menu_btn" )
     {
         conformationMsg = "Are you sure you|want to go back to|the main menu?";
-        actionType = NUIControl::ECAT_GAME_STATE_CHANGE;
+        actionType = NUIControlDefs::ECAT_GAME_STATE_CHANGE;
         executionAction = "title_screen_state";
     }
     else if( m_piControl->getName() == "Key_Binding_reset_btn" )
@@ -59,7 +59,7 @@ void CSmartConfirmBtn::execute()
     else if( m_piControl->getName() == "continue_btn" )
     {
         conformationMsg = "Are you sure you|want to continue|on to the next state?";
-        actionType = NUIControl::ECAT_GAME_STATE_CHANGE;
+        actionType = NUIControlDefs::ECAT_GAME_STATE_CHANGE;
         executionAction = "level_1_state";
     }
     /*else if( m_pUIControl->GetName().find(".game_save") != string::npos )
@@ -77,7 +77,7 @@ void CSmartConfirmBtn::execute()
         executionAction = pUIControl->GetName();
 
         // Set the action type to kill the menu
-        actionType = NUIControl::ECAT_DEACTIVATE;
+        actionType = NUIControlDefs::ECAT_DEACTIVATE;
     }*/
 
     // Set the conformation menu

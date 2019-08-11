@@ -13,7 +13,7 @@
 CUILabel::CUILabel( const std::string & group ) :
     CUIControl( group )
 {
-    m_type = NUIControl::ECT_LABEL;
+    m_type = NUIControlDefs::ECT_LABEL;
 
 }   // Constructor
 

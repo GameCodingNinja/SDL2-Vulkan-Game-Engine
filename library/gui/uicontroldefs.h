@@ -7,7 +7,7 @@
 #ifndef __ui_control_defs_h__
 #define __ui_control_defs_h__
 
-namespace NUIControl
+namespace NUIControlDefs
 {
     const bool TOGGLE_STATE_ON(true);
     const bool TOGGLE_STATE_OFF(false);

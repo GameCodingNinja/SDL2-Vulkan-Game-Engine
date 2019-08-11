@@ -90,7 +90,7 @@ class CGame
     //
     void handleEvent()
     {
-        if( !ActionMgr.queueEmpty() )
+        if( !ActionMgr.isQueueEmpty() )
         {
             // Is it time to quit?
             if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||

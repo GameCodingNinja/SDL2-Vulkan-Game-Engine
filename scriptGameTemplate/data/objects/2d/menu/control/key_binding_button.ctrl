@@ -44,24 +44,21 @@
         <!-- These controls must always be listed in this order to match the device enum list in defs.h -->
 
         <!-- Keyboard binding -->
-        <control controlType="label" defaultState="inactive">
+        <control name="keyboard" controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/key_binding_button_label.ctrl"/>
             <position x="-85" y="0" z="0"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
         </control>
 
         <!-- Mouse binding -->
-        <control controlType="label" defaultState="inactive">
+        <control name="mouse" controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/key_binding_button_label.ctrl"/>
             <position x="157" y="0" z="0"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
         </control>
 
         <!-- Gamepad binding -->
-        <control controlType="label" defaultState="inactive">
+        <control name="gamepad" controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/key_binding_button_label.ctrl"/>
             <position x="370" y="0" z="0"/>
-            <stateScript onActive="Control_OnActive" onSelect="Control_OnSelect"/>
         </control>
 
     </subControlList>

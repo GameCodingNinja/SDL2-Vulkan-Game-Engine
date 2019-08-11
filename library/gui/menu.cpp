@@ -608,7 +608,7 @@ void CMenu::navigateMenu( iControlNavNode::ENavNode navNodeAction )
 
                 NGenFunc::DispatchEvent(
                     NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-                    NUIControl::ECS_ACTIVE,
+                    NUIControlDefs::ECS_ACTIVE,
                     pNavNode->getControl() );
 
                 break;
@@ -654,7 +654,7 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
 
         // Set the state to active which will block all messages until the state is reset to idle
         auto pCtrl = m_pActiveNode->getControl()->getPtrToActiveControl();
-        if( (pCtrl != nullptr) && (pCtrl->getActionType() > NUIControl::ECAT_IDLE) )
+        if( (pCtrl != nullptr) && (pCtrl->getActionType() > NUIControlDefs::ECAT_IDLE) )
             m_state = NMenuDefs::EMS_ACTIVE;
     }
     else if( msgCracker.isDeviceMouse() )
@@ -667,7 +667,7 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
                 selectionFound = true;
 
                 // Set the state to active which will block all messages until the state is reset to idle
-                if( iter->getActionType() > NUIControl::ECAT_IDLE )
+                if( iter->getActionType() > NUIControlDefs::ECAT_IDLE )
                     m_state = NMenuDefs::EMS_ACTIVE;
 
                 break;
@@ -692,7 +692,7 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
                 {
                     // Set the state to active which will block all messages until the state is reset to idle
                     auto pCtrl = m_pActiveNode->getControl()->getPtrToActiveControl();
-                    if( (pCtrl != nullptr) && (pCtrl->getActionType() > NUIControl::ECAT_IDLE) )
+                    if( (pCtrl != nullptr) && (pCtrl->getActionType() > NUIControlDefs::ECAT_IDLE) )
                         m_state = NMenuDefs::EMS_ACTIVE;
 
                     break;
@@ -836,7 +836,7 @@ iControl * CMenu::getPtrToActiveControl()
 
     for( auto iter : m_pControlVec )
     {
-        if( iter->getState() > NUIControl::ECS_INACTIVE )
+        if( iter->getState() > NUIControlDefs::ECS_INACTIVE )
         {
             pResult = iter->getPtrToActiveControl();
             break;
