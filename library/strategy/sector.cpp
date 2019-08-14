@@ -15,7 +15,6 @@
 #include <utilities/deletefuncs.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
-#include <managers/signalmanager.h>
 #include <common/camera.h>
 #include <node/nodefactory.h>
 #include <node/nodedatalist.h>
@@ -124,10 +123,6 @@ void CSector::loadSprite( CSprite * sprite, const CSpriteData & rSpriteData )
 
     // Init the sprite
     sprite->init();
-
-    // Broadcast the signal to create the sprite AI
-    if( !rSpriteData.getAIName().empty() )
-        CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), sprite );
 }
 
 

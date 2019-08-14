@@ -14,7 +14,6 @@
 #include <utilities/xmlParser.h>
 #include <utilities/deletefuncs.h>
 #include <utilities/genfunc.h>
-#include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
 #include <node/nodefactory.h>

@@ -48,6 +48,7 @@
             <fontStringLst>
                 <string text="x"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="close"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -63,6 +64,7 @@
             <fontStringLst>
                 <string text="^"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>

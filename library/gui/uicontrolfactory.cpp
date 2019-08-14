@@ -10,7 +10,6 @@
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
-#include <managers/signalmanager.h>
 #include <gui/uilabel.h>
 #include <gui/uibutton.h>
 #include <gui/uisubcontrol.h>
@@ -71,12 +70,6 @@ namespace NUIControlFactory
 
         // Have the control load it's share
         pControl->loadFromNode( node );
-
-        // Broadcast signal to let the game handle smart gui create and insertion into control
-        CSignalMgr::Instance().broadcast( pControl );
-
-        // Do any smart gui Create
-        pControl->smartCreate();
 
         return pControl;
     }

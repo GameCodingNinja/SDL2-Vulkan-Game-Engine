@@ -13,18 +13,9 @@
 #include "../state/titlescreenstate.h"
 #include "../state/loadstate.h"
 #include "../state/level1state.h"
-#include "../ai/ballai.h"
-#include "../smartGUI/smartconfirmbtn.h"
-#include "../smartGUI/smartresolutionbtn.h"
-#include "../smartGUI/smartapplysettingsbtn.h"
-#include "../smartGUI/smartfullscreencheckbox.h"
-#include "../smartGUI/smartvsynccheckbox.h"
-#include "../smartGUI/smartdeadzoneslider.h"
-#include "../smartGUI/smartkeybindbtn.h"
 
 // Game lib dependencies
 #include <system/device.h>
-#include <managers/signalmanager.h>
 #include <managers/cameramanager.h>
 #include <gui/menumanager.h>
 #include <gui/icontrol.h>
@@ -55,10 +46,6 @@ CGame::CGame() :
     // Load the camera data early because many objects init the default camera in their constructor
     // The above call to CDevice::Instance().init loads the settings which the camera relies on
     CCameraMgr::Instance().load( "data/objects/camera.lst" );
-    
-    CSignalMgr::Instance().connect_smartGui( boost::bind(&CGame::smartGuiControlCreateCallBack, this, _1) );
-    CSignalMgr::Instance().connect_smartMenu( boost::bind(&CGame::smartMenuCreateCallBack, this, _1) );
-    CSignalMgr::Instance().connect_aICreate( boost::bind(&CGame::aICreateCallBack, this, _1, _2) );
 
     if( CSettings::Instance().isDebugMode() )
         CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
@@ -108,52 +95,6 @@ void CGame::create()
 
     // Let the games begin
     m_gameRunning = true;
-}
-
-
-/************************************************************************
-*    DESC:  Callback for when a smart gui control is created
-************************************************************************/
-void CGame::smartGuiControlCreateCallBack( iControl * piControl )
-{
-    if( piControl->getFaction() == "decision_btn" )
-        piControl->setSmartGui( new CSmartConfirmBtn( piControl ) );
-
-    else if( piControl->getFaction() == "key_binding_btn" )
-        piControl->setSmartGui( new CSmartKeyBindBtn( piControl ) );
-
-    else if( piControl->getName() == "resolution_btn_lst" )
-        piControl->setSmartGui( new CSmartResolutionBtn( piControl ) );
-
-    else if( piControl->getName() == "settings_apply_btn" )
-        piControl->setSmartGui( new CSmartApplySettingsBtn( piControl ) );
-
-    else if( piControl->getName() == "full_screen_check_box" )
-        piControl->setSmartGui( new CSmartScrnCheckBox( piControl ) );
-
-    else if( piControl->getName() == "v-sync_check_box" )
-        piControl->setSmartGui( new CSmartVSyncCheckBox( piControl ) );
-
-    else if( piControl->getName() == "settings_dead_zone_slider" )
-        piControl->setSmartGui( new CSmartDeadZoneSlider( piControl ) );
-}
-
-
-/************************************************************************
-*    DESC:  Callback for when a smart menu is created
-************************************************************************/
-void CGame::smartMenuCreateCallBack( CMenu * pMenu )
-{
-}
-
-
-/***************************************************************************
-*    decs:  Call back function to create sprite ai
-****************************************************************************/
-void CGame::aICreateCallBack( const std::string & aiName, CSprite * pSprite )
-{
-    if( aiName == "aiBall" )
-        pSprite->setAI( new CBallAI( pSprite ) );
 }
 
 

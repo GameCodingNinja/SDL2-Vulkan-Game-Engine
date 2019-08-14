@@ -171,8 +171,6 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
 
         // Prepare script function associated with handling this game event
         prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
-
-        smartExecuteAction();
     }
 
     return result;
@@ -204,8 +202,6 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
 
             // Prepare script function associated with handling this game event
             prepareControlScriptFunction( NUIControlDefs::ECS_SELECT );
-
-            smartExecuteAction();
         }
     }
     else if( msgCracker.getPressType() != getMouseSelectType() )
@@ -246,8 +242,6 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
         // Prepare script function associated with handling this game event
         if( prepareOnSelect )
             prepareControlScriptFunction( NUIControlDefs::ECS_SELECT );
-
-        smartExecuteAction();
     }
 }
 

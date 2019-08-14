@@ -25,7 +25,6 @@
 #include <utilities/matrix.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlparsehelper.h>
-#include <common/iaibase.h>
 #include <sprite/spritedata.h>
 
 /************************************************************************
@@ -166,24 +165,11 @@ void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::s
 
 
 /************************************************************************
-*    DESC:  React to what the player is doing
-************************************************************************/
-void CSprite::handleEvent( const SDL_Event & rEvent )
-{
-    if( m_upAI )
-        m_upAI->handleEvent( rEvent );
-}
-
-
-/************************************************************************
 *    DESC:  Update the sprite
 ************************************************************************/
 void CSprite::update()
 {
     m_scriptComponent.update();
-
-    if( m_upAI )
-        m_upAI->update();
 }
 
 
@@ -299,16 +285,4 @@ int CSprite::getId() const
 const iObjectData & CSprite::getObjectData() const
 {
     return m_rObjectData;
-}
-
-
-/************************************************************************
-*    DESC:  Set/Get the AI pointer. This class owns the pointer
-************************************************************************/
-void CSprite::setAI( iAIBase * pAIBase )
-{
-    m_upAI.reset( pAIBase );
-
-    // Handle any initialization in a separate function
-    m_upAI->init();
 }

@@ -29,7 +29,6 @@ class CObject2D;
 class iObjectData;
 class iVisualComponent;
 class iPhysicsComponent;
-class iAIBase;
 class CObjectData2D;
 class CObjectData3D;
 class SpriteData;
@@ -97,9 +96,6 @@ public:
     // Get the script component
     CScriptComponent & getScriptComponent();
     
-    // Set/Get the AI pointer
-    virtual void setAI( iAIBase * pAIBase );
-    
     // Set the texture ID from index
     void setFrame( uint index );
     
@@ -131,9 +127,6 @@ private:
     
     // The script part of the sprite
     CScriptComponent m_scriptComponent;
-    
-    // Base AI scoped pointer
-    std::unique_ptr<iAIBase> m_upAI;
     
     // Script function map. Execute scripts with an id
     std::map<const std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;

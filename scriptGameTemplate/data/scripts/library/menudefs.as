@@ -6,7 +6,7 @@
 
 namespace NMenuDefs
 {
-    enum EMenuEvent
+    shared enum EMenuEvent
     {
         // Menu events
         EME_MENU_USER_EVENTS = 0x8000,
@@ -35,7 +35,7 @@ namespace NMenuDefs
         EME_MENU_TAB_RIGHT,
     }
 
-    enum ETransCode
+    shared enum ETransCode
     {
         ETC_RESET=0,
         ETC_BEGIN,
@@ -43,7 +43,7 @@ namespace NMenuDefs
     }
     
     // Button states
-    enum EActionPress
+    shared enum EActionPress
     {
         EAP_IDLE = 0,
         EAP_DOWN,

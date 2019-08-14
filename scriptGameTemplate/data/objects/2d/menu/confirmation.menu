@@ -28,7 +28,9 @@
             <fontStringLst>
                 <string text="No"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
+            <!-- Supports up, down, left, right -->
             <navigate left="yes_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -43,7 +45,9 @@
             <fontStringLst>
                 <string text="Yes"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
+            <!-- Supports up, down, left, right -->
             <navigate right="no_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>

@@ -17,7 +17,6 @@
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
-#include <boost/signals2.hpp>
 
 // Standard lib dependencies
 #include <string>
@@ -31,7 +30,6 @@
 
 // Forward declaration(s)
 class CCamera;
-class CSmartGuiControl;
 class CSelectMsgCracker;
 class CScrollParam;
 struct XMLNode;
@@ -39,8 +37,6 @@ struct XMLNode;
 class iControl : public CObject2D, boost::noncopyable
 {
 public:
-    
-    typedef boost::signals2::signal<void (iControl *)> ExecutionActionSignal;
 
     // Constructor
     iControl( const std::string & group );
@@ -78,13 +74,6 @@ public:
     
     // Reset the control to inactive if its not disabled
     virtual void reset( bool complete = false ) = 0;
-
-    // Set/Get the Smart GUI pointer
-    virtual void setSmartGui( CSmartGuiControl * pSmartGuiControl ) = 0;
-    virtual CSmartGuiControl * getSmartGuiPtr() = 0;
-
-    // Do any smart create
-    virtual void smartCreate() = 0;
 
     // Set the type of action
     virtual void setActionType( NUIControlDefs::EControlActionType value ) = 0;
@@ -149,9 +138,6 @@ public:
     
     // Check if control is a sub control
     virtual bool isSubControl() const = 0;
-    
-    // Connect to the execution action signal
-    virtual void connect_executionAction( const ExecutionActionSignal::slot_type & slot ) = 0;
     
     // Call a script function map key for sprite
     virtual void callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate = false ) = 0;

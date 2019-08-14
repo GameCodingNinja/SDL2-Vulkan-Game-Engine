@@ -12,11 +12,7 @@
 #include <memory>
 
 // Forward declaration(s)
-class CSprite;
-class iControl;
 class iGameState;
-class CMenu;
-class iSprite;
 union SDL_Event;
 
 class CGame
@@ -49,15 +45,6 @@ private:
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t cmdBufIndex );
-
-    // Callback for when a smart gui control is created
-    void smartGuiControlCreateCallBack( iControl * piControl );
-    
-    // Callback for when a smart menu is created
-    void smartMenuCreateCallBack( CMenu * pMenu );
-    
-    // Call back function to create sprite ai
-    void aICreateCallBack( const std::string & aiName, CSprite * pSprite );
     
     // Callback for the state string
     void statStringCallBack( const std::string & statStr );

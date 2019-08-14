@@ -44,7 +44,6 @@ add_library(
         gui/menu.cpp
         gui/uilabel.cpp
         gui/uisubcontrol.cpp
-        gui/ismartguibase.cpp
         gui/uibuttonlist.cpp
         gui/uicheckbox.cpp
         gui/uislider.cpp
@@ -106,7 +105,6 @@ add_library(
         managers/fontmanager.cpp
         managers/actionmanager.cpp
         managers/spritesheetmanager.cpp
-        managers/signalmanager.cpp
         managers/cameramanager.cpp
         physics/physicsworldmanager2d.cpp
         physics/physicsworldmanager3d.cpp

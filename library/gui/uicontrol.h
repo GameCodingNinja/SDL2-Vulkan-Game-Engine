@@ -26,7 +26,6 @@
 #include <vector>
 
 // Forward declaration(s)
-class CSmartGuiControl;
 class CObject2D;
 class CSprite;
 
@@ -73,13 +72,6 @@ public:
 
     // Reset the control to inactive if its not disabled
     virtual void reset( bool complete = false ) override;
-
-    // Set/Get the Smart GUI pointer
-    void setSmartGui( CSmartGuiControl * pSmartGuiControl ) override;
-    CSmartGuiControl * getSmartGuiPtr() override;
-
-    // Do any smart create
-    void smartCreate() override;
 
     // Set the type of action
     void setActionType( NUIControlDefs::EControlActionType value ) override;
@@ -145,9 +137,6 @@ public:
     // Check if control is a sub control
     virtual bool isSubControl() const override;
     
-    // Connect to the execution action signal
-    void connect_executionAction( const ExecutionActionSignal::slot_type & slot ) override;
-    
     // Call a script function map key for sprite
     void callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate = false ) override;
     
@@ -179,12 +168,6 @@ protected:
 
     // Recycle the contexts
     void recycleContext();
-
-    // Smart execute the action
-    void smartExecuteAction();
-    
-    // Do any smart event handling
-    void smartHandleEvent( const SDL_Event & rEvent );
 
     // Handle message
     virtual void onStateChange( const SDL_Event & rEvent );
@@ -249,9 +232,6 @@ private:
     // Collision center
     CPoint<float> m_collisionCenter;
 
-    // Base smart Gui control scoped pointer
-    std::unique_ptr<CSmartGuiControl> m_upSmartGui;
-
     // Mouse selection type
     NDefs::EActionPress m_mouseSelectType;
 
@@ -260,9 +240,6 @@ private:
 
     // Scrolling parameters
     CScrollParam m_scrollParam;
-    
-    // Boost signals
-    ExecutionActionSignal m_executionActionSignal;
 };
 
 #endif

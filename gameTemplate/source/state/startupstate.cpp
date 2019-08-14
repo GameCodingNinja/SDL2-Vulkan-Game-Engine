@@ -30,6 +30,10 @@
 #include <script/scriptmenu.h>
 #include <script/scriptvisual.h>
 #include <script/scripthighresolutiontimer.h>
+#include <script/scriptmenumanager.h>
+#include <script/scriptactionmanager.h>
+#include <script/scriptdevice.h>
+#include <script/scriptsettings.h>
 #include <system/device.h>
 #include <gui/menumanager.h>
 #include <utilities/genfunc.h>
@@ -91,9 +95,9 @@ void CStartUpState::init()
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
     RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), true );
     NScriptSize::Register();
-    NScriptGlobals::Register();
     NScriptPoint::Register();
     NScriptColor::Register();
+    NScriptGlobals::Register();
     NScriptVisual::Register();
     NScriptHighResolutionTimer::Register();
     NScriptSprite::Register();
@@ -167,6 +171,10 @@ void CStartUpState::assetLoad()
         NScriptSound::Register();
         NScriptUIControl::Register();
         NScriptMenu::Register();
+        NScriptMenuManager::Register();
+        NScriptActionManager::Register();
+        NScriptDevice::Register();
+        NScriptSettings::Register();
 
         // Load group specific script items
         CScriptMgr::Instance().loadGroup("(menu)");

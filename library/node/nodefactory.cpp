@@ -12,7 +12,6 @@
 #include <3d/object3d.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
-#include <managers/signalmanager.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
 #include <node/spritenodemultilist.h>
@@ -85,10 +84,6 @@ namespace NNodeFactory
 
         // Init the sprite
         pSprite->init();
-
-        // Broadcast the signal to create the sprite AI
-        if( !rSpriteData.getAIName().empty() )
-            CSignalMgr::Instance().broadcast( rSpriteData.getAIName(), pSprite );
     }
 
     /************************************************************************

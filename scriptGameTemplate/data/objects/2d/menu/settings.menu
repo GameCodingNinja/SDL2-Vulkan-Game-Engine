@@ -82,6 +82,7 @@
                 <string text="Full Screen"/>
                 <string text="x"/>
             </fontStringLst>
+            <!-- Supports up, down, left, right -->
             <navigate up="resolution_btn_lst" down="v-sync_check_box"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -101,6 +102,7 @@
                 <string text="V-Sync"/>
                 <string text="x"/>
             </fontStringLst>
+            <!-- Supports up, down, left, right -->
             <navigate up="full_screen_check_box" down="settings_dead_zone_slider"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -117,6 +119,7 @@
             <fontStringLst>
                 <string text="GPad Deadzone: %d%%"/>
             </fontStringLst>
+            <!-- Supports up, down, left, right -->
             <navigate up="v-sync_check_box" down="settings_apply_btn"/>
             <scroll startDelay="750" scrollDelay="100" left="true" right="true"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
@@ -136,6 +139,7 @@
             <fontStringLst>
                 <string text="Apply"/>
             </fontStringLst>
+            <!-- Supports up, down, left, right -->
             <navigate up="settings_dead_zone_slider" down="resolution_btn_lst"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, execute & event -->
             <scriptLst>

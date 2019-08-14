@@ -1,5 +1,5 @@
 /************************************************************************
-*    FILE NAME:       menu_defs.as
+*    FILE NAME:       menudefs.as
 *
 *    DESCRIPTION:     Menu defines
 ************************************************************************/
@@ -40,5 +40,13 @@ namespace NMenuDefs
         ETC_RESET=0,
         ETC_BEGIN,
         ETC_END,
+    }
+    
+    // Button states
+    shared enum EActionPress
+    {
+        EAP_IDLE = 0,
+        EAP_DOWN,
+        EAP_UP
     }
 }

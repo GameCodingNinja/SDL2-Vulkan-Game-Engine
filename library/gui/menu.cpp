@@ -20,7 +20,6 @@
 #include <gui/uicontroldefs.h>
 #include <gui/uilabel.h>
 #include <gui/uicontrolfactory.h>
-#include <gui/ismartguibase.h>
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
 #include <common/ivisualcomponent.h>
@@ -546,9 +545,6 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
 
     // Prepare script functions associated with handling game events
     prepare( "event", rEvent.type, rEvent.user.code );
-
-    // Handle any smart menu events
-    smartHandleEvent( rEvent );
 }
 
 /************************************************************************
@@ -868,35 +864,6 @@ CScrollParam & CMenu::getScrollParam( int msg )
     }
 
     return m_scrollParam;
-}
-
-
-/************************************************************************
-*    DESC:  Set the smart menu pointer. This class owns the pointer
-************************************************************************/
-void CMenu::setSmartGui( CSmartGuiMenu * pSmartGuiMenu )
-{
-    m_upSmartGui.reset( pSmartGuiMenu );
-}
-
-
-/************************************************************************
-*    DESC:  Do any smart create
-************************************************************************/
-void CMenu::smartCreate()
-{
-    if( m_upSmartGui )
-        m_upSmartGui->create();
-}
-
-
-/************************************************************************
-*    DESC:  Do any smart event handling
-************************************************************************/
-void CMenu::smartHandleEvent( const SDL_Event & rEvent )
-{
-    if( m_upSmartGui )
-        m_upSmartGui->handleEvent( rEvent );
 }
 
 

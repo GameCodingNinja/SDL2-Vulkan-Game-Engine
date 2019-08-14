@@ -88,12 +88,6 @@ public:
     // Get the scroll params
     CScrollParam & getScrollParam( int msg );
     
-    // Set the smart menu pointer. This class owns the pointer
-    void setSmartGui( class CSmartGuiMenu * pSmartGuiMenu );
-    
-    // Do any smart create
-    void smartCreate();
-    
     // Is the menu idle
     bool isIdle();
     
@@ -158,9 +152,6 @@ private:
 
     // Set the first inactive control to be active
     void activateFirstInactiveControl();
-    
-    // Do any smart event handling
-    void smartHandleEvent( const SDL_Event & rEvent );
 
 private:
 
@@ -200,9 +191,6 @@ private:
 
     // Scrolling parameters
     CScrollParam m_scrollParam;
-    
-    // Base smart Gui control scoped pointer
-    std::unique_ptr<class CSmartGuiMenu> m_upSmartGui;
     
     // The script conponent
     CScriptComponent m_scriptComponent;

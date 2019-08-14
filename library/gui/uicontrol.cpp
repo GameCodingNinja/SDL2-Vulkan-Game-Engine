@@ -16,7 +16,6 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/deletefuncs.h>
 #include <gui/menudefs.h>
-#include <gui/ismartguibase.h>
 #include <gui/messagecracker.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
@@ -282,9 +281,6 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
 
     // Prepare script function associated with handling this game event
     prepareControlScriptFunction( NUIControlDefs::ECS_EVENT, rEvent.type, rEvent.user.code );
-
-    // Do any smart event handling
-    smartHandleEvent( rEvent );
 }
 
 
@@ -363,12 +359,6 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
 
         else if( m_actionType == NUIControlDefs::ECAT_QUIT_GAME )
             NGenFunc::DispatchEvent( SDL_QUIT );
-
-        // Smart gui execution
-        smartExecuteAction();
-
-        // Boost signal execute action
-        m_executionActionSignal(this);
 
         // Prepare script function associated with handling this game event
         prepareControlScriptFunction( NUIControlDefs::ECS_EXECUTE );
@@ -738,50 +728,6 @@ void CUIControl::setDefaultState( NUIControlDefs::EControlState value )
 
 
 /************************************************************************
-*    DESC:  Set/Get the smart control pointer. This class owns the pointer
-************************************************************************/
-void CUIControl::setSmartGui( CSmartGuiControl * pSmartGuiControl )
-{
-    m_upSmartGui.reset( pSmartGuiControl );
-}
-
-CSmartGuiControl * CUIControl::getSmartGuiPtr()
-{
-    return m_upSmartGui.get();
-}
-
-
-/************************************************************************
-*    DESC:  Do any smart create
-************************************************************************/
-void CUIControl::smartCreate()
-{
-    if( m_upSmartGui )
-        m_upSmartGui->create();
-}
-
-
-/************************************************************************
-*    DESC:  Do any smart event handling
-************************************************************************/
-void CUIControl::smartHandleEvent( const SDL_Event & rEvent )
-{
-    if( m_upSmartGui )
-        m_upSmartGui->handleEvent( rEvent );
-}
-
-
-/************************************************************************
-*    DESC:  Smart execute the action
-************************************************************************/
-void CUIControl::smartExecuteAction()
-{
-    if( m_upSmartGui )
-        m_upSmartGui->execute();
-}
-
-
-/************************************************************************
 *    DESC:  Set the control to their default behavior
 ************************************************************************/
 void CUIControl::revertToDefaultState()
@@ -1076,15 +1022,6 @@ CScrollParam & CUIControl::getScrollParam()
 bool CUIControl::isSubControl() const
 {
     return false;
-}
-
-
-/************************************************************************
-*    DESC:  Connect to the execution action signal
-************************************************************************/
-void CUIControl::connect_executionAction( const ExecutionActionSignal::slot_type & slot )
-{
-    m_executionActionSignal.connect(slot);
 }
 
 

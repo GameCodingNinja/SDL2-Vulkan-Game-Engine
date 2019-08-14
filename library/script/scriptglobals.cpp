@@ -12,7 +12,6 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/genfunc.h>
 #include <utilities/exceptionhandling.h>
-#include <managers/signalmanager.h>
 #include <script/scriptmanager.h>
 #include <common/size.h>
 

@@ -18,7 +18,6 @@
 #include <gui/scrollparam.h>
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
-#include <managers/signalmanager.h>
 #include <managers/cameramanager.h>
 #include <system/device.h>
 
@@ -222,12 +221,6 @@ void CMenuMgr::loadMenusFromNode( const std::string & group, const XMLNode & nod
 
         // Have the menu load it's share
         iter.first->second.load( menuNode.getAttribute( "file" ) );
-
-        // Broadcast signal to let the game handle smart menu inits
-        CSignalMgr::Instance().broadcast( &iter.first->second );
-
-        // Handle any smart menu creates
-        iter.first->second.smartCreate();
     }
 }
 

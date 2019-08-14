@@ -197,9 +197,6 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
 
             // Prepare script function associated with handling this game event
             prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
-
-            // Execute smart gui
-            smartExecuteAction();
         }
         else if( (void *)m_pSubControlVec[NUIControlDefs::BTN_INC] == rEvent.user.data1 )
         {
@@ -211,9 +208,6 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
 
             // Prepare script function associated with handling this game event
             prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
-
-            // Execute smart gui
-            smartExecuteAction();
         }
     }
 }

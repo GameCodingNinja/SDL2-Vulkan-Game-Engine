@@ -18,7 +18,9 @@
             <fontStringLst>
                 <string text="Continue"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="exit_btn" down="new_game_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -35,7 +37,9 @@
             <fontStringLst>
                 <string text="New Game"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="continue_btn" down="load_game_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -51,7 +55,9 @@
             <fontStringLst>
                 <string text="Load Game"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="new_game_btn" down="settings_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -67,7 +73,9 @@
             <fontStringLst>
                 <string text="Settings"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="load_game_btn" down="key_binding_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -83,7 +91,9 @@
             <fontStringLst>
                 <string text="Key Bindings"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="settings_btn" down="exit_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
@@ -99,7 +109,9 @@
             <fontStringLst>
                 <string text="Exit Game"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="key_binding_btn" down="continue_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
