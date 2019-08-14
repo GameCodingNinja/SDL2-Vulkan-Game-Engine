@@ -16,15 +16,13 @@
 
 // Game lib dependencies
 #include <system/device.h>
-#include <managers/cameramanager.h>
-#include <gui/menumanager.h>
-#include <gui/icontrol.h>
-#include <gui/menu.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/statcounter.h>
 #include <utilities/highresolutiontimer.h>
-#include <sprite/sprite.h>
+#include <managers/actionmanager.h>
+#include <managers/cameramanager.h>
+#include <gui/menumanager.h>
 
 // Boost lib dependencies
 #include <boost/bind.hpp>
@@ -246,9 +244,15 @@ void CGame::pollEvents()
     // Event handler
     SDL_Event msgEvent;
 
+    // Clear the stored event queue
+    CActionMgr::Instance().clearQueue();
+
     // Handle events on queue
     while( SDL_PollEvent( &msgEvent ) )
     {
+        // Add the event to the event queue for message handling in scripts
+        CActionMgr::Instance().queueEvent( msgEvent );
+
         // let the game handle the event
         // turns true on quit
         if( handleEvent( msgEvent ) )

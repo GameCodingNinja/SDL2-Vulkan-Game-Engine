@@ -5,7 +5,7 @@
 
         <sprite objectName="275x55_button_solid">
             <scriptLst>
-                <="Control_Hidden"/>
+                <script disable="Control_Hidden"/>
                 <script inactive="Control_Hidden"/>
                 <script active="Control_Solid_Active"/>
                 <script select="Control_Solid_Selected_visible"/>

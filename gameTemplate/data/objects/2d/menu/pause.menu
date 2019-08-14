@@ -3,6 +3,7 @@
 
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
+    <!-- Supports init, transIn, transOut, event -->
     <scriptLst>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -30,7 +31,9 @@
             <fontStringLst>
                 <string text="x"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="close"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -48,8 +51,11 @@
             <fontStringLst>
                 <string text="Resume"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="exit_btn" down="settings_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -63,8 +69,11 @@
             <fontStringLst>
                 <string text="Settings"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="resume_btn" down="key_binding_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -78,8 +87,11 @@
             <fontStringLst>
                 <string text="Key Bindings"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="settings_btn" down="main_menu_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -93,11 +105,15 @@
             <fontStringLst>
                 <string text="Main Menu"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="key_binding_btn" down="exit_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="ConfirmBtn_execute"/>
             </scriptLst>
         </control>
 
@@ -108,11 +124,15 @@
             <fontStringLst>
                 <string text="Exit Game"/>
             </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <!-- Supports up, down, left, right -->
             <navigate up="main_menu_btn" down="resume_btn"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
+                <script execute="ConfirmBtn_execute"/>
             </scriptLst>
         </control> 
 

@@ -23,7 +23,7 @@ void ConfirmBtn_execute( uiControl & control )
     {
         actionType = "game_state_change";
         conformationMsg = "Are you sure you|want to continue|on to the next state?";
-        executionAction = "run_state";
+        executionAction = "level_1_state";
     }
     else if( control.getName() == "main_menu_btn" )
     {

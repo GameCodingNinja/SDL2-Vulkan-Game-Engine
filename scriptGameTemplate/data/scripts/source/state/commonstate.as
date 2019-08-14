@@ -17,7 +17,7 @@ class CCommonState : iGameState
         super( gameState, nextState );
         
         mGameStateDict.set("title_screen_state", NStateDefs::EGS_TITLE_SCREEN);
-        mGameStateDict.set("run_state", NStateDefs::EGS_RUN);
+        mGameStateDict.set("level_1_state", NStateDefs::EGS_RUN);
     }
     
     //

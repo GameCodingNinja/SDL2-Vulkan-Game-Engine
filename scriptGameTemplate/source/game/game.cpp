@@ -143,11 +143,13 @@ void CGame::pollEvents()
     // Event handler
     SDL_Event msgEvent;
 
+    // Clear the stored event queue
     CActionMgr::Instance().clearQueue();
 
     // Handle events on queue
     while( SDL_PollEvent( &msgEvent ) )
     {
+        // Add the event to the event queue for message handling in scripts
         CActionMgr::Instance().queueEvent( msgEvent );
         
         handleEvent( msgEvent );

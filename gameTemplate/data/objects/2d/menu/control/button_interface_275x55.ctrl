@@ -24,7 +24,7 @@
         <sprite objectName="control_font">
             <font fontName="dejavu_sans_reg_45"/>
             <scriptLst>
-                <script disabled="Control_Disabled"/>
+                <script disable="Control_Disabled"/>
                 <script inactive="Control_Inactive"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected_Dispatch_Exe_Act"/>
