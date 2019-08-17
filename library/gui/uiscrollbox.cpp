@@ -194,6 +194,21 @@ void CUIScrollBox::handleEvent( const SDL_Event & rEvent )
     // Call the parent
     CUISubControl::handleEvent( rEvent );
 
+    if( rEvent.wheel.type == SDL_MOUSEWHEEL )
+    {
+        // Invalidate the active control
+        m_activeScrollCtrl = NUIControlDefs::NO_ACTIVE_CONTROL;
+
+        // Get the current scroll position
+        m_scrollCurPos = getSubControl()->incSliderMovePos( -(rEvent.wheel.y * 50) );
+
+        // Set the bounds
+        setStartEndPos();
+
+        // Reposition the scroll controls
+        repositionScrollControls();
+    }
+
     for( int i = m_visStartPos; i < m_visEndPos; ++i )
         m_pScrollControlVec[i]->handleEvent( rEvent );
 }

@@ -230,6 +230,9 @@ public:
     // Set/Get the slider position
     virtual void setSliderPosValue( float value = 0 ){}
     virtual float getSliderPosValue(){ return 0.f; }
+
+    // Inc/Set the slider based on mouse movement
+    virtual float incSliderMovePos( float value ){ return 0.f; };
     
     // Set/Get the slider min value
     virtual void setSliderMinValue( float value ){}

@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript"
+		},
+		{
+			"path": "/home/howie/Development/SDL2"
 		}
 	],
 	"settings": {

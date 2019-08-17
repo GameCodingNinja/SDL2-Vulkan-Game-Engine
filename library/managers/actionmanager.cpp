@@ -922,32 +922,6 @@ bool CActionMgr::wasActionEvent( const std::string & actionStr, NDefs::EActionPr
 
 
 /************************************************************************
-*    DESC:  Generic call for any event
-************************************************************************/
-bool CActionMgr::wasEvent( uint event )
-{
-    for( auto & iter : m_eventQueue )
-        if( iter.type == event )
-            return true;
-
-    return false;
-}
-
-
-/************************************************************************
-*    DESC:  Was this a game specific event
-************************************************************************/
-bool CActionMgr::wasGameEvent( uint type, int code )
-{
-    for( auto & iter : m_eventQueue )
-        if( (iter.type == type) && (iter.user.code == code) )
-            return true;
-
-    return false;
-}
-
-
-/************************************************************************
 *    DESC:  Device specific key checks
 ************************************************************************/
 bool CActionMgr::wasKeyboardEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress )
@@ -1023,13 +997,44 @@ bool CActionMgr::wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::
 
 
 /************************************************************************
+*    DESC:  Generic call for any event
+************************************************************************/
+bool CActionMgr::wasEvent( uint event )
+{
+    for( auto & iter : m_eventQueue )
+        if( iter.type == event )
+            return true;
+
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Was this a game specific event
+************************************************************************/
+bool CActionMgr::wasGameEvent( uint type, int code )
+{
+    for( auto & iter : m_eventQueue )
+        if( (iter.type == type) && (iter.user.code == code) )
+            return true;
+
+    return false;
+}
+
+
+/************************************************************************
 *    DESC:  Was this a window event
 ************************************************************************/
-bool CActionMgr::wasWindowEvent( uint event )
+bool CActionMgr::wasWindowEvent( uint event, uint & windowID, int & data1, int & data2 )
 {
     for( auto & iter : m_eventQueue )
         if( (iter.type == SDL_WINDOWEVENT) && (iter.window.event == event) )
+        {
+            windowID = iter.window.windowID;
+            data1 = iter.window.data1;
+            data2 = iter.window.data2;
             return true;
+        }
 
     return false;
 }
@@ -1079,6 +1084,195 @@ uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uin
                 type = iter.type;
                 code = iter.cbutton.button;
                 data = iter.cbutton.which;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+/************************************************************************
+*    DESC:  Enumerate display events
+************************************************************************/
+uint CActionMgr::enumerateDisplayEvents( uint & event, uint & displayIndex, int & orientation, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( iter.type == SDL_DISPLAYEVENT )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                event = iter.display.event;
+                displayIndex = iter.display.display;
+                orientation = iter.window.data1;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+/************************************************************************
+*    DESC:  Enumerate Mouse wheel events
+************************************************************************/
+uint CActionMgr::enumerateMouseWheelEvents( uint & windowID, int & x, int & y, uint & direction, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( iter.type == SDL_MOUSEWHEEL )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                windowID = iter.wheel.windowID;
+                x = iter.wheel.x;
+                y = iter.wheel.y;
+                direction = iter.wheel.direction;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+
+/************************************************************************
+*    DESC:  Enumerate window events
+************************************************************************/
+uint CActionMgr::enumerateWindowEvents( uint & event, uint & windowID, int & data1, int & data2, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( iter.type == SDL_WINDOWEVENT )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                event = iter.window.event;
+                windowID = iter.window.windowID;
+                data1 = iter.window.data1;
+                data2 = iter.window.data2;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+/************************************************************************
+*    DESC:  Enumerate touch finger events
+************************************************************************/
+uint CActionMgr::enumerateTouchFingerEvents(
+    uint & event, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( (iter.type >= SDL_FINGERDOWN) && (iter.type <= SDL_FINGERMOTION) )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                event = iter.type;
+                touchId = iter.tfinger.touchId;
+                fingerId = iter.tfinger.fingerId;
+                x = iter.tfinger.x;
+                y = iter.tfinger.y;
+                dx = iter.tfinger.dx;
+                dy = iter.tfinger.dy;
+                pressure = iter.tfinger.pressure;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+/************************************************************************
+*    DESC:  Enumerate Multiple finger events
+************************************************************************/
+uint CActionMgr::enumerateMultipleFingerEvents(
+    int64_t & touchId, float & dTheta, float & dDist, float & x, float & y, uint & numFingers, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( iter.type == SDL_MULTIGESTURE )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                touchId = iter.mgesture.touchId;
+                dTheta = iter.mgesture.dTheta;
+                dDist = iter.mgesture.dDist;
+                x = iter.mgesture.x;
+                y = iter.mgesture.y;
+                numFingers = iter.mgesture.numFingers;
+
+                return counter;
+            }
+        }
+    }
+
+    return 0;
+}
+
+
+/************************************************************************
+*    DESC:  Enumerate Dollar Gesture events
+************************************************************************/
+uint CActionMgr::enumerateDollarGestureEvents(
+    int64_t & touchId, int64_t & gestureId, uint & numFingers, float & error, float & x, float & y, uint startIndex )
+{
+    uint counter(0);
+
+    for( auto & iter : m_eventQueue )
+    {
+        if( iter.type == SDL_MULTIGESTURE )
+        {
+            counter++;
+
+            if( counter > startIndex )
+            {
+                touchId = iter.dgesture.touchId;
+                gestureId = iter.dgesture.gestureId;
+                numFingers = iter.dgesture.numFingers;
+                error = iter.dgesture.error;
+                x = iter.dgesture.x;
+                y = iter.dgesture.y;
 
                 return counter;
             }

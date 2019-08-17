@@ -52,6 +52,9 @@ public:
     // Handle the mouse move
     virtual bool onMouseMove( const SDL_Event & rEvent ) override;
 
+    // Inc/Set the slider based on mouse movement
+    virtual float incSliderMovePos( float value ) override;
+
 protected:
     
     // Inc the slider inc value
@@ -73,9 +76,6 @@ private:
 
     // Set the position of the slider
     void setSliderPos();
-
-    // Inc/Set the slider based on mouse movement
-    void incSliderMovePos( float value );
 
     // Handle Action messages
     virtual void onLeftAction( const SDL_Event & rEvent ) override;

@@ -299,12 +299,14 @@ void CUISlider::incSlider( float value )
 /************************************************************************
 *    DESC:  Inc the slider based on mouse movement
 ************************************************************************/
-void CUISlider::incSliderMovePos( float value )
+float CUISlider::incSliderMovePos( float value )
 {
     m_curValue += value * ((m_maxValue - m_minValue) / m_travelDistPixels);
 
     // Update the slider
     updateSlider();
+
+    return m_curValue;
 }
 
 
