@@ -65,6 +65,14 @@ namespace NUIControlDefs
         ECAT_GAME_STATE_CHANGE,
         ECAT_QUIT_GAME
     };
+
+    enum EActionResponse
+    {
+        EAR_UP=1,
+        EAR_DOWN=2,
+        EAR_LEFT=4,
+        EAR_RIGHT=8
+    };
 }
 
 #endif

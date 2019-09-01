@@ -47,14 +47,6 @@ protected:
 
 private:
     
-    enum EActionResponse
-    {
-        EAR_UP=1,
-        EAR_DOWN=2,
-        EAR_LEFT=4,
-        EAR_RIGHT=8
-    };
-    
     // Inc/Dec control
     void inc();
     void dec();
