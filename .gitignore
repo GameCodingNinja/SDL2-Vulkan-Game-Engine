@@ -1,4 +1,3 @@
-/org.lapcatgames.templateOld
 /org.libsdl.testgles
 
 /gameTemplate/.vscode/ipch
@@ -7,31 +6,13 @@
 /gameTemplate/.vs/
 /gameTemplate/gameTemplate.sdf
 /gameTemplate/gameTemplate.VC.opendb
-/gameTemplate/nbproject/
 /gameTemplate/build/
-
-/battleHardened/Win32/
-/battleHardened/AS_DEBUG/
-/battleHardened/.vs/
-/battleHardened/battleHardened.sdf
-/battleHardened/battleHardened.VC.opendb
-/battleHardened/nbproject/
-/battleHardened/build/
-
-/HugesWhoSlots/Win32/
-/HugesWhoSlots/AS_DEBUG/
-/HugesWhoSlots/.vs/
-/HugesWhoSlots/HugesWhoSlots.sdf
-/HugesWhoSlots/HugesWhoSlots.VC.opendb
-/HugesWhoSlots/nbproject/
-/HugesWhoSlots/build/
 
 /PachinkoChallenge/Win32/
 /PachinkoChallenge/AS_DEBUG/
 /PachinkoChallenge/.vs/
 /PachinkoChallenge/PachinkoChallenge.sdf
 /PachinkoChallenge/PachinkoChallenge.VC.opendb
-/PachinkoChallenge/nbproject/
 /PachinkoChallenge/build/
 
 /scriptGameTemplate/Win32/
@@ -39,23 +20,13 @@
 /scriptGameTemplate/.vs/
 /scriptGameTemplate/KittyBall.sdf
 /scriptGameTemplate/KittyBall.VC.opendb
-/scriptGameTemplate/nbproject/
 /scriptGameTemplate/build/
-
-/KittyBall/Win32/
-/KittyBall/AS_DEBUG/
-/KittyBall/.vs/
-/KittyBall/KittyBall.sdf
-/KittyBall/KittyBall.VC.opendb
-/KittyBall/nbproject/
-/KittyBall/build/
 
 /consoleTestAp/Win32/
 /consoleTestAp/AS_DEBUG/
 /consoleTestAp/.vs/
 /consoleTestAp/KittyBall.sdf
 /consoleTestAp/consoleTestAp.VC.opendb
-/consoleTestAp/nbproject/
 /consoleTestAp/build/
 
 /org.howiesfunware.PachinkoChallenge/build
@@ -64,13 +35,6 @@
 /org.howiesfunware.PachinkoChallenge/.gradle
 /org.howiesfunware.PachinkoChallenge/.idea
 /org.howiesfunware.PachinkoChallenge/app/.externalNativeBuild
-
-/com.hugheswhoproductions.hugheswhoslots/build
-/com.hugheswhoproductions.hugheswhoslots/gradle
-/com.hugheswhoproductions.hugheswhoslots/app/build
-/com.hugheswhoproductions.hugheswhoslots/.gradle
-/com.hugheswhoproductions.hugheswhoslots/.idea
-/com.hugheswhoproductions.hugheswhoslots/app/.externalNativeBuild
 
 /org.lapcatgames.template/build
 /org.lapcatgames.template/app/build

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<node>
+    
+    <node name="loadAnim" defaultGroup="(load)">
+        
+        <sprite objectName="loadAnim">
+            <dynamicOffset right="150" bottom="150"/>
+            <scriptLst>
+                <script loadAnimationLoop="State_LoopAnimation" group="(state)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+</node>

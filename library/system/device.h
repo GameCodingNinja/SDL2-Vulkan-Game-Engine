@@ -14,6 +14,7 @@
 // Standard lib dependencies
 #include <system/descriptorallocator.h>
 #include <common/size.h>
+#include <common/color.h>
 
 // Standard lib dependencies
 #include <functional>
@@ -233,6 +234,9 @@ public:
     // Change the resolution
     void changeResolution( const CSize<float> & size, bool fullScreen );
 
+    // Set the clear color
+    void setClearColor( float r, float g, float b, float a );
+
 private:
 
     // Constructor
@@ -376,6 +380,9 @@ private:
 
     // The current frame
     size_t m_currentFrame = 0;
+
+    // The clear color
+    CColor m_clearColor;
 };
 
 #endif

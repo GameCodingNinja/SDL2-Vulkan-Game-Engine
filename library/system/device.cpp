@@ -271,7 +271,7 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 
     // Accessed by attachment index. Current attachments are color and depth
     std::vector<VkClearValue> clearValues(2);
-    clearValues[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
+    clearValues[0].color = {m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a};
     clearValues[1].depthStencil = {1.0f, 0xff};
 
     // Start a render pass
@@ -1585,4 +1585,13 @@ void CDevice::handleResolutionChange( int width, int height )
 
     // Rebuild all the camera projection matrixes
     CCameraMgr::Instance().rebuildProjectionMatrix();
+}
+
+
+/***************************************************************************
+*   DESC:  Set the clear color
+****************************************************************************/
+void CDevice::setClearColor( float r, float g, float b, float a )
+{
+    m_clearColor.set( r, g, b, a );
 }

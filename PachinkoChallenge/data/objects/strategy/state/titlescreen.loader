@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<strategyLst>
+
+    <strategy name="_title_" type="actor" cmdBufPool="(title)">
+    
+        <node name="background"/>
+
+    </strategy>
+  
+</strategyLst>

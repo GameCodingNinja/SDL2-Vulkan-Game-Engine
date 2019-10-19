@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../library",
+                "${workspaceFolder}/../angelscript",
+                "${workspaceFolder}/../Box2D",
+                "${workspaceFolder}/../bulletPhysics",
+                "${workspaceFolder}/../../SDL2",
+                "${workspaceFolder}/../../SDL2_mixer"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compileCommands": ""
+        }
+    ],
+    "version": 4
+}

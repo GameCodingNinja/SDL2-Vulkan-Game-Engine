@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<listTable>
+    
+    <groupList groupName="(menu)">
+      <file path="data/scripts/library/shared_utilities.as"/>
+      <file path="data/scripts/library/shared_sprite_utilities.as"/>
+      <file path="data/scripts/library/defs.as"/>
+      <file path="data/scripts/library/menudefs.as"/>
+      <file path="data/scripts/library/uicontroldefs.as"/>
+      <file path="data/scripts/library/menu.as"/>
+      <file path="data/scripts/library/confirmbtn.as"/>
+      <file path="data/scripts/library/resolutionbtn.as"/>
+      <file path="data/scripts/library/fullscreencheckbox.as"/>
+      <file path="data/scripts/library/deadzoneslider.as"/>
+      <file path="data/scripts/library/applybtn.as"/>
+      <file path="data/scripts/library/keybindbtn.as"/>
+    </groupList>
+
+    <groupList groupName="(state)">
+        <file path="data/scripts/library/shared_utilities.as"/>
+        <file path="data/scripts/library/shared_sprite_utilities.as"/>
+        <file path="data/scripts/library/shared_visual_utilities.as"/>
+        <file path="data/scripts/source/state/statedefs.as"/>
+        <file path="data/scripts/source/state/state.as"/>
+    </groupList>
+    
+    <groupList groupName="(main)">
+        <file path="data/scripts/library/menudefs.as"/>
+        <file path="data/scripts/source/game/main.as"/>
+        <file path="data/scripts/source/game/game.as"/>
+        <file path="data/scripts/source/game/gamedefs.as"/>
+        <file path="data/scripts/source/state/statedefs.as"/>
+        <file path="data/scripts/source/state/igamestate.as"/>
+        <file path="data/scripts/source/state/statemessage.as"/>
+        <file path="data/scripts/source/state/commonstate.as"/>
+        <file path="data/scripts/source/state/startupstate.as"/>
+        <file path="data/scripts/source/state/titlescreenstate.as"/>
+        <file path="data/scripts/source/state/loadstate.as"/>
+        <file path="data/scripts/source/state/level1state.as"/>
+    </groupList>
+  
+    <groupList groupName="(level_1)">
+        <file path="data/scripts/library/level1.as"/>
+    </groupList>
+
+</listTable>

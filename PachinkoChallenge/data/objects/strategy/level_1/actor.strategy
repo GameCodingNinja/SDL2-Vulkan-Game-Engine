@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<node defaultGroup="(level_1)">
+    
+    <node name="square_red">
+        
+        <sprite objectName="square_red">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="triangle_green">
+        
+        <sprite objectName="triangle_green">
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="triangle_blue">
+        
+        <sprite objectName="triangle_blue">
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_green">
+        
+        <sprite objectName="circle_green">
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_blue">
+        
+        <sprite objectName="circle_blue">
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_red">
+        
+        <sprite objectName="circle_red">
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+</node>

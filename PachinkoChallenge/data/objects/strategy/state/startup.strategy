@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<node>
+
+    <node name="logo" defaultGroup="(startup)">
+        
+        <sprite objectName="logo">
+            <position x="0" y="0" z="0"/>
+        </sprite>
+
+    </node>
+
+    <node name="solid_white_bk" defaultGroup="(startup)">
+        
+        <sprite objectName="solid_white_bk">
+            <position x="0" y="0" z="0"/>
+        </sprite>
+
+    </node>
+
+</node>
