@@ -41,7 +41,7 @@
                 <pipeline id="2d_solid"/>
                 <color r="1" g="1" b="1" a="1"/>
             </visual>
-            <size width="1920" height="1080"/>
+            <size width="1080" height="1920"/>
         </object>
 
     </objectList>

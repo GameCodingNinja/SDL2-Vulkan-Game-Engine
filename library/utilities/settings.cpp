@@ -127,6 +127,16 @@ void CSettings::loadXML()
                 m_engineVersion = std::atoi(infoNode.getAttribute("engineVersion"));
         }
 
+        #if defined(__IOS__) || defined(__ANDROID__)
+
+        SDL_DisplayMode dm;
+        SDL_GetDesktopDisplayMode(0, &dm);
+
+        m_size.w = dm.w;
+        m_size.h = dm.h;
+
+        #endif
+
         const XMLNode displayListNode = m_mainNode.getChildNode("display");
         if( !displayListNode.isEmpty() )
         {
@@ -147,32 +157,13 @@ void CSettings::loadXML()
             // Get the attributes from the "defaultHeight" node
             const XMLNode defResNode = displayListNode.getChildNode("default");
 
+            m_native_size.h = m_default_size.h = std::atof(defResNode.getAttribute("height"));
+            if( defResNode.isAttributeSet("width") )
+                m_native_size.w = m_default_size.w = std::atof(defResNode.getAttribute("width"));
+
             if( defResNode.isAttributeSet("orientation") )
-            {
                 if( std::strcmp( defResNode.getAttribute("orientation"), "portrait" ) == 0 )
-                {
                     m_orientation = NDefs::EO_PORTRAIT;
-
-                    #if !defined(__ANDROID__)
-                    m_size.swap();
-                    #endif
-                }
-            }
-
-            if( m_orientation == NDefs::EO_PORTRAIT )
-            {
-                m_native_size.h = m_default_size.h = std::atof(defResNode.getAttribute("width"));
-
-                if( defResNode.isAttributeSet("height") )
-                    m_native_size.w = std::atof(defResNode.getAttribute("height"));
-            }
-            else
-            {
-                m_native_size.h = m_default_size.h = std::atof(defResNode.getAttribute("height"));
-
-                if( defResNode.isAttributeSet("width") )
-                    m_native_size.w = std::atof(defResNode.getAttribute("width"));
-            }
         }
 
         calcRatio();
@@ -368,23 +359,22 @@ uint32_t CSettings::getEngineVersion() const
 ************************************************************************/
 void CSettings::calcRatio()
 {
-    #if defined(__IOS__) || defined(__ANDROID__)
-
-    SDL_DisplayMode dm;
-    SDL_GetDesktopDisplayMode(0, &dm);
-
-    m_size.w = dm.w;
-    m_size.h = dm.h;
-
-    #endif
-
     // Height and width screen ratio for perspective projection
     m_screenAspectRatio.w = m_size.w / m_size.h;
     m_screenAspectRatio.h = m_size.h / m_size.w;
 
-    // NOTE: The default width is based on the current aspect ratio
-    // NOTE: Make sure the width does not have a floating point component
-    m_default_size.w = (float)(int)((m_screenAspectRatio.w * m_default_size.h) + 0.5);
+    if( m_orientation == NDefs::EO_PORTRAIT )
+    {
+        // NOTE: The default height is based on the current aspect ratio
+        // NOTE: Make sure the height does not have a floating point component
+        m_default_size.h = (float)(int)std::ceil((m_screenAspectRatio.h * m_default_size.w) + 0.5);
+    }
+    else
+    {
+        // NOTE: The default width is based on the current aspect ratio
+        // NOTE: Make sure the width does not have a floating point component
+        m_default_size.w = (float)(int)std::ceil((m_screenAspectRatio.w * m_default_size.h) + 0.5);
+    }
 
     // Get half the size for use with screen boundaries
     m_default_size_half = m_default_size / 2.f;
@@ -462,6 +452,14 @@ const CSize<float> & CSettings::getDefaultSizeHalf() const
 const CSize<float> & CSettings::getOrthoAspectRatio() const
 {
     return m_orthoAspectRatio;
+}
+
+float CSettings::getOrthoAspectRatioOrientation() const
+{
+    if( m_orientation == NDefs::EO_PORTRAIT )
+        return m_orthoAspectRatio.w;
+    else
+        return m_orthoAspectRatio.h;
 }
 
 

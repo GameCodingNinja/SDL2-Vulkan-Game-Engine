@@ -10,12 +10,10 @@
 ************************************************************************/
 void State_StartUpFadeIn()
 {
+    // This is initialized in startupstate.as
     CVisual visual;
-    
-    CColor current(0,0,0,1);
-    visual.setAdditiveColor( current );
-    
-    Hold( 250 );
+
+    Hold( 500 );
             
     CColor final(1,1,1,1);
     NVisualUtils::ColorTo( 500, final, visual );
@@ -27,9 +25,7 @@ void State_StartUpFadeIn()
 void State_FadeIn()
 {
     CVisual visual;
-    
-    CColor current(0,0,0,1);
-    visual.setAdditiveColor( current );
+    visual.setAdditiveColor(0,0,0,1);
             
     CColor final(1,1,1,1);
     NVisualUtils::ColorTo( 500, final, visual );

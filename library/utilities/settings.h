@@ -81,6 +81,7 @@ public:
     // Height and width screen ratio for orthographic objects.
     // The difference between screen and the default size
     const CSize<float> & getOrthoAspectRatio() const;
+    float getOrthoAspectRatioOrientation() const;
 
     // Height and width screen ratio for perspective projection
     const CSize<float> & getScreenAspectRatio() const;

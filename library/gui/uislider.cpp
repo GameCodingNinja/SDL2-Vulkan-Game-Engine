@@ -162,7 +162,7 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
 
     if( isActive() && (m_pressType == NDefs::EAP_DOWN) )
     {
-        const float oneOverAspectRatio(1.f / CSettings::Instance().getOrthoAspectRatio().getH());
+        const float oneOverAspectRatio(1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
 
         if( m_orientation == EO_HORIZONTAL )
             incSliderMovePos( (float)rEvent.motion.xrel * oneOverAspectRatio );
@@ -193,7 +193,7 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
         {
             CPoint<float> dif =
                 (msgCracker.getPos() - getSubControl()->getCollisionPos()) *
-                    (1.f / CSettings::Instance().getOrthoAspectRatio().getH());
+                    (1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
 
             if( m_orientation == EO_HORIZONTAL )
                 incSliderMovePos( dif.x );

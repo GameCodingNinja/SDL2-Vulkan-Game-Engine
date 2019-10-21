@@ -33,6 +33,10 @@ final class CStartUpState : CCommonState
     //
     void init() override
     {
+        // Init the additive color before any rendering is started
+        CVisual visual;
+        visual.setAdditiveColor(0,0,0,1);
+
         // Load the data lists
         ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
         StrategyMgr.loadListTable( "data/objects/strategy/strategyListTable.lst" );
