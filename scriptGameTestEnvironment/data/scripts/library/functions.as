@@ -22,7 +22,7 @@ void rotateGun( CSprite & sprite )
     
     while( true )
     {
-        if( !ActionMgr.queueEmpty() )
+        if( !ActionMgr.isQueueEmpty() )
         {
             if( ActionMgr.wasLastDeviceMouse() )
             {

@@ -42,6 +42,7 @@ CSettings::CSettings() :
     m_viewAngle(45.f),
     m_minZdist(5.f),
     m_maxZdist(1000.f),
+    m_gamepadEnabled(false),
     m_gamepadStickDeadZone(2500),
     m_frequency(44100),
     m_sound_channels(MIX_DEFAULT_CHANNELS),
@@ -247,6 +248,7 @@ void CSettings::loadXML()
             const XMLNode joypadNode = deviceNode.getChildNode("joypad");
             if( !joypadNode.isEmpty() )
             {
+                m_gamepadEnabled = true;
                 m_gamepadStickDeadZone = std::atoi(joypadNode.getAttribute("stickDeadZone"));
             }
 
@@ -537,6 +539,15 @@ float CSettings::getMinZdist() const
 float CSettings::getMaxZdist() const
 {
     return m_maxZdist;
+}
+
+
+/************************************************************************
+*    DESC:  Is the gamepad enabled
+************************************************************************/
+bool CSettings::isGamePadEnabled() const
+{
+    return m_gamepadEnabled;
 }
 
 

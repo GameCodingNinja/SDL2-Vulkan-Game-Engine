@@ -55,7 +55,7 @@ class CGame
         ObjectDataMgr.loadGroup( "(main)" );
 
         // Create the needed strategies
-        LoadStrategy( "data/objects/strategy/strategy.loader" );
+        StrategyMgr.loadStrategy( "data/objects/strategy/strategy.loader" );
     }
     
     //
@@ -63,7 +63,7 @@ class CGame
     //
     void handleEvent()
     {
-        if( !ActionMgr.queueEmpty() )
+        if( !ActionMgr.isQueueEmpty() )
         {
             // Is it time to quit?
             if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||

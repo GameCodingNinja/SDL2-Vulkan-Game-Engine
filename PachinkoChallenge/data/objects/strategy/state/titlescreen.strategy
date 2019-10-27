@@ -3,9 +3,13 @@
     
     <node name="background" defaultGroup="(title)">
         
-        <sprite objectName="background">
-            <position x="0" y="0" z="0"/>
-        </sprite>
+        <sprite objectName="background"/>
+
+    </node>
+
+    <node name="title" defaultGroup="(title)">
+        
+        <sprite objectName="title"/>
 
     </node>
 

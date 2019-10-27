@@ -78,7 +78,7 @@ void LoadTitleScreenAssets()
     ObjectDataMgr.loadGroup( "(title)" );
     
     // Create the needed strategies
-    LoadStrategy( "data/objects/strategy/state/titlescreen.loader" );
+    StrategyMgr.loadStrategy( "data/objects/strategy/state/titlescreen.loader" );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

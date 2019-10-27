@@ -1075,8 +1075,9 @@ void CDevice::initStartupGamepads()
     //int newMappings = SDL_GameControllerAddMappingsFromFile("data/settings/gamecontrollerdb.txt");
     //NGenFunc::PostDebugMsg( boost::str( boost::format("New controller mappings found: %d - Number of controllers found: %d") % newMappings % (int)SDL_NumJoysticks() ) );
 
-    for( int i = 0; i < SDL_NumJoysticks(); ++i )
-        addGamepad( i );
+    if( CSettings::Instance().isGamePadEnabled() )
+        for( int i = 0; i < SDL_NumJoysticks(); ++i )
+            addGamepad( i );
 }
 
 

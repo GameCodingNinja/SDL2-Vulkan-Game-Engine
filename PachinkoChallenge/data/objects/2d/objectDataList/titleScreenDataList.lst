@@ -41,96 +41,13 @@
                 <texture file="data/textures/titleScreen/title_background.png"/>
             </visual>
         </object>
-        
-        <!--
-        <object name="wheel">
-            <visual>
-                <texture file="data/textures/slot/wheel.png"/>
-            </visual>
-        </object>
-        
-        <object name="triangle">
-            <visual>
-                <texture file="data/textures/slot/triangle_green.png"/>
-            </visual>
-        </object>
-        
-        <object name="black_font">
-            <visual>
-                <mesh genType="font"/>
-                <color r="0" g="0" b="0" a="1"/>
-            </visual>
-        </object>
-        
-        <object name="white_font">
-            <visual>
-                <mesh genType="font"/>
-                <color r="1" g="1" b="1" a="1"/>
-            </visual>
-        </object>
-        -->
-        
-<!--
-        <object name="spriteSheetTest1">
-            <visual>
-                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
-                <mesh genType="sprite_sheet">
-                    <spriteSheet defIndex="8" glyphCount="16" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
-                        <glyph id="weaponicons (%d)"/>
-                    </spriteSheet>
-                </mesh>
-                <pipeline id="2d_spriteSheet"/>
-            </visual>
-        </object>
-        
-        <object name="spriteSheetTest2">
-            <visual>
-                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
-                <mesh genType="sprite_sheet">
-                    <spriteSheet defIndex="2" glyphCount="8" formatCodeOffset="8" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
-                        <glyph id="weaponicons (%d)"/>
-                    </spriteSheet>
-                </mesh>
-                <pipeline id="2d_spriteSheet"/>
-            </visual>
-        </object>
 
-        <object name="spriteSheetTest3">
+        <object name="title">
             <visual>
-                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
-                <mesh genType="sprite_sheet">
-                    <spriteSheet defIndex="3" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
-                        <glyph id="weaponicons (2)"/>
-                        <glyph id="hero001"/>
-                        <glyph id="hero3down001"/>
-                        <glyph id="ship (3)"/>
-                        <glyph id="pomel (14)"/>
-                    </spriteSheet>
-                </mesh>
-                <pipeline id="2d_spriteSheet"/>
+                <texture file="data/textures/titleScreen/title.png"/>
             </visual>
         </object>
-
-        <object name="spriteSheetTest4">
-            <visual>
-                <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
-                <mesh genType="sprite_sheet">
-                    <spriteSheet defIndex="9" glyphCount="22" columns="4"/>
-                </mesh>
-                <pipeline id="2d_spriteSheet"/>
-            </visual>
-        </object>
-
-        <object name="spriteSheetTest5">
-            <visual>
-                <texture file="data/textures/spriteSheet/test_simple.png" compressed="true"/>
-                <mesh genType="sprite_sheet">
-                    <spriteSheet defIndex="2" file="data/objects/2d/mesh/titleScreen/test_simple.xml" loadAllGlyphs="true"/>
-                </mesh>
-                <pipeline id="2d_spriteSheet"/>
-            </visual>
-        </object>
--->
+        
     </objectList>
 
 </objectDataList2D>

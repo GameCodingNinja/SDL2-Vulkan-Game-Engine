@@ -37,7 +37,7 @@ final class CLoadState : CCommonState
         ObjectDataMgr.loadGroup( "(load)" );
         
         // Create the needed strategy
-        LoadStrategy( "data/objects/strategy/state/loadscreen.loader" );
+        StrategyMgr.loadStrategy( "data/objects/strategy/state/loadscreen.loader" );
         
         // Start the fade in and animation
         Spawn("State_FadeIn", "(state)");

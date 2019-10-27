@@ -86,6 +86,9 @@ public:
     // Height and width screen ratio for perspective projection
     const CSize<float> & getScreenAspectRatio() const;
 
+    // Is the gamepad enabled
+    bool isGamePadEnabled() const;
+
     // Get the gamepad stick dead zone
     int getGamePadStickDeadZone() const;
 
@@ -210,6 +213,9 @@ private:
 
     // maximum Z distance
     float m_maxZdist;
+
+    // Game pad enabled
+    bool m_gamepadEnabled;
 
     // Gamepad dead zone
     int m_gamepadStickDeadZone;

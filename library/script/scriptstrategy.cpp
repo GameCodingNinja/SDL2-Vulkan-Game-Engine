@@ -218,10 +218,10 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                             asMETHOD(CStrategyMgr, transform), asCALL_THISCALL) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void clear()",                                 asFUNCTION(Clear), asCALL_CDECL_OBJLAST) );
 
+        // Load the strategy
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadStrategy(string &in)",                asFUNCTION(NStrategyloader::load), asCALL_CDECL_OBJLAST) );
+
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );
-
-        // Load the strategy
-        Throw( pEngine->RegisterGlobalFunction("void LoadStrategy(string &in)", asFUNCTION(NStrategyloader::load), asCALL_CDECL) );
     }
 }

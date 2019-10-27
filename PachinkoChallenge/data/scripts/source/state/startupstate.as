@@ -49,7 +49,7 @@ final class CStartUpState : CCommonState
         MenuMgr.setCommandBuffer( "(menu)" );
         
         // Create the needed strategy
-        LoadStrategy( "data/objects/strategy/state/startup.loader" );
+        StrategyMgr.loadStrategy( "data/objects/strategy/state/startup.loader" );
         
         // Do the fade in
         Spawn("State_StartUpFadeIn", "(state)");
