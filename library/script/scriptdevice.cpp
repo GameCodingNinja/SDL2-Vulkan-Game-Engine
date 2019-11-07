@@ -16,6 +16,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptDevice
 {
@@ -50,15 +51,15 @@ namespace NScriptDevice
         // Register type
         Throw( pEngine->RegisterObjectType( "CDevice", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void create(string &in)",                        asFUNCTION(Create), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void destroy()",                                 asMETHOD(CDevice, destroy), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void deleteCommandPoolGroup(string &in)",        asMETHOD(CDevice, deleteCommandPoolGroup), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void waitForIdle()",                             asMETHOD(CDevice, waitForIdle), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void showWindow(bool visible = true)",           asMETHOD(CDevice, showWindow), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void render()",                                  asMETHOD(CDevice, render), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void changeResolution(CSize & in, bool)",        asMETHOD(CDevice, changeResolution), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void setFullScreen(bool)",                       asMETHOD(CDevice, setFullScreen), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CDevice", "void setClearColor(float, float, float, float)", asMETHOD(CDevice, setClearColor), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void create(string &in)",                        WRAP_OBJ_LAST(Create),                     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void destroy()",                                 WRAP_MFN(CDevice, destroy),                asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void deleteCommandPoolGroup(string &in)",        WRAP_MFN(CDevice, deleteCommandPoolGroup), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void waitForIdle()",                             WRAP_MFN(CDevice, waitForIdle),            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void showWindow(bool visible = true)",           WRAP_MFN(CDevice, showWindow),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void render()",                                  WRAP_MFN(CDevice, render),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void changeResolution(CSize & in, bool)",        WRAP_MFN(CDevice, changeResolution),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void setFullScreen(bool)",                       WRAP_MFN(CDevice, setFullScreen),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CDevice", "void setClearColor(float, float, float, float)", WRAP_MFN(CDevice, setClearColor),          asCALL_GENERIC) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CDevice Device", &CDevice::Instance()) );

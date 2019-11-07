@@ -30,7 +30,6 @@
 /consoleTestAp/build/
 
 /org.howiesfunware.PachinkoChallenge/build
-/org.howiesfunware.PachinkoChallenge/gradle
 /org.howiesfunware.PachinkoChallenge/app/build
 /org.howiesfunware.PachinkoChallenge/.gradle
 /org.howiesfunware.PachinkoChallenge/.idea
@@ -41,7 +40,6 @@
 /org.lapcatgames.template/.gradle
 /org.lapcatgames.template/.idea
 /org.lapcatgames.template/app/.externalNativeBuild
-/org.lapcatgames.template/.idea
 
 /library/.vscode/ipch
 /library/Win32/

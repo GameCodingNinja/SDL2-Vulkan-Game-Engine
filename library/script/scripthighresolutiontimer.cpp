@@ -15,6 +15,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptHighResolutionTimer
 {
@@ -30,9 +31,9 @@ namespace NScriptHighResolutionTimer
         // Register type
         Throw( pEngine->RegisterObjectType( "CHighResTimer", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "double getElapsedTime()", asMETHOD(CHighResTimer, getElapsedTime), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "void timerStart()",       asMETHOD(CHighResTimer, timerStart),     asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "float timerStop()",       asMETHOD(CHighResTimer, timerStop),      asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "double getElapsedTime()", WRAP_MFN(CHighResTimer, getElapsedTime), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "void timerStart()",       WRAP_MFN(CHighResTimer, timerStart),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "float timerStop()",       WRAP_MFN(CHighResTimer, timerStop),      asCALL_GENERIC) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CHighResTimer HighResTimer", &CHighResTimer::Instance()) );

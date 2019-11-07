@@ -16,6 +16,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptFontManager
 {
@@ -50,7 +51,7 @@ namespace NScriptFontManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CFontMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("CFontMgr", "void load(string &in)", asFUNCTION(Load), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CFontMgr", "void load(string &in)", WRAP_OBJ_LAST(Load), asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CFontMgr FontMgr", &CFontMgr::Instance()) );

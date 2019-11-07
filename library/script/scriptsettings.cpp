@@ -15,6 +15,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptSettings
 {
@@ -30,36 +31,36 @@ namespace NScriptSettings
         // Register type
         Throw( pEngine->RegisterObjectType( "CSettings", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getResolution()",        asMETHOD(CSettings, getResolution),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSize()",              asMETHOD(CSettings, getSize),              asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSize()",       asMETHOD(CSettings, getDefaultSize),       asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSizeHalf()",          asMETHOD(CSettings, getSizeHalf),          asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getNativeSize()",        asMETHOD(CSettings, getNativeSize),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSizeHalf()",   asMETHOD(CSettings, getDefaultSizeHalf),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setSize(const CSize & in)",       asMETHOD(CSettings, setSize),              asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getScreenAspectRatio()", asMETHOD(CSettings, getScreenAspectRatio), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getOrthoAspectRatio()",  asMETHOD(CSettings, getOrthoAspectRatio),  asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void calcRatio()",                     asMETHOD(CSettings, calcRatio),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getResolution()",        WRAP_MFN(CSettings, getResolution),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSize()",              WRAP_MFN(CSettings, getSize),              asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSize()",       WRAP_MFN(CSettings, getDefaultSize),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSizeHalf()",          WRAP_MFN(CSettings, getSizeHalf),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getNativeSize()",        WRAP_MFN(CSettings, getNativeSize),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSizeHalf()",   WRAP_MFN(CSettings, getDefaultSizeHalf),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setSize(const CSize & in)",       WRAP_MFN(CSettings, setSize),              asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getScreenAspectRatio()", WRAP_MFN(CSettings, getScreenAspectRatio), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getOrthoAspectRatio()",  WRAP_MFN(CSettings, getOrthoAspectRatio),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void calcRatio()",                     WRAP_MFN(CSettings, calcRatio),            asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "bool getVSync()",                      asMETHOD(CSettings, getVSync),             asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setVSync(bool)",                  asMETHOD(CSettings, setVSync),             asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "bool getFullScreen()",                 asMETHOD(CSettings, getFullScreen),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setFullScreen(bool)",             asMETHOD(CSettings, setFullScreen),        asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool getVSync()",                      WRAP_MFN(CSettings, getVSync),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setVSync(bool)",                  WRAP_MFN(CSettings, setVSync),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool getFullScreen()",                 WRAP_MFN(CSettings, getFullScreen),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setFullScreen(bool)",             WRAP_MFN(CSettings, setFullScreen),        asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "int getSectorSize()",                  asMETHOD(CSettings, getSectorSize),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "int getSectorSizeHalf()",              asMETHOD(CSettings, getSectorSizeHalf),    asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "int getSectorSize()",                  WRAP_MFN(CSettings, getSectorSize),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "int getSectorSizeHalf()",              WRAP_MFN(CSettings, getSectorSizeHalf),    asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "int getAnisotropicLevel()",            asMETHOD(CSettings, getAnisotropicLevel),  asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setAnisotropicLevel(int)",        asMETHOD(CSettings, setAnisotropicLevel),  asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "int getAnisotropicLevel()",            WRAP_MFN(CSettings, getAnisotropicLevel),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setAnisotropicLevel(int)",        WRAP_MFN(CSettings, setAnisotropicLevel),  asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugMode()",                   asMETHOD(CSettings, isDebugMode),          asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugAsMobile()",               asMETHOD(CSettings, isDebugAsMobile),      asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isMobileDevice()",                asMETHOD(CSettings, isMobileDevice),       asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugMode()",                   WRAP_MFN(CSettings, isDebugMode),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugAsMobile()",               WRAP_MFN(CSettings, isDebugAsMobile),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isMobileDevice()",                WRAP_MFN(CSettings, isMobileDevice),       asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "int getGamePadStickDeadZone()",        asMETHOD(CSettings, getGamePadStickDeadZone), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void setGamePadStickDeadZone(int)",    asMETHOD(CSettings, setGamePadStickDeadZone), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "int getGamePadStickDeadZone()",        WRAP_MFN(CSettings, getGamePadStickDeadZone), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void setGamePadStickDeadZone(int)",    WRAP_MFN(CSettings, setGamePadStickDeadZone), asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "void saveSettings()",                  asMETHOD(CSettings, saveSettings), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "void saveSettings()",                  WRAP_MFN(CSettings, saveSettings), asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CSettings Settings", &CSettings::Instance()) );

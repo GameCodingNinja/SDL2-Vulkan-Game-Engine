@@ -19,6 +19,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptSprite
 {
@@ -223,62 +224,62 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectType(  "CSprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
         // Visual component functions
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(const CColor &in)",                   asFUNCTION(SetColor1),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(float, float, float, float)",         asFUNCTION(SetColor2),       asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getColor() const",                   asFUNCTION(GetColor),        asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultColor()",                            asFUNCTION(SetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getDefaultColor() const",            asFUNCTION(GetDefaultColor), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setAlpha(float, bool allowToExceed = false)",  asFUNCTION(SetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "float getAlpha() const",                            asFUNCTION(GetAlpha), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultAlpha()",                            asFUNCTION(SetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "float getDefaultAlpha() const",                     asFUNCTION(GetDefaultAlpha), asCALL_CDECL_OBJLAST)  );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void createFontString(string &in)",                 asFUNCTION(CreateFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const string & getFontString() const",              asFUNCTION(GetFontString), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite() const",                         asFUNCTION(IsFontSprite), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(const CColor &in)",                  WRAP_OBJ_LAST(SetColor1),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(float, float, float, float)",        WRAP_OBJ_LAST(SetColor2),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getColor() const",                  WRAP_OBJ_LAST(GetColor),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultColor()",                           WRAP_OBJ_LAST(SetDefaultColor),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CColor & getDefaultColor() const",           WRAP_OBJ_LAST(GetDefaultColor),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setAlpha(float, bool allowToExceed = false)", WRAP_OBJ_LAST(SetAlpha),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "float getAlpha() const",                           WRAP_OBJ_LAST(GetAlpha),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setDefaultAlpha()",                           WRAP_OBJ_LAST(SetDefaultAlpha),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "float getDefaultAlpha() const",                    WRAP_OBJ_LAST(GetDefaultAlpha),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void createFontString(string &in)",                WRAP_OBJ_LAST(CreateFontString), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const string & getFontString() const",             WRAP_OBJ_LAST(GetFontString),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite() const",                        WRAP_OBJ_LAST(IsFontSprite),     asCALL_GENERIC) );
 
         // Physics component functions
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", asFUNCTION(SetTransform), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setLinearVelocity(float, float)", asFUNCTION(SetLinearVelocity), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setAngularVelocity(float)",       asFUNCTION(SetAngularVelocity), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",      asFUNCTION(ApplyAngularImpulse), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", WRAP_OBJ_LAST(SetTransform),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setLinearVelocity(float, float)",                                               WRAP_OBJ_LAST(SetLinearVelocity),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setAngularVelocity(float)",                                                     WRAP_OBJ_LAST(SetAngularVelocity),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",                                 WRAP_OBJ_LAST(ApplyAngularImpulse), asCALL_GENERIC) );
 
         // Sprite specific functions
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               asFUNCTION(GetSize), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount() const",                          asMETHOD(CSprite, getFrameCount),        asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setFrame(uint)",                                 asMETHOD(CSprite, setFrame),             asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getCurrentFrame() const",                        asMETHOD(CSprite, getCurrentFrame),      asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               WRAP_OBJ_LAST(GetSize),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount() const",                          WRAP_MFN(CSprite, getFrameCount),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setFrame(uint)",                                 WRAP_MFN(CSprite, setFrame),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "uint getCurrentFrame() const",                        WRAP_MFN(CSprite, getCurrentFrame), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "int getId() const",                                   asMETHOD(CSprite,   getId),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "int getId() const",                                   WRAP_MFN(CSprite,   getId),         asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool prepare(string &in, bool forceUpdate = false)",  asMETHOD(CSprite,   prepare),            asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool prepare(string &in, bool forceUpdate = false)",  WRAP_MFN(CSprite,   prepare),       asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               WRAP_OBJ_LAST(SetVisible),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              WRAP_OBJ_LAST(IsVisible),    asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(CPoint &in)",                             asFUNCTION(SetPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(SetPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(CPoint &in)",                             WRAP_OBJ_LAST(SetPos1),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(float x = 0, float y = 0, float z = 0)",  WRAP_OBJ_LAST(SetPos2),      asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(CPoint & in)",                            asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(float x = 0, float y = 0, float z = 0)",  asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(CPoint & in)",                            WRAP_OBJ_LAST(IncPos1),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(float x = 0, float y = 0, float z = 0)",  WRAP_OBJ_LAST(IncPos2),      asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getPos() const",                       asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getWorldPos() const",                  asFUNCTION(GetWorldPos),  asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getCenterPos() const",                 asFUNCTION(GetCenterPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getPos() const",                       WRAP_OBJ_LAST(GetPos),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getWorldPos() const",                  WRAP_OBJ_LAST(GetWorldPos),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getCenterPos() const",                 WRAP_OBJ_LAST(GetCenterPos), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot1),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot1), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot() const",                         asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot() const",                         WRAP_OBJ_LAST(GetRot),    asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetScale1), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetScale2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncScale1), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncScale2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                      asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                       WRAP_OBJ_LAST(GetScale),   asCALL_GENERIC) );
     }
 }

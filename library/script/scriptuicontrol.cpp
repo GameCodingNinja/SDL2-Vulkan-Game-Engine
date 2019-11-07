@@ -22,6 +22,7 @@
 // AngelScript lib dependencies
 #include <angelscript.h>
 #include <scriptarray/scriptarray.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptUIControl
 {
@@ -158,89 +159,89 @@ namespace NScriptUIControl
         // Register type
         Throw( pEngine->RegisterObjectType(  "uiControl", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setStringToList(string &in)",   asMETHOD(iControl, setStringToList), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setStringToList(string &in)",                                WRAP_MFN(iControl, setStringToList), asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void createFontString(string &in, int spriteIndex = 0)",          asMETHODPR(iControl, createFontString, (const std::string &, int), void), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void createFontString(int stringIndex = 0, int spriteIndex = 0)", asMETHODPR(iControl, createFontString, (int, int), void), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setActionType(string &in)",                                  asMETHODPR(iControl, setActionType, (const std::string &), void), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setExecutionAction(string &in)",                             asMETHOD(iControl, setExecutionAction),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void changeState(int)",                                           asMETHOD(iControl, changeState),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "uiControl & findControl(string &in)",                             asFUNCTION(FindControl), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void createFontString(string &in, int spriteIndex = 0)",          WRAP_MFN_PR(iControl, createFontString, (const std::string &, int), void), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void createFontString(int stringIndex = 0, int spriteIndex = 0)", WRAP_MFN_PR(iControl, createFontString, (int, int), void),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setActionType(string &in)",                                  WRAP_MFN_PR(iControl, setActionType, (const std::string &), void),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setExecutionAction(string &in)",                             WRAP_MFN(iControl, setExecutionAction),                                    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void changeState(int)",                                           WRAP_MFN(iControl, changeState),                                           asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "uiControl & findControl(string &in)",                             WRAP_OBJ_LAST(FindControl),                                                asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isDisabled() const",                   asMETHOD(iControl, isDisabled),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isInactive() const",                   asMETHOD(iControl, isInactive),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isActive() const",                     asMETHOD(iControl, isActive),     asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isSelected() const",                   asMETHOD(iControl, isSelected),   asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isSelectable() const",                 asMETHOD(iControl, isSelectable), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isDisabled() const",                               WRAP_MFN(iControl, isDisabled),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isInactive() const",                               WRAP_MFN(iControl, isInactive),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isActive() const",                                 WRAP_MFN(iControl, isActive),                   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isSelected() const",                               WRAP_MFN(iControl, isSelected),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isSelectable() const",                             WRAP_MFN(iControl, isSelectable),               asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getName() const",            asFUNCTION(GetName), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getGroup() const",           asFUNCTION(GetGroup), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getFaction() const",         asFUNCTION(GetFaction), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getExecutionAction() const", asMETHOD(iControl, getExecutionAction), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getName() const",                        WRAP_OBJ_LAST(GetName),                         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getGroup() const",                       WRAP_OBJ_LAST(GetGroup),                        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getFaction() const",                     WRAP_OBJ_LAST(GetFaction),                      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getExecutionAction() const",             WRAP_MFN(iControl, getExecutionAction),         asCALL_GENERIC) );
         
         // Object pos, rot & scale
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setVisible(bool)",                                 asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isVisible() const",                                asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setVisible(bool)",                                 WRAP_OBJ_LAST(SetVisible),                         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isVisible() const",                                WRAP_OBJ_LAST(IsVisible),                          asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setPos(CPoint &in)",                               asFUNCTION(SetPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setPos(float x = 0, float y = 0, float z = 0)",    asFUNCTION(SetPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setPos(CPoint &in)",                               WRAP_OBJ_LAST(SetPos1),                            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setPos(float x = 0, float y = 0, float z = 0)",    WRAP_OBJ_LAST(SetPos2),                            asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incPos(CPoint & in)",                              asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incPos(float x = 0, float y = 0, float z = 0)",    asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incPos(CPoint & in)",                              WRAP_OBJ_LAST(IncPos1),                            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incPos(float x = 0, float y = 0, float z = 0)",    WRAP_OBJ_LAST(IncPos2),                            asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getPos() const",                         asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getPos() const",                         WRAP_OBJ_LAST(GetPos),                             asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot1),                            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot1),                            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getRot() const",                         asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getRot() const",                         WRAP_OBJ_LAST(GetRot),                             asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetScale1),                          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetScale2),                          asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncScale1),                          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncScale2),                          asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getScale() const",                       asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "const CPoint & getScale() const",                       WRAP_OBJ_LAST(GetScale),                           asCALL_GENERIC) );
 
         // Interface to sub sontrol
-        Throw( pEngine->RegisterObjectMethod("uiControl", "uint size()",                                           asMETHOD(iControl, size), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "uint size()",                                           WRAP_MFN(iControl, size),                       asCALL_GENERIC) );
         
         // Interface to button list
-        Throw( pEngine->RegisterObjectMethod("uiControl", "int getActiveIndex() const",                            asMETHOD(iControl, getActiveIndex), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setActiveIndex(int)",                              asMETHOD(iControl, setActiveIndex), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "int getActiveIndex() const",                            WRAP_MFN(iControl, getActiveIndex),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setActiveIndex(int)",                              WRAP_MFN(iControl, setActiveIndex),             asCALL_GENERIC) );
         
         // Interface to check box
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool getToggleState() const",                           asMETHOD(iControl, getToggleState), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setToggleState(bool)",                             asMETHOD(iControl, setToggleState), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool getToggleState() const",                           WRAP_MFN(iControl, getToggleState),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setToggleState(bool)",                             WRAP_MFN(iControl, setToggleState),             asCALL_GENERIC) );
         
         // Interface to meter
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setMeterValue(double)",                            asMETHOD(iControl, setMeterValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void startBangUp(double)",                              asMETHOD(iControl, startBangUp), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void fastBang()",                                       asMETHOD(iControl, fastBang), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isBanging() const",                                asMETHOD(iControl, isBanging), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void clearMeter()",                                     asMETHOD(iControl, clearMeter), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setMeterValue(double)",                            WRAP_MFN(iControl, setMeterValue),              asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void startBangUp(double)",                              WRAP_MFN(iControl, startBangUp),                asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void fastBang()",                                       WRAP_MFN(iControl, fastBang),                   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool isBanging() const",                                WRAP_MFN(iControl, isBanging),                  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void clearMeter()",                                     WRAP_MFN(iControl, clearMeter),                 asCALL_GENERIC) );
         
         // Interface to progress bar
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setProgressBarValue(float)",                       asMETHOD(iControl, setProgressBarValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "float getProgressBarValue() const",                     asMETHOD(iControl, getProgressBarValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void incProgressBarValue(float)",                       asMETHOD(iControl, incProgressBarValue), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setProgressBarValue(float)",                       WRAP_MFN(iControl, setProgressBarValue),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "float getProgressBarValue() const",                     WRAP_MFN(iControl, getProgressBarValue),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incProgressBarValue(float)",                       WRAP_MFN(iControl, incProgressBarValue),        asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setProgressBarMinValue(float)",                    asMETHOD(iControl, setProgressBarMinValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "float getProgressBarMinValue() const",                  asMETHOD(iControl, getProgressBarMinValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setProgressBarMaxValue(float)",                    asMETHOD(iControl, setProgressBarMaxValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "float getProgressBarMaxValue() const",                  asMETHOD(iControl, getProgressBarMaxValue), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setProgressBarMinValue(float)",                    WRAP_MFN(iControl, setProgressBarMinValue),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "float getProgressBarMinValue() const",                  WRAP_MFN(iControl, getProgressBarMinValue),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setProgressBarMaxValue(float)",                    WRAP_MFN(iControl, setProgressBarMaxValue),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "float getProgressBarMaxValue() const",                  WRAP_MFN(iControl, getProgressBarMaxValue),     asCALL_GENERIC) );
         
         // Interface to slider
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderPosValue(float)",                         asMETHOD(iControl, setSliderPosValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "float getSliderPosValue() const",                       asMETHOD(iControl, getSliderPosValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMinValue(float)",                         asMETHOD(iControl, setSliderMinValue), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMaxValue(float)",                         asMETHOD(iControl, setSliderMaxValue), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderPosValue(float)",                         WRAP_MFN(iControl, setSliderPosValue),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "float getSliderPosValue() const",                       WRAP_MFN(iControl, getSliderPosValue),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMinValue(float)",                         WRAP_MFN(iControl, setSliderMinValue),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void setSliderMaxValue(float)",                         WRAP_MFN(iControl, setSliderMaxValue),          asCALL_GENERIC) );
         
         // Interface to scroll box
-        Throw( pEngine->RegisterObjectMethod("uiControl", "uiControl & getScrollBoxControl(uint)",asMETHOD(iControl, getPtrToScrollBoxControl), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "uiControl & getScrollBoxControl(uint)",                 WRAP_MFN(iControl, getPtrToScrollBoxControl),   asCALL_GENERIC) );
     }
 }

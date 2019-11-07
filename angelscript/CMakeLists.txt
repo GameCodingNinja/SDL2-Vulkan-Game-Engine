@@ -6,9 +6,9 @@ add_library(
         source/as_builder.cpp
         source/as_bytecode.cpp
         source/as_callfunc.cpp
-	source/as_callfunc_mips.cpp
-	source/as_callfunc_arm_gcc.S
-	source/as_callfunc_arm.cpp
+        source/as_callfunc_mips.cpp
+        source/as_callfunc_arm_gcc.S
+        source/as_callfunc_arm.cpp
         source/as_callfunc_x86.cpp
         source/as_callfunc_x64_gcc.cpp
         source/as_callfunc_x64_msvc.cpp
@@ -39,8 +39,8 @@ add_library(
         source/as_variablescope.cpp
         add_on/scriptstdstring/scriptstdstring.cpp
         add_on/scriptarray/scriptarray.cpp
-	add_on/scriptdictionary/scriptdictionary.cpp
-	add_on/scriptmath/scriptmath.cpp )
+        add_on/scriptdictionary/scriptdictionary.cpp
+        add_on/scriptmath/scriptmath.cpp )
 
 include_directories(include)
 

@@ -15,6 +15,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptMenu
 {
@@ -121,40 +122,40 @@ namespace NScriptMenu
         // Register type
         Throw( pEngine->RegisterObjectType(  "CMenu", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setAlpha(float alpha)",                            asMETHOD(CMenu, setAlpha), asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "float getAlpha()",                                      asMETHOD(CMenu, getAlpha), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setAlpha(float alpha)",                            WRAP_MFN(CMenu, setAlpha),              asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "float getAlpha()",                                      WRAP_MFN(CMenu, getAlpha),              asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getControl(string &in)",                    asMETHOD(CMenu, getPtrToControl),       asCALL_THISCALL) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getActiveControl()",                        asMETHOD(CMenu, getPtrToActiveControl), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getControl(string &in)",                    WRAP_MFN(CMenu, getPtrToControl),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getActiveControl()",                        WRAP_MFN(CMenu, getPtrToActiveControl), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "bool isActive()",                                       asMETHOD(CMenu, isActive), asCALL_THISCALL) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "bool isActive()",                                       WRAP_MFN(CMenu, isActive),              asCALL_GENERIC) );
 
         // Object pos, rot & scale
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setVisible(bool)",                                 asFUNCTION(SetVisible), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "bool isVisible()",                                      asFUNCTION(IsVisible), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setVisible(bool)",                                 WRAP_OBJ_LAST(SetVisible), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "bool isVisible()",                                      WRAP_OBJ_LAST(IsVisible),  asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setPos(CPoint &in)",                               asFUNCTION(SetPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setPos(float x = 0, float y = 0, float z = 0)",    asFUNCTION(SetPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setPos(CPoint &in)",                               WRAP_OBJ_LAST(SetPos1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setPos(float x = 0, float y = 0, float z = 0)",    WRAP_OBJ_LAST(SetPos2),    asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void incPos(CPoint & in)",                              asFUNCTION(IncPos1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void incPos(float x = 0, float y = 0, float z = 0)",    asFUNCTION(IncPos2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void incPos(CPoint & in)",                              WRAP_OBJ_LAST(IncPos1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void incPos(float x = 0, float y = 0, float z = 0)",    WRAP_OBJ_LAST(IncPos2),    asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "const CPoint & getPos()",                               asFUNCTION(GetPos),  asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "const CPoint & getPos()",                               WRAP_OBJ_LAST(GetPos),     asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(SetRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(SetRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void incRot(CPoint &in, bool convertToRadians = true)", asFUNCTION(IncRot1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", asFUNCTION(IncRot2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void incRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "const CPoint & getRot()",                               asFUNCTION(GetRot),    asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "const CPoint & getRot()",                               WRAP_OBJ_LAST(GetRot),     asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setScale(CPoint & in)",                            asFUNCTION(SetScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void setScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(SetScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetScale1),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetScale2),  asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void incScale(CPoint & in)",                            asFUNCTION(IncScale1), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CMenu", "void incScale(float x = 1, float y = 1, float z = 1)",  asFUNCTION(IncScale2), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncScale1),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncScale2),  asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CMenu", "const CPoint & getScale()",                             asFUNCTION(GetScale),   asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "const CPoint & getScale()",                             WRAP_OBJ_LAST(GetScale),   asCALL_GENERIC) );
     }
 }

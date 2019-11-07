@@ -1,0 +1,96 @@
+{
+  "buildFiles": [
+    "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk"
+  ],
+  "cleanCommands": [
+    "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 clean"
+  ],
+  "buildTargetsCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "timidity-debug-armeabi-v7a": {
+      "artifactName": "timidity",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libtimidity.a",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libtimidity.a"
+    },
+    "hidapi-debug-armeabi-v7a": {
+      "artifactName": "hidapi",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libhidapi.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libhidapi.so"
+    },
+    "main-debug-armeabi-v7a": {
+      "artifactName": "main",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmain.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmain.so"
+    },
+    "bulletPhysics-debug-armeabi-v7a": {
+      "artifactName": "bulletPhysics",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libbulletPhysics.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libbulletPhysics.so"
+    },
+    "cpufeatures-debug-armeabi-v7a": {
+      "artifactName": "cpufeatures",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libcpufeatures.a",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libcpufeatures.a"
+    },
+    "SDL2_mixer-debug-armeabi-v7a": {
+      "artifactName": "SDL2_mixer",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libSDL2_mixer.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libSDL2_mixer.so"
+    },
+    "Box2D-debug-armeabi-v7a": {
+      "artifactName": "Box2D",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libBox2D.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libBox2D.so"
+    },
+    "angelscript-debug-armeabi-v7a": {
+      "artifactName": "angelscript",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libangelscript.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libangelscript.so"
+    },
+    "modplug-debug-armeabi-v7a": {
+      "artifactName": "modplug",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmodplug.a",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmodplug.a"
+    },
+    "SDL2-debug-armeabi-v7a": {
+      "artifactName": "SDL2",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libSDL2.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libSDL2.so"
+    },
+    "ogg-debug-armeabi-v7a": {
+      "artifactName": "ogg",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libogg.a",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libogg.a"
+    },
+    "vorbisidec-debug-armeabi-v7a": {
+      "artifactName": "vorbisidec",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libvorbisidec.a",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libvorbisidec.a"
+    },
+    "mpg123-debug-armeabi-v7a": {
+      "artifactName": "mpg123",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmpg123.so",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmpg123.so"
+    },
+    "FLAC-debug-armeabi-v7a": {
+      "artifactName": "FLAC",
+      "buildCommand": "/home/howie/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-23 NDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj NDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib APP_PLATFORM\u003dandroid-23 /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libFLAC.a",
+      "abi": "armeabi-v7a",
+      "output": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libFLAC.a"
+    }
+  }
+}

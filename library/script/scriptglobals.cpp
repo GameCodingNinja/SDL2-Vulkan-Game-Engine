@@ -27,6 +27,7 @@
 // AngelScript lib dependencies
 #include <angelscript.h>
 #include <scriptarray/scriptarray.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptGlobals
 {
@@ -34,12 +35,16 @@ namespace NScriptGlobals
     
     /************************************************************************
     *    DESC:  Generate a random number
+    *    param: int min, int max
     ************************************************************************/
-    int RandInt( int min, int max )
+    void RandInt( asIScriptGeneric * pScriptGen )
     {
+        int min = pScriptGen->GetArgDWord(0);
+        int max = pScriptGen->GetArgDWord(1);
+
         std::uniform_int_distribution<int> randInt(min, max);
-        
-        return randInt(defaultGenerator);
+
+        pScriptGen->SetReturnDWord( randInt(defaultGenerator) );
     }
     
     /************************************************************************
@@ -56,7 +61,7 @@ namespace NScriptGlobals
     /************************************************************************
     *    DESC:  Suspend the script to the game loop
     ************************************************************************/
-    void Suspend()
+    void Suspend( asIScriptGeneric * pScriptGen )
     {
         asIScriptContext *ctx = asGetActiveContext();
 
@@ -69,7 +74,7 @@ namespace NScriptGlobals
     /************************************************************************
     *    DESC:  Get Resolutions
     ************************************************************************/
-    CScriptArray * GetScreenResolutions()
+    void GetScreenResolutions( asIScriptGeneric * pScriptGen )
     {
         std::vector< CSize<int> > resVec;
         int displayCount = SDL_GetNumDisplayModes(0);
@@ -99,10 +104,46 @@ namespace NScriptGlobals
             CSize<float> mode( resVec[i] );
             ary->SetValue(i, &mode);
         }
-        
-        return ary;
+
+        // Set the return value
+        pScriptGen->SetReturnObject( ary );
     }
- 
+
+    /************************************************************************
+    *    DESC:  Dispatch Even Wrapper
+    *    PARAM: int return; int type, int code
+    ************************************************************************/
+    void DispatchEvent( asIScriptGeneric * pScriptGen )
+    {
+        int type = pScriptGen->GetArgDWord(0);
+        int code = pScriptGen->GetArgDWord(1);
+
+        pScriptGen->SetReturnDWord( NGenFunc::DispatchEvent( type, code ) );
+    }
+
+    /************************************************************************
+    *    DESC:  Spawn Wrapper
+    *    PARAM: const std::string & funcName, const std::string & group
+    ************************************************************************/
+    void Spawn( asIScriptGeneric * pScriptGen )
+    {
+        std::string *funcName = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(0));
+        std::string *group = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(1));
+
+        CScriptMgr::Instance().prepareSpawn( *funcName, *group );
+    }
+
+    /************************************************************************
+    *    DESC:  Spawn by thread Wrapper
+    *    PARAM: const std::string & funcName, const std::string & group
+    ************************************************************************/
+    void SpawnByThread( asIScriptGeneric * pScriptGen )
+    {
+        std::string *funcName = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(0));
+        std::string *group = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(1));
+
+        CScriptMgr::Instance().spawnByThread( *funcName, *group );
+    }
 
     /************************************************************************
     *    DESC:  Register the global functions
@@ -111,17 +152,17 @@ namespace NScriptGlobals
     {
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
 
-        Throw( pEngine->RegisterGlobalFunction("int RandInt(int, int)", asFUNCTION(RandInt), asCALL_CDECL) );
-        Throw( pEngine->RegisterGlobalFunction("void Print(string &in)", asFUNCTION(NGenFunc::PostDebugMsg), asCALL_CDECL) );
-        Throw( pEngine->RegisterGlobalFunction("void Suspend()", asFUNCTION(Suspend), asCALL_CDECL) );
-        Throw( pEngine->RegisterGlobalFunction("int UniformRandomInt(int startRange, int endRange, int seed = 0)", asFUNCTION( NGenFunc::UniformRandomInt), asCALL_CDECL ) );
-        Throw( pEngine->RegisterGlobalFunction("float UniformRandomFloat(float startRange, float endRange, int seed = 0)", asFUNCTION( NGenFunc::UniformRandomFloat), asCALL_CDECL ) );
+        Throw( pEngine->RegisterGlobalFunction("int RandInt(int, int)", asFUNCTION(RandInt), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("void Print(string &in)", WRAP_FN(NGenFunc::PostDebugMsg), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("void Suspend()", asFUNCTION(Suspend), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("int UniformRandomInt(int startRange, int endRange, int seed = 0)", WRAP_FN(NGenFunc::UniformRandomInt), asCALL_GENERIC ) );
+        Throw( pEngine->RegisterGlobalFunction("float UniformRandomFloat(float startRange, float endRange, int seed = 0)", WRAP_FN(NGenFunc::UniformRandomFloat), asCALL_GENERIC ) );
         // The DispatchEvent function has 4 parameters and because they are not defined here, they only return garbage
         // AngelScript is not allowing the other two voided pointers
-        Throw( pEngine->RegisterGlobalFunction("void DispatchEvent(int type, int code = 0)", asFUNCTION(NGenFunc::DispatchEvent), asCALL_CDECL) );
-        Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, string &in = '')", asMETHOD(CScriptMgr, prepareSpawn), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
-        Throw( pEngine->RegisterGlobalFunction("void SpawnByThread(string &in, string &in = '')", asMETHOD(CScriptMgr, spawnByThread), asCALL_THISCALL_ASGLOBAL, &CScriptMgr::Instance()) );
+        Throw( pEngine->RegisterGlobalFunction("int DispatchEvent(int type, int code = 0)", asFUNCTION(DispatchEvent), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("void Spawn(string &in, string &in = '')", asFUNCTION(Spawn), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("void SpawnByThread(string &in, string &in = '')", asFUNCTION(SpawnByThread), asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterGlobalFunction("array<CSize> @ GetScreenResolutions()", asFUNCTION(GetScreenResolutions), asCALL_CDECL) );
+        Throw( pEngine->RegisterGlobalFunction("array<CSize> @ GetScreenResolutions()", asFUNCTION(GetScreenResolutions), asCALL_GENERIC) );
     }
 }

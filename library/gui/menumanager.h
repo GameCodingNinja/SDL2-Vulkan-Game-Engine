@@ -123,6 +123,15 @@ public:
     void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
     void setCommandBuffers( const std::string & cmdBufPool );
 
+    // Get the name of the default tree
+    const std::string & getDefaultTreeName();
+
+    // Dispatch the escape action
+    void dispatchEscapeAction();
+
+    // Dispatch the toggle action
+    void dispatchToggleAction();
+
 private:
     
     // Constructor

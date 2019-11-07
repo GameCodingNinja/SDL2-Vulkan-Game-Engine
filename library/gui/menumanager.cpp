@@ -592,21 +592,11 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
             // Only the default tree can execute an escape or toggle when none are active.
             if( CActionMgr::Instance().wasAction( rEvent, m_escapeAction, NDefs::EAP_DOWN ) )
             {
-                CMenuTree * pTree = getActiveTree();
-
-                if( pTree == nullptr )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION, 0, &m_defaultTree );
-                else
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION, 0, &pTree->getName() );
+                
             }
             else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, NDefs::EAP_DOWN ) )
             {
-                CMenuTree * pTree = getActiveTree();
-
-                if( pTree == nullptr )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION, 0, &m_defaultTree );
-                else
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION, 0, &pTree->getName() );
+                
             }
             else if( m_active )
             {
@@ -678,6 +668,34 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
             handleEventForTrees( rEvent );
         }
     }
+}
+
+
+/************************************************************************
+*    DESC:  Dispatch the escape action
+************************************************************************/
+void CMenuMgr::dispatchEscapeAction()
+{
+    CMenuTree * pTree = getActiveTree();
+
+    if( pTree == nullptr )
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION, 0, &m_defaultTree );
+    else
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION, 0, &pTree->getName() );
+}
+
+
+/************************************************************************
+*    DESC:  Dispatch the toggle action
+************************************************************************/
+void CMenuMgr::dispatchToggleAction()
+{
+    CMenuTree * pTree = getActiveTree();
+
+    if( pTree == nullptr )
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION, 0, &m_defaultTree );
+    else
+        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION, 0, &pTree->getName() );
 }
 
 
@@ -993,6 +1011,15 @@ CMenuTree * CMenuMgr::getActiveTree()
     }
 
     return pTree;
+}
+
+
+/************************************************************************
+*    DESC:  Get the name of the default tree
+************************************************************************/
+const std::string & CMenuMgr::getDefaultTreeName()
+{
+    return m_defaultTree;
 }
 
 

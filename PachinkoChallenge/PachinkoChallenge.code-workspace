@@ -84,7 +84,8 @@
 			"future": "cpp",
 			"cfenv": "cpp",
 			"cinttypes": "cpp",
-			"valarray": "cpp"
+			"valarray": "cpp",
+			"*.as": "cpp"
 		}
 	}
 }

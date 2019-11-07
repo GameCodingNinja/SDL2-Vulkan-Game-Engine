@@ -16,6 +16,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <autowrapper/aswrappedcall.h>
 
 namespace NScriptObjectDataManager
 {
@@ -57,8 +58,6 @@ namespace NScriptObjectDataManager
         }
     }
     
-    
-    
     /************************************************************************
     *    DESC:  Free all of the meshes and materials of a specific data group                                                           
     ************************************************************************/
@@ -79,7 +78,6 @@ namespace NScriptObjectDataManager
     }
 
 
-    
     /************************************************************************
     *    DESC:  Register global functions
     ************************************************************************/
@@ -92,9 +90,9 @@ namespace NScriptObjectDataManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CObjectDataMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadListTable(string &in)", asFUNCTION(LoadListTable), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup(string &in)",     asFUNCTION(LoadGroup), asCALL_CDECL_OBJLAST) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup(string &in)",     asFUNCTION(FreeGroup), asCALL_CDECL_OBJLAST) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadListTable(string &in)", WRAP_OBJ_LAST(LoadListTable), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup(string &in)",     WRAP_OBJ_LAST(LoadGroup),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup(string &in)",     WRAP_OBJ_LAST(FreeGroup),     asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CObjectDataMgr ObjectDataMgr", &CObjectDataMgr::Instance()) );
