@@ -592,11 +592,11 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
             // Only the default tree can execute an escape or toggle when none are active.
             if( CActionMgr::Instance().wasAction( rEvent, m_escapeAction, NDefs::EAP_DOWN ) )
             {
-                
+                dispatchEscapeAction();
             }
             else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, NDefs::EAP_DOWN ) )
             {
-                
+                dispatchToggleAction();
             }
             else if( m_active )
             {

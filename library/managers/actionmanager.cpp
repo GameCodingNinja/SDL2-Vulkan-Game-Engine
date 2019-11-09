@@ -31,7 +31,7 @@ CActionMgr::CActionMgr() :
 
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("RETURN",  SDLK_RETURN) );
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("ESCAPE",  SDLK_ESCAPE) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("AC_BACK",  SDLK_AC_BACK) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("AC_BACK",  SDLK_AC_BACK) ); // Android back button
 
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("ARROW UP",    SDLK_UP) );
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("ARROW DOWN",  SDLK_DOWN) );
