@@ -121,13 +121,43 @@ void CActorStrategy::loadFromFile( const std::string & file )
 /************************************************************************
  *    DESC:  Get the node data container by name
  ************************************************************************/
-CNodeDataList & CActorStrategy::getData( const std::string & name )
+CNodeDataList & CActorStrategy::getData( const std::string & name, const std::string & _group )
 {
+    // Normal senerio is that the actor data has been loaded for this actor strategy
     auto iter = m_dataMap.find( name );
     if( iter == m_dataMap.end() )
-        throw NExcept::CCriticalException("Node Data Error!",
-            boost::str( boost::format("Error finding node data (%s).\n\n%s\nLine: %s")
-                % name % __FUNCTION__ % __LINE__ ));
+    {
+        std::string group = _group;
+
+        // If we can't find the data and the group param is empty, see if we can find the group 
+        // in the Object Data Manager as a last attemp. 
+        if( group.empty() )
+        {
+            group = CObjectDataMgr::Instance().findGroup( name );
+
+            if( !group.empty() )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node data generated from group search (%s-%s)!") % name % group ) );
+        }
+        else
+        {
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node data generated from group param (%s-%s)!") % name % group ) );
+        }
+
+        // If we found group that has an object of the same name, create the data and pass it along
+        if( !group.empty() )
+        {
+            iter = m_dataMap.emplace(
+                std::piecewise_construct,
+                std::forward_as_tuple(name),
+                std::forward_as_tuple(group, name) ).first;
+        }
+        else
+        {
+            throw NExcept::CCriticalException("Node Data Error!",
+                boost::str( boost::format("Error finding node data (%s).\n\n%s\nLine: %s")
+                    % name % __FUNCTION__ % __LINE__ ));
+        }
+    }
 
     return iter->second;
 }
@@ -139,7 +169,8 @@ CNodeDataList & CActorStrategy::getData( const std::string & name )
 iNode * CActorStrategy::create(
     const std::string & dataName,
     const std::string & instanceName,
-    bool makeActive )
+    bool makeActive,
+    const std::string & group )
 {
     if( instanceName.empty() && !makeActive )
         throw NExcept::CCriticalException("Node Create Error!",
@@ -149,7 +180,7 @@ iNode * CActorStrategy::create(
     // Create a unique node id
     const int nodeId( m_idInc++ );
 
-    auto & rNodeDataVec = getData( dataName ).getData();
+    auto & rNodeDataVec = getData( dataName, group ).getData();
 
     iNode * pHeadNode(nullptr);
 

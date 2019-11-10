@@ -25,6 +25,10 @@ public:
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
         int defId = defs_DEFAULT_ID );
+
+    CSpriteData( 
+        const std::string & group,
+        const std::string & objName );
     
     CSpriteData( const CSpriteData & data );
     

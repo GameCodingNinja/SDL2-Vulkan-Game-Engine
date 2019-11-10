@@ -63,6 +63,21 @@ CNodeData::CNodeData(
                     % nodeName % __FUNCTION__ % __LINE__ ));
 }
 
+/************************************************************************
+*    DESC:  Constructor for dynamic node data generation for sprite creation
+************************************************************************/
+CNodeData::CNodeData( 
+    const std::string & group,
+    const std::string & objName ) :
+        CSpriteData( group, objName ),
+        m_nodeName(objName),
+        m_nodeId(defs_DEFAULT_ID),
+        m_parenNodetId(defs_DEFAULT_ID),
+        m_nodeType(NDefs::ENT_SPRITE),
+        m_hasChildrenNodes(false)
+{
+}
+
 
 /************************************************************************
 *    DESC:  destructor                                                             

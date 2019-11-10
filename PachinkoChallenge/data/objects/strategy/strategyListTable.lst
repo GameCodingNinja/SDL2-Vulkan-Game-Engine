@@ -4,17 +4,9 @@
     <groupList groupName="_startup_">
         <file path="data/objects/strategy/state/startup.strategy"/>
     </groupList>
-    
-    <groupList groupName="_title_background_">
-        <file path="data/objects/strategy/state/titlescreenbackground.strategy"/>
-    </groupList>
 
     <groupList groupName="_title_stage_">
         <file path="data/objects/strategy/state/titlescreenstage.strategy"/>
-    </groupList>
-
-    <groupList groupName="_title_text_">
-        <file path="data/objects/strategy/state/titlescreentitle.strategy"/>
     </groupList>
 
     <groupList groupName="_load_">

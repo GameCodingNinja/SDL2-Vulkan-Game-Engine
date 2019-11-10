@@ -97,6 +97,11 @@ namespace NStrategyloader
                                 {
                                     const std::string name = startegyNodeXML.getAttribute( "name" );
 
+                                    // See if a group has been specified
+                                    std::string group;
+                                    if( startegyNodeXML.isAttributeSet("group") )
+                                        group = startegyNodeXML.getAttribute( "group" );
+
                                     // See if there is an instance name associated with this node
                                     // Nodes are active by default but can be loaded disabled if it has an instance name
                                     std::string instanceName;
@@ -109,7 +114,7 @@ namespace NStrategyloader
                                             active = ( std::strcmp( startegyNodeXML.getAttribute("active"), "true" ) == 0 );
                                     }
 
-                                    iNode * pHeadNode = pStrategy->create( name, instanceName, active );
+                                    iNode * pHeadNode = pStrategy->create( name, instanceName, active, group );
 
                                     // Check for any child nodes. Could be object, sprite or node
                                     for( int childNode = 0; childNode < startegyNodeXML.nChildNode(); ++childNode )

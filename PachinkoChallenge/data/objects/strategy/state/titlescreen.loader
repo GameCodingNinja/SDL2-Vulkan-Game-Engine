@@ -3,7 +3,7 @@
 
     <strategy name="_title_background_" type="actor" cmdBufPool="(title)">
     
-        <node name="background">
+        <node group="(title)" name="background">
             <sprite>
                 <rotation z="90"/>
             </sprite>
@@ -15,7 +15,7 @@
 
     <strategy name="_title_text_" type="actor" cmdBufPool="(title)">
 
-        <node name="title">
+        <node group="(title)" name="title">
             <sprite>
                 <position x="0" y="-700" z="0"/>
             </sprite>

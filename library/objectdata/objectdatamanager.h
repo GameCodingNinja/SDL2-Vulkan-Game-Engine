@@ -47,6 +47,9 @@ public:
     void freeGroupLst( const std::vector<std::string> & groupVec );
     void freeGroupAry( const CScriptArray & strategyIdAry );
 
+    // Find the group an object name belongs to
+    std::string findGroup( const std::string & objectName );
+
 private:
 
     CObjectDataMgr();

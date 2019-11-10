@@ -52,7 +52,8 @@ public:
     virtual iNode * create(
         const std::string & dataName,
         const std::string & instanceName = "",
-        bool makeActive = true ){ return nullptr; }
+        bool makeActive = true,
+        const std::string & group = std::string() ){ return nullptr; }
     
     // Create the node
     virtual void destroy( int id ){};

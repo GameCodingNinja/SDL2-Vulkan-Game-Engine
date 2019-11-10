@@ -336,3 +336,24 @@ void CObjectDataMgr::freeDataGroup( const std::string & group )
     if( mapIter != m_objectDataMapMap.end() )
         m_objectDataMapMap.erase( mapIter );
 }
+
+/************************************************************************
+ *    DESC:  Find the group an object name belongs to
+ ************************************************************************/
+std::string CObjectDataMgr::findGroup( const std::string & objectName )
+{
+    std::string result;
+
+    // Work your way backwards through the map because chances are we are looking
+    // for an object name in a group that was reciently added.
+    for( auto iter = m_objectDataMapMap.rbegin(); iter != m_objectDataMapMap.rend(); iter++ )
+    {
+        if( iter->second.find( objectName ) != iter->second.end() )
+        {
+            result = iter->first;
+            break;
+        }
+    }
+
+    return result;
+}

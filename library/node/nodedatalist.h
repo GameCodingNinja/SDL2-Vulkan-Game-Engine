@@ -30,6 +30,11 @@ public:
         const std::string & _defGroup,
         const std::string & _defObjName,
         int defId = defs_DEFAULT_ID );
+
+    // Constructor for dynamic node data generation for sprite creation
+    CNodeDataList(
+        const std::string & group,
+        const std::string & objName );
     
     // Destructor
     virtual ~CNodeDataList();

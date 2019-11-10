@@ -51,11 +51,11 @@ namespace NScriptStrategy
     /************************************************************************
     *    DESC:  Create an actor sprite                                                            
     ************************************************************************/
-    iNode * Create( const std::string & id, const std::string & instance, iStrategy & rStrategy )
+    iNode * Create( const std::string & id, const std::string & instance, bool active, const std::string & group, iStrategy & rStrategy )
     {
         try
         {
-            return rStrategy.create( id, instance );
+            return rStrategy.create( id, instance, active, group );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -163,7 +163,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectType("iStrategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCommandBuffer(string &in)",           WRAP_OBJ_LAST(SetCommandBuffer), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in, string &in = '')", WRAP_OBJ_LAST(Create),           asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in, string &in = '', bool active = true, string &in = '')", WRAP_OBJ_LAST(Create), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void destroy(int)",                           WRAP_MFN(iStrategy, destroy),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCamera(string &in)",                  WRAP_MFN(iStrategy, setCamera),  asCALL_GENERIC) );
         

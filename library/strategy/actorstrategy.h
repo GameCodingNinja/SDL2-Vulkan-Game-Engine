@@ -49,7 +49,8 @@ public:
     iNode * create(
         const std::string & dataName,
         const std::string & instanceName = "",
-        bool makeActive = true ) override;
+        bool makeActive = true,
+        const std::string & group = std::string() ) override;
     
     // activate/deactivate node
     iNode * activateNode( const std::string & instanceName );
@@ -84,7 +85,7 @@ public:
 protected:
 
     // Get the node data by name
-    CNodeDataList & getData( const std::string & name );
+    CNodeDataList & getData( const std::string & name, const std::string & _group = std::string() );
     
 private:
     

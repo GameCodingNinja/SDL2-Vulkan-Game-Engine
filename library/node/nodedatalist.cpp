@@ -49,6 +49,16 @@ CNodeDataList::CNodeDataList(
     loadNode( node, m_dataVec.back(), defGroup, defObjName, defId );
 }
 
+/************************************************************************
+*    DESC:  Constructor for dynamic node data generation for sprite creation
+************************************************************************/
+CNodeDataList::CNodeDataList(
+    const std::string & group,
+    const std::string & objName )
+{
+    m_dataVec.emplace_back( group, objName );
+}
+
 
 /************************************************************************
 *    DESC:  destructor

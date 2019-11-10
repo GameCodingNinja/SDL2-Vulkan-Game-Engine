@@ -41,6 +41,19 @@ CSpriteData::CSpriteData(
         m_spriteId = std::atoi(xmlNode.getAttribute( "id" ));
 }
 
+/************************************************************************
+*    DESC:  Constructor for dynamic node data generation for sprite creation
+************************************************************************/
+CSpriteData::CSpriteData( 
+    const std::string & group,
+    const std::string & objName ) :
+        m_name(objName),
+        m_group(group),
+        m_objectName(objName),
+        m_spriteId(defs_DEFAULT_ID)
+{
+}
+
 CSpriteData::CSpriteData( const CSpriteData & data ) :
     m_xmlNode( data.m_xmlNode ),
     m_name( data.m_name ),
