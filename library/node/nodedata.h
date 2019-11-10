@@ -23,7 +23,6 @@ public:
         int parenNodetId = defs_DEFAULT_ID,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
-        const std::string & defAIName = std::string(),
         int defId = defs_DEFAULT_ID );
     
     // Destructor

@@ -84,7 +84,7 @@ void CActorStrategy::loadFromFile( const std::string & file )
     const XMLNode node = XMLNode::openFileHelper( file.c_str(), "node" );
     if( !node.isEmpty() )
     {
-        std::string defGroup, defObjName, defAIName, nodeName;
+        std::string defGroup, defObjName, nodeName;
         
         // Check for any defaults
         if( node.isAttributeSet( "defaultGroup" ) )
@@ -92,9 +92,6 @@ void CActorStrategy::loadFromFile( const std::string & file )
 
         if( node.isAttributeSet( "defaultObjectName" ) )
             defObjName = node.getAttribute( "defaultObjectName" );
-
-        if( node.isAttributeSet( "defaultAIName" ) )
-            defAIName = node.getAttribute( "defaultAIName" );
     
         for( int i = 0; i < node.nChildNode(); ++i )
         {
@@ -107,7 +104,7 @@ void CActorStrategy::loadFromFile( const std::string & file )
             bool duplicate = !m_dataMap.emplace(
                 std::piecewise_construct,
                 std::forward_as_tuple(id),
-                std::forward_as_tuple(nodeLst, defGroup, defObjName, defAIName) ).second;
+                std::forward_as_tuple(nodeLst, defGroup, defObjName) ).second;
 
             // Check for duplicate names
             if( duplicate )

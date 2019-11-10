@@ -24,7 +24,6 @@ public:
         const XMLNode & node,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
-        const std::string & defAIName = std::string(),
         int defId = defs_DEFAULT_ID );
     
     CSpriteData( const CSpriteData & data );
@@ -40,9 +39,6 @@ public:
     
     // Get the object name
     const std::string & getObjectName() const;
-
-    // Get the AI name
-    const std::string & getAIName() const;
     
     // Get the unique id number
     int getSpriteId() const;
@@ -63,9 +59,6 @@ private:
     
     // Object name
     std::string m_objectName;
-    
-    // AI name
-    std::string m_aiName;
     
     // Sprite Id
     int m_spriteId;

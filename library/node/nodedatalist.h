@@ -29,7 +29,6 @@ public:
         const XMLNode & node,
         const std::string & _defGroup,
         const std::string & _defObjName,
-        const std::string & _defAIName,
         int defId = defs_DEFAULT_ID );
     
     // Destructor
@@ -46,7 +45,6 @@ private:
         CNodeData & nodeData,
         const std::string & defGroup,
         const std::string & defObjName,
-        const std::string & defAIName,
         int defId = defs_DEFAULT_ID );
     
 private:

@@ -28,9 +28,8 @@ CNodeData::CNodeData(
     int parenNodetId,
     const std::string & defGroup,
     const std::string & defObjName,
-    const std::string & defAIName,
     int defId ) :
-        CSpriteData( node.getChildNode(), defGroup, defObjName, defAIName, defId ),
+        CSpriteData( node.getChildNode(), defGroup, defObjName, defId ),
         m_nodeName(nodeName),
         m_nodeId(nodeId),
         m_parenNodetId(parenNodetId),

@@ -42,10 +42,12 @@ public:
     // Add strategy which will load it's data from XML node
     iStrategy * addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy );
     
-    // activate/deactivate strategy
+    // activate strategy
     iStrategy * activateStrategy( const std::string & strategyId );
     void activateStrategyLst( const std::vector<std::string> & strategyIdVec );
     void activateStrategyAry( const CScriptArray & strategyIdAry );
+
+    // deactivate strategy
     void deactivateStrategy( const std::string & strategyId );
     void deactivateStrategyLst( const std::vector<std::string> & strategyIdVec );
     void deactivateStrategyAry( const CScriptArray & strategyIdAry );

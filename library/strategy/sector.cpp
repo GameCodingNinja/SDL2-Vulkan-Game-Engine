@@ -50,7 +50,7 @@ void CSector::loadFromNode( const XMLNode & node )
     const XMLNode sectorNode = XMLNode::openFileHelper( filePath.c_str(), "sector" );
     if( !sectorNode.isEmpty() )
     {
-        std::string defObjName, defGroup, defAIName, nodeName;
+        std::string defObjName, defGroup, nodeName;
         int defId(defs_DEFAULT_ID);
 
         // Check for any defaults
@@ -60,9 +60,6 @@ void CSector::loadFromNode( const XMLNode & node )
         if( sectorNode.isAttributeSet( "defaultObjectName" ) )
             defObjName = sectorNode.getAttribute( "defaultObjectName" );
 
-        if( sectorNode.isAttributeSet( "defaultAIName" ) )
-            defAIName = sectorNode.getAttribute( "defaultAIName" );
-
         if( sectorNode.isAttributeSet( "defaultId" ) )
             defId = std::atoi(sectorNode.getAttribute( "defaultId" ));
         
@@ -71,7 +68,7 @@ void CSector::loadFromNode( const XMLNode & node )
         {
             const XMLNode childNode = sectorNode.getChildNode( i );
             
-            CNodeDataList data( childNode, defGroup, defObjName, defAIName, defId );
+            CNodeDataList data( childNode, defGroup, defObjName, defId );
             const auto & rNodeDataVec = data.getData();
             
             // See if the head nodes has a name
