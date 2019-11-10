@@ -7,6 +7,9 @@
 
 final class CTitleScreenState : CCommonState
 {
+    // An array of the strategies used in this state
+    array<string> mStrategyAry = {"_title_background_", "_title_stage_", "_title_text_"};
+
     //
     //  Constructor
     //
@@ -25,7 +28,7 @@ final class CTitleScreenState : CCommonState
         
         Device.deleteCommandPoolGroup( "(title)" );
         
-        StrategyMgr.deleteStrategy( "_title_" );
+        StrategyMgr.deleteStrategyAry( mStrategyAry );
         
         ObjectDataMgr.freeGroup( "(title)" );
     }
@@ -39,7 +42,7 @@ final class CTitleScreenState : CCommonState
         MenuMgr.activateTree( "title_screen_tree" );
         
         // Activate the strategies
-        StrategyMgr.activateStrategy( "_title_" );
+        StrategyMgr.activateStrategyAry( mStrategyAry );
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");

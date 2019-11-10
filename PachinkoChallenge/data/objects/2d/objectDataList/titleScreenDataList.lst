@@ -47,6 +47,18 @@
                 <texture file="data/textures/titleScreen/title.png"/>
             </visual>
         </object>
+
+        <object name="peg">
+            <visual>
+                <texture file="data/textures/run/peg.png"/>
+            </visual>
+            <physics>
+                <body type="static"/>
+                <fixtureLst>
+                    <fixture shape="circle" radius="17"/>
+                </fixtureLst>
+            </physics>
+        </object>
         
     </objectList>
 

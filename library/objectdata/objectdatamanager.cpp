@@ -27,6 +27,9 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
+// AngelScript lib dependencies
+#include <scriptarray/scriptarray.h>
+
 /************************************************************************
  *    DESC:  Constructor
  ************************************************************************/
@@ -71,6 +74,12 @@ void CObjectDataMgr::loadGroupLst( const std::vector<std::string> & groupVec )
 {
     for( auto & iter : groupVec )
         loadGroup( iter );
+}
+
+void CObjectDataMgr::loadGroupAry( const CScriptArray & strategyIdAry )
+{
+    for( uint i = 0; i < strategyIdAry.GetSize(); i++ )
+        loadGroup( *reinterpret_cast<const std::string *>(strategyIdAry.At(i)) );
 }
 
 void CObjectDataMgr::loadGroup( const std::string & group )
@@ -293,6 +302,12 @@ void CObjectDataMgr::freeGroupLst( const std::vector<std::string> & groupVec )
 {
     for( auto & iter : groupVec )
         freeGroup( iter );
+}
+
+void CObjectDataMgr::freeGroupAry( const CScriptArray & strategyIdAry )
+{
+    for( uint i = 0; i < strategyIdAry.GetSize(); i++ )
+        freeGroup( *reinterpret_cast<const std::string *>(strategyIdAry.At(i)) );
 }
 
 void CObjectDataMgr::freeGroup( const std::string & group )

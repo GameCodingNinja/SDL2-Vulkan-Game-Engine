@@ -1,13 +1,19 @@
 <?xml version="1.0"?>
 <strategyLst>
 
-    <strategy name="_title_" type="actor" cmdBufPool="(title)">
+    <strategy name="_title_background_" type="actor" cmdBufPool="(title)">
     
         <node name="background">
             <sprite>
                 <rotation z="90"/>
             </sprite>
         </node>
+
+    </strategy>
+
+    <strategy name="_title_stage_" type="stage" camera="title_anim_camera" cmdBufPool="(title)"/>
+
+    <strategy name="_title_text_" type="actor" cmdBufPool="(title)">
 
         <node name="title">
             <sprite>

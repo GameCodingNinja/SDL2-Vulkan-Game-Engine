@@ -24,6 +24,9 @@
 // SDL lib dependencies
 #include <SDL.h>
 
+// AngelScript lib dependencies
+#include <scriptarray/scriptarray.h>
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -75,6 +78,13 @@ void CStrategyMgr::activateStrategyLst( const std::vector<std::string> & strateg
         activateStrategy( iter );
 }
 
+void CStrategyMgr::activateStrategyAry( const CScriptArray & strategyIdAry )
+{
+    for( uint i = 0; i < strategyIdAry.GetSize(); i++ )
+        activateStrategy( *reinterpret_cast<const std::string *>(strategyIdAry.At(i)) );
+}
+
+
 iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
@@ -110,6 +120,12 @@ void CStrategyMgr::deactivateStrategyLst( const std::vector<std::string> & strat
         deactivateStrategy( iter );
 }
 
+void CStrategyMgr::deactivateStrategyAry( const CScriptArray & strategyIdAry )
+{
+    for( uint i = 0; i < strategyIdAry.GetSize(); i++ )
+        deactivateStrategy( *reinterpret_cast<const std::string *>(strategyIdAry.At(i)) );
+}
+
 void CStrategyMgr::deactivateStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
@@ -137,6 +153,12 @@ void CStrategyMgr::deleteStrategyLst( const std::vector<std::string> & strategyI
 {
     for( auto & iter : strategyIdVec )
         deleteStrategy( iter );
+}
+
+void CStrategyMgr::deleteStrategyAry( const CScriptArray & strategyIdAry )
+{
+    for( uint i = 0; i < strategyIdAry.GetSize(); i++ )
+        deleteStrategy( *reinterpret_cast<const std::string *>(strategyIdAry.At(i)) );
 }
 
 void CStrategyMgr::deleteStrategy( const std::string & strategyId )

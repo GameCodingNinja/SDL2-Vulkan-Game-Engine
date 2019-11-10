@@ -24,6 +24,7 @@
 class iNode;
 class iStrategy;
 class CMatrix;
+class CScriptArray;
 union SDL_Event;
 struct XMLNode;
 
@@ -44,12 +45,15 @@ public:
     // activate/deactivate strategy
     iStrategy * activateStrategy( const std::string & strategyId );
     void activateStrategyLst( const std::vector<std::string> & strategyIdVec );
+    void activateStrategyAry( const CScriptArray & strategyIdAry );
     void deactivateStrategy( const std::string & strategyId );
     void deactivateStrategyLst( const std::vector<std::string> & strategyIdVec );
+    void deactivateStrategyAry( const CScriptArray & strategyIdAry );
     
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
     void deleteStrategyLst( const std::vector<std::string> & strategyIdVec );
+    void deleteStrategyAry( const CScriptArray & strategyIdAry );
 
     // Delete all the sprites
     void clear();

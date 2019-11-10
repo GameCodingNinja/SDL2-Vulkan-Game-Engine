@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<node>
+    
+    <node name="background" defaultGroup="(title)">
+        
+        <sprite objectName="background"/>
+
+    </node>
+
+</node>

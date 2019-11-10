@@ -20,6 +20,7 @@ class CObjectData2D;
 class CObjectData3D;
 class CSpriteData;
 class iObjectData;
+class CScriptArray;
 struct XMLNode;
 
 class CObjectDataMgr : public CManagerBase
@@ -39,10 +40,12 @@ public:
     // Load all of the meshes and materials of a specific data group
     void loadGroup( const std::string & group );
     void loadGroupLst( const std::vector<std::string> & groupVec );
+    void loadGroupAry( const CScriptArray & strategyIdAry );
 
     // Free all of the meshes and materials of a specific data group
     void freeGroup( const std::string & group );
     void freeGroupLst( const std::vector<std::string> & groupVec );
+    void freeGroupAry( const CScriptArray & strategyIdAry );
 
 private:
 

@@ -17,6 +17,7 @@
 // AngelScript lib dependencies
 #include <angelscript.h>
 #include <autowrapper/aswrappedcall.h>
+#include <scriptarray/scriptarray.h>
 
 namespace NScriptObjectDataManager
 {
@@ -57,6 +58,22 @@ namespace NScriptObjectDataManager
             asGetActiveContext()->SetException(ex.what());
         }
     }
+
+    void LoadGroupAry( const CScriptArray & groupAry, CObjectDataMgr & rObjectDataMgr )
+    {
+        try
+        {
+            rObjectDataMgr.loadGroupAry( groupAry );
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+    }
     
     /************************************************************************
     *    DESC:  Free all of the meshes and materials of a specific data group                                                           
@@ -66,6 +83,22 @@ namespace NScriptObjectDataManager
         try
         {
             rObjectDataMgr.freeGroup( group );
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+    }
+
+    void FreeGroupAry( const CScriptArray & groupAry, CObjectDataMgr & rObjectDataMgr )
+    {
+        try
+        {
+            rObjectDataMgr.freeGroupAry( groupAry );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -90,9 +123,11 @@ namespace NScriptObjectDataManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CObjectDataMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadListTable(string &in)", WRAP_OBJ_LAST(LoadListTable), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup(string &in)",     WRAP_OBJ_LAST(LoadGroup),     asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup(string &in)",     WRAP_OBJ_LAST(FreeGroup),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadListTable(string &in)",       WRAP_OBJ_LAST(LoadListTable), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroup(string &in)",           WRAP_OBJ_LAST(LoadGroup),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void loadGroupAry(array<string> &in)", WRAP_OBJ_LAST(LoadGroupAry),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroup(string &in)",           WRAP_OBJ_LAST(FreeGroup),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObjectDataMgr", "void freeGroupAry(array<string> &in)", WRAP_OBJ_LAST(FreeGroupAry),  asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CObjectDataMgr ObjectDataMgr", &CObjectDataMgr::Instance()) );

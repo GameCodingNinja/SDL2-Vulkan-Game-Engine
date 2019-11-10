@@ -138,43 +138,6 @@ namespace NScriptStrategy
         return pStrategy;
     }
 
-    /************************************************************************
-    *    DESC:  Create a basic stage strategy                                                            
-    ************************************************************************/
-    void DeleteStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
-    {
-        try
-        {
-            rStrategyMgr.deleteStrategy( strategyId );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-    }
-    
-    /************************************************************************
-    *    DESC:  Clear all the strategies
-    ************************************************************************/
-    void Clear( CStrategyMgr & rStrategyMgr )
-    {
-        try
-        {
-            rStrategyMgr.clear();
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-    }
     
     /************************************************************************
     *    DESC:  Register the class with AngelScript
@@ -207,20 +170,28 @@ namespace NScriptStrategy
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadListTable(string &in)",               WRAP_MFN(CStrategyMgr, loadListTable),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadListTable(string &in)",                WRAP_MFN(CStrategyMgr, loadListTable),         asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createActorStrategy(string &in)",  WRAP_OBJ_LAST(CreateActorStrategy),         asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createStageStrategy(string &in)",  WRAP_OBJ_LAST(CreateStageStrategy),         asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & activateStrategy(string &in)",     WRAP_MFN(CStrategyMgr, activateStrategy),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deactivateStrategy(string &in)",          WRAP_MFN(CStrategyMgr, deactivateStrategy), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",          WRAP_OBJ_LAST(GetStrategy),                 asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",              WRAP_OBJ_LAST(DeleteStrategy),              asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                WRAP_MFN(CStrategyMgr, update),             asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                             WRAP_MFN(CStrategyMgr, transform),          asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void clear()",                                 WRAP_OBJ_LAST(Clear),                       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createActorStrategy(string &in)",   WRAP_OBJ_LAST(CreateActorStrategy),            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createStageStrategy(string &in)",   WRAP_OBJ_LAST(CreateStageStrategy),            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & activateStrategy(string &in)",      WRAP_MFN(CStrategyMgr, activateStrategy),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void activateStrategyAry(array<string> &in)",   WRAP_MFN(CStrategyMgr, activateStrategyAry),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deactivateStrategy(string &in)",           WRAP_MFN(CStrategyMgr, deactivateStrategy),    asCALL_GENERIC) );
+
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deactivateStrategyAry(array<string> &in)", WRAP_MFN(CStrategyMgr, deactivateStrategyAry), asCALL_GENERIC) );
+
+
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",           WRAP_OBJ_LAST(GetStrategy),                    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",               WRAP_MFN(CStrategyMgr, deleteStrategy),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategyAry(array<string> &in)",     WRAP_MFN(CStrategyMgr, deleteStrategyAry),     asCALL_GENERIC) );
+
+
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void update()",                                 WRAP_MFN(CStrategyMgr, update),                asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void transform()",                              WRAP_MFN(CStrategyMgr, transform),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void clear()",                                  WRAP_MFN(CStrategyMgr, clear),                 asCALL_GENERIC) );
 
         // Load the strategy
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadStrategy(string &in)",                WRAP_FN(NStrategyloader::load),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadStrategy(string &in)",                 WRAP_FN(NStrategyloader::load),                 asCALL_GENERIC) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );

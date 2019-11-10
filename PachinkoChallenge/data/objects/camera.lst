@@ -3,9 +3,8 @@
     
     <default projectType="orthographic" minZDist="5" maxZDist="1000" view_angle="45.0"/>
 
-    <camera id="cubeCamera" projectType="perspective" minZDist="5" maxZDist="1000" view_angle="45.0">
-        <position x="0" y="0" z="20"/>
-        <rotation x="10" y="0" z="0"/>
+    <camera id="title_anim_camera" projectType="orthographic" minZDist="5" maxZDist="1000" view_angle="45.0">
+        <position x="0" y="50" z="20"/>
     </camera>
   
 </cameraLst>

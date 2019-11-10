@@ -1253,11 +1253,9 @@ void CDevice::createSharedFontIBO( std::vector<uint16_t> & iboVec )
     // If the new indices are greater then the current, init the IBO with the newest
     if( iboVec.size() > m_currentMaxFontIndices )
     {
+        // Add to the delete queue so as to not be deleted while in the command buffer
         if( !m_sharedFontIbo.isEmpty() )
-        {
-            vkDestroyBuffer( m_logicalDevice, m_sharedFontIbo.m_buffer, nullptr );
-            vkFreeMemory( m_logicalDevice, m_sharedFontIbo.m_deviceMemory, nullptr );
-        }
+            AddToDeleteQueue( m_sharedFontIbo );
 
         CDeviceVulkan::creatMemoryBuffer( iboVec, m_sharedFontIbo, VK_BUFFER_USAGE_INDEX_BUFFER_BIT );
 
@@ -1320,9 +1318,9 @@ void CDevice::AddToDeleteQueue( CMemoryBuffer & memBuff )
     }
 }
 
-void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & commandBufVec )
+void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & memoryBufVec )
 {
-    for( auto & iter : commandBufVec )
+    for( auto & iter : memoryBufVec )
         AddToDeleteQueue( iter );
 }
 
