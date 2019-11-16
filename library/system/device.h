@@ -70,9 +70,6 @@ public:
     // Create the command pool group
     VkCommandPool createSecondaryCommandPool( const std::string & group );
 
-    // Delete a secondary command buffer of a specific group
-    void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
-
     // Create push descriptor set
     void createPushDescriptorSet(
         uint32_t pipelineIndex,
@@ -197,9 +194,6 @@ public:
     // Get descriptor data map
     const CDescriptorData & getDescriptorData( const std::string & id ) const;
 
-    // Delete a uniform buffer vec
-    void deleteUniformBufferVec( std::vector<CMemoryBuffer> & commandBufVec );
-
     // Begin the recording of the command buffer
     void beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer );
 
@@ -237,6 +231,9 @@ public:
     // Set the clear color
     void setClearColor( float r, float g, float b, float a );
 
+    // Delete a secondary command buffer of a specific group
+    //void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
+
 private:
 
     // Constructor
@@ -266,6 +263,10 @@ private:
     // Delete the model group
     void deleteModelGroup( const std::string & group );
 
+    // Add a delete function to the delete map
+    void AddToDeleteQueue( std::function<void(VkDevice logicalDevice)> deleteFunc );
+    void AddToDeleteQueue( CTexture & texture );
+
     // Record the command buffers
     void recordCommandBuffers( uint32_t cmdBufIndex );
 
@@ -274,9 +275,6 @@ private:
 
     // Destroy the swap chain
     void destroySwapChain() override;
-    
-    // Free the memory buffer
-    void freeMemoryBuffer( CMemoryBuffer & memoryBuffer );
     
     // Load 3d mesh file
     void loadFrom3DM(
@@ -363,8 +361,8 @@ private:
     // Map containing pipeline layouts
     std::map< const std::string, VkPipelineLayout > m_pipelineLayoutMap;
 
-    // Vector for deleting memory buffers
-    std::map< uint32_t, std::vector<CMemoryBuffer> > m_memoryDeleteMap;
+    // Vector for deleting VK memory buffers
+    std::map< uint32_t, std::vector<std::function<void(VkDevice logicalDevice)>> > m_memoryDeleteMap;
     
     // Map containing a group array of vbo, ibo and texture id's
     std::map< const std::string, std::map< const std::string, CModel > > m_modelMapMap;

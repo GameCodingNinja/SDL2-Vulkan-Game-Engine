@@ -50,9 +50,6 @@ CLoadState::CLoadState( const CStateMessage & stateMsg ) :
 ************************************************************************/
 CLoadState::~CLoadState()
 {
-    // Wait for all rendering to be finished
-    CDevice::Instance().waitForIdle();
-    
     CStrategyMgr::Instance().deleteStrategy( "_load_" );
     CDevice::Instance().deleteCommandPoolGroup( "(load)" );
     CObjectDataMgr::Instance().freeGroup( "(load)" );

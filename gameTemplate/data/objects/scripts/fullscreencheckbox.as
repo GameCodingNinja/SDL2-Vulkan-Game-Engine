@@ -38,7 +38,6 @@ final class CFullScreenCheckbox
     //
     void changeFullScreen()
     {
-        Device.waitForIdle();
         Device.setFullScreen( Settings.getFullScreen() );
     }
 

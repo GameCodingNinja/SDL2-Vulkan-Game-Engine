@@ -22,9 +22,6 @@ final class CRunState : CCommonState
     //
     void destroy() override
     {
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
-        
         ScriptMgr.freeGroup( "(level_1)" );
         ObjectDataMgr.freeGroup( "(level_1)" );
         StrategyMgr.deleteStrategy( "_stage_" );

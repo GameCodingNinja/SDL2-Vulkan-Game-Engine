@@ -40,9 +40,6 @@ CTitleScreenState::CTitleScreenState() :
 ************************************************************************/
 CTitleScreenState::~CTitleScreenState()
 {
-    // Wait for all rendering to be finished
-    CDevice::Instance().waitForIdle();
-    
     CStrategyMgr::Instance().deleteStrategyLst( {"_title_", "_cube_"} );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
     CObjectDataMgr::Instance().freeGroupLst( {"(title)", "(cube)"} );

@@ -138,6 +138,9 @@ void CDevice::create( const std::string & pipelineCfg )
 ****************************************************************************/
 void CDevice::destroy()
 {
+    // Wait for all rendering to be finished
+    waitForIdle();
+
     // Destroy the Vulkan instance
     CDeviceVulkan::destroy();
 
@@ -167,15 +170,8 @@ void CDevice::destroyAssets()
 
         // Free all textures in all groups
         for( auto & mapIter : m_textureMapMap )
-        {
             for( auto & iter : mapIter.second )
-            {
-                vkDestroyImage( m_logicalDevice, iter.second.textureImage, nullptr );
-                vkFreeMemory( m_logicalDevice, iter.second.textureImageMemory, nullptr );
-                vkDestroyImageView( m_logicalDevice, iter.second.textureImageView, nullptr );
-                vkDestroySampler( m_logicalDevice, iter.second.textureSampler, nullptr );
-            }
-        }
+                iter.second.free( m_logicalDevice );
 
         m_textureMapMap.clear();
 
@@ -189,17 +185,17 @@ void CDevice::destroyAssets()
         // Free all memory buffer groups
         for( auto & mapIter : m_memoryBufferMapMap )
             for( auto & iter : mapIter.second )
-                freeMemoryBuffer( iter.second );
+                iter.second.free( m_logicalDevice );
 
         m_memoryBufferMapMap.clear();
         
         // Free the shared font IBO buffer
-        freeMemoryBuffer( m_sharedFontIbo );
+        m_sharedFontIbo.free( m_logicalDevice );
         
         // Free the delete queue
         for( auto & mapIter : m_memoryDeleteMap )
             for( auto & vecIter : mapIter.second )
-                freeMemoryBuffer( vecIter );
+                vecIter( m_logicalDevice );
         
         m_memoryDeleteMap.clear();
 
@@ -404,7 +400,7 @@ void CDevice::frameCounterMemoryOperations()
         if( mapIter->first < m_frameCounter )
         {
             for( auto & vecIter : mapIter->second )
-                freeMemoryBuffer( vecIter );
+                vecIter( m_logicalDevice );
             
             mapIter = m_memoryDeleteMap.erase( mapIter );
         }
@@ -891,24 +887,6 @@ VkShaderModule CDevice::createShader( const std::string & filePath )
 
 
 /************************************************************************
-*    DESC:  Delete a secondary command buffer of a specific group
-************************************************************************/
-void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec )
-{
-    if( !commandBufVec.empty() )
-    {
-        // A command pool shouldn't have been already created
-        auto iter = m_commandPoolMap.find( group );
-        if( iter != m_commandPoolMap.end() )
-        {
-            vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
-            commandBufVec.clear();
-        }
-    }
-}
-
-
-/************************************************************************
 *    DESC:  Delete group assets
 ************************************************************************/
 void CDevice::deleteGroupAssets( const std::string & group )
@@ -935,12 +913,7 @@ void CDevice::deleteTextureGroup( const std::string & group )
     {
         // Delete all the textures in this group
         for( auto & iter : mapIter->second )
-        {
-            vkDestroyImage( m_logicalDevice, iter.second.textureImage, nullptr );
-            vkFreeMemory( m_logicalDevice, iter.second.textureImageMemory, nullptr );
-            vkDestroyImageView( m_logicalDevice, iter.second.textureImageView, nullptr );
-            vkDestroySampler( m_logicalDevice, iter.second.textureSampler, nullptr );
-        }
+            AddToDeleteQueue( iter.second );
 
         // Erase this group
         m_textureMapMap.erase( mapIter );
@@ -957,7 +930,8 @@ void CDevice::deleteCommandPoolGroup( const std::string & group )
     auto iter = m_commandPoolMap.find( group );
     if( iter != m_commandPoolMap.end() )
     {
-        vkDestroyCommandPool( m_logicalDevice, iter->second, nullptr );
+        auto cmdPool = iter->second;
+        AddToDeleteQueue( [cmdPool](VkDevice logicalDevice) { vkDestroyCommandPool( logicalDevice, cmdPool, nullptr ); } );
 
         // Erase this group
         m_commandPoolMap.erase( iter );
@@ -975,10 +949,7 @@ void CDevice::deleteMemoryBufferGroup( const std::string & group )
     if( mapIter != m_memoryBufferMapMap.end() )
     {
         for( auto & iter : mapIter->second )
-        {
-            vkDestroyBuffer( m_logicalDevice, iter.second.m_buffer, nullptr );
-            vkFreeMemory( m_logicalDevice, iter.second.m_deviceMemory, nullptr );
-        }
+            AddToDeleteQueue( iter.second );
 
         // Erase this group
         m_memoryBufferMapMap.erase( mapIter );
@@ -988,8 +959,8 @@ void CDevice::deleteMemoryBufferGroup( const std::string & group )
 
 /************************************************************************
 *    DESC:  Delete the model group
-*           NOTE: Nothing to delete here because the textures, vbo and ibo
-*                 are being held in their respective groups
+*           NOTE: No VK elements to delete here because the textures, 
+*                 vbo and ibo are being held in their respective groups
 ************************************************************************/
 void CDevice::deleteModelGroup( const std::string & group )
 {
@@ -1017,6 +988,9 @@ void CDevice::setFullScreen( bool fullscreen )
 {
     if( m_pWindow )
     {
+        // Wait for all rendering to be finished
+        waitForIdle();
+
         int flag(0);
 
         if( fullscreen )
@@ -1283,39 +1257,33 @@ size_t CDevice::getSharedFontIBOMaxIndiceCount()
 
 
 /************************************************************************
-*    DESC:  Free the memory buffer
+*    DESC:  Add a delete function to the delete map
 ************************************************************************/
-void CDevice::freeMemoryBuffer( CMemoryBuffer & memoryBuffer )
+void CDevice::AddToDeleteQueue( std::function<void(VkDevice logicalDevice)> deleteFunc )
 {
-    if( memoryBuffer.m_buffer != VK_NULL_HANDLE )
-    {
-        vkDestroyBuffer( m_logicalDevice, memoryBuffer.m_buffer, nullptr );
-        memoryBuffer.m_buffer = VK_NULL_HANDLE;
-    }
-
-    if( memoryBuffer.m_deviceMemory != VK_NULL_HANDLE )
-    {
-        vkFreeMemory( m_logicalDevice, memoryBuffer.m_deviceMemory, nullptr );
-        memoryBuffer.m_deviceMemory = VK_NULL_HANDLE;
-    }
-}
-
-
-/************************************************************************
-*    DESC:  Add a memory buffer to the delete 
-************************************************************************/
-void CDevice::AddToDeleteQueue( CMemoryBuffer & memBuff )
-{
+    // Add to an existing entry
     auto mapIter = m_memoryDeleteMap.find( m_frameCounter + m_framebufferVec.size() );
     if( mapIter != m_memoryDeleteMap.end() )
     {
-        mapIter->second.push_back( memBuff );
+        mapIter->second.emplace_back( std::move(deleteFunc) );
     }
+    // Create a new entry to hold memory to be deleted at this future frame counter
     else
     {
-        auto iter = m_memoryDeleteMap.emplace( m_frameCounter + m_framebufferVec.size(), std::vector<CMemoryBuffer>() );
-        iter.first->second.push_back( memBuff );
+        auto iter = m_memoryDeleteMap.emplace( m_frameCounter + m_framebufferVec.size(), 
+            std::vector<std::function<void(VkDevice logicalDevice)>>() );
+        iter.first->second.emplace_back( std::move(deleteFunc) );
     }
+}
+
+void CDevice::AddToDeleteQueue( CTexture & texture )
+{
+    AddToDeleteQueue( [texture](VkDevice logicalDevice) mutable { texture.free(logicalDevice); } );
+}
+
+void CDevice::AddToDeleteQueue( CMemoryBuffer & memBuff )
+{
+    AddToDeleteQueue( [memBuff](VkDevice logicalDevice) mutable { memBuff.free(logicalDevice); } );
 }
 
 void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & memoryBufVec )
@@ -1544,6 +1512,9 @@ uint32_t CDevice::getFrameCounter()
  ************************************************************************/
 void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
 {
+    // Wait for all rendering to be finished
+    waitForIdle();
+    
     SDL_DisplayMode mode;
     SDL_GetCurrentDisplayMode(0, &mode);
 
@@ -1595,3 +1566,21 @@ void CDevice::setClearColor( float r, float g, float b, float a )
 {
     m_clearColor.set( r, g, b, a );
 }
+
+
+/************************************************************************
+*    DESC:  Delete a secondary command buffer of a specific group
+************************************************************************/
+/*void CDevice::deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec )
+{
+    if( !commandBufVec.empty() )
+    {
+        // A command pool shouldn't have been already created
+        auto iter = m_commandPoolMap.find( group );
+        if( iter != m_commandPoolMap.end() )
+        {
+            vkFreeCommandBuffers( m_logicalDevice, iter->second, commandBufVec.size(), commandBufVec.data() );
+            commandBufVec.clear();
+        }
+    }
+}*/

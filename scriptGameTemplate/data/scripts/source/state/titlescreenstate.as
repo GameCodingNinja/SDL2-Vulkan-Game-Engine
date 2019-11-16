@@ -20,9 +20,6 @@ final class CTitleScreenState : CCommonState
     //
     void destroy() override
     {
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
-        
         Device.deleteCommandPoolGroup( "(title)" );
         
         StrategyMgr.deleteStrategy( "_title_" );

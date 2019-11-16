@@ -55,6 +55,41 @@ public:
     
     // Texture file path
     std::string textFilePath;
+
+    /************************************************************************
+    *    DESC:  Free the texture memory
+    ************************************************************************/
+    void free( VkDevice logicalDevice )
+    {
+        textFilePath.clear();
+        mipLevels = 1;
+        size.clear();
+        type = ETT_DIFFUSE;
+
+        if( textureImage != VK_NULL_HANDLE )
+        {
+            vkDestroyImage( logicalDevice, textureImage, nullptr );
+            textureImage = VK_NULL_HANDLE;
+        }
+
+        if( textureImageMemory != VK_NULL_HANDLE )
+        {
+            vkFreeMemory( logicalDevice, textureImageMemory, nullptr );
+            textureImageMemory = VK_NULL_HANDLE;
+        }
+
+        if( textureImageView != VK_NULL_HANDLE )
+        {
+            vkDestroyImageView( logicalDevice, textureImageView, nullptr );
+            textureImageView = VK_NULL_HANDLE;
+        }
+
+        if( textureSampler != VK_NULL_HANDLE )
+        {
+            vkDestroySampler( logicalDevice, textureSampler, nullptr );
+            textureSampler = VK_NULL_HANDLE;
+        }
+    }
 };
 
 #endif

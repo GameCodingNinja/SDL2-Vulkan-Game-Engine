@@ -20,9 +20,6 @@ final class CLoadState : CCommonState
     //
     void destroy() override
     {
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
-        
         Device.deleteCommandPoolGroup( "(load)" );
         ObjectDataMgr.freeGroup( "(load)" );
         StrategyMgr.deleteStrategy( "_load_" );

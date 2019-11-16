@@ -20,9 +20,6 @@ final class CStartUpState : CCommonState
     //
     void destroy() override
     {
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
-        
         Device.deleteCommandPoolGroup( "(startup)" );
         ObjectDataMgr.freeGroup( "(startup)" );
         StrategyMgr.deleteStrategy( "_startup_" );

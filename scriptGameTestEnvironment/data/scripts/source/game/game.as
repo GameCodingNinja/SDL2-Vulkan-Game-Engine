@@ -23,9 +23,6 @@ class CGame
     //
     void destroy()
     {
-        // Wait for all rendering to be finished
-        Device.waitForIdle();
-        
         // Sprites allocate device data and need to be freed
         StrategyMgr.clear();
         

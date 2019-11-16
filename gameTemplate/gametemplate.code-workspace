@@ -81,7 +81,14 @@
 			"typeinfo": "cpp",
 			"utility": "cpp",
 			"variant": "cpp",
-			"algorithm": "cpp"
+			"algorithm": "cpp",
+			"unordered_set": "cpp",
+			"iterator": "cpp",
+			"memory_resource": "cpp",
+			"random": "cpp",
+			"cfenv": "cpp",
+			"cinttypes": "cpp",
+			"valarray": "cpp"
 		},
 		"editor.autoClosingBrackets": "never"
 	}

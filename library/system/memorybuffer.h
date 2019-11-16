@@ -24,6 +24,24 @@ public:
         
         return false;
     }
+
+    /************************************************************************
+    *    DESC:  Free the memory buffer
+    ************************************************************************/
+    void free( VkDevice logicalDevice )
+    {
+        if( m_buffer != VK_NULL_HANDLE )
+        {
+            vkDestroyBuffer( logicalDevice, m_buffer, nullptr );
+            m_buffer = VK_NULL_HANDLE;
+        }
+
+        if( m_deviceMemory != VK_NULL_HANDLE )
+        {
+            vkFreeMemory( logicalDevice, m_deviceMemory, nullptr );
+            m_deviceMemory = VK_NULL_HANDLE;
+        }
+    }
 };
 
-#endif  // __memory_buffer_h__
+#endif

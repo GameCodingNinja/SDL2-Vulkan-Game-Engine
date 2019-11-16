@@ -40,9 +40,6 @@ CLevel1State::CLevel1State() :
 ************************************************************************/
 CLevel1State::~CLevel1State()
 {
-    // Wait for all rendering to be finished
-    CDevice::Instance().waitForIdle();
-    
     CStrategyMgr::Instance().deleteStrategyLst( {"_level_1_", "_stage_"} );
     CDevice::Instance().deleteCommandPoolGroup( "(level_1)" );
     CObjectDataMgr::Instance().freeGroup( "(level_1)" );

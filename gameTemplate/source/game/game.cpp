@@ -56,7 +56,6 @@ CGame::CGame() :
 CGame::~CGame()
 {
     // Free all objects
-    // This waits for idle before returning
     upGameState.reset();
     
     // Free the menu assets
@@ -117,9 +116,6 @@ void CGame::doStateChange()
 {
     if( upGameState->doStateChange() )
     {
-        // Wait for all rendering to be finished
-        CDevice::Instance().waitForIdle();
-    
         // Get the game state we are moving to
         const NStateDefs::EGameState curState = upGameState->getState();
 

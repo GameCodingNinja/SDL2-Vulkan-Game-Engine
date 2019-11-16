@@ -63,8 +63,6 @@ final class CResolutionBtn
     //
     void changeResolution()
     {
-        Device.waitForIdle();
-
         mResIndex = mControl.getActiveIndex();
 
         Device.changeResolution( mResAry[mResIndex], Settings.getFullScreen() );
