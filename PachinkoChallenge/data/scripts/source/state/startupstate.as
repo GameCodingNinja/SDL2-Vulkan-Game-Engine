@@ -35,8 +35,8 @@ final class CStartUpState : CCommonState
         visual.setAdditiveColor(0,0,0,1);
 
         // Load the data lists
-        ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
-        StrategyMgr.loadListTable( "data/objects/strategy/strategyListTable.lst" );
+        ObjectDataMgr.loadListTable( "data/objects/2d/objectDataList/dataTable.lst" );
+        StrategyMgr.loadListTable( "data/objects/strategy/strategyTable.lst" );
         
         // Load group specific assets
         ScriptMgr.loadGroup( "(state)" );

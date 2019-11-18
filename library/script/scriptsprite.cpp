@@ -16,6 +16,10 @@
 #include <physics/iphysicscomponent.h>
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
+#include <utilities/genfunc.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
@@ -24,6 +28,9 @@
 namespace NScriptSprite
 {
     CPoint<float> point;
+    CSize<float> size;
+    CColor color;
+    std::string string;
 
     /************************************************************************
     *    DESC:  Wrapper function due to virtual inheritance
@@ -78,7 +85,12 @@ namespace NScriptSprite
     
     const CSize<float> & GetSize(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->getSize();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return sprite.getVisualComponent()->getSize();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+        return size;
     }
 
     void SetRot1(const CPoint<float> & rot, bool convertToRadians, CSprite & sprite)
@@ -133,82 +145,158 @@ namespace NScriptSprite
 
     void SetColor1(const CColor & color, CSprite & sprite)
     {
-        sprite.getVisualComponent()->setColor( color );
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            component->setColor( color );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
     }
 
     void SetColor2(float r, float g, float b, float a, CSprite & sprite)
     {
-        sprite.getVisualComponent()->setColor( r, g, b, a );
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            component->setColor( r, g, b, a );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
     }
 
     const CColor & GetColor(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->getColor();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return component->getColor();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+
+        return color;
     }
 
     void SetDefaultColor(CSprite & sprite)
     {
-        sprite.getVisualComponent()->setDefaultColor();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            component->setDefaultColor();
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
     }
 
     const CColor & GetDefaultColor(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->getDefaultColor();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return component->getDefaultColor();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+
+        return color;
     }
 
     void SetAlpha(float alpha, bool allowToExceed, CSprite & sprite)
     {
-        sprite.getVisualComponent()->setAlpha( alpha, allowToExceed );
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            component->setAlpha( alpha, allowToExceed );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
     }
 
     float GetAlpha(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->getAlpha();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return component->getAlpha();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+
+        return 1.f;
     }
 
     void SetDefaultAlpha(CSprite & sprite)
     {
-        sprite.getVisualComponent()->setDefaultAlpha();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            component->setDefaultAlpha();
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
     }
 
     float GetDefaultAlpha(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->getDefaultAlpha();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return component->getDefaultAlpha();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+
+        return 1.f;
     }
 
     void CreateFontString(const std::string & fontStr, CSprite & sprite)
     {
-        sprite.getVisualComponent()->createFontString(fontStr);
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            component->createFontString(fontStr);
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
     }
 
     const std::string & GetFontString(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->getFontString();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return component->getFontString();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+
+        return string;
     }
 
     bool IsFontSprite(CSprite & sprite)
     {
-        return sprite.getVisualComponent()->isFontSprite();
+        auto component = sprite.getVisualComponent();
+        if( component != nullptr )
+            return component->isFontSprite();
+        
+        NGenFunc::PostDebugMsg( "WARNING: Visual component does not exist." );
+
+        return false;
     }
 
     void SetTransform(float x, float y, float angle, bool resetVelocity, CSprite & sprite)
     {
-        sprite.getPhysicsComponent()->setTransform( x, y, angle, resetVelocity );
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->setTransform( x, y, angle, resetVelocity );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
     void SetLinearVelocity(float x, float y, CSprite & sprite)
     {
-        sprite.getPhysicsComponent()->setLinearVelocity( x, y );
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->setLinearVelocity( x, y );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
     void SetAngularVelocity(float angle, CSprite & sprite)
     {
-        sprite.getPhysicsComponent()->setAngularVelocity( angle );
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->setAngularVelocity( angle );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
     void ApplyAngularImpulse(float value, bool wake, CSprite & sprite)
     {
-        sprite.getPhysicsComponent()->applyAngularImpulse( value, wake );
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->applyAngularImpulse( value, wake );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
     /************************************************************************
@@ -221,7 +309,7 @@ namespace NScriptSprite
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
 
         // Register type
-        Throw( pEngine->RegisterObjectType(  "CSprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
+        Throw( pEngine->RegisterObjectType( "CSprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
         // Visual component functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(const CColor &in)",                  WRAP_OBJ_LAST(SetColor1),        asCALL_GENERIC) );

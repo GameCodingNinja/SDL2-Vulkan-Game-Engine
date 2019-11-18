@@ -17,13 +17,14 @@ typedef unsigned int uint;
 
 #define defs_DEG_TO_RAD 0.0174532925199432957
 #define defs_RAD_TO_DEG 57.29577951308232
-#define defs_EPSILON 8.854187817e-12
+#define defs_EPSILON    8.854187817e-12
 #define defs_RGB_TO_DEC 0.00390625f
 
 #define defs_DEFAULT_ID       -1
+#define defs_NULL_BODY_TYPE   -1
 
 // Analog stick max values -32768 to 32767 but to simplify it, we'll just use 32767
-#define defs_MAX_ANALOG_AXIS_VALUE 32767
+#define defs_MAX_ANALOG_AXIS_VALUE        32767
 #define defs_ANALOG_PERCENTAGE_CONVERTION 327.67f
 
 namespace NDefs

@@ -3,7 +3,7 @@
     <!-- The stage's sectors and their integer position in the world -->
     <sectors>
 
-        <sector file="data/objects/strategy/state/titlescreensector.lst">
+        <sector file="data/objects/strategy/state/titlescreen.sector.lst">
             <position x="0" y="0" z="0"/>
         </sector>
 

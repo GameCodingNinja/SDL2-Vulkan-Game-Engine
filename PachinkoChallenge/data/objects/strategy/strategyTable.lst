@@ -6,7 +6,11 @@
     </groupList>
 
     <groupList groupName="_title_stage_">
-        <file path="data/objects/strategy/state/titlescreenstage.strategy"/>
+        <file path="data/objects/strategy/state/titlescreen.stage.strategy"/>
+    </groupList>
+
+    <groupList groupName="_title_actor_">
+        <file path="data/objects/strategy/state/titlescreen.actor.strategy"/>
     </groupList>
 
     <groupList groupName="_load_">

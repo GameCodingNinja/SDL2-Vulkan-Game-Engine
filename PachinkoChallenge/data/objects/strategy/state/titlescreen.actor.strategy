@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<node defaultGroup="(title)">
+    
+    <node name="square_green">
+        
+        <sprite objectName="square_green">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="square_blue">
+        
+        <sprite objectName="square_blue">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="square_red">
+        
+        <sprite objectName="square_red">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="triangle_green">
+        
+        <sprite objectName="triangle_green">
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="triangle_blue">
+        
+        <sprite objectName="triangle_blue">
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="triangle_red">
+        
+        <sprite objectName="triangle_red">
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_green">
+        
+        <sprite objectName="circle_green">
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_blue">
+        
+        <sprite objectName="circle_blue">
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_red">
+        
+        <sprite objectName="circle_red">
+            <scriptLst>
+                <script ball_ai="Title_BallAI" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+</node>

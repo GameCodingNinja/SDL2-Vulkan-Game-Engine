@@ -40,7 +40,7 @@
     </groupList>
   
     <groupList groupName="(level_1)">
-        <file path="data/scripts/library/level1.as"/>
+        <file path="data/scripts/source/level/level1.as"/>
     </groupList>
 
 </listTable>

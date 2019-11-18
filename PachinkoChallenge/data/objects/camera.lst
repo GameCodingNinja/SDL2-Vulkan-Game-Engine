@@ -4,7 +4,7 @@
     <default projectType="orthographic" minZDist="5" maxZDist="1000" view_angle="45.0"/>
 
     <camera id="title_anim_camera" projectType="orthographic" minZDist="5" maxZDist="1000" view_angle="45.0">
-        <position x="0" y="50" z="20"/>
+        <position x="0" y="-30" z="20"/>
     </camera>
   
 </cameraLst>

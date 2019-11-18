@@ -11,6 +11,9 @@
 // Physical component dependency
 #include <objectdata/iobjectphysicsdata.h>
 
+// Game lib dependencies
+#include <common/defs.h>
+
 // Standard lib dependencies
 #include <string>
 #include <vector>
@@ -54,7 +57,7 @@ private:
     std::string m_world;
     
     // Type of physics body
-    b2BodyType m_bodyType;
+    b2BodyType m_bodyType = b2BodyType(defs_NULL_BODY_TYPE);
     
     // The constant decceleration of movement and rotation
     float m_linearDamping, m_angularDamping;
@@ -66,4 +69,4 @@ private:
     std::vector<CFixture> m_fixtureVec;
 };
 
-#endif  // __object_physics_data_2d_h__
+#endif

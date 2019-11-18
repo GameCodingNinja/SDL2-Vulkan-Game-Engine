@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "/home/howie/Development/SDL2"
+		},
+		{
+			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D"
 		}
 	],
 	"settings": {

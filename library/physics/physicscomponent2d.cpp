@@ -87,7 +87,7 @@ void CPhysicsComponent2D::createBody( const CSprite & sprite )
         bodyDef.linearDamping = physicsData.getLinearDamping();
         bodyDef.angularDamping = physicsData.getAngularDamping();
         bodyDef.fixedRotation = physicsData.isRotationFixed();
-        bodyDef.position.Set( sprite.getObject()->getPos().getX() * PIXELS_TO_METERS, -(sprite.getObject()->getPos().getY() * PIXELS_TO_METERS) );
+        bodyDef.position.Set( sprite.getObject()->getPos().getX() * PIXELS_TO_METERS, sprite.getObject()->getPos().getY() * PIXELS_TO_METERS );
         bodyDef.angle = -sprite.getObject()->getRot().getZ();
         bodyDef.userData = (void*)&sprite;
 
@@ -128,7 +128,7 @@ void CPhysicsComponent2D::createFixture( const CSprite & sprite )
 void CPhysicsComponent2D::createCircularShapeFixture( const CSprite & sprite, const CFixture & fixture )
 {
     b2CircleShape shape;
-    shape.m_radius = (fixture.m_radius * sprite.getObject()->getScale().getX()) * PIXELS_TO_METERS;
+    shape.m_radius = fixture.m_radius * sprite.getObject()->getScale().getX() * PIXELS_TO_METERS;
 
     b2FixtureDef f;
     f.shape = &shape;
@@ -324,7 +324,7 @@ void CPhysicsComponent2D::update( CSprite * pSprite )
         {
             const b2Vec2 & pos = m_pBody->GetPosition();
             const float angle = m_pBody->GetAngle();
-            pSprite->getObject()->setPos( pos.x * METERS_TO_PIXELS, (pos.y * METERS_TO_PIXELS) );
+            pSprite->getObject()->setPos( pos.x * METERS_TO_PIXELS, pos.y * METERS_TO_PIXELS );
             pSprite->getObject()->setRot( 0, 0, angle, false );
         }
     }
@@ -348,7 +348,7 @@ void CPhysicsComponent2D::setTransform( float x, float y, float angle, bool rese
 {
     if( m_pBody != nullptr )
     {
-        m_pBody->SetTransform( b2Vec2( x * PIXELS_TO_METERS, (y * PIXELS_TO_METERS) ), angle );
+        m_pBody->SetTransform( b2Vec2( x * PIXELS_TO_METERS, y * PIXELS_TO_METERS ), angle );
 
         if( resetVelocity )
         {
@@ -365,7 +365,7 @@ void CPhysicsComponent2D::setTransform( float x, float y, float angle, bool rese
 void CPhysicsComponent2D::setLinearVelocity( float x, float y )
 {
     if( m_pBody != nullptr )
-        m_pBody->SetLinearVelocity( b2Vec2( x * PIXELS_TO_METERS, -(y * PIXELS_TO_METERS) ) );
+        m_pBody->SetLinearVelocity( b2Vec2( x * PIXELS_TO_METERS, y * PIXELS_TO_METERS ) );
 }
 
 

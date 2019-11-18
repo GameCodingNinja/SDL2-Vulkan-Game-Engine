@@ -11,6 +11,7 @@
 // Game lib dependencies
 #include <common/color.h>
 #include <utilities/xmlparsehelper.h>
+#include <utilities/genfunc.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -22,7 +23,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CObjectPhysicsData2D::CObjectPhysicsData2D() :
-    m_bodyType(b2BodyType(-1)),
+    m_bodyType(b2BodyType(defs_NULL_BODY_TYPE)),
     m_linearDamping(0),
     m_angularDamping(0),
     m_fixedRotation(false)
@@ -185,6 +186,10 @@ void CObjectPhysicsData2D::loadFromNode( const XMLNode & objectNode )
                 }
             }
         }
+
+        // Put out a warning if the physics world is not defined
+        if( m_world.empty() && m_bodyType != defs_NULL_BODY_TYPE && !m_fixtureVec.empty() )
+            NGenFunc::PostDebugMsg( "WARNING: Physics world not defined even though body type and fixture is." );
     }
 }
 
@@ -248,5 +253,5 @@ const std::vector<CFixture> & CObjectPhysicsData2D::getFixtureVec() const
 ************************************************************************/
 bool CObjectPhysicsData2D::isActive() const
 {
-    return (!m_world.empty() && (m_bodyType != b2BodyType(-1)));
+    return (!m_world.empty() && (m_bodyType != b2BodyType(defs_NULL_BODY_TYPE)));
 }
