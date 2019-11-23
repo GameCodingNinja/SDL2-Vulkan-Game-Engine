@@ -17,6 +17,7 @@
 #include <script/scriptmanager.h>
 #include <physics/physicsworldmanager2d.h>
 #include <physics/physicsworld2d.h>
+#include <sprite/sprite.h>
 #include <strategy/stagestrategy.h>
 #include <strategy/actorstrategy.h>
 #include <strategy/strategymanager.h>
@@ -32,6 +33,10 @@ CLevel1State::CLevel1State() :
     CCommonState( NStateDefs::EGS_LEVEL_1, NStateDefs::EGS_GAME_LOAD ),
         m_rPhysicsWorld( CPhysicsWorldManager2D::Instance().getWorld( "(game)" ) )
 {
+    // The state inherits from b2ContactListener to handle physics collisions
+    // so this state is the collision listener
+    m_rPhysicsWorld.getWorld().SetContactListener(this);
+    //m_rPhysicsWorld.getWorld().SetDestructionListener(this);
 }
 
 
@@ -106,6 +111,47 @@ void CLevel1State::physics()
     if( !CMenuMgr::Instance().isActive() )
     {
         m_rPhysicsWorld.fixedTimeStep();
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Called when two fixtures begin to touch
+************************************************************************/
+void CLevel1State::BeginContact(b2Contact* contact)
+{
+    auto pSpriteA = (CSprite *)contact->GetFixtureA()->GetUserData();
+    auto pSpriteB = (CSprite *)contact->GetFixtureB()->GetUserData();
+
+    if( (pSpriteA != nullptr) && (pSpriteB != nullptr) )
+    {
+        const int spriteAid = pSpriteA->getId();
+        const int spriteBid = pSpriteB->getId();
+
+        if( spriteAid == SPRITE_PEG )
+            pSpriteA->setFrame(1);
+
+        else if( spriteBid == SPRITE_PEG )
+            pSpriteB->setFrame(1);
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Called when two fixtures cease to touch
+************************************************************************/
+void CLevel1State::EndContact(b2Contact* contact)
+{
+    auto pSpriteA = reinterpret_cast<CSprite *>(contact->GetFixtureA()->GetUserData());
+    auto pSpriteB = reinterpret_cast<CSprite *>(contact->GetFixtureB()->GetUserData());
+
+    if( (pSpriteA != nullptr) && (pSpriteB != nullptr) )
+    {
+        if( pSpriteA->getId() == SPRITE_PEG )
+            pSpriteA->setFrame(0);
+
+        else if( pSpriteB->getId() == SPRITE_PEG )
+            pSpriteB->setFrame(0);
     }
 }
 

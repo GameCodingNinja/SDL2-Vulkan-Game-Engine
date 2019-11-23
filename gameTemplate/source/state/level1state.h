@@ -11,10 +11,13 @@
 // Physical component dependency
 #include "commonstate.h"
 
+// Box2D lib dependencies
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
+
 // Forward declaration(s)
 class CPhysicsWorld2D;
 
-class CLevel1State : public CCommonState
+class CLevel1State : public CCommonState, b2ContactListener//, b2DestructionListener
 {
 public:
 
@@ -36,10 +39,28 @@ public:
     // Static load function
     static void load();
 
+    // Called when two fixtures begin to touch
+    void BeginContact(b2Contact* contact) override;
+    
+    // Called when two fixtures cease to touch
+    void EndContact(b2Contact* contact) override;
+
+    // Called when any fixture is about to be destroyed
+    //void SayGoodbye(b2Fixture* fixture) override {}
+    
+    // Called when any joint is about to be destroyed
+    //void SayGoodbye(b2Joint* joint) override {}
+
 private:
     
     // Physics world
     CPhysicsWorld2D & m_rPhysicsWorld;
+
+    // Sprite peg
+    enum
+    {
+        SPRITE_PEG = -2
+    };
 };
 
 #endif
