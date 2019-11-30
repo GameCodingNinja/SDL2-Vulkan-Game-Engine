@@ -5,6 +5,12 @@
 //  DESC:       Level 1 state
 //
 
+enum ESpriteId
+{
+    SPRITE_PEG = -2,
+    SPRITE_MULTI = 0
+};
+
 final class CRunState : CCommonState
 {
     CPhysicsWorld2D @mPhysicsWorld;
@@ -44,6 +50,7 @@ final class CRunState : CCommonState
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
+        mPhysicsWorld.EnableContactListener();
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
@@ -80,6 +87,36 @@ final class CRunState : CCommonState
     {
         if( !MenuMgr.isActive() )
             mPhysicsWorld.variableTimeStep();
+    }
+
+    //
+    //  Begin contact physics callback
+    //
+    void beginContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        if( spriteA.getId() == SPRITE_PEG )
+        {
+            spriteA.setFrame(1);
+        }
+        else if( spriteB.getId() == SPRITE_PEG )
+        {
+            spriteB.setFrame(1);
+        }
+    }
+
+    //
+    //  End contact physics callback
+    //
+    void endContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        if( spriteA.getId() == SPRITE_PEG )
+        {
+            spriteA.setFrame(0);
+        }
+        else if( spriteB.getId() == SPRITE_PEG )
+        {
+            spriteB.setFrame(0);
+        }
     }
 };
 

@@ -72,6 +72,7 @@ void CScriptMgr::clear()
     
     m_pContextPoolVec.clear();
     m_pActiveContextVec.clear();
+    m_activeContextCounter = 0;
 }
 
 
@@ -149,16 +150,19 @@ void CScriptMgr::buildScript( asIScriptModule * pScriptModule, const std::string
 ************************************************************************/
 asIScriptContext * CScriptMgr::getContext()
 {
+    // Set the active contex counter
+    CStatCounter::Instance().setActiveContexCounter( ++m_activeContextCounter );
+
     if( !m_pContextPoolVec.empty() )
     {
         asIScriptContext * pContex = m_pContextPoolVec.back();
         m_pContextPoolVec.pop_back();
 
+        // Set the pool contex counter
+        CStatCounter::Instance().setPoolContexCounter( m_pContextPoolVec.size() );
+
         return pContex;
     }
-
-    // Maintain a total count of contexts
-    CStatCounter::Instance().incScriptContexCounter();
 
     return scpEngine->CreateContext();
 }
@@ -169,7 +173,13 @@ asIScriptContext * CScriptMgr::getContext()
 ************************************************************************/
 void CScriptMgr::recycleContext( asIScriptContext * pContext )
 {
-    m_pContextPoolVec.push_back( pContext );
+    if( m_pContextPoolVec.size() < (float)m_activeContextCounter * m_maxPoolPercentage )
+        m_pContextPoolVec.push_back( pContext );
+    else
+        pContext->Release();
+    
+    CStatCounter::Instance().setPoolContexCounter( m_pContextPoolVec.size() );
+    CStatCounter::Instance().setActiveContexCounter( --m_activeContextCounter );
 }
 
 
@@ -390,9 +400,6 @@ void CScriptMgr::spawnByThread( const std::string & funcName, const std::string 
         if( group.empty() )
             grp = pContex->GetFunction()->GetModuleName();
         
-        // Increment the active script context counter
-        CStatCounter::Instance().incActiveScriptContexCounter();
-        
         // Prepare the script function to run
         // Don't prepare the script in the thread because that calls the script engine
         // and requires the use of a cleanup function call asThreadCleanup
@@ -463,12 +470,7 @@ void CScriptMgr::update( std::vector<asIScriptContext *> & pContextVec )
     // while the for loop is executing as spawn contexts are added.
     // DO NOT change to a C++11 ranged for loop. It won't work.
     for( size_t i = 0; i < pContextVec.size(); ++i )
-    {
         executeScript( pContextVec[i] );
-        
-        // Increment the active script context counter
-        CStatCounter::Instance().incActiveScriptContexCounter();
-    }
 
     auto iter = pContextVec.begin();
     while( iter != pContextVec.end() )
@@ -512,4 +514,13 @@ void CScriptMgr::executeScript( asIScriptContext * pContext )
                     % pContext->GetExceptionString() ));
         }
     }
+}
+
+
+/************************************************************************
+*    DESC:  Set the max pool percentage
+************************************************************************/
+void CScriptMgr::setMaxPoolPercentage( float poolPercentage )
+{
+    m_maxPoolPercentage = poolPercentage;
 }

@@ -88,9 +88,10 @@ namespace NScriptScriptManager
         // Register type
         Throw( pEngine->RegisterObjectType( "CScriptMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void loadGroup(string &in)", WRAP_OBJ_LAST(LoadGroup), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void freeGroup(string &in)", WRAP_OBJ_LAST(FreeGroup), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void clear()",               WRAP_OBJ_LAST(Clear),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void loadGroup(string &in)",       WRAP_OBJ_LAST(LoadGroup),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void freeGroup(string &in)",       WRAP_OBJ_LAST(FreeGroup),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void clear()",                     WRAP_OBJ_LAST(Clear),           asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CScriptMgr", "void setMaxPoolPercentage(float)", WRAP_MFN(CScriptMgr, setMaxPoolPercentage), asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CScriptMgr ScriptMgr", &CScriptMgr::Instance()) );

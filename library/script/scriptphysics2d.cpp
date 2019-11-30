@@ -17,6 +17,7 @@
 
 // AngelScript lib dependencies
 #include <angelscript.h>
+#include <scriptarray/scriptarray.h>
 #include <autowrapper/aswrappedcall.h>
 
 namespace NScriptPhysics2d
@@ -52,10 +53,11 @@ namespace NScriptPhysics2d
         // Register type
         Throw( pEngine->RegisterObjectType("CPhysicsWorld2D", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("CPhysicsWorld2D", "void fixedTimeStep()",    WRAP_MFN(CPhysicsWorld2D, fixedTimeStep),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CPhysicsWorld2D", "void variableTimeStep()", WRAP_MFN(CPhysicsWorld2D, variableTimeStep), asCALL_GENERIC) );
-        
-        
+        Throw( pEngine->RegisterObjectMethod("CPhysicsWorld2D", "void fixedTimeStep()",                                 WRAP_MFN(CPhysicsWorld2D, fixedTimeStep),             asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CPhysicsWorld2D", "void variableTimeStep()",                              WRAP_MFN(CPhysicsWorld2D, variableTimeStep),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CPhysicsWorld2D", "void EnableContactListener( bool enable = true )",     WRAP_MFN(CPhysicsWorld2D, EnableContactListener),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CPhysicsWorld2D", "void EnableDestructionListener( bool enable = true )", WRAP_MFN(CPhysicsWorld2D, EnableDestructionListener), asCALL_GENERIC) );
+
         // Register type
         Throw( pEngine->RegisterObjectType( "CPhysicsWorldManager2D", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
@@ -64,7 +66,7 @@ namespace NScriptPhysics2d
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "void destroyWorld(string &in)",          WRAP_MFN(CPhysicsWorldManager2D, destroyWorld), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "CPhysicsWorld2D & getWorld(string &in)", WRAP_MFN(CPhysicsWorldManager2D, getWorld),     asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CPhysicsWorldManager2D", "void clear()",                           WRAP_MFN(CPhysicsWorldManager2D, clear),        asCALL_GENERIC) );
-
+        
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CPhysicsWorldManager2D PhysicsWorldManager2D", &CPhysicsWorldManager2D::Instance()) );
     }

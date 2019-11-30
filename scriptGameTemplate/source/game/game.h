@@ -33,9 +33,6 @@ public:
     // Create the game Window
     void create();
     
-    // Main game loop for script driven games
-    bool gameLoop();
-    
     // Display error massage
     void displayErrorMsg( const std::string & title, const std::string & msg );
 
@@ -43,7 +40,10 @@ private:
     
     // Game start init
     void init();
-    
+
+    // Register game functions
+    void registerGameFunc();
+
     // Poll for game events
     void pollEvents();
 

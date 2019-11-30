@@ -106,12 +106,6 @@ void CPhysicsWorldManager2D::destroyWorld( const std::string & group )
     auto iter = m_pWorld2dMap.find( group );
     if( iter != m_pWorld2dMap.end() )
     {
-        // Clear out any listeners if they were set
-        iter->second->getWorld().SetDestructionListener(nullptr);
-        iter->second->getWorld().SetContactListener(nullptr);
-        iter->second->getWorld().SetContactFilter(nullptr);
-        iter->second->getWorld().SetDebugDraw(nullptr);
-
         NDelFunc::Delete( iter->second );
         m_pWorld2dMap.erase( iter );
     }

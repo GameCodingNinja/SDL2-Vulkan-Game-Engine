@@ -52,14 +52,14 @@
                 <color r="48" g="97" b="153" a="217"/>
             </visual>
             <size width="500" height="500"/>
-        </object>-->
+        </object>
 
         <object name="logo">
             <visual>
                 <pipeline id="2d_quad"/>
                 <texture file="data/textures/startup/logo.png"/>
             </visual>
-        </object>
+        </object>-->
 
         <object name="waffles">
             <visual>
@@ -67,7 +67,7 @@
             </visual>
         </object>
 
-        <object name="background">
+        <!--<object name="background">
             <visual>
                 <texture file="data/textures/titleScreen/title_background.png"/>
             </visual>
@@ -105,7 +105,7 @@
             <size width="500" height="200"/>
         </object>
 
-        <!--<object name="spriteSheetTest4">
+        <object name="spriteSheetTest4">
             <visual>
                 <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
                 <mesh genType="sprite_sheet">

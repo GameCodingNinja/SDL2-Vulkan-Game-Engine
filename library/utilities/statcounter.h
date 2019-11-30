@@ -34,14 +34,14 @@ public:
     void incCycle();
 
     // Inc the display counter
-    void incDisplayCounter( size_t value = 1 );
+    void incDisplayCounter( int value = 1 );
     
     // Inc the physics objects counter
     void incPhysicsObjectsCounter();
 
-    // Inc the script contex counter
-    void incScriptContexCounter();
-    void incActiveScriptContexCounter();
+    // Set the contex counters
+    void setPoolContexCounter( size_t value );
+    void setActiveContexCounter( int value );
     
     // Connect/Disconnect to the signal
     void connect( const StatCounterSignal::slot_type & slot );
@@ -61,20 +61,20 @@ private:
 private:
 
     // Counter for visual objects
-    size_t m_vObjCounter;
+    int m_vObjCounter;
     
     // Counter for physics objects
-    size_t m_physicsObjCounter;
+    int m_physicsObjCounter;
 
     // Elapsed time counter
     double m_elapsedFPSCounter;
 
     // cycle counter. This counter is never reset
-    size_t m_cycleCounter;
+    uint m_cycleCounter;
 
     // Angle Script contex counter
-    size_t m_scriptContexCounter;
-    size_t m_activeContexCounter;
+    size_t m_poolContexCounter;
+    int m_activeContexCounter;
 
     // Stat string
     std::string m_statStr;

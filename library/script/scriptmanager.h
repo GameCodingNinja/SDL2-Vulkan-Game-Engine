@@ -93,6 +93,9 @@ public:
     // Spawn by thread
     void spawnByThread( const std::string & funcName, const std::string & group = "" );
 
+    // Set the max pool percentage
+    void setMaxPoolPercentage( float poolPercentage );
+
 private:
 
     // Constructor
@@ -136,6 +139,12 @@ private:
     // Error string messages
     std::string m_errorTitle;
     std::string m_errorMsg;
+
+    // Active context counter
+    int m_activeContextCounter = 0;
+
+    // Maximum pool percentage
+    float m_maxPoolPercentage = 0.25f;
 };
 
 #endif

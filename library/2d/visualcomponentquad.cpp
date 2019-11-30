@@ -141,28 +141,32 @@ void CVisualComponentQuad::updateUBO(
 ************************************************************************/
 void CVisualComponentQuad::setFrame( uint index )
 {
-    iVisualComponent::setFrame( index );
-    
     const auto & rVisualData( m_rObjectData.getVisualData() );
-    const auto & rTexture( rVisualData.getTexture( index ) );
-    const float defScale( rVisualData.getDefaultUniformScale() );
-    
-    m_quadVertScale.w = rTexture.size.w * defScale;
-    m_quadVertScale.h = rTexture.size.h * defScale;
 
-    // Recycle if the descriptor set is not null
-    // Can't update the descriptor set because it could be actuve in the command buffer.
-    // The strategy is to recycle the current one and grab a fresh one
-    if( m_pDescriptorSet != nullptr )
-        CDevice::Instance().recycleDescriptorSet( m_pDescriptorSet );
+    if( index < rVisualData.getFrameCount() )
+    {
+        iVisualComponent::setFrame( index );
         
-    m_pDescriptorSet = CDevice::Instance().getDescriptorSet(
-        m_rObjectData.getVisualData().getPipelineIndex(),
-        rTexture,
-        m_uniformBufVec );
-    
-    // Update the texture
-    //m_pushDescSet.updateTexture( rTexture );
+        const auto & rTexture( rVisualData.getTexture( index ) );
+        const float defScale( rVisualData.getDefaultUniformScale() );
+        
+        m_quadVertScale.w = rTexture.size.w * defScale;
+        m_quadVertScale.h = rTexture.size.h * defScale;
+
+        // Recycle if the descriptor set is not null
+        // Can't update the descriptor set because it could be actuve in the command buffer.
+        // The strategy is to recycle the current one and grab a fresh one
+        if( m_pDescriptorSet != nullptr )
+            CDevice::Instance().recycleDescriptorSet( m_pDescriptorSet );
+            
+        m_pDescriptorSet = CDevice::Instance().getDescriptorSet(
+            m_rObjectData.getVisualData().getPipelineIndex(),
+            rTexture,
+            m_uniformBufVec );
+        
+        // Update the texture
+        //m_pushDescSet.updateTexture( rTexture );
+    }
 }
 
 

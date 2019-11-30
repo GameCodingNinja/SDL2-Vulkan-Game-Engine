@@ -13,12 +13,15 @@
 #include <common/point.h>
 
 // Standard lib dependencies
+#include <string>
 #include <set>
+#include <tuple>
+#include <vector>
 
 // Forward declaration(s)
 struct XMLNode;
 
-class CPhysicsWorld2D
+class CPhysicsWorld2D : public b2ContactListener, b2DestructionListener
 {
 public:
 
@@ -61,6 +64,24 @@ public:
     // Get the pixels per meter
     double getPixelsPerMeter() const;
 
+    // Enable/disable the listeners
+    void EnableContactListener( bool enable = true );
+    void EnableDestructionListener( bool enable = true );
+
+private:
+
+    // Called when two fixtures begin to touch
+    void BeginContact(b2Contact* contact) override;
+    
+    // Called when two fixtures cease to touch
+    void EndContact(b2Contact* contact) override;
+
+    // Called when any fixture is about to be destroyed
+    void SayGoodbye(b2Fixture* fixture) override;
+    
+    // Called when any joint is about to be destroyed
+    void SayGoodbye(b2Joint* joint) override;
+
 private:
 
     // Box2D world
@@ -97,6 +118,12 @@ private:
     
     // pixels per meter scaler
     float m_pixelsPerMeter;
+
+    // Listener members
+    std::tuple<std::string, std::string> m_beginContactTuple;
+    std::tuple<std::string, std::string> m_endContactTuple;
+    std::tuple<std::string, std::string> m_deleteFixtureTuple;
+    std::tuple<std::string, std::string> m_deleteJointTuple;
 };
 
 #endif

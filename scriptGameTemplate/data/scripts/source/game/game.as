@@ -90,6 +90,8 @@ class CGame
     //
     void handleEvent()
     {
+        PollEvents();
+
         if( !ActionMgr.isQueueEmpty() )
         {
             // Is it time to quit?
@@ -114,22 +116,58 @@ class CGame
         doChangeState();
         
         handleEvent();
+
+        // Get our elapsed time
+        HighResTimer.calcElapsedTime();
         
         if( mGameRunning )
         {
             // Handle the physics
             mGameState.physics();
+
+            // Suspend to allow physics callback scripts to be called
+            Suspend();
             
             // Update animations, Move sprites, Check for collision
             mGameState.update();
+
+            // Suspend to allow sprite and other update scripts to be called
+            Suspend();
             
             // Transform game objects
             mGameState.transform();
             
             // Do the rendering
             Device.render();
+
+            // Inc the stat cycle
+            if( Settings.isDebugMode() )
+                StatCounter.incCycle();
         }
         
         return mGameRunning;
+    }
+
+    /************************************************************************
+    *    DESC:  Physics callbacks
+    ************************************************************************/
+    void beginContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        mGameState.beginContact( spriteA, spriteB );
+    }
+
+    void endContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        mGameState.endContact( spriteA, spriteB );
+    }
+
+    void destroyFixture( CSprite & sprite )
+    {
+        mGameState.destroyFixture( sprite );
+    }
+
+    void destroyJoint( CSprite & sprite )
+    {
+        mGameState.destroyJoint( sprite );
     }
 };

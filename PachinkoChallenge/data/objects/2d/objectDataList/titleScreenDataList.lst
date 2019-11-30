@@ -182,7 +182,7 @@
 
         <object name="peg">
             <visual>
-                <texture file="data/textures/run/peg.png"/>
+                <texture count="2" file="data/textures/run/peg%d.png"/>
             </visual>
             <physics world="(game)">
                 <body type="static"/>

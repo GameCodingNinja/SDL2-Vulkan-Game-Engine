@@ -1045,48 +1045,33 @@ bool CActionMgr::wasWindowEvent( uint event, uint & windowID, int & data1, int &
 ************************************************************************/
 uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( iter.type == SDL_KEYDOWN || iter.type == SDL_KEYUP )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( rEvent.type == SDL_KEYDOWN || rEvent.type == SDL_KEYUP )
         {
-            counter++;
+            type = rEvent.type;
+            code = rEvent.key.keysym.sym;
+            data = rEvent.key.repeat;
 
-            if( counter > startIndex )
-            {
-                type = iter.type;
-                code = iter.key.keysym.sym;
-                data = iter.key.repeat;
-
-                return counter;
-            }
+            return i + 1;
         }
-        else if( iter.type == SDL_MOUSEBUTTONDOWN || iter.type == SDL_MOUSEBUTTONUP )
+        else if( rEvent.type == SDL_MOUSEBUTTONDOWN || rEvent.type == SDL_MOUSEBUTTONUP )
         {
-            counter++;
+            type = rEvent.type;
+            code = rEvent.button.button;
+            data = rEvent.button.which;
 
-            if( counter > startIndex )
-            {
-                type = iter.type;
-                code = iter.button.button;
-                data = iter.button.which;
-
-                return counter;
-            }
+            return i + 1;
         }
-        else if( iter.type == SDL_CONTROLLERBUTTONDOWN || iter.type == SDL_CONTROLLERBUTTONUP )
+        else if( rEvent.type == SDL_CONTROLLERBUTTONDOWN || rEvent.type == SDL_CONTROLLERBUTTONUP )
         {
-            counter++;
+            type = rEvent.type;
+            code = rEvent.cbutton.button;
+            data = rEvent.cbutton.which;
 
-            if( counter > startIndex )
-            {
-                type = iter.type;
-                code = iter.cbutton.button;
-                data = iter.cbutton.which;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 
@@ -1097,31 +1082,24 @@ uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uin
 /************************************************************************
 *    DESC:  Enumerate display events
 ************************************************************************/
-uint CActionMgr::enumerateDisplayEvents( uint & event, uint & displayIndex, int & orientation, uint startIndex )
+uint CActionMgr::enumerateDisplayEvents( uint & eventId, uint & displayIndex, int & orientation, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( iter.type == SDL_DISPLAYEVENT )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( rEvent.type == SDL_DISPLAYEVENT )
         {
-            counter++;
+            eventId = rEvent.display.event;
+            displayIndex = rEvent.display.display;
+            orientation = rEvent.window.data1;
 
-            if( counter > startIndex )
-            {
-                event = iter.display.event;
-                displayIndex = iter.display.display;
-                orientation = iter.window.data1;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 
     return 0;
 }
-
-
 
 
 /************************************************************************
@@ -1129,23 +1107,18 @@ uint CActionMgr::enumerateDisplayEvents( uint & event, uint & displayIndex, int 
 ************************************************************************/
 uint CActionMgr::enumerateMouseWheelEvents( uint & windowID, int & x, int & y, uint & direction, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( iter.type == SDL_MOUSEWHEEL )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( rEvent.type == SDL_MOUSEWHEEL )
         {
-            counter++;
+            windowID = rEvent.wheel.windowID;
+            x = rEvent.wheel.x;
+            y = rEvent.wheel.y;
+            direction = rEvent.wheel.direction;
 
-            if( counter > startIndex )
-            {
-                windowID = iter.wheel.windowID;
-                x = iter.wheel.x;
-                y = iter.wheel.y;
-                direction = iter.wheel.direction;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 
@@ -1153,31 +1126,23 @@ uint CActionMgr::enumerateMouseWheelEvents( uint & windowID, int & x, int & y, u
 }
 
 
-
-
-
 /************************************************************************
 *    DESC:  Enumerate window events
 ************************************************************************/
-uint CActionMgr::enumerateWindowEvents( uint & event, uint & windowID, int & data1, int & data2, uint startIndex )
+uint CActionMgr::enumerateWindowEvents( uint & eventId, uint & windowID, int & data1, int & data2, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( iter.type == SDL_WINDOWEVENT )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( rEvent.type == SDL_WINDOWEVENT )
         {
-            counter++;
+            eventId = rEvent.window.event;
+            windowID = rEvent.window.windowID;
+            data1 = rEvent.window.data1;
+            data2 = rEvent.window.data2;
 
-            if( counter > startIndex )
-            {
-                event = iter.window.event;
-                windowID = iter.window.windowID;
-                data1 = iter.window.data1;
-                data2 = iter.window.data2;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 
@@ -1189,29 +1154,24 @@ uint CActionMgr::enumerateWindowEvents( uint & event, uint & windowID, int & dat
 *    DESC:  Enumerate touch finger events
 ************************************************************************/
 uint CActionMgr::enumerateTouchFingerEvents(
-    uint & event, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex )
+    uint & eventId, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( (iter.type >= SDL_FINGERDOWN) && (iter.type <= SDL_FINGERMOTION) )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( (rEvent.type >= SDL_FINGERDOWN) && (rEvent.type <= SDL_FINGERMOTION) )
         {
-            counter++;
+            eventId = rEvent.type;
+            touchId = rEvent.tfinger.touchId;
+            fingerId = rEvent.tfinger.fingerId;
+            x = rEvent.tfinger.x;
+            y = rEvent.tfinger.y;
+            dx = rEvent.tfinger.dx;
+            dy = rEvent.tfinger.dy;
+            pressure = rEvent.tfinger.pressure;
 
-            if( counter > startIndex )
-            {
-                event = iter.type;
-                touchId = iter.tfinger.touchId;
-                fingerId = iter.tfinger.fingerId;
-                x = iter.tfinger.x;
-                y = iter.tfinger.y;
-                dx = iter.tfinger.dx;
-                dy = iter.tfinger.dy;
-                pressure = iter.tfinger.pressure;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 
@@ -1225,25 +1185,20 @@ uint CActionMgr::enumerateTouchFingerEvents(
 uint CActionMgr::enumerateMultipleFingerEvents(
     int64_t & touchId, float & dTheta, float & dDist, float & x, float & y, uint & numFingers, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( iter.type == SDL_MULTIGESTURE )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( rEvent.type == SDL_MULTIGESTURE )
         {
-            counter++;
+            touchId = rEvent.mgesture.touchId;
+            dTheta = rEvent.mgesture.dTheta;
+            dDist = rEvent.mgesture.dDist;
+            x = rEvent.mgesture.x;
+            y = rEvent.mgesture.y;
+            numFingers = rEvent.mgesture.numFingers;
 
-            if( counter > startIndex )
-            {
-                touchId = iter.mgesture.touchId;
-                dTheta = iter.mgesture.dTheta;
-                dDist = iter.mgesture.dDist;
-                x = iter.mgesture.x;
-                y = iter.mgesture.y;
-                numFingers = iter.mgesture.numFingers;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 
@@ -1257,25 +1212,20 @@ uint CActionMgr::enumerateMultipleFingerEvents(
 uint CActionMgr::enumerateDollarGestureEvents(
     int64_t & touchId, int64_t & gestureId, uint & numFingers, float & error, float & x, float & y, uint startIndex )
 {
-    uint counter(0);
-
-    for( auto & iter : m_eventQueue )
+    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
-        if( iter.type == SDL_MULTIGESTURE )
+        SDL_Event & rEvent = m_eventQueue[i];
+
+        if( rEvent.type == SDL_MULTIGESTURE )
         {
-            counter++;
+            touchId = rEvent.dgesture.touchId;
+            gestureId = rEvent.dgesture.gestureId;
+            numFingers = rEvent.dgesture.numFingers;
+            error = rEvent.dgesture.error;
+            x = rEvent.dgesture.x;
+            y = rEvent.dgesture.y;
 
-            if( counter > startIndex )
-            {
-                touchId = iter.dgesture.touchId;
-                gestureId = iter.dgesture.gestureId;
-                numFingers = iter.dgesture.numFingers;
-                error = iter.dgesture.error;
-                x = iter.dgesture.x;
-                y = iter.dgesture.y;
-
-                return counter;
-            }
+            return i + 1;
         }
     }
 

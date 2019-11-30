@@ -1665,7 +1665,9 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
         SOIL_LOAD_RGBA );
 
     if( pixels == nullptr )
-        throw NExcept::CCriticalException( "SOIL Error!", "Error loading image!");
+        throw NExcept::CCriticalException(
+            "SOIL Error!", 
+            boost::str( boost::format("Error loading image! %s") % texture.textFilePath ));
 
     VkDeviceSize imageSize = texture.size.w * texture.size.h * SOIL_LOAD_RGBA;
 

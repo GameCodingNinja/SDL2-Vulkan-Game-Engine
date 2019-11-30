@@ -40,12 +40,14 @@
 #include <script/scriptdevice.h>
 #include <script/scriptvisual.h>
 #include <script/scriptphysics2d.h>
+#include <script/scriptstatcounter.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
 #include <scriptarray/scriptarray.h>
 #include <scriptdictionary/scriptdictionary.h>
 #include <scriptmath/scriptmath.h>
+#include <autowrapper/aswrappedcall.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -126,12 +128,29 @@ void CGame::init()
     NScriptDevice::Register();
     NScriptVisual::Register();
     NScriptPhysics2d::Register();
+    NScriptStatCounter::Register();
+
+    // Register game level functions
+    registerGameFunc();
 
     CScriptMgr::Instance().loadGroup( CSettings::Instance().getScriptGroup() );
     CScriptMgr::Instance().prepare(
         CSettings::Instance().getScriptGroup(), CSettings::Instance().getScriptMain() );
 
     CHighResTimer::Instance().calcElapsedTime();
+}
+
+
+/***************************************************************************
+*   DESC:  Register game functions
+****************************************************************************/
+void CGame::registerGameFunc()
+{
+    using namespace NScriptGlobals; // Used for Throw
+        
+    asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
+
+    Throw( pEngine->RegisterGlobalFunction("void PollEvents()", WRAP_MFN(CGame, pollEvents), asCALL_GENERIC, this) );
 }
 
 
@@ -154,28 +173,6 @@ void CGame::pollEvents()
         
         handleEvent( msgEvent );
     }
-}
-
-
-/***************************************************************************
-*   DESC:  Main game loop
-****************************************************************************/
-bool CGame::gameLoop()
-{
-    // Poll for game events
-    pollEvents();
-
-    // Get our elapsed time
-    CHighResTimer::Instance().calcElapsedTime();
-
-    // Main script update
-    const bool result = CScriptMgr::Instance().update();
-    
-    // Inc the stat cycle
-    if( CSettings::Instance().isDebugMode() )
-        CStatCounter::Instance().incCycle();
-    
-    return result;
 }
 
 

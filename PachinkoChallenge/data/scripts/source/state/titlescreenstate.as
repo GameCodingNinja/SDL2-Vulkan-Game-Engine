@@ -44,6 +44,7 @@ final class CTitleScreenState : CCommonState
 
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
+        mPhysicsWorld.EnableContactListener();
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
@@ -79,6 +80,36 @@ final class CTitleScreenState : CCommonState
     void physics() override
     {
         mPhysicsWorld.variableTimeStep();
+    }
+
+    //
+    //  Begin contact physics callback
+    //
+    void beginContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        if( spriteA.getId() == SPRITE_PEG )
+        {
+            spriteA.setFrame(1);
+        }
+        else if( spriteB.getId() == SPRITE_PEG )
+        {
+            spriteB.setFrame(1);
+        }
+    }
+
+    //
+    //  End contact physics callback
+    //
+    void endContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        if( spriteA.getId() == SPRITE_PEG )
+        {
+            spriteA.setFrame(0);
+        }
+        else if( spriteB.getId() == SPRITE_PEG )
+        {
+            spriteB.setFrame(0);
+        }
     }
 };
 

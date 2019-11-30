@@ -91,4 +91,26 @@ class iGameState
     // Get the message
     CStateMessage & getStateMessage()
     { return mStateMessage; }
+
+
+    // Physics callbacks
+    void beginContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        // Empty member to be overwritten
+    }
+
+    void endContact( CSprite & spriteA, CSprite & spriteB )
+    {
+        // Empty member to be overwritten
+    }
+
+    void destroyFixture( CSprite & sprite )
+    {
+        // Empty member to be overwritten
+    }
+
+    void destroyJoint( CSprite & sprite )
+    {
+        // Empty member to be overwritten
+    }
 };

@@ -116,11 +116,11 @@ public:
     
     // Enumerate events
     uint enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex = 0 );
-    uint enumerateDisplayEvents( uint & event, uint & displayIndex, int & orientation, uint startIndex = 0 );
+    uint enumerateDisplayEvents( uint & eventId, uint & displayIndex, int & orientation, uint startIndex = 0 );
     uint enumerateMouseWheelEvents( uint & windowID, int & x, int & y, uint & direction, uint startIndex = 0 );
-    uint enumerateWindowEvents( uint & event, uint & windowID, int & data1, int & data2, uint startIndex = 0 );
+    uint enumerateWindowEvents( uint & eventId, uint & windowID, int & data1, int & data2, uint startIndex = 0 );
     uint enumerateTouchFingerEvents(
-        uint & event, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex = 0 );
+        uint & eventId, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex = 0 );
     uint enumerateMultipleFingerEvents(
         int64_t & touchId, float & dTheta, float & dDist, float & x, float & y, uint & numFingers, uint startIndex = 0 );
     uint enumerateDollarGestureEvents(

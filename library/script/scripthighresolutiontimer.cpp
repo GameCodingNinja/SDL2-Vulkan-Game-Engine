@@ -31,9 +31,10 @@ namespace NScriptHighResolutionTimer
         // Register type
         Throw( pEngine->RegisterObjectType( "CHighResTimer", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "double getElapsedTime()", WRAP_MFN(CHighResTimer, getElapsedTime), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "void timerStart()",       WRAP_MFN(CHighResTimer, timerStart),     asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "float timerStop()",       WRAP_MFN(CHighResTimer, timerStop),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "void calcElapsedTime()",  WRAP_MFN(CHighResTimer, calcElapsedTime), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "double getElapsedTime()", WRAP_MFN(CHighResTimer, getElapsedTime),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "void timerStart()",       WRAP_MFN(CHighResTimer, timerStart),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CHighResTimer", "float timerStop()",       WRAP_MFN(CHighResTimer, timerStop),       asCALL_GENERIC) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CHighResTimer HighResTimer", &CHighResTimer::Instance()) );

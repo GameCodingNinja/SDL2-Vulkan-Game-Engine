@@ -125,13 +125,10 @@ void CLevel1State::BeginContact(b2Contact* contact)
 
     if( (pSpriteA != nullptr) && (pSpriteB != nullptr) )
     {
-        const int spriteAid = pSpriteA->getId();
-        const int spriteBid = pSpriteB->getId();
-
-        if( spriteAid == SPRITE_PEG )
+        if( pSpriteA->getId() == SPRITE_PEG )
             pSpriteA->setFrame(1);
 
-        else if( spriteBid == SPRITE_PEG )
+        else if( pSpriteB->getId() == SPRITE_PEG )
             pSpriteB->setFrame(1);
     }
 }

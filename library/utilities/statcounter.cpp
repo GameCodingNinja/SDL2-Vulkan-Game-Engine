@@ -23,7 +23,7 @@ CStatCounter::CStatCounter() :
     m_physicsObjCounter(0),
     m_elapsedFPSCounter(0),
     m_cycleCounter(0),
-    m_scriptContexCounter(0),
+    m_poolContexCounter(0),
     m_activeContexCounter(0),
     m_statsDisplayTimer(2000)
 {
@@ -91,7 +91,6 @@ void CStatCounter::resetCounters()
     m_physicsObjCounter = 0;
     m_elapsedFPSCounter = 0.0;
     m_cycleCounter = 0;
-    m_activeContexCounter = 0;
 }
 
 
@@ -100,10 +99,10 @@ void CStatCounter::resetCounters()
 ************************************************************************/
 void CStatCounter::formatStatString()
 {
-    m_statStr = boost::str( boost::format("fps: %d - scx: %d of %d - vis: %d - phy: %d - res: %d x %d")
+    m_statStr = boost::str( boost::format("fps: %d - sca: %d - scp: %d - vis: %d - phy: %d - res: %d x %d")
         % ((int)(m_elapsedFPSCounter / (double)m_cycleCounter))
-        % (m_activeContexCounter / m_cycleCounter)
-        % m_scriptContexCounter
+        % m_activeContexCounter
+        % m_poolContexCounter
         % (m_vObjCounter / m_cycleCounter)
         % (m_physicsObjCounter / m_cycleCounter)
         % CSettings::Instance().getSize().w
@@ -117,7 +116,7 @@ void CStatCounter::formatStatString()
 /************************************************************************
 *    DESC:  Inc the display counter
 ************************************************************************/
-void CStatCounter::incDisplayCounter( size_t value )
+void CStatCounter::incDisplayCounter( int value )
 {
     m_vObjCounter += value;
 }
@@ -133,18 +132,18 @@ void CStatCounter::incPhysicsObjectsCounter()
 
 
 /************************************************************************
-*    DESC:  Inc the script contex counter
+*    DESC:  Set the pool contex counter
 ************************************************************************/
-void CStatCounter::incScriptContexCounter()
+void CStatCounter::setPoolContexCounter( size_t value )
 {
-    ++m_scriptContexCounter;
+    m_poolContexCounter = value;
 }
 
 
 /************************************************************************
-*    DESC:  Inc the active script contex counter
+*    DESC:  Set the active contex counter
 ************************************************************************/
-void CStatCounter::incActiveScriptContexCounter()
+void CStatCounter::setActiveContexCounter( int value )
 {
-    ++m_activeContexCounter;
+    m_activeContexCounter = value;
 }

@@ -13,6 +13,7 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/mathfunc.h>
 #include <utilities/exceptionhandling.h>
+#include <script/scriptmanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -42,6 +43,11 @@ CPhysicsWorld2D::CPhysicsWorld2D() :
 ************************************************************************/
 CPhysicsWorld2D::~CPhysicsWorld2D()
 {
+    // Clear out any listeners if they were set
+    m_world.SetDestructionListener(nullptr);
+    m_world.SetContactListener(nullptr);
+    m_world.SetContactFilter(nullptr);
+    m_world.SetDebugDraw(nullptr);
 }
 
 
@@ -98,6 +104,50 @@ void CPhysicsWorld2D::loadFromNode( const XMLNode & node )
     if( !conversionNode.isEmpty() )
     {
         m_pixelsPerMeter = std::atof( conversionNode.getAttribute( "pixelsPerMeter" ) );
+    }
+
+    // Load the group and script for the begin contact listener
+    XMLNode beginContactNode = node.getChildNode( "beginContactListener" );
+    if( !beginContactNode.isEmpty() )
+    {
+        std::string group = beginContactNode.getAttribute( "group" );
+        std::string script = beginContactNode.getAttribute( "script" );
+
+        if( !group.empty() && !script.empty() )
+            m_beginContactTuple = {group, script};
+    }
+
+    // Load the group and script for the end contact listener
+    XMLNode endContactNode = node.getChildNode( "endContactListener" );
+    if( !endContactNode.isEmpty() )
+    {
+        std::string group = endContactNode.getAttribute( "group" );
+        std::string script = endContactNode.getAttribute( "script" );
+
+        if( !group.empty() && !script.empty() )
+            m_endContactTuple = {group, script};
+    }
+
+    // Load the group and script for the delete fixture listener
+    XMLNode deleteFixtureNode = node.getChildNode( "deleteFixtureListener" );
+    if( !deleteFixtureNode.isEmpty() )
+    {
+        std::string group = deleteFixtureNode.getAttribute( "group" );
+        std::string script = deleteFixtureNode.getAttribute( "script" );
+
+        if( !group.empty() && !script.empty() )
+            m_deleteFixtureTuple = {group, script};
+    }
+
+    // Load the group and script for the delete fixture listener
+    XMLNode deleteJointNode = node.getChildNode( "deleteJointListener" );
+    if( !deleteJointNode.isEmpty() )
+    {
+        std::string group = deleteJointNode.getAttribute( "group" );
+        std::string script = deleteJointNode.getAttribute( "script" );
+
+        if( !group.empty() && !script.empty() )
+            m_deleteFixtureTuple = {group, script};
     }
 }
 
@@ -210,7 +260,7 @@ void CPhysicsWorld2D::setFPS( float fps )
     if( fps > 1.f )
     {
         // Calculate the step paramaters
-	m_stepTimeSec = 1.f / fps;
+	    m_stepTimeSec = 1.f / fps;
         m_stepTime = m_stepTimeSec * 1000.f;
 
         // Set the timer so that we'll begin a step next time we call Update
@@ -252,4 +302,90 @@ bool CPhysicsWorld2D::isActive() const
 double CPhysicsWorld2D::getPixelsPerMeter() const
 {
     return m_pixelsPerMeter;
+}
+
+
+/************************************************************************
+*    DESC:  Enable/disable the listeners
+************************************************************************/
+void CPhysicsWorld2D::EnableContactListener( bool enable )
+{
+    if( enable )
+        m_world.SetContactListener(this);
+    else
+        m_world.SetContactListener(nullptr);
+}
+
+void CPhysicsWorld2D::EnableDestructionListener( bool enable )
+{
+    if( enable )
+        m_world.SetDestructionListener(this);
+    else
+        m_world.SetDestructionListener(nullptr);
+}
+
+
+/************************************************************************
+*    DESC:  Called when two fixtures begin to touch
+************************************************************************/
+void CPhysicsWorld2D::BeginContact(b2Contact* contact)
+{
+    void * pVoidA = contact->GetFixtureA()->GetUserData();
+    void * pVoidB = contact->GetFixtureB()->GetUserData();
+
+    if( (pVoidA != nullptr) && (pVoidB != nullptr) && !std::get<0>(m_beginContactTuple).empty() )
+    {
+        // Can't pass as void * so just doing a typecast to avoid an error.
+        // The type doesn't really matter and avoinding adding a CSprite dependancy.
+        CScriptMgr::Instance().prepare(
+            std::get<0>(m_beginContactTuple), std::get<1>(m_beginContactTuple), {(char *)pVoidA, (char *)pVoidB});
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Called when two fixtures cease to touch
+************************************************************************/
+void CPhysicsWorld2D::EndContact(b2Contact* contact)
+{
+    void * pVoidA = contact->GetFixtureA()->GetUserData();
+    void * pVoidB = contact->GetFixtureB()->GetUserData();
+
+    if( (pVoidA != nullptr) && (pVoidB != nullptr) && !std::get<0>(m_endContactTuple).empty() )
+    {
+        // Can't pass as void * so just doing a typecast to avoid an error.
+        // The type doesn't really matter and avoinding adding a CSprite dependancy.
+        CScriptMgr::Instance().prepare(
+            std::get<0>(m_endContactTuple), std::get<1>(m_endContactTuple), {(char *)pVoidA, (char *)pVoidB});
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Called when any fixture is about to be destroyed
+************************************************************************/
+void CPhysicsWorld2D::SayGoodbye(b2Fixture* fixture)
+{
+    void * pVoid = fixture->GetUserData();
+
+    if( (pVoid != nullptr) && !std::get<0>(m_deleteFixtureTuple).empty() )
+        // Can't pass as void * so just doing a typecast to avoid an error.
+        // The type doesn't really matter and avoinding adding a CSprite dependancy.
+        CScriptMgr::Instance().prepare(
+            std::get<0>(m_deleteFixtureTuple), std::get<1>(m_deleteFixtureTuple), {(char *)pVoid});
+}
+
+
+/************************************************************************
+*    DESC:  Called when any fixture is about to be destroyed
+************************************************************************/
+void CPhysicsWorld2D::SayGoodbye(b2Joint* joint)
+{
+    void * pVoid = joint->GetUserData();
+
+    if( (pVoid != nullptr) && !std::get<0>(m_deleteJointTuple).empty() )
+        // Can't pass as void * so just doing a typecast to avoid an error.
+        // The type doesn't really matter and avoinding adding a CSprite dependancy.
+        CScriptMgr::Instance().prepare(
+            std::get<0>(m_deleteJointTuple), std::get<1>(m_deleteJointTuple), {(char *)pVoid});
 }
