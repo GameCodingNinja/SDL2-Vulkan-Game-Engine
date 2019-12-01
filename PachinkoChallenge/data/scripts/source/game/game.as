@@ -125,13 +125,13 @@ class CGame
             // Handle the physics
             mGameState.physics();
 
-            // Suspend to allow physics callback scripts to be called
+            // Suspend to allow physics callback scripts to be executed
             Suspend();
             
             // Update animations, Move sprites, Check for collision
             mGameState.update();
 
-            // Suspend to allow sprite and other update scripts to be called
+            // Suspend to allow sprite and other update scripts to be executed
             Suspend();
             
             // Transform game objects

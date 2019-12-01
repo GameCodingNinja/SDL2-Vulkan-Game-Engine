@@ -60,6 +60,8 @@ class CGame
     //
     void handleEvent()
     {
+        PollEvents();
+
         if( !ActionMgr.isQueueEmpty() )
         {
             // Is it time to quit?
@@ -80,17 +82,27 @@ class CGame
     bool gameLoop()
     {
         handleEvent();
+
+        // Get our elapsed time
+        HighResTimer.calcElapsedTime();
         
         if( mGameRunning )
         {
             // Do the update
             StrategyMgr.update();
+
+            // Suspend to allow sprite and other update scripts to be executed
+            Suspend();
             
             // Do the transform
             StrategyMgr.transform();
             
             // Do the rendering
             Device.render();
+
+            // Inc the stat cycle
+            if( Settings.isDebugMode() )
+                StatCounter.incCycle();
         }
         
         return mGameRunning;

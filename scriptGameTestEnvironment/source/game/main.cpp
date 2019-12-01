@@ -9,6 +9,7 @@
 #include "game.h"
 
 // Game lib dependencies
+#include <script/scriptmanager.h>
 #include <utilities/exceptionhandling.h>
 
 // Standard lib dependencies
@@ -30,7 +31,7 @@ int main( int argc, char* args[] )
         game.create();
 
         // Call the game loop
-        while( game.gameLoop() )
+        while( CScriptMgr::Instance().update() )
         { }
     }
     catch( NExcept::CCriticalException & ex )
