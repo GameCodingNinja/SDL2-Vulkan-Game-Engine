@@ -115,3 +115,17 @@ void CScriptComponent::stopAndRecycle( const std::string & funcName )
         }
     }
 }
+
+
+/************************************************************************
+*    DESC:  Stop a function if it is being called and restart it
+************************************************************************/
+void CScriptComponent::stopAndRestart(
+    const std::string & group, const std::string & funcName, const std::vector<CScriptParam> & paramVec )
+{
+    // Try to stop and recycle the function if it is active
+    stopAndRecycle( funcName );
+
+    // Prepare the script function to run
+    prepare( group, funcName, paramVec );
+}

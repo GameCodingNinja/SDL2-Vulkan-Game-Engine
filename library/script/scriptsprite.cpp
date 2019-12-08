@@ -299,6 +299,11 @@ namespace NScriptSprite
             NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
+    void ScriptResetAndRecycle(CSprite & sprite)
+    {
+        sprite.getScriptComponent().resetAndRecycle();
+    }
+
     /************************************************************************
     *    DESC:  Register the class with AngelScript
     ************************************************************************/
@@ -325,12 +330,6 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "const string & getFontString() const",             WRAP_OBJ_LAST(GetFontString),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite() const",                        WRAP_OBJ_LAST(IsFontSprite),     asCALL_GENERIC) );
 
-        // Physics component functions
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", WRAP_OBJ_LAST(SetTransform),        asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setLinearVelocity(float, float)",                                               WRAP_OBJ_LAST(SetLinearVelocity),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setAngularVelocity(float)",                                                     WRAP_OBJ_LAST(SetAngularVelocity),  asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",                                 WRAP_OBJ_LAST(ApplyAngularImpulse), asCALL_GENERIC) );
-
         // Sprite specific functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               WRAP_OBJ_LAST(GetSize),             asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount() const",                          WRAP_MFN(CSprite, getFrameCount),   asCALL_GENERIC) );
@@ -339,8 +338,6 @@ namespace NScriptSprite
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "int getId() const",                                   WRAP_MFN(CSprite,   getId),         asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool prepare(string &in, bool forceUpdate = false)",  WRAP_MFN(CSprite,   prepare),       asCALL_GENERIC) );
-
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               WRAP_OBJ_LAST(SetVisible),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              WRAP_OBJ_LAST(IsVisible),    asCALL_GENERIC) );
 
@@ -361,13 +358,24 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot2), asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot() const",                         WRAP_OBJ_LAST(GetRot),    asCALL_GENERIC) );
-
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetScale1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetScale2), asCALL_GENERIC) );
-
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncScale1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncScale2), asCALL_GENERIC) );
-
         Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                       WRAP_OBJ_LAST(GetScale),   asCALL_GENERIC) );
+
+        // Physics component functions
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void physicsUpdate()",                                                               WRAP_MFN(CSprite, physicsUpdate),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsTransform(float, float, float angle = 0, bool resetVelocity = true)", WRAP_OBJ_LAST(SetTransform),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setLinearVelocity(float, float)",                                               WRAP_OBJ_LAST(SetLinearVelocity),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setAngularVelocity(float)",                                                     WRAP_OBJ_LAST(SetAngularVelocity),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",                                 WRAP_OBJ_LAST(ApplyAngularImpulse), asCALL_GENERIC) );
+
+        // Script specific functions
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void update()",                                   WRAP_MFN(CSprite,   update),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool prepare(string &in, bool f = false)",        WRAP_MFN(CSprite,   prepare),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool stopAndRecycle(string &in)",                 WRAP_MFN(CSprite,   stopAndRecycle),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool stopAndRestart(string &in, bool f = false)", WRAP_MFN(CSprite,   stopAndRestart),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void resetAndRecycle()",                          WRAP_OBJ_LAST(ScriptResetAndRecycle), asCALL_GENERIC) );
     }
 }

@@ -212,6 +212,9 @@ void CDeviceVulkan::destroy()
 
     if( m_vulkanInstance != VK_NULL_HANDLE )
     {
+        if( m_vulkanSurface != VK_NULL_HANDLE )
+            vkDestroySurfaceKHR( m_vulkanInstance, m_vulkanSurface, nullptr );
+
         if( CSettings::Instance().isValidationLayers() && (vkDestroyDebugReportCallbackEXT != nullptr) )
             vkDestroyDebugReportCallbackEXT( m_vulkanInstance, vkDebugReportCallbackEXT, nullptr );
 

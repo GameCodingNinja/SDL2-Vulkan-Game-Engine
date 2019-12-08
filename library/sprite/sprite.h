@@ -75,6 +75,12 @@ public:
     
     // Prepare the script Id function to run
     bool prepare( const std::string & scriptFuncId, bool forceUpdate = false );
+
+    // Stop the script and recycle the context
+    bool stopAndRecycle( const std::string & scriptFuncId );
+
+    // Stop the script, recycle and start the execution
+    bool stopAndRestart( const std::string & scriptFuncId, bool forceUpdate = false );
     
     // Copy over the script functions
     void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string>> & scriptFunctionMap );

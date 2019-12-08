@@ -155,6 +155,45 @@ bool CSprite::prepare( const std::string & scriptFuncId, bool forceUpdate )
 
 
 /************************************************************************
+*    DESC:  Stop the script and recycle the context
+************************************************************************/
+bool CSprite::stopAndRecycle( const std::string & scriptFuncId )
+{
+    auto iter = m_scriptFunctionMap.find( scriptFuncId );
+    if( iter != m_scriptFunctionMap.end() )
+    {
+        m_scriptComponent.stopAndRecycle( std::get<1>(iter->second) );
+
+        return true;
+    }
+
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Stop the script, recycle and start the execution
+************************************************************************/
+bool CSprite::stopAndRestart( const std::string & scriptFuncId, bool forceUpdate )
+{
+    auto iter = m_scriptFunctionMap.find( scriptFuncId );
+    if( iter != m_scriptFunctionMap.end() )
+    {
+        m_scriptComponent.stopAndRestart( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+
+        // Allow the script to execute and return it's context to the queue
+        // for the scripts that don't animate
+        if( forceUpdate )
+            m_scriptComponent.update();
+
+        return true;
+    }
+
+    return false;
+}
+
+
+/************************************************************************
 *    DESC:  Copy over the script functions
 ************************************************************************/
 void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string>> & scriptFunctionMap )

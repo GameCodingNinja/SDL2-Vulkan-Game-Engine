@@ -47,6 +47,12 @@ public:
     // Stop a function if it is being called and recycle it
     void stopAndRecycle( const std::string & funcName );
 
+    // Stop a function if it is being called and restart it
+    void stopAndRestart(
+        const std::string & group,
+        const std::string & funcName,
+        const std::vector<CScriptParam> & paramVec = std::vector<CScriptParam>() );
+
     // Is this component active?
     bool isActive();
 

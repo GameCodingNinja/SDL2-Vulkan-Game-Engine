@@ -96,18 +96,20 @@ final class CRunState : CCommonState
     {
         if( spriteA.getId() == SPRITE_PEG )
         {
-            spriteA.setFrame(1);
+            Print("Sprite A: " + spriteA.getId() + " colides with: " + spriteB.getId());
+            spriteA.stopAndRestart( "peg_on_off" );
         }
         else if( spriteB.getId() == SPRITE_PEG )
         {
-            spriteB.setFrame(1);
+            Print("Sprite B: " + spriteB.getId() + " colides with: " + spriteA.getId());
+            spriteB.stopAndRestart( "peg_on_off" );
         }
     }
 
     //
     //  End contact physics callback
     //
-    void endContact( CSprite & spriteA, CSprite & spriteB )
+    /*void endContact( CSprite & spriteA, CSprite & spriteB )
     {
         if( spriteA.getId() == SPRITE_PEG )
         {
@@ -117,7 +119,7 @@ final class CRunState : CCommonState
         {
             spriteB.setFrame(0);
         }
-    }
+    }*/
 };
 
 //

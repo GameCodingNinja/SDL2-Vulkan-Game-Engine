@@ -23,3 +23,15 @@ void Level1_BallAI( CSprite & sprite )
         Suspend();
     }
 }
+
+//
+//  AI Update script
+//
+void Level1_PegOnOff( CSprite & sprite )
+{
+    sprite.setFrame(1);
+
+    Hold( 200 );
+
+    sprite.setFrame(0);
+}
