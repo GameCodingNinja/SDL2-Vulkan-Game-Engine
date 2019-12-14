@@ -27,10 +27,8 @@ void Level1_BallAI( CSprite & sprite )
 //
 //  AI Update script
 //
-void Level1_PegOnOff( CSprite & sprite )
+void Level1_PegOff( CSprite & sprite )
 {
-    sprite.setFrame(1);
-
     Hold( 200 );
 
     sprite.setFrame(0);
