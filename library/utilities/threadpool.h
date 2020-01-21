@@ -5,6 +5,37 @@
 *    DESCRIPTION:     Class to manage a thread pool
 ************************************************************************/
 
+/* Implementation example
+int main()
+{
+    std::vector< std::future<void> > jobs;
+    
+    auto & mutex = CThreadPool::Instance().getMutex();
+    CThreadPool::Instance().init( 2, 4 );
+    
+    for( int i = 0; i < 8; ++i )
+    {
+        jobs.emplace_back(
+            CThreadPool::Instance().postRetFut([&mutex] {
+                
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                
+                std::unique_lock<std::mutex> lock( mutex );
+                std::cout << "Task finished in thread: " << std::this_thread::get_id() << std::endl;
+            })
+        );
+    }
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    // Wait for all the jobs to finish
+    // get() is a blocking call, waiting for each job to return
+    for( auto && iter : jobs ) iter.get();
+
+    return 0;
+}
+*/
+
 #ifndef __thread_pool_h__
 #define __thread_pool_h__
 
@@ -18,6 +49,7 @@
 #include <functional>
 #include <stdexcept>
 #include <future>
+#include <atomic>
 
 // Thread disable flag for testing purposes
 //#define __thread_disable__
@@ -45,6 +77,7 @@ public:
     void init( const int minThreads, const int maxThreads );
     
     // Wait for the jobs to complete
+    // NOTE: Only works when the futures are stored internally
     void wait();
     
     // Lock mutex for Synchronization
@@ -52,6 +85,9 @@ public:
     
     // Unlock mutex for Synchronization
     void unlock();
+
+    // Stop the thread pool
+    void stop();
     
     // Get the mutex
     std::mutex & getMutex();
@@ -80,8 +116,8 @@ private:
     std::mutex m_mutex;
     std::condition_variable m_condition;
     
-    // Flag to allow the thread to fall through and end
-    bool m_stop = false;
+    // Thread pool stop flag
+    std::atomic_bool m_stop;
 };
 
 

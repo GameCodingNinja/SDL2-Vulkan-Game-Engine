@@ -3,48 +3,72 @@
     <node>
         <sprite>
             <position x="-560" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-400" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-240" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-80" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="80" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="240" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="400" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="560" y="-800"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -54,42 +78,63 @@
     <node>
         <sprite>
             <position x="-480" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-320" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-160" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="0" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="160" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="320" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="480" y="-640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -99,48 +144,72 @@
     <node>
         <sprite>
             <position x="-560" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-400" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-240" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-80" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="80" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="240" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="400" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="560" y="-480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -150,42 +219,63 @@
     <node>
         <sprite>
             <position x="-480" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-320" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-160" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="0" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="160" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="320" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="480" y="-320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -195,48 +285,72 @@
     <node>
         <sprite>
             <position x="-560" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-400" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-240" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-80" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="80" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="240" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="400" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="560" y="-160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -245,42 +359,63 @@
     <node>
         <sprite>
             <position x="-480" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-320" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-160" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="0" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="160" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="320" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="480" y="0"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -289,48 +424,72 @@
     <node>
         <sprite>
             <position x="-560" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-400" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-240" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-80" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="80" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="240" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="400" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="560" y="160"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -339,42 +498,63 @@
     <node>
         <sprite>
             <position x="-480" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-320" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-160" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="0" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="160" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="320" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="480" y="320"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -383,48 +563,72 @@
     <node>
         <sprite>
             <position x="-560" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-400" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-240" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-80" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="80" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="240" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="400" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="560" y="480"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
@@ -433,44 +637,64 @@
     <node>
         <sprite>
             <position x="-480" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-320" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="-160" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="0" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="160" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="320" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
 
     <node>
         <sprite>
             <position x="480" y="640"/>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
         </sprite>
     </node>
-
 
 </sector>

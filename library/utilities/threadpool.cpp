@@ -14,7 +14,8 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CThreadPool::CThreadPool()
+CThreadPool::CThreadPool() :
+    m_stop(false)
 {
 }
 
@@ -24,17 +25,7 @@ CThreadPool::CThreadPool()
 ************************************************************************/
 CThreadPool::~CThreadPool()
 {
-    #if !defined(__thread_disable__)
-    {
-        std::unique_lock<std::mutex> lock( m_queue_mutex );
-        m_stop = true;
-    }
-
-    m_condition.notify_all();
-
-    for( std::thread & iter : m_workers )
-        iter.join();
-    #endif
+    stop();
 }
 
 
@@ -94,6 +85,7 @@ void CThreadPool::init( const int minThreads, const int maxThreads )
 
 /************************************************************************
 *    DESC:  Wait for the jobs to complete
+*           NOTE: Only works when the futures are stored internally
 ************************************************************************/
 void CThreadPool::wait()
 {
@@ -127,6 +119,32 @@ void CThreadPool::unlock()
     #if !defined(__thread_disable__)
     m_mutex.unlock();
     #endif
+}
+
+
+/************************************************************************
+*    DESC:  Stop the thread
+************************************************************************/
+void CThreadPool::stop()
+{
+    if( !m_stop )
+    {
+        #if !defined(__thread_disable__)
+        {
+            std::unique_lock<std::mutex> lock( m_queue_mutex );
+            m_stop = true;
+        }
+
+        m_condition.notify_all();
+
+        for( std::thread & iter : m_workers )
+            iter.join();
+        #endif
+
+        m_jobVec.clear();
+        m_tasks = std::queue< std::function<void()> >();
+        m_workers.clear();
+    }
 }
 
 

@@ -89,10 +89,12 @@ final class CTitleScreenState : CCommonState
     {
         if( spriteA.getId() == SPRITE_PEG )
         {
+            spriteA.resetAndRecycle();
             spriteA.setFrame(1);
         }
         else if( spriteB.getId() == SPRITE_PEG )
         {
+            spriteB.resetAndRecycle();
             spriteB.setFrame(1);
         }
     }
@@ -104,11 +106,11 @@ final class CTitleScreenState : CCommonState
     {
         if( spriteA.getId() == SPRITE_PEG )
         {
-            spriteA.setFrame(0);
+            spriteA.stopAndRestart( "peg_off" );
         }
         else if( spriteB.getId() == SPRITE_PEG )
         {
-            spriteB.setFrame(0);
+            spriteB.stopAndRestart( "peg_off" );
         }
     }
 };
@@ -146,4 +148,14 @@ void Title_BallAI( CSprite & sprite )
 
         Suspend();
     }
+}
+
+//
+//  AI Update script
+//
+void Title_PegOff( CSprite & sprite )
+{
+    Hold( 200 );
+
+    sprite.setFrame(0);
 }
