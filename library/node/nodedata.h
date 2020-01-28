@@ -11,6 +11,8 @@
 // Physical component dependency
 #include <sprite/spritedata.h>
 
+// Game lib dependencies
+#include <gui/uicontroldefs.h>
 class CNodeData : public CSpriteData
 {
 public:
@@ -45,6 +47,9 @@ public:
     // Get the node type
     NDefs::ENodeType getNodeType() const;
 
+    // Get the control type
+    NUIControlDefs::EControlType getControlType() const;
+
     // Does this node have children?
     bool hasChildrenNodes() const;
 
@@ -62,10 +67,11 @@ private:
     // Node type
     NDefs::ENodeType m_nodeType;
 
+    // Control type of node
+    NUIControlDefs::EControlType m_controlType;
+
     // Does this node have children nodes?
     bool m_hasChildrenNodes;
 };
 
 #endif
-
-

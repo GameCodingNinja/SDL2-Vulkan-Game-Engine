@@ -47,7 +47,10 @@ void CCameraMgr::load( const std::string & filePath )
     {
         const XMLNode defaultNode = node.getChildNode("default");
         if( !defaultNode.isEmpty() )
+        {
             m_defCamera.loadFromNode( defaultNode );
+            m_defCamera.transform();
+        }
 
         for( int i = 0; i < node.nChildNode( "camera" ); ++i )
         {

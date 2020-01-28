@@ -49,6 +49,7 @@ public:
     virtual void update() override;
 
     // Transform the control
+    virtual void transform() override;
     virtual void transform( const CObject2D & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered

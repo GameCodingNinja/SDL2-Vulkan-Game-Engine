@@ -26,6 +26,7 @@ class CMatrix;
 class CSprite;
 class CCamera;
 class CObject2D;
+class CUIControl;
 
 class iNode
 {
@@ -91,6 +92,10 @@ public:
     
     // Get the sprite
     virtual CSprite * getSprite()
+    { return nullptr; }
+
+    // Get the control
+    virtual CUIControl * getControl()
     { return nullptr; }
     
     // Reset the iterators

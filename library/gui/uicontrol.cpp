@@ -176,6 +176,16 @@ void CUIControl::update()
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
+void CUIControl::transform()
+{
+    CObject2D::transform();
+
+    for( auto iter : m_pSpriteVec )
+        iter->getObject()->transform();
+
+    transformCollision();
+}
+
 void CUIControl::transform( const CObject2D & object )
 {
     CObject2D::transform( object );

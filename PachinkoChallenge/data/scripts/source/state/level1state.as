@@ -46,7 +46,7 @@ final class CRunState : CCommonState
         
         // Enable the strategy for rendering
         StrategyMgr.activateStrategy( "_stage_" );
-        StrategyMgr.activateStrategy( "_level_1_" );
+        //StrategyMgr.activateStrategy( "_level_1_" );
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );

@@ -17,8 +17,11 @@
 #include <node/spritenodemultilist.h>
 #include <node/objectnodemultilist.h>
 #include <node/spritenode.h>
+#include <node/uicontrolnode.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
+#include <gui/uimeter.h>
+#include <gui/uiprogressbar.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -29,6 +32,7 @@ namespace NNodeFactory
     iNode * Create( const CNodeData & rNodeData, const int nodeId );
     void Load( CSprite * pSprite, const CSpriteData & rSpriteData );
     void Load( CObject2D * pObject, const CSpriteData & rSpriteData );
+    iNode * CreateUIControlNode( const CNodeData & rNodeData );
     
     /************************************************************************
     *    DESC:  Create the node from the node data list
@@ -60,6 +64,10 @@ namespace NNodeFactory
             pNode = new CObjectNodeMultiLst( nodeId, rNodeData.getNodeId(), rNodeData.getParentNodeId() );
 
             Load( pNode->getObject(), rNodeData );
+        }
+        else if( rNodeData.getNodeType() == NDefs::ENT_UI_CONTROL )
+        {
+            pNode = CreateUIControlNode( rNodeData );
         }
         else
         {
@@ -93,5 +101,27 @@ namespace NNodeFactory
     {
         // Load the transforms from sprite data
         pObject->loadTransFromNode( rSpriteData.getXMLNode() );
+    }
+
+    /************************************************************************
+    *    DESC:  Create the UI Control node
+    ************************************************************************/
+    iNode * CreateUIControlNode( const CNodeData & rNodeData )
+    {
+        std::unique_ptr<CUIControl> upControl;
+
+        if( rNodeData.getControlType() == NUIControlDefs::ECT_METER )
+        {
+            upControl.reset( new CUIMeter( rNodeData.getGroup() ) );
+        }
+        else if( rNodeData.getControlType() == NUIControlDefs::ECT_PROGRESS_BAR )
+        {
+            upControl.reset( new CUIProgressBar( rNodeData.getGroup() ) );
+        }
+
+        upControl->loadFromNode( rNodeData.getXMLNode() );
+        upControl->init();
+
+        return new CUIControlNode( std::move(upControl), rNodeData.getNodeId(), rNodeData.getParentNodeId() );
     }
 }

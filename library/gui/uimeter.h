@@ -34,10 +34,13 @@ public:
     virtual ~CUIMeter();
     
     // Load the initial info from XML node
-    virtual void loadFromNode( const XMLNode & node ) override;
+    void loadFromNode( const XMLNode & node ) override;
+
+    // Init control
+    void init() override;
     
     // Update the control
-    virtual void update() override;
+    void update() override;
     
     // Set the amount to the meter without banging up
     void setMeterValue( const double amount ) override;

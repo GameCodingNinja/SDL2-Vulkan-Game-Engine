@@ -106,14 +106,10 @@ void CUIMeter::loadControlFromNode( const XMLNode & controlNode )
     CUIControl::loadControlFromNode( controlNode );
 
     // Find the sprite that renders the font
+    // NOTE: Should always be the last font sprite in the sprite list
     for( auto iter : m_pSpriteVec )
-    {
         if( iter->getVisualComponent()->isFontSprite() )
-        {
             m_pSprite = iter;
-            break;
-        }
-    }
 
     if( m_pSprite == nullptr )
         throw NExcept::CCriticalException("UI Meter Init Error!",
@@ -123,11 +119,24 @@ void CUIMeter::loadControlFromNode( const XMLNode & controlNode )
 
 
 /************************************************************************
+*    DESC:  Init the control
+************************************************************************/
+void CUIMeter::init()
+{
+    CUIControl::init();
+
+    // If the font that displays the meter value has no scripts, display the current value
+    if( !m_pSprite->hasScriptFunctions() )
+        displayValue();
+}
+
+
+/************************************************************************
 *    DESC:  Set the amount to the meter without banging up
 ************************************************************************/
 void CUIMeter::setMeterValue( const double amount )
 {
-    if( ((int64_t)amount > 0) && ((int64_t)amount != (int64_t)m_currentValue) )
+    if( ((int64_t)amount != (int64_t)m_currentValue) )
     {
         m_lastValue = m_currentValue;
         m_currentValue = m_targetValue = amount;

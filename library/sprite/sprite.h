@@ -113,6 +113,9 @@ public:
     
     // Get the unique id number
     int getId() const;
+
+    // Does this sprite have script functions
+    bool hasScriptFunctions();
     
 private:
     

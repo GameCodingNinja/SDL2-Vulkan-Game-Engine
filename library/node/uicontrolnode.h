@@ -1,36 +1,35 @@
 
 /************************************************************************
-*    FILE NAME:       spritenode.h
+*    FILE NAME:       uicontrolnode.h
 *
-*    DESCRIPTION:     Sprite node class for rendering just one sprite
+*    DESCRIPTION:     UI Control node class for rendering a ui control
 ************************************************************************/
 
-#ifndef __sprite_node_h__
-#define __sprite_node_h__
+#ifndef __uicontrol_node_h__
+#define __uicontrol_node_h__
 
 // Physical component dependency
 #include <node/inode.h>
 
-// Game lib dependencies
-#include <sprite/sprite.h>
+// Standard lib dependencies
+#include <memory>
 
 // Forward declaration(s)
 class CMatrix;
-class iObjectData;
+class CUIControl;
 
-class CSpriteNode : public iNode
+class CUIControlNode : public iNode
 {
 public:
 
     // Constructor
-    CSpriteNode(
-        const iObjectData & objectData,
-        int spriteId = defs_DEFAULT_ID,
+    CUIControlNode(
+        std::unique_ptr<CUIControl> pControl,
         int nodeId = defs_DEFAULT_ID,
         int parentId = defs_DEFAULT_ID );
 
     // Destructor
-    virtual ~CSpriteNode();
+    virtual ~CUIControlNode();
 
     // Update the nodes
     void update() override;
@@ -44,14 +43,8 @@ public:
     // for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
 
-    // Get the unique head node id number
-    int getId() const override;
-
-    // Get the sprite
-    CSprite * getSprite() override;
-
-    // Get the object
-    CObject2D * getObject() override;
+    // Get the control
+    CUIControl * getControl() override;
 
 private:
 
@@ -65,7 +58,7 @@ private:
 protected:
 
     // Node data
-    CSprite m_sprite;
+    std::unique_ptr<CUIControl> m_upControl;
 };
 
 #endif

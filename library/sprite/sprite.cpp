@@ -325,3 +325,13 @@ const iObjectData & CSprite::getObjectData() const
 {
     return m_rObjectData;
 }
+
+
+
+/************************************************************************
+*    DESC:  Does this sprite have script functions
+************************************************************************/
+bool CSprite::hasScriptFunctions()
+{
+    return !m_scriptFunctionMap.empty();
+}

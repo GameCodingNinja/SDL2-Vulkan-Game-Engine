@@ -124,6 +124,7 @@ add_library(
         node/nodedata.cpp
         node/nodedatalist.cpp
         node/nodefactory.cpp
+        node/uicontrolnode.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp

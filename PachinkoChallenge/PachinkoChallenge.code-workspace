@@ -21,8 +21,11 @@
 			"*.menu": "xml",
 			"*.cfg": "xml",
 			"*.list": "xml",
+			"*.lst": "xml",
 			"*.ctrl": "xml",
 			"*.2dm": "xml",
+			"*.strategy": "xml",
+			"*.loader": "xml",
 			"cctype": "cpp",
 			"clocale": "cpp",
 			"cmath": "cpp",
@@ -87,8 +90,7 @@
 			"future": "cpp",
 			"cfenv": "cpp",
 			"cinttypes": "cpp",
-			"valarray": "cpp",
-			"*.as": "cpp"
+			"valarray": "cpp"
 		}
 	}
 }

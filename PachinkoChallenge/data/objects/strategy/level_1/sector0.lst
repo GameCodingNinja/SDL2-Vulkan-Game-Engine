@@ -3,128 +3,67 @@
 
     <node>
         <sprite>
-            <position x="-800" y="-320"/>
+            <position x="-800" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-640" y="-320"/>
+            <position x="-640" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-480" y="-320"/>
+            <position x="-480" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-320" y="-320"/>
+            <position x="-320" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-160" y="-320"/>
+            <position x="-160" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="0" y="-320"/>
+            <position x="0" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="160" y="-320"/>
+            <position x="160" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="320" y="-320"/>
+            <position x="320" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="480" y="-320"/>
+            <position x="480" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="640" y="-320"/>
+            <position x="640" y="-1360"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="800" y="-320"/>
-        </sprite>
-    </node>
-
-
-    <node>
-        <sprite>
-            <position x="-720" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="-560" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="-400" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="-240" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="-80" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="80" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="240" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="400" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="560" y="-160"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="720" y="-160"/>
+            <position x="800" y="-1360"/>
         </sprite>
     </node>
 
@@ -132,67 +71,61 @@
 
     <node>
         <sprite>
-            <position x="-800" y="0"/>
+            <position x="-720" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-640" y="0"/>
+            <position x="-560" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-480" y="0"/>
+            <position x="-400" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-320" y="0"/>
+            <position x="-240" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-160" y="0"/>
+            <position x="-80" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="0" y="0"/>
+            <position x="80" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="160" y="0"/>
+            <position x="240" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="320" y="0"/>
+            <position x="400" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="480" y="0"/>
+            <position x="560" y="-1200"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="640" y="0"/>
-        </sprite>
-    </node>
-
-    <node>
-        <sprite>
-            <position x="800" y="0"/>
+            <position x="720" y="-1200"/>
         </sprite>
     </node>
 
@@ -200,61 +133,67 @@
 
     <node>
         <sprite>
-            <position x="-720" y="160"/>
+            <position x="-800" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-560" y="160"/>
+            <position x="-640" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-400" y="160"/>
+            <position x="-480" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-240" y="160"/>
+            <position x="-320" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-80" y="160"/>
+            <position x="-160" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="80" y="160"/>
+            <position x="0" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="240" y="160"/>
+            <position x="160" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="400" y="160"/>
+            <position x="320" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="560" y="160"/>
+            <position x="480" y="-1040"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="720" y="160"/>
+            <position x="640" y="-1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="-1040"/>
         </sprite>
     </node>
 
@@ -262,68 +201,974 @@
 
     <node>
         <sprite>
-            <position x="-800" y="320"/>
+            <position x="-720" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-640" y="320"/>
+            <position x="-560" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-480" y="320"/>
+            <position x="-400" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-320" y="320"/>
+            <position x="-240" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="-160" y="320"/>
+            <position x="-80" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="0" y="320"/>
+            <position x="80" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="160" y="320"/>
+            <position x="240" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="320" y="320"/>
+            <position x="400" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="480" y="320"/>
+            <position x="560" y="-880"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="640" y="320"/>
+            <position x="720" y="-880"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="-720"/>
         </sprite>
     </node>
 
     <node>
         <sprite>
-            <position x="800" y="320"/>
+            <position x="-640" y="-720"/>
         </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="-720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="-720"/>
+        </sprite>
+    </node>
+
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="-560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="-560"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="-400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="-400"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="-240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="-240"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="-80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="-80"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="80"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="80"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="240"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="240"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="400"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="400"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="560"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="560"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="720"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="720"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="880"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="880"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="1040"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="1040"/>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-800" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="1200"/>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="1200"/>
+        </sprite>
+    </node>
+
+
+
+    <!--  rails  -->
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="-720" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="-560" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="-400" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="-240" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="-80" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="80" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="240" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="400" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="560" y="1500"/>
+        </sprite> 
+    </node>
+    
+    <node>
+        <sprite objectName="bar" id="-1">
+            <position x="720" y="1500"/>
+        </sprite> 
     </node>
 
 </sector>

@@ -1,35 +1,34 @@
 
 /************************************************************************
-*    FILE NAME:       spritenode.cpp
+*    FILE NAME:       uicontrolnode.cpp
 *
-*    DESCRIPTION:     Sprite node class for rendering just one sprite
+*    DESCRIPTION:     UI Control node class for rendering a ui control
 ************************************************************************/
 
 // Physical component dependency
-#include <node/spritenode.h>
+#include <node/uicontrolnode.h>
 
 // Game lib dependencies
-#include <2d/object2d.h>
+#include <gui/uicontrol.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteNode::CSpriteNode(
-    const iObjectData & objectData,
-    int spriteId,
+CUIControlNode::CUIControlNode(
+    std::unique_ptr<CUIControl> upControl,
     int nodeId,
     int parentId ) :
-        iNode( nodeId, parentId ),
-        m_sprite( objectData, spriteId )
+        iNode( nodeId, parentId )
 {
-    m_type = NDefs::ENT_SPRITE;
+    m_upControl = std::move(upControl);
+    m_type = NDefs::ENT_UI_CONTROL;
 }
 
 
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CSpriteNode::~CSpriteNode()
+CUIControlNode::~CUIControlNode()
 {
 }
 
@@ -37,25 +36,24 @@ CSpriteNode::~CSpriteNode()
 /***************************************************************************
 *    DESC:  Update the sprite.
 ****************************************************************************/
-void CSpriteNode::update()
+void CUIControlNode::update()
 {
-    m_sprite.update();
-    m_sprite.physicsUpdate();
+    m_upControl->update();
 }
 
 
 /***************************************************************************
 *    DESC:  Transform the sprite
 ****************************************************************************/
-void CSpriteNode::transform()
+void CUIControlNode::transform()
 {
-    m_sprite.getObject()->transform();
+    m_upControl->transform();
 }
 
 // Used to transform object on a sector
-void CSpriteNode::transform( const CObject2D & object )
+void CUIControlNode::transform( const CObject2D & object )
 {
-    m_sprite.getObject()->transform( object );
+    m_upControl->transform( object );
 }
 
 
@@ -63,34 +61,16 @@ void CSpriteNode::transform( const CObject2D & object )
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CUIControlNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
-    m_sprite.recordCommandBuffer( index, cmdBuffer, camera );
-}
-
-
-/************************************************************************
-*    DESC:  Get the unique head node id number
-************************************************************************/
-int CSpriteNode::getId() const
-{
-    return m_sprite.getId();
+    m_upControl->recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/
-CSprite * CSpriteNode::getSprite()
+CUIControl * CUIControlNode::getControl()
 {
-    return &m_sprite;
-}
-
-
-/************************************************************************
-*    DESC:  Get the object
-************************************************************************/
-CObject2D * CSpriteNode::getObject()
-{
-    return m_sprite.getObject();
+    return m_upControl.get();
 }
