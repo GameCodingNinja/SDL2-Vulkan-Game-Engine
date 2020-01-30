@@ -24,6 +24,15 @@
 	],
 	"settings": {
 		"files.associations": {
+			"*.menu": "xml",
+			"*.cfg": "xml",
+			"*.list": "xml",
+			"*.lst": "xml",
+			"*.ctrl": "xml",
+			"*.2dm": "xml",
+			"*.strategy": "xml",
+			"*.loader": "xml",
+			"*.stage": "xml",
 			"cctype": "cpp",
 			"clocale": "cpp",
 			"cmath": "cpp",

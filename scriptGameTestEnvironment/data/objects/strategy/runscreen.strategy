@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<node defaultGroup="(run)" defaultAIName="aiBall">
+<strategy defaultGroup="(run)" defaultAIName="aiBall">
     
     <node name="square_red">
         
@@ -68,4 +67,4 @@
 
     </node>
 
-</node>
+</strategy>

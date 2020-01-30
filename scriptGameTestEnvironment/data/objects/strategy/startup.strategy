@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<node>
+<strategy>
 <!--
     <node name="multiListNode" defaultGroup="(startup)">
 
@@ -86,4 +85,4 @@
 
     </node>
 
-</node>
+</strategy>

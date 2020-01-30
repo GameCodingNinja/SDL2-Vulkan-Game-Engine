@@ -1,9 +1,8 @@
-<?xml version="1.0"?>
 <stage>
     <!-- The stage's sectors and their integer position in the world -->
     <sectors>
 
-        <sector file="data/objects/strategy/state/titlescreen.sector.lst">
+        <sector file="data/objects/strategy/level_1/sector.strategy">
             <position x="0" y="0" z="0"/>
         </sector>
 

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<strategyLst>
+<loader>
 
     <strategy name="_title_background_" type="actor" cmdBufPool="(title)">
     
@@ -75,4 +74,4 @@
 
     </strategy>
   
-</strategyLst>
+</loader>

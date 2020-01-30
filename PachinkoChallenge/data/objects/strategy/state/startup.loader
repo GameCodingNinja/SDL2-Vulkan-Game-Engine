@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<strategyLst>
+<loader>
 
     <strategy name="_startup_" type="actor" cmdBufPool="(startup)" activate="true">
     
@@ -8,4 +7,4 @@
 
     </strategy>
   
-</strategyLst>
+</loader>

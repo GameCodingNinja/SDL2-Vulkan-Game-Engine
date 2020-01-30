@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <listTable>
 
     <groupList groupName="_startup_">
@@ -6,7 +5,7 @@
     </groupList>
 
     <groupList groupName="_title_stage_">
-        <file path="data/objects/strategy/state/titlescreen.stage.strategy"/>
+        <file path="data/objects/strategy/state/titlescreen.stage"/>
     </groupList>
 
     <groupList groupName="_title_actor_">
@@ -18,7 +17,7 @@
     </groupList>
 
     <groupList groupName="_stage_">
-        <file path="data/objects/strategy/level_1/stage.strategy"/>
+        <file path="data/objects/strategy/level_1/level.stage"/>
     </groupList>
     
     <groupList groupName="_level_1_">

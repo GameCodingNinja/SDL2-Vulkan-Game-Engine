@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<node>
+<strategy>
     
     <node name="background" defaultGroup="(title)">
         
@@ -9,4 +8,4 @@
 
     </node>
 
-</node>
+</strategy>

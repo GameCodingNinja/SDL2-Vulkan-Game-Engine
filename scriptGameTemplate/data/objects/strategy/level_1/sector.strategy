@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<sector defaultGroup="(level_1)" defaultObjectName="peg" defaultId="-2">
+<strategy defaultGroup="(level_1)" defaultObjectName="peg" defaultId="-2">
 
     <node>
         <sprite>
@@ -486,4 +485,4 @@
         </sprite>
     </node>
 
-</sector>
+</strategy>

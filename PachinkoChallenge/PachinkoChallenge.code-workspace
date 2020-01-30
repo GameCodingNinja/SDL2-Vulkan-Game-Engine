@@ -26,6 +26,7 @@
 			"*.2dm": "xml",
 			"*.strategy": "xml",
 			"*.loader": "xml",
+			"*.stage": "xml",
 			"cctype": "cpp",
 			"clocale": "cpp",
 			"cmath": "cpp",

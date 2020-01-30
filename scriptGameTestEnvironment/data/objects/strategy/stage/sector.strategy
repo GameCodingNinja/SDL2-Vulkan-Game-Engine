@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<sector defaultGroup="(run)" defaultObjectName="peg" defaultId="-2">
+<strategy defaultGroup="(run)" defaultObjectName="peg" defaultId="-2">
 
     <node type="spriteNode">
         <sprite2d>
@@ -326,4 +325,4 @@
         </sprite2d>
     </node>
 
-</sector>
+</strategy>

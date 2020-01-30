@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<node>
+<strategy>
 
     <node name="waffles" defaultGroup="(startup)">
         
@@ -95,4 +94,4 @@
     </node>
     -->
 
-</node>
+</strategy>

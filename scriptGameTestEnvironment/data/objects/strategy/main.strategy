@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<node defaultGroup="(main)">
+<strategy defaultGroup="(main)">
 
     <node name="multiListTestNode">
 
@@ -223,4 +222,4 @@
 
     </node>
 
-</node>
+</strategy>

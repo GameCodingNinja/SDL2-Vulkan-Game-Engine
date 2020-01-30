@@ -37,7 +37,7 @@ namespace NStrategyloader
     void load( const std::string & filePath )
     {
         // Open and parse the XML file:
-        const XMLNode xmlNode = XMLNode::openFileHelper( filePath.c_str(), "strategyLst" );
+        const XMLNode xmlNode = XMLNode::openFileHelper( filePath.c_str(), "loader" );
 
         if( !xmlNode.isEmpty() )
         {

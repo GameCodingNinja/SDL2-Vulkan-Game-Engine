@@ -81,7 +81,7 @@ CActorStrategy::~CActorStrategy()
 void CActorStrategy::loadFromFile( const std::string & file )
 {
     // open and parse the XML file:
-    const XMLNode node = XMLNode::openFileHelper( file.c_str(), "node" );
+    const XMLNode node = XMLNode::openFileHelper( file.c_str(), "strategy" );
     if( !node.isEmpty() )
     {
         std::string defGroup, defObjName, nodeName;

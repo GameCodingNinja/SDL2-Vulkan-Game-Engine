@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<node defaultGroup="(title)">
+<strategy defaultGroup="(title)">
     
     <node name="square_green">
         
@@ -94,4 +94,4 @@
 
     </node>
 
-</node>
+</strategy>

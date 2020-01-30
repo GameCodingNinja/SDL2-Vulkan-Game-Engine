@@ -47,7 +47,7 @@ void CSector::loadFromNode( const XMLNode & node )
 {
     // open and parse the XML file:
     const std::string filePath = node.getAttribute( "file" );
-    const XMLNode sectorNode = XMLNode::openFileHelper( filePath.c_str(), "sector" );
+    const XMLNode sectorNode = XMLNode::openFileHelper( filePath.c_str(), "strategy" );
     if( !sectorNode.isEmpty() )
     {
         std::string defObjName, defGroup, nodeName;

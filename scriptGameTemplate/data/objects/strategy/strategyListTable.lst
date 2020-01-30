@@ -18,7 +18,7 @@
     </groupList>
 
     <groupList groupName="_stage_">
-        <file path="data/objects/strategy/level_1/stage.strategy"/>
+        <file path="data/objects/strategy/level_1/level.stage"/>
     </groupList>
     
     <groupList groupName="_level_1_">
