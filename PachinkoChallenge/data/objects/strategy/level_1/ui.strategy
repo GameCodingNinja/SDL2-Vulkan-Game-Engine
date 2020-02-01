@@ -1,7 +1,6 @@
-<node defaultGroup="(level_1)">
+<strategy defaultGroup="(level_1)">
     
     <node name="uiWinMeter">
-        
         <uiMeter name="win_meter" controlType="meter" defaultState="inactive">
             <filePath file="data/objects/strategy/level_1/win_meter.ctrl"/>
             <position x="-700" y="-1500" z="0"/>
@@ -18,4 +17,4 @@
         </uiMeter>
     </node>
 
-</node>
+</strategy>

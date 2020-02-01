@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <menu>
 
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
