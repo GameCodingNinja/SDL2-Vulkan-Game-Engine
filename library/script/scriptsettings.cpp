@@ -31,7 +31,6 @@ namespace NScriptSettings
         // Register type
         Throw( pEngine->RegisterObjectType( "CSettings", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getResolution()",        WRAP_MFN(CSettings, getResolution),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSize()",              WRAP_MFN(CSettings, getSize),              asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSize()",       WRAP_MFN(CSettings, getDefaultSize),       asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getSizeHalf()",          WRAP_MFN(CSettings, getSizeHalf),          asCALL_GENERIC) );

@@ -18,6 +18,12 @@ class b2Body;
 class iPhysicsComponent
 {
 public:
+
+    // Constructor
+    iPhysicsComponent(){};
+
+    // Destructor
+    virtual ~iPhysicsComponent(){};
     
     // Init the physics by creating the body and fixture
     // NOTE: Function must be called externally at the right time

@@ -23,5 +23,5 @@ CUIButton::CUIButton( const std::string & group ) :
 ************************************************************************/
 CUIButton::~CUIButton()
 {
-}   // Destructor
+}
 

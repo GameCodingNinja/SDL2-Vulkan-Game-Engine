@@ -47,7 +47,7 @@ public:
         bool interfaceTree = false );
 
     // Destructor
-    ~CMenuTree();
+    virtual ~CMenuTree();
 
     // Handle events
     void handleEvent( const SDL_Event & rEvent );

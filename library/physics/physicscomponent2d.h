@@ -38,7 +38,7 @@ public:
     CPhysicsComponent2D( const iObjectData & objectData );
 
     // Destructor
-    ~CPhysicsComponent2D();
+    virtual ~CPhysicsComponent2D();
 
     // Init the physics by creating the body and fixture
     // NOTE: Function must be called externally at the right time
@@ -112,4 +112,4 @@ private:
 
 };
 
-#endif  // __physics_component_2d_h__
+#endif

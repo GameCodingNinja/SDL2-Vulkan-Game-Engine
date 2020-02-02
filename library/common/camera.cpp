@@ -214,3 +214,20 @@ const CMatrix & CCamera::getFinalMatrix() const
 {
     return m_finalMatrix;
 }
+
+
+/************************************************************************
+*    DESC:  Convert to orthographic screen coordinates
+************************************************************************/  
+CPoint<float> CCamera::toOrthoCoord( const CPoint<float> & position )
+{
+    CPoint<float> pos;
+
+    auto & ratio = CSettings::Instance().getOrthoAspectRatio();
+    auto & sizeHalf = CSettings::Instance().getSizeHalf();
+
+    pos.x = (position.x - sizeHalf.w) / (ratio.w * m_scale.x);
+    pos.y = (position.y - sizeHalf.h) / (ratio.h * m_scale.y);
+
+    return pos;
+}

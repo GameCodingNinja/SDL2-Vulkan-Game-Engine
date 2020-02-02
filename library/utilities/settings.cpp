@@ -393,11 +393,6 @@ void CSettings::calcRatio()
 /************************************************************************
 *    DESC:  Get/Set game window size
 ************************************************************************/
-const CSize<float> & CSettings::getResolution() const
-{
-    return m_size;
-}
-
 const CSize<float> & CSettings::getSize() const
 {
     return m_size;

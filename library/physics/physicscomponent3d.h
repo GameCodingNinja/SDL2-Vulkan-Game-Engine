@@ -35,7 +35,7 @@ public:
     CPhysicsComponent3D( const iObjectData & objectData );
 
     // Destructor
-    ~CPhysicsComponent3D();
+    virtual ~CPhysicsComponent3D();
 
     //////////////////////////////////////////////////////
     // Register CScriptComponent2d Object with AngelScript
@@ -78,6 +78,6 @@ private:
     std::unique_ptr<btRigidBody> m_upRigidBody;
 };
 
-#endif  // __physics_component_3d_h__
+#endif
 
 

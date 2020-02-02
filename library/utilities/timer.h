@@ -24,7 +24,7 @@ public:
     CTimer( double interval, bool startExpired = false );
 
     // Destructor
-    ~CTimer();
+    virtual ~CTimer();
 
     // Set the time to have expired
     void setExpired();

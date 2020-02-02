@@ -30,7 +30,7 @@ public:
     CScriptComponent();
 
     // Destructor
-    ~CScriptComponent();
+    virtual ~CScriptComponent();
     
     // Prepare the script function to run
     void prepare(

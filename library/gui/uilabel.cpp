@@ -23,5 +23,5 @@ CUILabel::CUILabel( const std::string & group ) :
 ************************************************************************/
 CUILabel::~CUILabel()
 {
-}   // Destructor
+}
 

@@ -37,7 +37,7 @@ public:
     CVisualComponent3D( const iObjectData & objectData );
 
     // Destructor
-    ~CVisualComponent3D();
+    virtual ~CVisualComponent3D();
 
     // Record the command buffers
     void recordCommandBuffer( 

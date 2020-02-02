@@ -55,6 +55,9 @@ public:
     // Get the final matrix
     const CMatrix & getFinalMatrix() const;
 
+    // Convert to orthographic screen coordinates
+    CPoint<float> toOrthoCoord( const CPoint<float> & position );
+
 private:
 
     // Calculate the final matrix

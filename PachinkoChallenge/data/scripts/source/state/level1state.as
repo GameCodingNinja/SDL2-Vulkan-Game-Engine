@@ -14,6 +14,8 @@ enum ESpriteId
 final class CRunState : CCommonState
 {
     CPhysicsWorld2D @mPhysicsWorld;
+    iStrategy @mActorStrategy;
+    CCamera @mCamera;
     
     //
     //  Constructor
@@ -44,13 +46,16 @@ final class CRunState : CCommonState
         // Unblock the menu messaging and activate needed trees(s)
         MenuMgr.activateTree( "pause_tree" );
         
-        // Enable the strategy for rendering
+        // Enable the needed strategies
         StrategyMgr.activateStrategy( "_stage_" );
-        //StrategyMgr.activateStrategy( "_level_1_" );
+        @mActorStrategy = StrategyMgr.activateStrategy( "_level_1_" );
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
         mPhysicsWorld.EnableContactListener();
+
+        // Get the camera
+        @mCamera = CameraMgr.get( "level_camera" );
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
@@ -63,8 +68,15 @@ final class CRunState : CCommonState
     {
         CCommonState::handleEvent();
         
+        if( !MenuMgr.isActive() && ActionMgr.wasMouseBtnEvent("LEFT MOUSE", NDefs::EAP_UP) )
+        {
+            CSprite @sprite = mActorStrategy.create("square_red").getSprite();
+            sprite.prepare("ball_ai");
+            CPoint pos= mCamera.toOrthoCoord( ActionMgr.getMouseAbsolutePos() );
+            sprite.setPhysicsTransform(pos.x, pos.y);
+        }
         // Check for the "game change state" message
-        if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
+        else if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
             Spawn("State_FadeOut", "(state)");
         
         else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
@@ -96,10 +108,12 @@ final class CRunState : CCommonState
     {
         if( spriteA.getId() == SPRITE_PEG )
         {
+            spriteA.resetAndRecycle();
             spriteA.setFrame(1);
         }
         else if( spriteB.getId() == SPRITE_PEG )
         {
+            spriteB.resetAndRecycle();
             spriteB.setFrame(1);
         }
     }
@@ -111,11 +125,11 @@ final class CRunState : CCommonState
     {
         if( spriteA.getId() == SPRITE_PEG )
         {
-            spriteA.setFrame(0);
+            spriteA.stopAndRestart( "peg_off" );
         }
         else if( spriteB.getId() == SPRITE_PEG )
         {
-            spriteB.setFrame(0);
+            spriteB.stopAndRestart( "peg_off" );
         }
     }
 };

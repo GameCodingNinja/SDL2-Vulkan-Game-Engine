@@ -855,6 +855,13 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
         
         m_lastDeviceUsed = NDefs::MOUSE;
     }
+    else if( rEvent.type == SDL_MOUSEBUTTONDOWN || rEvent.type == SDL_MOUSEBUTTONUP )
+    {
+        m_mouseAbsolutePos.x = rEvent.button.x;
+        m_mouseAbsolutePos.y = rEvent.button.y;
+
+        m_lastDeviceUsed = NDefs::MOUSE;
+    }
     else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
     {
         if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )

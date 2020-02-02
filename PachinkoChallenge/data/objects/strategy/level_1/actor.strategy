@@ -5,7 +5,7 @@
         <sprite objectName="square_red">
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+                <script ball_ai="Level1_BallAI"/>
             </scriptLst>
         </sprite>
 
@@ -15,7 +15,7 @@
         
         <sprite objectName="triangle_green">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+                <script ball_ai="Level1_BallAI"/>
             </scriptLst>
         </sprite>
 
@@ -25,7 +25,7 @@
         
         <sprite objectName="triangle_blue">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+                <script ball_ai="Level1_BallAI"/>
             </scriptLst>
         </sprite>
 
@@ -35,7 +35,7 @@
         
         <sprite objectName="circle_green">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+                <script ball_ai="Level1_BallAI"/>
             </scriptLst>
         </sprite>
 
@@ -45,7 +45,7 @@
         
         <sprite objectName="circle_blue">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+                <script ball_ai="Level1_BallAI"/>
             </scriptLst>
         </sprite>
 
@@ -55,7 +55,7 @@
         
         <sprite objectName="circle_red">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)"/>
+                <script ball_ai="Level1_BallAI"/>
             </scriptLst>
         </sprite>
 

@@ -48,7 +48,6 @@ public:
     uint32_t getEngineVersion() const;
 
     // Get game window size
-    const CSize<float> & getResolution() const;
     const CSize<float> & getSize() const;
     const CSize<float> & getSizeHalf() const;
     const CSize<float> & getNativeSize() const;
