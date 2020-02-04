@@ -20,6 +20,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <tuple>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -83,7 +84,7 @@ public:
     bool stopAndRestart( const std::string & scriptFuncId, bool forceUpdate = false );
     
     // Copy over the script functions
-    void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string>> & scriptFunctionMap );
+    void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap );
     
     // Get the reference to the object
     CObject2D * getObject();
@@ -138,7 +139,7 @@ private:
     CScriptComponent m_scriptComponent;
     
     // Script function map. Execute scripts with an id
-    std::map<const std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;
+    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
 };
 
 #endif

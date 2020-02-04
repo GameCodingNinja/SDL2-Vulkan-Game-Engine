@@ -7,6 +7,9 @@
 // Physical component dependency
 #include <utilities/xmlparsehelper.h>
 
+// Standard lib dependencies
+#include <cstring>
+
 namespace NParseHelper
 {
     /************************************************************************
@@ -415,7 +418,7 @@ namespace NParseHelper
     ************************************************************************/
     void initScriptFunctions(
         const XMLNode & node,
-        std::map<const std::string, std::tuple<std::string, std::string>> & scriptFunctionMap,
+        std::map<const std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap,
         const std::string & rGroup )
     {
         // Check for scripting - Add an empty string for scripts not defined
@@ -443,7 +446,11 @@ namespace NParseHelper
                             group = rGroup;
                     }
 
-                    scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue) );
+                    bool prepareOnInit = false;
+                    if( scriptNode.isAttributeSet( "prepareOnInit" ) )
+                        prepareOnInit = ( std::strcmp( scriptNode.getAttribute("prepareOnInit"), "true" ) == 0 );
+
+                    scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue, prepareOnInit) );
                 }
             }
         }

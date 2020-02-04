@@ -6,7 +6,7 @@
         <sprite objectName="square_green">
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -17,7 +17,7 @@
         <sprite objectName="square_blue">
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -28,7 +28,7 @@
         <sprite objectName="square_red">
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -38,7 +38,7 @@
         
         <sprite objectName="triangle_green">
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -48,7 +48,7 @@
         
         <sprite objectName="triangle_blue">
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -58,7 +58,7 @@
         
         <sprite objectName="triangle_red">
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -68,7 +68,7 @@
         
         <sprite objectName="circle_green">
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -78,7 +78,7 @@
         
         <sprite objectName="circle_blue">
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -88,7 +88,7 @@
         
         <sprite objectName="circle_red">
             <scriptLst>
-                <script ball_ai="Title_BallAI" group="(main)"/>
+                <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 

@@ -119,6 +119,11 @@ void CSprite::init()
 {
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->createFontString();
+
+    // Prepare any script functions that have been flagged
+    for( auto & iter : m_scriptFunctionMap )
+        if( std::get<2>(iter.second) )
+            m_scriptComponent.prepare( std::get<0>(iter.second), std::get<1>(iter.second), {this} );
 }
 
 
@@ -196,7 +201,7 @@ bool CSprite::stopAndRestart( const std::string & scriptFuncId, bool forceUpdate
 /************************************************************************
 *    DESC:  Copy over the script functions
 ************************************************************************/
-void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string>> & scriptFunctionMap )
+void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap )
 {
     for( auto & iter : scriptFunctionMap )
         m_scriptFunctionMap.emplace( iter );
@@ -325,7 +330,6 @@ const iObjectData & CSprite::getObjectData() const
 {
     return m_rObjectData;
 }
-
 
 
 /************************************************************************

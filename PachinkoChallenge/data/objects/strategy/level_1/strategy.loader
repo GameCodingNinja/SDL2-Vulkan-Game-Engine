@@ -1,6 +1,9 @@
 <loader>
 
-    <strategy name="_stage_" type="stage" cmdBufPool="(level_1)" camera="level_camera"/>
-    <strategy name="_level_1_" type="actor" cmdBufPool="(level_1)" camera="level_camera"/>
+    <strategy name="_level_1_stage_" type="stage" cmdBufPool="(level_1)" camera="level_camera"/>
+    <strategy name="_level_1_actor_" type="actor" cmdBufPool="(level_1)" camera="level_camera"/>
+    <strategy name="_level_1_ui_" type="actor" cmdBufPool="(level_1)" camera="level_camera">
+        <node name="uiWinMeter"/>
+    </strategy>
   
 </loader>

@@ -237,7 +237,7 @@ private:
     NDefs::EActionPress m_mouseSelectType;
 
     // On state script function names
-    std::map<const std::string, std::tuple<std::string, std::string>> m_scriptFunctionMap;
+    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
 
     // Scrolling parameters
     CScrollParam m_scrollParam;

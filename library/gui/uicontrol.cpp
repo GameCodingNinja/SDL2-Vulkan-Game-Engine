@@ -181,7 +181,7 @@ void CUIControl::transform()
     CObject2D::transform();
 
     for( auto iter : m_pSpriteVec )
-        iter->getObject()->transform();
+        iter->getObject()->transform( *this );
 
     transformCollision();
 }

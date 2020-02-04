@@ -13,6 +13,7 @@ enum ESpriteId
 
 final class CRunState : CCommonState
 {
+    array<string> mStrategyAry = {"_level_1_stage_","_level_1_actor_","_level_1_ui_"};
     CPhysicsWorld2D @mPhysicsWorld;
     iStrategy @mActorStrategy;
     CCamera @mCamera;
@@ -32,8 +33,7 @@ final class CRunState : CCommonState
     {
         ScriptMgr.freeGroup( "(level_1)" );
         ObjectDataMgr.freeGroup( "(level_1)" );
-        StrategyMgr.deleteStrategy( "_stage_" );
-        StrategyMgr.deleteStrategy( "_level_1_" );
+        StrategyMgr.deleteStrategyAry( mStrategyAry );
         Device.deleteCommandPoolGroup( "(level_1)" );
         PhysicsWorldManager2D.clear();
     }
@@ -47,8 +47,8 @@ final class CRunState : CCommonState
         MenuMgr.activateTree( "pause_tree" );
         
         // Enable the needed strategies
-        StrategyMgr.activateStrategy( "_stage_" );
-        @mActorStrategy = StrategyMgr.activateStrategy( "_level_1_" );
+        StrategyMgr.activateStrategyAry( mStrategyAry );
+        @mActorStrategy = StrategyMgr.getStrategy( "_level_1_actor_" );
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
@@ -70,10 +70,10 @@ final class CRunState : CCommonState
         
         if( !MenuMgr.isActive() && ActionMgr.wasMouseBtnEvent("LEFT MOUSE", NDefs::EAP_UP) )
         {
-            CSprite @sprite = mActorStrategy.create("square_red").getSprite();
-            sprite.prepare("ball_ai");
             CPoint pos= mCamera.toOrthoCoord( ActionMgr.getMouseAbsolutePos() );
-            sprite.setPhysicsTransform(pos.x, pos.y);
+            CSprite @sprite = mActorStrategy.create("square_red").getSprite();
+            sprite.setPhysicsTransform(pos.x, -1500);
+            sprite.applyAngularImpulse(RandFloat(-0.5, 0.5));
         }
         // Check for the "game change state" message
         else if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )

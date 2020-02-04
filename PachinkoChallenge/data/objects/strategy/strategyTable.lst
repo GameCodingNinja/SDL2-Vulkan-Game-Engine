@@ -16,12 +16,16 @@
         <file path="data/objects/strategy/state/loadscreen.strategy"/>
     </groupList>
 
-    <groupList groupName="_stage_">
+    <groupList groupName="_level_1_stage_">
         <file path="data/objects/strategy/level_1/level.stage"/>
     </groupList>
     
-    <groupList groupName="_level_1_">
+    <groupList groupName="_level_1_actor_">
         <file path="data/objects/strategy/level_1/actor.strategy"/>
+    </groupList>
+
+    <groupList groupName="_level_1_ui_">
+        <file path="data/objects/strategy/level_1/ui.strategy"/>
     </groupList>
   
 </listTable>

@@ -46,6 +46,16 @@ namespace NScriptGlobals
 
         pScriptGen->SetReturnDWord( randInt(defaultGenerator) );
     }
+
+    void RandFloat( asIScriptGeneric * pScriptGen )
+    {
+        float min = pScriptGen->GetArgFloat(0);
+        float max = pScriptGen->GetArgFloat(1);
+
+        std::uniform_real_distribution<float> randFloat(min, max);
+
+        pScriptGen->SetReturnFloat( randFloat(defaultGenerator) );
+    }
     
     /************************************************************************
     *    DESC:  Throw an exception for values less then 0
@@ -153,6 +163,7 @@ namespace NScriptGlobals
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
 
         Throw( pEngine->RegisterGlobalFunction("int RandInt(int, int)", asFUNCTION(RandInt), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("float RandFloat(float, float)", asFUNCTION(RandFloat), asCALL_GENERIC) );
         Throw( pEngine->RegisterGlobalFunction("void Print(string &in)", WRAP_FN(NGenFunc::PostDebugMsg), asCALL_GENERIC) );
         Throw( pEngine->RegisterGlobalFunction("void Suspend()", asFUNCTION(Suspend), asCALL_GENERIC) );
         Throw( pEngine->RegisterGlobalFunction("int UniformRandomInt(int startRange, int endRange, int seed = 0)", WRAP_FN(NGenFunc::UniformRandomInt), asCALL_GENERIC ) );
