@@ -711,16 +711,22 @@ int main()
     {
         jobs.emplace_back(
             CThreadPool::Instance().postRetFut([&mutex] {
+                {
+                    std::unique_lock<std::mutex> lock( mutex );
+                    std::cout << "Task started in thread: " << std::this_thread::get_id() << std::endl;
+                }
                 
                 std::this_thread::sleep_for(std::chrono::seconds(1));
                 
-                std::unique_lock<std::mutex> lock( mutex );
-                std::cout << "Task finished in thread: " << std::this_thread::get_id() << std::endl;
+                {
+                    std::unique_lock<std::mutex> lock( mutex );
+                    std::cout << "Task finished in thread: " << std::this_thread::get_id() << std::endl;
+                }
             })
         );
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    //std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Wait for all the jobs to finish
     // get() is a blocking call, waiting for each job to return

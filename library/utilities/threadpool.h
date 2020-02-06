@@ -130,18 +130,14 @@ auto CThreadPool::postRetFut(F&& f, Args&&... args)
 {
     using return_type = typename std::result_of < F(Args...)>::type;
     
-    #if defined(__thread_disable__)
     auto task = std::make_shared < std::packaged_task < return_type()> >(
         std::bind(std::forward<F>(f), std::forward<Args>(args)...) );
-    
-    std::future<return_type> res = task->get_future();
-    (*task)();
-    return res;
-    #else
-    auto task = std::make_shared < std::packaged_task < return_type()> >(
-            std::bind(std::forward<F>(f), std::forward<Args>(args)...) );
 
     std::future<return_type> res = task->get_future();
+
+    #if defined(__thread_disable__)
+    (*task)();
+    #else
     {
         std::unique_lock<std::mutex> lock(m_queue_mutex);
 
@@ -155,8 +151,9 @@ auto CThreadPool::postRetFut(F&& f, Args&&... args)
     
     m_condition.notify_one();
     
-    return res;
     #endif
+
+    return res;
 }
 
 
@@ -187,4 +184,4 @@ void CThreadPool::post(F&& f, Args&&... args)
     #endif
 }
 
-#endif  // __thread_pool_h__
+#endif
