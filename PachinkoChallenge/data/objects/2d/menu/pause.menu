@@ -20,26 +20,6 @@
         </control>
 
     </staticMenuControls>
-
-    <mouseOnlyControls>
-
-        <!-- mouse-only close Button -->
-        <control name="close_btn" controlType="button" defaultState="inactive" mouseOnlyCtrl="true">
-            <filePath file="data/objects/2d/menu/control/close_button.ctrl"/>
-            <position x="140" y="-160" z="0"/>
-            <fontStringLst>
-                <string text="x"/>
-            </fontStringLst>
-            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
-            <action actionType="close"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
-                <script active="Control_OnActive"/>
-                <script select="Control_OnSelect"/>
-            </scriptLst>
-        </control>
-    
-    </mouseOnlyControls>
   
     <menuControls>
 
@@ -53,43 +33,7 @@
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
             <!-- Supports up, down, left, right -->
-            <navigate up="exit_btn" down="settings_btn"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
-                <script active="Control_OnActive"/>
-                <script select="Control_OnSelect"/>
-            </scriptLst>
-        </control>
-
-        <!-- Settings Button -->
-        <control name="settings_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="-35" z="0"/>
-            <fontStringLst>
-                <string text="Settings"/>
-            </fontStringLst>
-            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
-            <action actionType="to_menu" executionAction="settings_menu"/>
-            <!-- Supports up, down, left, right -->
-            <navigate up="resume_btn" down="key_binding_btn"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
-                <script active="Control_OnActive"/>
-                <script select="Control_OnSelect"/>
-            </scriptLst>
-        </control>
-
-        <!-- Key Bindings Button -->
-        <control name="key_binding_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
-            <position x="0" y="20" z="0"/>
-            <fontStringLst>
-                <string text="Key Bindings"/>
-            </fontStringLst>
-            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
-            <action actionType="to_menu" executionAction="key_bindings_menu"/>
-            <!-- Supports up, down, left, right -->
-            <navigate up="settings_btn" down="main_menu_btn"/>
+            <navigate up="exit_btn" down="main_menu_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
@@ -107,7 +51,7 @@
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <!-- Supports up, down, left, right -->
-            <navigate up="key_binding_btn" down="exit_btn"/>
+            <navigate up="resume_btn" down="exit_btn"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>

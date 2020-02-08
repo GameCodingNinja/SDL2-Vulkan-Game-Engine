@@ -103,7 +103,7 @@ private:
 private:
     
     // need to keep track of threads so we can join them
-    std::vector< std::thread > m_workers;
+    std::vector< std::thread > m_threadVec;
     
     // the task queue
     std::queue< std::function<void()> > m_tasks;

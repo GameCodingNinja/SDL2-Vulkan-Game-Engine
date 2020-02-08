@@ -2,30 +2,12 @@
 <objectDataList2D>
 
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
-    <default  name="">
+    <default>
         <visual>
-            <texture count="0" file="" compressed="false"/>
-            <mesh genType="quad" file="" >
-                <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file=""/>
-                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
-            </mesh>
+            <mesh genType="quad"/>
             <color r="1" g="1" b="1" a="1"/>
             <pipeline id="2d_quad"/>
         </visual>
-        <physics world="(game)">
-            <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
-            <fixtureLst>
-                <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
-                    <!-- <collisionFilter categoryBits="" maskBits="" groupIndex=""/> -->
-                    <!-- <vertLst>
-                    vert list for polygon shapes - max of 8
-                    Box2D polygons are defined using Counter Clockwise Winding (CCW)
-                    <vert x="" y=""/>
-                    </vertLst> -->
-                    <sizeMod top="0" bottom="0" left="0" right="0"/>
-                </fixture>
-            </fixtureLst>
-        </physics>
         <size width="0" height="0"/>
     </default>
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
@@ -36,7 +18,7 @@
             <visual>
                 <texture file="data/textures/run/circle_green.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
                     <fixture shape="circle" radius="48" density="0.3" restitution="0.6"/>
@@ -48,7 +30,7 @@
             <visual>
                 <texture file="data/textures/run/circle_blue.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
                     <fixture shape="circle" radius="48" density="0.2" restitution="0.4"/>
@@ -60,7 +42,7 @@
             <visual>
                 <texture file="data/textures/run/circle_red.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
                     <fixture shape="circle" radius="48" density="0.1" restitution="0.3"/>
@@ -72,7 +54,7 @@
             <visual>
                 <texture file="data/textures/run/square_red.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
                     <fixture shape="polygon" density="0.1" restitution="0.2">
@@ -86,7 +68,7 @@
             <visual>
                 <texture file="data/textures/run/triangle_green.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
                     <fixture shape="polygon" density="0.3" restitution="0.6">
@@ -104,7 +86,7 @@
             <visual>
                 <texture file="data/textures/run/triangle_blue.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
                     <fixture shape="polygon" density="0.2" restitution="0.4">
@@ -122,7 +104,7 @@
             <visual>
                 <texture count="2" file="data/textures/run/peg%d.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="static"/>
                 <fixtureLst>
                     <fixture shape="circle" radius="17"/>
@@ -134,7 +116,7 @@
             <visual>
                 <texture file="data/textures/run/bar.png"/>
             </visual>
-            <physics>
+            <physics world="(game)">
                 <body type="static"/>
                 <fixtureLst>
                     <fixture shape="polygon">
@@ -152,7 +134,6 @@
                 </mesh>
                 <color r="48" g="97" b="153" a="1"/>
             </visual>
-            <physics world=""/>
             <size width="175" height="55"/>
         </object>
 
@@ -161,7 +142,6 @@
                 <mesh genType="font"/>
                 <color r="64" g="125" b="192" a="1"/>
             </visual>
-            <physics world=""/>
         </object>
 
         <object name="level_font">
@@ -169,7 +149,6 @@
                 <mesh genType="font"/>
                 <color r="64" g="125" b="192" a="1"/>
             </visual>
-            <physics world=""/>
         </object>
 
     </objectList>

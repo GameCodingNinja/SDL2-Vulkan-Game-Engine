@@ -702,21 +702,24 @@ public:
 
 int main()
 {
-    std::vector< std::future<void> > jobs;
+    std::vector< std::future<void> > jobVec;
+
+    using namespace std::chrono_literals;
     
     auto & mutex = CThreadPool::Instance().getMutex();
     CThreadPool::Instance().init( 8, 8 );
     
     for( int i = 0; i < 8; ++i )
     {
-        jobs.emplace_back(
+        jobVec.emplace_back(
             CThreadPool::Instance().postRetFut([&mutex] {
                 {
                     std::unique_lock<std::mutex> lock( mutex );
                     std::cout << "Task started in thread: " << std::this_thread::get_id() << std::endl;
                 }
                 
-                std::this_thread::sleep_for(std::chrono::seconds(1));
+                //std::this_thread::sleep_for(std::chrono::seconds(1));
+                std::this_thread::sleep_for(1s);
                 
                 {
                     std::unique_lock<std::mutex> lock( mutex );
@@ -730,7 +733,7 @@ int main()
 
     // Wait for all the jobs to finish
     // get() is a blocking call, waiting for each job to return
-    for( auto && iter : jobs ) iter.get();
+    for( auto && iter : jobVec ) iter.get();
 
     return 0;
 }

@@ -52,28 +52,35 @@ void CThreadPool::init( const int minThreads, const int maxThreads )
     else if( (maxThreads > threads) && (maxThreads <= maxCores) )
         threads = maxThreads;
 
-    m_workers.reserve( threads );
+    m_threadVec.reserve( threads );
 
+    // create all the threads for the pool
     for( int i = 0; i < threads; ++i )
     {
-        m_workers.emplace_back(
+        m_threadVec.emplace_back(
             [this] {
                 for (;;)
                 {
                     std::function<void() > task;
 
                     {
+                        // Locks this whole section with a mutex
                         std::unique_lock<std::mutex> lock(this->m_queue_mutex);
+
+                        // Wait here until the task queue is not empty or we need to stop the thread pool
                         this->m_condition.wait(lock,
                             [this] { return this->m_stop || !this->m_tasks.empty(); });
 
+                        // Get out now if we are to stop and the task queue is empty
                         if (this->m_stop && this->m_tasks.empty())
                             return;
 
+                        // Get the top most task and pop it from the queue to be executed
                         task = std::move(this->m_tasks.front());
                         this->m_tasks.pop();
                     }
 
+                    // Execute the task
                     task();
                 }
             }
@@ -137,13 +144,13 @@ void CThreadPool::stop()
 
         m_condition.notify_all();
 
-        for( std::thread & iter : m_workers )
+        for( std::thread & iter : m_threadVec )
             iter.join();
         #endif
 
         m_jobVec.clear();
         m_tasks = std::queue< std::function<void()> >();
-        m_workers.clear();
+        m_threadVec.clear();
     }
 }
 

@@ -6,10 +6,6 @@
         <file path="data/objects/2d/objectDataList/menuMisc.lst"/>
         <file path="data/objects/2d/objectDataList/menuButtonFrames.lst"/>
     </groupList>
-
-    <groupList groupName="(debug)">
-        <file path="data/objects/2d/objectDataList/debug.lst"/>
-    </groupList>
     
     <groupList groupName="(startup)">
         <file path="data/objects/2d/objectDataList/startupDataList.lst"/>

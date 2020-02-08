@@ -2,36 +2,32 @@
 <objectDataList2D>
 
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
-    <default  name="">
+    <default>
         <visual>
-            <texture count="0" file="" compressed="false"/>
-            <mesh genType="quad" file="">
-                <spriteSheet defIndex="0" glyphCount="0" columns="0"/>
-                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
-            </mesh>
+            <mesh genType="quad"/>
             <color r="64" g="125" b="192" a="1"/>
             <pipeline id="2d_quad"/>
         </visual>
-        <size width="0" height="0"/>
     </default>
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
   
     <objectList>
 
-        <object name="label_font">
+        <object name="235x85_button_solid">
             <visual>
-                <mesh genType="font"/>
+                <pipeline id="2d_solid"/>
+                <color r="25" g="54" b="84" a="0.8"/>
             </visual>
-        </object>
-        
-        <object name="meter_font">
-            <visual>
-                <mesh genType="font"/>
-                <color r="64" g="125" b="192" a="0"/>
-            </visual>
+            <size width="231" height="81"/>
         </object>
 
         <object name="control_font">
+            <visual>
+                <mesh genType="font"/>
+            </visual>
+        </object>
+
+        <object name="label_font">
             <visual>
                 <mesh genType="font"/>
             </visual>
@@ -45,36 +41,12 @@
             <size width="271" height="51"/>
         </object>
 
-        <object name="235x85_button_solid">
+        <object name="150x65_button_solid">
             <visual>
                 <pipeline id="2d_solid"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
-            <size width="231" height="81"/>
-        </object>
-
-        <object name="145x55_button_solid">
-            <visual>
-                <pipeline id="2d_solid"/>
-                <color r="25" g="54" b="84" a="0.8"/>
-            </visual>
-            <size width="141" height="51"/>
-        </object>
-
-        <object name="125x55_button_solid">
-            <visual>
-                <pipeline id="2d_solid"/>
-                <color r="25" g="54" b="84" a="0.8"/>
-            </visual>
-            <size width="121" height="51"/>
-        </object>
-
-        <object name="28x28_button_solid">
-            <visual>
-                <pipeline id="2d_solid"/>
-                <color r="25" g="54" b="84" a="0.8"/>
-            </visual>
-            <size width="26" height="26"/>
+            <size width="146" height="61"/>
         </object>
 
     </objectList>
