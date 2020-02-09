@@ -128,13 +128,13 @@
 
         <object name="meter_frame">
             <visual>
-                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <texture file="data/textures/menu/16x16_5_pixel_frame.png"/>
                 <mesh genType="scaled_frame">
-                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                    <scaledFrame thicknessWidth="7" thicknessHeight="7" centerQuad="false"/>
                 </mesh>
                 <color r="48" g="97" b="153" a="1"/>
             </visual>
-            <size width="175" height="55"/>
+            <size width="250" height="70"/>
         </object>
 
         <object name="meter_font">

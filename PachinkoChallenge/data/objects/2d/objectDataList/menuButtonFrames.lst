@@ -15,11 +15,11 @@
   
     <objectList>
 
-        <object name="275x55_button_frame">
+        <object name="345x75_button_frame">
             <visual>
-                <texture file="data/textures/menu/16x16_3_pixel_frame.png"/>
+                <texture file="data/textures/menu/16x16_4_pixel_frame.png"/>
             </visual>
-            <size width="275" height="55"/>
+            <size width="345" height="75"/>
         </object>
 
         <object name="235x85_button_frame">

@@ -17,7 +17,7 @@
     <objectList>
 
         <object name="pause_menu_bg">
-            <size width="355" height="395"/>
+            <size width="400" height="400"/>
         </object>
         
         <object name="confirmation_menu_bg">

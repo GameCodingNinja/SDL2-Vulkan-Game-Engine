@@ -5,12 +5,11 @@
   <fonts>
 
     <!-- the name of the font xml file and texture needs to be the same name except for the file extension -->
-    <font name="dejavu_sans_reg_32" file="data/textures/fonts/dejavu_sans_reg_32"/>
-    <font name="dejavu_sans_reg_45" file="data/textures/fonts/dejavu_sans_reg_45"/>
-    <font name="dejavu_sans_cond_45" file="data/textures/fonts/dejavu_sans_cond_45"/>
-    <font name="dejavu_sans_bold_45" file="data/textures/fonts/dejavu_sans_bold_45"/>
-    <font name="dejavu_sans_reg_55" file="data/textures/fonts/dejavu_sans_reg_55"/>
+    <font name="dejavu_sans_reg_40" file="data/textures/fonts/dejavu_sans_reg_40"/>
+    <font name="dejavu_sans_cond_60" file="data/textures/fonts/dejavu_sans_cond_60"/>
+    <font name="dejavu_sans_reg_60" file="data/textures/fonts/dejavu_sans_reg_60"/>
     <font name="dejavu_sans_reg_65" file="data/textures/fonts/dejavu_sans_reg_65"/>
+    <font name="dejavu_sans_bold_65" file="data/textures/fonts/dejavu_sans_bold_65"/>
     <font name="dejavu_sans_bold_70" file="data/textures/fonts/dejavu_sans_bold_70"/>
 
     

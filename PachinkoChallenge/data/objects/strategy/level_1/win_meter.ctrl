@@ -2,16 +2,18 @@
 
     <spriteList>
 
+        <!-- Meter label -->
         <sprite objectName="level_font">
-            <position x="0" y="50" z="0"/>
-            <font fontName="dejavu_sans_reg_32" fontString="Win Meter"/>
+            <position x="0" y="-50" z="0"/>
+            <font fontName="dejavu_sans_reg_40" fontString="Win Meter"/>
         </sprite>
 
         <sprite objectName="meter_frame"/>
 
+        <!-- The last font sprite is the one used to display the meter value -->
         <sprite objectName="level_font">
             <position x="0" y="-1" z="0"/>
-            <font fontName="dejavu_sans_cond_45">
+            <font fontName="dejavu_sans_cond_60">
                 <attributes kerning="-2"/>
             </font>
         </sprite>

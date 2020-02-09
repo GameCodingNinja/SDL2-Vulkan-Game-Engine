@@ -1,6 +1,23 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
+#include <cstdint>
+#include <vector>
+#include <boost/crc.hpp>
+
+int main()
+{
+    boost::crc_optimal<16, 0xFFFF, 0, 0, false, false> result;
+
+    std::vector<uint8_t> buffer = {8,1,1,0,1,0};
+
+    result.process_bytes( buffer.data(), buffer.size() );
+
+    uint8_t value = result.checksum();
+
+    return 0;
+}
+
 /*class iStatic
 {
 public:
@@ -674,7 +691,7 @@ int main()
     //getchar();
 }*/
 
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 #include <chrono>
 #include <algorithm>
@@ -736,7 +753,7 @@ int main()
     for( auto && iter : jobVec ) iter.get();
 
     return 0;
-}
+}*/
 
 
 

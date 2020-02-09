@@ -13,12 +13,28 @@
   
     <objectList>
 
+        <object name="345x75_button_solid">
+            <visual>
+                <pipeline id="2d_solid"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="341" height="71"/>
+        </object>
+
         <object name="235x85_button_solid">
             <visual>
                 <pipeline id="2d_solid"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
             <size width="231" height="81"/>
+        </object>
+
+        <object name="150x65_button_solid">
+            <visual>
+                <pipeline id="2d_solid"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="146" height="61"/>
         </object>
 
         <object name="control_font">
@@ -31,22 +47,6 @@
             <visual>
                 <mesh genType="font"/>
             </visual>
-        </object>
-
-        <object name="275x55_button_solid">
-            <visual>
-                <pipeline id="2d_solid"/>
-                <color r="25" g="54" b="84" a="0.8"/>
-            </visual>
-            <size width="271" height="51"/>
-        </object>
-
-        <object name="150x65_button_solid">
-            <visual>
-                <pipeline id="2d_solid"/>
-                <color r="25" g="54" b="84" a="0.8"/>
-            </visual>
-            <size width="146" height="61"/>
         </object>
 
     </objectList>

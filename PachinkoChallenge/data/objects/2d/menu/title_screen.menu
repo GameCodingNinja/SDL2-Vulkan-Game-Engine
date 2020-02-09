@@ -12,7 +12,7 @@
 
         <!-- Start Button -->
         <control name="continue_btn" faction="decision_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_200x75.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_200x85.ctrl"/>
             <position x="-200" y="0" z="0"/>
             <fontStringLst>
                 <string text="Start"/>
@@ -29,7 +29,7 @@
 
         <!-- Score Button -->
         <control name="score_btn" controlType="button" defaultState="disabled">
-            <filePath file="data/objects/2d/menu/control/button_200x75.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_200x85.ctrl"/>
             <position x="200" y="0" z="0"/>
             <fontStringLst>
                 <string text="Score"/>

@@ -3,7 +3,7 @@
     <node name="uiWinMeter">
         <uiMeter name="win_meter" controlType="meter" defaultState="inactive">
             <filePath file="data/objects/strategy/level_1/win_meter.ctrl"/>
-            <position x="-700" y="-1500" z="0"/>
+            <position x="-380" y="-880" z="0"/>
             <!-- Max size of font string in meter -->
             <size width="175" height="55"/>
             <!-- <meterScript onInit="Meter_OnInit" onStart="Meter_OnStart" onStop="Meter_OnStop" onClear="Meter_OnClear"/> -->

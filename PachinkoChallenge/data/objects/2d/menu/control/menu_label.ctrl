@@ -3,7 +3,7 @@
     <spriteList>
 
         <sprite objectName="label_font">
-            <font fontName="dejavu_sans_bold_45"/>
+            <font fontName="dejavu_sans_bold_65"/>
         </sprite>
     
     </spriteList>
