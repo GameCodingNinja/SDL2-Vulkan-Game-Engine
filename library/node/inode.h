@@ -25,7 +25,7 @@
 class CMatrix;
 class CSprite;
 class CCamera;
-class CObject2D;
+class CObjectTransform;
 class CUIControl;
 
 class iNode
@@ -73,7 +73,7 @@ public:
     // Transform the nodes
     virtual void transform(){}
     // Used to transform object on a sector
-    virtual void transform( const CObject2D & object ){}
+    virtual void transform( const CObjectTransform & object ){}
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}
@@ -87,7 +87,7 @@ public:
     { return nullptr; }
     
     // Get the object
-    virtual CObject2D * getObject()
+    virtual CObjectTransform * getObject()
     { return nullptr; }
     
     // Get the sprite

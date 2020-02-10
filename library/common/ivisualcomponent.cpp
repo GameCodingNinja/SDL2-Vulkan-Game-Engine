@@ -19,6 +19,7 @@
 std::string iVisualComponent::m_null_string;
 CSize<int> iVisualComponent::m_null_int_size;
 CSize<float> iVisualComponent::m_null_float_size;
+CMatrix iVisualComponent::m_null_matrix;
 
 /************************************************************************
 *    desc:  Constructor

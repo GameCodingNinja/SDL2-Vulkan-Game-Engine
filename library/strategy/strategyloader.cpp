@@ -28,7 +28,7 @@
 
 namespace NStrategyloader
 {
-    void init( const XMLNode & nodeXML, CObject2D * pObject );
+    void init( const XMLNode & nodeXML, CObjectTransform * pObject );
     void init( const XMLNode & nodeXML, CSprite * pSprite );
 
     /************************************************************************
@@ -169,7 +169,7 @@ namespace NStrategyloader
     /************************************************************************
      *    DESC:  Init the object with the xmlNode data
      ************************************************************************/
-    void init( const XMLNode & nodeXML, CObject2D * pObject )
+    void init( const XMLNode & nodeXML, CObjectTransform * pObject )
     {
         // Set any transforms
         pObject->loadTransFromNode( nodeXML );
@@ -178,7 +178,7 @@ namespace NStrategyloader
     void init( const XMLNode & nodeXML, CSprite * pSprite )
     {
         // Set any transforms
-        pSprite->getObject()->loadTransFromNode( nodeXML );
+        pSprite->loadTransFromNode( nodeXML );
 
         // See if there are any scripts that need to be prepared
         for( int i = 0; i < nodeXML.nChildNode("script"); ++i )

@@ -149,8 +149,8 @@ void CUIControl::loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCo
     else
     {
         // Find the largest size width and height of the different sprites for the controls size
-        const float width( pSprite->getVisualComponent()->getSize().w + std::fabs( pSprite->getObject()->getPos().x ) );
-        const float height( pSprite->getVisualComponent()->getSize().h + std::fabs( pSprite->getObject()->getPos().y ) );
+        const float width( pSprite->getVisualComponent()->getSize().w + std::fabs( pSprite->getPos().x ) );
+        const float height( pSprite->getVisualComponent()->getSize().h + std::fabs( pSprite->getPos().y ) );
 
         if( width > m_size.w )
             m_size.w = width;
@@ -178,20 +178,20 @@ void CUIControl::update()
 ************************************************************************/
 void CUIControl::transform()
 {
-    CObject2D::transform();
+    CObjectTransform::transform();
 
     for( auto iter : m_pSpriteVec )
-        iter->getObject()->transform( *this );
+        iter->transform( *this );
 
     transformCollision();
 }
 
-void CUIControl::transform( const CObject2D & object )
+void CUIControl::transform( const CObjectTransform & object )
 {
-    CObject2D::transform( object );
+    CObjectTransform::transform( object );
 
     for( auto iter : m_pSpriteVec )
-        iter->getObject()->transform( *this );
+        iter->transform( *this );
 
     transformCollision();
 }

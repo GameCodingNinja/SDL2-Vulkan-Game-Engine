@@ -12,7 +12,7 @@
 #include <node/nodemultilist.h>
 
 // Game lib dependencies
-#include <2d/object2d.h>
+#include <common/objecttransform.h>
 
 class CObjectNodeMultiLst : public CNodeMultiLst
 {
@@ -29,10 +29,10 @@ public:
     
     // Transform the nodes
     void transform() override;
-    void transform( const CObject2D & object ) override;
+    void transform( const CObjectTransform & object ) override;
     
     // Get the sprite
-    CObject2D * getObject() override;
+    CObjectTransform * getObject() override;
     
     // Get the sprite id number
     int getId() const override;
@@ -40,7 +40,7 @@ public:
 private:
     
     // Node data
-    CObject2D m_object;
+    CObjectTransform m_object;
     
     // Object Id of this node
     int m_objectId;

@@ -8,7 +8,7 @@
 #define __camera_h__
 
 // Physical component dependency
-#include <3d/object3d.h>
+#include <common/objecttransform.h>
 
 // Game lib dependencies
 #include <utilities/matrix.h>
@@ -16,7 +16,7 @@
 // Forward Declarations
 struct XMLNode;
 
-class CCamera : public CObject3D
+class CCamera : public CObjectTransform
 {
 public:
 
@@ -50,13 +50,21 @@ public:
     const CMatrix & getProjectionMatrix() const;
 
     // Transform - One call for those objects that don't have parents
-    virtual void transform();
+    void transform() final;
 
     // Get the final matrix
     const CMatrix & getFinalMatrix() const;
 
     // Convert to orthographic screen coordinates
     CPoint<float> toOrthoCoord( const CPoint<float> & position );
+
+    // Get the rotation matrix
+    const CMatrix & getRotMatrix() const final;
+
+protected:
+    
+    // Apply the rotation
+    void applyRotation( CMatrix & matrix ) final;
 
 private:
 
@@ -70,6 +78,10 @@ private:
 
     // Custom projection matrix
     CMatrix m_finalMatrix;
+
+    // Matrix for rotations only
+    // Basically used for normal calculations
+    CMatrix m_rotMatrix;
 
     // The projection type
     NDefs::EProjectionType m_projType;

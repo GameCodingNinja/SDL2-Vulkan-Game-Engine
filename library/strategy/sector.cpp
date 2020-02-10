@@ -138,7 +138,7 @@ void CSector::update()
 ************************************************************************/
 void CSector::transform()
 {
-    CObject3D::transform();
+    CObjectTransform::transform();
     
     for( auto iter : m_pNodeVec )
         iter->transform( *this );

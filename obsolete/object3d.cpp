@@ -15,11 +15,11 @@ CObject3D::CObject3D()
 {
 }
 
-CObject3D::CObject3D( const CObject3D & obj ) :
+/*CObject3D::CObject3D( const CObject3D & obj ) :
     CObject2D( obj ),
     m_rotMatrix( obj.m_rotMatrix )
 {
-}
+}*/
 
 
 /************************************************************************

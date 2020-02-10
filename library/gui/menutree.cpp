@@ -88,7 +88,7 @@ void CMenuTree::transform()
         m_pMenuPathVec.back()->transform();
 }
 
-void CMenuTree::transform( const CObject2D & object )
+void CMenuTree::transform( const CObjectTransform & object )
 {
     if( !m_pMenuPathVec.empty() )
         m_pMenuPathVec.back()->transform( object );

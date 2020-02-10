@@ -21,7 +21,6 @@
 #include <node/nodedata.h>
 #include <node/inode.h>
 #include <system/device.h>
-#include <3d/object3d.h>
 #include <common/camera.h>
 
 // Boost lib dependencies

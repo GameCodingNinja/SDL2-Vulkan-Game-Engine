@@ -15,6 +15,7 @@
 #include <common/color.h>
 #include <common/size.h>
 #include <common/defs.h>
+#include <utilities/matrix.h>
 
 // Standard lib dependencies
 #include <string>
@@ -28,7 +29,7 @@ class iObjectData;
 class CFontProperties;
 class CFontData;
 class CCamera;
-class CObject2D;
+class CObjectTransform;
 struct XMLNode;
 
 class iVisualComponent : public CVisual
@@ -45,7 +46,7 @@ public:
     virtual void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CObject2D * const pObject,
+        const CObjectTransform * const pObject,
         const CCamera & camera ) {}
     
     // Set/Get the color
@@ -100,6 +101,13 @@ public:
     
     // Get the crop offset
     virtual const CSize<int> & getCropOffset( uint index = 0 ) const;
+
+    // Get the rotation matrix
+    virtual const CMatrix & getRotMatrix() const { return m_null_matrix; };
+    virtual CMatrix & getRotMatrix() { return m_null_matrix; };
+
+    // Use a point to set a column - used for 3d physics
+    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){};
     
 protected:
 
@@ -119,6 +127,7 @@ protected:
     static std::string m_null_string;
     static CSize<int> m_null_int_size;
     static CSize<float> m_null_float_size;
+    static CMatrix m_null_matrix;
 };
 
 #endif

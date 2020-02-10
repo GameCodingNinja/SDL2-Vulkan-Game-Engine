@@ -52,7 +52,7 @@ public:
     void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CObject2D * const pObject,
+        const CObjectTransform * const pObject,
         const CCamera & camera ) override;
     
 private:
@@ -62,7 +62,7 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CObject2D * const pObject,
+        const CObjectTransform * const pObject,
         const CCamera & camera ) override;
     
     // Add the line width to the vector based on horz alignment

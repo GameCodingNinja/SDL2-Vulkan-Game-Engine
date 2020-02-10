@@ -14,7 +14,6 @@
 #include <common/camera.h>
 #include <system/device.h>
 #include <system/uniformbufferobject.h>
-#include <2d/object2d.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -42,7 +41,7 @@ void CVisualComponentScaledFrame::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CObject2D * const pObject,
+    const CObjectTransform * const pObject,
     const CCamera & camera )
 {
     // Setup the uniform buffer object

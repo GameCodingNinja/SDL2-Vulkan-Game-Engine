@@ -17,7 +17,6 @@
 #include <system/uniformbufferobject.h>
 #include <utilities/statcounter.h>
 #include <common/camera.h>
-#include <2d/object2d.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -75,7 +74,7 @@ CVisualComponent3D::~CVisualComponent3D()
 void CVisualComponent3D::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
-    const CObject2D * const pObject,
+    const CObjectTransform * const pObject,
     const CCamera & camera )
 {
     if( m_active )
@@ -127,17 +126,40 @@ void CVisualComponent3D::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CObject2D * const pObject,
+    const CObjectTransform * const pObject,
     const CCamera & camera )
 {
     // Setup the uniform buffer object
     NUBO::model_rotate_viewProj_color_additive ubo;
     ubo.model = pObject->getMatrix();
-    ubo.rotate = pObject->getRotMatrix() * camera.getRotMatrix();
+    ubo.rotate = m_rotMatrix * camera.getRotMatrix();
     ubo.viewProj = camera.getFinalMatrix();
     ubo.color = m_color;
     ubo.additive = m_additive;
 
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
+}
+
+
+/************************************************************************
+*    DESC:  Get the rotation matrix
+************************************************************************/
+const CMatrix & CVisualComponent3D::getRotMatrix() const
+{
+    return m_rotMatrix;
+}
+
+CMatrix & CVisualComponent3D::getRotMatrix()
+{
+    return m_rotMatrix;
+}
+
+
+/************************************************************************
+*    DESC:  Use a point to set a column - used for 3d physics
+************************************************************************/
+void CVisualComponent3D::setRotMatrixColumn( const int col, const float x, const float y, const float z )
+{
+    m_rotMatrix.setColumn( col, x, y, z );
 }

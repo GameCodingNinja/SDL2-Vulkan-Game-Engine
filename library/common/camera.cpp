@@ -112,7 +112,7 @@ void CCamera::init()
     createProjectionMatrix();
     
     // Do the initial transform
-    CObject3D::transform();
+    CObjectTransform::transform();
     
     // Calculate the final matrix
     calcFinalMatrix();
@@ -159,12 +159,12 @@ const CMatrix & CCamera::getProjectionMatrix() const
 ************************************************************************/  
 void CCamera::setPos( const CPoint<CWorldValue> & position )
 {
-    CObject3D::setPos( -position );
+    CObjectTransform::setPos( -position );
 }
 
 void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
-    CObject3D::setPos( -x, -y, -z );
+    CObjectTransform::setPos( -x, -y, -z );
 }
 
 
@@ -173,12 +173,12 @@ void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 ************************************************************************/  
 void CCamera::incPos( const CPoint<CWorldValue> & position )
 {
-    CObject3D::incPos( -position );
+    CObjectTransform::incPos( -position );
 }
 
 void CCamera::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
-    CObject3D::incPos( -x, -y, -z );
+    CObjectTransform::incPos( -x, -y, -z );
 }
 
 
@@ -189,7 +189,7 @@ void CCamera::transform()
 {
     const bool wasTransformed( m_parameters.isSet( NDefs::TRANSFORM ) );
     
-    CObject3D::transform();
+    CObjectTransform::transform();
     
     if( wasTransformed )
         calcFinalMatrix();
@@ -230,4 +230,26 @@ CPoint<float> CCamera::toOrthoCoord( const CPoint<float> & position )
     pos.y = (position.y - sizeHalf.h) / (ratio.h * m_scale.y);
 
     return pos;
+}
+
+
+/************************************************************************
+*    DESC:  Apply the rotation
+************************************************************************/
+void CCamera::applyRotation( CMatrix & matrix )
+{
+    m_rotMatrix.initilizeMatrix();
+    m_rotMatrix.rotate( m_rot );
+
+    // Since the rotation has already been done, multiply it into the matrix
+    matrix.multiply3x3( m_rotMatrix );
+}
+
+
+/************************************************************************
+*    DESC:  Get the rotation matrix
+************************************************************************/
+const CMatrix & CCamera::getRotMatrix() const
+{
+    return m_rotMatrix;
 }

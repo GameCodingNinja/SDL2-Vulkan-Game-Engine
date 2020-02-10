@@ -43,8 +43,15 @@ public:
     void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CObject2D * const pObject,
-        const CCamera & camera ) override;
+        const CObjectTransform * const pObject,
+        const CCamera & camera ) final;
+
+    // Get the rotation matrix
+    const CMatrix & getRotMatrix() const final;
+    CMatrix & getRotMatrix() final;
+
+    // Use a point to set a column - used for 3d physics
+    void setRotMatrixColumn( const int col, const float x, const float y, const float z ) final;
     
 private:
     
@@ -53,7 +60,7 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CObject2D * const pObject,
+        const CObjectTransform * const pObject,
         const CCamera & camera );
 
 private:
@@ -75,6 +82,10 @@ private:
     
     // Is the active
     const bool m_active;
+
+    // Matrix for rotations only
+    // Basically used for normal calculations
+    CMatrix m_rotMatrix;
 };
 
 #endif

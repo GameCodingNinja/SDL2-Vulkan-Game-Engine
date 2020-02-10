@@ -121,16 +121,16 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
             m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData( getGroup(), objectName ) ) );
 
             // Load the transform data
-            m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
+            m_upStencilMaskSprite->loadTransFromNode( stencilMaskNode );
 
             // Get the size
             m_size = m_upStencilMaskSprite->getVisualComponent()->getSize();
 
             // Get the initial position
-            m_pos = m_upStencilMaskSprite->getObject()->getPos();
+            m_pos = m_upStencilMaskSprite->getPos();
 
             // Get the initial scale
-            m_scale = m_upStencilMaskSprite->getObject()->getScale();
+            m_scale = m_upStencilMaskSprite->getScale();
         }
         else
         {
@@ -138,10 +138,10 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
             m_size = m_pSpriteVec.at(m_spriteApplyIndex)->getVisualComponent()->getSize();
 
             // Get the initial position
-            m_pos = m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->getPos();
+            m_pos = m_pSpriteVec.at(m_spriteApplyIndex)->getPos();
 
             // Get the initial scale
-            m_scale = m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->getScale();
+            m_scale = m_pSpriteVec.at(m_spriteApplyIndex)->getScale();
         }
     }
 }
@@ -150,12 +150,12 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
-void CUIProgressBar::transform( const CObject2D & object )
+void CUIProgressBar::transform( const CObjectTransform & object )
 {
     CUIControl::transform( object );
 
     if( m_upStencilMaskSprite )
-        m_upStencilMaskSprite->getObject()->transform( *this );
+        m_upStencilMaskSprite->transform( *this );
 }
 
 
@@ -224,13 +224,13 @@ void CUIProgressBar::setSizePos()
 
     if( m_upStencilMaskSprite )
     {
-        m_upStencilMaskSprite->getObject()->setScale( scale );
-        m_upStencilMaskSprite->getObject()->setPos( pos );
+        m_upStencilMaskSprite->setScale( scale );
+        m_upStencilMaskSprite->setPos( pos );
     }
     else
     {
-        m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->setScale( scale );
-        m_pSpriteVec.at(m_spriteApplyIndex)->getObject()->setPos( pos );
+        m_pSpriteVec.at(m_spriteApplyIndex)->setScale( scale );
+        m_pSpriteVec.at(m_spriteApplyIndex)->setPos( pos );
     }
 }
 

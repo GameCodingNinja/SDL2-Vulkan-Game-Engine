@@ -20,7 +20,7 @@ public:
 
     // Constructor
     CObject3D();
-    CObject3D( const CObject3D & obj );
+    //CObject3D( const CObject3D & obj );
 
     // Destructor
     virtual ~CObject3D();

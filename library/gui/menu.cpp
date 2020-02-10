@@ -172,7 +172,7 @@ void CMenu::loadStaticSpriteFromNode( const XMLNode & node )
     m_pSpriteVec.push_back( new CSprite( CObjectDataMgr::Instance().getData( m_group, objectName ) ) );
 
     // Load the transform data
-    m_pSpriteVec.back()->getObject()->loadTransFromNode( node );
+    m_pSpriteVec.back()->loadTransFromNode( node );
 
     // Init the script functions
     m_pSpriteVec.back()->initScriptFunctions( node );
@@ -395,10 +395,10 @@ void CMenu::transform()
 {
     if( isVisible() )
     {
-        CObject2D::transform();
+        CObjectTransform::transform();
 
         for( auto iter : m_pSpriteVec )
-            iter->getObject()->transform( *this );
+            iter->transform( *this );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );
@@ -411,14 +411,14 @@ void CMenu::transform()
     }
 }
 
-void CMenu::transform( const CObject2D & object )
+void CMenu::transform( const CObjectTransform & object )
 {
     if( isVisible() )
     {
-        CObject2D::transform( object );
+        CObjectTransform::transform( object );
 
         for( auto iter : m_pSpriteVec )
-            iter->getObject()->transform( *this );
+            iter->transform( *this );
 
         for( auto iter : m_pStaticControlVec )
             iter->transform( *this );

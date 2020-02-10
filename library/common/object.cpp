@@ -19,17 +19,6 @@ CObject::CObject() :
 {
 }
 
-// Copy constructor
-CObject::CObject( const CObject & obj ) :
-    m_parameters( obj.m_parameters ),
-    m_pos( obj.m_pos ),
-    m_rot( obj.m_rot ),
-    m_scale( obj.m_scale ),
-    m_centerPos( obj.m_centerPos ),
-    m_cropOffset( obj.m_cropOffset )
-{
-}
-
 
 /************************************************************************
 *    DESC:  Destructor

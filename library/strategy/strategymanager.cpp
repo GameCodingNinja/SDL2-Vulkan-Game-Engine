@@ -9,7 +9,6 @@
 #include <strategy/strategymanager.h>
 
 // Game lib dependencies
-#include <2d/object2d.h>
 #include <utilities/deletefuncs.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/matrix.h>

@@ -27,10 +27,6 @@
 
 // Forward Declarations
 class CNodeDataList;
-class CSpriteData;
-class CSprite;
-class CObject2D;
-class CMatrix;
 
 class CActorStrategy : public iStrategy, boost::noncopyable
 {

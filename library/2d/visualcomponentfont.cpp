@@ -19,7 +19,6 @@
 #include <managers/fontmanager.h>
 #include <utilities/genfunc.h>
 #include <utilities/statcounter.h>
-#include <2d/object2d.h>
 
 /************************************************************************
 *    desc:  Constructor
@@ -45,7 +44,7 @@ void CVisualComponentFont::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CObject2D * const pObject,
+    const CObjectTransform * const pObject,
     const CCamera & camera )
 {
     // Setup the uniform buffer object
@@ -66,7 +65,7 @@ void CVisualComponentFont::updateUBO(
 void CVisualComponentFont::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
-    const CObject2D * const pObject,
+    const CObjectTransform * const pObject,
     const CCamera & camera )
 {
     if( allowCommandRecording() )

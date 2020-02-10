@@ -9,7 +9,6 @@
 
 // Game lib dependencies
 #include <sprite/sprite.h>
-#include <3d/object3d.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <objectdata/objectdata2d.h>
@@ -31,7 +30,7 @@ namespace NNodeFactory
     // Declare the function prototypes
     iNode * Create( const CNodeData & rNodeData, const int nodeId );
     void Load( CSprite * pSprite, const CSpriteData & rSpriteData );
-    void Load( CObject2D * pObject, const CSpriteData & rSpriteData );
+    void Load( CObjectTransform * pObject, const CSpriteData & rSpriteData );
     iNode * CreateUIControlNode( const CNodeData & rNodeData );
     
     /************************************************************************
@@ -97,7 +96,7 @@ namespace NNodeFactory
     /************************************************************************
     *    DESC:  Load the object data
     ************************************************************************/
-    void Load( CObject2D * pObject, const CSpriteData & rSpriteData )
+    void Load( CObjectTransform * pObject, const CSpriteData & rSpriteData )
     {
         // Load the transforms from sprite data
         pObject->loadTransFromNode( rSpriteData.getXMLNode() );

@@ -114,7 +114,7 @@ void CWheelView::loadWheelSprites( const XMLNode & node, const std::string & gro
                         % group % __FUNCTION__ % __LINE__ ));
 
             m_wheelSpriteDeq.emplace_back( CObjectDataMgr::Instance().getData( group, spriteNode.getAttribute("objectName") ) );
-            m_wheelSpriteDeq.back().getObject()->loadTransFromNode( spriteNode );
+            m_wheelSpriteDeq.back().loadTransFromNode( spriteNode );
         }
     }
 }
@@ -167,7 +167,7 @@ void CWheelView::loadSprites( const XMLNode & node, const std::string & group )
                         % group % __FUNCTION__ % __LINE__ ));
 
             m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData( group, spriteNode.getAttribute("objectName") ) );
-            m_spriteDeq.back().getObject()->loadTransFromNode( spriteNode );
+            m_spriteDeq.back().loadTransFromNode( spriteNode );
         }
     }
 }
@@ -179,7 +179,7 @@ void CWheelView::loadSprites( const XMLNode & node, const std::string & group )
 void CWheelView::preTransform()
 {
     for( auto & iter : m_spriteDeq )
-        iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
@@ -365,7 +365,7 @@ void CWheelView::transform( const CMatrix & matrix, bool tranformWorldPos )
     CObject2D::transform( matrix, tranformWorldPos );
 
     for( auto & iter : m_wheelSpriteDeq )
-        iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasWorldPosTranformed() );
 
     for( auto & iter : m_symbolDeq )
         iter.transform( getMatrix(), wasWorldPosTranformed() );

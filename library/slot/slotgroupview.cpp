@@ -61,8 +61,8 @@ void CSlotGroupView::create(
 
     // Allocate the cycle results text
     m_upCycleResultsTxtSprite.reset( new CSprite( CObjectDataMgr::Instance().getData( group, objectName ) ) );
-    m_upCycleResultsTxtSprite->getObject()->setVisible( false );
-    m_upCycleResultsTxtSprite->getObject()->loadTransFromNode( cycleResultsTxtNode );
+    m_upCycleResultsTxtSprite->setVisible( false );
+    m_upCycleResultsTxtSprite->loadTransFromNode( cycleResultsTxtNode );
 
     // Load the font properties from XML node
     m_upCycleResultsTxtSprite->getVisualComponent()->loadFontPropFromNode( cycleResultsTxtNode );
@@ -74,7 +74,7 @@ void CSlotGroupView::create(
 ************************************************************************/
 void CSlotGroupView::setCycleResultText( bool visible, const CPay * pPay )
 {
-    m_upCycleResultsTxtSprite->getObject()->setVisible( visible );
+    m_upCycleResultsTxtSprite->setVisible( visible );
 
     if( visible && (pPay != nullptr) )
     {

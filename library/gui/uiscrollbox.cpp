@@ -134,7 +134,7 @@ void CUIScrollBox::loadControlFromNode( const XMLNode & node )
         m_cullHeight = (m_upStencilMaskSprite->getVisualComponent()->getSize().w + m_controlHeight) / 2;
 
         // Load the transform data
-        m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
+        m_upStencilMaskSprite->loadTransFromNode( stencilMaskNode );
     }
 }
 
@@ -321,7 +321,7 @@ void CUIScrollBox::update()
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
-void CUIScrollBox::transform( const CObject2D & object )
+void CUIScrollBox::transform( const CObjectTransform & object )
 {
     // Call the parent
     CUISubControl::transform( object );
@@ -331,7 +331,7 @@ void CUIScrollBox::transform( const CObject2D & object )
         m_pScrollControlVec[i]->transform( *this );
 
     // Transform the mask
-    m_upStencilMaskSprite->getObject()->transform( *this );
+    m_upStencilMaskSprite->transform( *this );
 }
 
 

@@ -8,9 +8,6 @@
 // Physical component dependency
 #include <node/objectnodemultilist.h>
 
-// Game lib dependencies
-#include <2d/object2d.h>
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -42,7 +39,7 @@ void CObjectNodeMultiLst::transform()
 }
 
 // Used to transform object on a sector
-void CObjectNodeMultiLst::transform( const CObject2D & object )
+void CObjectNodeMultiLst::transform( const CObjectTransform & object )
 {
     m_object.transform( object );
 
@@ -54,7 +51,7 @@ void CObjectNodeMultiLst::transform( const CObject2D & object )
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObject2D * CObjectNodeMultiLst::getObject()
+CObjectTransform * CObjectNodeMultiLst::getObject()
 {
     return &m_object;
 }

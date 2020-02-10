@@ -1,7 +1,29 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
-#include <cstdint>
+#include <utilities/matrix.h>
+
+int main()
+{
+    CMatrix m_matrix;
+    CMatrix m_matrixRotate;
+
+    m_matrix.setScale(CPoint<float>(1.5, 1.3, 1.7));
+    m_matrix.rotate(CPoint<float>(57, 287, 79));
+    m_matrix.translate(CPoint<float>(200, 700, 880));
+    m_matrix.rotate(CPoint<float>(57, 287, 79));
+    m_matrix.translate(CPoint<float>(200, 700, 880));
+    m_matrix.rotate(CPoint<float>(57, 287, 79));
+    m_matrix.setScale(CPoint<float>(-1.5, -1.3, -1.7));
+
+    m_matrixRotate.rotate(CPoint<float>(57, 287, 79));
+    m_matrixRotate.rotate(CPoint<float>(57, 287, 79));
+    m_matrixRotate.rotate(CPoint<float>(57, 287, 79));
+
+    return 0;
+}
+
+/*#include <cstdint>
 #include <vector>
 #include <boost/crc.hpp>
 
@@ -16,7 +38,7 @@ int main()
     uint8_t value = result.checksum();
 
     return 0;
-}
+}*/
 
 /*class iStatic
 {

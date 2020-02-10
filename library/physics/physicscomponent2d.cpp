@@ -18,7 +18,6 @@
 #include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/statcounter.h>
-#include <2d/object2d.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -87,8 +86,8 @@ void CPhysicsComponent2D::createBody( const CSprite & sprite )
         bodyDef.linearDamping = physicsData.getLinearDamping();
         bodyDef.angularDamping = physicsData.getAngularDamping();
         bodyDef.fixedRotation = physicsData.isRotationFixed();
-        bodyDef.position.Set( sprite.getObject()->getPos().getX() * PIXELS_TO_METERS, sprite.getObject()->getPos().getY() * PIXELS_TO_METERS );
-        bodyDef.angle = -sprite.getObject()->getRot().getZ();
+        bodyDef.position.Set( sprite.getPos().getX() * PIXELS_TO_METERS, sprite.getPos().getY() * PIXELS_TO_METERS );
+        bodyDef.angle = -sprite.getRot().getZ();
         bodyDef.userData = (void*)&sprite;
 
         // Create the body
@@ -128,7 +127,7 @@ void CPhysicsComponent2D::createFixture( const CSprite & sprite )
 void CPhysicsComponent2D::createCircularShapeFixture( const CSprite & sprite, const CFixture & fixture )
 {
     b2CircleShape shape;
-    shape.m_radius = fixture.m_radius * sprite.getObject()->getScale().getX() * PIXELS_TO_METERS;
+    shape.m_radius = fixture.m_radius * sprite.getScale().getX() * PIXELS_TO_METERS;
 
     b2FixtureDef f;
     f.shape = &shape;
@@ -159,7 +158,7 @@ void CPhysicsComponent2D::createEdgeShapeFixture( const CSprite & sprite, const 
     // Apply scale to the size and divide by 2
     // Object data holds size as int so need to convert it to a float
     const CSize<float> objectSize = sprite.getVisualComponent()->getSize();
-    const CSize<float> scale( sprite.getObject()->getScale().getX(), sprite.getObject()->getScale().getY() );
+    const CSize<float> scale( sprite.getScale().getX(), sprite.getScale().getY() );
     const CSize<float> size = objectSize * scale * 0.5f;
 
     // Convert the points to world location in meters
@@ -193,7 +192,7 @@ void CPhysicsComponent2D::createPolygonShapeFixture( const CSprite & sprite, con
     // Apply scale to the size and divide by 2
     // Object data holds size as int so need to convert it to a float
     const CSize<float> objectSize = sprite.getVisualComponent()->getSize();
-    const CSize<float> scale( sprite.getObject()->getScale().getX(), sprite.getObject()->getScale().getY() );
+    const CSize<float> scale( sprite.getScale().getX(), sprite.getScale().getY() );
     const CSize<float> size = objectSize * scale * 0.5f;
 
     // Is this polygon shape defined by a vector of points?
@@ -263,7 +262,7 @@ void CPhysicsComponent2D::createChainShapeFixture( const CSprite & sprite, const
     // Apply scale to the size and divide by 2
     // Object data holds size as int so need to convert it to a float
     const CSize<float> objectSize = sprite.getVisualComponent()->getSize();
-    const CSize<float> scale( sprite.getObject()->getScale().getX(), sprite.getObject()->getScale().getY() );
+    const CSize<float> scale( sprite.getScale().getX(), sprite.getScale().getY() );
     const CSize<float> size = objectSize * scale * 0.5f;
 
     // Convert the points to world location in meters
@@ -324,8 +323,8 @@ void CPhysicsComponent2D::update( CSprite * pSprite )
         {
             const b2Vec2 & pos = m_pBody->GetPosition();
             const float angle = m_pBody->GetAngle();
-            pSprite->getObject()->setPos( pos.x * METERS_TO_PIXELS, pos.y * METERS_TO_PIXELS );
-            pSprite->getObject()->setRot( 0, 0, angle, false );
+            pSprite->setPos( pos.x * METERS_TO_PIXELS, pos.y * METERS_TO_PIXELS );
+            pSprite->setRot( 0, 0, angle, false );
         }
     }
 }

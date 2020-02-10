@@ -9,7 +9,7 @@
 #include <node/spritenode.h>
 
 // Game lib dependencies
-#include <2d/object2d.h>
+#include <common/objecttransform.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -49,13 +49,13 @@ void CSpriteNode::update()
 ****************************************************************************/
 void CSpriteNode::transform()
 {
-    m_sprite.getObject()->transform();
+    m_sprite.transform();
 }
 
 // Used to transform object on a sector
-void CSpriteNode::transform( const CObject2D & object )
+void CSpriteNode::transform( const CObjectTransform & object )
 {
-    m_sprite.getObject()->transform( object );
+    m_sprite.transform( object );
 }
 
 
@@ -90,7 +90,7 @@ CSprite * CSpriteNode::getSprite()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObject2D * CSpriteNode::getObject()
+CObjectTransform * CSpriteNode::getObject()
 {
-    return m_sprite.getObject();
+    return &m_sprite;
 }

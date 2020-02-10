@@ -130,7 +130,7 @@ void CWheelGroupView::transform()
     for( auto & iter : m_wheelViewDeq )
         iter.transform( getMatrix(), wasWorldPosTranformed() );
 
-    m_upCycleResultsTxtSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upCycleResultsTxtSprite->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 

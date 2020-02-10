@@ -9,7 +9,7 @@
 #include <node/spritenodemultilist.h>
 
 // Game lib dependencies
-#include <2d/object2d.h>
+#include <common/objecttransform.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -52,16 +52,16 @@ void CSpriteNodeMultiLst::update()
 ****************************************************************************/
 void CSpriteNodeMultiLst::transform()
 {
-    m_sprite.getObject()->transform();
+    m_sprite.transform();
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();
 }
 
 // Used to transform object on a sector
-void CSpriteNodeMultiLst::transform( const CObject2D & object )
+void CSpriteNodeMultiLst::transform( const CObjectTransform & object )
 {
-    m_sprite.getObject()->transform( object );
+    m_sprite.transform( object );
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();
@@ -76,7 +76,7 @@ void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer c
 {
     m_sprite.recordCommandBuffer( index, cmdBuffer, camera );
     
-   // Call the parent but it has to be last
+    // Call the parent but it has to be last
     CNodeMultiLst::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
@@ -102,7 +102,7 @@ int CSpriteNodeMultiLst::getId() const
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObject2D * CSpriteNodeMultiLst::getObject()
+CObjectTransform * CSpriteNodeMultiLst::getObject()
 {
-    return m_sprite.getObject();
+    return &m_sprite;
 }

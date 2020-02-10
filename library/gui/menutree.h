@@ -30,7 +30,7 @@
 
 // Forward declaration(s)
 struct XMLNode;
-class CObject2D;
+class CObjectTransform;
 class CMenu;
 class CCamera;
 
@@ -60,7 +60,7 @@ public:
 
     // Transform the menu tree
     void transform();
-    void transform( const CObject2D & object );
+    void transform( const CObjectTransform & object );
     
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );

@@ -17,7 +17,6 @@
 #include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/matrix.h>
-#include <3d/object3d.h>
 
 // Bullet Physics lib dependencies
 #include <btBulletCollisionCommon.h>
@@ -64,9 +63,9 @@ void CPhysicsComponent3D::init( const CSprite & sprite )
         float raduis( 1 );
         float diameter( 1 );
 
-        const CPoint<float> scale( sprite.getObject()->getScale() );
-        const CPoint<float> pos( sprite.getObject()->getPos() );
-        const CPoint<float> rot( sprite.getObject()->getRot() );
+        const CPoint<float> scale( sprite.getScale() );
+        const CPoint<float> pos( sprite.getPos() );
+        const CPoint<float> rot( sprite.getRot() );
 
         const float mass( rPhysicsData.getMass() );
 
@@ -139,18 +138,18 @@ void CPhysicsComponent3D::update( CSprite * pSprite )
         btTransform trans;
         m_upRigidBody->getMotionState()->getWorldTransform(trans);
         
-        pSprite->getObject()->getParameters().add( NDefs::ROTATE | NDefs::PHYSICS_TRANSFORM );
+        pSprite->getParameters().add( NDefs::ROTATE | NDefs::PHYSICS_TRANSFORM );
     
         // Set the position
         const btVector3 & btVec = trans.getOrigin();
-        pSprite->getObject()->setPos( btVec.x(), btVec.y(), btVec.z() );
+        pSprite->setPos( btVec.x(), btVec.y(), btVec.z() );
 
         // Set the rotation
         const btMatrix3x3 & btMat = trans.getBasis();
         for( int i = 0; i < 3; ++i )
         {
             const btVector3 & vec = btMat.getRow(i);
-            pSprite->getObject()->setRotMatrixColumn( i, vec.x(), vec.y(), vec.z() );
+            pSprite->setRotMatrixColumn( i, vec.x(), vec.y(), vec.z() );
         }
         
         // This is an example of how to get the rotation out of bullet physics

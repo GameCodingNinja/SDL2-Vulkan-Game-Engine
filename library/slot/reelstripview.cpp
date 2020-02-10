@@ -102,7 +102,7 @@ void CReelStripView::create( const XMLNode & node, const std::string & group )
         m_upStencilMaskSprite.reset( new CSprite( CObjectDataMgr::Instance().getData( group, objectName ) ) );
 
         // Load the transform data
-        m_upStencilMaskSprite->getObject()->loadTransFromNode( stencilMaskNode );
+        m_upStencilMaskSprite->loadTransFromNode( stencilMaskNode );
     }
 
     // Get the sprite list if any
@@ -119,7 +119,7 @@ void CReelStripView::create( const XMLNode & node, const std::string & group )
             m_spriteDeq.emplace_back( CObjectDataMgr::Instance().getData( group, objectName ) );
 
             // Load the transform data
-            m_spriteDeq.back().getObject()->loadTransFromNode( spriteNode );
+            m_spriteDeq.back().loadTransFromNode( spriteNode );
         }
     }
 
@@ -467,10 +467,10 @@ void CReelStripView::transform( const CMatrix & matrix, bool tranformWorldPos )
     CObject2D::transform( matrix, tranformWorldPos );
 
     // Transform the mask
-    m_upStencilMaskSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upStencilMaskSprite->transform( getMatrix(), wasWorldPosTranformed() );
 
     for( auto & iter : m_spriteDeq )
-        iter.getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 

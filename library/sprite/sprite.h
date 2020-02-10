@@ -8,6 +8,9 @@
 #ifndef __sprite_h__
 #define __sprite_h__
 
+// Physical component dependency
+#include <common/objecttransform.h>
+
 // Game lib dependencies
 #include <common/defs.h>
 #include <common/size.h>
@@ -26,7 +29,6 @@
 #include <system/vulkan.h>
 
 // Forward declaration(s)
-class CObject2D;
 class iObjectData;
 class iVisualComponent;
 class iPhysicsComponent;
@@ -40,7 +42,7 @@ class btTransform;
 struct XMLNode;
 union SDL_Event;
 
-class CSprite : public boost::noncopyable
+class CSprite : public CObjectTransform, boost::noncopyable
 {
 public:
 
@@ -86,10 +88,6 @@ public:
     // Copy over the script functions
     void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap );
     
-    // Get the reference to the object
-    CObject2D * getObject();
-    const CObject2D * getObject() const;
-    
     // Get the object data
     const iObjectData & getObjectData() const;
     
@@ -117,6 +115,14 @@ public:
 
     // Does this sprite have script functions
     bool hasScriptFunctions();
+
+    // Use a point to set a column - used for 3d physics
+    void setRotMatrixColumn( const int col, const float x, const float y, const float z ) final;
+
+protected:
+    
+    // Apply the rotation
+    void applyRotation( CMatrix & matrix ) final;
     
 private:
     
@@ -125,9 +131,6 @@ private:
     
     // The object data
     const iObjectData & m_rObjectData;
-    
-    // Object unique pointer
-    std::unique_ptr<CObject2D> m_upObject;
     
     // The visual part of the sprite
     std::unique_ptr<iVisualComponent> m_upVisualComponent;

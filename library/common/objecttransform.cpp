@@ -1,23 +1,16 @@
 /************************************************************************
-*    FILE NAME:       object.cpp
+*    FILE NAME:       objecttransform.cpp
 *
-*    DESCRIPTION:     object class
+*    DESCRIPTION:     object transform class
 ************************************************************************/
 
 // Physical component dependency
-#include <2d/object2d.h>
+#include <common/objecttransform.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CObject2D::CObject2D()
-{
-}
-
-CObject2D::CObject2D( const CObject2D & obj ) :
-    CObject( obj ),
-    m_transPos( obj.m_transPos ),
-    m_matrix( obj.m_matrix )
+CObjectTransform::CObjectTransform()
 {
 }
 
@@ -25,7 +18,7 @@ CObject2D::CObject2D( const CObject2D & obj ) :
 /************************************************************************
 *    DESC:  Destructor
 ************************************************************************/
-CObject2D::~CObject2D()
+CObjectTransform::~CObjectTransform()
 {
 }
 
@@ -33,7 +26,7 @@ CObject2D::~CObject2D()
 /************************************************************************
 *    DESC:  Get the object's translated position
 ************************************************************************/
-const CPoint<float> & CObject2D::getWorldPos() const
+const CPoint<float> & CObjectTransform::getWorldPos() const
 {
     return m_transPos;
 }
@@ -42,7 +35,7 @@ const CPoint<float> & CObject2D::getWorldPos() const
 /************************************************************************
 *    DESC:  Transform the object in local space
 ************************************************************************/
-void CObject2D::transformLocal( CMatrix & matrix )
+void CObjectTransform::transformLocal( CMatrix & matrix )
 {
     // Reset the matrices
     matrix.initilizeMatrix();
@@ -74,7 +67,7 @@ void CObject2D::transformLocal( CMatrix & matrix )
 /************************************************************************
 *    DESC:  Transform
 ************************************************************************/
-void CObject2D::transform()
+void CObjectTransform::transform()
 {
     m_parameters.remove( NDefs::WAS_TRANSFORMED );
     
@@ -86,7 +79,7 @@ void CObject2D::transform()
     }
 }
 
-void CObject2D::transform( const CObject2D & object )
+void CObjectTransform::transform( const CObjectTransform & object )
 {
     m_parameters.remove( NDefs::WAS_TRANSFORMED );
     
@@ -106,7 +99,7 @@ void CObject2D::transform( const CObject2D & object )
 /************************************************************************
 *    DESC:  Apply the scale
 ************************************************************************/
-void CObject2D::applyScale( CMatrix & matrix )
+void CObjectTransform::applyScale( CMatrix & matrix )
 {
     matrix.setScale( m_scale );
 }
@@ -115,7 +108,7 @@ void CObject2D::applyScale( CMatrix & matrix )
 /************************************************************************
 *    DESC:  Apply the rotation
 ************************************************************************/
-void CObject2D::applyRotation( CMatrix & matrix )
+void CObjectTransform::applyRotation( CMatrix & matrix )
 {
     // Add in the center point prior to rotation
     if( m_parameters.isSet( NDefs::CENTER_POINT ) )
@@ -132,7 +125,7 @@ void CObject2D::applyRotation( CMatrix & matrix )
 /************************************************************************
 *    DESC:  Get the object's matrix
 ************************************************************************/
-const CMatrix & CObject2D::getMatrix() const
+const CMatrix & CObjectTransform::getMatrix() const
 {
     return m_matrix;
 }
@@ -142,7 +135,12 @@ const CMatrix & CObject2D::getMatrix() const
 *    DESC:  Get the object's rotation matrix
 *           NOTE: For 2d, it's the same matrix
 ************************************************************************/
-const CMatrix & CObject2D::getRotMatrix() const
+const CMatrix & CObjectTransform::getRotMatrix() const
+{
+    return m_matrix;
+}
+
+CMatrix & CObjectTransform::getRotMatrix()
 {
     return m_matrix;
 }
@@ -151,7 +149,7 @@ const CMatrix & CObject2D::getRotMatrix() const
 /************************************************************************
 *    DESC:  Was the world position transformed?
 ************************************************************************/
-bool CObject2D::wasWorldPosTranformed() const
+bool CObjectTransform::wasWorldPosTranformed() const
 {
     return m_parameters.isSet( NDefs::WAS_TRANSFORMED );
 }
@@ -160,7 +158,7 @@ bool CObject2D::wasWorldPosTranformed() const
 /************************************************************************
 *    DESC:  Force a transform from this point all the way up the line
 ************************************************************************/
-void CObject2D::forceTransform()
+void CObjectTransform::forceTransform()
 {
     m_parameters.add( NDefs::TRANSFORM );
 }

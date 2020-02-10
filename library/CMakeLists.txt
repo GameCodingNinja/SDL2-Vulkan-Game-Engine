@@ -131,8 +131,6 @@ add_library(
         2d/visualcomponentscaledframe.cpp
         2d/visualcomponentfont.cpp
         2d/visualcomponentnull.cpp
-        2d/object2d.cpp
-        3d/object3d.cpp
         3d/light.cpp
         3d/lightlist.cpp
         3d/visualcomponent3d.cpp
@@ -147,6 +145,7 @@ add_library(
         common/worldvalue.cpp
         common/camera.cpp
         common/object.cpp
+        common/objecttransform.cpp
         common/fontdata.cpp
         common/fontproperties.cpp
         common/ivisualcomponent.cpp

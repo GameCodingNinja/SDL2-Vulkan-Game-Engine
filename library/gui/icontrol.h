@@ -9,7 +9,7 @@
 #define __i_control_h__
 
 // Physical component dependency
-#include <2d/object2d.h>
+#include <common/objecttransform.h>
 
 // Game lib dependencies
 #include <gui/uicontroldefs.h>
@@ -34,7 +34,7 @@ class CSelectMsgCracker;
 class CScrollParam;
 struct XMLNode;
 
-class iControl : public CObject2D, boost::noncopyable
+class iControl : public CObjectTransform, boost::noncopyable
 {
 public:
 

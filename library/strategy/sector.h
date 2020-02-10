@@ -9,7 +9,7 @@
 #define __sector_h__
 
 // Physical component dependency
-#include <3d/object3d.h>
+#include <common/objecttransform.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -27,7 +27,7 @@ class CCamera;
 class iNode;
 class CSpriteData;
 
-class CSector : public CObject3D, boost::noncopyable
+class CSector : public CObjectTransform, boost::noncopyable
 {
 public:
 

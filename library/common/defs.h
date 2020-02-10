@@ -89,6 +89,15 @@ namespace NDefs
 
         // Visible bit
         VISIBLE             = 0x100,
+
+        // States
+        STATE1              = 0x200,
+        STATE2              = 0x400,
+        STATE3              = 0x800,
+        STATE4              = 0x1000,
+        STATE5              = 0x2000,
+        STATE6              = 0x4000,
+        STATE7              = 0x8000
     };
     
     enum EAspectRatio

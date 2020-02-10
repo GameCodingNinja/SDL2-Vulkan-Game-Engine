@@ -9,7 +9,7 @@
 #define __menu_h__
 
 // Physical component dependency
-#include <2d/object2d.h>
+#include <common/objecttransform.h>
 
 // Game lib dependencies
 #include <gui/menudefs.h>
@@ -32,7 +32,7 @@
 class CSprite;
 union SDL_Event;
 
-class CMenu : public CObject2D, boost::noncopyable
+class CMenu : public CObjectTransform, boost::noncopyable
 {
 public:
 
@@ -56,7 +56,7 @@ public:
 
     // Transform the menu
     void transform() override;
-    void transform( const CObject2D & object ) override;
+    void transform( const CObjectTransform & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );

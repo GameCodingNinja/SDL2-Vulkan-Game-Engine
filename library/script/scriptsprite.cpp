@@ -9,7 +9,6 @@
 #include <script/scriptsprite.h>
 
 // Game lib dependencies
-#include <2d/object2d.h>
 #include <sprite/sprite.h>
 #include <common/ivisualcomponent.h>
 #include <common/point.h>
@@ -37,49 +36,49 @@ namespace NScriptSprite
     ************************************************************************/
     void SetVisible(bool value, CSprite & sprite)
     {
-        sprite.getObject()->setVisible(value);
+        sprite.setVisible(value);
     }
 
     bool IsVisible(CSprite & sprite)
     {
-        return sprite.getObject()->isVisible();
+        return sprite.isVisible();
     }
 
     void SetPos1(const CPoint<float> & pos, CSprite & sprite)
     {
-        sprite.getObject()->setPos(pos);
+        sprite.setPos(pos);
     }
 
     void SetPos2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.getObject()->setPos(x,y,z);
+        sprite.setPos(x,y,z);
     }
 
     void IncPos1(CPoint<float> & pos, CSprite & sprite)
     {
-        sprite.getObject()->incPos(pos);
+        sprite.incPos(pos);
     }
 
     void IncPos2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.getObject()->incPos(x,y,z);
+        sprite.incPos(x,y,z);
     }
 
     const CPoint<float> & GetPos(CSprite & sprite)
     {
-        point = sprite.getObject()->getPos();
+        point = sprite.getPos();
         return point;
     }
     
     const CPoint<float> & GetWorldPos(CSprite & sprite)
     {
-        point = sprite.getObject()->getWorldPos();
+        point = sprite.getWorldPos();
         return point;
     }
     
     const CPoint<float> & GetCenterPos(CSprite & sprite)
     {
-        point = sprite.getObject()->getCenterPos();
+        point = sprite.getCenterPos();
         return point;
     }
     
@@ -95,52 +94,52 @@ namespace NScriptSprite
 
     void SetRot1(const CPoint<float> & rot, bool convertToRadians, CSprite & sprite)
     {
-        sprite.getObject()->setRot(rot, convertToRadians);
+        sprite.setRot(rot, convertToRadians);
     }
 
     void SetRot2(float x, float y, float z, bool convertToRadians, CSprite & sprite)
     {
-        sprite.getObject()->setRot(x,y,z, convertToRadians);
+        sprite.setRot(x,y,z, convertToRadians);
     }
 
     void IncRot1(const CPoint<float> & rot, bool convertToRadians, CSprite & sprite)
     {
-        sprite.getObject()->incRot(rot, convertToRadians);
+        sprite.incRot(rot, convertToRadians);
     }
 
     void IncRot2(float x, float y, float z, bool convertToRadians, CSprite & sprite)
     {
-        sprite.getObject()->incRot(x,y,z, convertToRadians);
+        sprite.incRot(x,y,z, convertToRadians);
     }
 
     const CPoint<float> & GetRot(CSprite & sprite)
     {
-        return sprite.getObject()->getRot();
+        return sprite.getRot();
     }
 
     void SetScale1(const CPoint<float> & rot, CSprite & sprite)
     {
-        sprite.getObject()->setScale(rot);
+        sprite.setScale(rot);
     }
 
     void SetScale2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.getObject()->setScale(x,y,z);
+        sprite.setScale(x,y,z);
     }
 
     void IncScale1(const CPoint<float> & rot, CSprite & sprite)
     {
-        sprite.getObject()->incScale(rot);
+        sprite.incScale(rot);
     }
 
     void IncScale2(float x, float y, float z, CSprite & sprite)
     {
-        sprite.getObject()->incScale(x,y,z);
+        sprite.incScale(x,y,z);
     }
 
     const CPoint<float> & GetScale(CSprite & sprite)
     {
-        return sprite.getObject()->getScale();
+        return sprite.getScale();
     }
 
     void SetColor1(const CColor & color, CSprite & sprite)

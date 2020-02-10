@@ -11,13 +11,11 @@
 // Game lib dependencies
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdata3d.h>
-#include <2d/object2d.h>
 #include <2d/visualcomponentquad.h>
 #include <2d/visualcomponentspritesheet.h>
 #include <2d/visualcomponentscaledframe.h>
 #include <2d/visualcomponentfont.h>
 #include <2d/visualcomponentnull.h>
-#include <3d/object3d.h>
 #include <3d/visualcomponent3d.h>
 #include <physics/physicscomponent2d.h>
 #include <physics/physicscomponent3d.h>
@@ -55,8 +53,6 @@ CSprite::CSprite( const iObjectData & objectData, int id ) :
         // Create the physics component
         if( objectData.getPhysicsData().isActive() )
             m_upPhysicsComponent.reset( new CPhysicsComponent2D( objectData ) );
-        
-        m_upObject.reset( new CObject2D );
     }
     else if( objectData.is3D() )
     {
@@ -67,12 +63,10 @@ CSprite::CSprite( const iObjectData & objectData, int id ) :
         // Create the physics component
         if( objectData.getPhysicsData().isActive() )
             m_upPhysicsComponent.reset( new CPhysicsComponent3D( objectData ) );
-
-        m_upObject.reset( new CObject3D );
     }
 
     // If there's no visual data, set the hide flag
-    m_upObject->setVisible( objectData.getVisualData().isActive() );
+    setVisible( objectData.getVisualData().isActive() );
 }
 
 
@@ -90,7 +84,7 @@ CSprite::~CSprite()
 void CSprite::load( const XMLNode & node )
 {
     // Load the transform data
-    m_upObject->loadTransFromNode( node );
+    loadTransFromNode( node );
 
     // Init the script functions
     initScriptFunctions( node );
@@ -232,22 +226,8 @@ void CSprite::physicsUpdate()
 ************************************************************************/
 void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
-    if( m_upObject->isVisible() )
-        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, m_upObject.get(), camera );
-}
-
-
-/************************************************************************
-*    DESC:  Get the reference to the object
-************************************************************************/
-CObject2D * CSprite::getObject()
-{
-    return m_upObject.get();
-}
-
-const CObject2D * CSprite::getObject() const
-{
-    return m_upObject.get();
+    if( isVisible() )
+        m_upVisualComponent->recordCommandBuffer( index, cmdBuf, this, camera );
 }
 
 
@@ -293,7 +273,7 @@ void CSprite::setFrame( uint index )
         m_upVisualComponent->setFrame( index );
 
         if( m_upVisualComponent->getGenerationType() == NDefs::EGT_SPRITE_SHEET )
-            m_upObject->setCropOffset( m_upVisualComponent->getCropOffset( index ) );
+            setCropOffset( m_upVisualComponent->getCropOffset( index ) );
     }
 }
 
@@ -338,4 +318,46 @@ const iObjectData & CSprite::getObjectData() const
 bool CSprite::hasScriptFunctions()
 {
     return !m_scriptFunctionMap.empty();
+}
+
+
+/************************************************************************
+*    DESC:  Apply the rotation
+************************************************************************/
+void CSprite::applyRotation( CMatrix & matrix )
+{
+    // 3D light calculations require a rotation matrix without scale
+    if( m_rObjectData.is3D() )
+    {
+        // Add in the center point prior to rotation
+        if( m_parameters.isSet( NDefs::CENTER_POINT ) )
+            matrix.translate( m_centerPos );
+        
+        // Add in the rotation if this is NOT a physics transformation
+        if( !m_parameters.isSet( NDefs::PHYSICS_TRANSFORM ) )
+        {
+            m_upVisualComponent->getRotMatrix().initilizeMatrix();
+            m_upVisualComponent->getRotMatrix().rotate( m_rot );
+        }
+        
+        // Since the rotation has already been done, multiply it into the matrix
+        matrix.multiply3x3( m_upVisualComponent->getRotMatrix() );
+        
+        // Subtract the center point after rotation to put back in original position
+        if( m_parameters.isSet( NDefs::CENTER_POINT ) )
+            matrix.translate( -m_centerPos );
+    }
+    else
+    {
+        CObjectTransform::applyRotation( matrix );
+    }
+}
+
+
+/************************************************************************
+*    DESC:  Use a point to set a column - used for 3d physics
+************************************************************************/
+void CSprite::setRotMatrixColumn( const int col, const float x, const float y, const float z )
+{
+    m_upVisualComponent->setRotMatrixColumn( col, x, y, z );
 }

@@ -11,8 +11,8 @@
 // Game lib dependencies
 #include <utilities/deletefuncs.h>
 #include <utilities/exceptionhandling.h>
-#include <2d/object2d.h>
 #include <sprite/sprite.h>
+#include <common/objecttransform.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -97,17 +97,17 @@ void CNodeMultiLst::transform( iNode * pNode )
 
             if( pNextNode != nullptr )
             {
-                CObject2D * pNextObj(nullptr);
-                CObject2D * pObj(nullptr);
+                CObjectTransform * pNextObj(nullptr);
+                CObjectTransform * pObj(nullptr);
                 
                 if( pNextNode->getSprite() != nullptr )
-                    pNextObj = pNextNode->getSprite()->getObject();
+                    pNextObj = pNextNode->getSprite();
                 
                 else if( pNextNode->getObject() != nullptr )
                     pNextObj = pNextNode->getObject();
                 
                 if( pNode->getSprite() != nullptr )
-                    pObj = pNode->getSprite()->getObject();
+                    pObj = pNode->getSprite();
                 
                 else if( pNode->getObject() != nullptr )
                     pObj = pNode->getObject();

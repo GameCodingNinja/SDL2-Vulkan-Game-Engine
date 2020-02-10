@@ -24,7 +24,6 @@ class CObject
 public:
     
     CObject();
-    CObject( const CObject & obj );
     virtual ~CObject();
 
     // Load the transform data from node

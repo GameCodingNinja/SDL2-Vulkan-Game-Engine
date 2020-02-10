@@ -1,11 +1,11 @@
 /************************************************************************
-*    FILE NAME:       object2d.h
+*    FILE NAME:       objecttransform.h
 *
 *    DESCRIPTION:     2D object class
 ************************************************************************/
 
-#ifndef __object_2d_h__
-#define __object_2d_h__
+#ifndef __object_transform_h__
+#define __object_transform_h__
 
 // Physical component dependency
 #include <common/object.h>
@@ -16,23 +16,23 @@
 // Forward declaration(s)
 class CMatrix;
 
-class CObject2D : public CObject
+class CObjectTransform : public CObject
 {
 public:
 
-    CObject2D();
-    CObject2D( const CObject2D & obj );
-    virtual ~CObject2D();
+    CObjectTransform();
+    virtual ~CObjectTransform();
 
     // Transform - One call for those objects that don't have parents
     virtual void transform();
-    virtual void transform( const CObject2D & object );
+    virtual void transform( const CObjectTransform & object );
 
     // Get the object's matrix
     const CMatrix & getMatrix() const;
     
     // Get the object's rotation matrix
     virtual const CMatrix & getRotMatrix() const;
+    virtual CMatrix & getRotMatrix();
 
     // Was the world position transformed?
     bool wasWorldPosTranformed() const;
@@ -43,8 +43,8 @@ public:
     // Get the object's translated position
     const CPoint<float> & getWorldPos() const;
     
-    // Use a point to set a column
-    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){}
+    // Use a point to set a column - used for 3d physics
+    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){};
 
 protected:
 

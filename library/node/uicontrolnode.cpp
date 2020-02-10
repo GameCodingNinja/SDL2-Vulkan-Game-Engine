@@ -51,7 +51,7 @@ void CUIControlNode::transform()
 }
 
 // Used to transform object on a sector
-void CUIControlNode::transform( const CObject2D & object )
+void CUIControlNode::transform( const CObjectTransform & object )
 {
     m_upControl->transform( object );
 }

@@ -162,7 +162,7 @@ void CReelGroupView::transform()
     for( auto & iter : m_reelStripViewDeq )
         iter.transform( getMatrix(), wasWorldPosTranformed() );
 
-    m_upCycleResultsTxtSprite->getObject()->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upCycleResultsTxtSprite->transform( getMatrix(), wasWorldPosTranformed() );
 }
 
 
