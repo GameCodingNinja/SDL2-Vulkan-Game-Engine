@@ -9,7 +9,6 @@
 #define __device_vulkan_h__
 
 // Game lib dependencies
-#include <common/defs.h>
 #include <system/memorybuffer.h>
 
 // Standard lib dependencies
@@ -24,7 +23,6 @@
 
 // Forward declaration(s)
 class CTexture;
-class CMemoryBuffer;
 class CPipelineData;
 class CDescriptorData;
 

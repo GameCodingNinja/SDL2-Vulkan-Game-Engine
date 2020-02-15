@@ -14,12 +14,6 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-// Standard lib dependencies
-#include <vector>
-
-// Vulkan lib dependencies
-#include <system/vulkan.h>
-
 namespace NUBO
 {
     /************************************************************************

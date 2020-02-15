@@ -12,9 +12,6 @@
 #include <common/size.h>
 #include <common/rect.h>
 
-// Standard lib dependencies
-#include <cstdint>
-
 class CSpriteSheetGlyph
 {
 public:
@@ -58,9 +55,6 @@ private:
     
     // Crop Offset
     CSize<int> m_cropOffset;
-
 };
 
-#endif  // __sprite_sheet_glyph_h__
-
-
+#endif

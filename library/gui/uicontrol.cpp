@@ -28,10 +28,6 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-// Standard lib dependencies
-#include <cstring>
-#include <iostream>
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/

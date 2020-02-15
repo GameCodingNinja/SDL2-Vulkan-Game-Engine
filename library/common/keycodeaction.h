@@ -53,6 +53,4 @@ private:
     std::vector<int> m_id;
 };
 
-#endif  // __key_code_action_h__
-
-
+#endif

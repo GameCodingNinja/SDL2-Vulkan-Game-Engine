@@ -9,12 +9,10 @@
 #include <strategy/actorstrategy.h>
 
 // Game lib dependencies
-#include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <utilities/deletefuncs.h>
 #include <utilities/genfunc.h>
-#include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
 #include <node/nodefactory.h>
 #include <node/nodedatalist.h>

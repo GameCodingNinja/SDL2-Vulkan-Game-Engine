@@ -26,7 +26,6 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
-#include <set>
 
 // Forward Declarations
 struct XMLNode;
@@ -202,4 +201,4 @@ private:
     std::string m_resExt;
 };
 
-#endif  // __object_visual_data_2d_h__
+#endif

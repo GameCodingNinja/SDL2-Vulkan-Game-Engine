@@ -13,13 +13,14 @@
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/deletefuncs.h>
-#include <objectdata/objectdatamanager.h>
-#include <objectdata/objectdata2d.h>
 #include <common/camera.h>
 #include <node/nodefactory.h>
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
 
 /************************************************************************
 *    DESC:  Constructor

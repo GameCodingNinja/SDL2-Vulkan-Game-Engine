@@ -33,5 +33,4 @@ namespace NMathFunc
     CPoint<float> MouseTo3D( float mx, float my, CCamera matCam, CMatrix matProj );
 }
 
-#endif  // __math_func_2d_h__
-
+#endif

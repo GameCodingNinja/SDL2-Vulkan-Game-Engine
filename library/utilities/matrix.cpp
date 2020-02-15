@@ -10,8 +10,6 @@
 
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>
-#include <utilities/genfunc.h>
-#include <common/defs.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>

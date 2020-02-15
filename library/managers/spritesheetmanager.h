@@ -45,9 +45,6 @@ private:
     
     // Map of sprite sheet data
     std::map< const std::string, CSpriteSheet > m_spriteSheetMap;
-
 };
 
-#endif  // __sprite_sheet_manager_h__
-
-
+#endif

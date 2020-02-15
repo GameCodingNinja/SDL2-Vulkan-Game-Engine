@@ -11,22 +11,14 @@
 // Physical component dependency
 #include <managers/managerbase.h>
 
-// Game lib dependencies
-#include <common/point.h>
-#include <common/worldvalue.h>
-
 // Standard lib dependencies
 #include <string>
 #include <map>
 #include <vector>
 
 // Forward Declarations
-class iNode;
 class iStrategy;
-class CMatrix;
 class CScriptArray;
-union SDL_Event;
-struct XMLNode;
 
 class CStrategyMgr : public CManagerBase
 {

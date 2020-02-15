@@ -423,4 +423,4 @@ public:
     }
 };
 
-#endif  // __size_h__
+#endif

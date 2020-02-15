@@ -13,7 +13,6 @@
 
 // Game lib dependencies
 #include <common/defs.h>
-#include <common/size.h>
 #include <script/scriptcomponent.h>
 
 // Boost lib dependencies
@@ -32,13 +31,8 @@
 class iObjectData;
 class iVisualComponent;
 class iPhysicsComponent;
-class CObjectData2D;
-class CObjectData3D;
-class SpriteData;
 class CMatrix;
-class CSpriteData;
 class CCamera;
-class btTransform;
 struct XMLNode;
 union SDL_Event;
 

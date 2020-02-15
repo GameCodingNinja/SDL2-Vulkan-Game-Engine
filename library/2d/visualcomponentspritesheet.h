@@ -11,9 +11,6 @@
 // Physical component dependency
 #include <2d/visualcomponentquad.h>
 
-// Game lib dependencies
-#include <common/rect.h>
-
 class CVisualComponentSpriteSheet : public CVisualComponentQuad
 {
 public:

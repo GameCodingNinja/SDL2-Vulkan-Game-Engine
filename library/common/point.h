@@ -745,5 +745,4 @@ public:
 
 };
 
-#endif  // __point_h__
-
+#endif

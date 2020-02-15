@@ -9,7 +9,6 @@
 #include <objectdata/objectdatamanager.h>
 
 // Game lib dependencies
-#include <sprite/spritedata.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 #include <utilities/settings.h>
@@ -17,12 +16,9 @@
 #include <objectdata/objectdata3d.h>
 #include <managers/spritesheetmanager.h>
 #include <system/device.h>
-#include <system/pipeline.h>
 
 // Standard lib dependencies
-#include <set>
 #include <string>
-#include <cstring>
 
 // Boost lib dependencies
 #include <boost/format.hpp>

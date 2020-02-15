@@ -12,10 +12,6 @@
 #include <utilities/xmlParser.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/mathfunc.h>
-#include <utilities/exceptionhandling.h>
-
-// Boost lib dependencies
-#include <boost/format.hpp>
 
 // Standard lib dependencies
 #include <cstring>

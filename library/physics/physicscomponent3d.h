@@ -25,7 +25,6 @@ class iObjectData;
 class CSprite;
 class CPhysicsWorld3D;
 class btRigidBody;
-class asIScriptEngine;
 
 class CPhysicsComponent3D : public iPhysicsComponent, boost::noncopyable
 {
@@ -36,11 +35,6 @@ public:
 
     // Destructor
     virtual ~CPhysicsComponent3D();
-
-    //////////////////////////////////////////////////////
-    // Register CScriptComponent2d Object with AngelScript
-    //////////////////////////////////////////////////////
-    //static void Register( asIScriptEngine * pEngine );
 
     // Init the physics by creating the body and fixture
     // NOTE: Function must be called externally at the right time

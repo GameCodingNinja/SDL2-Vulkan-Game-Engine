@@ -10,7 +10,6 @@
 
 // Game lib dependencies
 #include <common/defs.h>
-#include <common/size.h>
 #include <common/color.h>
 #include <common/texture.h>
 #include <common/model.h>

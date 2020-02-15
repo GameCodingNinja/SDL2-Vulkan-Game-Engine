@@ -12,9 +12,6 @@
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 namespace NSmart
 {
     //*****************************************************************************
@@ -192,8 +189,6 @@ namespace NSmart
 
         T * ptr;
     };
-
 }
 
-
-#endif // _smart_pointers_h_
+#endif

@@ -10,7 +10,6 @@
 // Game lib dependencies
 #include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
-#include <common/texture.h>
 #include <system/device.h>
 
 // Boost lib dependencies

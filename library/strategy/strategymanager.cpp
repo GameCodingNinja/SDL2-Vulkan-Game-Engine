@@ -11,17 +11,11 @@
 // Game lib dependencies
 #include <utilities/deletefuncs.h>
 #include <utilities/exceptionhandling.h>
-#include <utilities/matrix.h>
-#include <utilities/xmlParser.h>
-#include <utilities/settings.h>
 #include <utilities/genfunc.h>
 #include <strategy/istrategy.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-
-// SDL lib dependencies
-#include <SDL.h>
 
 // AngelScript lib dependencies
 #include <scriptarray/scriptarray.h>

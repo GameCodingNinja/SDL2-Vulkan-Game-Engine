@@ -1,16 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       ispritestrategy.h
+*    FILE NAME:       istrategy.h
 *
 *    DESCRIPTION:     Strategy Interface Class
 ************************************************************************/
 
 #ifndef __i_strategy_h__
 #define __i_strategy_h__
-
-// Game lib dependencies
-#include <common/point.h>
-#include <common/worldvalue.h>
 
 // Standard lib dependencies
 #include <string>
@@ -21,9 +17,7 @@
 
 // Forward Declarations
 class iNode;
-class CMatrix;
 class CCamera;
-union SDL_Event;
 
 class iStrategy
 {

@@ -75,4 +75,4 @@ namespace NParseHelper
         const std::string & rGroup );
 }
 
-#endif  // __xml_parse_helper_h__
+#endif

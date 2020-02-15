@@ -17,7 +17,6 @@
 
 // Standard lib dependencies
 #include <string>
-#include <utility>
 
 // Forward Declarations
 struct XMLNode;
@@ -87,4 +86,4 @@ private:
     float m_radiusSquared;
 };
 
-#endif  // __object_data_2d_h__
+#endif

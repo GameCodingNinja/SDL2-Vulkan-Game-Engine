@@ -14,9 +14,8 @@
 
 // Standard lib dependencies
 #include <string>
-#include <set>
 #include <tuple>
-#include <vector>
+#include <unordered_set>
 
 // Forward declaration(s)
 struct XMLNode;
@@ -92,7 +91,7 @@ private:
 
     // All bodies that are handled by this physics world
     // NOTE: Class doesn't not own the data. Do Not Delete!
-    std::set<b2Body *> m_pBodySet;
+    std::unordered_set<b2Body *> m_pBodySet;
 
     // If we're actively running simulations
     bool m_active;

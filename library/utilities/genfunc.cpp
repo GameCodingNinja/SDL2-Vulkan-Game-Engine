@@ -24,11 +24,7 @@
 #include <SDL.h>
 
 // Standard lib dependencies
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
 #include <iostream>
-#include <algorithm>
 #include <random>
 #include <chrono>
 

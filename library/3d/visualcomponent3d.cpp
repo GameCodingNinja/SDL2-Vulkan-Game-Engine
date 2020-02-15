@@ -18,12 +18,6 @@
 #include <utilities/statcounter.h>
 #include <common/camera.h>
 
-// Boost lib dependencies
-#include <boost/format.hpp>
-
-// Standard lib dependencies
-#include <memory>
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/

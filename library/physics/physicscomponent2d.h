@@ -109,7 +109,6 @@ private:
     // Pointer to the world
     // NOTE: Do not free. We don't own this pointer.
     CPhysicsWorld2D * m_pWorld;
-
 };
 
 #endif

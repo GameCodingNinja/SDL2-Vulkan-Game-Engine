@@ -26,7 +26,6 @@
 #include <vector>
 
 // Forward declaration(s)
-class CObject2D;
 class CSprite;
 
 class CUIControl : public iControl

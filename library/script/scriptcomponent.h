@@ -9,7 +9,6 @@
 #define __script_component_h__
 
 // Game lib dependencies
-#include <common/defs.h>
 #include <script/scriptdefs.h>
 
 // Boost lib dependencies
@@ -61,7 +60,6 @@ private:
     // dynamic context vector
     // NOTE: This class does not own the pointer
     std::vector<asIScriptContext *> m_pContextVec;
-
 };
 
 #endif

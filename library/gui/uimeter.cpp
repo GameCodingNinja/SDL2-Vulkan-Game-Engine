@@ -14,15 +14,12 @@
 #include <utilities/exceptionhandling.h>
 #include <common/ivisualcomponent.h>
 #include <sprite/sprite.h>
-#include <objectdata/objectdata2d.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 
 // Standard lib dependencies
-#include <iostream>
-#include <chrono>
 #include <map>
 
 /************************************************************************

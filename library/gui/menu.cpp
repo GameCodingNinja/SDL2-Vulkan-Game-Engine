@@ -13,12 +13,10 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/deletefuncs.h>
 #include <utilities/xmlparsehelper.h>
-#include <utilities/settings.h>
 #include <utilities/genfunc.h>
 #include <objectdata/objectdatamanager.h>
 #include <gui/menudefs.h>
 #include <gui/uicontroldefs.h>
-#include <gui/uilabel.h>
 #include <gui/uicontrolfactory.h>
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
@@ -27,7 +25,6 @@
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-#include <boost/bind.hpp>
 
 // SDL lib dependencies
 #include <SDL.h>

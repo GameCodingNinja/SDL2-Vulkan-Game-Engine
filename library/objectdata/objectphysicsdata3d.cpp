@@ -9,11 +9,7 @@
 #include <objectdata/objectphysicsdata3d.h>
 
 // Game lib dependencies
-#include <common/color.h>
 #include <utilities/xmlparsehelper.h>
-
-// Boost lib dependencies
-#include <boost/format.hpp>
 
 /************************************************************************
 *    DESC:  Constructor

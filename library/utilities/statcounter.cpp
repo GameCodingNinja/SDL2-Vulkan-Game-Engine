@@ -9,8 +9,8 @@
 #include <utilities/statcounter.h>
 
 // Game lib dependencies
-#include <utilities/highresolutiontimer.h>
 #include <utilities/settings.h>
+#include <utilities/highresolutiontimer.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>

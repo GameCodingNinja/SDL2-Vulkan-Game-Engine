@@ -13,16 +13,11 @@
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
 #include <common/texture.h>
-#include <common/size.h>
-#include <common/vertex.h>
 #include <system/pipeline.h>
 #include <soil/SOIL.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-
-// Standard lib dependencies
-#include <fstream>
 
 /************************************************************************
 *    DESC:  Validation layer callback

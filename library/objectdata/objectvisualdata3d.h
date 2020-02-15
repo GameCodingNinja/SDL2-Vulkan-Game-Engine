@@ -12,18 +12,11 @@
 #include <objectdata/iobjectvisualdata.h>
 
 // Game lib dependencies
-#include <common/size.h>
 #include <common/color.h>
-#include <common/rect.h>
-#include <common/point.h>
-#include <common/defs.h>
-#include <common/scaledframe.h>
-#include <common/texture.h>
 #include <common/model.h>
 
 // Standard lib dependencies
 #include <string>
-#include <vector>
 
 // Forward Declarations
 struct XMLNode;

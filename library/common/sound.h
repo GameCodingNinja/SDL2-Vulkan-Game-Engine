@@ -81,5 +81,4 @@ private:
     int16_t m_volume;
 };
 
-#endif  // __sound_h__
-
+#endif

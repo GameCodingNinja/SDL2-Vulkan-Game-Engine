@@ -13,6 +13,7 @@
 
 // Game lib dependencies
 #include <gui/uicontroldefs.h>
+
 class CNodeData : public CSpriteData
 {
 public:

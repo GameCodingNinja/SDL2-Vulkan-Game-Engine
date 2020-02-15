@@ -357,5 +357,4 @@ public:
     }
 };
 
-#endif  // __quaternion_h__
-
+#endif

@@ -18,12 +18,12 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
+#include <map>
 
 // Forward declaration(s)
 class asIScriptEngine;
 class asIScriptContext;
 class asIScriptModule;
-class asIScriptContext;
 class asIScriptFunction;
 class asITypeInfo;
 struct asSMessageInfo;

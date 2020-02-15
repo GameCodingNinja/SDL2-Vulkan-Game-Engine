@@ -10,12 +10,10 @@
 
 // Game lib dependencies
 #include <system/device.h>
-#include <system/pipeline.h>
 #include <managers/spritesheetmanager.h>
 #include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>
 #include <utilities/exceptionhandling.h>
-#include <utilities/settings.h>
 #include <utilities/genfunc.h>
 #include <common/defs.h>
 #include <common/quad2d.h>
@@ -25,7 +23,6 @@
 #include <boost/format.hpp>
 
 // Standard lib dependencies
-#include <iostream>
 #include <cstring>
 
 // Declare some static

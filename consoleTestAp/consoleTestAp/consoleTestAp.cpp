@@ -1,7 +1,40 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
-#include <utilities/matrix.h>
+#include <iostream>
+#include <set>
+#include <unordered_set>
+#include <vector>
+#include <algorithm>
+#include <utilities/highresolutiontimer.h>
+
+int main()  // 7124.35 ms
+{
+    std::cout << "Test started..." << std::endl;
+
+    std::vector<int> dataVec;
+    dataVec.reserve(100000);
+    for(int i = 0; i < 100000; i++)
+        dataVec.push_back(i);
+
+    std::random_shuffle( dataVec.begin(), dataVec.end() );
+    
+    CHighResTimer::Instance().timerStart();
+    
+    //std::set<int> testSet;
+    std::unordered_set<int> testSet;
+    for(int iter : dataVec)
+        testSet.insert(iter);
+
+    for(int iter : dataVec)
+        testSet.find(iter);
+    
+    std::cout << "Execution time: " << CHighResTimer::Instance().timerStop() << std::endl;
+    
+    return 0;
+}
+
+/*#include <utilities/matrix.h>
 
 int main()
 {
@@ -21,7 +54,7 @@ int main()
     m_matrixRotate.rotate(CPoint<float>(57, 287, 79));
 
     return 0;
-}
+}*/
 
 /*#include <cstdint>
 #include <vector>

@@ -22,7 +22,6 @@
 #include <deque>
 
 // Forward Declarations
-class CObject2D;
 class CMatrix;
 
 class CStageStrategy : public iStrategy, boost::noncopyable

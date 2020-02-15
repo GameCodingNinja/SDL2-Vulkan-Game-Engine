@@ -9,9 +9,7 @@
 #include <managers/cameramanager.h>
 
 // Game lib dependencies
-#include <utilities/settings.h>
 #include <utilities/genfunc.h>
-#include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
 
 // Boost lib dependencies

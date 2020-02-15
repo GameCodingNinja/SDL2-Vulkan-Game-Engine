@@ -21,9 +21,7 @@
 #include <physics/physicscomponent3d.h>
 #include <utilities/xmlParser.h>
 #include <utilities/matrix.h>
-#include <utilities/exceptionhandling.h>
 #include <utilities/xmlparsehelper.h>
-#include <sprite/spritedata.h>
 
 /************************************************************************
 *    DESC:  Constructor

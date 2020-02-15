@@ -67,4 +67,4 @@ private:
     std::size_t level;
 };
 
-#endif	// __state_h__
+#endif

@@ -359,4 +359,4 @@ public:
 
 };
 
-#endif  // __quad_h__
+#endif

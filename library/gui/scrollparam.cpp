@@ -14,7 +14,6 @@
 
 // Standard lib dependencies
 #include <cstring>
-#include <cstdlib>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -49,8 +48,7 @@ void CScrollParam::loadFromNode( const XMLNode & node )
         if( node.isAttributeSet( "right" ) && (std::strcmp( node.getAttribute( "right" ), "true" ) == 0) )
             m_scrollTypesMap.emplace( NMenuDefs::EME_MENU_RIGHT_ACTION, NMenuDefs::EME_MENU_SCROLL_RIGHT );
     }
-    
-}   // LoadFromNode
+}
 
 
 /************************************************************************
@@ -68,8 +66,7 @@ bool CScrollParam::canScroll( int msg )
     }
 
     return false;
-    
-}   // CanScroll
+}
 
 
 /************************************************************************

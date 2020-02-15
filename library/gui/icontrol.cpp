@@ -12,7 +12,7 @@
 #include <utilities/xmlParser.h>
 #include <utilities/xmlparsehelper.h>
 #include <utilities/xmlpreloader.h>
-#include <utilities/settings.h>
+//#include <utilities/settings.h>
 
 /************************************************************************
 *    DESC:  Constructor

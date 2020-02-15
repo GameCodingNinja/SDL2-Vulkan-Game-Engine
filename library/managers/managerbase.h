@@ -38,9 +38,6 @@ protected:
     
     // Mobile extension
     std::string m_mobileExt;
-
 };
 
-#endif  // __manager_base_h__
-
-
+#endif

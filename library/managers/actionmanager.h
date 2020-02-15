@@ -25,7 +25,6 @@
 // Standard lib dependencies
 #include <string>
 #include <vector>
-#include <array>
 #include <map>
 
 class CActionMgr

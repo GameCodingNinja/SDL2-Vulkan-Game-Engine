@@ -16,9 +16,6 @@
 #include <vector>
 
 // Forward declaration(s)
-class CObjectData2D;
-class CObjectData3D;
-class CSpriteData;
 class iObjectData;
 class CScriptArray;
 struct XMLNode;

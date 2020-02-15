@@ -14,9 +14,6 @@
 // Physical component dependency
 #include <node/inode.h>
 
-// Game lib dependencies
-#include <common/defs.h>
-
 // Standard lib dependencies
 #include <vector>
 #include <string>

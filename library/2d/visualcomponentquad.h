@@ -19,7 +19,6 @@
 #include <boost/noncopyable.hpp>
 
 // Forward declaration(s)
-class iObjectData;
 class iObjectVisualData;
 class CMemoryBuffer;
 class CDevice;

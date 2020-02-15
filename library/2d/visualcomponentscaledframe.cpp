@@ -15,9 +15,6 @@
 #include <system/device.h>
 #include <system/uniformbufferobject.h>
 
-// Boost lib dependencies
-#include <boost/format.hpp>
-
 /************************************************************************
 *    desc:  Constructor
 ************************************************************************/

@@ -37,4 +37,4 @@ public:
     CSize<float> m_fontStrSize;
 };
 
-#endif  // __font_data_h__
+#endif

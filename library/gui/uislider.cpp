@@ -20,7 +20,6 @@
 
 // Standard lib dependencies
 #include <cstring>
-#include <iostream>
 
 /************************************************************************
 *    DESC:  Constructor

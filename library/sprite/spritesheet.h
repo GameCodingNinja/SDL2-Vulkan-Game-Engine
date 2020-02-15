@@ -10,7 +10,6 @@
 
 // Game lib dependencies
 #include <sprite/spritesheetglyph.h>
-#include <common/defs.h>
 
 // Standard lib dependencies
 #include <string>
@@ -88,5 +87,4 @@ private:
     std::map< std::string, CSpriteSheetGlyph > m_glyphMap;
 };
 
-#endif  // __sprite_sheet_h__
-
+#endif

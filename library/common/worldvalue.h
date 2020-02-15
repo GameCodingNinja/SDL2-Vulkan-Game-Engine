@@ -97,6 +97,4 @@ private:
     static int HALF_SECTOR_SIZE;
 };
 
-#endif  // __world_value_h__
-
-
+#endif

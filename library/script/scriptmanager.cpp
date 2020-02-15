@@ -9,17 +9,14 @@
 #include <script/scriptmanager.h>
 
 // Game lib dependencies
-#include <utilities/xmlParser.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
 #include <utilities/statcounter.h>
-#include <script/scriptglobals.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
 
 // Standard lib dependencies
-#include <cstring>
 #include <thread>
 
 // AngelScript lib dependencies

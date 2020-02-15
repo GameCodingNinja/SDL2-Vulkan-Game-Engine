@@ -16,9 +16,6 @@
 #include <map>
 #include <vector>
 
-// Forward Declarations
-struct XMLNode;
-
 class CCameraMgr
 {
 public:

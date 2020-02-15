@@ -29,7 +29,6 @@
 // Forward declaration(s)
 class CMenu;
 class CMenuTree;
-class CUIControl;
 union SDL_Event;
 
 class CMenuMgr : public CManagerBase

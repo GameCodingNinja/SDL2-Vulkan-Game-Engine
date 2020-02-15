@@ -58,7 +58,6 @@ namespace NGenFunc
         assert(result != nullptr);
         return result;
     }
-    
-}   // NGenFunc
+}
 
-#endif  // __genfunc_h__
+#endif

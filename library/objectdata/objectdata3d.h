@@ -7,15 +7,16 @@
 #ifndef __object_data_3d_h__
 #define __object_data_3d_h__
 
+// Physical component dependency
+#include <objectdata/iobjectdata.h>
+
 // Game lib dependencies
 #include <common/point.h>
 #include <objectdata/objectvisualdata3d.h>
 #include <objectdata/objectphysicsdata3d.h>
-#include <objectdata/iobjectdata.h>
 
 // Standard lib dependencies
 #include <string>
-#include <utility>
 
 // Forward Declarations
 struct XMLNode;
@@ -76,4 +77,4 @@ private:
     float m_radiusSquared;
 };
 
-#endif  // __object_data_2d_h__
+#endif

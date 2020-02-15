@@ -8,9 +8,6 @@
 #ifndef __bit_mask_h__
 #define __bit_mask_h__
 
-// Game lib dependencies
-#include <common/defs.h>
-
 template <typename type>
 class CBitmask
 {
@@ -125,4 +122,4 @@ private:
 
 };
 
-#endif  // __bit_mask_h__
+#endif

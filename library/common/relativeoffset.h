@@ -76,6 +76,4 @@ private:
 
 };
 
-#endif  // __relative_offset_h__
-
-
+#endif

@@ -92,9 +92,6 @@ private:
     
     // null sound
     static CSound m_null_Sound;
-
 };
 
-#endif  // __play_list_h__
-
-
+#endif

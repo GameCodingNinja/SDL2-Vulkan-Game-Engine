@@ -12,7 +12,6 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/settings.h>
 #include <utilities/genfunc.h>
-#include <utilities/matrix.h>
 #include <utilities/xmlParser.h>
 #include <utilities/smartpointers.h>
 #include <common/texture.h>

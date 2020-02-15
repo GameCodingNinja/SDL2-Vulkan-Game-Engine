@@ -431,4 +431,4 @@ public:
 };
 
 
-#endif  // __color_h__
+#endif

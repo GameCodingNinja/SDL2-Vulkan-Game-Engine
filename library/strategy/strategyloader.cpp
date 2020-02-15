@@ -23,9 +23,6 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-// Standard lib dependencies
-#include <cstring>
-
 namespace NStrategyloader
 {
     void init( const XMLNode & nodeXML, CObjectTransform * pObject );

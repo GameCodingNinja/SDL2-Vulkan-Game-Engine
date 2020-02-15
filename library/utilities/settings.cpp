@@ -9,7 +9,6 @@
 #include <utilities/settings.h>
 
 // Game lib dependencies
-#include <common/defs.h>
 #include <common/worldvalue.h>
 
 // Boost lib dependencies
@@ -19,7 +18,6 @@
 #include <cstring>
 
 // SDL lib dependencies
-#include <SDL.h>
 #include <SDL_mixer.h>
 
 /************************************************************************

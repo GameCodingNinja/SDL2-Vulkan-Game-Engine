@@ -19,9 +19,6 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-// Standard lib dependencies
-#include <iostream>
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/

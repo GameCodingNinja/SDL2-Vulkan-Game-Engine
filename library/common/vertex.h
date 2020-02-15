@@ -61,4 +61,4 @@ namespace NVertex
     std::vector<VkVertexInputAttributeDescription> getAttributeDesc( const std::string & vertAttrDes );
 }
 
-#endif  // __vertex_2d_h__
+#endif

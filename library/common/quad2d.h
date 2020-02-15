@@ -27,5 +27,4 @@ public:
 
 };
 
-#endif  // __face_2d_h__
-
+#endif

@@ -12,8 +12,6 @@
 #include <SDL.h>
 
 // Game lib dependencies
-#include <common/defs.h>
-#include <utilities/matrix.h>
 #include <gui/menudefs.h>
 #include <gui/scrollparam.h>
 
@@ -29,7 +27,6 @@
 #include <system/vulkan.h>
 
 // Forward declaration(s)
-struct XMLNode;
 class CObjectTransform;
 class CMenu;
 class CCamera;

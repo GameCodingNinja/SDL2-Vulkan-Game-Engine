@@ -173,16 +173,16 @@ b2World & CPhysicsWorld2D::getWorld()
 b2Body * CPhysicsWorld2D::createBody( const b2BodyDef & pDef )
 {
     // NOTE: Class doesn't not own the data. Do Not Delete!
-    b2Body * pTmpBody = m_world.CreateBody( &pDef );
+    b2Body * pBody = m_world.CreateBody( &pDef );
 
-    if( pTmpBody == nullptr )
+    if( pBody == nullptr )
         throw NExcept::CCriticalException("Physics Body Error!",
             boost::str( boost::format("Error creating physics body.\n\n%s\nLine: %s")
                 % __FUNCTION__ % __LINE__ ));
 
-    m_pBodySet.insert( pTmpBody );
+    m_pBodySet.insert( pBody );
 
-    return pTmpBody;
+    return pBody;
 }
 
 

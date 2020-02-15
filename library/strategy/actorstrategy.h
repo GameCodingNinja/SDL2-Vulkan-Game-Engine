@@ -11,11 +11,6 @@
 // Physical component dependency
 #include <strategy/istrategy.h>
 
-// Game lib dependencies
-#include <common/point.h>
-#include <common/defs.h>
-#include <common/worldvalue.h>
-
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
@@ -23,7 +18,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <set>
 
 // Forward Declarations
 class CNodeDataList;
@@ -116,5 +110,3 @@ protected:
 };
 
 #endif
-
-

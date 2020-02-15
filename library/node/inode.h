@@ -22,7 +22,6 @@
 #include <system/vulkan.h>
 
 // Forward declaration(s)
-class CMatrix;
 class CSprite;
 class CCamera;
 class CObjectTransform;

@@ -58,7 +58,6 @@ private:
     // Disabled return value.
     // This value allows a disabled timer to act as expired or not
     bool m_disableValue;
-
 };
 
-#endif  // __timer_h__
+#endif

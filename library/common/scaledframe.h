@@ -25,6 +25,4 @@ public:
     bool m_bottomFrame = true;
 };
 
-#endif  // __scaled_frame_h__
-
-
+#endif

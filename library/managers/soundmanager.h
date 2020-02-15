@@ -107,7 +107,6 @@ private:
     // Null members
     CPlayList m_null_playLst;
     CSound m_null_sound;
-
 };
 
-#endif  // __sound_manager_h__
+#endif

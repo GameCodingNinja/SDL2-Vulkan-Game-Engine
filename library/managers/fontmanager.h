@@ -53,7 +53,6 @@ private:
 
     // Group name
     std::string m_group;
-
 };
 
-#endif  // __font_manager_h__
+#endif

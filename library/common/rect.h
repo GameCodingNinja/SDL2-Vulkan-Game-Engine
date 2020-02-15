@@ -125,4 +125,4 @@ public:
     }
 };
 
-#endif  // __rect_h__
+#endif

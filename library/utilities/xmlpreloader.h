@@ -49,9 +49,6 @@ private:
     
     // Map of XML nodes
     std::map<const std::string, XMLNode> m_xmlNodeMap;
-
 };
 
-#endif  // __xml_preloader_h__
-
-
+#endif

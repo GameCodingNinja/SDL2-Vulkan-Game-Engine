@@ -13,7 +13,6 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
 #include <utilities/settings.h>
-#include <common/defs.h>
 
 // SDL lib dependencies
 #include <SDL_mixer.h>

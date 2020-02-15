@@ -84,7 +84,6 @@ private:
     
     // Stat counter signal
     StatCounterSignal m_statCounterSignal;
-
 };
 
-#endif  // __stat_counter_h__
+#endif

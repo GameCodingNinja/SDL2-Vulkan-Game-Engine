@@ -9,10 +9,7 @@
 #include <managers/actionmanager.h>
 
 // Game lib dependencies
-#include <system/device.h>
-#include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
-#include <script/scriptmanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
