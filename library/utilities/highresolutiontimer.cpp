@@ -8,7 +8,7 @@
 #include <utilities/highresolutiontimer.h>
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor

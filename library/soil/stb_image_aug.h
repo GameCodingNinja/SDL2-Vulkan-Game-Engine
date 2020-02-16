@@ -159,7 +159,7 @@
 #endif
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #define STBI_VERSION 1
 

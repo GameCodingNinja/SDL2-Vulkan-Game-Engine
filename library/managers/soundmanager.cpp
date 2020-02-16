@@ -14,14 +14,14 @@
 #include <utilities/genfunc.h>
 #include <utilities/settings.h>
 
-// SDL lib dependencies
-#include <SDL_mixer.h>
-
 // Boost lib dependencies
 #include <boost/format.hpp>
 
 // Standard lib dependencies
 #include <cstring>
+
+// SDL lib dependencies
+#include <SDL2/SDL_mixer.h>
 
 /************************************************************************
 *    DESC:  Constructor

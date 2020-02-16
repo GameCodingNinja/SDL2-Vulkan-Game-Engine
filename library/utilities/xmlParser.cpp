@@ -51,7 +51,7 @@
  */
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 // disable warning about unsafe functions
 #if defined(_WINDOWS)

@@ -21,11 +21,11 @@
 #include <managers/cameramanager.h>
 #include <system/device.h>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Boost lib dependencies
 #include <boost/format.hpp>
+
+// SDL lib dependencies
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor

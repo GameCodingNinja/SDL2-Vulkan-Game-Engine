@@ -8,9 +8,6 @@
 #ifndef __menu_tree_h__
 #define __menu_tree_h__
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Game lib dependencies
 #include <gui/menudefs.h>
 #include <gui/scrollparam.h>
@@ -25,6 +22,9 @@
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
+
+// SDL lib dependencies
+#include <SDL2/SDL.h>
 
 // Forward declaration(s)
 class CObjectTransform;

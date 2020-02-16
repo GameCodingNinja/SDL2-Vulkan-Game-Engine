@@ -4,15 +4,19 @@
 			"path": "."
 		},
 		{
+			"name": "Library",
 			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/library"
 		},
 		{
+			"name": "AngelScript",
 			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript"
 		},
 		{
+			"name": "SDL2",
 			"path": "/home/howie/Development/SDL2"
 		},
 		{
+			"name": "Box2D",
 			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D"
 		}
 	],
@@ -91,7 +95,8 @@
 			"future": "cpp",
 			"cfenv": "cpp",
 			"cinttypes": "cpp",
-			"valarray": "cpp"
+			"valarray": "cpp",
+			"math.h": "c"
 		}
 	}
 }

@@ -47,9 +47,7 @@ else()
 
     # List all the include directories
     include_directories(
-        ${SDL2_INCLUDE_DIRS}
-        ${SDL2MIXER_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIRS}
+        /user/include
         ../
         ../bulletPhysics/src
         ../library

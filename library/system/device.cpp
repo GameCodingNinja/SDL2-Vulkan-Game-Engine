@@ -30,7 +30,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL_vulkan.h>
+#include <SDL2/SDL_vulkan.h>
 
 /************************************************************************
 *    DESC:  Constructor

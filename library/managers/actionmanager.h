@@ -8,9 +8,6 @@
 #ifndef __action_manager_h__
 #define __action_manager_h__
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Game lib dependencies
 #include <utilities/xmlParser.h>
 #include <common/keycodeaction.h>
@@ -26,6 +23,9 @@
 #include <string>
 #include <vector>
 #include <map>
+
+// SDL lib dependencies
+#include <SDL2/SDL.h>
 
 class CActionMgr
 {

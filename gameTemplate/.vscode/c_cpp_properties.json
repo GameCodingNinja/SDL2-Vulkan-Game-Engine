@@ -5,11 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/../library",
-                "${workspaceFolder}/../angelscript",
-                "${workspaceFolder}/../Box2D",
-                "${workspaceFolder}/../bulletPhysics",
-                "${workspaceFolder}/../../SDL2",
-                "${workspaceFolder}/../../SDL2_mixer"
+                "${workspaceFolder}/../angelscript/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

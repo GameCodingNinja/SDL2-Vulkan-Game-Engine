@@ -1,11 +1,13 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Library",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/../library",
-                "${workspaceFolder}/../angelscript/**"
+                "${workspaceFolder}/",
+                "${workspaceFolder}/../angelscript/include/",
+                "${workspaceFolder}/../angelscript/add_on/",
+                "${workspaceFolder}/../",
+                "${workspaceFolder}/../bulletPhysics/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

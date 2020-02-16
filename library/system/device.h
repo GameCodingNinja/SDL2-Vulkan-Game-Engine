@@ -23,7 +23,7 @@
 #include <map>
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 // Forward declaration(s)
 struct SDL_Window;

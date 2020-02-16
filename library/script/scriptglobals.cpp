@@ -18,11 +18,11 @@
 // Standard lib dependencies
 #include <random>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Boost lib dependencies
 #include <boost/format.hpp>
+
+// SDL lib dependencies
+#include <SDL2/SDL.h>
 
 // AngelScript lib dependencies
 #include <angelscript.h>

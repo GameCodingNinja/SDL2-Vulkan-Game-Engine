@@ -7,8 +7,8 @@
 #ifndef __highresolutiontimer_h__
 #define __highresolutiontimer_h__
 
-// SDL lib dependencies
-#include <SDL.h>
+// Standard lib dependencies
+#include <cstdint>
 
 class CHighResTimer
 {
@@ -64,4 +64,4 @@ private:
 
 };
 
-#endif  // __highresolutiontimer_h__
+#endif

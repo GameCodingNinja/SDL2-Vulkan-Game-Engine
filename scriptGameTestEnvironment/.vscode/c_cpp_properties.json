@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../library",
+                "${workspaceFolder}/../angelscript/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

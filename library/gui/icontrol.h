@@ -22,11 +22,11 @@
 #include <string>
 #include <vector>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Vulkan lib dependencies
 #include <system/vulkan.h>
+
+// SDL lib dependencies
+#include <SDL2/SDL.h>
 
 // Forward declaration(s)
 class CCamera;

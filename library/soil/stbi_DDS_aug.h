@@ -6,7 +6,7 @@
 #define HEADER_STB_IMAGE_DDS_AUGMENTATION
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 //	is it a DDS file?
 extern int      stbi_dds_test_memory      (stbi_uc const *buffer, int len);

@@ -10,7 +10,7 @@
 #pragma warning(disable : 4996)
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "image_DXT.h"
 #include <math.h>

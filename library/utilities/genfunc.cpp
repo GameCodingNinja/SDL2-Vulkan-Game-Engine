@@ -21,7 +21,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 // Standard lib dependencies
 #include <iostream>

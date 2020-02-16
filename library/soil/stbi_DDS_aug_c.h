@@ -3,7 +3,7 @@
 ///	(use SOIL for that ;-)
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 ///	A bunch of DirectDraw Surface structures and flags
 typedef struct {
