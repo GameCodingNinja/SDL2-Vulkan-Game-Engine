@@ -26,7 +26,6 @@
 
 namespace NScriptSprite
 {
-    CPoint<float> point;
     CSize<float> size;
     CColor color;
     std::string string;
@@ -34,16 +33,6 @@ namespace NScriptSprite
     /************************************************************************
     *    DESC:  Wrapper function due to virtual inheritance
     ************************************************************************/
-    void SetVisible(bool value, CSprite & sprite)
-    {
-        sprite.setVisible(value);
-    }
-
-    bool IsVisible(CSprite & sprite)
-    {
-        return sprite.isVisible();
-    }
-
     void SetPos1(const CPoint<float> & pos, CSprite & sprite)
     {
         sprite.setPos(pos);
@@ -62,24 +51,6 @@ namespace NScriptSprite
     void IncPos2(float x, float y, float z, CSprite & sprite)
     {
         sprite.incPos(x,y,z);
-    }
-
-    const CPoint<float> & GetPos(CSprite & sprite)
-    {
-        point = sprite.getPos();
-        return point;
-    }
-    
-    const CPoint<float> & GetWorldPos(CSprite & sprite)
-    {
-        point = sprite.getWorldPos();
-        return point;
-    }
-    
-    const CPoint<float> & GetCenterPos(CSprite & sprite)
-    {
-        point = sprite.getCenterPos();
-        return point;
     }
     
     const CSize<float> & GetSize(CSprite & sprite)
@@ -112,11 +83,6 @@ namespace NScriptSprite
         sprite.incRot(x,y,z, convertToRadians);
     }
 
-    const CPoint<float> & GetRot(CSprite & sprite)
-    {
-        return sprite.getRot();
-    }
-
     void SetScale1(const CPoint<float> & rot, CSprite & sprite)
     {
         sprite.setScale(rot);
@@ -135,11 +101,6 @@ namespace NScriptSprite
     void IncScale2(float x, float y, float z, CSprite & sprite)
     {
         sprite.incScale(x,y,z);
-    }
-
-    const CPoint<float> & GetScale(CSprite & sprite)
-    {
-        return sprite.getScale();
     }
 
     void SetColor1(const CColor & color, CSprite & sprite)
@@ -337,8 +298,8 @@ namespace NScriptSprite
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "int getId() const",                                   WRAP_MFN(CSprite,   getId),         asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               WRAP_OBJ_LAST(SetVisible),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              WRAP_OBJ_LAST(IsVisible),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               WRAP_MFN(CSprite, setVisible),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              WRAP_MFN(CSprite, isVisible),    asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(CPoint &in)",                             WRAP_OBJ_LAST(SetPos1),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPos(float x = 0, float y = 0, float z = 0)",  WRAP_OBJ_LAST(SetPos2),      asCALL_GENERIC) );
@@ -346,9 +307,9 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(CPoint & in)",                            WRAP_OBJ_LAST(IncPos1),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incPos(float x = 0, float y = 0, float z = 0)",  WRAP_OBJ_LAST(IncPos2),      asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getPos() const",                       WRAP_OBJ_LAST(GetPos),       asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getWorldPos() const",                  WRAP_OBJ_LAST(GetWorldPos),  asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getCenterPos() const",                 WRAP_OBJ_LAST(GetCenterPos), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getPos() const",                       WRAP_MFN(CSprite, getPos),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getTransPos() const",                  WRAP_MFN(CSprite, getTransPos),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getCenterPos() const",                 WRAP_MFN(CSprite, getCenterPos), asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot1),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(SetRot2), asCALL_GENERIC) );
@@ -356,12 +317,14 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(IncRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot() const",                         WRAP_OBJ_LAST(GetRot),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getRot() const",                         WRAP_MFN(CSprite, getRot), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetScale1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetScale2), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncScale1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncScale2), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                       WRAP_OBJ_LAST(GetScale),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                       WRAP_MFN(CSprite, getScale),   asCALL_GENERIC) );
+
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CBitmask & getParameters()",                            WRAP_MFN(CSprite, getParameters), asCALL_GENERIC) );
 
         // Physics component functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void physicsUpdate()",                                                               WRAP_MFN(CSprite, physicsUpdate),   asCALL_GENERIC) );

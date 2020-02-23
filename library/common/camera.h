@@ -12,6 +12,7 @@
 
 // Game lib dependencies
 #include <utilities/matrix.h>
+#include <common/worldvalue.h>
 
 // Forward Declarations
 struct XMLNode;
@@ -39,7 +40,10 @@ public:
     // Create the projection matrix
     void createProjectionMatrix();
 
-    // Set/Inc the camera's world position
+    // Get the world value position
+    const CPoint<CWorldValue> & getWorldValuePos() const;
+
+    // Set/Inc the world value position
     void setPos( const CPoint<CWorldValue> & position );
     void setPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
 
@@ -72,6 +76,9 @@ private:
     void calcFinalMatrix();
 
 private:
+
+    // World position value
+    CPoint<CWorldValue> m_worldValPos;
 
     // Custom projection matrix
     CMatrix m_projectionMatrix;

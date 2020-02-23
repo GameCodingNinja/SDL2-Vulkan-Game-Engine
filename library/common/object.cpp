@@ -31,7 +31,7 @@ CObject::~CObject()
 /************************************************************************
 *    DESC:  Get the object's world position
 ************************************************************************/
-const CPoint<CWorldValue> & CObject::getPos() const
+const CPoint<float> & CObject::getPos() const
 {
     return m_pos;
 }
@@ -40,13 +40,6 @@ const CPoint<CWorldValue> & CObject::getPos() const
 /************************************************************************
 *    DESC:  Set the object's position
 ************************************************************************/
-void CObject::setPos( const CPoint<CWorldValue> & position )
-{
-    m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
-
-    m_pos = position;
-}
-
 void CObject::setPos( const CPoint<float> & position )
 {
     m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
@@ -54,7 +47,7 @@ void CObject::setPos( const CPoint<float> & position )
     m_pos = position;
 }
 
-void CObject::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
+void CObject::setPos( float x, float y, float z )
 {
     m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
 
@@ -65,13 +58,6 @@ void CObject::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 /************************************************************************
 *    DESC:  Inc the object's float position
 ************************************************************************/
-void CObject::incPos( const CPoint<CWorldValue> & position )
-{
-    m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
-
-    m_pos += position;
-}
-
 void CObject::incPos( const CPoint<float> & position )
 {
     m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
@@ -79,7 +65,7 @@ void CObject::incPos( const CPoint<float> & position )
     m_pos += position;
 }
 
-void CObject::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
+void CObject::incPos( float x, float y, float z )
 {
     m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
 
@@ -296,7 +282,7 @@ void CObject::loadTransFromNode( const XMLNode & node )
 {
     bool loadedFlag;
 
-    CPoint<CWorldValue> pos = NParseHelper::LoadPosition( node, loadedFlag );
+    CPoint<float> pos = NParseHelper::LoadPosition( node, loadedFlag );
     if( loadedFlag )
         setPos( pos );
 
@@ -321,7 +307,7 @@ void CObject::loadTransFromNode( const XMLNode & node )
 /************************************************************************
 *    DESC:  Get the parameters
 ************************************************************************/
-CBitmask<int16_t> & CObject::getParameters()
+CBitmask<uint16_t> & CObject::getParameters()
 {
     return m_parameters;
 }

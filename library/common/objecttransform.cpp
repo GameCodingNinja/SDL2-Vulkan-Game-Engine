@@ -26,7 +26,7 @@ CObjectTransform::~CObjectTransform()
 /************************************************************************
 *    DESC:  Get the object's translated position
 ************************************************************************/
-const CPoint<float> & CObjectTransform::getWorldPos() const
+const CPoint<float> & CObjectTransform::getTransPos() const
 {
     return m_transPos;
 }

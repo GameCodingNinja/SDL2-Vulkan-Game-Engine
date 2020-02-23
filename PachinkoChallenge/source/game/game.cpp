@@ -41,6 +41,7 @@
 #include <script/scriptvisual.h>
 #include <script/scriptphysics2d.h>
 #include <script/scriptstatcounter.h>
+#include <script/scriptbitmask.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -111,6 +112,7 @@ void CGame::init()
     NScriptGlobals::Register();
     NScriptColor::Register();
     NScriptPoint::Register();
+    NScriptBitmask::Register();
     NScriptActionManager::Register();
     NScriptCamera::Register();
     NScriptCameraManager::Register();

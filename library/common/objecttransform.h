@@ -41,7 +41,7 @@ public:
     void forceTransform();
     
     // Get the object's translated position
-    const CPoint<float> & getWorldPos() const;
+    const CPoint<float> & getTransPos() const;
     
     // Use a point to set a column - used for 3d physics
     virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){};

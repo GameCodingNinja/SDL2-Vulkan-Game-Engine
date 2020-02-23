@@ -125,6 +125,38 @@ void CSector::loadSprite( CSprite * sprite, const CSpriteData & rSpriteData )
 
 
 /************************************************************************
+*    DESC:  Set the world value position
+************************************************************************/  
+void CSector::setPos( const CPoint<CWorldValue> & position )
+{
+    m_worldValPos = -position;
+    CObjectTransform::setPos( m_worldValPos );
+}
+
+void CSector::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
+{
+    m_worldValPos.set( -x, -y, -z );
+    CObjectTransform::setPos( m_worldValPos );
+}
+
+
+/************************************************************************
+*    DESC:  Increment the world value position
+************************************************************************/  
+void CSector::incPos( const CPoint<CWorldValue> & position )
+{
+    m_worldValPos.inc( -position.x, -position.y, -position.z );
+    CObjectTransform::incPos( m_worldValPos );
+}
+
+void CSector::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
+{
+    m_worldValPos.inc( -x, -y, -z );
+    CObjectTransform::incPos( m_worldValPos );
+}
+
+
+/************************************************************************
 *    DESC:  Update the actor
 ************************************************************************/
 void CSector::update()

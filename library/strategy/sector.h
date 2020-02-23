@@ -11,6 +11,9 @@
 // Physical component dependency
 #include <common/objecttransform.h>
 
+// Game lib dependencies
+#include <common/worldvalue.h>
+
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
@@ -39,6 +42,16 @@ public:
     
     // Load the sector data from node
     void loadFromNode( const struct XMLNode & node );
+
+    // Get the world value position
+    const CPoint<CWorldValue> & getWorldValuePos() const;
+
+    // Set/Inc the world value position
+    void setPos( const CPoint<CWorldValue> & position );
+    void setPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
+
+    void incPos( const CPoint<CWorldValue> & position );
+    void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
 
     // Update the actor
     void update();
@@ -72,6 +85,9 @@ private:
     bool inPerspectiveView();
     
 private:
+
+    // World position value
+    CPoint<CWorldValue> m_worldValPos;
     
     // Vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;

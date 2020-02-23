@@ -10,7 +10,6 @@
 // Game lib dependencies
 #include <common/size.h>
 #include <common/point.h>
-#include <common/worldvalue.h>
 #include <utilities/bitmask.h>
 
 // Standard lib dependencies
@@ -30,15 +29,13 @@ public:
     void loadTransFromNode( const XMLNode & node );
 
     // Set/Get the object's position
-    void setPos( const CPoint<CWorldValue> & position );
     void setPos( const CPoint<float> & position );
-    void setPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
-    const CPoint<CWorldValue> & getPos() const;
+    void setPos( float x = 0, float y = 0, float z = 0 );
+    const CPoint<float> & getPos() const;
 
     // Increment the object's position
-    void incPos( const CPoint<CWorldValue> & position );
     void incPos( const CPoint<float> & position );
-    void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
+    void incPos( float x = 0, float y = 0, float z = 0 );
 
     // Invert the object's position
     void invertPos();
@@ -83,15 +80,15 @@ public:
     void copyTransform( const CObject * pObject );
     
     // Get the parameters
-    CBitmask<int16_t> & getParameters();
+    CBitmask<uint16_t> & getParameters();
 
 protected:
     
     // Bitmask settings to record if the object needs to be transformed
-    CBitmask<int16_t> m_parameters;
+    CBitmask<uint16_t> m_parameters;
 
     // Local position
-    CPoint<CWorldValue> m_pos;
+    CPoint<float> m_pos;
 
     // Local Rotation stored in radians
     CPoint<float> m_rot;
