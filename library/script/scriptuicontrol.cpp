@@ -221,6 +221,7 @@ namespace NScriptUIControl
         // Interface to meter
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setMeterValue(double)",                            WRAP_MFN(iControl, setMeterValue),              asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void startBangUp(double)",                              WRAP_MFN(iControl, startBangUp),                asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void incBangUp(double)",                                WRAP_MFN(iControl, incBangUp),                  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void fastBang()",                                       WRAP_MFN(iControl, fastBang),                   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "bool isBanging() const",                                WRAP_MFN(iControl, isBanging),                  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "void clearMeter()",                                     WRAP_MFN(iControl, clearMeter),                 asCALL_GENERIC) );

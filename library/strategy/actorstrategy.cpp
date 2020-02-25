@@ -325,20 +325,6 @@ void CActorStrategy::recordCommandBuffer( uint32_t index )
 /************************************************************************
 *    DESC:  Get the pointer to the node
 ************************************************************************/
-iNode * CActorStrategy::getNode( const int id )
-{
-    const auto iter = std::find_if(
-        m_pNodeVec.begin(),
-        m_pNodeVec.end(),
-        [id](const iNode * pNode) { return pNode->getId() == id; } );
-
-    if( iter == m_pNodeVec.end() )
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found (%s).\n\n%s\nLine: %s")
-            % id % __FUNCTION__ % __LINE__ ) );
-
-    return *iter;
-}
-
 iNode * CActorStrategy::getNode( const std::string & instanceName )
 {
     auto iter = m_pNodeMap.find( instanceName );

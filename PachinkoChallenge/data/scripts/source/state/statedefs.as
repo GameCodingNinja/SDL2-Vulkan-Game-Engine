@@ -17,9 +17,9 @@ namespace NStateDefs
     
     shared enum EStateEvent
     {
-        ESE_USER_EVENTS = 0x9000,
+        ESE_STATE_USER_EVENTS = 0x8100,
         ESE_FADE_IN_COMPLETE,
         ESE_FADE_OUT_COMPLETE,
-        ESE_THREAD_LOAD_COMPLETE,
+        ESE_THREAD_LOAD_COMPLETE
     }
 }

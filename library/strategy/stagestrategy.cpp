@@ -10,7 +10,11 @@
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
+#include <utilities/exceptionhandling.h>
 #include <system/device.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -60,6 +64,23 @@ void CStageStrategy::loadFromNode( const XMLNode & node )
             m_sectorDeq.back().loadTransFromNode( sectorNode );
         }
     }
+}
+
+
+/************************************************************************
+*    DESC:  Get the pointer to the node
+************************************************************************/
+iNode * CStageStrategy::getNode( const std::string & nodeName, size_t sector )
+{
+    if( sector < m_sectorDeq.size() )
+        return m_sectorDeq[sector].getNode(nodeName);
+
+    else
+        throw NExcept::CCriticalException("Get Node Error!",
+            boost::str( boost::format("Sector out of range to find node (%s).\n\n%s\nLine: %s")
+                % nodeName % __FUNCTION__ % __LINE__ ));
+    
+    return nullptr;
 }
 
 

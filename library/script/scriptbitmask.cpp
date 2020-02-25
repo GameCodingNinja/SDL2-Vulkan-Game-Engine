@@ -36,9 +36,9 @@ namespace NScriptBitmask
         Throw( pEngine->RegisterObjectMethod("CBitmask", "void removeAllExcept(uint)", WRAP_MFN(CBitmask<int>, removeAllExcept), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CBitmask", "void clear()",               WRAP_MFN(CBitmask<int>, clear),           asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CBitmask", "bool isEmpty()",             WRAP_MFN(CBitmask<int>, isEmpty),         asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CBitmask", "bool isSet()",               WRAP_MFN(CBitmask<int>, isSet),           asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CBitmask", "bool areAllSet()",           WRAP_MFN(CBitmask<int>, areAllSet),       asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CBitmask", "int getIncluding(int)",      WRAP_MFN(CBitmask<int>, getIncluding),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CBitmask", "int getExcluding(int)",      WRAP_MFN(CBitmask<int>, getExcluding),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CBitmask", "bool isSet(uint)",           WRAP_MFN(CBitmask<int>, isSet),           asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CBitmask", "bool areAllSet(uint)",       WRAP_MFN(CBitmask<int>, areAllSet),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CBitmask", "int getIncluding(uint)",     WRAP_MFN(CBitmask<int>, getIncluding),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CBitmask", "int getExcluding(uint)",     WRAP_MFN(CBitmask<int>, getExcluding),    asCALL_GENERIC) );
     }
 }

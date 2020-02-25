@@ -17,6 +17,8 @@ final class CRunState : CCommonState
     CPhysicsWorld2D @mPhysicsWorld;
     iStrategy @mActorStrategy;
     CCamera @mCamera;
+    uiControl @mWinMeterCtrl;
+    uint multiplier = 1;
     
     //
     //  Constructor
@@ -49,6 +51,8 @@ final class CRunState : CCommonState
         // Enable the needed strategies
         StrategyMgr.activateStrategyAry( mStrategyAry );
         @mActorStrategy = StrategyMgr.getStrategy( "_level_1_actor_" );
+        iStrategy @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
+        @mWinMeterCtrl = mUIStrategy.getNode("uiWinMeter").getControl();
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
@@ -78,6 +82,9 @@ final class CRunState : CCommonState
         // Check for the "game change state" message
         else if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
             Spawn("State_FadeOut", "(state)");
+
+        else if( ActionMgr.wasGameEvent( NLevelDefs::ELE_BANG_UP_AWARD ) )
+            mWinMeterCtrl.incBangUp( multiplier );
         
         else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
             MenuMgr.allow();

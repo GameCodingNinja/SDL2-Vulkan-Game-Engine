@@ -27,6 +27,7 @@
         <file path="data/scripts/library/defs.as"/>
         <file path="data/scripts/library/menudefs.as"/>
         <file path="data/scripts/library/shared_utilities.as"/>
+        <file path="data/scripts/source/level/leveldefs.as"/>
         <file path="data/scripts/source/game/main.as"/>
         <file path="data/scripts/source/game/game.as"/>
         <file path="data/scripts/source/game/gamedefs.as"/>
@@ -42,6 +43,8 @@
   
     <groupList groupName="(level_1)">
         <file path="data/scripts/library/shared_utilities.as"/>
+        <file path="data/scripts/library/defs.as"/>
+        <file path="data/scripts/source/level/leveldefs.as"/>
         <file path="data/scripts/source/level/level1.as"/>
     </groupList>
 

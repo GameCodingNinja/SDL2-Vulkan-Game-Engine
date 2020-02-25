@@ -47,6 +47,9 @@ public:
     
     // Start the bang range
     void startBangUp( const double amount ) override;
+
+    // Increment the bang up
+    void incBangUp( const double amount ) override;
     
     // Do a fast bang
     void fastBang() override;

@@ -45,6 +45,9 @@ public:
     
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index ) override;
+
+    // Get the pointer to the node
+    iNode * getNode( const std::string & nodeName, size_t sector ) override;
     
 protected:
     

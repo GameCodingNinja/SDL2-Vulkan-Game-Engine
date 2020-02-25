@@ -58,19 +58,12 @@ public:
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index ) override;
 
-    // Get the reference to the node
-    template<typename target>
-    target * get( const int id )
-    {
-        return dynamic_cast<target *>(getNode( id ));
-    }
-
     // Find if the node is active
     bool isActive( const int id );
     
     // Get the pointer to the node
     iNode * getNode( const int id );
-    iNode * getNode( const std::string & instanceName );
+    iNode * getNode( const std::string & instanceName ) override;
 
 protected:
 

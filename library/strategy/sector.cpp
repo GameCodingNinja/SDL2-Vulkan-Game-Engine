@@ -250,7 +250,7 @@ bool CSector::inPerspectiveView()
 /************************************************************************
 *    DESC:  Get the pointer to the node
 ************************************************************************/
-iNode * CSector::get( const std::string & nodeName )
+iNode * CSector::getNode( const std::string & nodeName )
 {
     auto mapIter = m_pNodeMap.find( nodeName );
     if( mapIter == m_pNodeMap.end() )

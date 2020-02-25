@@ -160,6 +160,18 @@ void CUIMeter::startBangUp( const double amount )
 
 
 /************************************************************************
+*    DESC:  Increment the bang up
+************************************************************************/
+void CUIMeter::incBangUp( const double amount )
+{
+    m_targetValue += amount;
+    m_bangUp = true;
+
+    setBangRange();
+}
+
+
+/************************************************************************
 *    DESC:  Set the bang range
 ************************************************************************/
 void CUIMeter::setBangRange()

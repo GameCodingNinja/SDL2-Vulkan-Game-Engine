@@ -63,6 +63,10 @@ public:
     
     // Record the command buffer for all the sprite objects that are to be rendered
     virtual void recordCommandBuffer( uint32_t index ){}
+
+    // Get the pointer to the node
+    virtual iNode * getNode( const std::string & instanceName ){ return nullptr; };
+    virtual iNode * getNode( const std::string & instanceName, size_t sector ){ return nullptr; };
     
 protected:
     

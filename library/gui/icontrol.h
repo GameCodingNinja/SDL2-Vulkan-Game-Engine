@@ -200,6 +200,9 @@ public:
     
     // Start the bang range
     virtual void startBangUp( const double amount ){}
+
+    // Increment the bang up
+    virtual void incBangUp( const double amount ){};
     
     // Do a fast bang
     virtual void fastBang(){}

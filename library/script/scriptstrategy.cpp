@@ -47,6 +47,45 @@ namespace NScriptStrategy
             asGetActiveContext()->SetException(ex.what());
         }
     }
+
+    /************************************************************************
+    *    DESC:  Get the pointer to the node
+    ************************************************************************/
+    iNode * GetNode1( const std::string & instanceName, iStrategy & rStrategy )
+    {
+        try
+        {
+            return rStrategy.getNode(instanceName);
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+        
+        return nullptr;
+    }
+
+    iNode * GetNode2( const std::string & nodeName, size_t sector, iStrategy & rStrategy )
+    {
+        try
+        {
+            return rStrategy.getNode(nodeName, sector);
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+        
+        return nullptr;
+    }
     
     /************************************************************************
     *    DESC:  Create an actor sprite                                                            
@@ -153,6 +192,7 @@ namespace NScriptStrategy
 
         // iNode specific functions
         Throw( pEngine->RegisterObjectMethod("iNode", "CSprite & getSprite()",            WRAP_MFN(iNode, getSprite),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iNode", "uiControl & getControl()",         WRAP_MFN(iNode, getControl),     asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & next()",                   WRAP_MFN(iNode, next),           asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "int getType()",                    WRAP_MFN(iNode, getType),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "int getId()",                      WRAP_MFN(iNode, getId),          asCALL_GENERIC) );
@@ -166,6 +206,8 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in, string &in = '', bool active = true, string &in = '')", WRAP_OBJ_LAST(Create), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void destroy(int)",                           WRAP_MFN(iStrategy, destroy),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCamera(string &in)",                  WRAP_MFN(iStrategy, setCamera),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & getNode(string &in)",                 WRAP_OBJ_LAST(GetNode1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & getNode(string &in, uint)",           WRAP_OBJ_LAST(GetNode2),    asCALL_GENERIC) );
         
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );

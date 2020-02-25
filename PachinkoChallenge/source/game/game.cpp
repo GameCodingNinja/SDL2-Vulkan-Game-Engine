@@ -118,13 +118,13 @@ void CGame::init()
     NScriptCameraManager::Register();
     NScriptSprite::Register();
     NScriptSound::Register();
-    NScriptStrategy::Register();
     NScriptObjectDataManager::Register();
     NScriptSettings::Register();
     NScriptHighResolutionTimer::Register();
     NScriptUIControl::Register();
     NScriptMenu::Register();
     NScriptMenuManager::Register();
+    NScriptStrategy::Register();
     NScriptFontManager::Register();
     NScriptScriptManager::Register();
     NScriptDevice::Register();

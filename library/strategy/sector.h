@@ -71,7 +71,7 @@ public:
     bool inView();
     
     // Get the pointer to the node
-    iNode * get( const std::string & nodeName );
+    iNode * getNode( const std::string & nodeName );
 
 private:
     
