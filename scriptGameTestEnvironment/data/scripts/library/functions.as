@@ -31,7 +31,7 @@ void rotateGun( CSprite & sprite )
                 float ratio = 1 / Settings.getOrthoAspectRatio().h;
                 CSize halfSize = Settings.getSizeHalf();
 
-                CPoint spritePos = sprite.getWorldPos();
+                CPoint spritePos = sprite.getPos();
                 CPoint mousePos = ActionMgr.getMouseAbsolutePos();
                 gunRotation = -(atan2( (ratio * (halfSize.w - mousePos.x)) + spritePos.x, (ratio * (halfSize.h - mousePos.y)) + spritePos.y ) + M_PI_2);
                 sprite.setRot( 0, 0, gunRotation, false );
@@ -43,11 +43,11 @@ void rotateGun( CSprite & sprite )
                 sprite.setRot( 0, 0, gunRotation, false );
             }
             
-            if( ActionMgr.wasAction("Shoot") )
+            if( ActionMgr.wasActionEvent("Shoot") )
             {
                 CSprite @ projectile = StrategyMgr.getStrategy( "_main_" ).create( "projectile" ).getSprite();
                 
-                CPoint pos = sprite.getWorldPos();
+                CPoint pos = sprite.getPos();
                 CPoint centerPos = sprite.getCenterPos();
                 const float OFFSET = 50.f;
                 CPoint projectileOffset;
@@ -81,7 +81,7 @@ void MoveProjectile( CSprite & sprite )
     velocity.y = sin( rotation ) * PROJECTILE_SPEED;
     
     // Hold on to the stating position to calculate length
-    CPoint startPos = sprite.getWorldPos();
+    CPoint startPos = sprite.getPos();
 
     while( true )
     {
@@ -89,7 +89,7 @@ void MoveProjectile( CSprite & sprite )
         sprite.incPos( velocity * HighResTimer.getElapsedTime() );
         
         // Delete if goes out of view
-        if( sprite.getWorldPos().getLengthSquared2D() > 1300000.f )
+        if( sprite.getPos().getLengthSquared2D() > 1300000.f )
         {
             StrategyMgr.getStrategy( "_main_" ).destroy( sprite.getId() );
             break;

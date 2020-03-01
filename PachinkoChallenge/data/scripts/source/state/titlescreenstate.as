@@ -53,24 +53,27 @@ final class CTitleScreenState : CCommonState
     //
     //  Handle events
     //
-    void handleEvent() override
+    void handleEvent( const CEvent & event ) override
     {
-        CCommonState::handleEvent();
+        CCommonState::handleEvent( event );
         
-        // Check for the "game change state" message
-        if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
-            Spawn("State_FadeOut", "(state)");
-        
-        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
-            MenuMgr.allow();
-        
-        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
+        if( event.type > NDefs::SDL_USEREVENT )
         {
-            // Clear out all the trees
-            MenuMgr.clearActiveTrees();
+            // Check for the "game change state" message
+            if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
+                Spawn("State_FadeOut", "(state)");
+            
+            else if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )
+                MenuMgr.allow();
+            
+            else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
+            {
+                // Clear out all the trees
+                MenuMgr.clearActiveTrees();
 
-            // Set the flag to change the state
-            mChangeState = true;
+                // Set the flag to change the state
+                mChangeState = true;
+            }
         }
     }
 

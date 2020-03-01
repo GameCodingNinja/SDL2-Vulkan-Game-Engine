@@ -299,6 +299,21 @@ void CActionMgr::loadActionFromNode(
 
 
 /************************************************************************
+*    DESC:  Poll the event
+************************************************************************/
+const SDL_Event & CActionMgr::pollEvent()
+{
+    if( m_queueIndex < m_eventQueue.size() )
+        return m_eventQueue[m_queueIndex++];
+
+    // Reset the counter if we hit the end of the queue
+    m_queueIndex = 0;
+
+    return m_nullEvent;
+}
+
+
+/************************************************************************
 *    DESC:  Was this an action
 ************************************************************************/
 bool CActionMgr::wasAction( const SDL_Event & rEvent, const std::string & actionStr, NDefs::EActionPress actionPress )
@@ -905,6 +920,7 @@ bool CActionMgr::isQueueEmpty()
 ************************************************************************/
 void CActionMgr::clearQueue()
 {
+    m_queueIndex = 0;
     m_eventQueue.clear();
 }
 

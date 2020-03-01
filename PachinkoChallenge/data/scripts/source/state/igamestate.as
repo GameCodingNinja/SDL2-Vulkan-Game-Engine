@@ -54,7 +54,7 @@ class iGameState
         // Empty member to be overwritten
     }
     
-    void handleEvent()
+    void handleEvent( const CEvent & event )
     {
         // Empty member to be overwritten
     }

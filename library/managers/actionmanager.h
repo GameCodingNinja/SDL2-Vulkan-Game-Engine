@@ -41,8 +41,11 @@ public:
     // Load the action mappings from xml
     void loadActionFromXML( const std::string & filePath );
 
+    // Poll the event
+    const SDL_Event & pollEvent();
+
     // Was this an action
-    bool wasAction( const SDL_Event & rEvent, const std::string & actionStr, NDefs::EActionPress );
+    bool wasAction( const SDL_Event & rEvent, const std::string & actionStr, NDefs::EActionPress actionPress );
     NDefs::EActionPress wasAction( const SDL_Event & rEvent, const std::string & actionStr );
 
     // What was the last devic
@@ -248,6 +251,12 @@ private:
     
     // Que of event message
     std::vector<SDL_Event> m_eventQueue;
+
+    // Queue index
+    uint m_queueIndex = 0;
+
+    // Null event
+    SDL_Event m_nullEvent = {};
 };
 
 #endif

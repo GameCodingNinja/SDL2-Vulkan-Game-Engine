@@ -45,6 +45,19 @@ namespace NScriptActionManager
     }
 
     /************************************************************************
+    *    DESC:  Was action function wrapper
+    ************************************************************************/
+    bool WasAction1(const SDL_Event & rEvent, const std::string & actionStr, uint actionPress, CActionMgr & actionMgr)
+    {
+        return actionMgr.wasAction(rEvent, actionStr, NDefs::EActionPress(actionPress));
+    }
+
+    uint WasAction2(const SDL_Event & rEvent, const std::string & actionStr, CActionMgr & actionMgr)
+    {
+        return actionMgr.wasAction(rEvent, actionStr);
+    }
+
+    /************************************************************************
     *    DESC:  Enumerate Mouse Wheel Events generic
     *    prototype: uint enumerateButtonEvents(
     *               uint & windowID, int & x, int & y, uint & direction, uint startIndex = 0)
@@ -166,10 +179,13 @@ namespace NScriptActionManager
         // assignment operator
         Throw( pEngine->RegisterObjectMethod("CSensor", "CSensor & opAssign(const CSensor & in)", WRAP_MFN_PR(CSensor, operator =, (const CSensor &), CSensor &),       asCALL_GENERIC) );
         
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "const CEvent & pollEvent()",                               WRAP_MFN(CActionMgr, pollEvent),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasAction(const CEvent &in, string &in, uint)",       WRAP_OBJ_LAST(WasAction1),                       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint wasAction(const CEvent &in, string &in)",             WRAP_OBJ_LAST(WasAction2),                       asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void enableAction(bool value = true)",                     WRAP_MFN(CActionMgr, enableAction),              asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool isAction()",                                          WRAP_MFN(CActionMgr, isAction),                  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void load(string &in)",                                    WRAP_MFN(CActionMgr, loadActionFromXML),         asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasAction(string &in, int actionPress = 1)",          WRAP_MFN(CActionMgr, wasActionEvent),            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasActionEvent(string &in, int actionPress = 1)",     WRAP_MFN(CActionMgr, wasActionEvent),            asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasGameEvent(uint type, int code = 0)",               WRAP_MFN(CActionMgr, wasGameEvent),              asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasKeyboardEvent(string &in, int actionPress = 1)",   WRAP_MFN(CActionMgr, wasKeyboardEvent),          asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasMouseBtnEvent(string &in, int actionPress = 1)",   WRAP_MFN(CActionMgr, wasMouseBtnEvent),          asCALL_GENERIC) );

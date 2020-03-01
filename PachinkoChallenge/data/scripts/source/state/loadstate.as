@@ -43,16 +43,19 @@ final class CLoadState : CCommonState
     //
     //  Handle the events
     //
-    void handleEvent() override
+    void handleEvent( const CEvent & event ) override
     {
-        if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
-            assetLoad();
-        
-        else if( ActionMgr.wasEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE ) )
-            Spawn("State_FadeOut", "(state)");
-        
-        else if( ActionMgr.wasEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
-            mChangeState = true;
+        if( event.type > NDefs::SDL_USEREVENT )
+        {
+            if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )
+                assetLoad();
+            
+            else if( event.type == NStateDefs::ESE_THREAD_LOAD_COMPLETE )
+                Spawn("State_FadeOut", "(state)");
+            
+            else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
+                mChangeState = true;
+        }
     }
     
     //

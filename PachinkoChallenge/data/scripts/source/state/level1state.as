@@ -13,7 +13,7 @@ enum ESpriteId
 
 final class CRunState : CCommonState
 {
-    array<string> mStrategyAry = {"_level_1_stage_","_level_1_actor_","_level_1_ui_"};
+    array<string> mStrategyAry = {"_level_1_stage_","_level_1_ball_","_level_1_ui_"};
     CPhysicsWorld2D @mPhysicsWorld;
     iStrategy @mActorStrategy;
     CCamera @mCamera;
@@ -50,7 +50,7 @@ final class CRunState : CCommonState
         
         // Enable the needed strategies
         StrategyMgr.activateStrategyAry( mStrategyAry );
-        @mActorStrategy = StrategyMgr.getStrategy( "_level_1_actor_" );
+        @mActorStrategy = StrategyMgr.getStrategy( "_level_1_ball_" );
         iStrategy @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
         @mWinMeterCtrl = mUIStrategy.getNode("uiWinMeter").getControl();
         
@@ -68,34 +68,41 @@ final class CRunState : CCommonState
     //
     //  Handle events
     //
-    void handleEvent() override
+    void handleEvent( const CEvent & event ) override
     {
-        CCommonState::handleEvent();
+        CCommonState::handleEvent( event );
         
-        if( !MenuMgr.isActive() && ActionMgr.wasMouseBtnEvent("LEFT MOUSE", NDefs::EAP_UP) )
+        if( event.type > NDefs::SDL_USEREVENT )
         {
-            CPoint pos= mCamera.toOrthoCoord( ActionMgr.getMouseAbsolutePos() );
-            CSprite @sprite = mActorStrategy.create("square_red").getSprite();
-            sprite.setPhysicsTransform(pos.x, -1500);
-            sprite.applyAngularImpulse(RandFloat(-0.5, 0.5));
+            // Check for the "game change state" message
+            if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
+                Spawn("State_FadeOut", "(state)");
+
+            else if( event.type == NLevelDefs::ELE_BANG_UP_AWARD )
+                mWinMeterCtrl.incBangUp( multiplier );
+            
+            else if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )
+                MenuMgr.allow();
+            
+            else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
+            {
+                // Clear out all the trees
+                MenuMgr.clearActiveTrees();
+
+                // Set the flag to change the state
+                mChangeState = true;
+            }
         }
-        // Check for the "game change state" message
-        else if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
-            Spawn("State_FadeOut", "(state)");
-
-        else if( ActionMgr.wasGameEvent( NLevelDefs::ELE_BANG_UP_AWARD ) )
-            mWinMeterCtrl.incBangUp( multiplier );
-        
-        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_IN_COMPLETE ) )
-            MenuMgr.allow();
-        
-        else if( ActionMgr.wasGameEvent( NStateDefs::ESE_FADE_OUT_COMPLETE ) )
+        else if( event.type > NDefs::SDL_MOUSEMOTION )
         {
-            // Clear out all the trees
-            MenuMgr.clearActiveTrees();
-
-            // Set the flag to change the state
-            mChangeState = true;
+            if( !MenuMgr.isActive() && ActionMgr.wasAction(event, "drop_ball", NDefs::EAP_UP) )
+            {
+                // Strictly a mouse only game which is why I'm using the button event x & y
+                CPoint pos= mCamera.toOrthoCoord( event.button.x, event.button.y );
+                CSprite @sprite = mActorStrategy.create("square_red").getSprite();
+                sprite.setPhysicsTransform(pos.x, -1500);
+                sprite.applyAngularImpulse(RandFloat(-0.5, 0.5));
+            }
         }
     }
     

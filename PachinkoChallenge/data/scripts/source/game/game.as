@@ -92,20 +92,26 @@ class CGame
     {
         PollEvents();
 
-        if( !ActionMgr.isQueueEmpty() )
+        while(true)
         {
-            // Is it time to quit?
-            if( ActionMgr.wasEvent( NGameDefs::EGE_QUIT ) ||
-                ActionMgr.wasEvent( NGameDefs::EGE_APP_TERMINATING ) )
+            const CEvent @event = ActionMgr.pollEvent();
+
+            if(event.type > 0)
             {
-                mGameRunning = false;
+                if( event.type == NGameDefs::EGE_QUIT ||
+                    event.type == NGameDefs::EGE_APP_TERMINATING )
+                {
+                    mGameRunning = false;
 
-                // Show the window
-                Device.showWindow(false);
+                    // Hide the window
+                    Device.showWindow(false);
+                }
+                else
+                    mGameState.handleEvent( event );
             }
-
-            mGameState.handleEvent();
-        }
+            else
+                break;
+        };
     }
     
     //

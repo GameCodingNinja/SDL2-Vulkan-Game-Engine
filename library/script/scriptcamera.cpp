@@ -105,9 +105,14 @@ namespace NScriptCamera
         camera.transform();
     }
 
-    CPoint<float> ToOrthoCoord(const CPoint<float> & pos, CCamera & camera)
+    CPoint<float> ToOrthoCoord1(const CPoint<float> & pos, CCamera & camera)
     {
         return camera.toOrthoCoord(pos);
+    }
+
+    CPoint<float> ToOrthoCoord2(const int x, const int y, CCamera & camera)
+    {
+        return camera.toOrthoCoord(CPoint<float>(x, y));
     }
     
     
@@ -145,10 +150,11 @@ namespace NScriptCamera
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncScale1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CCamera", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncScale2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CCamera", "const CPoint & getScale() const",     WRAP_OBJ_LAST(GetScale),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "const CPoint & getScale() const",                       WRAP_OBJ_LAST(GetScale),   asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CCamera", "CPoint toOrthoCoord(const CPoint & in)",     WRAP_OBJ_LAST(ToOrthoCoord),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "CPoint toOrthoCoord(const CPoint & in)",                WRAP_OBJ_LAST(ToOrthoCoord1),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "CPoint toOrthoCoord(const int, const int)",             WRAP_OBJ_LAST(ToOrthoCoord2),   asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CCamera", "void transform()",  WRAP_OBJ_LAST(Transform), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CCamera", "void transform()",                                      WRAP_OBJ_LAST(Transform), asCALL_GENERIC) );
     }
 }

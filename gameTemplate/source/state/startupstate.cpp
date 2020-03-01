@@ -34,6 +34,8 @@
 #include <script/scriptactionmanager.h>
 #include <script/scriptdevice.h>
 #include <script/scriptsettings.h>
+#include <script/scriptbitmask.h>
+#include <script/scriptevent.h>
 #include <system/device.h>
 #include <gui/menumanager.h>
 #include <utilities/genfunc.h>
@@ -93,6 +95,8 @@ void CStartUpState::init()
     RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), true );
     NScriptSize::Register();
     NScriptPoint::Register();
+    NScriptBitmask::Register();
+    NScriptEvent::Register();
     NScriptColor::Register();
     NScriptGlobals::Register();
     NScriptVisual::Register();

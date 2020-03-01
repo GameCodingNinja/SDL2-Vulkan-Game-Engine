@@ -20,8 +20,8 @@
         <file path="data/objects/strategy/level_1/level.stage"/>
     </groupList>
     
-    <groupList groupName="_level_1_actor_">
-        <file path="data/objects/strategy/level_1/actor.strategy"/>
+    <groupList groupName="_level_1_ball_">
+        <file path="data/objects/strategy/level_1/ball.strategy"/>
     </groupList>
 
     <groupList groupName="_level_1_ui_">

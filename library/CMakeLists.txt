@@ -86,6 +86,7 @@ add_library(
         script/scriptphysics2d.cpp
         script/scriptstatcounter.cpp
         script/scriptbitmask.cpp
+        script/scriptevent.cpp
         system/devicevulkan.cpp
         system/device.cpp
         system/uniformbufferobject.cpp

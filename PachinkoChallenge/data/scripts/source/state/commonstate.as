@@ -31,10 +31,10 @@ class CCommonState : iGameState
     //
     //  Handle the events
     //
-    void handleEvent() override
+    void handleEvent( const CEvent & event ) override
     {
         // Check for the "game change state" message
-        if( ActionMgr.wasGameEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN ) )
+        if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
         {
             // Block all message processing in the menu manager
             MenuMgr.allow( false );
