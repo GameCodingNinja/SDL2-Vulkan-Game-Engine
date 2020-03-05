@@ -4,7 +4,7 @@
  * for portability. It works by using recursion and a node tree for breaking
  * down the elements of an XML document.  </P>
  *
- * @version     V2.43
+ * @version     V2.44
  * @author      Frank Vanden Berghen
  *
  * NOTE:
@@ -42,10 +42,10 @@
  *   console instead of inside a message-box-window. Message-box-windows are
  *   available on windows 9x/NT/2000/XP/Vista only.
  *
- * Copyright (c) 2002, Business-Insight
- * <a href="http://www.Business-Insight.com">Business-Insight</a>
- * All rights reserved.
- * See the file "AFPL-license.txt" about the licensing terms
+ * Copyright (c) 2002, Frank Vanden Berghen - All rights reserved.
+ * Commercialized by <a href="http://www.Business-Insight.com">Business-Insight</a>
+ * See the file "AFPL-license.txt about the licensing terms
+
  *
  ****************************************************************************
  */
@@ -372,30 +372,34 @@ char myIsTextWideChar(const void *b, int len) { return FALSE; }
 #ifdef _XMLWIDECHAR
     #ifdef _XMLWINDOWS
     // for Microsoft Visual Studio 6.0 and Microsoft Visual Studio .NET and Borland C++ Builder 6.0
-        char    xmltob(XMLCSTR t,char    v){ if (t&&(*t)) return (char)_wtoi(t); return v; }
-        int     xmltoi(XMLCSTR t,int     v){ if (t&&(*t)) return _wtoi(t); return v; }
-        long    xmltol(XMLCSTR t,long    v){ if (t&&(*t)) return _wtol(t); return v; }
-        double  xmltof(XMLCSTR t,double  v){ if (t&&(*t)) swscanf(t, L"%lf", &v); /*v=_wtof(t);*/ return v; }
+        char      xmltob(XMLCSTR t,char      v){ if (t&&(*t)) return (char)_wtoi(t); return v; }
+        int       xmltoi(XMLCSTR t,int       v){ if (t&&(*t)) return _wtoi(t); return v; }
+        long long xmltol(XMLCSTR t,long long v){ if (t&&(*t)) return _wtoi64(t); return v; }
+        double    xmltof(XMLCSTR t,double    v){ if (t&&(*t)) swscanf(t, L"%lf", &v); /*v=_wtof(t);*/ return v; }
     #else
         #ifdef sun
         // for CC
            #include <widec.h>
            char    xmltob(XMLCSTR t,char    v){ if (t) return (char)wstol(t,NULL,10); return v; }
            int     xmltoi(XMLCSTR t,int     v){ if (t) return (int)wstol(t,NULL,10); return v; }
-           long    xmltol(XMLCSTR t,long    v){ if (t) return wstol(t,NULL,10); return v; }
+           long long xmltol(XMLCSTR t,long long v){ if (t) return wstol(t,NULL,10); return v; }
         #else
         // for gcc
            char    xmltob(XMLCSTR t,char    v){ if (t) return (char)wcstol(t,NULL,10); return v; }
            int     xmltoi(XMLCSTR t,int     v){ if (t) return (int)wcstol(t,NULL,10); return v; }
-           long    xmltol(XMLCSTR t,long    v){ if (t) return wcstol(t,NULL,10); return v; }
+           long long xmltol(XMLCSTR t,long long v){ if (t) return wcstol(t,NULL,10); return v; }
         #endif
-        double  xmltof(XMLCSTR t,double  v){ if (t&&(*t)) swscanf(t, L"%lf", &v); /*v=_wtof(t);*/ return v; }
+		double  xmltof(XMLCSTR t,double  v){ if (t&&(*t)) swscanf(t, L"%lf", &v); /*v=_wtof(t);*/ return v; }
     #endif
 #else
-    char    xmltob(XMLCSTR t,char    v){ if (t&&(*t)) return (char)atoi(t); return v; }
-    int     xmltoi(XMLCSTR t,int     v){ if (t&&(*t)) return atoi(t); return v; }
-    long    xmltol(XMLCSTR t,long    v){ if (t&&(*t)) return atol(t); return v; }
-    double  xmltof(XMLCSTR t,double  v){ if (t&&(*t)) return atof(t); return v; }
+    #ifdef _XMLWINDOWS
+       long long xmltol(XMLCSTR t,long long v){ if (t&&(*t)) return _atoi64(t); return v; }
+    #else
+       long long xmltol(XMLCSTR t,long long v){ if (t&&(*t)) return atoll(t); return v; }
+    #endif
+    char      xmltob(XMLCSTR t,char      v){ if (t&&(*t)) return (char)atoi(t); return v; }
+    int       xmltoi(XMLCSTR t,int       v){ if (t&&(*t)) return atoi(t); return v; }
+    double    xmltof(XMLCSTR t,double    v){ if (t&&(*t)) return atof(t); return v; }
 #endif
 XMLCSTR xmltoa(XMLCSTR t,      XMLCSTR v){ if (t)       return  t; return v; }
 XMLCHAR xmltoc(XMLCSTR t,const XMLCHAR v){ if (t&&(*t)) return *t; return v; }
@@ -408,6 +412,8 @@ XMLCHAR xmltoc(XMLCSTR t,const XMLCHAR v){ if (t&&(*t)) return *t; return v; }
 // the following "openFileHelper" function to get an "error reporting mechanism" tailored to your needs.
 XMLNode XMLNode::openFileHelper(XMLCSTR filename, XMLCSTR tag)
 {
+    // guess the value of the global parameter "characterEncoding"
+    // (the guess is based on the first 200 bytes of the file).
     /*#if !(defined(__IOS__) || defined(__ANDROID__))
 
     FILE *f=xfopen(filename,_CXML("rb"));
@@ -421,8 +427,6 @@ XMLNode XMLNode::openFileHelper(XMLCSTR filename, XMLCSTR tag)
 
     #else*/
     
-    // guess the value of the global parameter "characterEncoding"
-    // (the guess is based on the first 200 bytes of the file).
     SDL_RWops *f=SDL_RWFromFile(filename,_CXML("rb"));
     if (f)
     {
@@ -443,7 +447,11 @@ XMLNode XMLNode::openFileHelper(XMLCSTR filename, XMLCSTR tag)
         // create message
         char message[2000],*s1=(char*)"",*s3=(char*)""; XMLCSTR s2=_CXML("");
         if (pResults.error==eXMLErrorFirstTagNotFound) { s1=(char*)"First Tag should be '"; s2=tag; s3=(char*)"'.\n"; }
-        sprintf(message,
+#ifdef _XMLWINDOWS
+        _snprintf(message,2000,
+#else
+        snprintf(message,2000,
+#endif		 
 #ifdef _XMLWIDECHAR
             "XML Parsing error inside file '%S'.\n%S\nAt line %i, column %i.\n%s%S%s"
 #else
@@ -764,9 +772,36 @@ XMLSTR ToXMLStringTool::toXMLUnSafe(XMLSTR dest,XMLCSTR source)
 #else
         switch(XML_ByteTable[(unsigned char)ch])
         {
-        case 4: *(dest++)=*(source++);
-        case 3: *(dest++)=*(source++);
-        case 2: *(dest++)=*(source++);
+        case 4:
+            if ((!(source[1]))||(!(source[2]))||(!(source[3]))) { *(dest++)='_'; source++; }
+            else 
+            {
+                *dest=*source;
+                dest[1]=source[1];
+                dest[2]=source[2];
+                dest[3]=source[3];
+                dest+=4; source+=4;
+            }
+            break;
+        case 3:
+            if ((!(source[1]))||(!(source[2]))) { *(dest++)='_'; source++; }
+            else 
+            {
+                *dest=*source;
+                dest[1]=source[1];
+                dest[2]=source[2];
+                dest+=3; source+=3;
+            }
+            break;
+        case 2: 
+            if (!(source[1])) { *(dest++)='_'; source++; }
+            else 
+            {
+                *dest=*source;
+                dest[1]=source[1];
+                dest+=2; source+=2;
+            }
+            break;
         case 1: *(dest++)=*(source++);
         }
 #endif
@@ -1332,11 +1367,21 @@ char XMLNode::parseClearTag(void *px, void *_pClear)
 
 void XMLNode::exactMemory(XMLNodeData *d)
 {
+// disable the realloc moving an object of non-trivially copyable type warning
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 800)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
+#endif
+
     if (d->pOrder)     d->pOrder=(int*)realloc(d->pOrder,(d->nChild+d->nText+d->nClear)*sizeof(int));
     if (d->pChild)     d->pChild=(XMLNode*)realloc(d->pChild,d->nChild*sizeof(XMLNode));
     if (d->pAttribute) d->pAttribute=(XMLAttribute*)realloc(d->pAttribute,d->nAttribute*sizeof(XMLAttribute));
     if (d->pText)      d->pText=(XMLCSTR*)realloc(d->pText,d->nText*sizeof(XMLSTR));
     if (d->pClear)     d->pClear=(XMLClear *)realloc(d->pClear,d->nClear*sizeof(XMLClear));
+
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 800)
+#pragma GCC diagnostic pop
+#endif
 }
 
 char XMLNode::maybeAddTxT(void *pa, XMLCSTR tokenPStr)
@@ -2234,6 +2279,12 @@ XMLSTR XMLNode::createXMLString(int nFormat, int *pnSize) const
 
 int XMLNode::detachFromParent(XMLNodeData *d)
 {
+// disable the realloc moving an object of non-trivially copyable type warning
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 800)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
+#endif
+
     XMLNode *pa=d->pParent->pChild;
     int i=0;
     while (((void*)(pa[i].d))!=((void*)d)) i++;
@@ -2241,6 +2292,10 @@ int XMLNode::detachFromParent(XMLNodeData *d)
     if (d->pParent->nChild) memmove(pa+i,pa+i+1,(d->pParent->nChild-i)*sizeof(XMLNode));
     else { free(pa); d->pParent->pChild=NULL; }
     return removeOrderElement(d->pParent,eNodeChild,i);
+
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 800)
+#pragma GCC diagnostic pop
+#endif
 }
 
 XMLNode::~XMLNode()

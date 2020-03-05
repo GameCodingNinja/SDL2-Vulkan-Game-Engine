@@ -1,61 +1,123 @@
 {
+  "abi": "ARM64_V8A",
+  "abiPlatformVersion": 23,
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "cxxBuildFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a",
+  "info": {
+    "abi": "ARM64_V8A",
+    "bitness": 64,
+    "deprecated": false,
+    "default": true
+  },
+  "originalCxxBuildFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a",
   "variant": {
+    "buildSystemArgumentList": [
+      "APP_PLATFORM\u003dandroid-23"
+    ],
+    "buildTargetSet": [],
+    "cFlagsList": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "cppFlagsList": [],
+    "isDebuggableEnabled": true,
     "module": {
-      "rootBuildGradleFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge",
-      "sdkFolder": "/home/howie/Android/Sdk",
-      "isNativeCompilerSettingsCacheEnabled": false,
-      "isBuildOnlyTargetAbiEnabled": true,
-      "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
-      "splitsAbiFilterSet": [],
-      "intermediatesFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates",
-      "gradleModulePathName": ":app",
-      "moduleRootFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app",
-      "makeFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
       "buildSystem": "NDK_BUILD",
-      "compilerSettingsCacheFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/.cxx",
+      "cmakeToolchainFile": "/home/howie/Android/Sdk/ndk-bundle/build/cmake/android.toolchain.cmake",
       "cxxFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx",
-      "ndkFolder": "/home/howie/Android/Sdk/ndk-bundle",
-      "ndkVersion": "20.1.5948944",
-      "ndkSupportedAbiList": [
-        "ARMEABI_V7A",
-        "ARM64_V8A",
-        "X86",
-        "X86_64"
-      ],
+      "gradleModulePathName": ":app",
+      "intermediatesFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates",
+      "makeFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+      "moduleBuildFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build.gradle",
+      "moduleRootFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app",
       "ndkDefaultAbiList": [
         "ARMEABI_V7A",
         "ARM64_V8A",
         "X86",
         "X86_64"
       ],
-      "cmakeToolchainFile": "."
+      "ndkFolder": "/home/howie/Android/Sdk/ndk-bundle",
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "ndkMetaPlatforms": {
+        "min": 16,
+        "max": 29,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29
+        }
+      },
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkVersion": "20.1.5948944",
+      "project": {
+        "compilerSettingsCacheFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/.cxx",
+        "cxxFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/.cxx",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isNativeCompilerSettingsCacheEnabled": false,
+        "rootBuildGradleFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge",
+        "sdkFolder": "/home/howie/Android/Sdk"
+      },
+      "splitsAbiFilterSet": [],
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "ARMEABI_V7A": "/home/howie/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
+          "ARM64_V8A": "/home/howie/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
+          "X86": "/home/howie/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so",
+          "X86_64": "/home/howie/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      }
     },
-    "buildSystemArgumentList": [
-      "APP_PLATFORM\u003dandroid-23"
-    ],
-    "cFlagList": [],
-    "cppFlagsList": [],
-    "variantName": "debug",
-    "soFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/lib",
     "objFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local",
-    "jsonFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug",
-    "gradleBuildOutputFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/cxx/debug",
-    "isDebuggableEnabled": true,
+    "variantName": "debug",
     "validAbiList": [
-      "ARM64_V8A",
-      "ARMEABI_V7A"
-    ],
-    "buildTargetSet": []
-  },
-  "abi": "ARM64_V8A",
-  "abiPlatformVersion": 23,
-  "cxxBuildFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a",
-  "jsonFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a/android_gradle_build.json",
-  "gradleBuildOutputFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/cxx/debug/arm64-v8a",
-  "objFolder": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/debug/obj/local/arm64-v8a",
-  "buildCommandFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a/build_command.txt",
-  "buildOutputFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a/build_output.txt",
-  "modelOutputFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a/build_model.json",
-  "jsonGenerationLoggingRecordFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a/json_generation_record.json",
-  "compileCommandsJsonFile": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/debug/arm64-v8a/compile_commands.json"
+      "ARMEABI_V7A",
+      "ARM64_V8A"
+    ]
+  }
 }

@@ -1,7 +1,141 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
+// XML file load test
 #include <iostream>
+#include <utilities/highresolutiontimer.h>
+#include <utilities/tagparser.h>
+#include <utilities/xmlParser.h>
+
+int main()  // 7124.35 ms
+{
+    //std::cout << "Test started..." << std::endl;
+
+    CTagParser tagParser;
+
+    CHighResTimer::Instance().timerStart();
+    
+    tagParser.loadXML("usabilitywiki-20191220-stub-meta-history.xml");
+    
+    //std::cout << "Tag Parser Execution time: " << CHighResTimer::Instance().timerStop() << std::endl;
+
+    CHighResTimer::Instance().timerStart();
+
+    XMLNode::openFileHelper( "usabilitywiki-20191220-stub-meta-history.xml", "mediawiki" );
+
+    //std::cout << "XML Node Execution time: " << CHighResTimer::Instance().timerStop() << std::endl;
+    
+    return 0;
+}
+
+// rvalue / lvalue test
+/*#include <vector>
+#include <iostream>
+#include <string>
+
+template <typename type>
+void printMe(type && str)
+{
+    std::cout << str << std::endl;
+}
+
+class CMyClass
+{
+public:
+
+    CMyClass()
+    {
+        m_data = {0,1,2,3,4,5,6,7,8,9};
+        std::cout << "default constructor" << std::endl;
+    }
+
+    CMyClass(const CMyClass & myClass) :
+        m_data(myClass.m_data)
+    {
+        std::cout << "lvalue copy constructor" << std::endl;
+    }
+
+    CMyClass(CMyClass && myClass) :
+        m_data(std::move(myClass.m_data))
+    {
+        std::cout << "rvalue copy constructor" << std::endl;
+    }
+
+    CMyClass(std::vector<int> && data) :
+        m_data(std::move(data))
+    {
+        std::cout << "rvalue reference" << std::endl;
+    }
+
+    CMyClass(std::vector<int> & data) :
+        m_data(data)
+    {
+        std::cout << "lvalue reference" << std::endl;
+    }
+
+    std::vector<int> get()
+    {
+        //std::vector<int> data = {0,1,2,3,4,5,6,7,8,9};
+
+        return m_data;
+    }
+
+    void operator = ( CMyClass & myClass )
+    {
+        m_data = myClass.m_data;
+        std::cout << "lvalue =" << std::endl;
+    }
+
+    void operator = ( const CMyClass & myClass )
+    {
+        m_data = myClass.m_data;
+        std::cout << "const lvalue =" << std::endl;
+    }
+
+    void operator = ( CMyClass && myClass )
+    {
+        m_data = std::move(myClass.m_data);
+        std::cout << "rvalue =" << std::endl;
+    }
+
+    std::vector<int> m_data;
+
+};
+
+CMyClass getMyClass()
+{
+    CMyClass myClass;
+    myClass.m_data.push_back(12);
+    myClass.m_data.push_back(15);
+    myClass.m_data.push_back(22);
+
+    return myClass;
+}
+
+
+int main()
+{
+    CMyClass result( getMyClass() );
+
+    CMyClass copyClass = std::move(result);
+
+    result = std::move(copyClass);
+    
+
+    std::string myStr = "test String";
+    printMe(myStr);
+
+    std::vector<int> data1 = {0,1,2,3,4,5,6,7,8,9};
+
+    CMyClass myClass(std::move(data1));
+
+    std::vector<int> data2 = myClass.get();
+
+    return 0;
+}*/
+
+
+/*#include <iostream>
 #include <set>
 #include <unordered_set>
 #include <vector>
@@ -32,7 +166,7 @@ int main()  // 7124.35 ms
     std::cout << "Execution time: " << CHighResTimer::Instance().timerStop() << std::endl;
     
     return 0;
-}
+}*/
 
 /*#include <utilities/matrix.h>
 

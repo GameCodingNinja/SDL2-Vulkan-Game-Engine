@@ -58,68 +58,17 @@ namespace NGenFunc
 
         return result;
     }
-
-
-    /************************************************************************
-    *    DESC:  Read in a file and return it as a buffer
-    ************************************************************************/
-    std::shared_ptr<char> FileToBuf( const std::string & file, size_t & sizeInBytes )
-    {
-        const size_t TERMINATOR_SIZE(1);
-
-        // Open file for reading
-        NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( file.c_str(), "rb" ) );
-        if( scpFile.isNull() )
-            throw NExcept::CCriticalException("File Load Error!",
-                boost::str( boost::format("Error Loading file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
-
-        // Seek to the end of the file to find out how many 
-        // bytes into the file we are and add one for temination
-        sizeInBytes = (size_t)SDL_RWseek( scpFile.get(), 0, RW_SEEK_END );
-        
-        if( (int)sizeInBytes == -1 )
-            throw NExcept::CCriticalException("File Load Error!",
-                boost::str( boost::format("Error Loading file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
-        
-        sizeInBytes += TERMINATOR_SIZE;
-
-        // Allocate a buffer for the entire length
-        // of the file and a null termination
-        std::shared_ptr<char> spChar( new char[sizeInBytes], std::default_delete<char[]>() );
-
-        // zero out the string
-        memset(spChar.get(), 0, sizeInBytes);
-
-        // Go back to the beginning of the file and 
-        // read the contents of the file in to the buffer
-        SDL_RWseek( scpFile.get(), 0, RW_SEEK_SET );
-        SDL_RWread( scpFile.get(), spChar.get(), 1, sizeInBytes-TERMINATOR_SIZE );
-
-        /* Test Code to output contents of buffer
-        if( file == "data/objects/2d/scripts/menu.as" )
-        {
-            NSmart::scoped_filehandle_ptr<FILE> scpFileTest( fopen("c:/test.txt", "wb") );
-            if( !scpFileTest.isNull() )
-            {
-                fwrite( spChar.get(), sizeInBytes, 1, scpFileTest.get() );
-            }
-        }*/
-
-        return spChar;
-    }
-
-    std::shared_ptr<char> FileToBuf( const std::string & file )
-    {
-        size_t sizeInBytes;
-        return FileToBuf( file, sizeInBytes );
-    }
     
     
     /************************************************************************
     *    DESC:  Read in a file and return it as a vector buffer
     ************************************************************************/
-    std::vector<char> FileToVec( const std::string & file )
+    std::vector<char> FileToVec( const std::string & file, bool terminate )
     {
+        size_t terminatorSize = 0;
+        if( terminate )
+            terminatorSize = 1;
+
         // Open file for reading
         NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( file.c_str(), "rb" ) );
         if( scpFile.isNull() )
@@ -135,12 +84,15 @@ namespace NGenFunc
                 boost::str( boost::format("Error Loading file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
 
         // Allocate a vector to the entire length of the file
-        std::vector<char> bufferVec(sizeInBytes);
+        std::vector<char> bufferVec(sizeInBytes + terminatorSize);
 
         // Go back to the beginning of the file and 
         // read the contents of the file in to the buffer
         SDL_RWseek( scpFile.get(), 0, RW_SEEK_SET );
         SDL_RWread( scpFile.get(), bufferVec.data(), 1, sizeInBytes );
+
+        if( terminate )
+            bufferVec[sizeInBytes] = 0;
 
         return bufferVec;
     }

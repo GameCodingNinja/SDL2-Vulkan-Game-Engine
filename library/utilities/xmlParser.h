@@ -6,12 +6,11 @@
  * It works by using recursion and a node tree for breaking
  * down the elements of an XML document.
  *
- * @version     V2.43
+ * @version     V2.44
  * @author      Frank Vanden Berghen
  *
- * Copyright (c) 2002, Business-Insight
- * <a href="http://www.Business-Insight.com">Business-Insight</a>
- * All rights reserved.
+ * Copyright (c) 2002, Frank Vanden Berghen - All rights reserved.<br/>
+ * Commercialized by <a href="http://www.Business-Insight.com">Business-Insight</a><br/>
  * See the file <a href="../../AFPL-license.txt">AFPL-license.txt</a> about the licensing terms
  *
  * \section tutorial First Tutorial
@@ -88,7 +87,7 @@
 
 #include <stdlib.h>
 
-#ifdef _UNICODE
+#if defined(UNICODE) || defined(_UNICODE)
 // If you comment the next "define" line then the library will never "switch to" _UNICODE (wchar_t*) mode (16/32 bits per characters).
 // This is useful when you get error messages like:
 //    'XMLNode::openFileHelper' : cannot convert parameter 2 from 'const char [5]' to 'const wchar_t *'
@@ -633,14 +632,14 @@ XMLDLLENTRY void freeXMLString(XMLSTR t); // {free(t);}
  * delete them without any trouble.
  *
  * @{ */
-#ifdef XMLTO_FUNCTIONS
+
 XMLDLLENTRY char    xmltob(XMLCSTR xmlString,char   defautValue=0);
 XMLDLLENTRY int     xmltoi(XMLCSTR xmlString,int    defautValue=0);
-XMLDLLENTRY long    xmltol(XMLCSTR xmlString,long   defautValue=0);
+XMLDLLENTRY long long xmltol(XMLCSTR xmlString,long long defautValue=0);
 XMLDLLENTRY double  xmltof(XMLCSTR xmlString,double defautValue=.0);
 XMLDLLENTRY XMLCSTR xmltoa(XMLCSTR xmlString,XMLCSTR defautValue=_CXML(""));
 XMLDLLENTRY XMLCHAR xmltoc(XMLCSTR xmlString,const XMLCHAR defautValue=_CXML('\0'));
-#endif
+
 /** @} */
 
 /** @defgroup ToXMLStringTool Helper class to create XML files using "printf", "fprintf", "cout",... functions.

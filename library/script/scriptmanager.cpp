@@ -111,10 +111,10 @@ void CScriptMgr::loadGroup( const std::string & group )
 void CScriptMgr::addScript( asIScriptModule * pScriptModule, const std::string & filePath )
 {
     // Load the script file into a charater array
-    std::shared_ptr<char> spChar = NGenFunc::FileToBuf( filePath );
+    std::vector<char> bufVec = NGenFunc::FileToVec( filePath, NGenFunc::TERMINATE );
 
     // Load script into module section - the file path is it's ID
-    if( pScriptModule->AddScriptSection(filePath.c_str(), spChar.get() ) < 0 ) // std::strlen( spChar.get() )
+    if( pScriptModule->AddScriptSection(filePath.c_str(), bufVec.data() ) < 0 )
     {
         throw NExcept::CCriticalException("Script List load Error!",
             boost::str( boost::format("Error loading script (%s).\n\n%s\nLine: %s")

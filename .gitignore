@@ -31,15 +31,17 @@
 
 /org.howiesfunware.PachinkoChallenge/build
 /org.howiesfunware.PachinkoChallenge/app/build
+/org.howiesfunware.PachinkoChallenge/app/.cxx
 /org.howiesfunware.PachinkoChallenge/.gradle
 /org.howiesfunware.PachinkoChallenge/.idea
 /org.howiesfunware.PachinkoChallenge/app/.externalNativeBuild
 
-/org.lapcatgames.template/build
-/org.lapcatgames.template/app/build
-/org.lapcatgames.template/.gradle
-/org.lapcatgames.template/.idea
-/org.lapcatgames.template/app/.externalNativeBuild
+/org.howiesfunware.template/build
+/org.howiesfunware.template/app/build
+/org.howiesfunware.template/app/.cxx
+/org.howiesfunware.template/.gradle
+/org.howiesfunware.template/.idea
+/org.howiesfunware.template/app/.externalNativeBuild
 
 /library/.vscode/ipch
 /library/Win32/

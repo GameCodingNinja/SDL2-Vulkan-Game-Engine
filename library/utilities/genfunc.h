@@ -15,13 +15,13 @@
 
 namespace NGenFunc
 {
+    const bool TERMINATE = true;
+
     // Count the number of occurrences of sub string
     int CountStrOccurrence( const std::string & searchStr, const std::string & subStr );
 
-    // Read in a file and return it as a buffer
-    std::shared_ptr<char> FileToBuf( const std::string & file );
-    std::shared_ptr<char> FileToBuf( const std::string & file, size_t & sizeInBytes );
-    std::vector<char> FileToVec( const std::string & file );
+    // Read in a file and return it as a vector buffer
+    std::vector<char> FileToVec( const std::string & file, bool terminate = false );
 
     // Output string info
     void PostDebugMsg( const std::string & msg );

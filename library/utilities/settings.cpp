@@ -19,6 +19,7 @@
 
 // SDL lib dependencies
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
