@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/playlist.h>
+#include <sound/playlist.h>
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
@@ -16,6 +16,7 @@
 #include <boost/format.hpp>
 
 // Standard lib dependencies
+#include <random>
 #include <algorithm>
 #include <cstring>
 
@@ -218,7 +219,9 @@ void CPlayList::shuffle()
         CSound oldLastSound(m_soundVec.back());
         
         // Shuffle
-        std::random_shuffle( m_soundVec.begin(), m_soundVec.end() );
+        std::random_device rd;
+        std::default_random_engine g(rd());
+        std::shuffle( m_soundVec.begin(), m_soundVec.end(), g );
         
         // Make sure the new first sound is not the old last sound.
         // Don't want the same two sounds playing back to back

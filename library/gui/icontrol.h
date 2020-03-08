@@ -25,10 +25,8 @@
 // Vulkan lib dependencies
 #include <system/vulkan.h>
 
-// SDL lib dependencies
-#include <SDL2/SDL.h>
-
 // Forward declaration(s)
+union SDL_Event;
 class CCamera;
 class CSelectMsgCracker;
 class CScrollParam;

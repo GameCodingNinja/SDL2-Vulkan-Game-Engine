@@ -29,7 +29,8 @@
             "options": {
                 "cwd": "${workspaceRoot}"
             },
-            "command": "rm -rfd build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release .."
+            "command": "rm -rfd build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..",
+            "problemMatcher": []
         },
         {
             "label": "Execute",

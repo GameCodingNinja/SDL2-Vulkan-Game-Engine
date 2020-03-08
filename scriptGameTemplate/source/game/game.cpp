@@ -101,9 +101,6 @@ void CGame::init()
     // Handle some events on startup
     pollEvents();
 
-    // Load the script list table
-    CScriptMgr::Instance().loadListTable( CSettings::Instance().getScriptListTable() );
-
     // Register the script items
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
     RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), true );
@@ -133,10 +130,14 @@ void CGame::init()
     NScriptVisual::Register();
     NScriptPhysics2d::Register();
     NScriptStatCounter::Register();
-
+    
     // Register game level functions
     registerGameFunc();
+    
+    // Load the script list table
+    CScriptMgr::Instance().loadListTable( CSettings::Instance().getScriptListTable() );
 
+    // Load the starting group
     CScriptMgr::Instance().loadGroup( CSettings::Instance().getScriptGroup() );
     CScriptMgr::Instance().prepare(
         CSettings::Instance().getScriptGroup(), CSettings::Instance().getScriptMain() );

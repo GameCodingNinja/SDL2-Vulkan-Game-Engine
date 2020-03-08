@@ -12,8 +12,8 @@
 #include <managers/managerbase.h>
 
 // Game lib dependencies
-#include <common/sound.h>
-#include <common/playlist.h>
+#include <sound/sound.h>
+#include <sound/playlist.h>
 
 class CSoundMgr : public CManagerBase
 {

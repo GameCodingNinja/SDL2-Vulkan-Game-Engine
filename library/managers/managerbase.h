@@ -23,8 +23,8 @@ public:
     // Load the data list table
     void loadListTable( const std::string & filePath );
     
-    // Load the group
-    virtual void loadGroup( const XMLNode & node, const std::string & group );
+    // Derived class loading of class specific data
+    virtual void loadUniqueData( const XMLNode & node, const std::string & group );
 
 protected:
 

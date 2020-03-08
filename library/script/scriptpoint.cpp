@@ -56,6 +56,14 @@ namespace NScriptPoint
     /************************************************************************
     *    DESC:  Wrapper function due to type being a template
     ************************************************************************/
+    void OpAssignCPoint(asIScriptGeneric *gen)
+    {
+        CPoint<float> * a = static_cast<CPoint<float> *>(gen->GetArgObject(0));
+        CPoint<float> * self = static_cast<CPoint<float> *>(gen->GetObject());
+        *self = *a;
+        gen->SetReturnAddress(self);
+    }
+
     float GetLengthSquared2D1(CPoint<float> & point)
     {
         return point.getLengthSquared2D();
@@ -121,7 +129,6 @@ namespace NScriptPoint
         point.cap(value);
     }
 
-
     /************************************************************************
      *    DESC:  Register the class with AngelScript
      ************************************************************************/
@@ -142,7 +149,7 @@ namespace NScriptPoint
         Throw( pEngine->RegisterObjectBehaviour("CPoint", asBEHAVE_DESTRUCT,  "void f()",                    WRAP_OBJ_LAST(Destructor),                 asCALL_GENERIC) );
 
         // assignment operator
-        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint & opAssign(CPoint & in)", WRAP_MFN_PR(CPoint<float>, operator =, (const CPoint<float> &), CPoint<float> &), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint & opAssign(const CPoint & in)", asFUNCTION(OpAssignCPoint), asCALL_GENERIC) );
 
         // binary operators
         Throw( pEngine->RegisterObjectMethod("CPoint", "CPoint opAdd ( CPoint & in )", WRAP_MFN_PR(CPoint<float>, operator +, (const CPoint<float> &) const, CPoint<float>), asCALL_GENERIC) );

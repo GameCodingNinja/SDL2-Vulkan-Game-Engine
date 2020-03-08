@@ -9,9 +9,9 @@
 #include <script/scriptsound.h>
 
 // Game lib dependencies
-#include <common/playlist.h>
-#include <managers/soundmanager.h>
-#include <common/sound.h>
+#include <sound/playlist.h>
+#include <sound/soundmanager.h>
+#include <sound/sound.h>
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
 #include <utilities/exceptionhandling.h>

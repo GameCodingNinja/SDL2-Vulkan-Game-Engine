@@ -85,12 +85,7 @@ CStartUpState::~CStartUpState()
 ************************************************************************/
 void CStartUpState::init()
 {
-    // Load list table data
-    CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
-    CScriptMgr::Instance().loadListTable( "data/objects/scripts/scriptListTable.lst" );
-    CStrategyMgr::Instance().loadListTable( "data/objects/strategy/strategyListTable.lst" );
-
-    // Register the script items needed for startup animation
+    // Register the script items
     RegisterStdString( CScriptMgr::Instance().getEnginePtr() );
     RegisterScriptArray( CScriptMgr::Instance().getEnginePtr(), true );
     NScriptSize::Register();
@@ -102,6 +97,18 @@ void CStartUpState::init()
     NScriptVisual::Register();
     NScriptHighResolutionTimer::Register();
     NScriptSprite::Register();
+    NScriptSound::Register();
+    NScriptUIControl::Register();
+    NScriptMenu::Register();
+    NScriptMenuManager::Register();
+    NScriptActionManager::Register();
+    NScriptDevice::Register();
+    NScriptSettings::Register();
+    
+    // Load list table data
+    CObjectDataMgr::Instance().loadListTable( "data/objects/2d/objectDataList/dataListTable.lst" );
+    CScriptMgr::Instance().loadListTable( "data/objects/scripts/scriptListTable.lst" );
+    CStrategyMgr::Instance().loadListTable( "data/objects/strategy/strategyListTable.lst" );
 
     // Load group specific assets
     CScriptMgr::Instance().loadGroup("(state)");
@@ -167,15 +174,6 @@ void CStartUpState::assetLoad()
 
         // Load the menu sounds
         CSoundMgr::Instance().loadGroup("(menu)");
-
-        // Register the script items
-        NScriptSound::Register();
-        NScriptUIControl::Register();
-        NScriptMenu::Register();
-        NScriptMenuManager::Register();
-        NScriptActionManager::Register();
-        NScriptDevice::Register();
-        NScriptSettings::Register();
 
         // Load group specific script items
         CScriptMgr::Instance().loadGroup("(menu)");

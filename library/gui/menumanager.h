@@ -26,10 +26,12 @@
 // Vulkan lib dependencies
 #include <system/vulkan.h>
 
+// SDL lib dependencies
+#include <SDL2/SDL.h>
+
 // Forward declaration(s)
 class CMenu;
 class CMenuTree;
-union SDL_Event;
 
 class CMenuMgr : public CManagerBase
 {

@@ -20,7 +20,7 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/matrix.h>
 #include <common/sound.h>
-#include <managers/soundmanager.h>
+#include <sound/soundmanager.h>
 #include <sprite/sprite.h>
 
 // Boost lib dependencies

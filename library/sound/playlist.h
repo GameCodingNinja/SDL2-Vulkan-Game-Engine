@@ -9,7 +9,7 @@
 #define __play_list_h__
 
 // Game lib dependencies
-#include <common/sound.h>
+#include <sound/sound.h>
 #include <common/defs.h>
 
 // Standard lib dependencies

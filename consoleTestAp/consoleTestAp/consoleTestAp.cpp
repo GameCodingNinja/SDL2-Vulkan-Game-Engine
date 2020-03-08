@@ -1,13 +1,269 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
-// XML file load test
+// C++ 11, 14, 17 features
+
 #include <iostream>
+#include <vector>
+#include <complex>
+
+#include <cstdlib>
+#include <iostream>
+#include <set>
+#include <string>
+#include <iterator>
+
+#include <tuple>
+
+
+class [ [deprecated] ] CMyClass
+{
+public:
+
+    CMyClass() :
+        m_myVec {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        m_myArray {0}
+    {
+    }
+
+private:
+
+    std::vector<int> m_myVec;
+    int m_myArray[50];
+};
+ 
+struct S {
+    int n;
+    std::string s;
+    float d;
+    bool operator<(const S& rhs) const
+    {
+        // compares n to rhs.n,
+        // then s to rhs.s,
+        // then d to rhs.d
+        return std::tie(n, s, d) < std::tie(rhs.n, rhs.s, rhs.d);
+    }
+};
+
+auto MyFunc()
+{
+    int valueInt = 42;
+    std::string valueStr = "Test";
+    float valueFloat = 3.14;
+    
+    return std::make_tuple(valueInt, valueStr, valueFloat, std::ignore);
+}
+
+template <auto ... vs> struct HeterogenousValueList {};
+using MyList = HeterogenousValueList<'a', 100, 'b'>;
+template<auto n> struct B { /* ... */ };
+
+int main()
+{
+
+    std::vector<int> myVec {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+ 
+    auto multiply = [](auto x, auto y) {return x + y;};
+
+    std::cout << multiply(5, 9) << std::endl;
+    std::cout << multiply(5.1, 9.7) << std::endl;
+
+    auto vecSize = [vec = std::move(myVec)]() {return vec.size();};
+
+    std::cout << vecSize() << std::endl;
+    std::cout << myVec.size() << std::endl;
+
+    auto million = 1'000'000;
+    auto pi = 3.14159'26535'89793;
+
+    std::cout << million << std::endl;
+    std::cout << pi << std::endl;
+
+    using namespace std::complex_literals;
+    auto myComplexFloat = 29if;
+
+    std::cout << std::norm(myComplexFloat) << std::endl;
+
+    std::set<S> mySet;
+ 
+    // pre C++17:
+    {
+	    S value{42, "Test", 3.14};
+	    std::set<S>::iterator iter;
+	    bool inserted;
+ 
+	    // unpacks the return val of insert into iter and inserted
+	    std::tie(iter, inserted) = mySet.insert(value);
+
+	    if (inserted)
+		    std::cout << "Value was inserted\n";
+    }
+	
+	// with C++17:
+    {
+        S value{100, "abc", 100.0};
+        const auto [iter, inserted] = mySet.insert(value);
+		
+        if (inserted)
+		    std::cout << "Value(" << iter->n << ", " << iter->s << ", ...) was inserted" << "\n";
+    }
+
+    auto tuple = MyFunc();
+    std::get<0>(tuple);
+
+    if(auto [a, b, c, d] = MyFunc(); a > c)
+    {
+        std::cout << "A is greater" << std::endl;
+    }
+
+    std::cout << multiply(5, 9) << std::endl;
+
+    if(int init = 1; init == 2)
+        std::cout << init << std::endl;
+
+    std::make_tuple("string", 7);
+
+    for (auto[iss, name] = std::pair(std::istringstream(head), std::string {}); getline(iss, name); )
+    {
+    // Process name
+    }
+}
+
+/*#include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <locale>
+#include <chrono>
+#include <atomic>
+#include <cstdlib>
+#include <cstdint>
+#include <utilities/pool.h>
+#include <utilities/ascii_escape_code.hpp>
+
+using namespace std;
+using namespace std::chrono;
+using namespace ascii_escape_code;
+
+std::string with_commas(uint64_t value)
+{
+	std::stringstream ss;
+	ss.imbue(std::locale(""));
+	ss << std::fixed << value;
+	return ss.str();
+}
+
+template<typename PT>
+void benchmark(const char* pool_name, uint64_t tasks, uint64_t reps)
+{
+	cout << black << bold << pool_name << normal << " (" << red << with_commas(tasks) << black << " tasks, " << red << with_commas(reps) << black << " reps)" << flush;
+
+	atomic_uint64_t result = 0;
+	auto work = [&result](uint64_t r)
+	{
+		uint64_t sum = 0;
+		for (auto i = 1; i <= r; ++i)
+		{
+			auto t = rand();
+			sum += t + 1;
+			sum -= t;
+		}
+		result += sum;
+	};
+
+	auto start_time = high_resolution_clock::now();
+	{
+		PT pool;
+		for (uint64_t i = 1; i <= tasks / 2; ++i)
+		{
+			pool.enqueue_work(work, reps);
+			[[maybe_unused]] auto p = pool.enqueue_task(work, reps);
+		}
+	}
+	auto end_time = high_resolution_clock::now();
+
+	cout << "\t" << red << duration_cast<microseconds>(end_time - start_time).count() / 1000.f << " ms" << black;
+	cout << "\t(", (result == tasks * reps ? cout << green : cout << red), cout << with_commas(result) << reset << ")" << endl;
+}
+
+int main()
+{
+    cout << "test started..." << endl;
+	uint64_t TASK_START = 100'000;
+	uint64_t TASK_STEP  = 100'000;
+	uint64_t TASK_STOP  = 1'000'000;
+
+	uint64_t REPS_START = 100;
+	uint64_t REPS_STEP  = 100;
+	uint64_t REPS_STOP  = 1'000;
+
+	for(auto t = TASK_START; t <= TASK_STOP; t += TASK_STEP)
+	{
+		if(TASK_START < TASK_STOP) cout << "********************************************************************************" << endl;
+		for(auto r = REPS_START; r <= REPS_STOP; r += REPS_STEP)
+		{
+			benchmark<simple_thread_pool>("simple  ", t, r);
+			benchmark<thread_pool>       ("advanced", t, r);
+			if(REPS_START < REPS_STOP) cout << endl;
+		}
+		if(TASK_START < TASK_STOP) cout << endl;
+	}
+}*/
+
+/*#include <iostream>
+#include <chrono>
+#include <cstdlib>
+#include <utilities/pool.h>
+using namespace std;
+using namespace chrono;
+ 
+const unsigned int COUNT = 10'000'000;
+const unsigned int REPS = 10;
+ 
+int main()
+{
+    cout << "test started..." << endl;
+	srand(0);
+	auto start = high_resolution_clock::now();
+	{
+		simple_thread_pool tp;
+		for(int i = 0; i < COUNT; ++i)
+			tp.enqueue_work([i]() {
+				int x;
+				int reps = REPS + (REPS * (rand() % 5));
+				for(int n = 0; n < reps; ++n)
+					x = i + rand();
+			});
+	}
+	auto end = high_resolution_clock::now();
+	auto duration = duration_cast<milliseconds>(end - start);
+	cout << "simple_thread_pool duration = " << duration.count() / 1000.f << " s" << endl;
+ 
+	srand(0);
+	start = high_resolution_clock::now();
+	{
+		thread_pool tp;
+		for(int i = 0; i < COUNT; ++i)
+			tp.enqueue_work([i]() {
+				int x;
+				int reps = REPS + (REPS * (rand() % 5));
+				for(int n = 0; n < reps; ++n)
+					x = i + rand();
+			});
+	}
+	end = high_resolution_clock::now();
+	duration = duration_cast<milliseconds>(end - start);
+	cout << "thread_pool duration = " << duration.count() / 1000.f << " s" << endl;
+
+    return 0;
+}*/
+
+// XML file load test
+/*#include <iostream>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/tagparser.h>
 #include <utilities/xmlParser.h>
 
-int main()  // 7124.35 ms
+int main()
 {
     //std::cout << "Test started..." << std::endl;
 
@@ -26,7 +282,7 @@ int main()  // 7124.35 ms
     //std::cout << "XML Node Execution time: " << CHighResTimer::Instance().timerStop() << std::endl;
     
     return 0;
-}
+}*/
 
 // rvalue / lvalue test
 /*#include <vector>

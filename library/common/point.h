@@ -529,20 +529,41 @@ public:
 
     bool isXEmpty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == x) || (*(int*)&x == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     bool isYEmpty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == y) || (*(int*)&y == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     bool isZEmpty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == z) || (*(int*)&z == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     /************************************************************************

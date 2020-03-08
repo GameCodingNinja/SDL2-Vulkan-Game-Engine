@@ -1,14 +1,86 @@
 [
   {
     "level": "INFO",
-    "message": "Start JSON generation. Platform version: 23 min SDK version: arm64-v8a"
+    "message": "Start JSON generation. Platform version: 23 min SDK version: arm64-v8a",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
   },
   {
     "level": "INFO",
-    "message": "JSON \u0027/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a/android_gradle_build.json\u0027 was up-to-date"
+    "message": "rebuilding JSON /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a/android_gradle_build.json due to:",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
   },
   {
     "level": "INFO",
-    "message": "JSON generation completed without problems"
+    "message": "- expected json /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a/android_gradle_build.json file is not present, will remove stale json folder",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "- missing previous command file /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a/build_command.txt, will remove stale json folder",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "- command changed from previous, will remove stale json folder",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "created folder \u0027/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a\u0027",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "executing ndkBuild Executable : /home/howie/Android/Sdk/ndk/20.0.5594570/ndk-build\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk\nNDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk\nAPP_ABI\u003darm64-v8a\nNDK_ALL_ABIS\u003darm64-v8a\nNDK_DEBUG\u003d0\nAPP_PLATFORM\u003dandroid-23\nNDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/release/obj\nNDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/release/lib\nAPP_PLATFORM\u003dandroid-23\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "Executable : /home/howie/Android/Sdk/ndk/20.0.5594570/ndk-build\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk\nNDK_APPLICATION_MK\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk\nAPP_ABI\u003darm64-v8a\nNDK_ALL_ABIS\u003darm64-v8a\nNDK_DEBUG\u003d0\nAPP_PLATFORM\u003dandroid-23\nNDK_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/release/obj\nNDK_LIBS_OUT\u003d/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/build/intermediates/ndkBuild/release/lib\nAPP_PLATFORM\u003dandroid-23\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "done executing ndkBuild",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "write build output /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a/build_output.txt",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "parse and convert ndk-build output to build configuration JSON",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "found application make file /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Application.mk",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "write command file /home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/.cxx/ndkBuild/release/arm64-v8a/build_command.txt",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON generation completed without problems",
+    "file": "/home/howie/Development/SDL2-Vulkan-Game-Engine/org.howiesfunware.PachinkoChallenge/app/jni/Android.mk",
+    "tag": "release|arm64-v8a"
   }
 ]

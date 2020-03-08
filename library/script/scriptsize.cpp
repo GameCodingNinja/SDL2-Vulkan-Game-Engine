@@ -48,6 +48,14 @@ namespace NScriptSize
         ((CSize<float>*)pThisPointer)->~CSize();
     }
 
+    void OpAssignCSize(asIScriptGeneric *gen)
+    {
+        CSize<float> * a = static_cast<CSize<float> *>(gen->GetArgObject(0));
+        CSize<float> * self = static_cast<CSize<float> *>(gen->GetObject());
+        *self = *a;
+        gen->SetReturnAddress(self);
+    }
+
     /************************************************************************
      *    DESC:  Register the class with AngelScript
      ************************************************************************/
@@ -67,7 +75,7 @@ namespace NScriptSize
         Throw( pEngine->RegisterObjectBehaviour("CSize", asBEHAVE_DESTRUCT,  "void f()",                 WRAP_OBJ_LAST(Destructor),               asCALL_GENERIC) );
 
         // assignment operator
-        Throw( pEngine->RegisterObjectMethod("CSize", "CSize & opAssign(const CSize & in)", WRAP_MFN_PR(CSize<float>, operator =, (const CSize<float> &), CSize<float> &), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSize", "CSize & opAssign(const CSize & in)", asFUNCTION(OpAssignCSize), asCALL_GENERIC) );
 
         // binary operators
         Throw( pEngine->RegisterObjectMethod("CSize", "CSize opAdd ( const CSize & in )", WRAP_MFN_PR(CSize<float>, operator +, (const CSize<float> &) const, CSize<float>), asCALL_GENERIC) );

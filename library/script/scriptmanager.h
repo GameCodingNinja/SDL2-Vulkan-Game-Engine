@@ -39,11 +39,14 @@ public:
         return scriptManager;
     }
 
+    // Derived class loading of class specific data
+    void loadUniqueData( const XMLNode & node, const std::string & group ) override;
+
     // Get the pointer to the script engine
     asIScriptEngine * getEnginePtr();
 
     // Load all of the scripts of a specific group
-    void loadGroup( const std::string & group );
+    void loadGroup( const std::string & group, const bool forceLoadFromScript = false );
 
     // Free all of the scripts of a specific data group
     void freeGroup( const std::string & group );
@@ -121,6 +124,8 @@ private:
 
 private:
 
+    const bool FORCE_LOAD_FROM_SCRIPT = true;
+
     // Smart com pointer to AngelScript script engine
     NSmart::scoped_com_ptr<asIScriptEngine> scpEngine;
 
@@ -145,6 +150,9 @@ private:
 
     // Maximum pool percentage
     float m_maxPoolPercentage = 0.25f;
+
+    // Holds the list table map
+    std::map<const std::string, std::string> m_byteCodeFileMap;
 };
 
 #endif

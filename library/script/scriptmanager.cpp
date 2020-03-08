@@ -12,6 +12,8 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
 #include <utilities/statcounter.h>
+#include <utilities/settings.h>
+#include <script/bytecodestream.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -56,6 +58,54 @@ CScriptMgr::~CScriptMgr()
 
 
 /************************************************************************
+*    DESC:  Derived class loading of class specific data
+*           NOTE: This function is used to save script byte code
+************************************************************************/
+void CScriptMgr::loadUniqueData( const XMLNode & node, const std::string & group )
+{
+    if( node.isAttributeSet("byteCodeFile") )
+    {
+        // Make sure it's not an empty path
+        std::string byteCodePath = node.getAttribute("byteCodeFile");
+        if( !byteCodePath.empty() )
+        {
+            // Save the byte code file path for loading later
+            m_byteCodeFileMap.emplace(group, byteCodePath);
+
+            // Do we want to save out the byte code
+            if( CSettings::Instance().getSaveByteCode() )
+            {
+                // Load the scripts for this group
+                loadGroup( group, FORCE_LOAD_FROM_SCRIPT );
+
+                // Get the script module. It should be built by the previous call
+                asIScriptModule * pScriptModule = scpEngine->GetModule(group.c_str(), asGM_ONLY_IF_EXISTS);
+                if( pScriptModule == nullptr )
+                {
+                    throw NExcept::CCriticalException("Script Byte Code Save Error!",
+                        boost::str( boost::format("Error script module does not exist (%s).\n\n%s\nLine: %s")
+                            % group % __FUNCTION__ % __LINE__ ));
+                }
+
+                // Save the byte code
+                CByteCodeStream byteCode( byteCodePath, "wb" );
+                if( pScriptModule->SaveByteCode( &byteCode, CSettings::Instance().getStripDebugInfo() ) < 0 )
+                {
+                    throw NExcept::CCriticalException("Script Byte Code Save Error!",
+                        boost::str( boost::format("Error writing script byte code (%s).\n\n%s\nLine: %s")
+                            % group % __FUNCTION__ % __LINE__ ));
+                }
+
+                // Discard this module and all it's contents.
+                // It will be reloaded through the normal process and will error if it's not discarded
+                pScriptModule->Discard();
+            }
+        }
+    }
+}
+
+
+/************************************************************************
 *    DESC:  Delete all the strategies
 ************************************************************************/
 void CScriptMgr::clear()
@@ -78,7 +128,7 @@ void CScriptMgr::clear()
 *
 *    param: string & group - specified group of scripts to load
 ************************************************************************/
-void CScriptMgr::loadGroup( const std::string & group )
+void CScriptMgr::loadGroup( const std::string & group, const bool forceLoadFromScript )
 {
     // Make sure the group we are looking has been defined in the list table file
     auto listTableIter = m_listTableMap.find( group );
@@ -96,12 +146,29 @@ void CScriptMgr::loadGroup( const std::string & group )
                 % group % __FUNCTION__ % __LINE__ ));
     }
 
-    // Add the scripts to the module
-    for( auto & iter : listTableIter->second )
-        addScript( pScriptModule, iter );
+    // See if we have the file path to the byte code
+    auto byteCodeFileIter = m_byteCodeFileMap.find( group );
 
-    // Build all the scripts added to the module
-    buildScript( pScriptModule, group );
+    // Load the byte code
+    if( CSettings::Instance().getLoadByteCode() && byteCodeFileIter != m_byteCodeFileMap.end() && !forceLoadFromScript )
+    {
+        CByteCodeStream byteCode( byteCodeFileIter->second, "rb" );
+        if( pScriptModule->LoadByteCode( &byteCode ) < 0 )
+        {
+            throw NExcept::CCriticalException("Script Byte Code Load Error!",
+                boost::str( boost::format("Error loading script byte code (%s).\n\n%s\nLine: %s")
+                    % group % __FUNCTION__ % __LINE__ ));
+        }
+    }
+    else
+    {
+        // Add the scripts to the module
+        for( auto & iter : listTableIter->second )
+            addScript( pScriptModule, iter );
+
+        // Build all the scripts added to the module
+        buildScript( pScriptModule, group );
+    }
 }
 
 

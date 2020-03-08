@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <common/sound.h>
+#include <sound/sound.h>
 
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>

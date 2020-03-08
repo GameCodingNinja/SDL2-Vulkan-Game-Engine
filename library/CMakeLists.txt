@@ -87,6 +87,7 @@ add_library(
         script/scriptstatcounter.cpp
         script/scriptbitmask.cpp
         script/scriptevent.cpp
+        script/bytecodestream.cpp
         system/devicevulkan.cpp
         system/device.cpp
         system/uniformbufferobject.cpp
@@ -103,7 +104,6 @@ add_library(
         utilities/xmlpreloader.cpp
         utilities/matrix.cpp
         utilities/exceptionhandling.cpp
-        managers/soundmanager.cpp
         managers/managerbase.cpp
         managers/fontmanager.cpp
         managers/actionmanager.cpp
@@ -142,8 +142,6 @@ add_library(
         strategy/strategymanager.cpp
         strategy/istrategy.cpp
         strategy/strategyloader.cpp
-        common/sound.cpp
-        common/playlist.cpp
         common/worldvalue.cpp
         common/camera.cpp
         common/object.cpp
@@ -154,6 +152,9 @@ add_library(
         common/visual.cpp
         common/vertex.cpp
         common/dynamicoffset.cpp
+        sound/soundmanager.cpp
+        sound/sound.cpp
+        sound/playlist.cpp
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c

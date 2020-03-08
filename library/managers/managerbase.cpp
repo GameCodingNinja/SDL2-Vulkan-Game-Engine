@@ -64,16 +64,16 @@ void CManagerBase::loadListTable( const std::string & filePath )
             iter.first->second.push_back(dataNode.getAttribute("path"));
         }
         
-        // External loading of group data
-        loadGroup( dataListNode, group );
+        // Derived class loading of class specific data
+        loadUniqueData( dataListNode, group );
     }
 }
 
 
 /************************************************************************
-*    DESC:  Load the group
+*    DESC:  Derived class loading of class specific data
 ************************************************************************/
-void CManagerBase::loadGroup( const XMLNode & node, const std::string & group )
+void CManagerBase::loadUniqueData( const XMLNode & node, const std::string & group )
 {
     // Empty for purposes of overriding
 }

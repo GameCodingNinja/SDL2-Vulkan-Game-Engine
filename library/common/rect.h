@@ -90,26 +90,54 @@ public:
 
     bool isX1Empty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == x1) || (*(int*)&x1 == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     bool isX2Empty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == x2) || (*(int*)&x2 == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     bool isY1Empty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == y1) || (*(int*)&y1 == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     bool isY2Empty() const
     {
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wstrict-aliasing"
+        #endif
         // This looks at the bits of the data as an int
         return ( (0 == y2) || (*(int*)&y2 == 0) );
+        #if defined(__GNUC__)
+        #pragma GCC diagnostic pop
+        #endif
     }
 
     /************************************************************************                                                             

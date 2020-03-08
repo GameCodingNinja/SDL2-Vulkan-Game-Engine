@@ -23,6 +23,9 @@
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 
+// SDL lib dependencies
+#include <SDL2/SDL.h>
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/

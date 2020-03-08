@@ -1,6 +1,6 @@
 <listTable>
     
-    <groupList groupName="(menu)">
+    <groupList groupName="(menu)" byteCodeFile="data/scripts/menu.bc">
       <file path="data/scripts/library/shared_utilities.as"/>
       <file path="data/scripts/library/shared_sprite_utilities.as"/>
       <file path="data/scripts/library/defs.as"/>
@@ -15,7 +15,7 @@
       <file path="data/scripts/library/keybindbtn.as"/>
     </groupList>
 
-    <groupList groupName="(state)">
+    <groupList groupName="(state)" byteCodeFile="data/scripts/state.bc">
         <file path="data/scripts/library/shared_utilities.as"/>
         <file path="data/scripts/library/shared_sprite_utilities.as"/>
         <file path="data/scripts/library/shared_visual_utilities.as"/>
@@ -23,7 +23,7 @@
         <file path="data/scripts/source/state/state.as"/>
     </groupList>
     
-    <groupList groupName="(main)">
+    <groupList groupName="(main)" byteCodeFile="data/scripts/main.bc">
         <file path="data/scripts/library/defs.as"/>
         <file path="data/scripts/library/menudefs.as"/>
         <file path="data/scripts/library/shared_utilities.as"/>
@@ -41,7 +41,7 @@
         <file path="data/scripts/source/state/level1state.as"/>
     </groupList>
   
-    <groupList groupName="(level_1)">
+    <groupList groupName="(level_1)" byteCodeFile="data/scripts/level_1.bc">
         <file path="data/scripts/library/shared_utilities.as"/>
         <file path="data/scripts/library/defs.as"/>
         <file path="data/scripts/source/level/leveldefs.as"/>

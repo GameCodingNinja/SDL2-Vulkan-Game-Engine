@@ -31,8 +31,3 @@ CClassTemplate::CClassTemplate()
 CClassTemplate::~CClassTemplate()
 {
 }
-
-
-
-
-

@@ -20,7 +20,7 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/xmlParser.h>
 #include <objectdata/objectdatamanager.h>
-#include <managers/soundmanager.h>
+#include <sound/soundmanager.h>
 #include <common/defs.h>
 #include <sprite/sprite.h>
 

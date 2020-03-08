@@ -11,10 +11,8 @@
 // Standard lib dependencies
 #include <string>
 
-// SDL lib dependencies
-#include <SDL.h>
-
 // Forward declaration(s)
+union SDL_Event;
 class CUIControl;
 class iGameState;
 class CMenu;

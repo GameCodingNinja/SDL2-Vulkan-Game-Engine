@@ -111,6 +111,9 @@ public:
     const std::string & getScriptListTable() const;
     const std::string & getScriptGroup() const;
     const std::string & getScriptMain() const;
+    bool getSaveByteCode() const;
+    bool getLoadByteCode() const;
+    bool getStripDebugInfo() const;
     
     // Get the sound frequency
     int getFrequency() const;
@@ -257,6 +260,9 @@ private:
     std::string m_scriptListTable;
     std::string m_scriptGroup;
     std::string m_scriptMain;
+    bool m_saveByteCode;
+    bool m_loadByteCode;
+    bool m_stripDebugInfo;
 };
 
 #endif

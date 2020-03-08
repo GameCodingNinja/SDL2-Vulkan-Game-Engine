@@ -6,7 +6,7 @@
 ************************************************************************/
 
 // Physical component dependency
-#include <managers/soundmanager.h>
+#include <sound/soundmanager.h>
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>

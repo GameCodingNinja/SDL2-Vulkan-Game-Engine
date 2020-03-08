@@ -21,7 +21,7 @@ LOCAL_C_INCLUDES := \
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES)
 
-LOCAL_CXXFLAGS := -std=gnu++14 -fexceptions
+LOCAL_CXXFLAGS := -std=gnu++17 -fexceptions
 
 LOCAL_SRC_FILES := \
     $(SDL_PATH)/src/main/android/SDL_android_main.c \
@@ -41,6 +41,7 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(LOCAL_PATH)/library/3d/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/node/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/common/*.cpp) \
+	$(wildcard $(LOCAL_PATH)/library/sound/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/utilities/*.cpp) \
 	$(wildcard $(LOCAL_PATH)/library/soil/*.c) \
 	$(wildcard $(LOCAL_PATH)/library/script/*.cpp))

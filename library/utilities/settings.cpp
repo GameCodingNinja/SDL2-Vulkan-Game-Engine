@@ -54,7 +54,10 @@ CSettings::CSettings() :
     m_anisotropicLevel(NDefs::ETF_ANISOTROPIC_0X),
     m_projectionType(NDefs::EPT_PERSPECTIVE),
     m_debugStrVisible(false),
-    m_tripleBuffering(false)
+    m_tripleBuffering(false),
+    m_saveByteCode(false),
+    m_loadByteCode(false),
+    m_stripDebugInfo(false)
 {
     CWorldValue::setSectorSize( 512 );
     
@@ -276,6 +279,15 @@ void CSettings::loadXML()
                 
                 if( scriptNode.isAttributeSet("mainFunction") )
                     m_scriptMain = scriptNode.getAttribute("mainFunction");
+
+                if( scriptNode.isAttributeSet("saveByteCode") )
+                    m_saveByteCode = ( std::strcmp( scriptNode.getAttribute("saveByteCode"), "true" ) == 0 );
+
+                if( scriptNode.isAttributeSet("loadByteCode") )
+                    m_loadByteCode = ( std::strcmp( scriptNode.getAttribute("loadByteCode"), "true" ) == 0 );
+
+                if( scriptNode.isAttributeSet("stripDebugInfo") )
+                    m_stripDebugInfo = ( std::strcmp( scriptNode.getAttribute("stripDebugInfo"), "true" ) == 0 );
             }
 
             // Get the sound settings
@@ -611,6 +623,21 @@ const std::string & CSettings::getScriptGroup() const
 const std::string & CSettings::getScriptMain() const
 {
     return m_scriptMain;
+}
+
+bool CSettings::getSaveByteCode() const
+{
+    return m_saveByteCode;
+}
+
+bool CSettings::getLoadByteCode() const
+{
+    return m_loadByteCode;
+}
+
+bool CSettings::getStripDebugInfo() const
+{
+    return m_stripDebugInfo;
 }
 
 

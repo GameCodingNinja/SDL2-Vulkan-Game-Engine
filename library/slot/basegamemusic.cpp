@@ -9,7 +9,7 @@
 #include <slot/basegamemusic.h>
 
 // Game lib dependencies
-#include <managers/soundmanager.h>
+#include <sound/soundmanager.h>
 
 /************************************************************************
 *    DESC:  Constructor
