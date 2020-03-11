@@ -14,8 +14,8 @@
 
 // Game lib dependencies
 #include <managers/fontmanager.h>
-#include <managers/soundmanager.h>
 #include <managers/actionmanager.h>
+#include <sound/soundmanager.h>
 #include <strategy/strategymanager.h>
 #include <objectdata/objectdatamanager.h>
 #include <common/color.h>
@@ -35,7 +35,7 @@
 #include <script/scriptdevice.h>
 #include <script/scriptsettings.h>
 #include <script/scriptbitmask.h>
-#include <script/scriptevent.h>
+#include <script/scripteventstub.h>
 #include <system/device.h>
 #include <gui/menumanager.h>
 #include <utilities/genfunc.h>
@@ -58,7 +58,7 @@
 #include <chrono>
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -91,7 +91,7 @@ void CStartUpState::init()
     NScriptSize::Register();
     NScriptPoint::Register();
     NScriptBitmask::Register();
-    NScriptEvent::Register();
+    NScriptEventStub::Register();
     NScriptColor::Register();
     NScriptGlobals::Register();
     NScriptVisual::Register();

@@ -25,7 +25,7 @@
 #include <boost/bind.hpp>
 
 // SDL lib dependencies
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #if defined(__ANDROID__)
 #include <android/log.h>

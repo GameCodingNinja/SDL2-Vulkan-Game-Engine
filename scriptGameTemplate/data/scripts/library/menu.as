@@ -67,8 +67,7 @@ void AlphaTo( float time, float final, CMenu & menu )
 ************************************************************************/
 void Control_OnActive( uiControl & control )
 {
-    if( !ActionMgr.wasLastDeviceMouse() )
-        SoundMgr.play( "(menu)", "active" );
+    SoundMgr.play( "(menu)", "active" );
 }
 
 

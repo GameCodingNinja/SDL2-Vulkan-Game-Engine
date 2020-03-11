@@ -31,7 +31,7 @@ void rotateGun( CSprite & sprite )
                 float ratio = 1 / Settings.getOrthoAspectRatio().h;
                 CSize halfSize = Settings.getSizeHalf();
 
-                CPoint spritePos = sprite.getPos();
+                CPoint spritePos = sprite.getTransPos();
                 CPoint mousePos = ActionMgr.getMouseAbsolutePos();
                 gunRotation = -(atan2( (ratio * (halfSize.w - mousePos.x)) + spritePos.x, (ratio * (halfSize.h - mousePos.y)) + spritePos.y ) + M_PI_2);
                 sprite.setRot( 0, 0, gunRotation, false );
@@ -47,7 +47,7 @@ void rotateGun( CSprite & sprite )
             {
                 CSprite @ projectile = StrategyMgr.getStrategy( "_main_" ).create( "projectile" ).getSprite();
                 
-                CPoint pos = sprite.getPos();
+                CPoint pos = sprite.getTransPos();
                 CPoint centerPos = sprite.getCenterPos();
                 const float OFFSET = 50.f;
                 CPoint projectileOffset;

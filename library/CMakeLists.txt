@@ -87,6 +87,7 @@ add_library(
         script/scriptstatcounter.cpp
         script/scriptbitmask.cpp
         script/scriptevent.cpp
+        script/scripteventstub.cpp
         script/bytecodestream.cpp
         system/devicevulkan.cpp
         system/device.cpp
