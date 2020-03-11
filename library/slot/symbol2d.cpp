@@ -101,7 +101,7 @@ void CSymbol2d::transform()
     }
 
     for( auto & iter : m_spriteDeq )
-        iter.transform( m_finalMatrix, wasWorldPosTranformed() );
+        iter.transform( m_finalMatrix, wasTranformed() );
 }
 
 void CSymbol2d::transform( const CMatrix & matrix, bool tranformWorldPos )
@@ -121,7 +121,7 @@ void CSymbol2d::transform( const CMatrix & matrix, bool tranformWorldPos )
     }
 
     for( auto & iter : m_spriteDeq )
-        iter.transform( m_finalMatrix, wasWorldPosTranformed() );
+        iter.transform( m_finalMatrix, wasTranformed() );
 }
 
 

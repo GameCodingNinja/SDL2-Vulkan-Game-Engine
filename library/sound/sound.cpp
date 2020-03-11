@@ -104,11 +104,21 @@ void CSound::play( int channel, int loopCount )
 {
     if( m_type == EST_LOADED )
     {
-        m_channel = Mix_PlayChannel( channel, (Mix_Chunk *)m_pVoid, loopCount );
+        if( (m_channel = Mix_PlayChannel( channel, (Mix_Chunk *)m_pVoid, loopCount )) == -1 )
+        {
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Sound play channel error (%s).\n\n%s\nLine: %s")
+                % Mix_GetError() % __FUNCTION__ % __LINE__ ) );
+        }
         Mix_Volume( m_channel, m_volume );
     }
     else if( m_type == EST_STREAM )
-        Mix_PlayMusic( (Mix_Music *)m_pVoid, loopCount );
+    {
+        if( Mix_PlayMusic( (Mix_Music *)m_pVoid, loopCount ) == -1 )
+        {
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Sound play stream error (%s).\n\n%s\nLine: %s")
+                % Mix_GetError() % __FUNCTION__ % __LINE__ ) );
+        }
+    }
 }
 
 
@@ -243,7 +253,7 @@ void CSound::setOpenChannel()
 
     if( i == MIX_CHANNELS )
     {
-        NGenFunc::PostDebugMsg( "No free channels available" );
+        NGenFunc::PostDebugMsg( "No free sound channels available" );
     }
     else
     {

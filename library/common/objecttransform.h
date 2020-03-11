@@ -34,10 +34,10 @@ public:
     virtual const CMatrix & getRotMatrix() const;
     virtual CMatrix & getRotMatrix();
 
-    // Was the world position transformed?
-    bool wasWorldPosTranformed() const;
+    // Was this object transformed?
+    bool wasTranformed() const;
 
-    // Force the world transform
+    // Force the transform
     void forceTransform();
     
     // Get the object's translated position

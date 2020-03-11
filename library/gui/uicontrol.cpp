@@ -198,7 +198,7 @@ void CUIControl::transform( const CObjectTransform & object )
 ************************************************************************/
 void CUIControl::transformCollision()
 {
-    if( wasWorldPosTranformed() && !m_size.isEmpty() )
+    if( wasTranformed() && !m_size.isEmpty() )
     {
         CMatrix finalMatrix( getMatrix() );
         finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );

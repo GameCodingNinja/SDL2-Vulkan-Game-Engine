@@ -160,7 +160,7 @@ void CSlotGroupView::transform()
     CObject2D::transform();
 
     if( m_upCycleResults )
-        m_upCycleResults->transform( getMatrix(), wasWorldPosTranformed() );
+        m_upCycleResults->transform( getMatrix(), wasTranformed() );
 }
 
 

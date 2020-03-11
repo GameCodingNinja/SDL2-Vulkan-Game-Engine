@@ -43,10 +43,10 @@ CSoundMgr::CSoundMgr() :
         CSettings::Instance().getFrequency(),     // Usually 22050 or 44100
         MIX_DEFAULT_FORMAT,
         CSettings::Instance().getSoundChannels(), // mono, stero, quad, suround, etc
-        CSettings::Instance().getChunkSize() ) == 0 )
+        CSettings::Instance().getChunkSize() ) != 0 )
     {
         NGenFunc::PostDebugMsg( boost::str( boost::format("Sound mixer open error (%s).\n\n%s\nLine: %s")
-                        % SDL_GetError() % __FUNCTION__ % __LINE__ ) );
+            % Mix_GetError() % __FUNCTION__ % __LINE__ ) );
     }
 
     if( CSettings::Instance().getMixChannels() != m_maxMixChannels )

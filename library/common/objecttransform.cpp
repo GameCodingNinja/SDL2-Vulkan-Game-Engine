@@ -83,7 +83,7 @@ void CObjectTransform::transform( const CObjectTransform & object )
 {
     m_parameters.remove( NDefs::WAS_TRANSFORMED );
     
-    if( m_parameters.isSet( NDefs::TRANSFORM ) || object.wasWorldPosTranformed() )
+    if( m_parameters.isSet( NDefs::TRANSFORM ) || object.wasTranformed() )
     {
         CMatrix localMatrix;
     
@@ -147,9 +147,9 @@ CMatrix & CObjectTransform::getRotMatrix()
 
 
 /************************************************************************
-*    DESC:  Was the world position transformed?
+*    DESC:  Was this object transformed?
 ************************************************************************/
-bool CObjectTransform::wasWorldPosTranformed() const
+bool CObjectTransform::wasTranformed() const
 {
     return m_parameters.isSet( NDefs::WAS_TRANSFORMED );
 }

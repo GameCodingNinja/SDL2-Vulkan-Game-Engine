@@ -29,7 +29,7 @@ CObject::~CObject()
 
 
 /************************************************************************
-*    DESC:  Get the object's world position
+*    DESC:  Get the object's position
 ************************************************************************/
 const CPoint<float> & CObject::getPos() const
 {

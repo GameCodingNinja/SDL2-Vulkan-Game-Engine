@@ -128,9 +128,9 @@ void CWheelGroupView::transform()
     CSlotGroupView::transform();
 
     for( auto & iter : m_wheelViewDeq )
-        iter.transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasTranformed() );
 
-    m_upCycleResultsTxtSprite->transform( getMatrix(), wasWorldPosTranformed() );
+    m_upCycleResultsTxtSprite->transform( getMatrix(), wasTranformed() );
 }
 
 

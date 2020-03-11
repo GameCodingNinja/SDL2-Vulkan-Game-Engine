@@ -179,7 +179,7 @@ void CWheelView::loadSprites( const XMLNode & node, const std::string & group )
 void CWheelView::preTransform()
 {
     for( auto & iter : m_spriteDeq )
-        iter.transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasTranformed() );
 }
 
 
@@ -365,10 +365,10 @@ void CWheelView::transform( const CMatrix & matrix, bool tranformWorldPos )
     CObject2D::transform( matrix, tranformWorldPos );
 
     for( auto & iter : m_wheelSpriteDeq )
-        iter.transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasTranformed() );
 
     for( auto & iter : m_symbolDeq )
-        iter.transform( getMatrix(), wasWorldPosTranformed() );
+        iter.transform( getMatrix(), wasTranformed() );
 }
 
 
