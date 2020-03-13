@@ -1368,7 +1368,7 @@ char XMLNode::parseClearTag(void *px, void *_pClear)
 void XMLNode::exactMemory(XMLNodeData *d)
 {
 // disable the realloc moving an object of non-trivially copyable type warning
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 800)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 #endif
@@ -1379,7 +1379,7 @@ void XMLNode::exactMemory(XMLNodeData *d)
     if (d->pText)      d->pText=(XMLCSTR*)realloc(d->pText,d->nText*sizeof(XMLSTR));
     if (d->pClear)     d->pClear=(XMLClear *)realloc(d->pClear,d->nClear*sizeof(XMLClear));
 
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(__INTEL_COMPILER) && (((__GNUC__ * 100) + __GNUC_MINOR__) >= 800)
 #pragma GCC diagnostic pop
 #endif
 }

@@ -7,7 +7,7 @@
     },
     {
       "level": "INFO",
-      "message": "ndk.dir in local.properties is not set"
+      "message": "ndk.dir in local.properties is /home/howie/Android/Sdk/ndk/20.0.5594570"
     },
     {
       "level": "INFO",
@@ -23,6 +23,10 @@
     },
     {
       "level": "INFO",
+      "message": "Considering /home/howie/Android/Sdk/ndk/20.0.5594570 by ndk.dir"
+    },
+    {
+      "level": "INFO",
       "message": "Considering /home/howie/Android/Sdk/ndk-bundle by ANDROID_NDK_HOME"
     },
     {
@@ -35,7 +39,7 @@
     },
     {
       "level": "INFO",
-      "message": "No user requested version, choosing /home/howie/Android/Sdk/ndk/20.0.5594570 which is version 20.0.5594570"
+      "message": "Found requested ndk.dir (/home/howie/Android/Sdk/ndk/20.0.5594570) which has version 20.0.5594570"
     }
   ]
 }

@@ -45,25 +45,6 @@
       <sourceFolder url="file://$MODULE_DIR$/jni/Box2D/Box2D/Dynamics/Joints" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/Box2D/Box2D/Dynamics" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/Box2D/Box2D/Rope" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/hidapi/android" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/libmodplug-0.8.9.0/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/libogg-1.3.2/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/timidity" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/mpg123-1.25.6/src/compat" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/mpg123-1.25.6/src/libmpg123" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/BroadphaseCollision" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/CollisionDispatch" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/CollisionShapes" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/Gimpact" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/NarrowPhaseCollision" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Character" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/ConstraintSolver" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Dynamics" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Featherstone" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/MLCPSolvers" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Vehicle" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletSoftBody" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/LinearMath" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/atomic" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/audio" isTestSource="false" />
@@ -78,6 +59,7 @@
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/filesystem/android" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/haptic" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/haptic/android" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/hidapi/android" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/joystick" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/joystick/android" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/joystick/hidapi" isTestSource="false" />
@@ -102,12 +84,30 @@
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/video" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/video/android" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/video/yuv2rgb" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/flac-1.3.2/src/libFLAC" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/flac-1.3.2/src/libFLAC" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/libmodplug-0.8.9.0/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/libogg-1.3.2/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/libvorbisidec-1.2.1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/mpg123-1.25.6/src/compat" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/external/mpg123-1.25.6/src/libmpg123" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/SDL2_mixer/timidity" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/angelscript/add_on/scriptarray" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/angelscript/add_on/scriptstdstring" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/angelscript/source" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/BroadphaseCollision" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/CollisionDispatch" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/CollisionShapes" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/Gimpact" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletCollision/NarrowPhaseCollision" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Character" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/ConstraintSolver" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Dynamics" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Featherstone" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/MLCPSolvers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletDynamics/Vehicle" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/BulletSoftBody" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/bulletPhysics/src/LinearMath" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/SDL/src/main/android" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/2d" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/3d" isTestSource="false" />
@@ -119,21 +119,22 @@
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/physics" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/script" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/soil" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jni/src/library/sound" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/sprite" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/strategy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/system" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/library/utilities" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/source/game" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jni/src/source/state" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/debug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/debug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/renderscript_source_output_dir/debug/out" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/debug" type="java-resource" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/debugAndroidTest/out" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/renderscript_source_output_dir/debugAndroidTest/out" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/debugAndroidTest/out" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/aidl_source_output_dir/debugAndroidTest/out" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/renderscript_source_output_dir/debugAndroidTest/out" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/debug" type="java-test-resource" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/ap_generated_sources/debugUnitTest/out" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
