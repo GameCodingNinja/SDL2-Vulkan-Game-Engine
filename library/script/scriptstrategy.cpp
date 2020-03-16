@@ -208,6 +208,8 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCamera(string &in)",                  WRAP_MFN(iStrategy, setCamera),  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & getNode(string &in)",                 WRAP_OBJ_LAST(GetNode1),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & getNode(string &in, uint)",           WRAP_OBJ_LAST(GetNode2),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & activateNode(string &in)",            WRAP_MFN(iStrategy, activateNode),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iStrategy", "void deactivateNode(string &in)",             WRAP_MFN(iStrategy, deactivateNode),  asCALL_GENERIC) );
         
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );

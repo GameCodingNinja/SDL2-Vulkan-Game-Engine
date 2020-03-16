@@ -1,9 +1,40 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
+#include <utilities/highresolutiontimer.h>
+#include <iostream>
+#include <iomanip>
+#include <thread>
+#include <chrono>
+
+int main()
+{
+    auto start = std::chrono::high_resolution_clock::now() + std::chrono::seconds(10);
+
+    for(int i = 0; i < 500000; i++)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+        auto end = std::chrono::high_resolution_clock::now();
+        auto result = start-end;
+        auto milliDur = std::chrono::duration_cast<std::chrono::milliseconds>(result).count();
+        auto secDur = std::chrono::duration_cast<std::chrono::seconds>(result).count();
+        auto minDur = std::chrono::duration_cast<std::chrono::minutes>(result).count();
+
+        std::cout << std::setfill('0') << std::setw(2) << minDur << ":"<< std::setfill('0') << std::setw(2) << (secDur % 60) << ":"<< std::setfill('0') << std::setw(2) << ((milliDur/10) % 100) << std::endl;
+    
+        if( milliDur/10 <= 0)
+            break;
+    }
+
+    return 0;
+}
+
+
+
 // C++ 11, 14, 17 features
 
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 #include <complex>
 
@@ -56,7 +87,7 @@ auto MyFunc()
 
 template <auto ... vs> struct HeterogenousValueList {};
 using MyList = HeterogenousValueList<'a', 100, 'b'>;
-template<auto n> struct B { /* ... */ };
+template<auto n> struct B {  };
 
 int main()
 {
@@ -127,7 +158,7 @@ int main()
     {
     // Process name
     }
-}
+}*/
 
 /*#include <iostream>
 #include <sstream>

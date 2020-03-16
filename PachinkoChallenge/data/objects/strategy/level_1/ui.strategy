@@ -3,7 +3,7 @@
     <node name="uiWinMeter">
         <uiMeter name="win_meter" controlType="meter" defaultState="inactive">
             <filePath file="data/objects/strategy/level_1/win_meter.ctrl"/>
-            <position x="-380" y="-880" z="0"/>
+            <position x="-400" y="-870" z="0"/>
             <!-- Max size of font string in meter -->
             <size width="175" height="55"/>
             <!-- <meterScript onInit="Meter_OnInit" onStart="Meter_OnStart" onStop="Meter_OnStop" onClear="Meter_OnClear"/> -->
@@ -15,6 +15,125 @@
                 <range target="1000000" bangUpType="rampUp" velocity="15.0"  estimatedTime="4000" slowStartTime="500"/>
             </bangRange>
         </uiMeter>
+    </node>
+
+    <node name="uiBackground">
+        
+        <sprite objectName="uiBackground">
+            <position x="0" y="-890" z="0"/>
+        </sprite>
+
+    </node>
+
+    <node name="uiTimerText">
+        
+        <sprite objectName="level_font">
+            <position x="70" y="-890" z="0"/>
+            <scale x="1.4" y="1.6" z="1.4"/>
+            <font fontName="dejavu_sans_bold_70" fontString="03:00:00"/>
+        </sprite>
+
+    </node>
+
+    <node name="uiMultplierText">
+        
+        <sprite objectName="level_font">
+            <position x="-270" y="-870" z="0"/>
+            <font fontName="dejavu_sans_bold_70" fontString="1X">
+                <alignment horzAlign="left"/>
+            </font>
+        </sprite>
+
+    </node>
+
+    <node name="uiNextBallText">
+        
+        <sprite objectName="level_font">
+            <position x="400" y="-927" z="0"/>
+            <font fontName="dejavu_sans_reg_40" fontString="Next Ball"/>
+        </sprite>
+
+    </node>
+
+    <node name="square_red">
+        
+        <sprite objectName="square_red">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="square_green">
+        
+        <sprite objectName="square_green">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="square_blue">
+        
+        <sprite objectName="square_blue">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="triangle_red">
+        
+        <sprite objectName="triangle_red">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="triangle_green">
+        
+        <sprite objectName="triangle_green">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="triangle_blue">
+        
+        <sprite objectName="triangle_blue">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="circle_red">
+        
+        <sprite objectName="circle_red">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="circle_green">
+        
+        <sprite objectName="circle_green">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
+    </node>
+
+    <node name="circle_blue">
+        
+        <sprite objectName="circle_blue">
+            <position x="400" y="-870" z="0"/>
+            <scale x="0.7" y="0.7" z="0.7"/>
+        </sprite>
+
     </node>
 
 </strategy>

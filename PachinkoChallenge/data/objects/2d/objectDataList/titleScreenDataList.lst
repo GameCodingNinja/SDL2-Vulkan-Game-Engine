@@ -27,7 +27,7 @@
 
         <object name="circle_green">
             <visual>
-                <texture file="data/textures/run/circle_green.png"/>
+                <texture file="data/textures/level/circle_green.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -40,7 +40,7 @@
     
         <object name="circle_blue">
             <visual>
-                <texture file="data/textures/run/circle_blue.png"/>
+                <texture file="data/textures/level/circle_blue.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -53,7 +53,7 @@
         
         <object name="circle_red">
             <visual>
-                <texture file="data/textures/run/circle_red.png"/>
+                <texture file="data/textures/level/circle_red.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -66,7 +66,7 @@
     
         <object name="square_green">
             <visual>
-                <texture file="data/textures/run/square_green.png"/>
+                <texture file="data/textures/level/square_green.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -81,7 +81,7 @@
 
         <object name="square_blue">
             <visual>
-                <texture file="data/textures/run/square_blue.png"/>
+                <texture file="data/textures/level/square_blue.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -96,7 +96,7 @@
 
         <object name="square_red">
             <visual>
-                <texture file="data/textures/run/square_red.png"/>
+                <texture file="data/textures/level/square_red.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -111,7 +111,7 @@
         
         <object name="triangle_green">
             <visual>
-                <texture file="data/textures/run/triangle_green.png"/>
+                <texture file="data/textures/level/triangle_green.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -130,7 +130,7 @@
     
         <object name="triangle_blue">
             <visual>
-                <texture file="data/textures/run/triangle_blue.png"/>
+                <texture file="data/textures/level/triangle_blue.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -149,7 +149,7 @@
 
         <object name="triangle_red">
             <visual>
-                <texture file="data/textures/run/triangle_red.png"/>
+                <texture file="data/textures/level/triangle_red.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">
@@ -168,7 +168,7 @@
 
         <object name="peg">
             <visual>
-                <texture count="2" file="data/textures/run/peg%d.png"/>
+                <texture count="2" file="data/textures/level/peg%d.png"/>
                 <color r="1" g="1" b="1" a="0.5"/>
             </visual>
             <physics world="(game)">

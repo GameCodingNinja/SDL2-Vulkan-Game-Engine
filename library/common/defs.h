@@ -158,6 +158,17 @@ namespace NDefs
         ENT_UI_CONTROL,
     };
 
+    enum ETimeFormat
+    {
+        ETF_MIL = 0b0001,
+        ETF_S_MIL = 0b0011,
+        ETF_M_S_MIL = 0b0111,
+        ETF_H_M_S_MIL = 0b1111,
+        ETF_S = 0b0010,
+        ETF_M_S = 0b0110,
+        ETF_H_M_S = 0b1110,
+    };
+
 }
 
 #endif

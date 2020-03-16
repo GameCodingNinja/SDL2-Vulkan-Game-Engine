@@ -31,7 +31,7 @@ namespace NScriptSprite
     std::string string;
 
     /************************************************************************
-    *    DESC:  Wrapper function due to virtual inheritance
+    *    DESC:  Wrapper functions
     ************************************************************************/
     void SetPos1(const CPoint<float> & pos, CSprite & sprite)
     {

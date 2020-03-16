@@ -39,8 +39,8 @@ namespace NScriptGlobals
     ************************************************************************/
     void RandInt( asIScriptGeneric * pScriptGen )
     {
-        int min = pScriptGen->GetArgDWord(0);
-        int max = pScriptGen->GetArgDWord(1);
+        const int min = pScriptGen->GetArgDWord(0);
+        const int max = pScriptGen->GetArgDWord(1);
 
         std::uniform_int_distribution<int> randInt(min, max);
 
@@ -49,8 +49,8 @@ namespace NScriptGlobals
 
     void RandFloat( asIScriptGeneric * pScriptGen )
     {
-        float min = pScriptGen->GetArgFloat(0);
-        float max = pScriptGen->GetArgFloat(1);
+        const float min = pScriptGen->GetArgFloat(0);
+        const float max = pScriptGen->GetArgFloat(1);
 
         std::uniform_real_distribution<float> randFloat(min, max);
 
@@ -125,8 +125,8 @@ namespace NScriptGlobals
     ************************************************************************/
     void DispatchEvent( asIScriptGeneric * pScriptGen )
     {
-        int type = pScriptGen->GetArgDWord(0);
-        int code = pScriptGen->GetArgDWord(1);
+        const int type = pScriptGen->GetArgDWord(0);
+        const int code = pScriptGen->GetArgDWord(1);
 
         pScriptGen->SetReturnDWord( NGenFunc::DispatchEvent( type, code ) );
     }
@@ -137,8 +137,8 @@ namespace NScriptGlobals
     ************************************************************************/
     void Spawn( asIScriptGeneric * pScriptGen )
     {
-        std::string *funcName = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(0));
-        std::string *group = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(1));
+        const std::string *funcName = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(0));
+        const std::string *group = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(1));
 
         CScriptMgr::Instance().prepareSpawn( *funcName, *group );
     }
@@ -149,8 +149,8 @@ namespace NScriptGlobals
     ************************************************************************/
     void SpawnByThread( asIScriptGeneric * pScriptGen )
     {
-        std::string *funcName = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(0));
-        std::string *group = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(1));
+        const std::string *funcName = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(0));
+        const std::string *group = reinterpret_cast<std::string*>(pScriptGen->GetArgAddress(1));
 
         CScriptMgr::Instance().spawnByThread( *funcName, *group );
     }

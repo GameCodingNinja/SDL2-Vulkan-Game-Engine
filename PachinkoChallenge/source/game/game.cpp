@@ -43,6 +43,7 @@
 #include <script/scriptstatcounter.h>
 #include <script/scriptbitmask.h>
 #include <script/scriptevent.h>
+#include <script/scripttime.h>
 
 // AngelScript lib dependencies
 #include <scriptstdstring/scriptstdstring.h>
@@ -130,6 +131,7 @@ void CGame::init()
     NScriptVisual::Register();
     NScriptPhysics2d::Register();
     NScriptStatCounter::Register();
+    NScriptTime::Register();
 
     // Register game level functions
     registerGameFunc();

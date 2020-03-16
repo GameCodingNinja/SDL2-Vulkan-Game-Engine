@@ -2,7 +2,29 @@
     
     <node name="square_red">
         
-        <sprite objectName="square_red">
+        <sprite objectName="square_red_physics">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="square_blue">
+        
+        <sprite objectName="square_blue_physics">
+            <scale x=".9" y=".9" z="1"/>
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="square_green">
+        
+        <sprite objectName="square_green_physics">
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
@@ -13,7 +35,7 @@
     
     <node name="triangle_green">
         
-        <sprite objectName="triangle_green">
+        <sprite objectName="triangle_green_physics">
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -23,7 +45,17 @@
     
     <node name="triangle_blue">
         
-        <sprite objectName="triangle_blue">
+        <sprite objectName="triangle_blue_physics">
+            <scriptLst>
+                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="triangle_red">
+        
+        <sprite objectName="triangle_red_physics">
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -33,7 +65,7 @@
     
     <node name="circle_green">
         
-        <sprite objectName="circle_green">
+        <sprite objectName="circle_green_physics">
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -43,7 +75,7 @@
     
     <node name="circle_blue">
         
-        <sprite objectName="circle_blue">
+        <sprite objectName="circle_blue_physics">
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -53,7 +85,7 @@
     
     <node name="circle_red">
         
-        <sprite objectName="circle_red">
+        <sprite objectName="circle_red_physics">
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>

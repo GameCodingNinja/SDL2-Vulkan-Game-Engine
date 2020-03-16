@@ -67,6 +67,10 @@ public:
     // Get the pointer to the node
     virtual iNode * getNode( const std::string & instanceName ){ return nullptr; };
     virtual iNode * getNode( const std::string & instanceName, size_t sector ){ return nullptr; };
+
+    // activate/deactivate node
+    virtual iNode * activateNode( const std::string & instanceName ){ return nullptr; };
+    virtual void deactivateNode( const std::string & instanceName ){};
     
 protected:
     

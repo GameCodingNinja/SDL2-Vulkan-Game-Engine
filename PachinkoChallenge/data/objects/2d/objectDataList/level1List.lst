@@ -13,34 +13,10 @@
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
   
     <objectList>
-        
-        <object name="circle_green">
+
+        <object name="circle_red_physics">
             <visual>
-                <texture file="data/textures/run/circle_green.png"/>
-            </visual>
-            <physics world="(game)">
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="circle" radius="48" density="0.3" restitution="0.6"/>
-                </fixtureLst>
-            </physics>
-        </object>
-    
-        <object name="circle_blue">
-            <visual>
-                <texture file="data/textures/run/circle_blue.png"/>
-            </visual>
-            <physics world="(game)">
-                <body type="dynamic"/>
-                <fixtureLst>
-                    <fixture shape="circle" radius="48" density="0.2" restitution="0.4"/>
-                </fixtureLst>
-            </physics>
-        </object>
-        
-        <object name="circle_red">
-            <visual>
-                <texture file="data/textures/run/circle_red.png"/>
+                <texture file="data/textures/level/circle_red.png"/>
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
@@ -50,9 +26,33 @@
             </physics>
         </object>
     
-        <object name="square_red">
+        <object name="circle_blue_physics">
             <visual>
-                <texture file="data/textures/run/square_red.png"/>
+                <texture file="data/textures/level/circle_blue.png"/>
+            </visual>
+            <physics world="(game)">
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="circle" radius="48" density="0.2" restitution="0.6"/>
+                </fixtureLst>
+            </physics>
+        </object>
+
+        <object name="circle_green_physics">
+            <visual>
+                <texture file="data/textures/level/circle_green.png"/>
+            </visual>
+            <physics world="(game)">
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="circle" radius="48" density="0.3" restitution="0.9"/>
+                </fixtureLst>
+            </physics>
+        </object>
+    
+        <object name="square_red_physics">
+            <visual>
+                <texture file="data/textures/level/square_red.png"/>
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
@@ -63,15 +63,43 @@
                 </fixtureLst>
             </physics>
         </object>
-        
-        <object name="triangle_green">
+
+        <object name="square_blue_physics">
             <visual>
-                <texture file="data/textures/run/triangle_green.png"/>
+                <texture file="data/textures/level/square_blue.png"/>
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
                 <fixtureLst>
-                    <fixture shape="polygon" density="0.3" restitution="0.6">
+                    <fixture shape="polygon" density="0.2" restitution="0.3">
+                        <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
+                    </fixture>
+                </fixtureLst>
+            </physics>
+        </object>
+
+        <object name="square_green_physics">
+            <visual>
+                <texture file="data/textures/level/square_green.png"/>
+            </visual>
+            <physics world="(game)">
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="polygon" density="0.3" restitution="0.4">
+                        <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
+                    </fixture>
+                </fixtureLst>
+            </physics>
+        </object>
+
+        <object name="triangle_red_physics">
+            <visual>
+                <texture file="data/textures/level/triangle_red.png"/>
+            </visual>
+            <physics world="(game)">
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="polygon" density="0.1" restitution="0.2">
                         <vertLst>
                             <vert x="50" y="5"/>
                             <vert x="5" y="94"/>
@@ -81,10 +109,10 @@
                 </fixtureLst>
             </physics>
         </object>
-    
-        <object name="triangle_blue">
+
+        <object name="triangle_blue_physics">
             <visual>
-                <texture file="data/textures/run/triangle_blue.png"/>
+                <texture file="data/textures/level/triangle_blue.png"/>
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
@@ -99,10 +127,28 @@
                 </fixtureLst>
             </physics>
         </object>
+        
+        <object name="triangle_green_physics">
+            <visual>
+                <texture file="data/textures/level/triangle_green.png"/>
+            </visual>
+            <physics world="(game)">
+                <body type="dynamic"/>
+                <fixtureLst>
+                    <fixture shape="polygon" density="0.3" restitution="0.6">
+                        <vertLst>
+                            <vert x="50" y="5"/>
+                            <vert x="5" y="94"/>
+                            <vert x="94" y="94"/>
+                        </vertLst>
+                    </fixture>
+                </fixtureLst>
+            </physics>
+        </object>
 
         <object name="peg">
             <visual>
-                <texture count="2" file="data/textures/run/peg%d.png"/>
+                <texture count="2" file="data/textures/level/peg%d.png"/>
             </visual>
             <physics world="(game)">
                 <body type="static"/>
@@ -114,7 +160,7 @@
 
         <object name="bar">
             <visual>
-                <texture file="data/textures/run/bar.png"/>
+                <texture file="data/textures/level/bar.png"/>
             </visual>
             <physics world="(game)">
                 <body type="static"/>
@@ -134,7 +180,16 @@
                 </mesh>
                 <color r="48" g="97" b="153" a="1"/>
             </visual>
-            <size width="250" height="70"/>
+            <size width="200" height="70"/>
+        </object>
+
+        <object name="uiBackground">
+            <visual>
+                <texture file="data/textures/level/level_ui_background.png"/>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <!-- Override the image size to stretch the graphic -->
+            <size width="1100" height="150"/>
         </object>
 
         <object name="meter_font">
@@ -148,6 +203,64 @@
             <visual>
                 <mesh genType="font"/>
                 <color r="64" g="125" b="192" a="1"/>
+            </visual>
+        </object>
+
+
+
+
+
+        <object name="circle_red">
+            <visual>
+                <texture file="data/textures/level/circle_red.png"/>
+            </visual>
+        </object>
+    
+        <object name="circle_blue">
+            <visual>
+                <texture file="data/textures/level/circle_blue.png"/>
+            </visual>
+        </object>
+
+        <object name="circle_green">
+            <visual>
+                <texture file="data/textures/level/circle_green.png"/>
+            </visual>
+        </object>
+    
+        <object name="square_red">
+            <visual>
+                <texture file="data/textures/level/square_red.png"/>
+            </visual>
+        </object>
+
+        <object name="square_blue">
+            <visual>
+                <texture file="data/textures/level/square_blue.png"/>
+            </visual>
+        </object>
+
+        <object name="square_green">
+            <visual>
+                <texture file="data/textures/level/square_green.png"/>
+            </visual>
+        </object>
+
+        <object name="triangle_red">
+            <visual>
+                <texture file="data/textures/level/triangle_red.png"/>
+            </visual>
+        </object>
+
+        <object name="triangle_blue">
+            <visual>
+                <texture file="data/textures/level/triangle_blue.png"/>
+            </visual>
+        </object>
+        
+        <object name="triangle_green">
+            <visual>
+                <texture file="data/textures/level/triangle_green.png"/>
             </visual>
         </object>
 

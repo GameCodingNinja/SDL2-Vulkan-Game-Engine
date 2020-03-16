@@ -1,5 +1,198 @@
 <strategy defaultGroup="(level_1)" defaultObjectName="peg" defaultId="-2">
 
+    <!--<node>
+        <sprite>
+            <position x="-800" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-640" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-480" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-320" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-160" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="0" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="160" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="320" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="480" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="640" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="800" y="-1360"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+
+
+    <node>
+        <sprite>
+            <position x="-720" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-560" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-400" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-240" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="-80" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="80" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="240" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="400" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="560" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+    <node>
+        <sprite>
+            <position x="720" y="-1200"/>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>-->
+
+
+
     <node>
         <sprite>
             <position x="-800" y="-1040"/>

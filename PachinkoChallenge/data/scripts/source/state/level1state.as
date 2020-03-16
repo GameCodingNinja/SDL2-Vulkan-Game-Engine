@@ -13,12 +13,33 @@ enum ESpriteId
 
 final class CRunState : CCommonState
 {
+    // Strategy array of names for easy creation and destruction of stratigies
     array<string> mStrategyAry = {"_level_1_stage_","_level_1_ball_","_level_1_ui_"};
+
+    // Ball list
+    array<string> mBallAry = 
+        {"square_red","square_green","square_blue",
+        "triangle_red","triangle_blue","triangle_green",
+        "circle_red","circle_blue","circle_green"};
+    
+    // Physics world object
     CPhysicsWorld2D @mPhysicsWorld;
-    iStrategy @mActorStrategy;
+
+    // Actor strategy reference(s)
+    iStrategy @mBallStrategy;
+    iStrategy @mUIStrategy;
+
+    // Level camera for orthographic point calculations
     CCamera @mCamera;
+
+    // Reference to meter control
     uiControl @mWinMeterCtrl;
+
+    // Points multiplier
     uint multiplier = 1;
+
+    // Next ball index
+    int mNextBallIndex = RandInt(0,mBallAry.length()-1);
     
     //
     //  Constructor
@@ -50,9 +71,12 @@ final class CRunState : CCommonState
         
         // Enable the needed strategies
         StrategyMgr.activateStrategyAry( mStrategyAry );
-        @mActorStrategy = StrategyMgr.getStrategy( "_level_1_ball_" );
-        iStrategy @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
+        @mBallStrategy = StrategyMgr.getStrategy( "_level_1_ball_" );
+        @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
         @mWinMeterCtrl = mUIStrategy.getNode("uiWinMeter").getControl();
+
+        // Make the next ball visible
+        mUIStrategy.activateNode(mBallAry[mNextBallIndex]);
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
@@ -93,15 +117,26 @@ final class CRunState : CCommonState
                 mChangeState = true;
             }
         }
-        else if( event.type > NDefs::SDL_MOUSEMOTION )
+        else if( event.type == NDefs::SDL_MOUSEBUTTONUP )
         {
             if( !MenuMgr.isActive() && ActionMgr.wasAction(event, "drop_ball", NDefs::EAP_UP) )
             {
                 // Strictly a mouse only game which is why I'm using the button event x & y
                 CPoint pos= mCamera.toOrthoCoord( event.button.x, event.button.y );
-                CSprite @sprite = mActorStrategy.create("square_red").getSprite();
-                sprite.setPhysicsTransform(pos.x, -1500);
+                CSprite @sprite = mBallStrategy.create(mBallAry[mNextBallIndex]).getSprite();
+                sprite.setPhysicsTransform(pos.x, -1400);
                 sprite.applyAngularImpulse(RandFloat(-0.5, 0.5));
+
+                // Randomly generate the next ball
+                int lastBallIndex = mNextBallIndex;
+                mNextBallIndex = RandInt(0,mBallAry.length()-1);
+
+                // Hide the last UI ball and show the next one
+                if( lastBallIndex != mNextBallIndex )
+                {
+                    mUIStrategy.deactivateNode( mBallAry[lastBallIndex] );
+                    mUIStrategy.activateNode( mBallAry[mNextBallIndex] );
+                }
             }
         }
     }
@@ -113,6 +148,14 @@ final class CRunState : CCommonState
     {
         if( !MenuMgr.isActive() )
             mPhysicsWorld.variableTimeStep();
+    }
+
+    //
+    //  Handle the update
+    //
+    void update() override
+    {
+
     }
 
     //

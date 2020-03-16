@@ -43,8 +43,8 @@ public:
         const std::string & group = std::string() ) override;
     
     // activate/deactivate node
-    iNode * activateNode( const std::string & instanceName );
-    void deactivateNode( const std::string & instanceName );
+    iNode * activateNode( const std::string & instanceName ) override;
+    void deactivateNode( const std::string & instanceName ) override;
     
     // Destroy the node
     void destroy( int id ) override;

@@ -172,4 +172,15 @@ namespace NDefs
         EAP_DOWN,
         EAP_UP
     };
+
+    shared enum ETimeFormat
+    {
+        ETF_MIL = 0x01,
+        ETF_S_MIL = 0x03,
+        ETF_M_S_MIL = 0x07,
+        ETF_H_M_S_MIL = 0x0f,
+        ETF_S = 0x02,
+        ETF_M_S = 0x06,
+        ETF_H_M_S = 0x0e,
+    };
 }
