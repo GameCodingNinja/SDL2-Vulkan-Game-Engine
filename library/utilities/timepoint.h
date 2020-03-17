@@ -35,7 +35,7 @@ public:
         m_timePoint( std::chrono::high_resolution_clock::now() + std::chrono::nanoseconds(value) )
     {}
 
-    CTimePoint(const std::chrono::system_clock::time_point & tp) :
+    CTimePoint(const std::chrono::high_resolution_clock::time_point & tp) :
         m_timePoint( tp )
     {}
 
@@ -116,7 +116,7 @@ public:
 private:
 
     // Time point of this class
-    std::chrono::system_clock::time_point m_timePoint;
+    std::chrono::high_resolution_clock::time_point m_timePoint;
 };
 
 #endif

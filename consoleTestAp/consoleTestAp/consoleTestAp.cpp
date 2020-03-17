@@ -1,7 +1,7 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
 
-#include <utilities/highresolutiontimer.h>
+/*#include <utilities/highresolutiontimer.h>
 #include <iostream>
 #include <iomanip>
 #include <thread>
@@ -28,7 +28,7 @@ int main()
     }
 
     return 0;
-}
+}*/
 
 
 
@@ -1167,7 +1167,7 @@ int main()
     //getchar();
 }*/
 
-/*#include <iostream>
+#include <iostream>
 #include <vector>
 #include <chrono>
 #include <algorithm>
@@ -1200,11 +1200,11 @@ int main()
     using namespace std::chrono_literals;
     
     auto & mutex = CThreadPool::Instance().getMutex();
-    CThreadPool::Instance().init( 8, 8 );
+    CThreadPool::Instance().init( 1, 2 );
     
     for( int i = 0; i < 8; ++i )
     {
-        jobVec.emplace_back(
+        /*jobVec.emplace_back(
             CThreadPool::Instance().postRetFut([&mutex] {
                 {
                     std::unique_lock<std::mutex> lock( mutex );
@@ -1219,17 +1219,35 @@ int main()
                     std::cout << "Task finished in thread: " << std::this_thread::get_id() << std::endl;
                 }
             })
-        );
+        );*/
+
+        CThreadPool::Instance().post([&mutex] {
+            {
+                std::unique_lock<std::mutex> lock( mutex );
+                std::cout << "Task started in thread: " << std::this_thread::get_id() << std::endl;
+            }
+            
+            //std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::this_thread::sleep_for(1s);
+            
+            {
+                std::unique_lock<std::mutex> lock( mutex );
+                std::cout << "Task finished in thread: " << std::this_thread::get_id() << std::endl;
+            }
+        });
     }
 
     //std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Wait for all the jobs to finish
     // get() is a blocking call, waiting for each job to return
-    for( auto && iter : jobVec ) iter.get();
+    //for( auto && iter : jobVec ) iter.get();
+
+    // Wait for posts that don't return a future
+    CThreadPool::Instance().wait();
 
     return 0;
-}*/
+}
 
 
 

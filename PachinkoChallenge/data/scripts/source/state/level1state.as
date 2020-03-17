@@ -35,11 +35,20 @@ final class CRunState : CCommonState
     // Reference to meter control
     uiControl @mWinMeterCtrl;
 
+    // Reference to timer text sprite
+    CSprite @mUITimerSprite;
+
+    // Multiplier sprite
+    CSprite @mUIMultiSprite;
+
     // Points multiplier
     uint multiplier = 1;
 
     // Next ball index
     int mNextBallIndex = RandInt(0,mBallAry.length()-1);
+
+    // Start of the timer time point
+    CTimePoint mTimePointStart;
     
     //
     //  Constructor
@@ -74,6 +83,8 @@ final class CRunState : CCommonState
         @mBallStrategy = StrategyMgr.getStrategy( "_level_1_ball_" );
         @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
         @mWinMeterCtrl = mUIStrategy.getNode("uiWinMeter").getControl();
+        @mUITimerSprite = mUIStrategy.getNode("uiTimerText").getSprite();
+        @mUIMultiSprite = mUIStrategy.getNode("uiMultplierText").getSprite();
 
         // Make the next ball visible
         mUIStrategy.activateNode(mBallAry[mNextBallIndex]);
@@ -87,6 +98,8 @@ final class CRunState : CCommonState
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
+
+        mTimePointStart.now( GetDurationMinutes(3) );
     }
     
     //
@@ -155,7 +168,10 @@ final class CRunState : CCommonState
     //
     void update() override
     {
+        CCommonState::update();
 
+        CTimePoint timePoint;
+        mUITimerSprite.createFontString( FormatTimeDuration( mTimePointStart - timePoint, NDefs::ETF_M_S ) );
     }
 
     //

@@ -30,7 +30,7 @@
         <sprite objectName="level_font">
             <position x="70" y="-890" z="0"/>
             <scale x="1.4" y="1.6" z="1.4"/>
-            <font fontName="dejavu_sans_bold_70" fontString="03:00:00"/>
+            <font fontName="dejavu_sans_bold_70" fontString="03:00"/>
         </sprite>
 
     </node>

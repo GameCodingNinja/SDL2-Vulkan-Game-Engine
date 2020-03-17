@@ -65,12 +65,11 @@ public:
     }
 
     // Post Lambda to the work queue and return future
-    template<class F, class... Args>
-    auto postRetFut(F&& f, Args&&... args)
-        -> std::future<typename std::result_of<F(Args...)>::type>;
+    template<typename F, typename... Args>
+    auto postRetFut(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>;
     
     // Post Lambda to the work queue and store future internally
-    template<class F, class... Args>
+    template<typename F, typename... Args>
     void post(F&& f, Args&&... args);
     
     // Thread pool init
@@ -124,11 +123,10 @@ private:
 /************************************************************************
 *    desc:  Post Lambda to the work queue and return future
 ************************************************************************/
-template<class F, class... Args>
-auto CThreadPool::postRetFut(F&& f, Args&&... args)
-    -> std::future<typename std::result_of<F(Args...)>::type>
+template<typename F, typename... Args>
+auto CThreadPool::postRetFut(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>
 {
-    using return_type = typename std::result_of < F(Args...)>::type;
+    using return_type = std::invoke_result_t<F, Args...>;
     
     auto task = std::make_shared < std::packaged_task < return_type()> >(
         std::bind(std::forward<F>(f), std::forward<Args>(args)...) );
@@ -160,7 +158,7 @@ auto CThreadPool::postRetFut(F&& f, Args&&... args)
 /************************************************************************
 *    desc:  Post Lambda to the work queue and store future internally
 ************************************************************************/
-template<class F, class... Args>
+template<typename F, typename... Args>
 void CThreadPool::post(F&& f, Args&&... args)
 {
     #if defined(__thread_disable__)

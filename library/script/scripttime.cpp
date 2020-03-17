@@ -139,35 +139,44 @@ namespace NScriptTime
         if( format & 0b1000 )
         {
             auto hours = std::chrono::duration_cast<std::chrono::hours>(duration).count();
-            ss << std::setfill('0') << std::setw(2) << hours << ":";
+            ss << std::setfill('0') << std::setw(2) << hours;
         }
 
         // Is minute set
         if( format & 0b0100 )
         {
+            if( !ss.str().empty() )
+                ss << ":";
+
             auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count();
-            ss << std::setfill('0') << std::setw(2) << (minutes % 60) << ":";
+            ss << std::setfill('0') << std::setw(2) << (minutes % 60);
         }
 
         // Is second set
         if( format & 0b0010 )
         {
+            if( !ss.str().empty() )
+                ss << ":";
+
             auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
-            ss << std::setfill('0') << std::setw(2) << (seconds % 60) << ":";
+            ss << std::setfill('0') << std::setw(2) << (seconds % 60);
         }
 
         // Is millisecond set
         if( format & 0b0001 )
         {
+            if( !ss.str().empty() )
+                ss << ":";
+                
             auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-            ss << std::setfill('0') << std::setw(2) << ((milliseconds/10) % 100) << ":";
+            ss << std::setfill('0') << std::setw(2) << ((milliseconds/10) % 100);
         }
 
         std::string ret_val = ss.str();
 	    pScriptGen->SetReturnObject(&ret_val);
     }
 
-    void SetDurationHours(asIScriptGeneric * pScriptGen)
+    void GetDurationHours(asIScriptGeneric * pScriptGen)
     {
         int64_t value = pScriptGen->GetArgQWord(0);
         auto duration = std::chrono::hours(value);
@@ -175,7 +184,7 @@ namespace NScriptTime
         pScriptGen->SetReturnQWord(result);
     }
 
-    void SetDurationMinutes(asIScriptGeneric * pScriptGen)
+    void GetDurationMinutes(asIScriptGeneric * pScriptGen)
     {
         int64_t value = pScriptGen->GetArgQWord(0);
         auto duration = std::chrono::minutes(value);
@@ -183,7 +192,7 @@ namespace NScriptTime
         pScriptGen->SetReturnQWord(result);
     }
 
-    void SetDurationSeconds(asIScriptGeneric * pScriptGen)
+    void GetDurationSeconds(asIScriptGeneric * pScriptGen)
     {
         int64_t value = pScriptGen->GetArgQWord(0);
         auto duration = std::chrono::seconds(value);
@@ -191,7 +200,7 @@ namespace NScriptTime
         pScriptGen->SetReturnQWord(result);
     }
 
-    void SetDurationMilliseconds(asIScriptGeneric * pScriptGen)
+    void GetDurationMilliseconds(asIScriptGeneric * pScriptGen)
     {
         int64_t value = pScriptGen->GetArgQWord(0);
         auto duration = std::chrono::milliseconds(value);
@@ -199,7 +208,7 @@ namespace NScriptTime
         pScriptGen->SetReturnQWord(result);
     }
 
-    void SetDurationMicroseconds(asIScriptGeneric * pScriptGen)
+    void GetDurationMicroseconds(asIScriptGeneric * pScriptGen)
     {
         int64_t value = pScriptGen->GetArgQWord(0);
         auto duration = std::chrono::microseconds(value);
@@ -293,10 +302,10 @@ namespace NScriptTime
 
         // Global functions
         Throw( pEngine->RegisterGlobalFunction("string FormatTimeDuration(const CTimeDuration &in, int)", asFUNCTION(FormatTimeDuration), asCALL_GENERIC) );
-        Throw( pEngine->RegisterGlobalFunction("int64 SetDurationHours(int64)",                    asFUNCTION(SetDurationHours),        asCALL_GENERIC) );
-        Throw( pEngine->RegisterGlobalFunction("int64 SetDurationMinutes(int64)",                  asFUNCTION(SetDurationMinutes),      asCALL_GENERIC) );
-        Throw( pEngine->RegisterGlobalFunction("int64 SetDurationSeconds(int64)",                  asFUNCTION(SetDurationSeconds),      asCALL_GENERIC) );
-        Throw( pEngine->RegisterGlobalFunction("int64 SetDurationMilliseconds(int64)",             asFUNCTION(SetDurationMilliseconds), asCALL_GENERIC) );
-        Throw( pEngine->RegisterGlobalFunction("int64 SetDurationMicroseconds(int64)",             asFUNCTION(SetDurationMicroseconds), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("int64 GetDurationHours(int64)",                    asFUNCTION(GetDurationHours),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("int64 GetDurationMinutes(int64)",                  asFUNCTION(GetDurationMinutes),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("int64 GetDurationSeconds(int64)",                  asFUNCTION(GetDurationSeconds),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("int64 GetDurationMilliseconds(int64)",             asFUNCTION(GetDurationMilliseconds), asCALL_GENERIC) );
+        Throw( pEngine->RegisterGlobalFunction("int64 GetDurationMicroseconds(int64)",             asFUNCTION(GetDurationMicroseconds), asCALL_GENERIC) );
     }
 }
