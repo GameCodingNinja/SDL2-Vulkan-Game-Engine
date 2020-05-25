@@ -5,7 +5,7 @@
             <filePath file="data/objects/strategy/level_1/win_meter.ctrl"/>
             <position x="-400" y="-870" z="0"/>
             <!-- Max size of font string in meter -->
-            <size width="175" height="55"/>
+            <size width="190" height="70"/>
             <!-- <meterScript onInit="Meter_OnInit" onStart="Meter_OnStart" onStop="Meter_OnStop" onClear="Meter_OnClear"/> -->
             <bangRange fastBangTime="500" scaleType="axis">
                 <range target="500" bangUpType="rampUp" velocity="15.0"  estimatedTime="200" slowStartTime="100"/>

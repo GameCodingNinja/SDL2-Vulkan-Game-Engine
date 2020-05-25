@@ -24,6 +24,10 @@
             <size width="750" height="450"/>
         </object>
 
+        <object name="game_start_menu_bg">
+            <size width="750" height="450"/>
+        </object>
+
     </objectList>
 
 </objectDataList2D>

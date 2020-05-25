@@ -419,11 +419,11 @@ public:
     ************************************************************************/
     std::string dump() const
     {
-        std::string printout = "Color( " +
-            str( boost::format("%d") % r ) + "r, " +
-            str( boost::format("%d") % g ) + "g, " +
-            str( boost::format("%d") % b ) + "b, " +
-            str( boost::format("%d") % a ) + "a )";
+        std::string printout = boost::str( boost::format("Color( r: %d, g: %d, b: %d, a: %d )")
+            % r
+            % g
+            % b
+            % a );
 
         return printout;
     }

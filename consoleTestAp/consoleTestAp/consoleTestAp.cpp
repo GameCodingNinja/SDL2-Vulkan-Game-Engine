@@ -1,5 +1,43 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
+	
+#include <iostream>
+#include <chrono>
+
+namespace NTest
+{
+#define MY_ENUM \
+    X(V1) \
+    X(V2) \
+    X(V3)
+
+#define X(name) name,
+enum MyEnum : int
+{
+    MY_ENUM
+};
+#undef X
+ 
+constexpr const char* MyEnumToString(MyEnum e) noexcept
+{
+    #define X(name) case(name): return #name;
+    switch(e)
+    {
+        MY_ENUM
+    }
+    #undef X
+    //return "UNKNOWN";
+}
+}
+ 
+int main(int argc, char** argv)
+{
+    std::cout << NTest::MyEnumToString(NTest::V1) << std::endl;
+    std::cout << NTest::MyEnumToString(NTest::V2) << std::endl;
+    std::cout << NTest::MyEnumToString(NTest::V3) << std::endl;
+    return 1;
+}
+
 
 /*#include <utilities/highresolutiontimer.h>
 #include <iostream>
@@ -1167,7 +1205,7 @@ int main()
     //getchar();
 }*/
 
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 #include <chrono>
 #include <algorithm>
@@ -1204,7 +1242,7 @@ int main()
     
     for( int i = 0; i < 8; ++i )
     {
-        /*jobVec.emplace_back(
+        jobVec.emplace_back(
             CThreadPool::Instance().postRetFut([&mutex] {
                 {
                     std::unique_lock<std::mutex> lock( mutex );
@@ -1219,7 +1257,7 @@ int main()
                     std::cout << "Task finished in thread: " << std::this_thread::get_id() << std::endl;
                 }
             })
-        );*/
+        );
 
         CThreadPool::Instance().post([&mutex] {
             {
@@ -1247,7 +1285,7 @@ int main()
     CThreadPool::Instance().wait();
 
     return 0;
-}
+}*/
 
 
 

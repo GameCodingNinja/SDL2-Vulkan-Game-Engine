@@ -194,6 +194,44 @@ namespace NScriptMenuManager
     }
 
     /************************************************************************
+    *    DESC:  Transition the tree
+    ************************************************************************/
+    void TransitionMenu1( const std::string & group, const std::string & treeStr, CMenuMgr & rMenuMgr )
+    {
+        try
+        {
+            rMenuMgr.transitionMenu( group, treeStr );
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+    }
+
+    /************************************************************************
+    *    DESC:  Transition the tree
+    ************************************************************************/
+    void TransitionMenu2( const std::string & treeStr, CMenuMgr & rMenuMgr )
+    {
+        try
+        {
+            rMenuMgr.transitionMenu( treeStr );
+        }
+        catch( NExcept::CCriticalException & ex )
+        {
+            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
+        }
+        catch( std::exception const & ex )
+        {
+            asGetActiveContext()->SetException(ex.what());
+        }
+    }
+
+    /************************************************************************
     *    DESC:  Deactivate the tree
     ************************************************************************/
     void DeactivateTree1( const std::string & group, const std::string & treeStr, CMenuMgr & rMenuMgr )
@@ -317,6 +355,9 @@ namespace NScriptMenuManager
 
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void deactivateTree(string &in, string &in)",           WRAP_OBJ_LAST(DeactivateTree1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void deactivateTree(string &in)",                       WRAP_OBJ_LAST(DeactivateTree2), asCALL_GENERIC) );
+
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void transitionMenu(string &in, string &in)",             WRAP_OBJ_LAST(TransitionMenu1),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void transitionMenu(string &in)",                         WRAP_OBJ_LAST(TransitionMenu2),   asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CMenuMgr", "void clearActiveTrees()",                               WRAP_MFN(CMenuMgr, clearActiveTrees), asCALL_GENERIC) );
 

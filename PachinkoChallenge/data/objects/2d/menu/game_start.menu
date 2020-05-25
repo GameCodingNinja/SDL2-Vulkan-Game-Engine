@@ -1,0 +1,48 @@
+<menu>
+    
+    <!-- Supports init, transIn, transOut, event -->
+    <scriptLst>
+        <script transIn="Menu_TransIn"/>
+        <script transOut="Menu_TransOut"/>
+    </scriptLst>
+
+    <staticMenuControls>
+
+        <!-- Message Label -->
+        <control name="message_lbl" controlType="label" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/game_start_label.ctrl"/>
+            <position x="0" y="-50" z="0"/>
+            <fontStringLst>
+                <string text="Test Message"/>
+            </fontStringLst>
+        </control>
+
+    </staticMenuControls>
+  
+    <menuControls>
+      
+        <control name="start_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_150x65.ctrl"/>
+            <position x="0" y="150" z="0"/>
+            <fontStringLst>
+                <string text="Start"/>
+            </fontStringLst>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="back"/>
+            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptLst>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptLst>
+        </control>
+
+    </menuControls>
+
+    <spriteList>
+
+        <sprite objectName="game_start_menu_bg"/>
+    
+    </spriteList>
+  
+</menu>
+

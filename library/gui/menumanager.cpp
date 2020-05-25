@@ -540,6 +540,67 @@ void CMenuMgr::clearActiveTrees()
 
 
 /************************************************************************
+*    DESC:  Transition a tree's default menu
+*           NOTE: Assumes unique tree names
+************************************************************************/
+void CMenuMgr::transitionMenu( const std::string & treeStr )
+{
+    for( auto & groupIter : m_menuTreeMapMap )
+    {
+        for( auto & treeIter : groupIter.second )
+        {
+            if( treeIter.first == treeStr )
+            {
+                transitionMenu( groupIter.first, treeIter.first );
+                return;
+            }
+        }
+    }
+
+    // If you got this far, it's a problem
+    throw NExcept::CCriticalException("Menu Transition Error!",
+        boost::str( boost::format("Menu tree doesn't exist (%s).\n\n%s\nLine: %s")
+            % treeStr % __FUNCTION__ % __LINE__ ));
+} 
+
+/************************************************************************
+*    DESC:  Transition a menu to be used
+************************************************************************/
+void CMenuMgr::transitionMenu( const std::string & group, const std::string & treeStr )
+{
+    auto groupIter = m_menuTreeMapMap.find( group );
+    if( groupIter != m_menuTreeMapMap.end() )
+    {
+        // Find the tree in the map
+        auto treeIter = groupIter->second.find( treeStr );
+        if( treeIter != groupIter->second.end() )
+        {
+            // This doesn't make sense for interface trees
+            if( treeIter->second.isInterfaceTree() )
+                throw NExcept::CCriticalException("Menu Transition Error!",
+                    boost::str( boost::format("Interface menus can't be transition (%s - %s).\n\n%s\nLine: %s")
+                        % group % treeStr % __FUNCTION__ % __LINE__ ));
+
+            // Init the menu for use
+            treeIter->second.transitionMenu();
+        }
+        else
+        {
+            throw NExcept::CCriticalException("Menu Transition Error!",
+                boost::str( boost::format("Menu tree doesn't exist (%s - %s).\n\n%s\nLine: %s")
+                    % group % treeStr % __FUNCTION__ % __LINE__ ));
+        }
+    }
+    else
+    {
+        throw NExcept::CCriticalException("Menu Transition Error!",
+            boost::str( boost::format("Menu tree group doesn't exist (%s - %s).\n\n%s\nLine: %s")
+                % group % treeStr % __FUNCTION__ % __LINE__ ));
+    }
+}
+
+
+/************************************************************************
 *    DESC:  Handle input events and dispatch menu events
 ************************************************************************/
 void CMenuMgr::handleEvent( const SDL_Event & rEvent )

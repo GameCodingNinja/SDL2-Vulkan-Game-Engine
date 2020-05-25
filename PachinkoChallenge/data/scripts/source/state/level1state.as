@@ -49,6 +49,9 @@ final class CRunState : CCommonState
 
     // Start of the timer time point
     CTimePoint mTimePointStart;
+
+    // Game active flag
+    bool mGameActive = false;
     
     //
     //  Constructor
@@ -76,7 +79,9 @@ final class CRunState : CCommonState
     void init() override
     {
         // Unblock the menu messaging and activate needed trees(s)
-        MenuMgr.activateTree( "pause_tree" );
+        MenuMgr.allow();
+        MenuMgr.activateTree( "game_start_tree" );
+        MenuMgr.transitionMenu( "game_start_tree" );
         
         // Enable the needed strategies
         StrategyMgr.activateStrategyAry( mStrategyAry );
@@ -98,8 +103,6 @@ final class CRunState : CCommonState
         
         // Do the fade in
         Spawn("State_FadeIn", "(state)");
-
-        mTimePointStart.now( GetDurationMinutes(3) );
     }
     
     //
@@ -118,9 +121,6 @@ final class CRunState : CCommonState
             else if( event.type == NLevelDefs::ELE_BANG_UP_AWARD )
                 mWinMeterCtrl.incBangUp( multiplier );
             
-            else if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )
-                MenuMgr.allow();
-            
             else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
             {
                 // Clear out all the trees
@@ -128,6 +128,19 @@ final class CRunState : CCommonState
 
                 // Set the flag to change the state
                 mChangeState = true;
+            }
+            else if( event.type == NMenuDefs::EME_MENU_TRANS_OUT )
+            {
+                if( event.user.code == NMenuDefs::ETC_END && !mGameActive )
+                {
+                    // Switch out the default menus
+                    MenuMgr.deactivateTree( "game_start_tree" );
+                    MenuMgr.activateTree( "pause_tree" );
+
+                    // Start the game
+                    mGameActive = true;
+                    mTimePointStart.now( GetDurationMinutes(3) );
+                }
             }
         }
         else if( event.type == NDefs::SDL_MOUSEBUTTONUP )
@@ -170,8 +183,20 @@ final class CRunState : CCommonState
     {
         CCommonState::update();
 
-        CTimePoint timePoint;
-        mUITimerSprite.createFontString( FormatTimeDuration( mTimePointStart - timePoint, NDefs::ETF_M_S ) );
+        if( mGameActive )
+        {
+            CTimePoint timePoint;
+            CTimeDuration duration( mTimePointStart - timePoint );
+            if( duration.getNanoseconds() > 0 )
+            {
+                mUITimerSprite.createFontString( FormatTimeDuration( mTimePointStart - timePoint, NDefs::ETF_M_S ) );
+            }
+            else
+            {
+                mUITimerSprite.createFontString( "00:00" );
+                mGameActive = false;
+            }
+        }
     }
 
     //

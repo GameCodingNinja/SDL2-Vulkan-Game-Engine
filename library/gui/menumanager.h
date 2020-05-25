@@ -76,6 +76,10 @@ public:
     void deactivateTree( const std::string & treeStr );
     void deactivateTreeLst( const std::vector<std::string> & treeStrVec );
 
+    // Transition a tree's default menu
+    void transitionMenu( const std::string & treeStr );
+    void transitionMenu( const std::string & group, const std::string & treeStr );
+
     // Clear the active trees
     void clearActiveTrees();
 

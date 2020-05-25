@@ -86,10 +86,10 @@ public:
     // Get the name of the tree
     std::string & getName();
 
-private:
-
     // Transition the menu
     void transitionMenu();
+
+private:
 
     // Handle message
     void onEscape( const SDL_Event & rEvent );
