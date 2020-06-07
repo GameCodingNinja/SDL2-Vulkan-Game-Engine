@@ -139,7 +139,7 @@ final class CRunState : CCommonState
 
                     // Start the game
                     mGameActive = true;
-                    mTimePointStart.now( GetDurationMinutes(3) );
+                    mTimePointStart.now( GetDurationMinutes(1) );
                 }
             }
         }
@@ -195,6 +195,11 @@ final class CRunState : CCommonState
             {
                 mUITimerSprite.createFontString( "00:00" );
                 mGameActive = false;
+
+                // Switch out the default menus and activate
+                MenuMgr.deactivateTree( "pause_tree" );
+                MenuMgr.activateTree( "game_start_tree" );
+                MenuMgr.transitionMenu( "game_start_tree" );
             }
         }
     }

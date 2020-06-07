@@ -71,6 +71,9 @@ public:
     // activate/deactivate node
     virtual iNode * activateNode( const std::string & instanceName ){ return nullptr; };
     virtual void deactivateNode( const std::string & instanceName ){};
+
+    // Clear all nodes
+    virtual void clear(){};
     
 protected:
     

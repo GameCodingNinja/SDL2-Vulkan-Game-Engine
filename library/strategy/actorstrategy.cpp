@@ -37,7 +37,17 @@ CActorStrategy::CActorStrategy()
 ************************************************************************/
 CActorStrategy::~CActorStrategy()
 {
-    // Build a unique list of nodes and delete
+    clear();
+}
+
+
+/************************************************************************
+ *    DESC:  Clear all nodes
+ ************************************************************************/
+void CActorStrategy::clearAllNodes()
+{
+    // Build a unique list of nodes to delete
+    // A node pointer can be in more then one container
     std::vector<iNode *> deleteList;
 
     for( auto & mapIter : m_pNodeMap )
@@ -69,6 +79,21 @@ CActorStrategy::~CActorStrategy()
     }
 
     NDelFunc::DeleteVectorPointers( deleteList );
+
+    m_pNodeMap.clear();
+    m_pNodeVec.clear();
+    m_pActivateVec.clear();
+    m_pDeactivateVec.clear();
+    m_deleteVec.clear();
+}
+
+
+/************************************************************************
+ *    DESC:  Clear all nodes
+ ************************************************************************/
+void CActorStrategy::clear()
+{
+    m_clearAllNodesFlag = true;
 }
 
 
@@ -282,6 +307,12 @@ void CActorStrategy::update()
     for( auto iter : m_pNodeVec )
         iter->update();
     
+    if( m_clearAllNodesFlag )
+    {
+        m_clearAllNodesFlag = false;
+        clearAllNodes();
+    }
+
     // Add nodes to the active list
     addToActiveList();
     

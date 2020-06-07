@@ -29,6 +29,13 @@
 /consoleTestAp/consoleTestAp.VC.opendb
 /consoleTestAp/build/
 
+/consoleSimpleApp/Win32/
+/consoleSimpleApp/AS_DEBUG/
+/consoleSimpleApp/.vs/
+/consoleSimpleApp/KittyBall.sdf
+/consoleSimpleApp/consoleTestAp.VC.opendb
+/consoleSimpleApp/build/
+
 /org.howiesfunware.PachinkoChallenge/build
 /org.howiesfunware.PachinkoChallenge/app/build
 /org.howiesfunware.PachinkoChallenge/app/.cxx

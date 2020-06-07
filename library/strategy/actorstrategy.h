@@ -65,6 +65,9 @@ public:
     iNode * getNode( const int id );
     iNode * getNode( const std::string & instanceName ) override;
 
+    // Clear all nodes
+    void clear() override;
+
 protected:
 
     // Get the node data by name
@@ -81,6 +84,9 @@ private:
     // Remove and deleted nodes from the active list and map
     void deleteFromActiveList();
 
+    // Clear all nodes
+    void clearAllNodes();
+
 protected:
 
     // Map of the node data
@@ -88,6 +94,9 @@ protected:
 
     // Active vector of iNode pointers
     std::vector<iNode *> m_pNodeVec;
+
+    // Nodes with names
+    std::map<const std::string, iNode *> m_pNodeMap;
     
     // Vector of iNode pointers to be added to the active vector
     std::vector<iNode *> m_pActivateVec;
@@ -97,9 +106,9 @@ protected:
     
     // Set of indexes to delete
     std::vector<int> m_deleteVec;
-    
-    // Nodes with names
-    std::map<const std::string, iNode *> m_pNodeMap;
+
+    // Clear all nodes flag
+    bool m_clearAllNodesFlag = false;
 };
 
 #endif
