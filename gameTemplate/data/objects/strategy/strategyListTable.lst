@@ -17,11 +17,11 @@
     </groupList>
 
     <groupList groupName="_stage_">
-        <file path="data/objects/strategy/level_1/level.stage"/>
+        <file path="data/objects/strategy/level_1/stage.strategy"/>
     </groupList>
     
     <groupList groupName="_level_1_">
-        <file path="data/objects/strategy/level_1/actor.strategy"/>
+        <file path="data/objects/strategy/level_1/ball.strategy"/>
     </groupList>
   
 </listTable>

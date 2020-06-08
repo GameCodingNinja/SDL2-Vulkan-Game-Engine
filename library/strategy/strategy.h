@@ -1,18 +1,21 @@
 
 /************************************************************************
-*    FILE NAME:       actorstrategy.h
+*    FILE NAME:       strategy.h
 *
-*    DESCRIPTION:     Actor strategy class
+*    DESCRIPTION:     Strategy class
 ************************************************************************/
 
-#ifndef __actor_strategy_h__
-#define __actor_strategy_h__
+#ifndef __strategy_h__
+#define __strategy_h__
 
 // Physical component dependency
-#include <strategy/istrategy.h>
+#include <common/objecttransform.h>
 
-// Boost lib dependencies
-#include <boost/noncopyable.hpp>
+// Game lib dependencies
+#include <common/worldvalue.h>
+
+// Vulkan lib dependencies
+#include <system/vulkan.h>
 
 // Standard lib dependencies
 #include <string>
@@ -21,52 +24,70 @@
 
 // Forward Declarations
 class CNodeDataList;
+class iNode;
+class CCamera;
 
-class CActorStrategy : public iStrategy, boost::noncopyable
+class CStrategy : public CObjectTransform
 {
 public:
 
     // Constructor
-    CActorStrategy();
+    CStrategy();
 
     // Destructor
-    virtual ~CActorStrategy();
+    virtual ~CStrategy();
 
     // Load the node data from file
-    void loadFromFile( const std::string & file ) override;
+    void loadFromFile( const std::string & file );
 
     // Create the node
     iNode * create(
         const std::string & dataName,
         const std::string & instanceName = "",
         bool makeActive = true,
-        const std::string & group = std::string() ) override;
+        const std::string & group = std::string() );
     
     // activate/deactivate node
-    iNode * activateNode( const std::string & instanceName ) override;
-    void deactivateNode( const std::string & instanceName ) override;
+    iNode * activateNode( const std::string & instanceName );
+    void deactivateNode( const std::string & instanceName );
+
+    // Get the world value position
+    const CPoint<CWorldValue> & getWorldValuePos() const;
+
+    // Set/Inc the world value position
+    void setPos( const CPoint<CWorldValue> & position );
+    void setPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
+
+    void incPos( const CPoint<CWorldValue> & position );
+    void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
     
     // Destroy the node
-    void destroy( int id ) override;
+    void destroy( int id );
 
     // Update the nodes
-    void update() override;
+    void update();
 
     // Transform the node
-    void transform() override;
+    void transform();// override;
+
+    // Set the command buffers
+    void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
 
     // Record the command buffer for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t index ) override;
+    void recordCommandBuffer( uint32_t index );
 
     // Find if the node is active
     bool isActive( const int id );
     
     // Get the pointer to the node
-    iNode * getNode( const int id );
-    iNode * getNode( const std::string & instanceName ) override;
+    iNode * getNode( const std::string & instanceName );
+
+    // Set to create the sprite
+    void setCamera( const std::string & cameraId );
+    CCamera & getCamera();
 
     // Clear all nodes
-    void clear() override;
+    void clear();
 
 protected:
 
@@ -89,6 +110,15 @@ private:
 
 protected:
 
+    // Id increment member
+    static int m_idInc;
+
+    // World position value
+    CPoint<CWorldValue> m_worldValPos;
+    
+    // Camera pointer
+    CCamera * m_pCamera;
+
     // Map of the node data
     std::map<const std::string, CNodeDataList> m_dataMap;
 
@@ -109,6 +139,12 @@ protected:
 
     // Clear all nodes flag
     bool m_clearAllNodesFlag = false;
+
+    // Command buffer
+    // NOTE: command buffers don't have to be freed because
+    //       they are freed by deleting the pool they belong to
+    //       and the pool will be freed at the end of the state
+    std::vector<VkCommandBuffer> m_commandBufVec;
 };
 
 #endif

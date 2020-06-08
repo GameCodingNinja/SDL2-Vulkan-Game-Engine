@@ -1,12 +1,11 @@
-
 /************************************************************************
-*    FILE NAME:       actorstrategy.cpp
+*    FILE NAME:       strategy.cpp
 *
-*    DESCRIPTION:     Actor strategy 2d class
+*    DESCRIPTION:     Strategy class
 ************************************************************************/
 
 // Physical component dependency
-#include <strategy/actorstrategy.h>
+#include <strategy/strategy.h>
 
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>
@@ -20,31 +19,33 @@
 #include <node/inode.h>
 #include <system/device.h>
 #include <common/camera.h>
+#include <managers/cameramanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
 
+int CStrategy::m_idInc = 0;
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CActorStrategy::CActorStrategy()
+CStrategy::CStrategy() :
+    m_pCamera( &CCameraMgr::Instance().getDefault() )
 {
 }
-
 
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
-CActorStrategy::~CActorStrategy()
+CStrategy::~CStrategy()
 {
     clear();
 }
 
-
 /************************************************************************
  *    DESC:  Clear all nodes
  ************************************************************************/
-void CActorStrategy::clearAllNodes()
+void CStrategy::clearAllNodes()
 {
     // Build a unique list of nodes to delete
     // A node pointer can be in more then one container
@@ -87,20 +88,18 @@ void CActorStrategy::clearAllNodes()
     m_deleteVec.clear();
 }
 
-
 /************************************************************************
  *    DESC:  Clear all nodes
  ************************************************************************/
-void CActorStrategy::clear()
+void CStrategy::clear()
 {
     m_clearAllNodesFlag = true;
 }
 
-
 /************************************************************************
  *    DESC:  Load the node data from node
  ************************************************************************/
-void CActorStrategy::loadFromFile( const std::string & file )
+void CStrategy::loadFromFile( const std::string & file )
 {
     // open and parse the XML file:
     const XMLNode node = XMLNode::openFileHelper( file.c_str(), "strategy" );
@@ -139,11 +138,10 @@ void CActorStrategy::loadFromFile( const std::string & file )
     }
 }
 
-
 /************************************************************************
  *    DESC:  Get the node data container by name
  ************************************************************************/
-CNodeDataList & CActorStrategy::getData( const std::string & name, const std::string & _group )
+CNodeDataList & CStrategy::getData( const std::string & name, const std::string & _group )
 {
     // Normal senerio is that the actor data has been loaded for this actor strategy
     auto iter = m_dataMap.find( name );
@@ -184,11 +182,10 @@ CNodeDataList & CActorStrategy::getData( const std::string & name, const std::st
     return iter->second;
 }
 
-
 /************************************************************************
 *    DESC:  create the node
 ************************************************************************/
-iNode * CActorStrategy::create(
+iNode * CStrategy::create(
     const std::string & dataName,
     const std::string & instanceName,
     bool makeActive,
@@ -237,11 +234,10 @@ iNode * CActorStrategy::create(
     return pHeadNode;
 }
 
-
 /************************************************************************
  *    DESC:  activate node
  ************************************************************************/
-iNode * CActorStrategy::activateNode( const std::string & instanceName )
+iNode * CStrategy::activateNode( const std::string & instanceName )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pNodeMap.find( instanceName );
@@ -266,11 +262,10 @@ iNode * CActorStrategy::activateNode( const std::string & instanceName )
     return mapIter->second;
 }
 
-
 /************************************************************************
  *    DESC:  deactivate node
  ************************************************************************/
-void CActorStrategy::deactivateNode( const std::string & instanceName )
+void CStrategy::deactivateNode( const std::string & instanceName )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pNodeMap.find( instanceName );
@@ -289,20 +284,48 @@ void CActorStrategy::deactivateNode( const std::string & instanceName )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node can't be found to deactivate (%s)!") % instanceName ) );
 }
 
+/************************************************************************
+*    DESC:  Set the world value position
+************************************************************************/  
+void CStrategy::setPos( const CPoint<CWorldValue> & position )
+{
+    m_worldValPos = -position;
+    CObjectTransform::setPos( m_worldValPos );
+}
+
+void CStrategy::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
+{
+    m_worldValPos.set( -x, -y, -z );
+    CObjectTransform::setPos( m_worldValPos );
+}
+
+/************************************************************************
+*    DESC:  Increment the world value position
+************************************************************************/  
+void CStrategy::incPos( const CPoint<CWorldValue> & position )
+{
+    m_worldValPos.inc( -position.x, -position.y, -position.z );
+    CObjectTransform::incPos( m_worldValPos );
+}
+
+void CStrategy::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
+{
+    m_worldValPos.inc( -x, -y, -z );
+    CObjectTransform::incPos( m_worldValPos );
+}
 
 /************************************************************************
 *    DESC:  destroy the node
 ************************************************************************/
-void CActorStrategy::destroy( int id )
+void CStrategy::destroy( int id )
 {
     m_deleteVec.push_back( id );
 }
 
-
 /***************************************************************************
 *    DESC:  Update the nodes
 ****************************************************************************/
-void CActorStrategy::update()
+void CStrategy::update()
 {
     for( auto iter : m_pNodeVec )
         iter->update();
@@ -323,22 +346,22 @@ void CActorStrategy::update()
     deleteFromActiveList();
 }
 
-
 /************************************************************************
 *    DESC:  Transform the nodes
 ************************************************************************/
-void CActorStrategy::transform()
+void CStrategy::transform()
 {
-    for( auto iter : m_pNodeVec )
-        iter->transform();
-}
+    CObjectTransform::transform();
 
+    for( auto iter : m_pNodeVec )
+        iter->transform( *this );
+}
 
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
 ****************************************************************************/
-void CActorStrategy::recordCommandBuffer( uint32_t index )
+void CStrategy::recordCommandBuffer( uint32_t index )
 {
     auto cmdBuf( m_commandBufVec.at(index) );
 
@@ -352,11 +375,10 @@ void CActorStrategy::recordCommandBuffer( uint32_t index )
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
-
 /************************************************************************
 *    DESC:  Get the pointer to the node
 ************************************************************************/
-iNode * CActorStrategy::getNode( const std::string & instanceName )
+iNode * CStrategy::getNode( const std::string & instanceName )
 {
     auto iter = m_pNodeMap.find( instanceName );
     
@@ -368,11 +390,10 @@ iNode * CActorStrategy::getNode( const std::string & instanceName )
     return iter->second;
 }
 
-
 /************************************************************************
- *    DESC:  Find if the node is active
- ************************************************************************/
-bool CActorStrategy::isActive( const int id )
+*    DESC:  Find if the node is active
+************************************************************************/
+bool CStrategy::isActive( const int id )
 {
     // See if this node has already been created
     const auto iter = std::find_if(
@@ -386,11 +407,10 @@ bool CActorStrategy::isActive( const int id )
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Add created nodes to the active list
 ************************************************************************/
-void CActorStrategy::addToActiveList()
+void CStrategy::addToActiveList()
 {
     // Add new nodes created during the update
     if( !m_pActivateVec.empty() )
@@ -405,11 +425,10 @@ void CActorStrategy::addToActiveList()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Remove deactivated nodes from the active list
 ************************************************************************/
-void CActorStrategy::removeFromActiveList()
+void CStrategy::removeFromActiveList()
 {
     if( !m_pDeactivateVec.empty() )
     {
@@ -429,11 +448,10 @@ void CActorStrategy::removeFromActiveList()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Remove and deleted nodes from the active list and map
 ************************************************************************/
-void CActorStrategy::deleteFromActiveList()
+void CStrategy::deleteFromActiveList()
 {
     if( !m_deleteVec.empty() )
     {
@@ -471,4 +489,25 @@ void CActorStrategy::deleteFromActiveList()
         
         m_deleteVec.clear();
     }
+}
+
+/************************************************************************
+ *    DESC:  Set the command buffers
+ ************************************************************************/
+void CStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
+{
+    m_commandBufVec = commandBufVec;
+}
+
+/************************************************************************
+*    DESC:  Set/Get the camera
+************************************************************************/
+void CStrategy::setCamera( const std::string & cameraId )
+{
+    m_pCamera = &CCameraMgr::Instance().get( cameraId );
+}
+
+CCamera & CStrategy::getCamera()
+{
+    return *m_pCamera;
 }

@@ -94,6 +94,19 @@ void CSprite::load( const XMLNode & node )
 
 
 /************************************************************************
+*    DESC:  Update the physics transforms
+************************************************************************/
+void CSprite::loadTransforms( const XMLNode & node )
+{
+    // Load the transform data
+    loadTransFromNode( node );
+    
+    if( m_upPhysicsComponent )
+        m_upPhysicsComponent->setTransform(m_pos.x, m_pos.y, m_rot.z);
+}
+
+
+/************************************************************************
 *    DESC:  Init the physics
 ************************************************************************/
 void CSprite::initPhysics()

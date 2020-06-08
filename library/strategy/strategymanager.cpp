@@ -12,7 +12,7 @@
 #include <utilities/deletefuncs.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/genfunc.h>
-#include <strategy/istrategy.h>
+#include <strategy/strategy.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -40,9 +40,9 @@ CStrategyMgr::~CStrategyMgr()
 /************************************************************************
  *    DESC:  Add strategy which will load it's data from XML node
  ************************************************************************/
-iStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy )
+CStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, CStrategy * pStrategy )
 {
-    auto mapIter = m_pStrategyMap.emplace( strategyId, pSpriteStrategy );
+    auto mapIter = m_pStrategyMap.emplace( strategyId, pStrategy );
 
     // Check for duplicate groups being used
     if( !mapIter.second )
@@ -58,7 +58,7 @@ iStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, iStrategy
         for( auto & filePathIter : listTableIter->second )
             mapIter.first->second->loadFromFile( filePathIter );
     
-    return pSpriteStrategy;
+    return pStrategy;
 }
 
 
@@ -78,7 +78,7 @@ void CStrategyMgr::activateStrategyAry( const CScriptArray & strategyIdAry )
 }
 
 
-iStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
+CStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pStrategyMap.find( strategyId );
@@ -218,7 +218,7 @@ void CStrategyMgr::recordCommandBuffer( uint32_t index )
 /************************************************************************
 *    DESC:  Get the pointer to the strategy
 ************************************************************************/
-iStrategy * CStrategyMgr::getStrategy( const std::string & strategyId )
+CStrategy * CStrategyMgr::getStrategy( const std::string & strategyId )
 {
     // Make sure the strategy we are looking for is available
     auto mapIter = m_pStrategyMap.find( strategyId );

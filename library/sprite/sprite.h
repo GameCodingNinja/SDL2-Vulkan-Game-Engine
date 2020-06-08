@@ -48,6 +48,9 @@ public:
     
     // Load the sprite data
     void load( const XMLNode & node );
+
+    // Load just the transforms from node
+    void loadTransforms( const XMLNode & node );
     
     // Init the physics
     void initPhysics();

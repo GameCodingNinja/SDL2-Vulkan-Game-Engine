@@ -18,8 +18,7 @@
 #include <physics/physicsworldmanager2d.h>
 #include <physics/physicsworld2d.h>
 #include <sprite/sprite.h>
-#include <strategy/stagestrategy.h>
-#include <strategy/actorstrategy.h>
+#include <strategy/strategy.h>
 #include <strategy/strategymanager.h>
 #include <strategy/strategyloader.h>
 
@@ -39,7 +38,6 @@ CLevel1State::CLevel1State() :
     //m_rPhysicsWorld.getWorld().SetDestructionListener(this);
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -51,7 +49,6 @@ CLevel1State::~CLevel1State()
     CPhysicsWorldManager2D::Instance().destroyWorld( "(game)" );
     CScriptMgr::Instance().freeGroup("(level_1)");
 }
-
 
 /************************************************************************
 *    DESC:  Do any pre-game loop init's
@@ -70,7 +67,6 @@ void CLevel1State::init()
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
 }
-
 
 /************************************************************************
 *    DESC:  Handle events
@@ -102,7 +98,6 @@ void CLevel1State::handleEvent( const SDL_Event & rEvent )
     }
 }
 
-
 /***************************************************************************
 *    DESC:  Handle the physics
 ****************************************************************************/
@@ -113,7 +108,6 @@ void CLevel1State::physics()
         m_rPhysicsWorld.fixedTimeStep();
     }
 }
-
 
 /************************************************************************
 *    DESC:  Called when two fixtures begin to touch
@@ -133,7 +127,6 @@ void CLevel1State::BeginContact(b2Contact* contact)
     }
 }
 
-
 /************************************************************************
 *    DESC:  Called when two fixtures cease to touch
 ************************************************************************/
@@ -152,7 +145,6 @@ void CLevel1State::EndContact(b2Contact* contact)
     }
 }
 
-
 /***************************************************************************
 *    DESC:  Static function for loading the assets for this state
 *           NOTE: Only call when the class is not allocated
@@ -169,5 +161,6 @@ void CLevel1State::load()
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
 
     // Load the Strategy
-    NStrategyloader::load( "data/objects/strategy/level_1/strategy.loader" );
+    NStrategyloader::load( "data/objects/strategy/level_1/stage.strategy.loader" );
+    NStrategyloader::load( "data/objects/strategy/level_1/ball.strategy.loader" );
 }

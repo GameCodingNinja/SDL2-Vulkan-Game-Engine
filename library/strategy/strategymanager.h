@@ -17,7 +17,7 @@
 #include <vector>
 
 // Forward Declarations
-class iStrategy;
+class CStrategy;
 class CScriptArray;
 
 class CStrategyMgr : public CManagerBase
@@ -32,10 +32,10 @@ public:
     }
     
     // Add strategy which will load it's data from XML node
-    iStrategy * addStrategy( const std::string & strategyId, iStrategy * pSpriteStrategy );
+    CStrategy * addStrategy( const std::string & strategyId, CStrategy * pSpriteStrategy );
     
     // activate strategy
-    iStrategy * activateStrategy( const std::string & strategyId );
+    CStrategy * activateStrategy( const std::string & strategyId );
     void activateStrategyLst( const std::vector<std::string> & strategyIdVec );
     void activateStrategyAry( const CScriptArray & strategyIdAry );
 
@@ -62,7 +62,7 @@ public:
     void recordCommandBuffer( uint32_t index );
     
     // Get the pointer to the strategy
-    iStrategy * getStrategy( const std::string & strategyId );
+    CStrategy * getStrategy( const std::string & strategyId );
     
     // Get a reference to the strategy
     template <typename target>
@@ -101,10 +101,10 @@ private:
 private:
 
     // Map of strategy pointers
-    std::map<std::string, iStrategy *> m_pStrategyMap;
+    std::map<std::string, CStrategy *> m_pStrategyMap;
     
     // Vector of strategy pointers
-    std::vector<iStrategy *> m_pStrategyVec;
+    std::vector<CStrategy *> m_pStrategyVec;
 };
 
 #endif

@@ -24,7 +24,7 @@
 #include <utilities/highresolutiontimer.h>
 #include <utilities/genfunc.h>
 #include <strategy/strategymanager.h>
-#include <strategy/actorstrategy.h>
+#include <strategy/strategy.h>
 #include <strategy/strategyloader.h>
 #include <common/color.h>
 #include <sprite/sprite.h>

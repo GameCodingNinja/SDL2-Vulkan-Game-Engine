@@ -1,7 +1,6 @@
 <loader>
 
-    <strategy name="_stage_" type="stage" cmdBufPool="(level_1)"/>
-    <strategy name="_level_1_" type="actor" cmdBufPool="(level_1)">
+    <strategy name="_level_1_" cmdBufPool="(level_1)">
     
         <node name="triangle_blue"/>
         <node name="triangle_green"/>

@@ -138,11 +138,8 @@ add_library(
         3d/light.cpp
         3d/lightlist.cpp
         3d/visualcomponent3d.cpp
-        strategy/sector.cpp
-        strategy/actorstrategy.cpp
-        strategy/stagestrategy.cpp
+        strategy/strategy.cpp
         strategy/strategymanager.cpp
-        strategy/istrategy.cpp
         strategy/strategyloader.cpp
         common/worldvalue.cpp
         common/camera.cpp

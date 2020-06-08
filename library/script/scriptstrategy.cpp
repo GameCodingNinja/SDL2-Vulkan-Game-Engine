@@ -10,9 +10,7 @@
 
 // Game lib dependencies
 #include <strategy/strategymanager.h>
-#include <strategy/istrategy.h>
-#include <strategy/stagestrategy.h>
-#include <strategy/actorstrategy.h>
+#include <strategy/strategy.h>
 #include <strategy/strategyloader.h>
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
@@ -31,7 +29,7 @@ namespace NScriptStrategy
     /************************************************************************
     *    DESC:  Set the command buffers
     ************************************************************************/
-    void SetCommandBuffer( const std::string & cmdBufPoolId, iStrategy & rStrategy )
+    void SetCommandBuffer( const std::string & cmdBufPoolId, CStrategy & rStrategy )
     {
         try
         {
@@ -51,7 +49,7 @@ namespace NScriptStrategy
     /************************************************************************
     *    DESC:  Get the pointer to the node
     ************************************************************************/
-    iNode * GetNode1( const std::string & instanceName, iStrategy & rStrategy )
+    iNode * GetNode( const std::string & instanceName, CStrategy & rStrategy )
     {
         try
         {
@@ -68,29 +66,11 @@ namespace NScriptStrategy
         
         return nullptr;
     }
-
-    iNode * GetNode2( const std::string & nodeName, size_t sector, iStrategy & rStrategy )
-    {
-        try
-        {
-            return rStrategy.getNode(nodeName, sector);
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return nullptr;
-    }
     
     /************************************************************************
-    *    DESC:  Create an actor sprite                                                            
+    *    DESC:  Create an sprite
     ************************************************************************/
-    iNode * Create( const std::string & id, const std::string & instance, bool active, const std::string & group, iStrategy & rStrategy )
+    iNode * Create( const std::string & id, const std::string & instance, bool active, const std::string & group, CStrategy & rStrategy )
     {
         try
         {
@@ -111,36 +91,13 @@ namespace NScriptStrategy
     /************************************************************************
     *    DESC:  Create a basic sprite strategy                                                            
     ************************************************************************/
-    iStrategy * CreateActorStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
+    CStrategy * CreateStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
     {
-        iStrategy * pStrategy = nullptr;
+        CStrategy * pStrategy = nullptr;
         
         try
         {
-            pStrategy = rStrategyMgr.addStrategy( strategyId, new CActorStrategy );
-        }
-        catch( NExcept::CCriticalException & ex )
-        {
-            asGetActiveContext()->SetException(ex.getErrorMsg().c_str());
-        }
-        catch( std::exception const & ex )
-        {
-            asGetActiveContext()->SetException(ex.what());
-        }
-        
-        return pStrategy;
-    }
-    
-    /************************************************************************
-    *    DESC:  Create a basic stage strategy                                                            
-    ************************************************************************/
-    iStrategy * CreateStageStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
-    {
-        iStrategy * pStrategy = nullptr;
-        
-        try
-        {
-            pStrategy = rStrategyMgr.addStrategy( strategyId, new CStageStrategy );
+            pStrategy = rStrategyMgr.addStrategy( strategyId, new CStrategy );
         }
         catch( NExcept::CCriticalException & ex )
         {
@@ -157,9 +114,9 @@ namespace NScriptStrategy
     /************************************************************************
     *    DESC:  Get the sprite strategy via string search
     ************************************************************************/
-    iStrategy * GetStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
+    CStrategy * GetStrategy( const std::string & strategyId, CStrategyMgr & rStrategyMgr )
     {
-        iStrategy * pStrategy = nullptr;
+        CStrategy * pStrategy = nullptr;
         
         try
         {
@@ -200,25 +157,24 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & getChildNode(string &in)", WRAP_MFN(iNode, getChildNode),   asCALL_GENERIC) );
 
         // Register type
-        Throw( pEngine->RegisterObjectType("iStrategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
+        Throw( pEngine->RegisterObjectType("Strategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCommandBuffer(string &in)",           WRAP_OBJ_LAST(SetCommandBuffer), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & create(string &in, string &in = '', bool active = true, string &in = '')", WRAP_OBJ_LAST(Create), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void destroy(int)",                           WRAP_MFN(iStrategy, destroy),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void setCamera(string &in)",                  WRAP_MFN(iStrategy, setCamera),  asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & getNode(string &in)",                 WRAP_OBJ_LAST(GetNode1),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & getNode(string &in, uint)",           WRAP_OBJ_LAST(GetNode2),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "iNode & activateNode(string &in)",            WRAP_MFN(iStrategy, activateNode),  asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iStrategy", "void deactivateNode(string &in)",             WRAP_MFN(iStrategy, deactivateNode),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "void setCommandBuffer(string &in)",           WRAP_OBJ_LAST(SetCommandBuffer), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "iNode & create(string &in, string &in = '', bool active = true, string &in = '')", WRAP_OBJ_LAST(Create), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "void destroy(int)",                           WRAP_MFN(CStrategy, destroy),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "void setCamera(string &in)",                  WRAP_MFN(CStrategy, setCamera),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "iNode & getNode(string &in)",                 WRAP_OBJ_LAST(GetNode),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "iNode & activateNode(string &in)",            WRAP_MFN(CStrategy, activateNode),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "void deactivateNode(string &in)",             WRAP_MFN(CStrategy, deactivateNode),  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "void clear()",                                WRAP_MFN(CStrategy, clear),  asCALL_GENERIC) );
         
         // Register type
         Throw( pEngine->RegisterObjectType( "CStrategyMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadListTable(string &in)",                WRAP_MFN(CStrategyMgr, loadListTable),         asCALL_GENERIC) );
         
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createActorStrategy(string &in)",   WRAP_OBJ_LAST(CreateActorStrategy),            asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & createStageStrategy(string &in)",   WRAP_OBJ_LAST(CreateStageStrategy),            asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & activateStrategy(string &in)",      WRAP_MFN(CStrategyMgr, activateStrategy),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "Strategy & createActorStrategy(string &in)",    WRAP_OBJ_LAST(CreateStrategy),            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "Strategy & activateStrategy(string &in)",       WRAP_MFN(CStrategyMgr, activateStrategy),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void activateStrategyAry(array<string> &in)",   WRAP_MFN(CStrategyMgr, activateStrategyAry),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deactivateStrategy(string &in)",           WRAP_MFN(CStrategyMgr, deactivateStrategy),    asCALL_GENERIC) );
 

@@ -10,8 +10,7 @@
 
 // Game lib dependencies
 #include <strategy/strategymanager.h>
-#include <strategy/actorstrategy.h>
-#include <strategy/stagestrategy.h>
+#include <strategy/strategy.h>
 #include <node/inode.h>
 #include <sprite/sprite.h>
 #include <common/defs.h>
@@ -46,106 +45,91 @@ namespace NStrategyloader
                 {
                     const std::string strategyName = startegyXML.getAttribute( "name" );
 
-                    if( !strategyName.empty() && startegyXML.isAttributeSet("type") )
+                    if( !strategyName.empty() )
                     {
-                        const std::string strategyType = startegyXML.getAttribute( "type" );
+                        auto * pStrategy = CStrategyMgr::Instance().addStrategy( strategyName, new CStrategy );
 
-                        if( !strategyType.empty() )
+                        // Apply a camera if one is defined
+                        if( startegyXML.isAttributeSet("camera") )
                         {
-                            iStrategy * pStrategy(nullptr);
-                            if( strategyType == "actor" )
-                                pStrategy = CStrategyMgr::Instance().addStrategy( strategyName, new CActorStrategy );
+                            const std::string cameraId = startegyXML.getAttribute("camera");
 
-                            else if( strategyType == "stage" )
-                                pStrategy = CStrategyMgr::Instance().addStrategy( strategyName, new CStageStrategy );
+                            if( !cameraId.empty() )
+                                pStrategy->setCamera( cameraId );
+                        }
 
-                            else
-                                throw NExcept::CCriticalException("Strategy Loader Error!",
-                                    boost::str( boost::format("Unknown strategy type (%s, %s).\n\n%s\nLine: %s")
-                                        % strategyName % strategyType % __FUNCTION__ % __LINE__ ));
+                        // Create the command buffer if defined
+                        if( startegyXML.isAttributeSet("cmdBufPool") )
+                        {
+                            const std::string cmdBufPool = startegyXML.getAttribute( "cmdBufPool" );
 
-                            // Apply a camera if one is defined
-                            if( startegyXML.isAttributeSet("camera") )
+                            if( !cmdBufPool.empty() )
                             {
-                                const std::string cameraId = startegyXML.getAttribute("camera");
-
-                                if( !cameraId.empty() )
-                                    pStrategy->setCamera( cameraId );
+                                auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPool );
+                                pStrategy->setCommandBuffers( cmdBuf );
                             }
+                        }
 
-                            // Create the command buffer if defined
-                            if( startegyXML.isAttributeSet("cmdBufPool") )
+                        // Load the nodes for the startegy
+                        for( int node = 0; node < startegyXML.nChildNode(); ++node )
+                        {
+                            const XMLNode startegyNodeXML = startegyXML.getChildNode( node );
+
+                            if( startegyNodeXML.isAttributeSet("name") )
                             {
-                                const std::string cmdBufPool = startegyXML.getAttribute( "cmdBufPool" );
+                                const std::string name = startegyNodeXML.getAttribute( "name" );
 
-                                if( !cmdBufPool.empty() )
+                                // See if a group has been specified
+                                std::string group;
+                                if( startegyNodeXML.isAttributeSet("group") )
+                                    group = startegyNodeXML.getAttribute( "group" );
+
+                                // See if there is an instance name associated with this node
+                                // Nodes are active by default but can be loaded disabled if it has an instance name
+                                std::string instanceName;
+                                bool active(true);
+                                if( startegyNodeXML.isAttributeSet("instance") )
                                 {
-                                    auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPool );
-                                    pStrategy->setCommandBuffers( cmdBuf );
+                                    instanceName = startegyNodeXML.getAttribute( "instance" );
+
+                                    if( startegyNodeXML.isAttributeSet("active") )
+                                        active = ( std::strcmp( startegyNodeXML.getAttribute("active"), "true" ) == 0 );
                                 }
-                            }
 
-                            // Load the nodes for the startegy
-                            for( int node = 0; node < startegyXML.nChildNode(); ++node )
-                            {
-                                const XMLNode startegyNodeXML = startegyXML.getChildNode( node );
+                                iNode * pHeadNode = pStrategy->create( name, instanceName, active, group );
 
-                                if( startegyNodeXML.isAttributeSet("name") )
+                                // Check for any child nodes. Could be object, sprite or node
+                                for( int childNode = 0; childNode < startegyNodeXML.nChildNode(); ++childNode )
                                 {
-                                    const std::string name = startegyNodeXML.getAttribute( "name" );
+                                    const XMLNode childNodeXML = startegyNodeXML.getChildNode( childNode );
 
-                                    // See if a group has been specified
-                                    std::string group;
-                                    if( startegyNodeXML.isAttributeSet("group") )
-                                        group = startegyNodeXML.getAttribute( "group" );
-
-                                    // See if there is an instance name associated with this node
-                                    // Nodes are active by default but can be loaded disabled if it has an instance name
-                                    std::string instanceName;
-                                    bool active(true);
-                                    if( startegyNodeXML.isAttributeSet("instance") )
+                                    // Check if we are looking for a child node
+                                    if( std::strcmp( childNodeXML.getName(), "node" ) == 0 )
                                     {
-                                        instanceName = startegyNodeXML.getAttribute( "instance" );
-
-                                        if( startegyNodeXML.isAttributeSet("active") )
-                                            active = ( std::strcmp( startegyNodeXML.getAttribute("active"), "true" ) == 0 );
-                                    }
-
-                                    iNode * pHeadNode = pStrategy->create( name, instanceName, active, group );
-
-                                    // Check for any child nodes. Could be object, sprite or node
-                                    for( int childNode = 0; childNode < startegyNodeXML.nChildNode(); ++childNode )
-                                    {
-                                        const XMLNode childNodeXML = startegyNodeXML.getChildNode( childNode );
-
-                                        // Check if we are looking for a child node
-                                        if( std::strcmp( childNodeXML.getName(), "node" ) == 0 )
+                                        if( childNodeXML.isAttributeSet("name") )
                                         {
-                                            if( childNodeXML.isAttributeSet("name") )
+                                            const std::string childName = childNodeXML.getAttribute( "name" );
+
+                                            iNode * pChildNode = pHeadNode->getChildNode( childName );
+                                            if( pChildNode )
                                             {
-                                                const std::string childName = childNodeXML.getAttribute( "name" );
+                                                const XMLNode nodeChildNodeXML = childNodeXML.getChildNode();
 
-                                                iNode * pChildNode = pHeadNode->getChildNode( childName );
-                                                if( pChildNode )
-                                                {
-                                                    const XMLNode nodeChildNodeXML = childNodeXML.getChildNode();
+                                                if( pChildNode->getType() == NDefs::ENT_OBJECT )
+                                                    init( nodeChildNodeXML, pChildNode->getObject() );
 
-                                                    if( pChildNode->getType() == NDefs::ENT_OBJECT )
-                                                        init( nodeChildNodeXML, pChildNode->getObject() );
-
-                                                    else if( pChildNode->getType() == NDefs::ENT_SPRITE )
-                                                        init( nodeChildNodeXML, pChildNode->getSprite() );
-                                                }
+                                                else if( pChildNode->getType() == NDefs::ENT_SPRITE )
+                                                    init( nodeChildNodeXML, pChildNode->getSprite() );
                                             }
                                         }
-                                        else
-                                        {
-                                            if( pHeadNode->getType() == NDefs::ENT_OBJECT )
-                                                init( childNodeXML, pHeadNode->getObject() );
+                                    }
+                                    else
+                                    {
+                                        if( pHeadNode->getType() == NDefs::ENT_OBJECT )
+                                            init( childNodeXML, pHeadNode->getObject() );
 
-                                            else if( pHeadNode->getType() == NDefs::ENT_SPRITE )
-                                                init( childNodeXML, pHeadNode->getSprite() );
-                                        }
+                                        else if( pHeadNode->getType() == NDefs::ENT_SPRITE )
+                                            init( childNodeXML, pHeadNode->getSprite() );
                                     }
                                 }
                             }
@@ -175,7 +159,7 @@ namespace NStrategyloader
     void init( const XMLNode & nodeXML, CSprite * pSprite )
     {
         // Set any transforms
-        pSprite->loadTransFromNode( nodeXML );
+        pSprite->loadTransforms( nodeXML );
 
         // See if there are any scripts that need to be prepared
         for( int i = 0; i < nodeXML.nChildNode("script"); ++i )
