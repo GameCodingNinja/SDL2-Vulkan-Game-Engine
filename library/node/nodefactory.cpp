@@ -28,7 +28,6 @@
 namespace NNodeFactory
 {
     // Declare the function prototypes
-    iNode * Create( const CNodeData & rNodeData, const int nodeId );
     void Load( CSprite * pSprite, const CSpriteData & rSpriteData );
     void Load( CObjectTransform * pObject, const CSpriteData & rSpriteData );
     iNode * CreateUIControlNode( const CNodeData & rNodeData );
@@ -36,7 +35,7 @@ namespace NNodeFactory
     /************************************************************************
     *    DESC:  Create the node from the node data list
     ************************************************************************/
-    iNode * Create( const CNodeData & rNodeData, const int nodeId )
+    iNode * Create( const CNodeData & rNodeData )
     {
         iNode * pNode(nullptr);
 
@@ -46,21 +45,17 @@ namespace NNodeFactory
             if( rNodeData.hasChildrenNodes() )
                 pNode = new CSpriteNodeMultiLst(
                     CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
-                    nodeId,
-                    rNodeData.getNodeId(),
-                    rNodeData.getParentNodeId() );
+                    rNodeData );
             else
                 pNode = new CSpriteNode(
                     CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
-                    nodeId,
-                    rNodeData.getNodeId(),
-                    rNodeData.getParentNodeId() );
+                    rNodeData );
 
             Load( pNode->getSprite(), rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT )
         {
-            pNode = new CObjectNodeMultiLst( nodeId, rNodeData.getNodeId(), rNodeData.getParentNodeId() );
+            pNode = new CObjectNodeMultiLst( rNodeData );
 
             Load( pNode->getObject(), rNodeData );
         }
@@ -120,6 +115,7 @@ namespace NNodeFactory
 
         upControl->loadFromNode( rNodeData.getXMLNode() );
         upControl->init();
+        upControl->setId( rNodeData.getId() );
 
         return new CUIControlNode( std::move(upControl), rNodeData.getNodeId(), rNodeData.getParentNodeId() );
     }

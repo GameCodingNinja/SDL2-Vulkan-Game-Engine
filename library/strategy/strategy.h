@@ -110,9 +110,6 @@ private:
 
 protected:
 
-    // Id increment member
-    static int m_idInc;
-
     // World position value
     CPoint<CWorldValue> m_worldValPos;
     

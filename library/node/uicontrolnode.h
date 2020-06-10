@@ -25,6 +25,7 @@ public:
     // Constructor
     CUIControlNode(
         std::unique_ptr<CUIControl> pControl,
+        int id,
         int nodeId = defs_DEFAULT_ID,
         int parentId = defs_DEFAULT_ID );
 
@@ -45,6 +46,9 @@ public:
 
     // Get the control
     CUIControl * getControl() override;
+
+    // Get the unique head node id number
+    int getId() const override;
 
 private:
 

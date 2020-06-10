@@ -8,16 +8,18 @@
 // Physical component dependency
 #include <node/objectnodemultilist.h>
 
+// Game lib dependencies
+#include <node/nodedata.h>
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CObjectNodeMultiLst::CObjectNodeMultiLst( int objectId, int nodeId, int parentId ) :
-    CNodeMultiLst(nodeId, parentId),
-    m_objectId(objectId)
+CObjectNodeMultiLst::CObjectNodeMultiLst( const CNodeData & rNodeData ) :
+    CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
+    m_object.setId( rNodeData.getId() );
     m_type = NDefs::ENT_OBJECT;
 }
-
 
 /************************************************************************
 *    DESC:  destructor
@@ -25,7 +27,6 @@ CObjectNodeMultiLst::CObjectNodeMultiLst( int objectId, int nodeId, int parentId
 CObjectNodeMultiLst::~CObjectNodeMultiLst()
 {
 }
-
 
 /***************************************************************************
 *    DESC:  Transform the nodes
@@ -47,7 +48,6 @@ void CObjectNodeMultiLst::transform( const CObjectTransform & object )
     CNodeMultiLst::transform();
 }
 
-
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
@@ -56,11 +56,10 @@ CObjectTransform * CObjectNodeMultiLst::getObject()
     return &m_object;
 }
 
-
 /************************************************************************
 *    DESC:  Get the sprite id number
 ************************************************************************/
 int CObjectNodeMultiLst::getId() const
 {
-    return m_objectId;
+    return m_object.getId();
 }

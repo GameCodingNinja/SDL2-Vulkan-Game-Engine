@@ -24,8 +24,6 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
-int CStrategy::m_idInc = 0;
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -196,9 +194,6 @@ iNode * CStrategy::create(
                 boost::str( boost::format("Need to supply an instance name if node is not active when created (%s).\n\n%s\nLine: %s")
                     % dataName % __FUNCTION__ % __LINE__ ));
 
-    // Create a unique node id
-    const int nodeId( m_idInc++ );
-
     auto & rNodeDataVec = getData( dataName, group ).getData();
 
     iNode * pHeadNode(nullptr);
@@ -207,7 +202,7 @@ iNode * CStrategy::create(
     for( auto & iter : rNodeDataVec )
     {
         // Create the node from the factory function
-        iNode * pNode = NNodeFactory::Create( iter, nodeId );
+        iNode * pNode = NNodeFactory::Create( iter );
         
         if( pHeadNode == nullptr )
             pHeadNode = pNode;

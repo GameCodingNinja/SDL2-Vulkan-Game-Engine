@@ -16,17 +16,14 @@
 
 // Forward declaration(s)
 class iObjectData;
+class CNodeData;
 
 class CSpriteNodeMultiLst : public CNodeMultiLst
 {
 public:
     
     // Constructor
-    CSpriteNodeMultiLst(
-        const iObjectData & objectData,
-        int spriteId = defs_DEFAULT_ID,
-        int nodeId = defs_DEFAULT_ID,
-        int parentId = defs_DEFAULT_ID );
+    CSpriteNodeMultiLst( const iObjectData & objectData, const CNodeData & rNodeData );
 
     // Destructor
     virtual ~CSpriteNodeMultiLst();

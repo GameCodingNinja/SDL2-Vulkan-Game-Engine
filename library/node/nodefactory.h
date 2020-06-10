@@ -14,7 +14,7 @@ class CNodeData;
 namespace NNodeFactory
 {
     // Create the control
-    iNode * Create( const CNodeData & rNodeData, const int nodeId );
+    iNode * Create( const CNodeData & rNodeData );
 };
 
 #endif

@@ -71,7 +71,11 @@
 			"cfenv": "cpp",
 			"cinttypes": "cpp",
 			"valarray": "cpp",
-			"numbers": "cpp"
+			"numbers": "cpp",
+			"compare": "cpp",
+			"concepts": "cpp",
+			"ranges": "cpp",
+			"stop_token": "cpp"
 		},
 		"editor.autoClosingBrackets": "never"
 	}

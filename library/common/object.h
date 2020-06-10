@@ -10,6 +10,7 @@
 // Game lib dependencies
 #include <common/size.h>
 #include <common/point.h>
+#include <common/defs.h>
 #include <utilities/bitmask.h>
 
 // Standard lib dependencies
@@ -82,6 +83,10 @@ public:
     // Get the parameters
     CBitmask<uint16_t> & getParameters();
 
+    // Get/Set the unique id number
+    int getId() const;
+    void setId( int id );
+
 protected:
     
     // Bitmask settings to record if the object needs to be transformed
@@ -102,6 +107,9 @@ protected:
     
     // Offset due to a sprite sheet crop.
     CSize<int16_t> m_cropOffset;
+
+    // Id number
+    int m_id = defs_DEFAULT_ID;
 };
 
 #endif

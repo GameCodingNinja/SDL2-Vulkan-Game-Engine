@@ -22,7 +22,7 @@ CSpriteData::CSpriteData(
         m_xmlNode( xmlNode ),
         m_group(defGroup),
         m_objectName(defObjName),
-        m_spriteId(defId)
+        m_id(defId)
 {
     // Get the name of this specific sprite instance
     if( xmlNode.isAttributeSet( "name" ) )
@@ -38,7 +38,7 @@ CSpriteData::CSpriteData(
     
     // Get the sprite's unique id number
     if( xmlNode.isAttributeSet( "id" ) )
-        m_spriteId = std::atoi(xmlNode.getAttribute( "id" ));
+        m_id = std::atoi(xmlNode.getAttribute( "id" ));
 }
 
 /************************************************************************
@@ -50,7 +50,7 @@ CSpriteData::CSpriteData(
         m_name(objName),
         m_group(group),
         m_objectName(objName),
-        m_spriteId(defs_DEFAULT_ID)
+        m_id(defs_DEFAULT_ID)
 {
 }
 
@@ -59,7 +59,7 @@ CSpriteData::CSpriteData( const CSpriteData & data ) :
     m_name( data.m_name ),
     m_group( data.m_group ),
     m_objectName( data.m_objectName ),
-    m_spriteId( data.m_spriteId )
+    m_id( data.m_id )
 {
 }
 
@@ -108,9 +108,9 @@ const std::string & CSpriteData::getObjectName() const
 
 
 /************************************************************************
-*    DESC:  Get the unique id number
+*    DESC:  Get the id number
 ************************************************************************/
-int CSpriteData::getSpriteId() const
+int CSpriteData::getId() const
 {
-    return m_spriteId;
+    return m_id;
 }

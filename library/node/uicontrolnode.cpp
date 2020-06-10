@@ -16,11 +16,13 @@
 ************************************************************************/
 CUIControlNode::CUIControlNode(
     std::unique_ptr<CUIControl> upControl,
+    int id,
     int nodeId,
     int parentId ) :
         iNode( nodeId, parentId )
 {
     m_upControl = std::move(upControl);
+    m_upControl->setId( id );
     m_type = NDefs::ENT_UI_CONTROL;
 }
 
@@ -73,4 +75,12 @@ void CUIControlNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf
 CUIControl * CUIControlNode::getControl()
 {
     return m_upControl.get();
+}
+
+/************************************************************************
+*    DESC:  Get the unique head node id number
+************************************************************************/
+int CUIControlNode::getId() const
+{
+    return m_upControl->getId();
 }

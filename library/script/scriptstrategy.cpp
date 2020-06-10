@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       scriptistrategy.cpp
 *
-*    DESCRIPTION:     iStrategy script object registration
+*    DESCRIPTION:     CStrategy script object registration
 ************************************************************************/
 
 // Physical component dependency
@@ -181,7 +181,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deactivateStrategyAry(array<string> &in)", WRAP_MFN(CStrategyMgr, deactivateStrategyAry), asCALL_GENERIC) );
 
 
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "iStrategy & getStrategy(string &in)",           WRAP_OBJ_LAST(GetStrategy),                    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "Strategy & getStrategy(string &in)",            WRAP_OBJ_LAST(GetStrategy),                    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategy(string &in)",               WRAP_MFN(CStrategyMgr, deleteStrategy),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void deleteStrategyAry(array<string> &in)",     WRAP_MFN(CStrategyMgr, deleteStrategyAry),     asCALL_GENERIC) );
 

@@ -41,7 +41,7 @@ class CSprite : public CObjectTransform, boost::noncopyable
 public:
 
     // Constructor
-    CSprite( const iObjectData & objectData, int id = defs_DEFAULT_ID );
+    CSprite( const iObjectData & objectData );
 
     // Destructor
     virtual ~CSprite();
@@ -106,9 +106,6 @@ public:
     
     // Get the current frame
     uint getCurrentFrame() const;
-    
-    // Get the unique id number
-    int getId() const;
 
     // Does this sprite have script functions
     bool hasScriptFunctions();
@@ -122,9 +119,6 @@ protected:
     void applyRotation( CMatrix & matrix ) final;
     
 private:
-    
-    // Unique Id number
-    int m_id;
     
     // The object data
     const iObjectData & m_rObjectData;

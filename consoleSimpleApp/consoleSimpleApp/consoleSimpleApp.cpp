@@ -1,7 +1,32 @@
 // consoleSimpleApp.cpp : Defines the entry point for the console application.
 //
-	
-#include <vector>
+
+#include <cstddef>
+#include <iostream>
+
+class CTmp
+{
+    public:
+
+    size_t ptrValue()
+    {
+        //return reinterpret_cast<std::size_t>(this);
+        return (size_t)this;
+    }
+};
+
+int main()
+{
+    CTmp tmp1;
+    CTmp tmp2;
+
+    std::cout << tmp1.ptrValue() << std::endl;
+    std::cout << tmp2.ptrValue() << std::endl;
+
+    return 0;
+}
+
+/*#include <vector>
 #include <ranges>
 #include <iostream>
  
@@ -14,4 +39,6 @@ int main()
     for (int i : ints | std::views::filter(even) | std::views::transform(square)) {
         std::cout << i << ' ';
     }
-}
+
+    return 0;
+}*/

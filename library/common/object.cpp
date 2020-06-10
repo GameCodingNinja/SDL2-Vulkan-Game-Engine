@@ -19,14 +19,12 @@ CObject::CObject() :
 {
 }
 
-
 /************************************************************************
 *    DESC:  Destructor
 ************************************************************************/
 CObject::~CObject()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Get the object's position
@@ -35,7 +33,6 @@ const CPoint<float> & CObject::getPos() const
 {
     return m_pos;
 }
-
 
 /************************************************************************
 *    DESC:  Set the object's position
@@ -54,7 +51,6 @@ void CObject::setPos( float x, float y, float z )
     m_pos.set( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Inc the object's float position
 ************************************************************************/
@@ -72,7 +68,6 @@ void CObject::incPos( float x, float y, float z )
     m_pos.inc( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Invert the object's position
 ************************************************************************/
@@ -80,7 +75,6 @@ void CObject::invertPos()
 {
     m_pos.invert();
 }
-
 
 /************************************************************************
 *    DESC:  Set the object's rotation
@@ -108,7 +102,6 @@ void CObject::setRot( float x, float y, float z, bool convertToRadians )
         m_rot.set( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Inc the pre-translation matrix
 *           NOTE: Rotation is stored as radians
@@ -135,7 +128,6 @@ void CObject::incRot( float x, float y, float z, bool convertToRadians )
         m_rot.inc( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Get the object's rotation in radians
 *           NOTE: Rotation is stored as radians
@@ -144,7 +136,6 @@ const CPoint<float> & CObject::getRot() const
 {
     return m_rot;
 }
-
 
 /************************************************************************
 *    DESC:  Set the object's scale
@@ -163,7 +154,6 @@ void CObject::setScale( float x, float y, float z )
     m_scale.set( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Inc the object's scale
 ************************************************************************/
@@ -181,7 +171,6 @@ void CObject::incScale( float x, float y, float z )
     m_scale.inc( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Get the object's scale
 ************************************************************************/
@@ -190,7 +179,6 @@ const CPoint<float> & CObject::getScale() const
     return m_scale;
 }
 
-
 /************************************************************************
 *    DESC:  Get the object's center position
 ************************************************************************/
@@ -198,7 +186,6 @@ const CPoint<float> & CObject::getCenterPos() const
 {
     return m_centerPos;
 }
-
 
 /************************************************************************
 *    DESC:  Set the object's center position
@@ -217,7 +204,6 @@ void CObject::setCenterPos( float x, float y, float z )
     m_centerPos.set( x, y, z );
 }
 
-
 /************************************************************************
 *    DESC:  Set the object's crop offset
 ************************************************************************/
@@ -231,7 +217,6 @@ void CObject::setCropOffset( const CSize<int16_t> & offset )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Set the object visible
 ************************************************************************/
@@ -243,7 +228,6 @@ void CObject::setVisible( bool value )
         m_parameters.remove( NDefs::VISIBLE );
 }
 
-
 /************************************************************************
 *    DESC:  Is the object visible
 ************************************************************************/
@@ -251,7 +235,6 @@ bool CObject::isVisible() const
 {
     return m_parameters.isSet( NDefs::VISIBLE );
 }
-
 
 /************************************************************************
 *    DESC:  Copy the transform to the passed in object
@@ -273,7 +256,6 @@ void CObject::copyTransform( const CObject * pObject )
     if( pObject->m_parameters.isSet( NDefs::CROP_OFFSET ) )
         setCropOffset( pObject->m_cropOffset );
 }
-
 
 /************************************************************************
 *    DESC:  Load the transform data from node
@@ -303,11 +285,23 @@ void CObject::loadTransFromNode( const XMLNode & node )
         setPos( dynamicOffset.getPos() );
 }
 
-
 /************************************************************************
 *    DESC:  Get the parameters
 ************************************************************************/
 CBitmask<uint16_t> & CObject::getParameters()
 {
     return m_parameters;
+}
+
+/************************************************************************
+*    DESC:  Get/Set id
+************************************************************************/
+int CObject::getId() const
+{
+    return m_id;
+}
+
+void CObject::setId( int id )
+{
+    m_id = id;
 }

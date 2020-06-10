@@ -17,17 +17,14 @@
 // Forward declaration(s)
 class CMatrix;
 class iObjectData;
+class CNodeData;
 
 class CSpriteNode : public iNode
 {
 public:
 
     // Constructor
-    CSpriteNode(
-        const iObjectData & objectData,
-        int spriteId = defs_DEFAULT_ID,
-        int nodeId = defs_DEFAULT_ID,
-        int parentId = defs_DEFAULT_ID );
+    CSpriteNode( const iObjectData & objectData, const CNodeData & rNodeData );
 
     // Destructor
     virtual ~CSpriteNode();

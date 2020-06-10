@@ -14,15 +14,15 @@
 // Game lib dependencies
 #include <common/objecttransform.h>
 
+// Forward declaration(s)
+class CNodeData;
+
 class CObjectNodeMultiLst : public CNodeMultiLst
 {
 public:
     
     // Constructor
-    CObjectNodeMultiLst(
-        int objectId = defs_DEFAULT_ID,
-        int nodeId = defs_DEFAULT_ID,
-        int parentId = defs_DEFAULT_ID );
+    CObjectNodeMultiLst( const CNodeData & rNodeData );
 
     // Destructor
     virtual ~CObjectNodeMultiLst();
@@ -41,9 +41,6 @@ private:
     
     // Node data
     CObjectTransform m_object;
-    
-    // Object Id of this node
-    int m_objectId;
 };
 
 #endif

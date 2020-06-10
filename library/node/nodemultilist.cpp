@@ -25,7 +25,6 @@ CNodeMultiLst::CNodeMultiLst( int nodeId, int parentId ) :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -33,7 +32,6 @@ CNodeMultiLst::~CNodeMultiLst()
 {
     NDelFunc::DeleteMapPointers( m_allNodeMap );
 }
-
 
 /***************************************************************************
 *    DESC:  Update the nodes.
@@ -72,7 +70,6 @@ void CNodeMultiLst::update( iNode * pNode )
         while( pNextNode != nullptr );
     }
 }
-
 
 /***************************************************************************
 *    DESC:  Translate the nodes
@@ -123,7 +120,6 @@ void CNodeMultiLst::transform( iNode * pNode )
     }
 }
 
-
 /***************************************************************************
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
@@ -160,7 +156,6 @@ void CNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkComman
     }
 }
 
-
 /************************************************************************
 *    DESC:  Add a node
 ************************************************************************/
@@ -185,7 +180,6 @@ bool CNodeMultiLst::addNode( iNode * pNode, const std::string & nodeName )
     return result;
 }
 
-
 /************************************************************************
 *    DESC:  Get the child node
 ************************************************************************/
@@ -200,7 +194,6 @@ iNode * CNodeMultiLst::getChildNode( const std::string & nodeName )
     
     return mapIter->second;
 }
-
 
 /************************************************************************
 *    DESC:  Reset the iterators

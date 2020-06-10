@@ -26,8 +26,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSprite::CSprite( const iObjectData & objectData, int id ) :
-    m_id( id ),
+CSprite::CSprite( const iObjectData & objectData ) :
     m_rObjectData( objectData )
 {
     if( objectData.is2D() )
@@ -67,14 +66,12 @@ CSprite::CSprite( const iObjectData & objectData, int id ) :
     setVisible( objectData.getVisualData().isActive() );
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CSprite::~CSprite()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the sprite data
@@ -92,7 +89,6 @@ void CSprite::load( const XMLNode & node )
         m_upVisualComponent->loadFontPropFromNode( node );
 }
 
-
 /************************************************************************
 *    DESC:  Update the physics transforms
 ************************************************************************/
@@ -105,7 +101,6 @@ void CSprite::loadTransforms( const XMLNode & node )
         m_upPhysicsComponent->setTransform(m_pos.x, m_pos.y, m_rot.z);
 }
 
-
 /************************************************************************
 *    DESC:  Init the physics
 ************************************************************************/
@@ -114,7 +109,6 @@ void CSprite::initPhysics()
     if( m_upPhysicsComponent )
         m_upPhysicsComponent->init(*this);
 }
-
 
 /************************************************************************
 *    DESC:  Init the sprite
@@ -131,7 +125,6 @@ void CSprite::init()
             m_scriptComponent.prepare( std::get<0>(iter.second), std::get<1>(iter.second), {this} );
 }
 
-
 /************************************************************************
 *    DESC:  Init the script functions and add them to the map
 *           This function loads the attribute info reguardless of what it is
@@ -140,7 +133,6 @@ void CSprite::initScriptFunctions( const XMLNode & node )
 {
     NParseHelper::initScriptFunctions( node, m_scriptFunctionMap, m_rObjectData.getGroup() );
 }
-
 
 /************************************************************************
 *    DESC:  Prepare the script function Id to run
@@ -163,7 +155,6 @@ bool CSprite::prepare( const std::string & scriptFuncId, bool forceUpdate )
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Stop the script and recycle the context
 ************************************************************************/
@@ -179,7 +170,6 @@ bool CSprite::stopAndRecycle( const std::string & scriptFuncId )
 
     return false;
 }
-
 
 /************************************************************************
 *    DESC:  Stop the script, recycle and start the execution
@@ -202,7 +192,6 @@ bool CSprite::stopAndRestart( const std::string & scriptFuncId, bool forceUpdate
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Copy over the script functions
 ************************************************************************/
@@ -212,7 +201,6 @@ void CSprite::copyScriptFunctions( const std::map<std::string, std::tuple<std::s
         m_scriptFunctionMap.emplace( iter );
 }
 
-
 /************************************************************************
 *    DESC:  Update the sprite
 ************************************************************************/
@@ -220,7 +208,6 @@ void CSprite::update()
 {
     m_scriptComponent.update();
 }
-
 
 /************************************************************************
 *    DESC:  Update the physics
@@ -231,7 +218,6 @@ void CSprite::physicsUpdate()
         m_upPhysicsComponent->update( this );
 }
 
-
 /************************************************************************
 *    DESC:  Record the command buffer
 ************************************************************************/
@@ -240,7 +226,6 @@ void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const
     if( isVisible() )
         m_upVisualComponent->recordCommandBuffer( index, cmdBuf, this, camera );
 }
-
 
 /************************************************************************
 *    DESC:  Get the visual component
@@ -255,7 +240,6 @@ const iVisualComponent * CSprite::getVisualComponent() const
     return m_upVisualComponent.get();
 }
 
-
 /************************************************************************
 *    DESC:  Get the physics component
 ************************************************************************/
@@ -264,7 +248,6 @@ iPhysicsComponent * CSprite::getPhysicsComponent()
     return m_upPhysicsComponent.get();
 }
 
-
 /************************************************************************
 *    DESC:  Get the script component
 ************************************************************************/
@@ -272,7 +255,6 @@ CScriptComponent & CSprite::getScriptComponent()
 {
     return m_scriptComponent;
 }
-
 
 /************************************************************************
 *    DESC:  Set the texture ID from index
@@ -304,16 +286,6 @@ uint CSprite::getCurrentFrame() const
     return m_upVisualComponent->getCurrentFrame();
 }
 
-
-/************************************************************************
-*    DESC:  Get the unique id number
-************************************************************************/
-int CSprite::getId() const
-{
-    return m_id;
-}
-
-
 /************************************************************************
 *    DESC:  Get the object data
 ************************************************************************/
@@ -322,7 +294,6 @@ const iObjectData & CSprite::getObjectData() const
     return m_rObjectData;
 }
 
-
 /************************************************************************
 *    DESC:  Does this sprite have script functions
 ************************************************************************/
@@ -330,7 +301,6 @@ bool CSprite::hasScriptFunctions()
 {
     return !m_scriptFunctionMap.empty();
 }
-
 
 /************************************************************************
 *    DESC:  Apply the rotation
@@ -363,7 +333,6 @@ void CSprite::applyRotation( CMatrix & matrix )
         CObjectTransform::applyRotation( matrix );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Use a point to set a column - used for 3d physics

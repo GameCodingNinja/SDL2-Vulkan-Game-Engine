@@ -44,8 +44,8 @@ public:
     // Get the object name
     const std::string & getObjectName() const;
     
-    // Get the unique id number
-    int getSpriteId() const;
+    // Get the id number
+    int getId() const;
 
     // Get the XML Node
     const XMLNode & getXMLNode() const;
@@ -64,8 +64,8 @@ private:
     // Object name
     std::string m_objectName;
     
-    // Sprite Id
-    int m_spriteId;
+    // id
+    int m_id;
 };
 
 #endif
