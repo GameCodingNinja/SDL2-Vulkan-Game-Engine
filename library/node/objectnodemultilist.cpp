@@ -19,25 +19,28 @@ CObjectNodeMultiLst::CObjectNodeMultiLst( const CNodeData & rNodeData ) :
 {
     m_id = rNodeData.getId();
     m_type = NDefs::ENT_OBJECT;
+
+    // Load the transforms from XML node
+    CObjectTransform::loadTransFromNode( rNodeData.getXMLNode() );
 }
 
 /***************************************************************************
 *    DESC:  Transform the nodes
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
 void CObjectNodeMultiLst::transform()
 {
     CObjectTransform::transform();
 
-    // Call the parent but it has to be last
+    // Call inherited but it has to be last
     CNodeMultiLst::transform();
 }
 
-// Used to transform object on a sector
 void CObjectNodeMultiLst::transform( const CObjectTransform & object )
 {
     CObjectTransform::transform( object );
 
-    // Call the parent but it has to be last
+    // Call inherited but it has to be last
     CNodeMultiLst::transform();
 }
 

@@ -13,6 +13,7 @@
 #include <utilities/exceptionhandling.h>
 #include <sprite/sprite.h>
 #include <common/objecttransform.h>
+#include <gui/uicontrol.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -39,8 +40,6 @@ CNodeMultiLst::~CNodeMultiLst()
 void CNodeMultiLst::update()
 {
     update( this );
-    
-    resetIterators();
 }
 
 void CNodeMultiLst::update( iNode * pNode )
@@ -48,19 +47,24 @@ void CNodeMultiLst::update( iNode * pNode )
     if( pNode != nullptr )
     {
         iNode * pNextNode;
+        auto nodeIter = pNode->getNodeIter();
 
         do
         {
             // get the next node
-            pNextNode = pNode->next();
+            pNextNode = pNode->next(nodeIter);
 
             if( pNextNode != nullptr )
             {
                 // Update the children
-                if( pNextNode->getSprite() != nullptr )
+                if( pNextNode->getType() == NDefs::ENT_SPRITE )
                 {
                     pNextNode->getSprite()->physicsUpdate();
                     pNextNode->getSprite()->update();
+                }
+                else if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
+                {
+                    pNextNode->getControl()->update();
                 }
                 
                 // Call a recursive function again
@@ -77,8 +81,6 @@ void CNodeMultiLst::update( iNode * pNode )
 void CNodeMultiLst::transform()
 {
     transform( this );
-    
-    resetIterators();
 }
 
 void CNodeMultiLst::transform( iNode * pNode )
@@ -86,16 +88,20 @@ void CNodeMultiLst::transform( iNode * pNode )
     if( pNode != nullptr )
     {
         iNode * pNextNode;
+        auto nodeIter = pNode->getNodeIter();
 
         do
         {
             // get the next node
-            pNextNode = pNode->next();
+            pNextNode = pNode->next(nodeIter);
 
             if( pNextNode != nullptr )
             {
                 // Transform the object
-                pNextNode->getObject()->transform( *pNode->getObject() );
+                if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
+                    pNextNode->getControl()->transform( *pNode->getObject() );
+                else
+                    pNextNode->getObject()->transform( *pNode->getObject() );
 
                 // Call a recursive function again
                 transform( pNextNode );
@@ -112,8 +118,6 @@ void CNodeMultiLst::transform( iNode * pNode )
 void CNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     recordCommandBuffer( this, index, cmdBuffer, camera );
-    
-    resetIterators();
 }
 
 void CNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
@@ -121,17 +125,21 @@ void CNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkComman
     if( pNode != nullptr )
     {
         iNode * pNextNode;
+        auto nodeIter = pNode->getNodeIter();
 
         do
         {
             // get the next node
-            pNextNode = pNode->next();
+            pNextNode = pNode->next(nodeIter);
 
             if( pNextNode != nullptr )
             {
                 // Record the command buffer
-                if( pNextNode->getSprite() != nullptr )
+                if( pNextNode->getType() == NDefs::ENT_SPRITE )
                     pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, camera );
+
+                else if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
+                    pNextNode->getControl()->recordCommandBuffer( index, cmdBuffer, camera );
 
                 // Call a recursive function again
                 recordCommandBuffer( pNextNode, index, cmdBuffer, camera );
@@ -160,8 +168,6 @@ bool CNodeMultiLst::addNode( iNode * pNode, const std::string & nodeName )
 
     const bool result = CNode::addNode( pNode );
 
-    resetIterators();
-
     return result;
 }
 
@@ -178,15 +184,4 @@ iNode * CNodeMultiLst::getChildNode( const std::string & nodeName )
                 % nodeName % __FUNCTION__ % __LINE__ ));
     
     return mapIter->second;
-}
-
-/************************************************************************
-*    DESC:  Reset the iterators
-************************************************************************/
-void CNodeMultiLst::resetIterators()
-{
-    reset();
-
-    for( auto & iter : m_allNodeMap )
-        iter.second->reset();
 }

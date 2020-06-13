@@ -26,10 +26,14 @@ public:
     CNode( int nodeId, int parentId );
 
     // Destructor
-    virtual ~CNode();
+    virtual ~CNode(){};
 
     // Get the next node
-    iNode * next() override;
+    iNode * next(nodeVecIter_t & rIter) override;
+
+    // Get the next node
+    nodeVecIter_t getNodeIter() override
+    { return m_nodeVec.begin(); }
 
     // Add a node
     bool addNode( iNode * pNode, const std::string & nodeName = "" ) override;
@@ -40,17 +44,11 @@ public:
     
     // Push back node into vector
     void pushBackNode( iNode * pNode ) override;
-    
-    // Reset the iterator
-    void reset() override;
 
 protected:
 
     // node vector. Do NOT free. Head node will free
     std::vector<iNode *> m_nodeVec;
-
-    // next node iterator
-    std::vector<iNode *>::iterator m_Iter;
 };
 
 #endif

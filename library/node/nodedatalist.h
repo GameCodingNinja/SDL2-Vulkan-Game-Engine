@@ -37,7 +37,7 @@ public:
         const std::string & objName );
     
     // Destructor
-    virtual ~CNodeDataList();
+    virtual ~CNodeDataList(){};
     
     // Get the node data
     const std::vector<CNodeData> & getData() const;

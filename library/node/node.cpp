@@ -19,32 +19,22 @@ CNode::CNode( int nodeId, int parentId ) :
 {
 }
 
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CNode::~CNode()
-{
-}
-
-
 /************************************************************************
 *    DESC:  Get the next node
 ************************************************************************/
-iNode * CNode::next()
+iNode * CNode::next(nodeVecIter_t & rIter)
 {
     iNode * pResult = nullptr;
 
     // Get the next node
-    if( m_Iter != m_nodeVec.end() )
+    if( rIter != m_nodeVec.end() )
     {
-        pResult = *m_Iter;
-        ++m_Iter;
+        pResult = *rIter;
+        ++rIter;
     }
 
     return pResult;
 }
-
 
 /************************************************************************
 *    DESC:  Add a node
@@ -64,7 +54,6 @@ bool CNode::addNode( iNode * pNode, const std::string & nodeName )
     return true;
 }
 
-
 /************************************************************************
 *    DESC:  Push back node into vector
 ************************************************************************/
@@ -72,7 +61,6 @@ void CNode::pushBackNode( iNode * pNode )
 {
     m_nodeVec.push_back( pNode );
 }
-
 
 /************************************************************************
 *    DESC:  Find the parent
@@ -91,11 +79,12 @@ iNode * CNode::findParent( iNode * pSearchNode )
         else
         {
             iNode * pNextNode;
+            auto nodeIter = m_nodeVec.begin();
 
             do
             {
                 // get the next node
-                pNextNode = next();
+                pNextNode = next(nodeIter);
 
                 if( pNextNode != nullptr )
                 {
@@ -108,14 +97,4 @@ iNode * CNode::findParent( iNode * pSearchNode )
     }
 
     return pResult;
-}
-
-
-/************************************************************************
-*    DESC:  Reset the iterator
-************************************************************************/
-void CNode::reset()
-{
-    if( !m_nodeVec.empty() )
-        m_Iter = m_nodeVec.begin();
 }

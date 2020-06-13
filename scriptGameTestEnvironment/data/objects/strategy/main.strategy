@@ -139,6 +139,32 @@
 
     </node>
 
+    <node name="shapes">
+
+        <sprite objectName="square_green">
+            <position x="-500" y="-400" z="0"/>
+        </sprite>
+
+        <node>
+
+            <sprite objectName="triangle_red">
+                <position x="0" y="70" z="0"/>
+            </sprite>
+
+            <node>
+
+                <sprite objectName="circle_blue">
+                    <position x="0" y="90" z="0"/>
+                </sprite>
+
+            </node>
+
+        </node>
+
+    </node>
+
+
+
     <node name="square_red">
 
         <sprite objectName="square_red">

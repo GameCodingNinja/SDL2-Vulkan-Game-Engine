@@ -22,49 +22,59 @@ CSpriteNodeMultiLst::CSpriteNodeMultiLst( const CNodeData & rNodeData ) :
 {
     m_id = rNodeData.getId();
     m_type = NDefs::ENT_SPRITE;
+
+    // Load the rest from XML node
+    CSprite::load( rNodeData.getXMLNode() );
+
+    // Init the physics
+    CSprite::initPhysics();
+
+    // Init the sprite
+    CSprite::init();
 }
 
 /***************************************************************************
-*    DESC:  Update the nodes.
+*    DESC:  Update the nodes
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
 void CSpriteNodeMultiLst::update()
 {
     CSprite::physicsUpdate();
     CSprite::update();
     
-    // Call the parent but it has to be last
+    // Call inherited but it has to be last
     CNodeMultiLst::update();
 }
 
 /***************************************************************************
 *    DESC:  Translate the nodes
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
 void CSpriteNodeMultiLst::transform()
 {
     CSprite::transform();
 
-    // Call the parent but it has to be last
+    // Call inherited but it has to be last
     CNodeMultiLst::transform();
 }
 
-// Used to transform object on a sector
 void CSpriteNodeMultiLst::transform( const CObjectTransform & object )
 {
     CSprite::transform( object );
 
-    // Call the parent but it has to be last
     CNodeMultiLst::transform();
 }
 
 /***************************************************************************
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
 void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     CSprite::recordCommandBuffer( index, cmdBuffer, camera );
     
-    // Call the parent but it has to be last
+    // Call inherited but it has to be last
     CNodeMultiLst::recordCommandBuffer( index, cmdBuffer, camera );
 }
 

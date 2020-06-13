@@ -1,12 +1,12 @@
 
 /************************************************************************
-*    FILE NAME:       uicontrolnode.cpp
+*    FILE NAME:       uicontrolnodemultilist.cpp
 *
 *    DESCRIPTION:     UI Control node class for rendering a ui control
 ************************************************************************/
 
 // Physical component dependency
-#include <node/uicontrolnode.h>
+#include <node/uicontrolnodemultilist.h>
 
 // Game lib dependencies
 #include <gui/uicontrol.h>
@@ -15,8 +15,8 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CUIControlNode::CUIControlNode( std::unique_ptr<CUIControl> upControl, const CNodeData & rNodeData ) :
-    iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
+CUIControlNodeMultiLst::CUIControlNodeMultiLst( std::unique_ptr<CUIControl> upControl, const CNodeData & rNodeData ) :
+    CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
     m_upControl = std::move(upControl);
     m_id = rNodeData.getId();
@@ -27,39 +27,53 @@ CUIControlNode::CUIControlNode( std::unique_ptr<CUIControl> upControl, const CNo
 }
 
 /***************************************************************************
-*    DESC:  Update the sprite.
+*    DESC:  Update the control.
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
-void CUIControlNode::update()
+void CUIControlNodeMultiLst::update()
 {
     m_upControl->update();
+
+    // Call inherited but it has to be last
+    CNodeMultiLst::update();
 }
 
 /***************************************************************************
-*    DESC:  Transform the sprite
+*    DESC:  Transform the control
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
-void CUIControlNode::transform()
+void CUIControlNodeMultiLst::transform()
 {
     m_upControl->transform();
+
+    // Call inherited but it has to be last
+    CNodeMultiLst::transform();
 }
 
-void CUIControlNode::transform( const CObjectTransform & object )
+void CUIControlNodeMultiLst::transform( const CObjectTransform & object )
 {
     m_upControl->transform( object );
+
+    // Call inherited but it has to be last
+    CNodeMultiLst::transform();
 }
 
 /***************************************************************************
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CUIControlNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CUIControlNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     m_upControl->recordCommandBuffer( index, cmdBuffer, camera );
+
+    // Call inherited but it has to be last
+    CNodeMultiLst::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 /************************************************************************
-*    DESC:  Get the sprite
+*    DESC:  Get the control
 ************************************************************************/
-CUIControl * CUIControlNode::getControl()
+CUIControl * CUIControlNodeMultiLst::getControl()
 {
     return m_upControl.get();
 }
@@ -67,7 +81,7 @@ CUIControl * CUIControlNode::getControl()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CUIControlNode::getObject()
+CObjectTransform * CUIControlNodeMultiLst::getObject()
 {
     return static_cast<CObjectTransform *>(m_upControl.get());
 }

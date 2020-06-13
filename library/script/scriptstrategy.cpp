@@ -158,7 +158,6 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iNode", "int getType()",                    WRAP_MFN(iNode, getType),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "int getId()",                      WRAP_MFN(iNode, getId),          asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "handle getHandle()",               WRAP_MFN(iNode, getHandle),      asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("iNode", "void resetIterators()",            WRAP_MFN(iNode, resetIterators), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & getChildNode(string &in)", WRAP_MFN(iNode, getChildNode),   asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "iNode & getNode()",              WRAP_OBJ_LAST(GetiNode),         asCALL_GENERIC) );

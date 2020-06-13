@@ -124,6 +124,7 @@ add_library(
         node/node.cpp
         node/spritenodemultilist.cpp
         node/objectnodemultilist.cpp
+        node/uicontrolnodemultilist.cpp
         node/nodemultilist.cpp
         node/spritenode.cpp
         node/nodedata.cpp

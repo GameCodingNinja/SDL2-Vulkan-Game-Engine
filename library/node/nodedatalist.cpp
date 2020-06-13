@@ -59,15 +59,6 @@ CNodeDataList::CNodeDataList(
     m_dataVec.emplace_back( group, objName );
 }
 
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CNodeDataList::~CNodeDataList()
-{
-}
-
-
 /************************************************************************
 *    DESC:  Load the node data recursively
 ************************************************************************/
@@ -92,7 +83,6 @@ void CNodeDataList::loadNode(
         loadNode( childXMLNode, m_dataVec.back(), defGroup, defObjName, defId );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Get the node data

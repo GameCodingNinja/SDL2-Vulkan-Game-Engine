@@ -28,6 +28,8 @@ class CCamera;
 class CObjectTransform;
 class CUIControl;
 
+typedef std::vector<class iNode *>::iterator nodeVecIter_t;
+
 class iNode
 {
 public:
@@ -45,15 +47,16 @@ public:
     virtual ~iNode(){}
 
     // Get the next node
-    virtual iNode * next()
+    virtual nodeVecIter_t getNodeIter()
+    { return nodeVecIter_t(); }
+
+    // Get the next node
+    virtual iNode * next(nodeVecIter_t & rIter)
     { return nullptr; }
 
     // Add a node
     virtual bool addNode( iNode * pNode, const std::string & nodeName = "" )
     { return false; }
-    
-    // Reset the iterator
-    virtual void reset(){}
     
     // Push back node into vector
     virtual void pushBackNode( iNode * pNode ){}
@@ -109,9 +112,6 @@ public:
     // Get the control
     virtual CUIControl * getControl()
     { return nullptr; }
-    
-    // Reset the iterators
-    virtual void resetIterators(){}
 
 protected:
 

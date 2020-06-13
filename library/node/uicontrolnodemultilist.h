@@ -1,15 +1,15 @@
 
 /************************************************************************
-*    FILE NAME:       uicontrolnode.h
+*    FILE NAME:       uicontrolnodemultilist.h
 *
 *    DESCRIPTION:     UI Control node class for rendering a ui control
 ************************************************************************/
 
-#ifndef __uicontrol_node_h__
-#define __uicontrol_node_h__
+#ifndef __uicontrol_node_multi_list_h__
+#define __uicontrol_node_multi_list_h__
 
 // Physical component dependency
-#include <node/inode.h>
+#include <node/nodemultilist.h>
 
 // Standard lib dependencies
 #include <memory>
@@ -19,21 +19,22 @@ class CMatrix;
 class CUIControl;
 class CNodeData;
 
-class CUIControlNode : public iNode
+class CUIControlNodeMultiLst : public CNodeMultiLst
 {
 public:
 
     // Constructor
-    CUIControlNode( std::unique_ptr<CUIControl> pControl, const CNodeData & rNodeData );
+    CUIControlNodeMultiLst( std::unique_ptr<CUIControl> pControl, const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CUIControlNode(){};
+    virtual ~CUIControlNodeMultiLst(){};
 
     // Update the nodes
     void update() override;
 
     // Transform the nodes
     void transform() override;
+
     // Used to transform object on a sector
     void transform( const CObjectTransform & object ) override;
 

@@ -22,6 +22,15 @@ CSpriteNode::CSpriteNode( const CNodeData & rNodeData ) :
 {
     m_id = rNodeData.getId();
     m_type = NDefs::ENT_SPRITE;
+
+    // Load the rest from XML node
+    CSprite::load( rNodeData.getXMLNode() );
+
+    // Init the physics
+    CSprite::initPhysics();
+
+    // Init the sprite
+    CSprite::init();
 }
 
 /***************************************************************************

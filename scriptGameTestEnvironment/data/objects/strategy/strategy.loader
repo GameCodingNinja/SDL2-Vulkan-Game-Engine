@@ -2,6 +2,7 @@
 
     <strategy name="_main_" cmdBufPool="(main)" activate="true">
     
+        <node name="shapes"/>
         <node name="multiListTestNode"/>
         <node name="player_ship">
             <node name="fire_tail">

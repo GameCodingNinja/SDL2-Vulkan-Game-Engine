@@ -13,6 +13,7 @@
 #include <utilities/xmlParser.h>
 #include <node/spritenodemultilist.h>
 #include <node/objectnodemultilist.h>
+#include <node/uicontrolnodemultilist.h>
 #include <node/spritenode.h>
 #include <node/uicontrolnode.h>
 #include <node/nodedata.h>
@@ -26,8 +27,6 @@
 namespace NNodeFactory
 {
     // Declare the function prototypes
-    void Load( CSprite * pSprite, const CSpriteData & rSpriteData );
-    void Load( CObjectTransform * pObject, const CSpriteData & rSpriteData );
     iNode * CreateUIControlNode( const CNodeData & rNodeData );
     
     /************************************************************************
@@ -44,14 +43,10 @@ namespace NNodeFactory
                 pNode = new CSpriteNodeMultiLst( rNodeData );
             else
                 pNode = new CSpriteNode( rNodeData );
-
-            Load( pNode->getSprite(), rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT )
         {
             pNode = new CObjectNodeMultiLst( rNodeData );
-
-            Load( pNode->getObject(), rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_UI_CONTROL )
         {
@@ -67,36 +62,13 @@ namespace NNodeFactory
         return pNode;
     }
 
-    /***************************************************************************
-    *    DESC:  Load the sprite data
-    ****************************************************************************/
-    void Load( CSprite * pSprite, const CSpriteData & rSpriteData )
-    {
-        // Load the rest from sprite data
-        pSprite->load( rSpriteData.getXMLNode() );
-
-        // Init the physics
-        pSprite->initPhysics();
-
-        // Init the sprite
-        pSprite->init();
-    }
-
-    /************************************************************************
-    *    DESC:  Load the object data
-    ************************************************************************/
-    void Load( CObjectTransform * pObject, const CSpriteData & rSpriteData )
-    {
-        // Load the transforms from sprite data
-        pObject->loadTransFromNode( rSpriteData.getXMLNode() );
-    }
-
     /************************************************************************
     *    DESC:  Create the UI Control node
     ************************************************************************/
     iNode * CreateUIControlNode( const CNodeData & rNodeData )
     {
         std::unique_ptr<CUIControl> upControl;
+        iNode * pNode(nullptr);
 
         if( rNodeData.getControlType() == NUIControlDefs::ECT_METER )
         {
@@ -106,11 +78,18 @@ namespace NNodeFactory
         {
             upControl.reset( new CUIProgressBar( rNodeData.getGroup() ) );
         }
+        else
+        {
+            throw NExcept::CCriticalException("Node UIControl Create Error!",
+                boost::str( boost::format("Node UIControl type not defined (%s).\n\n%s\nLine: %s")
+                    % rNodeData.getNodeName() % __FUNCTION__ % __LINE__ ));
+        }
 
-        upControl->loadFromNode( rNodeData.getXMLNode() );
-        upControl->init();
-        //upControl->setId( rNodeData.getId() );
+        if( rNodeData.hasChildrenNodes() )
+            pNode = new CUIControlNodeMultiLst( std::move(upControl), rNodeData );
+        else
+            pNode = new CUIControlNode( std::move(upControl), rNodeData );
 
-        return new CUIControlNode( std::move(upControl), rNodeData.getNodeId(), rNodeData.getParentNodeId() );
+        return pNode;
     }
 }

@@ -19,7 +19,7 @@
 
     <node name="uiBackground">
         
-        <sprite objectName="uiBackground">
+        <sprite>
             <position x="0" y="-890" z="0"/>
         </sprite>
 
@@ -57,7 +57,7 @@
 
     <node name="square_red">
         
-        <sprite objectName="square_red">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -66,7 +66,7 @@
 
     <node name="square_green">
         
-        <sprite objectName="square_green">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -75,7 +75,7 @@
 
     <node name="square_blue">
         
-        <sprite objectName="square_blue">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -84,7 +84,7 @@
 
     <node name="triangle_red">
         
-        <sprite objectName="triangle_red">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -93,7 +93,7 @@
 
     <node name="triangle_green">
         
-        <sprite objectName="triangle_green">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -102,7 +102,7 @@
 
     <node name="triangle_blue">
         
-        <sprite objectName="triangle_blue">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -111,7 +111,7 @@
 
     <node name="circle_red">
         
-        <sprite objectName="circle_red">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -120,7 +120,7 @@
 
     <node name="circle_green">
         
-        <sprite objectName="circle_green">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>
@@ -129,7 +129,7 @@
 
     <node name="circle_blue">
         
-        <sprite objectName="circle_blue">
+        <sprite>
             <position x="400" y="-870" z="0"/>
             <scale x="0.7" y="0.7" z="0.7"/>
         </sprite>

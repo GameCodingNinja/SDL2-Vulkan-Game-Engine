@@ -43,9 +43,6 @@ public:
     
 private:
     
-    // Reset the iterators
-    void resetIterators() override;
-    
     // Update the nodes
     void update( iNode * pNode );
     
