@@ -21,7 +21,7 @@ class CSpriteNodeMultiLst : public CNodeMultiLst, public CSprite
 public:
     
     // Constructor
-    CSpriteNodeMultiLst( const iObjectData & objectData, const CNodeData & rNodeData );
+    CSpriteNodeMultiLst( const CNodeData & rNodeData );
 
     // Destructor
     virtual ~CSpriteNodeMultiLst(){};

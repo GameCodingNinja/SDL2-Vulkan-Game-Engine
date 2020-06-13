@@ -22,10 +22,10 @@ class CSpriteNode : public iNode, public CSprite
 public:
 
     // Constructor
-    CSpriteNode( const iObjectData & objectData, const CNodeData & rNodeData );
+    CSpriteNode( const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CSpriteNode();
+    virtual ~CSpriteNode(){};
 
     // Update the nodes
     void update() override;

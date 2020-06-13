@@ -89,7 +89,7 @@
 
     </node>
 
-    <node name="player_ship"">
+    <node name="player_ship">
 
         <object>
             <position x="-400" y="200" z="0"/>

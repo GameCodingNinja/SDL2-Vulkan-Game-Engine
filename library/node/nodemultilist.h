@@ -57,7 +57,7 @@ private:
     
 private:
     
-    // List of all nodes.
+    // Map of all nodes.
     // This is only used by the head node and even though
     // every node will have one of these, it simplifies
     // the code and is minimal overhead

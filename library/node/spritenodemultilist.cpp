@@ -11,13 +11,14 @@
 // Game lib dependencies
 #include <common/objecttransform.h>
 #include <node/nodedata.h>
+#include <objectdata/objectdatamanager.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteNodeMultiLst::CSpriteNodeMultiLst( const iObjectData & objectData, const CNodeData & rNodeData ) :
+CSpriteNodeMultiLst::CSpriteNodeMultiLst( const CNodeData & rNodeData ) :
         CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
-        CSprite(objectData)
+        CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) )
 {
     m_id = rNodeData.getId();
     m_type = NDefs::ENT_SPRITE;

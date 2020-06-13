@@ -11,8 +11,6 @@
 #include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
-#include <objectdata/objectdata2d.h>
-#include <objectdata/objectdatamanager.h>
 #include <node/spritenodemultilist.h>
 #include <node/objectnodemultilist.h>
 #include <node/spritenode.h>
@@ -43,13 +41,9 @@ namespace NNodeFactory
         if( rNodeData.getNodeType() == NDefs::ENT_SPRITE )
         {
             if( rNodeData.hasChildrenNodes() )
-                pNode = new CSpriteNodeMultiLst(
-                    CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
-                    rNodeData );
+                pNode = new CSpriteNodeMultiLst( rNodeData );
             else
-                pNode = new CSpriteNode(
-                    CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ),
-                    rNodeData );
+                pNode = new CSpriteNode( rNodeData );
 
             Load( pNode->getSprite(), rNodeData );
         }

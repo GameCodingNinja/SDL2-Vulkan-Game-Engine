@@ -1,6 +1,6 @@
 <loader>
 
-    <strategy name="_main_" type="actor" cmdBufPool="(main)" activate="true">
+    <strategy name="_main_" cmdBufPool="(main)" activate="true">
     
         <node name="multiListTestNode"/>
         <node name="player_ship">
