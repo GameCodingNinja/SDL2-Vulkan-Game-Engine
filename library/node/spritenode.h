@@ -10,8 +10,6 @@
 
 // Physical component dependency
 #include <node/inode.h>
-
-// Game lib dependencies
 #include <sprite/sprite.h>
 
 // Forward declaration(s)
@@ -19,7 +17,7 @@ class CMatrix;
 class iObjectData;
 class CNodeData;
 
-class CSpriteNode : public iNode
+class CSpriteNode : public iNode, public CSprite
 {
 public:
 
@@ -41,9 +39,6 @@ public:
     // for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
 
-    // Get the unique head node id number
-    int getId() const override;
-
     // Get the sprite
     CSprite * getSprite() override;
 
@@ -58,11 +53,6 @@ private:
     // Record command buffer recursive function
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
-
-protected:
-
-    // Node data
-    CSprite m_sprite;
 };
 
 #endif

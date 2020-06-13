@@ -17,6 +17,7 @@
 // Standard lib dependencies
 #include <vector>
 #include <string>
+#include <atomic>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -32,8 +33,12 @@ class iNode
 public:
 
     // Constructor
-    iNode( int id = defs_DEFAULT_ID, int parentId = defs_DEFAULT_ID ) :
-        m_type(NDefs::ENT_NULL), m_id(id), m_parentId(parentId)
+    iNode( int nodeId = defs_DEFAULT_ID, int parentId = defs_DEFAULT_ID ) :
+        m_type(NDefs::ENT_NULL),
+        m_handle(m_hAtomicIter++),
+        m_id(defs_DEFAULT_ID),
+        m_nodeId(nodeId),
+        m_parentId(parentId)
     {}
 
     // Destructor
@@ -58,12 +63,20 @@ public:
     virtual iNode * findParent( iNode * pSearchNode )
     { return nullptr; }
 
-    // Get the unique node id number
-    virtual int getId() const
+    // Get the id number
+    handle16_t getHandle() const
+    { return m_handle; }
+
+    // Get the id number
+    int getId() const
     { return m_id; }
 
+    // Get the node id number
+    int getNodeId() const
+    { return m_nodeId; }
+
     // Get the parent id
-    virtual int getParentId() const
+    int getParentId() const
     { return m_parentId; }
 
     // Update the nodes
@@ -105,11 +118,20 @@ protected:
     // Node type
     NDefs::ENodeType m_type;
 
+    // Atomic handle incrementer
+    static std::atomic<handle16_t> m_hAtomicIter;
+
+    // node handle
+    handle16_t m_handle;
+
+    // id
+    int16_t m_id;
+
     // node id
-    int m_id;
+    int16_t m_nodeId;
 
     // parent node id
-    int m_parentId;
+    int16_t m_parentId;
 };
 
 #endif

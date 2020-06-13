@@ -16,6 +16,7 @@
 #include <script/scriptmanager.h>
 #include <script/scriptglobals.h>
 #include <utilities/genfunc.h>
+#include <node/inode.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -264,6 +265,18 @@ namespace NScriptSprite
         sprite.getScriptComponent().resetAndRecycle();
     }
 
+    int GetId(CSprite & sprite)
+    {
+        auto node = dynamic_cast<iNode *>(&sprite);
+
+        return node->getId();
+    }
+
+    handle16_t GetHandle(CSprite & sprite)
+    {
+        return dynamic_cast<iNode *>(&sprite)->getHandle();
+    }
+
     /************************************************************************
     *    DESC:  Register the class with AngelScript
     ************************************************************************/
@@ -275,6 +288,7 @@ namespace NScriptSprite
 
         // Register type
         Throw( pEngine->RegisterObjectType( "CSprite", 0, asOBJ_REF|asOBJ_NOCOUNT) );
+        Throw( pEngine->RegisterObjectType( "handle", sizeof(uint16_t), asOBJ_VALUE|asOBJ_POD) );
 
         // Visual component functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setColor(const CColor &in)",                  WRAP_OBJ_LAST(SetColor1),        asCALL_GENERIC) );
@@ -290,14 +304,15 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "const string & getFontString() const",             WRAP_OBJ_LAST(GetFontString),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "bool isFontSprite() const",                        WRAP_OBJ_LAST(IsFontSprite),     asCALL_GENERIC) );
 
+        Throw( pEngine->RegisterObjectMethod("CSprite", "int getId()",                                      WRAP_OBJ_LAST(GetId),            asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "handle getHandle()",                               WRAP_OBJ_LAST(GetHandle),        asCALL_GENERIC) );
+
         // Sprite specific functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "CSize getSize() const",                               WRAP_OBJ_LAST(GetSize),             asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "uint getFrameCount() const",                          WRAP_MFN(CSprite, getFrameCount),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setFrame(uint)",                                 WRAP_MFN(CSprite, setFrame),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "uint getCurrentFrame() const",                        WRAP_MFN(CSprite, getCurrentFrame), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "int getId() const",                                   WRAP_MFN(CSprite,   getId),         asCALL_GENERIC) );
-        
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setVisible(bool)",                               WRAP_MFN(CSprite, setVisible),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "bool isVisible() const",                              WRAP_MFN(CSprite, isVisible),    asCALL_GENERIC) );
 

@@ -1,8 +1,9 @@
 <strategy>
 
+    <!-- Node name will be used for the object name look up if one isn't defined -->
     <node name="cube" defaultGroup="(cube)">
         
-        <sprite objectName="cube">
+        <sprite>
             <position x="0" y="0" z="0"/>
             <scale x="3" y="3" z="3"/>
             <scriptLst>

@@ -17,15 +17,8 @@
 CObjectNodeMultiLst::CObjectNodeMultiLst( const CNodeData & rNodeData ) :
     CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
-    m_object.setId( rNodeData.getId() );
+    m_id = rNodeData.getId();
     m_type = NDefs::ENT_OBJECT;
-}
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CObjectNodeMultiLst::~CObjectNodeMultiLst()
-{
 }
 
 /***************************************************************************
@@ -33,7 +26,7 @@ CObjectNodeMultiLst::~CObjectNodeMultiLst()
 ****************************************************************************/
 void CObjectNodeMultiLst::transform()
 {
-    m_object.transform();
+    CObjectTransform::transform();
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();
@@ -42,7 +35,7 @@ void CObjectNodeMultiLst::transform()
 // Used to transform object on a sector
 void CObjectNodeMultiLst::transform( const CObjectTransform & object )
 {
-    m_object.transform( object );
+    CObjectTransform::transform( object );
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();
@@ -53,13 +46,5 @@ void CObjectNodeMultiLst::transform( const CObjectTransform & object )
 ************************************************************************/
 CObjectTransform * CObjectNodeMultiLst::getObject()
 {
-    return &m_object;
-}
-
-/************************************************************************
-*    DESC:  Get the sprite id number
-************************************************************************/
-int CObjectNodeMultiLst::getId() const
-{
-    return m_object.getId();
+    return static_cast<CObjectTransform *>(this);
 }

@@ -1,6 +1,6 @@
 <loader>
 
-    <strategy name="_startup_" type="actor" cmdBufPool="(startup)" activate="true">
+    <strategy name="_startup_" defaultGroup="(startup)" cmdBufPool="(startup)" activate="true">
     
         <node name="waffles"/>
 

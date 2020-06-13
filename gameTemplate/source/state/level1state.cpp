@@ -21,6 +21,7 @@
 #include <strategy/strategy.h>
 #include <strategy/strategymanager.h>
 #include <strategy/strategyloader.h>
+#include <node/inode.h>
 
 // Standard lib dependencies
 #include <vector>
@@ -114,16 +115,16 @@ void CLevel1State::physics()
 ************************************************************************/
 void CLevel1State::BeginContact(b2Contact* contact)
 {
-    auto pSpriteA = (CSprite *)contact->GetFixtureA()->GetUserData();
-    auto pSpriteB = (CSprite *)contact->GetFixtureB()->GetUserData();
+    auto pNodeA = dynamic_cast<iNode *>(static_cast<CSprite *>(contact->GetFixtureA()->GetUserData()));
+    auto pNodeB = dynamic_cast<iNode *>(static_cast<CSprite *>(contact->GetFixtureB()->GetUserData()));
 
-    if( (pSpriteA != nullptr) && (pSpriteB != nullptr) )
+    if( (pNodeA != nullptr) && (pNodeB != nullptr) )
     {
-        if( pSpriteA->getId() == SPRITE_PEG )
-            pSpriteA->setFrame(1);
+        if( pNodeA->getId() == SPRITE_PEG )
+            pNodeA->getSprite()->setFrame(1);
 
-        else if( pSpriteB->getId() == SPRITE_PEG )
-            pSpriteB->setFrame(1);
+        else if( pNodeB->getId() == SPRITE_PEG )
+            pNodeB->getSprite()->setFrame(1);
     }
 }
 
@@ -132,16 +133,16 @@ void CLevel1State::BeginContact(b2Contact* contact)
 ************************************************************************/
 void CLevel1State::EndContact(b2Contact* contact)
 {
-    auto pSpriteA = reinterpret_cast<CSprite *>(contact->GetFixtureA()->GetUserData());
-    auto pSpriteB = reinterpret_cast<CSprite *>(contact->GetFixtureB()->GetUserData());
+    auto pNodeA = dynamic_cast<iNode *>(static_cast<CSprite *>(contact->GetFixtureA()->GetUserData()));
+    auto pNodeB = dynamic_cast<iNode *>(static_cast<CSprite *>(contact->GetFixtureB()->GetUserData()));
 
-    if( (pSpriteA != nullptr) && (pSpriteB != nullptr) )
+    if( (pNodeA != nullptr) && (pNodeB != nullptr) )
     {
-        if( pSpriteA->getId() == SPRITE_PEG )
-            pSpriteA->setFrame(0);
+        if( pNodeA->getId() == SPRITE_PEG )
+            pNodeA->getSprite()->setFrame(0);
 
-        else if( pSpriteB->getId() == SPRITE_PEG )
-            pSpriteB->setFrame(0);
+        else if( pNodeB->getId() == SPRITE_PEG )
+            pNodeB->getSprite()->setFrame(0);
     }
 }
 

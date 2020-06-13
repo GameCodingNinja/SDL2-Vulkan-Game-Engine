@@ -1,6 +1,6 @@
 <loader>
 
-    <strategy name="_load_" type="actor" cmdBufPool="(load)" activate="true">
+    <strategy name="_load_" cmdBufPool="(load)" activate="true">
     
         <node name="loadAnim">
             <sprite>

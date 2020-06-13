@@ -1,8 +1,7 @@
 <loader>
 
-    <strategy name="_level_1_stage_" type="stage" cmdBufPool="(level_1)" camera="level_camera"/>
-    <strategy name="_level_1_ball_" type="actor" cmdBufPool="(level_1)" camera="level_camera"/>
-    <strategy name="_level_1_ui_" type="actor" cmdBufPool="(level_1)">
+    <strategy name="_level_1_ball_" cmdBufPool="(level_1)" camera="level_camera"/>
+    <strategy name="_level_1_ui_" defaultGroup="(level_1)" cmdBufPool="(level_1)">
         <node name="uiBackground" instance="uiBackground"/>
         <node name="uiWinMeter" instance="uiWinMeter"/>
         <node name="uiNextBallText"/>

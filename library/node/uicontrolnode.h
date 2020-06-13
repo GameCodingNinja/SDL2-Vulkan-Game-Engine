@@ -47,9 +47,6 @@ public:
     // Get the control
     CUIControl * getControl() override;
 
-    // Get the unique head node id number
-    int getId() const override;
-
 private:
 
     // Update the nodes recursive function

@@ -62,13 +62,13 @@ public:
     void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
     
     // Destroy the node
-    void destroy( int id );
+    void destroy( const handle16_t handle );
 
     // Update the nodes
     void update();
 
     // Transform the node
-    void transform();// override;
+    void transform();
 
     // Set the command buffers
     void setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec );
@@ -77,7 +77,7 @@ public:
     void recordCommandBuffer( uint32_t index );
 
     // Find if the node is active
-    bool isActive( const int id );
+    bool isActive( const handle16_t handle );
     
     // Get the pointer to the node
     iNode * getNode( const std::string & instanceName );
@@ -131,8 +131,8 @@ protected:
     // Vector of iNode pointers to be removed from the active vector
     std::vector<iNode *> m_pDeactivateVec;
     
-    // Set of indexes to delete
-    std::vector<int> m_deleteVec;
+    // Set of handles to delete
+    std::vector<handle16_t> m_deleteVec;
 
     // Clear all nodes flag
     bool m_clearAllNodesFlag = false;

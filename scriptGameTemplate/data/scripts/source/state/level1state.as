@@ -137,7 +137,8 @@ void LoadRunAssets()
     PhysicsWorldManager2D.createWorld( "(game)" );
     
     // Create the needed strategies
-    StrategyMgr.loadStrategy( "data/objects/strategy/level_1/strategy.loader" );
+    StrategyMgr.loadStrategy( "data/objects/strategy/level_1/stage.strategy.loader" );
+    StrategyMgr.loadStrategy( "data/objects/strategy/level_1/ball.strategy.loader" );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

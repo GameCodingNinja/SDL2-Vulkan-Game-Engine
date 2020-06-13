@@ -1,0 +1,12 @@
+<strategy defaultGroup="(title)" defaultId="-2">
+
+    <!-- Node name will be used for the object name look up if one isn't defined -->
+    <node name="peg">
+        <sprite>
+            <scriptLst>
+                <script peg_off="Title_PegOff" group="(main)"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+</strategy>

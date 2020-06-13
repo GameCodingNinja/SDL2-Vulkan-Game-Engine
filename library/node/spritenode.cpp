@@ -17,9 +17,9 @@
 ************************************************************************/
 CSpriteNode::CSpriteNode( const iObjectData & objectData, const CNodeData & rNodeData ) :
         iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
-        m_sprite( objectData )
+        CSprite( objectData )
 {
-    m_sprite.setId( rNodeData.getId() );
+    m_id = rNodeData.getId();
     m_type = NDefs::ENT_SPRITE;
 }
 
@@ -35,8 +35,8 @@ CSpriteNode::~CSpriteNode()
 ****************************************************************************/
 void CSpriteNode::update()
 {
-    m_sprite.update();
-    m_sprite.physicsUpdate();
+    CSprite::update();
+    CSprite::physicsUpdate();
 }
 
 /***************************************************************************
@@ -44,13 +44,13 @@ void CSpriteNode::update()
 ****************************************************************************/
 void CSpriteNode::transform()
 {
-    m_sprite.transform();
+    CSprite::transform();
 }
 
 // Used to transform object on a sector
 void CSpriteNode::transform( const CObjectTransform & object )
 {
-    m_sprite.transform( object );
+    CSprite::transform( object );
 }
 
 /***************************************************************************
@@ -59,15 +59,7 @@ void CSpriteNode::transform( const CObjectTransform & object )
 ****************************************************************************/
 void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
-    m_sprite.recordCommandBuffer( index, cmdBuffer, camera );
-}
-
-/************************************************************************
-*    DESC:  Get the unique head node id number
-************************************************************************/
-int CSpriteNode::getId() const
-{
-    return m_sprite.getId();
+    CSprite::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 /************************************************************************
@@ -75,7 +67,7 @@ int CSpriteNode::getId() const
 ************************************************************************/
 CSprite * CSpriteNode::getSprite()
 {
-    return &m_sprite;
+    return static_cast<CSprite *>(this);
 }
 
 /************************************************************************
@@ -83,5 +75,5 @@ CSprite * CSpriteNode::getSprite()
 ************************************************************************/
 CObjectTransform * CSpriteNode::getObject()
 {
-    return &m_sprite;
+    return static_cast<CObjectTransform *>(this);
 }

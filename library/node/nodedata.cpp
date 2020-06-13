@@ -29,7 +29,7 @@ CNodeData::CNodeData(
     const std::string & defGroup,
     const std::string & defObjName,
     int defId ) :
-        CSpriteData( node.getChildNode(), defGroup, defObjName, defId ),
+        CSpriteData( node.getChildNode(), nodeName, defGroup, defObjName, defId ),
         m_nodeName(nodeName),
         m_nodeId(nodeId),
         m_parenNodetId(parenNodetId),
@@ -92,15 +92,6 @@ CNodeData::CNodeData(
 {
 }
 
-
-/************************************************************************
-*    DESC:  destructor                                                             
-************************************************************************/
-CNodeData::~CNodeData()
-{
-}
-
-
 /************************************************************************
 *    DESC:  Get the node Name
 ************************************************************************/
@@ -108,7 +99,6 @@ const std::string & CNodeData::getNodeName() const
 {
     return m_nodeName;
 }
-
 
 /************************************************************************
 *    DESC:  Get the node id
@@ -118,7 +108,6 @@ int CNodeData::getNodeId() const
     return m_nodeId;
 }
 
-
 /************************************************************************
 *    DESC:  Get the parent node id
 ************************************************************************/
@@ -126,7 +115,6 @@ int CNodeData::getParentNodeId() const
 {
     return m_parenNodetId;
 }
-
 
 /************************************************************************
 *    DESC:  Get the node type
@@ -136,7 +124,6 @@ NDefs::ENodeType CNodeData::getNodeType() const
     return m_nodeType;
 }
 
-
 /************************************************************************
 *    DESC:  Get the control type
 ************************************************************************/
@@ -144,7 +131,6 @@ NUIControlDefs::EControlType CNodeData::getControlType() const
 {
     return m_controlType;
 }
-
 
 /************************************************************************
 *    DESC:  Does this node have children?

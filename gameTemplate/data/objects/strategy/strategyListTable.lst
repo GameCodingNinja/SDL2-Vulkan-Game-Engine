@@ -1,13 +1,5 @@
 <listTable>
 
-    <groupList groupName="_startup_">
-        <file path="data/objects/strategy/state/startup.strategy"/>
-    </groupList>
-
-    <groupList groupName="_title_">
-        <file path="data/objects/strategy/state/titlescreen.strategy"/>
-    </groupList>
-
     <groupList groupName="_cube_">
         <file path="data/objects/strategy/state/cube.strategy"/>
     </groupList>

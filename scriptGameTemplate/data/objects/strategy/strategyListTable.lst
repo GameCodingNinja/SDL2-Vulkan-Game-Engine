@@ -1,13 +1,5 @@
 <?xml version="1.0"?>
 <listTable>
-
-    <groupList groupName="_startup_">
-        <file path="data/objects/strategy/state/startup.strategy"/>
-    </groupList>
-    
-    <groupList groupName="_title_">
-        <file path="data/objects/strategy/state/titlescreen.strategy"/>
-    </groupList>
     
     <groupList groupName="_cube_">
         <file path="data/objects/strategy/state/cube.strategy"/>
@@ -18,11 +10,11 @@
     </groupList>
 
     <groupList groupName="_stage_">
-        <file path="data/objects/strategy/level_1/level.stage"/>
+        <file path="data/objects/strategy/level_1/stage.strategy"/>
     </groupList>
     
     <groupList groupName="_level_1_">
-        <file path="data/objects/strategy/level_1/actor.strategy"/>
+        <file path="data/objects/strategy/level_1/ball.strategy"/>
     </groupList>
   
 </listTable>

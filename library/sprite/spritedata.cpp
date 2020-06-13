@@ -16,6 +16,7 @@
 ************************************************************************/
 CSpriteData::CSpriteData( 
     const XMLNode & xmlNode,
+    const std::string & nodeName,
     const std::string & defGroup,
     const std::string & defObjName,
     int defId ) :
@@ -33,6 +34,8 @@ CSpriteData::CSpriteData(
         m_group = xmlNode.getAttribute( "group" );
     
     // Get the object data name
+    // Init with the node name in the event the node and the object data name are the same
+    m_objectName = nodeName;
     if( xmlNode.isAttributeSet( "objectName" ) )
         m_objectName = xmlNode.getAttribute( "objectName" );
     
@@ -63,14 +66,6 @@ CSpriteData::CSpriteData( const CSpriteData & data ) :
 {
 }
 
-
-/************************************************************************
-*    DESC:  destructor                                                             
-************************************************************************/
-CSpriteData::~CSpriteData()
-{
-}
-
 /************************************************************************
 *    DESC:  Get the XML Node
 ************************************************************************/
@@ -78,7 +73,6 @@ const XMLNode & CSpriteData::getXMLNode() const
 {
     return m_xmlNode;
 }
-
 
 /************************************************************************
 *    DESC:  Get the name of this specific sprite instance
@@ -88,7 +82,6 @@ const std::string & CSpriteData::getSpriteName() const
     return m_name;
 }
 
-
 /************************************************************************
 *    DESC:  Get the group
 ************************************************************************/
@@ -97,7 +90,6 @@ const std::string & CSpriteData::getGroup() const
     return m_group;
 }
 
-
 /************************************************************************
 *    DESC:  Get the object name
 ************************************************************************/
@@ -105,7 +97,6 @@ const std::string & CSpriteData::getObjectName() const
 {
     return m_objectName;
 }
-
 
 /************************************************************************
 *    DESC:  Get the id number

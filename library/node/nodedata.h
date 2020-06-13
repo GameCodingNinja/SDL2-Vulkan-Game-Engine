@@ -34,7 +34,7 @@ public:
         const std::string & objName );
     
     // Destructor
-    virtual ~CNodeData();
+    virtual ~CNodeData(){};
     
     // Get the node Name
     const std::string & getNodeName() const;

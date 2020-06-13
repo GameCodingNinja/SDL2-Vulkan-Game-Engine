@@ -120,6 +120,7 @@ add_library(
         sprite/sprite.cpp
         sprite/spritesheet.cpp
         sprite/spritedata.cpp
+        node/inode.cpp
         node/node.cpp
         node/spritenodemultilist.cpp
         node/objectnodemultilist.cpp

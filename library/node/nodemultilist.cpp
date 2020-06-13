@@ -94,23 +94,8 @@ void CNodeMultiLst::transform( iNode * pNode )
 
             if( pNextNode != nullptr )
             {
-                CObjectTransform * pNextObj(nullptr);
-                CObjectTransform * pObj(nullptr);
-                
-                if( pNextNode->getSprite() != nullptr )
-                    pNextObj = pNextNode->getSprite();
-                
-                else if( pNextNode->getObject() != nullptr )
-                    pNextObj = pNextNode->getObject();
-                
-                if( pNode->getSprite() != nullptr )
-                    pObj = pNode->getSprite();
-                
-                else if( pNode->getObject() != nullptr )
-                    pObj = pNode->getObject();
-                
                 // Transform the object
-                pNextObj->transform( *pObj );
+                pNextNode->getObject()->transform( *pNode->getObject() );
 
                 // Call a recursive function again
                 transform( pNextNode );

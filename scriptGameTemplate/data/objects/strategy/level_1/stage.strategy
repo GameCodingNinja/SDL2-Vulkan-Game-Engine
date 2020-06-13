@@ -1,0 +1,12 @@
+<strategy>
+    
+    <node name="peg">
+        <sprite objectName="peg" group="(level_1)" id="-2">
+            <!-- Will use the default group but you can also specify the group for the script -->
+            <scriptLst>
+                <script peg_off="Level1_PegOff" group="(level_1)"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+</strategy>

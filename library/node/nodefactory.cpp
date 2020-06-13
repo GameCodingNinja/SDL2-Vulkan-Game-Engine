@@ -115,7 +115,7 @@ namespace NNodeFactory
 
         upControl->loadFromNode( rNodeData.getXMLNode() );
         upControl->init();
-        upControl->setId( rNodeData.getId() );
+        //upControl->setId( rNodeData.getId() );
 
         return new CUIControlNode( std::move(upControl), rNodeData.getNodeId(), rNodeData.getParentNodeId() );
     }

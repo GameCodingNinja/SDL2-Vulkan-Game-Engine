@@ -26,8 +26,8 @@ final class CRunState : CCommonState
     CPhysicsWorld2D @mPhysicsWorld;
 
     // Actor strategy reference(s)
-    iStrategy @mBallStrategy;
-    iStrategy @mUIStrategy;
+    Strategy @mBallStrategy;
+    Strategy @mUIStrategy;
 
     // Level camera for orthographic point calculations
     CCamera @mCamera;
@@ -250,6 +250,7 @@ void LoadRunAssets()
     
     // Create the needed strategies
     StrategyMgr.loadStrategy( "data/objects/strategy/level_1/strategy.loader" );
+    StrategyMgr.loadStrategy( "data/objects/strategy/level_1/stage.loader" );
     
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );

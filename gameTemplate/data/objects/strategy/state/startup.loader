@@ -1,7 +1,9 @@
 <loader>
 
-    <strategy name="_startup_" type="actor" cmdBufPool="(startup)" activate="true">
+    <!-- One off Strategy node creation for simple nodes that don't define scripts. Bypasses the need to create a strategy file -->
+    <strategy name="_startup_" defaultGroup="(startup)" cmdBufPool="(startup)" activate="true">
     
+        <!-- Node name will be used for the object name look up if one isn't defined -->
         <node name="waffles"/>
 
     </strategy>

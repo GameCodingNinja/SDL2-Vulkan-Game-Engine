@@ -129,6 +129,7 @@ void LoadTitleScreenAssets()
     PhysicsWorldManager2D.createWorld( "(game)" );
     
     // Create the needed strategies
+    StrategyMgr.loadStrategy( "data/objects/strategy/state/titlescreen.stage.loader" );
     StrategyMgr.loadStrategy( "data/objects/strategy/state/titlescreen.loader" );
     
     // Send a message to indicate the load is done

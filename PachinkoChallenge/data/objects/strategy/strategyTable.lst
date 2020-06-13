@@ -5,11 +5,11 @@
     </groupList>
 
     <groupList groupName="_title_stage_">
-        <file path="data/objects/strategy/state/titlescreen.stage"/>
+        <file path="data/objects/strategy/state/titlescreen.stage.strategy"/>
     </groupList>
 
     <groupList groupName="_title_actor_">
-        <file path="data/objects/strategy/state/titlescreen.actor.strategy"/>
+        <file path="data/objects/strategy/state/titlescreen.ball.strategy"/>
     </groupList>
 
     <groupList groupName="_load_">
@@ -17,7 +17,7 @@
     </groupList>
 
     <groupList groupName="_level_1_stage_">
-        <file path="data/objects/strategy/level_1/level.stage"/>
+        <file path="data/objects/strategy/level_1/stage.strategy"/>
     </groupList>
     
     <groupList groupName="_level_1_ball_">

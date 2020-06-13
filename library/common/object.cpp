@@ -292,16 +292,3 @@ CBitmask<uint16_t> & CObject::getParameters()
 {
     return m_parameters;
 }
-
-/************************************************************************
-*    DESC:  Get/Set id
-************************************************************************/
-int CObject::getId() const
-{
-    return m_id;
-}
-
-void CObject::setId( int id )
-{
-    m_id = id;
-}

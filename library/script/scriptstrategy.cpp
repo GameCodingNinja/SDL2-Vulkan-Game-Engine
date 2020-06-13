@@ -134,6 +134,10 @@ namespace NScriptStrategy
         return pStrategy;
     }
 
+    iNode * GetiNode(CSprite & sprite)
+    {
+        return dynamic_cast<iNode *>(&sprite);
+    }
     
     /************************************************************************
     *    DESC:  Register the class with AngelScript
@@ -145,7 +149,7 @@ namespace NScriptStrategy
         asIScriptEngine * pEngine = CScriptMgr::Instance().getEnginePtr();
         
         // Register type
-        Throw( pEngine->RegisterObjectType(  "iNode", 0, asOBJ_REF|asOBJ_NOCOUNT) );
+        Throw( pEngine->RegisterObjectType( "iNode", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
         // iNode specific functions
         Throw( pEngine->RegisterObjectMethod("iNode", "CSprite & getSprite()",            WRAP_MFN(iNode, getSprite),      asCALL_GENERIC) );
@@ -153,15 +157,18 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & next()",                   WRAP_MFN(iNode, next),           asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "int getType()",                    WRAP_MFN(iNode, getType),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "int getId()",                      WRAP_MFN(iNode, getId),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iNode", "handle getHandle()",               WRAP_MFN(iNode, getHandle),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "void resetIterators()",            WRAP_MFN(iNode, resetIterators), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & getChildNode(string &in)", WRAP_MFN(iNode, getChildNode),   asCALL_GENERIC) );
+
+        Throw( pEngine->RegisterObjectMethod("CSprite", "iNode & getNode()",              WRAP_OBJ_LAST(GetiNode),         asCALL_GENERIC) );
 
         // Register type
         Throw( pEngine->RegisterObjectType("Strategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
 
         Throw( pEngine->RegisterObjectMethod("Strategy", "void setCommandBuffer(string &in)",           WRAP_OBJ_LAST(SetCommandBuffer), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("Strategy", "iNode & create(string &in, string &in = '', bool active = true, string &in = '')", WRAP_OBJ_LAST(Create), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("Strategy", "void destroy(int)",                           WRAP_MFN(CStrategy, destroy),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("Strategy", "void destroy(handle)",                        WRAP_MFN(CStrategy, destroy),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("Strategy", "void setCamera(string &in)",                  WRAP_MFN(CStrategy, setCamera),  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("Strategy", "iNode & getNode(string &in)",                 WRAP_OBJ_LAST(GetNode),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("Strategy", "iNode & activateNode(string &in)",            WRAP_MFN(CStrategy, activateNode),  asCALL_GENERIC) );

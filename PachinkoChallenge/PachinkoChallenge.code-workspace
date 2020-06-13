@@ -97,7 +97,11 @@
 			"cinttypes": "cpp",
 			"valarray": "cpp",
 			"math.h": "c",
-			"*.ipp": "cpp"
+			"*.ipp": "cpp",
+			"compare": "cpp",
+			"concepts": "cpp",
+			"ranges": "cpp",
+			"stop_token": "cpp"
 		}
 	}
 }

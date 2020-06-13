@@ -23,7 +23,7 @@ class CNode : public iNode
 public:
 
     // Constructor
-    CNode( int id, int parentId );
+    CNode( int nodeId, int parentId );
 
     // Destructor
     virtual ~CNode();

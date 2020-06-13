@@ -1,0 +1,11 @@
+<strategy defaultGroup="(level_1)" defaultId="-2">
+
+    <node name="peg">
+        <sprite>
+            <scriptLst>
+                <script peg_off="Level_PegOff"/>
+            </scriptLst>
+        </sprite>
+    </node>
+
+</strategy>

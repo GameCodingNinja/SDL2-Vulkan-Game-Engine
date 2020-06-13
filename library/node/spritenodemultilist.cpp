@@ -17,17 +17,10 @@
 ************************************************************************/
 CSpriteNodeMultiLst::CSpriteNodeMultiLst( const iObjectData & objectData, const CNodeData & rNodeData ) :
         CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
-        m_sprite(objectData)
+        CSprite(objectData)
 {
-    m_sprite.setId( rNodeData.getId() );
+    m_id = rNodeData.getId();
     m_type = NDefs::ENT_SPRITE;
-}
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CSpriteNodeMultiLst::~CSpriteNodeMultiLst()
-{
 }
 
 /***************************************************************************
@@ -35,8 +28,8 @@ CSpriteNodeMultiLst::~CSpriteNodeMultiLst()
 ****************************************************************************/
 void CSpriteNodeMultiLst::update()
 {
-    m_sprite.physicsUpdate();
-    m_sprite.update();
+    CSprite::physicsUpdate();
+    CSprite::update();
     
     // Call the parent but it has to be last
     CNodeMultiLst::update();
@@ -47,7 +40,7 @@ void CSpriteNodeMultiLst::update()
 ****************************************************************************/
 void CSpriteNodeMultiLst::transform()
 {
-    m_sprite.transform();
+    CSprite::transform();
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();
@@ -56,7 +49,7 @@ void CSpriteNodeMultiLst::transform()
 // Used to transform object on a sector
 void CSpriteNodeMultiLst::transform( const CObjectTransform & object )
 {
-    m_sprite.transform( object );
+    CSprite::transform( object );
 
     // Call the parent but it has to be last
     CNodeMultiLst::transform();
@@ -68,7 +61,7 @@ void CSpriteNodeMultiLst::transform( const CObjectTransform & object )
 ****************************************************************************/
 void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
-    m_sprite.recordCommandBuffer( index, cmdBuffer, camera );
+    CSprite::recordCommandBuffer( index, cmdBuffer, camera );
     
     // Call the parent but it has to be last
     CNodeMultiLst::recordCommandBuffer( index, cmdBuffer, camera );
@@ -79,15 +72,7 @@ void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer c
 ************************************************************************/
 CSprite * CSpriteNodeMultiLst::getSprite()
 {
-    return &m_sprite;
-}
-
-/************************************************************************
-*    DESC:  Get the sprite id number
-************************************************************************/
-int CSpriteNodeMultiLst::getId() const
-{
-    return m_sprite.getId();
+    return static_cast<CSprite *>(this);
 }
 
 /************************************************************************
@@ -95,5 +80,5 @@ int CSpriteNodeMultiLst::getId() const
 ************************************************************************/
 CObjectTransform * CSpriteNodeMultiLst::getObject()
 {
-    return &m_sprite;
+    return static_cast<CObjectTransform *>(this);
 }

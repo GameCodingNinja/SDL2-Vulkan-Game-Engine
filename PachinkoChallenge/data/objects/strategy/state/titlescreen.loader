@@ -1,6 +1,7 @@
 <loader>
 
-    <strategy name="_title_background_" type="actor" cmdBufPool="(title)">
+    <!-- One off Strategy node creation. Bypasses the need to create a strategy file -->
+    <strategy name="_title_background_" cmdBufPool="(title)">
     
         <node group="(title)" name="background">
             <sprite>
@@ -10,9 +11,8 @@
 
     </strategy>
 
-    <strategy name="_title_stage_" type="stage" camera="title_anim_camera" cmdBufPool="(title)"/>
-
-    <strategy name="_title_actor_" type="actor" camera="title_anim_camera" cmdBufPool="(title)">
+    <!-- One off Strategy node creation. Bypasses the need to create a strategy file -->
+    <strategy name="_title_actor_" defaultGroup="(title)" camera="title_anim_camera" cmdBufPool="(title)">
 
         <node name="circle_blue"/>
         <node name="circle_green"/>
@@ -26,7 +26,8 @@
 
     </strategy>
 
-    <strategy name="_title_text_" type="actor" cmdBufPool="(title)">
+    <!-- One off Strategy node creation. Bypasses the need to create a strategy file -->
+    <strategy name="_title_text_" cmdBufPool="(title)">
 
         <node group="(title)" name="title">
             <sprite>

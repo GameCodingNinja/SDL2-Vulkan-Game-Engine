@@ -104,6 +104,7 @@ void CStrategy::loadFromFile( const std::string & file )
     if( !node.isEmpty() )
     {
         std::string defGroup, defObjName, nodeName;
+        int defId = defs_DEFAULT_ID;
         
         // Check for any defaults
         if( node.isAttributeSet( "defaultGroup" ) )
@@ -111,26 +112,36 @@ void CStrategy::loadFromFile( const std::string & file )
 
         if( node.isAttributeSet( "defaultObjectName" ) )
             defObjName = node.getAttribute( "defaultObjectName" );
+
+        if( node.isAttributeSet( "defaultId" ) )
+            defId = std::atoi(node.getAttribute( "defaultId" ));
     
         for( int i = 0; i < node.nChildNode(); ++i )
         {
             const XMLNode nodeLst = node.getChildNode( "node", i );
 
-            // Get the node list id
-            const std::string id = nodeLst.getAttribute( "name" );
+            if( !nodeLst.isAttributeSet( "name" ) )
+            {
+                throw NExcept::CCriticalException("Strategy Load Error!",
+                    boost::str( boost::format("Strategy node requires a name (%s).\n\n%s\nLine: %s")
+                        % file % __FUNCTION__ % __LINE__ ));
+            }
+
+            // Get the node list name
+            const std::string name = nodeLst.getAttribute( "name" );
 
             // Load the sprite data into the map
             bool duplicate = !m_dataMap.emplace(
                 std::piecewise_construct,
-                std::forward_as_tuple(id),
-                std::forward_as_tuple(nodeLst, defGroup, defObjName) ).second;
+                std::forward_as_tuple(name),
+                std::forward_as_tuple(nodeLst, defGroup, defObjName, defId) ).second;
 
             // Check for duplicate names
             if( duplicate )
             {
                 throw NExcept::CCriticalException("Sprite Load Error!",
                     boost::str( boost::format("Duplicate sprite name (%s).\n\n%s\nLine: %s")
-                        % id % __FUNCTION__ % __LINE__ ));
+                        % name % __FUNCTION__ % __LINE__ ));
             }
         }
     }
@@ -312,9 +323,9 @@ void CStrategy::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 /************************************************************************
 *    DESC:  destroy the node
 ************************************************************************/
-void CStrategy::destroy( int id )
+void CStrategy::destroy( const handle16_t handle )
 {
-    m_deleteVec.push_back( id );
+    m_deleteVec.push_back( handle );
 }
 
 /***************************************************************************
@@ -388,13 +399,13 @@ iNode * CStrategy::getNode( const std::string & instanceName )
 /************************************************************************
 *    DESC:  Find if the node is active
 ************************************************************************/
-bool CStrategy::isActive( const int id )
+bool CStrategy::isActive( const handle16_t handle )
 {
     // See if this node has already been created
     const auto iter = std::find_if(
         m_pNodeVec.begin(),
         m_pNodeVec.end(),
-        [id](const iNode * pNode) { return pNode->getId() == id; } );
+        [handle](const iNode * pNode) { return pNode->getHandle() == handle; } );
 
     if( iter != m_pNodeVec.end() )
         return true;
@@ -450,12 +461,12 @@ void CStrategy::deleteFromActiveList()
 {
     if( !m_deleteVec.empty() )
     {
-        for( auto id : m_deleteVec )
+        for( auto handle : m_deleteVec )
         {
             const auto vecIter = std::find_if(
             m_pNodeVec.begin(),
             m_pNodeVec.end(),
-            [id](const iNode * pNode) { return pNode->getId() == id;} );
+            [handle](const iNode * pNode) { return pNode->getHandle() == handle;} );
 
             if( vecIter != m_pNodeVec.end() )
             {
@@ -465,14 +476,14 @@ void CStrategy::deleteFromActiveList()
             else
             {
                 NGenFunc::PostDebugMsg( boost::str( boost::format("Node id can't be found to delete (%s).\n\n%s\nLine: %s")
-                    % id % __FUNCTION__ % __LINE__ ) );
+                    % handle % __FUNCTION__ % __LINE__ ) );
             }
             
             // If this same node is in the map, delete it here too.
             auto mapIter = m_pNodeMap.begin();
             while( mapIter != m_pNodeMap.end() )
             {
-                if( mapIter->second->getId() == id )
+                if( mapIter->second->getHandle() == handle )
                 {
                     m_pNodeMap.erase( mapIter );
                     break;

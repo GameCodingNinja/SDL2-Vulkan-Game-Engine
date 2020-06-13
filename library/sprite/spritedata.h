@@ -22,6 +22,7 @@ public:
     // Constructor
     CSpriteData(
         const XMLNode & node,
+        const std::string & nodeName,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
         int defId = defs_DEFAULT_ID );
@@ -33,7 +34,7 @@ public:
     CSpriteData( const CSpriteData & data );
     
     // Destructor
-    virtual ~CSpriteData();
+    virtual ~CSpriteData(){};
     
     // Get the sprite name
     const std::string & getSpriteName() const;

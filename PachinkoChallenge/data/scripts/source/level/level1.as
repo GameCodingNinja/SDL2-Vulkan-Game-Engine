@@ -15,7 +15,7 @@ void Level1_BallAI( CSprite & sprite )
     {
         if( sprite.getPos().y > 1700.f )
         {
-            StrategyMgr.getStrategy("_level_1_ball_").destroy(sprite.getId());
+            StrategyMgr.getStrategy("_level_1_ball_").destroy(sprite.getHandle());
             break;
         }
         else if(

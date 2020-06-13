@@ -10,14 +10,12 @@
 
 // Physical component dependency
 #include <node/nodemultilist.h>
-
-// Game lib dependencies
 #include <common/objecttransform.h>
 
 // Forward declaration(s)
 class CNodeData;
 
-class CObjectNodeMultiLst : public CNodeMultiLst
+class CObjectNodeMultiLst : public CNodeMultiLst, public CObjectTransform
 {
 public:
     
@@ -25,7 +23,7 @@ public:
     CObjectNodeMultiLst( const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CObjectNodeMultiLst();
+    virtual ~CObjectNodeMultiLst(){};
     
     // Transform the nodes
     void transform() override;
@@ -33,14 +31,6 @@ public:
     
     // Get the sprite
     CObjectTransform * getObject() override;
-    
-    // Get the sprite id number
-    int getId() const override;
-    
-private:
-    
-    // Node data
-    CObjectTransform m_object;
 };
 
 #endif

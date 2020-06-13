@@ -91,7 +91,7 @@ void MoveProjectile( CSprite & sprite )
         // Delete if goes out of view
         if( sprite.getPos().getLengthSquared2D() > 1300000.f )
         {
-            StrategyMgr.getStrategy( "_main_" ).destroy( sprite.getId() );
+            StrategyMgr.getStrategy( "_main_" ).destroy( sprite.getNode().getHandle() );
             break;
         }
         

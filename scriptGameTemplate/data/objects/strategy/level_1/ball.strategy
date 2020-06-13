@@ -3,11 +3,9 @@
     <node name="square_red">
         
         <sprite objectName="square_red">
-            <!-- start the initial position high so that there no 0,0 collision before the script put into random position -->
-            <position x="-800" y="-1000"/>
             <scale x=".9" y=".9" z="1"/>
+            <!-- Will use the default group but you can also specify the group for the script -->
             <scriptLst>
-                <!-- Will use the default group but you can also specify the group for the script -->
                 <script ball_ai="Level1_BallAI" group="(level_1)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
@@ -17,7 +15,6 @@
     <node name="triangle_green">
         
         <sprite objectName="triangle_green">
-            <position x="-600" y="-1000"/>
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -28,7 +25,6 @@
     <node name="triangle_blue">
         
         <sprite objectName="triangle_blue">
-            <position x="-400" y="-1000"/>
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -39,7 +35,6 @@
     <node name="circle_green">
         
         <sprite objectName="circle_green">
-            <position x="-200" y="-1000"/>
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -50,7 +45,6 @@
     <node name="circle_blue">
         
         <sprite objectName="circle_blue">
-            <position x="0" y="-1000"/>
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>
@@ -61,7 +55,6 @@
     <node name="circle_red">
         
         <sprite objectName="circle_red">
-            <position x="200" y="-1000"/>
             <scriptLst>
                 <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
             </scriptLst>

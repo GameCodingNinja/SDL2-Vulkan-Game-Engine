@@ -14,8 +14,8 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CNode::CNode( int id, int parentId ) :
-    iNode( id, parentId )
+CNode::CNode( int nodeId, int parentId ) :
+    iNode( nodeId, parentId )
 {
 }
 
@@ -84,7 +84,7 @@ iNode * CNode::findParent( iNode * pSearchNode )
 
     if( pSearchNode != nullptr )
     {
-        if( m_id == pSearchNode->getParentId() )
+        if( m_nodeId == pSearchNode->getParentId() )
         {
             pResult = this;
         }
