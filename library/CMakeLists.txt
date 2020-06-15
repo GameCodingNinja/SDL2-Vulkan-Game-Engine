@@ -122,15 +122,15 @@ add_library(
         sprite/spritedata.cpp
         node/inode.cpp
         node/node.cpp
-        node/spritenodemultilist.cpp
-        node/objectnodemultilist.cpp
-        node/uicontrolnodemultilist.cpp
-        node/nodemultilist.cpp
         node/spritenode.cpp
+        node/objectnode.cpp
+        node/uicontrolnode.cpp
+        node/spriteleafnode.cpp
+        node/uicontrolleafnode.cpp
         node/nodedata.cpp
         node/nodedatalist.cpp
+        node/rendernode.cpp
         node/nodefactory.cpp
-        node/uicontrolnode.cpp
         2d/font.cpp
         2d/visualcomponentquad.cpp
         2d/visualcomponentspritesheet.cpp

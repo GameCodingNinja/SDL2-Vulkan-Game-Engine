@@ -2,10 +2,7 @@
 /************************************************************************
 *    FILE NAME:       inode.h
 *
-*    DESCRIPTION:     Node interface class
-*                     NOTE: Building the tree involves finding the parent
-*                           via it's id. Each node has it's id and it's
-*                           parent id
+*    DESCRIPTION:     Node interface class. Also used as a leaf node
 ************************************************************************/
 
 #ifndef __i_node_h__
@@ -35,12 +32,13 @@ class iNode
 public:
 
     // Constructor
-    iNode( int nodeId = defs_DEFAULT_ID, int parentId = defs_DEFAULT_ID ) :
+    iNode( uint8_t nodeId = defs_DEFAULT_NODE_ID, uint8_t parentId = defs_DEFAULT_NODE_ID ) :
         m_type(NDefs::ENT_NULL),
         m_handle(m_hAtomicIter++),
-        m_id(defs_DEFAULT_ID),
+        m_userId(defs_DEFAULT_ID),
         m_nodeId(nodeId),
-        m_parentId(parentId)
+        m_parentId(parentId),
+        m_crcUserId(0)
     {}
 
     // Destructor
@@ -55,7 +53,7 @@ public:
     { return nullptr; }
 
     // Add a node
-    virtual bool addNode( iNode * pNode, const std::string & nodeName = "" )
+    virtual bool addNode( iNode * pNode )
     { return false; }
     
     // Push back node into vector
@@ -66,20 +64,27 @@ public:
     virtual iNode * findParent( iNode * pSearchNode )
     { return nullptr; }
 
+    // Get the child node
+    virtual iNode * findChild( const uint16_t crcValue );
+
+    // Get the child node
+    virtual iNode * getChildNode( const std::string & nodeName )
+    { return nullptr; }
+
     // Get the id number
     handle16_t getHandle() const
     { return m_handle; }
 
-    // Get the id number
+    // Get the user id number
     int getId() const
-    { return m_id; }
+    { return m_userId; }
 
     // Get the node id number
-    int getNodeId() const
+    uint8_t getNodeId() const
     { return m_nodeId; }
 
     // Get the parent id
-    int getParentId() const
+    uint8_t getParentId() const
     { return m_parentId; }
 
     // Update the nodes
@@ -96,10 +101,6 @@ public:
     // Get the node type
     virtual NDefs::ENodeType getType() const
     { return m_type; }
-    
-    // Get the child node
-    virtual iNode * getChildNode( const std::string & nodeName )
-    { return nullptr; }
     
     // Get the object
     virtual CObjectTransform * getObject()
@@ -121,17 +122,21 @@ protected:
     // Atomic handle incrementer
     static std::atomic<handle16_t> m_hAtomicIter;
 
-    // node handle
+    // unique node handle
     handle16_t m_handle;
 
-    // id
-    int16_t m_id;
+    // user id
+    int16_t m_userId;
 
     // node id
-    int16_t m_nodeId;
+    uint8_t m_nodeId;
 
     // parent node id
-    int16_t m_parentId;
+    uint8_t m_parentId;
+
+    // CRC user id. CRC value of string name
+    // So that the string doesn't have to be stored
+    uint16_t m_crcUserId;
 };
 
 #endif

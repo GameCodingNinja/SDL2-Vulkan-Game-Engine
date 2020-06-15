@@ -1,7 +1,7 @@
 <strategy>
     
-    <node name="peg">
-        <sprite objectName="peg" group="(level_1)" id="-2"/>
+    <node name="peg" id="-2">
+        <sprite objectName="peg" group="(level_1)"/>
     </node>
 
 </strategy>

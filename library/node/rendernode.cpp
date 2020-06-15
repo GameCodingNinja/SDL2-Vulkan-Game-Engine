@@ -1,15 +1,15 @@
 
 /************************************************************************
-*    FILE NAME:       nodemultilist.cpp
+*    FILE NAME:       rendernode.cpp
 *
-*    DESCRIPTION:     Node multi link list class
+*    DESCRIPTION:     Class specifically handles resursion of
+*                     game loop render functions
 ************************************************************************/
 
 // Physical component dependency
-#include <node/nodemultilist.h>
+#include <node/rendernode.h>
 
 // Game lib dependencies
-#include <utilities/deletefuncs.h>
 #include <utilities/exceptionhandling.h>
 #include <sprite/sprite.h>
 #include <common/objecttransform.h>
@@ -21,28 +21,20 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CNodeMultiLst::CNodeMultiLst( int nodeId, int parentId ) :
+CRenderNode::CRenderNode( uint8_t nodeId, uint8_t parentId ) :
     CNode(nodeId, parentId)
 {
-}
-
-/************************************************************************
-*    DESC:  destructor
-************************************************************************/
-CNodeMultiLst::~CNodeMultiLst()
-{
-    NDelFunc::DeleteMapPointers( m_allNodeMap );
 }
 
 /***************************************************************************
 *    DESC:  Update the nodes.
 ****************************************************************************/
-void CNodeMultiLst::update()
+void CRenderNode::update()
 {
     update( this );
 }
 
-void CNodeMultiLst::update( iNode * pNode )
+void CRenderNode::update( iNode * pNode )
     {
     if( pNode != nullptr )
     {
@@ -78,12 +70,12 @@ void CNodeMultiLst::update( iNode * pNode )
 /***************************************************************************
 *    DESC:  Translate the nodes
 ****************************************************************************/
-void CNodeMultiLst::transform()
+void CRenderNode::transform()
 {
     transform( this );
 }
 
-void CNodeMultiLst::transform( iNode * pNode )
+void CRenderNode::transform( iNode * pNode )
 {
     if( pNode != nullptr )
     {
@@ -100,6 +92,7 @@ void CNodeMultiLst::transform( iNode * pNode )
                 // Transform the object
                 if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
                     pNextNode->getControl()->transform( *pNode->getObject() );
+                    
                 else
                     pNextNode->getObject()->transform( *pNode->getObject() );
 
@@ -115,12 +108,12 @@ void CNodeMultiLst::transform( iNode * pNode )
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CRenderNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     recordCommandBuffer( this, index, cmdBuffer, camera );
 }
 
-void CNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CRenderNode::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     if( pNode != nullptr )
     {
@@ -147,41 +140,4 @@ void CNodeMultiLst::recordCommandBuffer( iNode * pNode, uint32_t index, VkComman
         }
         while( pNextNode != nullptr );
     }
-}
-
-/************************************************************************
-*    DESC:  Add a node
-************************************************************************/
-bool CNodeMultiLst::addNode( iNode * pNode, const std::string & nodeName )
-{
-    std::string name = nodeName;
-    
-    // If a name is not given, generate one for the map
-    if( name.empty() )
-        name = "blank_" + std::to_string(m_allNodeMap.size());
-    
-    // Check for duplicate names
-    if( !m_allNodeMap.emplace( name, pNode ).second )
-        throw NExcept::CCriticalException("Node create Error!",
-                boost::str( boost::format("Duplicate node name (%s).\n\n%s\nLine: %s")
-                    % nodeName % __FUNCTION__ % __LINE__ ));
-
-    const bool result = CNode::addNode( pNode );
-
-    return result;
-}
-
-/************************************************************************
-*    DESC:  Get the child node
-************************************************************************/
-iNode * CNodeMultiLst::getChildNode( const std::string & nodeName )
-{
-    // Make sure the node we are looking for is available
-    auto mapIter = m_allNodeMap.find( nodeName );
-    if( mapIter == m_allNodeMap.end() )
-        throw NExcept::CCriticalException("Get child node Error!",
-            boost::str( boost::format("Child node can't be found (%s).\n\n%s\nLine: %s")
-                % nodeName % __FUNCTION__ % __LINE__ ));
-    
-    return mapIter->second;
 }

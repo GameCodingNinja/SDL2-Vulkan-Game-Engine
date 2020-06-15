@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       uicontrolnode.cpp
 *
-*    DESCRIPTION:     UI Control node class for rendering a ui control
+*    DESCRIPTION:     UI Control node that allows for children
 ************************************************************************/
 
 // Physical component dependency
@@ -11,40 +11,56 @@
 // Game lib dependencies
 #include <gui/uicontrol.h>
 #include <node/nodedata.h>
+#include <utilities/genfunc.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
 CUIControlNode::CUIControlNode( std::unique_ptr<CUIControl> upControl, const CNodeData & rNodeData ) :
-    iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
+    CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
     m_upControl = std::move(upControl);
-    m_id = rNodeData.getId();
+    m_userId = rNodeData.getUserId();
     m_type = NDefs::ENT_UI_CONTROL;
+
+    // Create a CRC16 of the node name
+    if( !rNodeData.getNodeName().empty() )
+        m_crcUserId = NGenFunc::CalcCRC16( rNodeData.getNodeName() );
 
     m_upControl->loadFromNode( rNodeData.getXMLNode() );
     m_upControl->init();
 }
 
 /***************************************************************************
-*    DESC:  Update the sprite.
+*    DESC:  Update the control.
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
 void CUIControlNode::update()
 {
     m_upControl->update();
+
+    // Call inherited for recursion of children
+    CRenderNode::update();
 }
 
 /***************************************************************************
-*    DESC:  Transform the sprite
+*    DESC:  Transform the control
+*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
 void CUIControlNode::transform()
 {
     m_upControl->transform();
+
+    // Call inherited for recursion of children
+    CRenderNode::transform();
 }
 
 void CUIControlNode::transform( const CObjectTransform & object )
 {
     m_upControl->transform( object );
+
+    // Call inherited for recursion of children
+    CRenderNode::transform();
 }
 
 /***************************************************************************
@@ -54,10 +70,13 @@ void CUIControlNode::transform( const CObjectTransform & object )
 void CUIControlNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     m_upControl->recordCommandBuffer( index, cmdBuffer, camera );
+
+    // Call inherited for recursion of children
+    CRenderNode::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 /************************************************************************
-*    DESC:  Get the sprite
+*    DESC:  Get the control
 ************************************************************************/
 CUIControl * CUIControlNode::getControl()
 {

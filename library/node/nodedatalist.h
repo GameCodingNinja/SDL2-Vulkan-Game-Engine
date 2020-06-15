@@ -26,10 +26,10 @@ public:
 
     // Constructor
     CNodeDataList(
-        const XMLNode & node,
+        const XMLNode & xmlNode,
         const std::string & _defGroup,
         const std::string & _defObjName,
-        int defId = defs_DEFAULT_ID );
+        int userId = defs_DEFAULT_ID );
 
     // Constructor for dynamic node data generation for sprite creation
     CNodeDataList(
@@ -50,7 +50,7 @@ private:
         CNodeData & nodeData,
         const std::string & defGroup,
         const std::string & defObjName,
-        int defId = defs_DEFAULT_ID );
+        int userId );
     
 private:
     

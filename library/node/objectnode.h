@@ -1,29 +1,31 @@
 
 /************************************************************************
-*    FILE NAME:       objectnodemultilist.h
+*    FILE NAME:       objectnode.h
 *
-*    DESCRIPTION:     Object node multi link list class
+*    DESCRIPTION:     Object node that allows for children
 ************************************************************************/
 
-#ifndef __object_node_multi_list_h__
-#define __object_node_multi_list_h__
+#ifndef __object_node_h__
+#define __object_node_h__
 
 // Physical component dependency
-#include <node/nodemultilist.h>
+#include <node/rendernode.h>
 #include <common/objecttransform.h>
 
 // Forward declaration(s)
 class CNodeData;
 
-class CObjectNodeMultiLst : public CNodeMultiLst, public CObjectTransform
+// Make use of multiple inheritance so that the object can return
+// a pointer to the node without having to keep a pointer to it
+class CObjectNode : public CRenderNode, public CObjectTransform
 {
 public:
     
     // Constructor
-    CObjectNodeMultiLst( const CNodeData & rNodeData );
+    CObjectNode( const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CObjectNodeMultiLst(){};
+    virtual ~CObjectNode(){};
     
     // Transform the nodes
     void transform() override;

@@ -37,7 +37,7 @@ CStrategy::CStrategy() :
 ************************************************************************/
 CStrategy::~CStrategy()
 {
-    clear();
+    clearAllNodes();
 }
 
 /************************************************************************
@@ -104,7 +104,7 @@ void CStrategy::loadFromFile( const std::string & file )
     if( !node.isEmpty() )
     {
         std::string defGroup, defObjName, nodeName;
-        int defId = defs_DEFAULT_ID;
+        int defUserId = defs_DEFAULT_ID;
         
         // Check for any defaults
         if( node.isAttributeSet( "defaultGroup" ) )
@@ -114,7 +114,7 @@ void CStrategy::loadFromFile( const std::string & file )
             defObjName = node.getAttribute( "defaultObjectName" );
 
         if( node.isAttributeSet( "defaultId" ) )
-            defId = std::atoi(node.getAttribute( "defaultId" ));
+            defUserId = std::atoi(node.getAttribute( "defaultId" ));
     
         for( int i = 0; i < node.nChildNode(); ++i )
         {
@@ -134,7 +134,7 @@ void CStrategy::loadFromFile( const std::string & file )
             bool duplicate = !m_dataMap.emplace(
                 std::piecewise_construct,
                 std::forward_as_tuple(name),
-                std::forward_as_tuple(nodeLst, defGroup, defObjName, defId) ).second;
+                std::forward_as_tuple(nodeLst, defGroup, defObjName, defUserId) ).second;
 
             // Check for duplicate names
             if( duplicate )
@@ -218,7 +218,7 @@ iNode * CStrategy::create(
         if( pHeadNode == nullptr )
             pHeadNode = pNode;
         
-        else if( !pHeadNode->addNode( pNode, iter.getNodeName() ) )
+        else if( !pHeadNode->addNode( pNode ) )
             throw NExcept::CCriticalException("Node Create Error!",
                 boost::str( boost::format("Parent node not found or node does not support adding children (%s, %d).\n\n%s\nLine: %s")
                     % dataName % pNode->getParentId() % __FUNCTION__ % __LINE__ ));

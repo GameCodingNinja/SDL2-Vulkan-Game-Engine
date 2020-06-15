@@ -1,27 +1,33 @@
 
 /************************************************************************
-*    FILE NAME:       spritenodemultilist.cpp
+*    FILE NAME:       spriteleafnode.cpp
 *
-*    DESCRIPTION:     Sprite node multi link list class
+*    DESCRIPTION:     Sprite node class for handling a sprite with
+*                     no children to keep the overhead low
 ************************************************************************/
 
 // Physical component dependency
-#include <node/spritenodemultilist.h>
+#include <node/spriteleafnode.h>
 
 // Game lib dependencies
 #include <common/objecttransform.h>
 #include <node/nodedata.h>
 #include <objectdata/objectdatamanager.h>
+#include <utilities/genfunc.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CSpriteNodeMultiLst::CSpriteNodeMultiLst( const CNodeData & rNodeData ) :
-        CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
+CSpriteLeafNode::CSpriteLeafNode( const CNodeData & rNodeData ) :
+        iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
         CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) )
 {
-    m_id = rNodeData.getId();
+    m_userId = rNodeData.getUserId();
     m_type = NDefs::ENT_SPRITE;
+
+    // Create a CRC16 of the node name
+    if( !rNodeData.getNodeName().empty() )
+        m_crcUserId = NGenFunc::CalcCRC16( rNodeData.getNodeName() );
 
     // Load the rest from XML node
     CSprite::load( rNodeData.getXMLNode() );
@@ -34,54 +40,41 @@ CSpriteNodeMultiLst::CSpriteNodeMultiLst( const CNodeData & rNodeData ) :
 }
 
 /***************************************************************************
-*    DESC:  Update the nodes
-*           NOTE: Only gets called if this is the head node
+*    DESC:  Update the sprite.
 ****************************************************************************/
-void CSpriteNodeMultiLst::update()
+void CSpriteLeafNode::update()
 {
-    CSprite::physicsUpdate();
     CSprite::update();
-    
-    // Call inherited but it has to be last
-    CNodeMultiLst::update();
+    CSprite::physicsUpdate();
 }
 
 /***************************************************************************
-*    DESC:  Translate the nodes
-*           NOTE: Only gets called if this is the head node
+*    DESC:  Transform the sprite
 ****************************************************************************/
-void CSpriteNodeMultiLst::transform()
+void CSpriteLeafNode::transform()
 {
     CSprite::transform();
-
-    // Call inherited but it has to be last
-    CNodeMultiLst::transform();
 }
 
-void CSpriteNodeMultiLst::transform( const CObjectTransform & object )
+// Used to transform object on a sector
+void CSpriteLeafNode::transform( const CObjectTransform & object )
 {
     CSprite::transform( object );
-
-    CNodeMultiLst::transform();
 }
 
 /***************************************************************************
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
-*           NOTE: Only gets called if this is the head node
 ****************************************************************************/
-void CSpriteNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CSpriteLeafNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     CSprite::recordCommandBuffer( index, cmdBuffer, camera );
-    
-    // Call inherited but it has to be last
-    CNodeMultiLst::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/
-CSprite * CSpriteNodeMultiLst::getSprite()
+CSprite * CSpriteLeafNode::getSprite()
 {
     return static_cast<CSprite *>(this);
 }
@@ -89,7 +82,7 @@ CSprite * CSpriteNodeMultiLst::getSprite()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CSpriteNodeMultiLst::getObject()
+CObjectTransform * CSpriteLeafNode::getObject()
 {
     return static_cast<CObjectTransform *>(this);
 }

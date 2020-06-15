@@ -19,6 +19,7 @@
 
 // Boost lib dependencies
 #include <boost/format.hpp>
+#include <boost/crc.hpp>
 
 // SDL lib dependencies
 #include <SDL2/SDL.h>
@@ -59,7 +60,6 @@ namespace NGenFunc
         return result;
     }
     
-    
     /************************************************************************
     *    DESC:  Read in a file and return it as a vector buffer
     ************************************************************************/
@@ -97,7 +97,6 @@ namespace NGenFunc
         return bufferVec;
     }
 
-
     /************************************************************************
     *    DESC:  Dispatch and event
     *
@@ -114,7 +113,6 @@ namespace NGenFunc
         return SDL_PushEvent(&_event);
     }
 
-
     /************************************************************************
     *    DESC: Output string info
     ************************************************************************/
@@ -129,7 +127,6 @@ namespace NGenFunc
         std::cout << msg << std::endl;
     #endif
     }
-
 
     /************************************************************************
     *    DESC:  Convert 2d screen coordinates to 3D perspective space
@@ -149,7 +146,6 @@ namespace NGenFunc
         destX = aspect * tangent* fx;
         destY = -tangent * fy;
     }
-
 
     /************************************************************************
     *    DESC:  Uniform int random number generation
@@ -193,7 +189,6 @@ namespace NGenFunc
         return distribution( generator );
     }
     
-    
     /************************************************************************
     *    DESC:  Add a name extension to a file
     ************************************************************************/
@@ -206,6 +201,16 @@ namespace NGenFunc
             dest.append( ext );
             dest.append( source.substr(index, source.length() - 1) );
         }
+    }
+
+    /************************************************************************
+    *    DESC:  Calculate the CRC from a string
+    ************************************************************************/
+    uint16_t CalcCRC16( const std::string & str )
+    {
+        boost::crc_16_type result;
+        result.process_bytes(str.data(), str.length());
+        return result.checksum();
     }
 }
 

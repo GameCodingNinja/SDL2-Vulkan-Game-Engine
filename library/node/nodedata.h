@@ -22,11 +22,11 @@ public:
     CNodeData(
         const XMLNode & node,
         const std::string & nodeName,
-        int nodeId = defs_DEFAULT_ID,
-        int parenNodetId = defs_DEFAULT_ID,
+        int nodeId = defs_DEFAULT_NODE_ID,
+        int parenNodetId = defs_DEFAULT_NODE_ID,
         const std::string & defGroup = std::string(),
         const std::string & defObjName = std::string(),
-        int defId = defs_DEFAULT_ID );
+        int userId = defs_DEFAULT_ID );
 
     // Constructor for dynamic node data generation for sprite creation
     CNodeData( 
@@ -40,10 +40,13 @@ public:
     const std::string & getNodeName() const;
     
     // Get the node id
-    int getNodeId() const;
+    uint8_t getNodeId() const;
     
     // Get the parent node id
-    int getParentNodeId() const;
+    uint8_t getParentNodeId() const;
+
+    // Get the user id
+    int getUserId() const;
     
     // Get the node type
     NDefs::ENodeType getNodeType() const;
@@ -60,10 +63,13 @@ private:
     const std::string m_nodeName;
 
     // Node Id
-    const int m_nodeId;
+    const uint8_t m_nodeId;
     
     // Parent Id
-    const int m_parenNodetId;
+    const uint8_t m_parenNodetId;
+
+    // User id
+    int m_userId;
     
     // Node type
     NDefs::ENodeType m_nodeType;

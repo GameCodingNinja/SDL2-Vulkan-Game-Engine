@@ -1,24 +1,33 @@
 
 /************************************************************************
-*    FILE NAME:       objectnodemultilist.cpp
+*    FILE NAME:       objectnode.cpp
 *
-*    DESCRIPTION:     Object node multi link list class
+*    DESCRIPTION:     Object node that allows for children
 ************************************************************************/
 
 // Physical component dependency
-#include <node/objectnodemultilist.h>
+#include <node/objectnode.h>
 
 // Game lib dependencies
 #include <node/nodedata.h>
+#include <utilities/genfunc.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CObjectNodeMultiLst::CObjectNodeMultiLst( const CNodeData & rNodeData ) :
-    CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
+CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
+    CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
-    m_id = rNodeData.getId();
+    m_userId = rNodeData.getUserId();
     m_type = NDefs::ENT_OBJECT;
+
+    // Create a CRC16 of the node name
+    if( !rNodeData.getNodeName().empty() )
+        m_crcUserId = NGenFunc::CalcCRC16( rNodeData.getNodeName() );
+
+    // Create a CRC16 of the node name
+    if( !rNodeData.getNodeName().empty() )
+        m_crcUserId = NGenFunc::CalcCRC16( rNodeData.getNodeName() );
 
     // Load the transforms from XML node
     CObjectTransform::loadTransFromNode( rNodeData.getXMLNode() );
@@ -28,26 +37,26 @@ CObjectNodeMultiLst::CObjectNodeMultiLst( const CNodeData & rNodeData ) :
 *    DESC:  Transform the nodes
 *           NOTE: Only gets called if this is the head node
 ****************************************************************************/
-void CObjectNodeMultiLst::transform()
+void CObjectNode::transform()
 {
     CObjectTransform::transform();
 
-    // Call inherited but it has to be last
-    CNodeMultiLst::transform();
+    // Call inherited for recursion of children
+    CRenderNode::transform();
 }
 
-void CObjectNodeMultiLst::transform( const CObjectTransform & object )
+void CObjectNode::transform( const CObjectTransform & object )
 {
     CObjectTransform::transform( object );
 
-    // Call inherited but it has to be last
-    CNodeMultiLst::transform();
+    // Call inherited for recursion of children
+    CRenderNode::transform();
 }
 
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CObjectNodeMultiLst::getObject()
+CObjectTransform * CObjectNode::getObject()
 {
     return static_cast<CObjectTransform *>(this);
 }

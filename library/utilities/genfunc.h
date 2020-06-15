@@ -40,6 +40,9 @@ namespace NGenFunc
     
     // Add a name extension to a file
     void AddFileExt( const std::string & source, std::string & dest, const std::string & ext );
+
+    // Calculate the CRC from a string
+    uint16_t CalcCRC16( const std::string & str );
     
     // dynamic_cast type with error checking
     template <typename target, class source>

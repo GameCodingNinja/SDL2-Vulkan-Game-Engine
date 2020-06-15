@@ -1,79 +1,72 @@
 
 /************************************************************************
-*    FILE NAME:       uicontrolnodemultilist.cpp
+*    FILE NAME:       uicontrolleafnode.cpp
 *
-*    DESCRIPTION:     UI Control node class for rendering a ui control
+*    DESCRIPTION:     UI Control node class for rendering a UIControl
+*                     Node class for handling a UIControl with no children
+*                     to keep the overhead low
 ************************************************************************/
 
 // Physical component dependency
-#include <node/uicontrolnodemultilist.h>
+#include <node/uicontrolleafnode.h>
 
 // Game lib dependencies
 #include <gui/uicontrol.h>
 #include <node/nodedata.h>
+#include <utilities/genfunc.h>
 
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CUIControlNodeMultiLst::CUIControlNodeMultiLst( std::unique_ptr<CUIControl> upControl, const CNodeData & rNodeData ) :
-    CNodeMultiLst( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
+CUIControlLeafNode::CUIControlLeafNode( std::unique_ptr<CUIControl> upControl, const CNodeData & rNodeData ) :
+    iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
     m_upControl = std::move(upControl);
-    m_id = rNodeData.getId();
+    m_userId = rNodeData.getUserId();
     m_type = NDefs::ENT_UI_CONTROL;
+
+    // Create a CRC16 of the node name
+    if( !rNodeData.getNodeName().empty() )
+        m_crcUserId = NGenFunc::CalcCRC16( rNodeData.getNodeName() );
 
     m_upControl->loadFromNode( rNodeData.getXMLNode() );
     m_upControl->init();
 }
 
 /***************************************************************************
-*    DESC:  Update the control.
-*           NOTE: Only gets called if this is the head node
+*    DESC:  Update the sprite.
 ****************************************************************************/
-void CUIControlNodeMultiLst::update()
+void CUIControlLeafNode::update()
 {
     m_upControl->update();
-
-    // Call inherited but it has to be last
-    CNodeMultiLst::update();
 }
 
 /***************************************************************************
-*    DESC:  Transform the control
-*           NOTE: Only gets called if this is the head node
+*    DESC:  Transform the sprite
 ****************************************************************************/
-void CUIControlNodeMultiLst::transform()
+void CUIControlLeafNode::transform()
 {
     m_upControl->transform();
-
-    // Call inherited but it has to be last
-    CNodeMultiLst::transform();
 }
 
-void CUIControlNodeMultiLst::transform( const CObjectTransform & object )
+void CUIControlLeafNode::transform( const CObjectTransform & object )
 {
     m_upControl->transform( object );
-
-    // Call inherited but it has to be last
-    CNodeMultiLst::transform();
 }
 
 /***************************************************************************
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CUIControlNodeMultiLst::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
+void CUIControlLeafNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera )
 {
     m_upControl->recordCommandBuffer( index, cmdBuffer, camera );
-
-    // Call inherited but it has to be last
-    CNodeMultiLst::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
 /************************************************************************
-*    DESC:  Get the control
+*    DESC:  Get the sprite
 ************************************************************************/
-CUIControl * CUIControlNodeMultiLst::getControl()
+CUIControl * CUIControlLeafNode::getControl()
 {
     return m_upControl.get();
 }
@@ -81,7 +74,7 @@ CUIControl * CUIControlNodeMultiLst::getControl()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CUIControlNodeMultiLst::getObject()
+CObjectTransform * CUIControlLeafNode::getObject()
 {
     return static_cast<CObjectTransform *>(m_upControl.get());
 }

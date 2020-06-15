@@ -22,6 +22,7 @@ typedef uint16_t handle16_t;
 #define defs_RGB_TO_DEC 0.00390625f
 
 #define defs_DEFAULT_ID       -1
+#define defs_DEFAULT_NODE_ID  0
 #define defs_DEFAULT_HANDLE   0
 #define defs_NULL_BODY_TYPE   -1
 

@@ -138,6 +138,9 @@ namespace NStrategyloader
 
                                             else if( pChildNode->getType() == NDefs::ENT_SPRITE )
                                                 init( nodeChildNodeXML, pChildNode->getSprite() );
+                                            
+                                            else if( pChildNode->getType() == NDefs::ENT_UI_CONTROL )
+                                                init( nodeChildNodeXML, pChildNode->getObject() );
                                         }
                                     }
                                 }

@@ -28,11 +28,12 @@ CNodeData::CNodeData(
     int parenNodetId,
     const std::string & defGroup,
     const std::string & defObjName,
-    int defId ) :
-        CSpriteData( node.getChildNode(), nodeName, defGroup, defObjName, defId ),
+    int userId ) :
+        CSpriteData( node.getChildNode(), nodeName, defGroup, defObjName ),
         m_nodeName(nodeName),
         m_nodeId(nodeId),
         m_parenNodetId(parenNodetId),
+        m_userId(userId),
         m_nodeType(NDefs::ENT_NULL),
         m_controlType(NUIControlDefs::ECT_NULL),
         m_hasChildrenNodes(false)
@@ -84,8 +85,9 @@ CNodeData::CNodeData(
     const std::string & objName ) :
         CSpriteData( group, objName ),
         m_nodeName(objName),
-        m_nodeId(defs_DEFAULT_ID),
-        m_parenNodetId(defs_DEFAULT_ID),
+        m_nodeId(defs_DEFAULT_NODE_ID),
+        m_parenNodetId(defs_DEFAULT_NODE_ID),
+        m_userId(defs_DEFAULT_ID),
         m_nodeType(NDefs::ENT_SPRITE),
         m_controlType(NUIControlDefs::ECT_NULL),
         m_hasChildrenNodes(false)
@@ -103,7 +105,7 @@ const std::string & CNodeData::getNodeName() const
 /************************************************************************
 *    DESC:  Get the node id
 ************************************************************************/
-int CNodeData::getNodeId() const
+uint8_t CNodeData::getNodeId() const
 {
     return m_nodeId;
 }
@@ -111,9 +113,17 @@ int CNodeData::getNodeId() const
 /************************************************************************
 *    DESC:  Get the parent node id
 ************************************************************************/
-int CNodeData::getParentNodeId() const
+uint8_t CNodeData::getParentNodeId() const
 {
     return m_parenNodetId;
+}
+
+/************************************************************************
+*    DESC:  Get the user id
+************************************************************************/
+int CNodeData::getUserId() const
+{
+    return m_userId;
 }
 
 /************************************************************************

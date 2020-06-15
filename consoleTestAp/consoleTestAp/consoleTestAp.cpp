@@ -1,7 +1,29 @@
 // consoleTestAp.cpp : Defines the entry point for the console application.
 //
-	
+
 #include <iostream>
+#include <string>
+#include <map>
+#include <boost/crc.hpp> 
+
+int main()
+{
+    std::map<const std::string, int *> m_allNodeMap;
+    const std::string str;
+
+    std::cout << "Size of Map: " << sizeof(m_allNodeMap) << std::endl;
+    std::cout << "Size of String: " << sizeof(str) << std::endl;
+
+    boost::crc_16_type result;
+    result.process_bytes("MgStriny", 8);
+
+    auto value = result.checksum();
+
+
+    return 0;
+}
+	
+/*#include <iostream>
 #include <chrono>
 
 namespace NTest
@@ -36,7 +58,7 @@ int main(int argc, char** argv)
     std::cout << NTest::MyEnumToString(NTest::V2) << std::endl;
     std::cout << NTest::MyEnumToString(NTest::V3) << std::endl;
     return 1;
-}
+}*/
 
 
 /*#include <utilities/highresolutiontimer.h>

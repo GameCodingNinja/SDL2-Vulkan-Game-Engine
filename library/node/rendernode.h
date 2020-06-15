@@ -1,12 +1,13 @@
 
 /************************************************************************
-*    FILE NAME:       nodemultilist.h
+*    FILE NAME:       rendernode.h
 *
-*    DESCRIPTION:     Node multi link list class
+*    DESCRIPTION:     Class specifically handles resursion of
+*                     game loop render functions
 ************************************************************************/
 
-#ifndef __node_multi_list_h__
-#define __node_multi_list_h__
+#ifndef __render_node_h__
+#define __render_node_h__
 
 // Physical component dependency
 #include <node/node.h>
@@ -15,15 +16,15 @@
 #include <map>
 #include <string>
 
-class CNodeMultiLst : public CNode
+class CRenderNode : public CNode
 {
 public:
     
     // Constructor
-    CNodeMultiLst( int nodeId = defs_DEFAULT_ID, int parentId = defs_DEFAULT_ID );
+    CRenderNode( uint8_t nodeId = defs_DEFAULT_NODE_ID, uint8_t parentId = defs_DEFAULT_NODE_ID );
 
     // Destructor
-    virtual ~CNodeMultiLst();
+    virtual ~CRenderNode(){};
     
     // Update the nodes
     virtual void update() override;
@@ -35,12 +36,6 @@ public:
     // for all the sprite objects that are to be rendered
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
     
-    // Add a node
-    bool addNode( iNode * pNode, const std::string & nodeName = "" ) override;
-    
-    // Get the child node
-    iNode * getChildNode( const std::string & nodeName ) override;
-    
 private:
     
     // Update the nodes
@@ -51,15 +46,6 @@ private:
     
     // Record command buffer recursive function
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
-    
-private:
-    
-    // Map of all nodes.
-    // This is only used by the head node and even though
-    // every node will have one of these, it simplifies
-    // the code and is minimal overhead
-    // This class OWNES these pointers
-    std::map<const std::string, iNode *> m_allNodeMap;
 };
 
 #endif

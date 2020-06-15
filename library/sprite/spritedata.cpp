@@ -18,17 +18,11 @@ CSpriteData::CSpriteData(
     const XMLNode & xmlNode,
     const std::string & nodeName,
     const std::string & defGroup,
-    const std::string & defObjName,
-    int defId ) :
+    const std::string & defObjName ) :
         m_xmlNode( xmlNode ),
         m_group(defGroup),
-        m_objectName(defObjName),
-        m_id(defId)
+        m_objectName(defObjName)
 {
-    // Get the name of this specific sprite instance
-    if( xmlNode.isAttributeSet( "name" ) )
-        m_name = xmlNode.getAttribute( "name" );
-    
     // Get the group this sprite belongs to
     if( xmlNode.isAttributeSet( "group" ) )
         m_group = xmlNode.getAttribute( "group" );
@@ -38,10 +32,6 @@ CSpriteData::CSpriteData(
     m_objectName = nodeName;
     if( xmlNode.isAttributeSet( "objectName" ) )
         m_objectName = xmlNode.getAttribute( "objectName" );
-    
-    // Get the sprite's unique id number
-    if( xmlNode.isAttributeSet( "id" ) )
-        m_id = std::atoi(xmlNode.getAttribute( "id" ));
 }
 
 /************************************************************************
@@ -50,19 +40,15 @@ CSpriteData::CSpriteData(
 CSpriteData::CSpriteData( 
     const std::string & group,
     const std::string & objName ) :
-        m_name(objName),
         m_group(group),
-        m_objectName(objName),
-        m_id(defs_DEFAULT_ID)
+        m_objectName(objName)
 {
 }
 
 CSpriteData::CSpriteData( const CSpriteData & data ) :
     m_xmlNode( data.m_xmlNode ),
-    m_name( data.m_name ),
     m_group( data.m_group ),
-    m_objectName( data.m_objectName ),
-    m_id( data.m_id )
+    m_objectName( data.m_objectName )
 {
 }
 
@@ -72,14 +58,6 @@ CSpriteData::CSpriteData( const CSpriteData & data ) :
 const XMLNode & CSpriteData::getXMLNode() const
 {
     return m_xmlNode;
-}
-
-/************************************************************************
-*    DESC:  Get the name of this specific sprite instance
-************************************************************************/
-const std::string & CSpriteData::getSpriteName() const
-{
-    return m_name;
 }
 
 /************************************************************************
@@ -96,12 +74,4 @@ const std::string & CSpriteData::getGroup() const
 const std::string & CSpriteData::getObjectName() const
 {
     return m_objectName;
-}
-
-/************************************************************************
-*    DESC:  Get the id number
-************************************************************************/
-int CSpriteData::getId() const
-{
-    return m_id;
 }

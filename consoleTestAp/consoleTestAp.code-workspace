@@ -88,7 +88,13 @@
 			"random": "cpp",
 			"cfenv": "cpp",
 			"cinttypes": "cpp",
-			"valarray": "cpp"
+			"valarray": "cpp",
+			"csignal": "cpp",
+			"codecvt": "cpp",
+			"compare": "cpp",
+			"concepts": "cpp",
+			"ranges": "cpp",
+			"stop_token": "cpp"
 		},
 		"editor.autoClosingBrackets": "never"
 	}

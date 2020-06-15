@@ -11,9 +11,9 @@
 #include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/xmlParser.h>
-#include <node/spritenodemultilist.h>
-#include <node/objectnodemultilist.h>
-#include <node/uicontrolnodemultilist.h>
+#include <node/spriteleafnode.h>
+#include <node/objectnode.h>
+#include <node/uicontrolleafnode.h>
 #include <node/spritenode.h>
 #include <node/uicontrolnode.h>
 #include <node/nodedata.h>
@@ -40,13 +40,13 @@ namespace NNodeFactory
         if( rNodeData.getNodeType() == NDefs::ENT_SPRITE )
         {
             if( rNodeData.hasChildrenNodes() )
-                pNode = new CSpriteNodeMultiLst( rNodeData );
-            else
                 pNode = new CSpriteNode( rNodeData );
+            else
+                pNode = new CSpriteLeafNode( rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT )
         {
-            pNode = new CObjectNodeMultiLst( rNodeData );
+            pNode = new CObjectNode( rNodeData );
         }
         else if( rNodeData.getNodeType() == NDefs::ENT_UI_CONTROL )
         {
@@ -86,9 +86,9 @@ namespace NNodeFactory
         }
 
         if( rNodeData.hasChildrenNodes() )
-            pNode = new CUIControlNodeMultiLst( std::move(upControl), rNodeData );
-        else
             pNode = new CUIControlNode( std::move(upControl), rNodeData );
+        else
+            pNode = new CUIControlLeafNode( std::move(upControl), rNodeData );
 
         return pNode;
     }

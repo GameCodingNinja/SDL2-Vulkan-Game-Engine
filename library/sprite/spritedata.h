@@ -24,8 +24,7 @@ public:
         const XMLNode & node,
         const std::string & nodeName,
         const std::string & defGroup = std::string(),
-        const std::string & defObjName = std::string(),
-        int defId = defs_DEFAULT_ID );
+        const std::string & defObjName = std::string() );
 
     CSpriteData( 
         const std::string & group,
@@ -36,17 +35,11 @@ public:
     // Destructor
     virtual ~CSpriteData(){};
     
-    // Get the sprite name
-    const std::string & getSpriteName() const;
-    
     // Get the group
     const std::string & getGroup() const;
     
     // Get the object name
     const std::string & getObjectName() const;
-    
-    // Get the id number
-    int getId() const;
 
     // Get the XML Node
     const XMLNode & getXMLNode() const;
@@ -55,18 +48,12 @@ private:
 
     // XML Node holding sprite data
     XMLNode m_xmlNode;
-
-    // Sprite name
-    std::string m_name;
     
     // Group Name
     std::string m_group;
     
     // Object name
     std::string m_objectName;
-    
-    // id
-    int m_id;
 };
 
 #endif

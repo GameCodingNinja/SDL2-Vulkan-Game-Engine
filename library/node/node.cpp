@@ -2,7 +2,8 @@
 /************************************************************************
 *    FILE NAME:       node.cpp
 *
-*    DESCRIPTION:     Node class
+*    DESCRIPTION:     Class for creating a general tree.
+*                     Each node can have arbitrary number of children.
 *                     NOTE: Building the tree involves finding the parent
 *                           via it's id. Each node has it's id and it's
 *                           parent id
@@ -11,12 +12,24 @@
 // Physical component dependency
 #include <node/node.h>
 
+// Game lib dependencies
+#include <utilities/deletefuncs.h>
+#include <utilities/genfunc.h>
+
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CNode::CNode( int nodeId, int parentId ) :
+CNode::CNode( uint8_t nodeId, uint8_t parentId ) :
     iNode( nodeId, parentId )
 {
+}
+
+/************************************************************************
+*    DESC:  destructor
+************************************************************************/
+CNode::~CNode()
+{
+    NDelFunc::DeleteVectorPointers( m_nodeVec );
 }
 
 /************************************************************************
@@ -39,7 +52,7 @@ iNode * CNode::next(nodeVecIter_t & rIter)
 /************************************************************************
 *    DESC:  Add a node
 ************************************************************************/
-bool CNode::addNode( iNode * pNode, const std::string & nodeName )
+bool CNode::addNode( iNode * pNode )
 {
     // Call a recursive function to find the parent node
     iNode * pParentNode = findParent( pNode );
@@ -92,8 +105,50 @@ iNode * CNode::findParent( iNode * pSearchNode )
                     pResult = pNextNode->findParent( pSearchNode );
                 }
             }
-            while( pNextNode != nullptr );
+            while( (pNextNode != nullptr) && (pResult == nullptr)  );
         }
+    }
+
+    return pResult;
+}
+
+/************************************************************************
+*    DESC:  get the child node
+************************************************************************/
+iNode * CNode::getChildNode( const std::string & nodeName )
+{
+    return findChild( NGenFunc::CalcCRC16( nodeName ) );
+}
+
+/************************************************************************
+*    DESC:  get the child node
+*           NOTE: This is a recursive function
+************************************************************************/
+iNode * CNode::findChild( const uint16_t crcValue )
+{
+    iNode * pResult = nullptr;
+
+    if( crcValue == m_crcUserId )
+    {
+        pResult = this;
+    }
+    else
+    {
+        iNode * pNextNode;
+        auto nodeIter = m_nodeVec.begin();
+
+        do
+        {
+            // get the next node
+            pNextNode = next(nodeIter);
+
+            if( pNextNode != nullptr )
+            {
+                // Call a recursive function to find the parent node
+                pResult = pNextNode->findChild( crcValue );
+            }
+        }
+        while( (pNextNode != nullptr) && (pResult == nullptr) );
     }
 
     return pResult;
