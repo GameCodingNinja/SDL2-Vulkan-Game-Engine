@@ -32,13 +32,13 @@ CTexture CObjectVisualData2D::m_null_texture;
 *    DESC:  Constructor
 ************************************************************************/
 CObjectVisualData2D::CObjectVisualData2D() :
-    m_genType(NDefs::EGT_NULL),
+    m_genType(EGenType::_NULL_),
     m_pipelineIndex(-1),
     m_textureSequenceCount(0),
     m_compressed(false),
     m_iboCount(0),
     m_defaultUniformScale(1),
-    m_mirror(NDefs::EM_NULL)
+    m_mirror(EMirror::_NULL_)
 {
 }
 
@@ -88,22 +88,22 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
                 std::string genTypeStr = meshNode.getAttribute( "genType" );
 
                 if( genTypeStr == "quad" )
-                    m_genType = NDefs::EGT_QUAD;
+                    m_genType = EGenType::QUAD;
 
                 else if( genTypeStr == "sprite_sheet" )
-                    m_genType = NDefs::EGT_SPRITE_SHEET;
+                    m_genType = EGenType::SPRITE_SHEET;
 
                 else if( genTypeStr == "scaled_frame" )
-                    m_genType = NDefs::EGT_SCALED_FRAME;
+                    m_genType = EGenType::SCALED_FRAME;
 
                 else if( genTypeStr == "mesh_file" )
-                    m_genType = NDefs::EGT_MESH_FILE;
+                    m_genType = EGenType::MESH_FILE;
 
                 else if( genTypeStr == "font" )
-                    m_genType = NDefs::EGT_FONT;
+                    m_genType = EGenType::FONT;
                 
                 else if( genTypeStr == "null" )
-                    m_genType = NDefs::EGT_NULL;
+                    m_genType = EGenType::_NULL_;
             }
 
             if( meshNode.isAttributeSet("file") )
@@ -114,13 +114,13 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
                 std::string mirrorTypeStr = meshNode.getAttribute( "mirror" );
 
                 if( mirrorTypeStr == "horizontal" )
-                    m_mirror = NDefs::EM_HORIZONTAL;
+                    m_mirror = EMirror::HORIZONTAL;
 
                 else if( mirrorTypeStr == "vertical" )
-                    m_mirror = NDefs::EM_VERTICAL;
+                    m_mirror = EMirror::VERTICAL;
 
                 else if( mirrorTypeStr == "horizontal_vertical" )
-                    m_mirror = NDefs::EM_HORIZONTAL_VERTICAL;
+                    m_mirror = EMirror::HORIZONTAL_VERTICAL;
             }
 
             const XMLNode spriteSheetNode = meshNode.getChildNode("spriteSheet");
@@ -200,7 +200,7 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
         }
 
         // Raise an exception if there's a genType but no valid pipeline index
-        if( (m_genType != NDefs::EGT_NULL) && (m_pipelineIndex == -1) )
+        if( (m_genType != EGenType::_NULL_) && (m_pipelineIndex == -1) )
         {
             throw NExcept::CCriticalException("Shader effect or techique not set!",
                 boost::str( boost::format("Shader object data missing.\n\n%s\nLine: %s")
@@ -220,13 +220,13 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<float
     // Create the texture from loaded image data
     createTexture( group, texture, rSize );
     
-    if( m_genType == NDefs::EGT_QUAD )
+    if( m_genType == EGenType::QUAD )
     {
         // Generate a quad
         generateQuad( group );
     }
     // Load object data defined as a sprite sheet
-    else if( m_genType == NDefs::EGT_SPRITE_SHEET )
+    else if( m_genType == EGenType::SPRITE_SHEET )
     {
         // Build the simple (grid) sprite sheet from XML data
         if( m_spriteSheetFilePath.empty() )
@@ -238,7 +238,7 @@ void CObjectVisualData2D::createFromData( const std::string & group, CSize<float
         // For this generation type, the glyph size is the default scale
         rSize = m_spriteSheet.getGlyph().getSize();
     }
-    else if( m_genType == NDefs::EGT_SCALED_FRAME )
+    else if( m_genType == EGenType::SCALED_FRAME )
     {
         if( !m_glyphIDs.empty() && !m_spriteSheetFilePath.empty() )
         {
@@ -294,7 +294,7 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
     std::string horzStr = "";
     std::string vertStr = "";
 
-    if( (m_mirror == NDefs::EM_HORIZONTAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
+    if( (m_mirror == EMirror::HORIZONTAL) || (m_mirror == EMirror::HORIZONTAL_VERTICAL) )
     {
         horzStr = "_horz";
 
@@ -304,7 +304,7 @@ void CObjectVisualData2D::generateQuad( const std::string & group )
         vert_uv_vec[3].uv.u = 0.0;
     }
 
-    if( (m_mirror == NDefs::EM_VERTICAL) || (m_mirror == NDefs::EM_HORIZONTAL_VERTICAL) )
+    if( (m_mirror == EMirror::VERTICAL) || (m_mirror == EMirror::HORIZONTAL_VERTICAL) )
     {
         vertStr = "_vert";
 
@@ -791,7 +791,7 @@ void CObjectVisualData2D::loadMeshFromXML(
 /************************************************************************
 *    DESC:  Get the generation type
 ************************************************************************/
-NDefs::EGenerationType CObjectVisualData2D::getGenerationType() const
+EGenType CObjectVisualData2D::getGenerationType() const
 {
     return m_genType;
 }
@@ -859,7 +859,7 @@ int CObjectVisualData2D::getIBOCount() const
 ************************************************************************/
 size_t CObjectVisualData2D::getFrameCount() const
 {
-    if( m_genType == NDefs::EGT_SPRITE_SHEET )
+    if( m_genType == EGenType::SPRITE_SHEET )
         return m_spriteSheet.getCount();
 
     return m_textureVec.size();
@@ -871,7 +871,7 @@ size_t CObjectVisualData2D::getFrameCount() const
 ************************************************************************/
 bool CObjectVisualData2D::isActive() const
 {
-    return (m_genType != NDefs::EGT_NULL);
+    return (m_genType != EGenType::_NULL_);
 }
 
 

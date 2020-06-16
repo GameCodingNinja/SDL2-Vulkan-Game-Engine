@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Sprite class
 ************************************************************************/
 
-#ifndef __sprite_h__
-#define __sprite_h__
+#pragma once
 
 // Physical component dependency
 #include <common/objecttransform.h>
@@ -135,5 +134,3 @@ private:
     // Script function map. Execute scripts with an id
     std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
 };
-
-#endif

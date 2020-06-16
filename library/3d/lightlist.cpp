@@ -36,7 +36,7 @@ CLightLst::~CLightLst()
 ************************************************************************/
 void CLightLst::add(
     const std::string & name,
-    NDefs::ELightType lightType,
+    ELightType lightType,
     const CColor & color,
     bool enable,
     const CPoint<float> & posDir,

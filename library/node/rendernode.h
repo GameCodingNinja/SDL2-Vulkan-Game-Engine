@@ -24,7 +24,7 @@ public:
     CRenderNode( uint8_t nodeId = defs_DEFAULT_NODE_ID, uint8_t parentId = defs_DEFAULT_NODE_ID );
 
     // Destructor
-    virtual ~CRenderNode(){};
+    virtual ~CRenderNode();
     
     // Update the nodes
     virtual void update() override;

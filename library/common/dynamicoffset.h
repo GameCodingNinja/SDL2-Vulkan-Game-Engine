@@ -5,13 +5,11 @@
 *    DESCRIPTION:     Dynamic Offset class
 ************************************************************************/  
 
-#ifndef __dynamic_offset_h__
-#define __dynamic_offset_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
 #include <common/size.h>
-#include <common/defs.h>
 #include <utilities/bitmask.h>
 
 class CDynamicOffset
@@ -53,5 +51,3 @@ private:
     // offset
     CPoint<float> point;
 };
-
-#endif

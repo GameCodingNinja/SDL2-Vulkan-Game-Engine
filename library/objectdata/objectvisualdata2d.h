@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class containing the 2D object's visual data
 ************************************************************************/
 
-#ifndef __object_visual_data_2d_h__
-#define __object_visual_data_2d_h__
+#pragma once
 
 // Physical component dependency
 #include <objectdata/iobjectvisualdata.h>
@@ -46,7 +45,7 @@ public:
     void createFromData( const std::string & group, CSize<float> & rSize ) override;
 
     // Get the gne type
-    NDefs::EGenerationType getGenerationType() const override;
+    EGenType getGenerationType() const override;
 
     // Get the texture
     const CTexture & getTexture( uint index = 0 ) const override;
@@ -153,7 +152,7 @@ private:
     CMemoryBuffer m_iboBuffer;
 
     // VBO/IBO generation type
-    NDefs::EGenerationType m_genType;
+    EGenType m_genType;
 
     // Pipeline index
     int m_pipelineIndex;
@@ -195,10 +194,8 @@ private:
     float m_defaultUniformScale;
     
     // Mirror enum
-    NDefs::EMirror m_mirror;
+    EMirror m_mirror;
     
     // File extension for resolution swap
     std::string m_resExt;
 };
-
-#endif

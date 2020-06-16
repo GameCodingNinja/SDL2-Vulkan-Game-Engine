@@ -5,8 +5,7 @@
 *    DESCRIPTION:     iVisualComponent Class
 ************************************************************************/
 
-#ifndef __i_visual_component_h__
-#define __i_visual_component_h__
+#pragma once
 
 // Physical component dependency
 #include <common/visual.h>
@@ -35,7 +34,7 @@ struct XMLNode;
 class iVisualComponent : public CVisual
 {
 public:
-    
+
     // Constructor
     iVisualComponent( const iObjectData & objectData );
     
@@ -97,7 +96,7 @@ public:
     bool isFontSprite() const;
     
     // Get the generation type
-    NDefs::EGenerationType getGenerationType() const;
+    EGenType getGenerationType() const;
     
     // Get the crop offset
     virtual const CSize<int> & getCropOffset( uint index = 0 ) const;
@@ -112,7 +111,7 @@ public:
 protected:
 
     // Generation type
-    const NDefs::EGenerationType GENERATION_TYPE;
+    const EGenType GENERATION_TYPE;
     
     // Color
     CColor m_color;
@@ -129,5 +128,3 @@ protected:
     static CSize<float> m_null_float_size;
     static CMatrix m_null_matrix;
 };
-
-#endif

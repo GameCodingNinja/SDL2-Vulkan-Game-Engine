@@ -34,7 +34,7 @@ CVisualComponentQuad::CVisualComponentQuad( const iObjectData & objectData ) :
     m_uniformBufVec = device.createUniformBufferVec( pipelineIndex );
 
     // Create the descriptor set
-    if( GENERATION_TYPE != NDefs::EGT_FONT )
+    if( GENERATION_TYPE != EGenType::FONT )
         m_pDescriptorSet = device.getDescriptorSet(
             pipelineIndex,
             objectData.getVisualData().getTexture(),
@@ -42,7 +42,7 @@ CVisualComponentQuad::CVisualComponentQuad( const iObjectData & objectData ) :
     
     // Create the push descriptor set
     // This is just data and doesn't need to be freed
-    // if( GENERATION_TYPE != NDefs::EGT_FONT )
+    // if( GENERATION_TYPE != EGenType::FONT )
     //     device.createPushDescriptorSet(
     //         pipelineIndex,
     //         objectData.getVisualData().getTexture(),
@@ -171,7 +171,7 @@ void CVisualComponentQuad::setFrame( uint index )
 ************************************************************************/
 bool CVisualComponentQuad::allowCommandRecording()
 {
-    return ((GENERATION_TYPE > NDefs::EGT_NULL) && (GENERATION_TYPE < NDefs::EGT_FONT));
+    return ((GENERATION_TYPE > EGenType::_NULL_) && (GENERATION_TYPE < EGenType::FONT));
 }
 
 

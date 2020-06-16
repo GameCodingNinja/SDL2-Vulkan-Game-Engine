@@ -22,8 +22,8 @@ public:
     
     CFontProperties();
     CFontProperties( const std::string fontName );
-    CFontProperties( const std::string fontName, NDefs::EHorzAlignment hAlign, NDefs::EVertAlignment vAlign );
-    CFontProperties( const std::string fontName, NDefs::EHorzAlignment hAlign, NDefs::EVertAlignment vAlign, float kerning );
+    CFontProperties( const std::string fontName, EHorzAlignment hAlign, EVertAlignment vAlign );
+    CFontProperties( const std::string fontName, EHorzAlignment hAlign, EVertAlignment vAlign, float kerning );
     
     // Copy the data
     void copy( const CFontProperties & obj );
@@ -37,10 +37,10 @@ public:
     std::string m_fontName;
     
     // horzontal alignment
-    NDefs::EHorzAlignment m_hAlign = NDefs::EHA_HORZ_CENTER;
+    EHorzAlignment m_hAlign = EHorzAlignment::HORZ_CENTER;
     
     // vertical alignment
-    NDefs::EVertAlignment m_vAlign = NDefs::EVA_VERT_CENTER;
+    EVertAlignment m_vAlign = EVertAlignment::VERT_CENTER;
     
     // distance between each character
     float m_kerning = 0.f;
@@ -55,5 +55,4 @@ public:
     float m_lineWrapHeight = 0.f;
 };
 
-#endif  // __font_properties_h__
-
+#endif

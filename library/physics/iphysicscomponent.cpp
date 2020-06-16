@@ -1,18 +1,16 @@
 
 /************************************************************************
-*    FILE NAME:       iobjectdata.h
+*    FILE NAME:       iphysicscomponent.h
 *
-*    DESCRIPTION:     Object Data interface class
+*    DESCRIPTION:     iphysicscomponent Class
 ************************************************************************/
 
 // Physical component dependency
-#include <objectdata/iobjectdata.h>
-
-CSize<float> iObjectData::m_null_size;
+#include <physics/iphysicscomponent.h>
 
 // Constructor / Destructor
-iObjectData::iObjectData()
+iPhysicsComponent::iPhysicsComponent()
 {}
 
-iObjectData::~iObjectData()
+iPhysicsComponent::~iPhysicsComponent()
 {}

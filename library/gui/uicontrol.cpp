@@ -36,7 +36,7 @@ CUIControl::CUIControl( const std::string & group ) :
     m_state(NUIControlDefs::ECS_NULL),
     m_lastState(NUIControlDefs::ECS_NULL),
     m_actionType(NUIControlDefs::ECAT_NULL),
-    m_mouseSelectType(NDefs::EAP_UP)
+    m_mouseSelectType(EActionPress::UP)
 {
 }
 
@@ -66,7 +66,7 @@ void CUIControl::loadFromNode( const XMLNode & node )
     // Set if mouse selection is the down message
     if( node.isAttributeSet( "mouseSelectDown" ) )
         if( std::strcmp( node.getAttribute( "mouseSelectDown" ), "true") == 0 )
-            m_mouseSelectType = NDefs::EAP_DOWN;
+            m_mouseSelectType = EActionPress::DOWN;
 
     // Setup the action
     XMLNode actionNode = node.getChildNode( "action" );
@@ -1056,7 +1056,7 @@ iControl * CUIControl::getPtrToActiveControl()
 /************************************************************************
 *    DESC:  Get the mouse select type
 ************************************************************************/
-NDefs::EActionPress CUIControl::getMouseSelectType() const
+EActionPress CUIControl::getMouseSelectType() const
 {
     return m_mouseSelectType;
 }

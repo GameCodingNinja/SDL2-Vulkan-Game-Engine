@@ -25,7 +25,7 @@ class CObjectData3D : public iObjectData
 {
 public:
 
-    // Constructor/Destructor
+    // Constructor / Destructor
     CObjectData3D();
     CObjectData3D( const CObjectData3D & obj );
     virtual ~CObjectData3D();

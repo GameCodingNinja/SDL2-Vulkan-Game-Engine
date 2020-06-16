@@ -34,7 +34,7 @@ public:
         const std::string & objName );
     
     // Destructor
-    virtual ~CNodeData(){};
+    virtual ~CNodeData();
     
     // Get the node Name
     const std::string & getNodeName() const;
@@ -49,7 +49,7 @@ public:
     int getUserId() const;
     
     // Get the node type
-    NDefs::ENodeType getNodeType() const;
+    ENodeType getNodeType() const;
 
     // Get the control type
     NUIControlDefs::EControlType getControlType() const;
@@ -69,10 +69,10 @@ private:
     const uint8_t m_parenNodetId;
 
     // User id
-    int m_userId;
+    int16_t m_userId;
     
     // Node type
-    NDefs::ENodeType m_nodeType;
+    ENodeType m_nodeType;
 
     // Control type of node
     NUIControlDefs::EControlType m_controlType;

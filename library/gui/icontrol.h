@@ -5,8 +5,7 @@
 *    DESCRIPTION:     iControl Interface class
 ************************************************************************/
 
-#ifndef __i_control_h__
-#define __i_control_h__
+#pragma once
 
 // Physical component dependency
 #include <common/objecttransform.h>
@@ -144,7 +143,7 @@ public:
     virtual iControl * getPtrToActiveControl() = 0;
     
     // Get the mouse select type
-    virtual NDefs::EActionPress getMouseSelectType() const = 0;
+    virtual EActionPress getMouseSelectType() const = 0;
     
     // Get the size of this control
     virtual const CSize<float> & getSize() const = 0;
@@ -279,5 +278,3 @@ protected:
     // menu alpha value
     float m_alpha;
 };
-
-#endif

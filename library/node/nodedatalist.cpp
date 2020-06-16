@@ -3,7 +3,7 @@
 *    FILE NAME:       nodedatalist.cpp
 *
 *    DESCRIPTION:     Based on how the XML is written, creates a node
-*                     list so that the Parent/child nodes can be created
+*                     list for easy Parent/child node creation
 ************************************************************************/
 
 // Physical component dependency
@@ -18,7 +18,7 @@
 #include <boost/format.hpp>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CNodeDataList::CNodeDataList(
     const XMLNode & xmlNode,
@@ -74,6 +74,9 @@ CNodeDataList::CNodeDataList(
 {
     m_dataVec.emplace_back( group, objName );
 }
+
+CNodeDataList::~CNodeDataList()
+{}
 
 /************************************************************************
 *    DESC:  Load the node data recursively

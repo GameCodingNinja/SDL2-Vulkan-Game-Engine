@@ -25,7 +25,7 @@ public:
     CObjectNode( const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CObjectNode(){};
+    virtual ~CObjectNode();
     
     // Transform the nodes
     void transform() override;

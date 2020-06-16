@@ -60,8 +60,9 @@ class iObjectPhysicsData
 {
 public:
 
-    // Destructor
-    virtual ~iObjectPhysicsData(){};
+    // Constructor / Destructor
+    iObjectPhysicsData();
+    virtual ~iObjectPhysicsData();
     
     // Load thes object data from node
     virtual void loadFromNode( const XMLNode & objectNode )
@@ -132,6 +133,4 @@ private:
     static CPoint<float> m_null_point;
 };
 
-#endif  // __iobjectdata_h__
-
-
+#endif

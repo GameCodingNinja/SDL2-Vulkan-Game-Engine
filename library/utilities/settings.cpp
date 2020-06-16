@@ -31,7 +31,7 @@ CSettings::CSettings() :
     m_mobileDevice(false),
     m_size(1280,768),
     m_default_size(1280,768),
-    m_orientation(NDefs::EO_LANDSCAPE),
+    m_orientation(EOrientation::LANDSCAPE),
     m_projectionScale(1),
     m_fullScreen(false),
     m_vSync(false),
@@ -51,8 +51,8 @@ CSettings::CSettings() :
     m_activateStencilBuffer(false),
     m_sectorSize(512),
     m_sectorSizeHalf(256),
-    m_anisotropicLevel(NDefs::ETF_ANISOTROPIC_0X),
-    m_projectionType(NDefs::EPT_PERSPECTIVE),
+    m_anisotropicLevel(ETextFilter::ANISOTROPIC_0X),
+    m_projectionType(EProjectionType::PERSPECTIVE),
     m_debugStrVisible(false),
     m_tripleBuffering(false),
     m_saveByteCode(false),
@@ -166,7 +166,7 @@ void CSettings::loadXML()
 
             if( defResNode.isAttributeSet("orientation") )
                 if( std::strcmp( defResNode.getAttribute("orientation"), "portrait" ) == 0 )
-                    m_orientation = NDefs::EO_PORTRAIT;
+                    m_orientation = EOrientation::PORTRAIT;
         }
 
         calcRatio();
@@ -206,7 +206,7 @@ void CSettings::loadXML()
 
                 if( projNode.isAttributeSet("projectType") &&
                     std::strcmp( projNode.getAttribute("projectType"), "orthographic" ) == 0 )
-                    m_projectionType = NDefs::EPT_ORTHOGRAPHIC;
+                    m_projectionType = EProjectionType::ORTHOGRAPHIC;
 
                 if( projNode.isAttributeSet("scale") )
                     m_projectionScale = std::atof(projNode.getAttribute("scale"));
@@ -222,19 +222,19 @@ void CSettings::loadXML()
                 const char * pAttr = textFilterNode.getAttribute("level");
 
                 if( std::strcmp( pAttr, "anisotropic_0X" ) == 0 )
-                    m_anisotropicLevel = NDefs::ETF_ANISOTROPIC_0X;
+                    m_anisotropicLevel = ETextFilter::ANISOTROPIC_0X;
 
                 else if( std::strcmp( pAttr, "anisotropic_2X" ) == 0 )
-                    m_anisotropicLevel = NDefs::ETF_ANISOTROPIC_2X;
+                    m_anisotropicLevel = ETextFilter::ANISOTROPIC_2X;
 
                 else if( std::strcmp( pAttr, "anisotropic_4X" ) == 0 )
-                    m_anisotropicLevel = NDefs::ETF_ANISOTROPIC_4X;
+                    m_anisotropicLevel = ETextFilter::ANISOTROPIC_4X;
 
                 else if( std::strcmp( pAttr, "anisotropic_8X" ) == 0 )
-                    m_anisotropicLevel = NDefs::ETF_ANISOTROPIC_8X;
+                    m_anisotropicLevel = ETextFilter::ANISOTROPIC_8X;
 
                 else if( std::strcmp( pAttr, "anisotropic_16X" ) == 0 )
-                    m_anisotropicLevel = NDefs::ETF_ANISOTROPIC_16X;
+                    m_anisotropicLevel = ETextFilter::ANISOTROPIC_16X;
             }
 
             // Get the attribute from the "backbuffer" node
@@ -376,7 +376,7 @@ void CSettings::calcRatio()
     m_screenAspectRatio.w = m_size.w / m_size.h;
     m_screenAspectRatio.h = m_size.h / m_size.w;
 
-    if( m_orientation == NDefs::EO_PORTRAIT )
+    if( m_orientation == EOrientation::PORTRAIT )
     {
         // NOTE: The default height is based on the current aspect ratio
         // NOTE: Make sure the height does not have a floating point component
@@ -464,7 +464,7 @@ const CSize<float> & CSettings::getOrthoAspectRatio() const
 
 float CSettings::getOrthoAspectRatioOrientation() const
 {
-    if( m_orientation == NDefs::EO_PORTRAIT )
+    if( m_orientation == EOrientation::PORTRAIT )
         return m_orthoAspectRatio.w;
     else
         return m_orthoAspectRatio.h;
@@ -684,12 +684,12 @@ int CSettings::getChunkSize() const
 ************************************************************************/
 int CSettings::getAnisotropicLevel() const
 {
-    return m_anisotropicLevel;
+    return static_cast<int>(m_anisotropicLevel);
 }
 
 void CSettings::setAnisotropicLevel( int level )
 {
-    m_anisotropicLevel = (NDefs::ETextFilter)level;
+    m_anisotropicLevel = static_cast<ETextFilter>(level);
 }
 
 
@@ -713,7 +713,7 @@ int CSettings::getSectorSizeHalf() const
 /************************************************************************
 *    DESC:  Get the projection type
 ************************************************************************/
-NDefs::EProjectionType CSettings::getProjectionType() const
+EProjectionType CSettings::getProjectionType() const
 {
     return m_projectionType;
 }

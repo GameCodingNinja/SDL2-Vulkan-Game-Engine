@@ -30,14 +30,14 @@
 CUISlider::CUISlider( const std::string & group ) :
     CUISubControl( group ),
     m_travelDistPixels(0),
-    m_orientation(EO_HORIZONTAL),
+    m_orientation(EOrientation::HORZ),
     m_minValue(0),
     m_maxValue(0),
     m_curValue(0),
     m_incValue(0),
     m_displayValueAsInt(false),
     m_sliderBtnHold(false),
-    m_pressType( NDefs::EAP_IDLE)
+    m_pressType( EActionPress::IDLE)
 {
     m_type = NUIControlDefs::ECT_SLIDER;
 }
@@ -64,7 +64,7 @@ void CUISlider::loadFromNode( const XMLNode & node )
     {
         if( settingsNode.isAttributeSet( "orientation" ) )
             if( std::strcmp(settingsNode.getAttribute( "orientation" ), "VERT") == 0 )
-                m_orientation = EO_VERTICAL;
+                m_orientation = EOrientation::VERT;
 
         if( settingsNode.isAttributeSet( "minValue" ) )
             m_minValue = atof(settingsNode.getAttribute( "minValue" ));
@@ -125,7 +125,7 @@ void CUISlider::init()
 void CUISlider::onLeftAction( const SDL_Event & rEvent )
 {
     // Handle the slider change
-    if( rEvent.user.code == NDefs::EAP_DOWN )
+    if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
         handleSliderChange( -m_incValue, true );
 }
 
@@ -135,7 +135,7 @@ void CUISlider::onLeftAction( const SDL_Event & rEvent )
 void CUISlider::onRightAction( const SDL_Event & rEvent )
 {
     // Handle the slider change
-    if( rEvent.user.code == NDefs::EAP_DOWN )
+    if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
         handleSliderChange( m_incValue, true );
 }
 
@@ -162,11 +162,11 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
 {
     bool result = CUISubControl::onMouseMove( rEvent );
 
-    if( isActive() && (m_pressType == NDefs::EAP_DOWN) )
+    if( isActive() && (m_pressType == EActionPress::DOWN) )
     {
         const float oneOverAspectRatio(1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
 
-        if( m_orientation == EO_HORIZONTAL )
+        if( m_orientation == EOrientation::HORZ )
             incSliderMovePos( (float)rEvent.motion.xrel * oneOverAspectRatio );
         else
             incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio );
@@ -197,7 +197,7 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
                 (msgCracker.getPos() - getSubControl()->getCollisionPos()) *
                     (1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
 
-            if( m_orientation == EO_HORIZONTAL )
+            if( m_orientation == EOrientation::HORZ )
                 incSliderMovePos( dif.x );
             else
                 incSliderMovePos( dif.y );
@@ -208,7 +208,7 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
     }
     else if( msgCracker.getPressType() != getMouseSelectType() )
     {
-        m_pressType = NDefs::EAP_IDLE;
+        m_pressType = EActionPress::IDLE;
     }
 
     return result;
@@ -222,7 +222,7 @@ void CUISlider::deactivateControl()
 {
     CUISubControl::deactivateControl();
 
-    m_pressType = NDefs::EAP_IDLE;
+    m_pressType = EActionPress::IDLE;
 }
 
 
@@ -367,7 +367,7 @@ void CUISlider::setSliderPos()
         float pixelsPerValue = m_travelDistPixels / (m_maxValue - m_minValue);
         float pos = startPos + (pixelsPerValue * (m_curValue - m_minValue));
 
-        if( m_orientation == EO_HORIZONTAL )
+        if( m_orientation == EOrientation::HORZ )
             getSubControl()->setPos( m_defaultPos + CPoint<float>(pos,0,0) );
         else
             getSubControl()->setPos( m_defaultPos + CPoint<float>(0,pos,0) );
@@ -380,5 +380,5 @@ void CUISlider::setSliderPos()
 ************************************************************************/
 bool CUISlider::isSliderMouseDown()
 {
-    return (m_pressType == NDefs::EAP_DOWN);
+    return (m_pressType == EActionPress::DOWN);
 }

@@ -147,7 +147,7 @@ public:
     virtual iControl * getPtrToActiveControl() override;
     
     // Get the mouse select type
-    NDefs::EActionPress getMouseSelectType() const override;
+    EActionPress getMouseSelectType() const override;
     
     // Get the size of this control
     const CSize<float> & getSize() const override;
@@ -233,7 +233,7 @@ private:
     CPoint<float> m_collisionCenter;
 
     // Mouse selection type
-    NDefs::EActionPress m_mouseSelectType;
+    EActionPress m_mouseSelectType;
 
     // On state script function names
     std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;

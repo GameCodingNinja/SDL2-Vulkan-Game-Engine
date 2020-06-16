@@ -518,7 +518,7 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
         else if( (rEvent.type >= NMenuDefs::EME_MENU_UP_ACTION) &&
                  (rEvent.type <= NMenuDefs::EME_MENU_RIGHT_ACTION) )
         {
-            if( rEvent.user.code == NDefs::EAP_DOWN )
+            if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
             {
                 if( rEvent.type == NMenuDefs::EME_MENU_UP_ACTION )
                 {

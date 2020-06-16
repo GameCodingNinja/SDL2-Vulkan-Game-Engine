@@ -37,18 +37,18 @@ namespace NNodeFactory
         iNode * pNode(nullptr);
 
         // Single node sprite that doesn't support children. Low overhead for when you only need one sprite with no children
-        if( rNodeData.getNodeType() == NDefs::ENT_SPRITE )
+        if( rNodeData.getNodeType() == ENodeType::SPRITE )
         {
             if( rNodeData.hasChildrenNodes() )
                 pNode = new CSpriteNode( rNodeData );
             else
                 pNode = new CSpriteLeafNode( rNodeData );
         }
-        else if( rNodeData.getNodeType() == NDefs::ENT_OBJECT )
+        else if( rNodeData.getNodeType() == ENodeType::OBJECT )
         {
             pNode = new CObjectNode( rNodeData );
         }
-        else if( rNodeData.getNodeType() == NDefs::ENT_UI_CONTROL )
+        else if( rNodeData.getNodeType() == ENodeType::UI_CONTROL )
         {
             pNode = CreateUIControlNode( rNodeData );
         }

@@ -69,7 +69,7 @@ private:
     void addLineWithToVec(
         const CFont & font,
         std::vector<float> & lineWidthOffsetVec,
-        const NDefs::EHorzAlignment hAlign,
+        const EHorzAlignment hAlign,
         float width,
         float firstCharOffset,
         float lastCharOffset );

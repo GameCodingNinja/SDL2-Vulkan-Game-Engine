@@ -33,7 +33,7 @@ public:
     CSpriteData( const CSpriteData & data );
     
     // Destructor
-    virtual ~CSpriteData(){};
+    virtual ~CSpriteData();
     
     // Get the group
     const std::string & getGroup() const;

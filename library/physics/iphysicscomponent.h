@@ -20,10 +20,10 @@ class iPhysicsComponent
 public:
 
     // Constructor
-    iPhysicsComponent(){};
+    iPhysicsComponent();
 
     // Destructor
-    virtual ~iPhysicsComponent(){};
+    virtual ~iPhysicsComponent();
     
     // Init the physics by creating the body and fixture
     // NOTE: Function must be called externally at the right time

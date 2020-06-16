@@ -27,7 +27,7 @@ public:
     CUIControlNode( std::unique_ptr<CUIControl> pControl, const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CUIControlNode(){};
+    virtual ~CUIControlNode();
 
     // Update the nodes
     void update() override;

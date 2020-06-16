@@ -60,10 +60,10 @@ namespace NParseHelper
     CRect<int> LoadRectFromChild( const XMLNode & node );
 
     // Load the horizontal alignment
-    NDefs::EHorzAlignment LoadHorzAlignment( const XMLNode & node, NDefs::EHorzAlignment horzAlignment );
+    EHorzAlignment LoadHorzAlignment( const XMLNode & node, EHorzAlignment horzAlignment );
 
     // Load the vertical alignment
-    NDefs::EVertAlignment LoadVertAlignment( const XMLNode & node, NDefs::EVertAlignment vertAlignment );
+    EVertAlignment LoadVertAlignment( const XMLNode & node, EVertAlignment vertAlignment );
 
     // Load the dynamic offset
     CDynamicOffset LoadDynamicOffset( const XMLNode & node, bool & loaded );

@@ -5,8 +5,7 @@
 *    DESCRIPTION: misc defines
 ************************************************************************/
 
-#ifndef __defs_h__
-#define __defs_h__
+#pragma once
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -30,148 +29,100 @@ typedef uint16_t handle16_t;
 #define defs_MAX_ANALOG_AXIS_VALUE        32767
 #define defs_ANALOG_PERCENTAGE_CONVERTION 327.67f
 
-namespace NDefs
+enum class EOrientation
 {
-    enum EProjectionType
-    {
-        EPT_NULL,
-        EPT_PERSPECTIVE,
-        EPT_ORTHOGRAPHIC
-    };
-    
-    enum EOrentation
-    {
-        EO_HORZ,
-        EO_LANDSCAPE=EO_HORZ,
-        EO_VERT,
-        EO_PORTRAIT=EO_VERT
-    };
+    HORZ,
+    LANDSCAPE=HORZ,
+    VERT,
+    PORTRAIT=VERT
+};
 
-    enum EHorzAlignment
-    {
-        EHA_HORZ_LEFT,
-        EHA_HORZ_CENTER,
-        EHA_HORZ_RIGHT
-    };
+enum class EHorzAlignment
+{
+    HORZ_LEFT,
+    HORZ_CENTER,
+    HORZ_RIGHT
+};
 
-    enum EVertAlignment
-    {
-        EVA_VERT_TOP,
-        EVA_VERT_CENTER,
-        EVA_VERT_BOTTOM
-    };
+enum class EVertAlignment
+{
+    VERT_TOP,
+    VERT_CENTER,
+    VERT_BOTTOM
+};
 
-    enum EGenerationType
-    {
-        EGT_NULL,
-        EGT_QUAD,
-        EGT_SPRITE_SHEET,
-        EGT_SCALED_FRAME,
-        EGT_MESH_FILE,
-        EGT_FONT
-    };
+enum class EGenType
+{
+    _NULL_,
+    QUAD,
+    SPRITE_SHEET,
+    SCALED_FRAME,
+    MESH_FILE,
+    FONT
+};
 
-    enum
-    {
-        // No parameters
-        NONE                = 0x00,
+enum class EDeviceId
+{
+    _NULL_=-1,
+    KEYBOARD,
+    MOUSE,
+    GAMEPAD
+};
 
-        // Transform parameters
-        TRANSLATE           = 0x01,
-        ROTATE	            = 0x02,
-        SCALE	            = 0x04,
-        CENTER_POINT        = 0x08,
-        CROP_OFFSET         = 0x10,
+enum class EActionPress
+{
+    IDLE = 0,
+    DOWN,
+    UP
+};
 
-        // Translate parameters
-        TRANSFORM           = 0x20,
-        WAS_TRANSFORMED     = 0x40,
+enum class ELightType
+{
+    _NULL_ = 0,
+    DIRECTIONAL,
+    POINT_INFINITE,
+    POINT_RADIUS,
+};
 
-        // Matrix rotation
-        PHYSICS_TRANSFORM   = 0x80,
+enum class EMirror
+{
+    _NULL_ = 0,
+    HORIZONTAL,
+    VERTICAL,
+    HORIZONTAL_VERTICAL
+};
 
-        // Visible bit
-        VISIBLE             = 0x100,
+enum class ETextFilter
+{
+    ANISOTROPIC_0X = 0,
+    ANISOTROPIC_2X = 2,
+    ANISOTROPIC_4X = 4,
+    ANISOTROPIC_8X = 8,
+    ANISOTROPIC_16X = 16
+};
 
-        // States
-        STATE1              = 0x200,
-        STATE2              = 0x400,
-        STATE3              = 0x800,
-        STATE4              = 0x1000,
-        STATE5              = 0x2000,
-        STATE6              = 0x4000,
-        STATE7              = 0x8000
-    };
-    
-    enum EAspectRatio
-    {
-        EAR_4_3,
-        EAR_3_2,
-        EAR_8_5,
-        EAR_5_3,
-        EAR_16_9
-    };
+/*enum class ETimeFormat
+{
+    ETF_MIL = 0b0001,
+    ETF_S_MIL = 0b0011,
+    ETF_M_S_MIL = 0b0111,
+    ETF_H_M_S_MIL = 0b1111,
+    ETF_S = 0b0010,
+    ETF_M_S = 0b0110,
+    ETF_H_M_S = 0b1110,
+};*/
 
-    enum EDeviceId
-    {
-        DEVICE_NULL=-1,
-        KEYBOARD,
-        MOUSE,
-        GAMEPAD,
-        MAX_UNIQUE_DEVICES
-    };
+enum class EProjectionType
+{
+    _NULL_,
+    PERSPECTIVE,
+    ORTHOGRAPHIC
+};
 
-    enum EActionPress
-    {
-        EAP_IDLE = 0,
-        EAP_DOWN,
-        EAP_UP
-    };
-
-    enum ETextFilter
-    {
-        ETF_ANISOTROPIC_0X = 0,
-        ETF_ANISOTROPIC_2X = 2,
-        ETF_ANISOTROPIC_4X = 4,
-        ETF_ANISOTROPIC_8X = 8,
-        ETF_ANISOTROPIC_16X = 16
-    };
-    
-    enum ELightType
-    {
-        ELT_NONE = 0,
-        ELT_DIRECTIONAL,
-        ELT_POINT_INFINITE,
-        ELT_POINT_RADIUS,
-    };
-    
-    enum EMirror
-    {
-        EM_NULL = 0,
-        EM_HORIZONTAL,
-        EM_VERTICAL,
-        EM_HORIZONTAL_VERTICAL
-    };
-    
-    enum ENodeType
-    {
-        ENT_NULL = 0,
-        ENT_OBJECT,
-        ENT_SPRITE,
-        ENT_UI_CONTROL,
-    };
-
-    enum ETimeFormat
-    {
-        ETF_MIL = 0b0001,
-        ETF_S_MIL = 0b0011,
-        ETF_M_S_MIL = 0b0111,
-        ETF_H_M_S_MIL = 0b1111,
-        ETF_S = 0b0010,
-        ETF_M_S = 0b0110,
-        ETF_H_M_S = 0b1110,
-    };
-
-}
-
-#endif
+enum class ENodeType: uint8_t
+{
+    _NULL_ = 0,
+    OBJECT,
+    SPRITE,
+    UI_CONTROL,
+};

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
-#ifndef __visual_component_quad_h__
-#define __visual_component_quad_h__
+#pragma once
 
 // Physical component dependency
 #include <common/ivisualcomponent.h>
@@ -78,5 +77,3 @@ protected:
     // Push Descriptor set
     //CPushDescriptorSet m_pushDescSet;
 };
-
-#endif

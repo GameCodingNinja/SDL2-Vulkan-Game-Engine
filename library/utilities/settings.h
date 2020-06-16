@@ -138,7 +138,7 @@ public:
     void setAnisotropicLevel( int level );
 
     // Get the projection type
-    NDefs::EProjectionType getProjectionType() const;
+    EProjectionType getProjectionType() const;
 
     // Get the projection scale
     float getProjectionScale() const;
@@ -185,7 +185,7 @@ private:
     CSize<float> m_default_size_half;
 
     // Orientation of game window
-    NDefs::EOrentation m_orientation;
+    EOrientation m_orientation;
 
     // Height and width screen ratio for perspective projection
     CSize<float> m_screenAspectRatio;
@@ -242,10 +242,10 @@ private:
     float m_sectorSizeHalf;
 
     // Anisotropic filtering level
-    NDefs::ETextFilter m_anisotropicLevel;
+    ETextFilter m_anisotropicLevel;
 
     // The projection type
-    NDefs::EProjectionType m_projectionType;
+    EProjectionType m_projectionType;
 
     // Debug string members
     std::string m_debugStrGroup;

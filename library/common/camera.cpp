@@ -37,7 +37,7 @@ CCamera::CCamera( const XMLNode & node ) :
 }
 
 CCamera::CCamera( float minZDist, float maxZDist ) :
-    m_projType(NDefs::EPT_ORTHOGRAPHIC),
+    m_projType(EProjectionType::ORTHOGRAPHIC),
     m_angle(0),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
@@ -46,7 +46,7 @@ CCamera::CCamera( float minZDist, float maxZDist ) :
 }
 
 CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
-    m_projType(NDefs::EPT_PERSPECTIVE),
+    m_projType(EProjectionType::PERSPECTIVE),
     m_angle(angle),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
@@ -80,15 +80,15 @@ void CCamera::loadFromNode( const XMLNode & node )
     if( node.isAttributeSet("projectType") )
     {
         if( std::strcmp( node.getAttribute("projectType"), "orthographic" ) == 0 )
-            m_projType = NDefs::EPT_ORTHOGRAPHIC;
+            m_projType = EProjectionType::ORTHOGRAPHIC;
         
         else if( std::strcmp( node.getAttribute("projectType"), "perspective" ) == 0 )
-            m_projType = NDefs::EPT_PERSPECTIVE;
+            m_projType = EProjectionType::PERSPECTIVE;
     }
     
     loadTransFromNode( node );
 
-    if( m_parameters.isSet( NDefs::TRANSFORM ) )
+    if( m_parameters.isSet( TRANSFORM ) )
         invertPos();
 }
 
@@ -96,7 +96,7 @@ void CCamera::loadFromNode( const XMLNode & node )
 /************************************************************************
 *    DESC:  Init the camera
 ************************************************************************/
-void CCamera::init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist )
+void CCamera::init( EProjectionType projType, float angle, float minZDist, float maxZDist )
 {
     m_projType = projType;
     m_angle = angle;
@@ -124,7 +124,7 @@ void CCamera::init()
 ************************************************************************/
 void CCamera::createProjectionMatrix()
 {
-    if( m_projType == NDefs::EPT_PERSPECTIVE )
+    if( m_projType == EProjectionType::PERSPECTIVE )
     {
         m_projectionMatrix.perspectiveFovRH(
             m_angle,
@@ -200,7 +200,7 @@ const CPoint<CWorldValue> & CCamera::getWorldValuePos() const
 ************************************************************************/
 void CCamera::transform()
 {
-    const bool wasTransformed( m_parameters.isSet( NDefs::TRANSFORM ) );
+    const bool wasTransformed( m_parameters.isSet( TRANSFORM ) );
     
     CObjectTransform::transform();
     

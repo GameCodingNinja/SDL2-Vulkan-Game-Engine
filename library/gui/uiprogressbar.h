@@ -76,7 +76,7 @@ private:
     int m_spriteApplyIndex;
     
     // Orentation
-    NDefs::EOrentation m_orentation;
+    EOrientation m_orentation;
     
     // progress bar size
     CSize<float> m_size;
@@ -90,9 +90,9 @@ private:
     // alignment
     union UAlignment
     {
-        UAlignment() : horz(NDefs::EHA_HORZ_LEFT){}
-        NDefs::EHorzAlignment horz;
-        NDefs::EVertAlignment vert;
+        UAlignment() : horz(EHorzAlignment::HORZ_LEFT){}
+        EHorzAlignment horz;
+        EVertAlignment vert;
     } m_alignment;
 };
 

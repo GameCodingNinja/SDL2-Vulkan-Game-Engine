@@ -3,7 +3,7 @@
 *    FILE NAME:       nodedatalist.h
 *
 *    DESCRIPTION:     Based on how the XML is written, creates a node
-*                     list so that the Parent/child nodes can be created
+*                     list for easy Parent/child node creation
 ************************************************************************/
 
 #ifndef __node_data_list_h__
@@ -37,7 +37,7 @@ public:
         const std::string & objName );
     
     // Destructor
-    virtual ~CNodeDataList(){};
+    virtual ~CNodeDataList();
     
     // Get the node data
     const std::vector<CNodeData> & getData() const;

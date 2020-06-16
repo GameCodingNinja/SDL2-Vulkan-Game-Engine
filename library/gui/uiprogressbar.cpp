@@ -27,7 +27,7 @@ CUIProgressBar::CUIProgressBar( const std::string & group ) :
     m_minValue(0),
     m_maxValue(100),
     m_spriteApplyIndex(0),
-    m_orentation(NDefs::EO_HORZ)
+    m_orentation(EOrientation::HORZ)
 {
     m_type = NUIControlDefs::ECT_PROGRESS_BAR;
 }
@@ -69,27 +69,27 @@ void CUIProgressBar::loadFromNode( const XMLNode & node )
     {
         if( orentNode.isAttributeSet("type") )
             if( std::strcmp( orentNode.getAttribute("type"), "vert") == 0 )
-                m_orentation = NDefs::EO_VERT;
+                m_orentation = EOrientation::VERT;
 
         if( orentNode.isAttributeSet("alignment") )
         {
             const char * pAlign = orentNode.getAttribute("alignment");
 
-            if( m_orentation == NDefs::EO_HORZ )
+            if( m_orentation == EOrientation::HORZ )
             {
                 if( std::strcmp( pAlign, "right") == 0 )
-                    m_alignment.horz = NDefs::EHA_HORZ_RIGHT;
+                    m_alignment.horz = EHorzAlignment::HORZ_RIGHT;
 
                 else if( std::strcmp( pAlign, "center") == 0 )
-                    m_alignment.horz = NDefs::EHA_HORZ_CENTER;
+                    m_alignment.horz = EHorzAlignment::HORZ_CENTER;
             }
             else
             {
                 if( std::strcmp( pAlign, "bottom") == 0 )
-                    m_alignment.vert = NDefs::EVA_VERT_BOTTOM;
+                    m_alignment.vert = EVertAlignment::VERT_BOTTOM;
 
                 else if( std::strcmp( pAlign, "center") == 0 )
-                    m_alignment.vert = NDefs::EVA_VERT_CENTER;
+                    m_alignment.vert = EVertAlignment::VERT_CENTER;
             }
         }
     }
@@ -199,15 +199,15 @@ void CUIProgressBar::setSizePos()
     // Calculate the new scale for the progress bar
     float scaler = (m_curValue - m_minValue) / (m_maxValue - m_minValue);
 
-    if( m_orentation == NDefs::EO_HORZ )
+    if( m_orentation == EOrientation::HORZ )
     {
         scale.x *= scaler;
         float offset = m_size.w * scaler;
 
-        if( m_alignment.horz == NDefs::EHA_HORZ_LEFT )
+        if( m_alignment.horz == EHorzAlignment::HORZ_LEFT )
             pos.x -= (m_size.w - offset) / 2;
 
-        else if( m_alignment.horz == NDefs::EHA_HORZ_RIGHT )
+        else if( m_alignment.horz == EHorzAlignment::HORZ_RIGHT )
             pos.x += (m_size.w - offset) / 2;
     }
     else
@@ -215,10 +215,10 @@ void CUIProgressBar::setSizePos()
         scale.y *= scaler;
         float offset = m_size.h * scaler;
 
-        if( m_alignment.vert == NDefs::EVA_VERT_TOP )
+        if( m_alignment.vert == EVertAlignment::VERT_TOP )
             pos.y += (m_size.h - offset) / 2;
 
-        else if( m_alignment.vert == NDefs::EVA_VERT_BOTTOM )
+        else if( m_alignment.vert == EVertAlignment::VERT_BOTTOM )
             pos.y -= (m_size.h - offset) / 2;
     }
 

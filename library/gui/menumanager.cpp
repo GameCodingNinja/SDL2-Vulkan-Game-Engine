@@ -648,17 +648,17 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
             }*/
 
             // Only the default tree can execute an escape or toggle when none are active.
-            if( CActionMgr::Instance().wasAction( rEvent, m_escapeAction, NDefs::EAP_DOWN ) )
+            if( CActionMgr::Instance().wasAction( rEvent, m_escapeAction, EActionPress::DOWN ) )
             {
                 dispatchEscapeAction();
             }
-            else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, NDefs::EAP_DOWN ) )
+            else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, EActionPress::DOWN ) )
             {
                 dispatchToggleAction();
             }
             else if( m_active )
             {
-                NDefs::EActionPress pressType;
+                EActionPress pressType;
 
                 // common and can result in many messages which is why it's specifically defined here
                 if( rEvent.type == SDL_MOUSEMOTION )
@@ -667,14 +667,14 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
                     handleEventForTrees( rEvent );
                 }
                 // Need to pack multiple data items into one 32-bit int for this message
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_selectAction )) > NDefs::EAP_IDLE )
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_selectAction )) > EActionPress::IDLE )
                 {
                     // Need to pack a lot of information into one 32 bit int
                     CSelectMsgCracker msgCracker;
-                    msgCracker.setPressType( pressType );
-                    msgCracker.setDeviceId( CActionMgr::Instance().getLastDeviceUsed() );
+                    msgCracker.setPressType( static_cast<int>(pressType) );
+                    msgCracker.setDeviceId( static_cast<int>(CActionMgr::Instance().getLastDeviceUsed()) );
 
-                    if( msgCracker.getDeviceId() == NDefs::MOUSE )
+                    if( msgCracker.getDeviceId() == EDeviceId::MOUSE )
                     {
                         msgCracker.setX( rEvent.button.x );
                         msgCracker.setY( rEvent.button.y );
@@ -682,26 +682,26 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
 
                     NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_SELECT_ACTION, msgCracker.getPackedUnit() );
                 }
-                else if( CActionMgr::Instance().wasAction( rEvent, m_backAction, NDefs::EAP_DOWN ) )
+                else if( CActionMgr::Instance().wasAction( rEvent, m_backAction, EActionPress::DOWN ) )
                     NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_BACK_ACTION );
 
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_upAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_UP_ACTION, pressType );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_upAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_UP_ACTION), static_cast<int>(pressType) );
 
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_downAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_DOWN_ACTION, pressType );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_downAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_DOWN_ACTION), static_cast<int>(pressType) );
 
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_leftAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_LEFT_ACTION, pressType );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_leftAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_LEFT_ACTION), static_cast<int>(pressType) );
 
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_rightAction )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_RIGHT_ACTION, pressType );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_rightAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_RIGHT_ACTION), static_cast<int>(pressType) );
 
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabLeft )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TAB_LEFT, pressType );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabLeft )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_TAB_LEFT), static_cast<int>(pressType) );
 
-                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabRight )) > NDefs::EAP_IDLE )
-                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TAB_RIGHT, pressType );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabRight )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_TAB_RIGHT), static_cast<int>(pressType) );
 
                 // If none of the predefined actions have been hit, just send the message for processing
                 else
@@ -719,7 +719,7 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
                 SDL_RemoveTimer(m_scrollTimerId);
                 m_scrollTimerId = 0;
 
-                if( rEvent.user.code == NDefs::EAP_DOWN )
+                if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
                     handleEventForScrolling( rEvent );
             }
 

@@ -13,3 +13,10 @@ CColor iObjectVisualData::m_null_color;
 CMemoryBuffer iObjectVisualData::m_null_memoryBuffer;
 CSpriteSheet iObjectVisualData::m_null_spriteSheet;
 CModel iObjectVisualData::m_null_model;
+
+// Constructor / Destructor
+iObjectVisualData::iObjectVisualData()
+{}
+
+iObjectVisualData::~iObjectVisualData()
+{}

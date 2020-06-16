@@ -115,6 +115,7 @@ add_library(
         physics/physicsworldmanager3d.cpp
         physics/physicsworld2d.cpp
         physics/physicsworld3d.cpp
+        physics/iphysicscomponent.cpp
         physics/physicscomponent2d.cpp
         physics/physicscomponent3d.cpp
         sprite/sprite.cpp

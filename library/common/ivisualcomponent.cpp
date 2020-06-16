@@ -140,14 +140,14 @@ uint iVisualComponent::getCurrentFrame() const
 ************************************************************************/
 bool iVisualComponent::isFontSprite() const
 {
-    return (GENERATION_TYPE == NDefs::EGT_FONT);
+    return (GENERATION_TYPE == EGenType::FONT);
 }
 
 
 /************************************************************************
 *    DESC:  Get the generation type
 ************************************************************************/
-NDefs::EGenerationType iVisualComponent::getGenerationType() const
+EGenType iVisualComponent::getGenerationType() const
 {
     return GENERATION_TYPE;
 }

@@ -28,7 +28,7 @@ public:
     CSpriteLeafNode( const CNodeData & rNodeData );
 
     // Destructor
-    virtual ~CSpriteLeafNode(){};
+    virtual ~CSpriteLeafNode();
 
     // Update the nodes
     void update() override;

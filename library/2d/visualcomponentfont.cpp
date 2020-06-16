@@ -202,10 +202,10 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
         xOffset = lineWidthOffsetVec[lineCount++];
 
         // Handle the vertical alignment
-        if( m_fontData.m_fontProp.m_vAlign == NDefs::EVA_VERT_TOP )
+        if( m_fontData.m_fontProp.m_vAlign == EVertAlignment::VERT_TOP )
             lineHeightOffset = initialHeightOffset - font.getBaselineOffset();
 
-        if( m_fontData.m_fontProp.m_vAlign == NDefs::EVA_VERT_CENTER )
+        if( m_fontData.m_fontProp.m_vAlign == EVertAlignment::VERT_CENTER )
         {
             lineHeightOffset = -(initialHeightOffset - ((font.getBaselineOffset()-lineSpace) / 2.f) - font.getVertPadding());
 
@@ -213,7 +213,7 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
                 lineHeightOffset = -((lineHeightWrap * lineWidthOffsetVec.size()) / 2.f);
         }
 
-        else if( m_fontData.m_fontProp.m_vAlign == NDefs::EVA_VERT_BOTTOM )
+        else if( m_fontData.m_fontProp.m_vAlign == EVertAlignment::VERT_BOTTOM )
         {
             lineHeightOffset = -(initialHeightOffset - font.getBaselineOffset() - font.getVertPadding());
 
@@ -502,18 +502,18 @@ std::vector<float> CVisualComponentFont::calcLineWidthOffset(
 void CVisualComponentFont::addLineWithToVec(
     const CFont & font,
     std::vector<float> & lineWidthOffsetVec,
-    const NDefs::EHorzAlignment hAlign,
+    const EHorzAlignment hAlign,
     float width,
     float firstCharOffset,
     float lastCharOffset )
 {
-    if( hAlign == NDefs::EHA_HORZ_LEFT )
+    if( hAlign == EHorzAlignment::HORZ_LEFT )
         lineWidthOffsetVec.push_back(-(firstCharOffset + font.getHorzPadding()));
 
-    else if( hAlign == NDefs::EHA_HORZ_CENTER )
+    else if( hAlign == EHorzAlignment::HORZ_CENTER )
         lineWidthOffsetVec.push_back(-((width - font.getHorzPadding()) / 2.f));
 
-    else if( hAlign == NDefs::EHA_HORZ_RIGHT )
+    else if( hAlign == EHorzAlignment::HORZ_RIGHT )
         lineWidthOffsetVec.push_back(-(width - lastCharOffset - font.getHorzPadding()));
 
     // Remove any fractional component of the last index
@@ -550,5 +550,5 @@ const CSize<float> & CVisualComponentFont::getSize() const
 bool CVisualComponentFont::allowCommandRecording()
 {
     return CVisualComponentQuad::allowCommandRecording() ||
-        ((GENERATION_TYPE == NDefs::EGT_FONT) && !m_fontData.m_fontString.empty() && !m_vboBuffer.isEmpty());
+        ((GENERATION_TYPE == EGenType::FONT) && !m_fontData.m_fontString.empty() && !m_vboBuffer.isEmpty());
 }

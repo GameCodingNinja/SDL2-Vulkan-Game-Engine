@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling action mapping
 ************************************************************************/
 
-#ifndef __action_manager_h__
-#define __action_manager_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
@@ -45,14 +44,14 @@ public:
     const SDL_Event & pollEvent();
 
     // Was this an action
-    bool wasAction( const SDL_Event & rEvent, const std::string & actionStr, NDefs::EActionPress actionPress );
-    NDefs::EActionPress wasAction( const SDL_Event & rEvent, const std::string & actionStr );
+    bool wasAction( const SDL_Event & rEvent, const std::string & actionStr, EActionPress actionPress );
+    EActionPress wasAction( const SDL_Event & rEvent, const std::string & actionStr );
 
     // What was the last devic
     bool wasLastDeviceGamepad();
     bool wasLastDeviceKeyboard();
     bool wasLastDeviceMouse();
-    NDefs::EDeviceId getLastDeviceUsed();
+    EDeviceId getLastDeviceUsed();
 
     // Reset the last used device
     void resetLastUsedDevice();
@@ -67,13 +66,13 @@ public:
     
     // Get the action/component strings for the give device id
     std::string getDeviceActionStr( 
-        NDefs::EDeviceId deviceId,
+        EDeviceId deviceId,
         const std::string & actionNameStr,
         bool & configurable );
 
     // Reset the action
     std::string resetAction(
-        NDefs::EDeviceId deviceId,
+        EDeviceId deviceId,
         const std::string & actionNameStr,
         int keyCode,
         bool & configurable );
@@ -103,15 +102,15 @@ public:
     bool wasEvent( uint event );
     
     // Was this an action event
-    bool wasActionEvent( const std::string & actionStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    bool wasActionEvent( const std::string & actionStr, EActionPress actionPress = EActionPress::DOWN );
     
     // Was this a game specific event
     bool wasGameEvent( uint type, int code );
 
     // Device specific key checks
-    bool wasKeyboardEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
-    bool wasMouseBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
-    bool wasGamepadBtnEvent( const std::string & componentIdStr, NDefs::EActionPress actionPress = NDefs::EAP_DOWN );
+    bool wasKeyboardEvent( const std::string & componentIdStr, EActionPress actionPress = EActionPress::DOWN );
+    bool wasMouseBtnEvent( const std::string & componentIdStr, EActionPress actionPress = EActionPress::DOWN );
+    bool wasGamepadBtnEvent( const std::string & componentIdStr, EActionPress actionPress = EActionPress::DOWN );
 
     // Was this a window event
     bool wasWindowEvent( uint event, uint & windowID, int & data1, int & data2 );
@@ -219,7 +218,7 @@ private:
     XMLNode m_mainNode;
 
     // Last device used
-    NDefs::EDeviceId m_lastDeviceUsed;
+    EDeviceId m_lastDeviceUsed;
 
     // Mouse pos
     CPoint<float> m_mouseAbsolutePos;
@@ -233,10 +232,10 @@ private:
     std::map<int, CSensor> m_sensorMap;
 
     // Flag to indicate analog state as button
-    std::array<NDefs::EActionPress,16> m_analogLXButtonStateAry;
-    std::array<NDefs::EActionPress,16> m_analogLYButtonStateAry;
-    std::array<NDefs::EActionPress,16> m_analogRXButtonStateAry;
-    std::array<NDefs::EActionPress,16> m_analogRYButtonStateAry;
+    std::array<EActionPress,16> m_analogLXButtonStateAry;
+    std::array<EActionPress,16> m_analogLYButtonStateAry;
+    std::array<EActionPress,16> m_analogRXButtonStateAry;
+    std::array<EActionPress,16> m_analogRYButtonStateAry;
     
     // The save file path
     std::string m_saveFilePath;
@@ -259,4 +258,3 @@ private:
     SDL_Event m_nullEvent = {};
 };
 
-#endif

@@ -34,7 +34,7 @@ public:
     void loadFromNode( const XMLNode & node );
     
     // Init the camera
-    void init( NDefs::EProjectionType projType, float angle, float minZDist, float maxZDist );
+    void init( EProjectionType projType, float angle, float minZDist, float maxZDist );
     void init();
 
     // Create the projection matrix
@@ -91,7 +91,7 @@ private:
     CMatrix m_rotMatrix;
 
     // The projection type
-    NDefs::EProjectionType m_projType;
+    EProjectionType m_projType;
 
     // Projection settings
     float m_angle;

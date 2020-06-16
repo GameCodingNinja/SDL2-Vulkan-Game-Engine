@@ -12,7 +12,7 @@
 #include <cstring>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CSpriteData::CSpriteData( 
     const XMLNode & xmlNode,
@@ -33,6 +33,9 @@ CSpriteData::CSpriteData(
     if( xmlNode.isAttributeSet( "objectName" ) )
         m_objectName = xmlNode.getAttribute( "objectName" );
 }
+
+CSpriteData::~CSpriteData()
+{}
 
 /************************************************************************
 *    DESC:  Constructor for dynamic node data generation for sprite creation

@@ -4,13 +4,11 @@
 *    DESCRIPTION:     object class
 ************************************************************************/
 
-#ifndef __object_h__
-#define __object_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/size.h>
 #include <common/point.h>
-#include <common/defs.h>
 #include <utilities/bitmask.h>
 
 // Standard lib dependencies
@@ -22,6 +20,38 @@ struct XMLNode;
 class CObject
 {
 public:
+
+    enum
+    {
+        // No parameters
+        NONE                = 0x00,
+
+        // Transform parameters
+        TRANSLATE           = 0x01,
+        ROTATE	            = 0x02,
+        SCALE	            = 0x04,
+        CENTER_POINT        = 0x08,
+        CROP_OFFSET         = 0x10,
+
+        // Translate parameters
+        TRANSFORM           = 0x20,
+        WAS_TRANSFORMED     = 0x40,
+
+        // Matrix rotation
+        PHYSICS_TRANSFORM   = 0x80,
+
+        // Visible bit
+        VISIBLE             = 0x100,
+
+        // States
+        STATE1              = 0x200,
+        STATE2              = 0x400,
+        STATE3              = 0x800,
+        STATE4              = 0x1000,
+        STATE5              = 0x2000,
+        STATE6              = 0x4000,
+        STATE7              = 0x8000
+    };
     
     CObject();
     virtual ~CObject();
@@ -104,5 +134,3 @@ protected:
     // Offset due to a sprite sheet crop.
     CSize<int16_t> m_cropOffset;
 };
-
-#endif

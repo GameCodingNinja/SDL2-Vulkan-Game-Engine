@@ -91,9 +91,9 @@ void CSymbol2d::update()
 ************************************************************************/
 void CSymbol2d::transform()
 {
-    m_parameters.remove( NDefs::WAS_TRANSFORMED );
+    m_parameters.remove( WAS_TRANSFORMED );
 
-    if( m_parameters.isSet( NDefs::TRANSFORM ) )
+    if( m_parameters.isSet( TRANSFORM ) )
     {
         transformLocal( m_finalMatrix );
 
@@ -106,14 +106,14 @@ void CSymbol2d::transform()
 
 void CSymbol2d::transform( const CMatrix & matrix, bool tranformWorldPos )
 {
-    m_parameters.remove( NDefs::WAS_TRANSFORMED );
+    m_parameters.remove( WAS_TRANSFORMED );
 
-    if( m_parameters.isSet( NDefs::TRANSFORM ) )
+    if( m_parameters.isSet( TRANSFORM ) )
         transformLocal( m_matrix );
 
-    if( m_parameters.isSet( NDefs::WAS_TRANSFORMED ) || tranformWorldPos )
+    if( m_parameters.isSet( WAS_TRANSFORMED ) || tranformWorldPos )
     {
-        m_parameters.add( NDefs::WAS_TRANSFORMED );
+        m_parameters.add( WAS_TRANSFORMED );
 
         m_finalMatrix.copy( m_matrix );
 

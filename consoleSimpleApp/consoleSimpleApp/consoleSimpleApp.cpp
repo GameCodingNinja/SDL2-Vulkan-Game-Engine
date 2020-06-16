@@ -1,30 +1,34 @@
 // consoleSimpleApp.cpp : Defines the entry point for the console application.
 //
 
-/*#include <cstddef>
+#include <cstddef>
 #include <iostream>
 
 class CTmp
 {
     public:
 
-    size_t ptrValue()
+    enum theEnum: uint64_t
     {
-        //return reinterpret_cast<std::size_t>(this);
-        return (size_t)this;
-    }
+        dummy1,
+        dummy2,
+        dummy3,
+        dummy4,
+        dummy5,
+        dummy6,
+        dummy7,
+    };
+
+    theEnum dummy;
 };
 
 int main()
 {
-    CTmp tmp1;
-    CTmp tmp2;
+    std::cout << sizeof(CTmp) << std::endl;
 
-    std::cout << tmp1.ptrValue() << std::endl;
-    std::cout << tmp2.ptrValue() << std::endl;
 
     return 0;
-}*/
+}
 
 /*#include <vector>
 #include <ranges>

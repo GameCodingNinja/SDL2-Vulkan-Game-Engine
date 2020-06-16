@@ -17,7 +17,7 @@ class CLight
 public:
 
     // Constructor
-    CLight( NDefs::ELightType lightType );
+    CLight( ELightType lightType );
 
     // Destructor
     virtual ~CLight();
@@ -36,7 +36,7 @@ public:
 private:
     
     // Light type
-    NDefs::ELightType m_type;
+    ELightType m_type;
 
     // Pos/Dir value
     CPoint<float> m_posDir;

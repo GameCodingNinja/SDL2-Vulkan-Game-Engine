@@ -144,5 +144,5 @@ float CObjectData2D::getRadiusSquared() const
 ************************************************************************/
 bool CObjectData2D::isGenTypeFont() const
 {
-    return m_visualData.getGenerationType() == NDefs::EGT_FONT;
+    return m_visualData.getGenerationType() == EGenType::FONT;
 }

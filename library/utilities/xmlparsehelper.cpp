@@ -314,21 +314,21 @@ namespace NParseHelper
     /************************************************************************
     *    DESC:  Load the horizontal alignment
     ************************************************************************/
-    NDefs::EHorzAlignment LoadHorzAlignment( const XMLNode & node, NDefs::EHorzAlignment horzAlignment )
+    EHorzAlignment LoadHorzAlignment( const XMLNode & node, EHorzAlignment horzAlignment )
     {
-        NDefs::EHorzAlignment horzAlign = horzAlignment;
+        EHorzAlignment horzAlign = horzAlignment;
 
         if( node.isAttributeSet( "horzAlign" ) )
         {
             std::string horzAlignStr = node.getAttribute( "horzAlign" );
             if( horzAlignStr == "left" )
-                horzAlign = NDefs::EHA_HORZ_LEFT;
+                horzAlign = EHorzAlignment::HORZ_LEFT;
 
             else if( horzAlignStr == "center" )
-                horzAlign = NDefs::EHA_HORZ_CENTER;
+                horzAlign = EHorzAlignment::HORZ_CENTER;
 
             else if( horzAlignStr == "right" )
-                horzAlign = NDefs::EHA_HORZ_RIGHT;
+                horzAlign = EHorzAlignment::HORZ_RIGHT;
         }
 
         return horzAlign;
@@ -338,21 +338,21 @@ namespace NParseHelper
     /************************************************************************
     *    DESC:  Load the vertical alignment
     ************************************************************************/
-    NDefs::EVertAlignment LoadVertAlignment( const XMLNode & node, NDefs::EVertAlignment vertAlignment )
+    EVertAlignment LoadVertAlignment( const XMLNode & node, EVertAlignment vertAlignment )
     {
-        NDefs::EVertAlignment vertAlign = vertAlignment;
+        EVertAlignment vertAlign = vertAlignment;
 
         if( node.isAttributeSet( "vertAlign" ) )
         {
             std::string vertAlignStr = node.getAttribute( "vertAlign" );
             if( vertAlignStr == "top" )
-                vertAlign = NDefs::EVA_VERT_TOP;
+                vertAlign = EVertAlignment::VERT_TOP;
 
             else if( vertAlignStr == "center" )
-                vertAlign = NDefs::EVA_VERT_CENTER;
+                vertAlign = EVertAlignment::VERT_CENTER;
 
             else if( vertAlignStr == "bottom" )
-                vertAlign = NDefs::EVA_VERT_BOTTOM;
+                vertAlign = EVertAlignment::VERT_BOTTOM;
         }
 
         return vertAlign;

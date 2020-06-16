@@ -222,10 +222,10 @@ void CUIScrollBox::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIScrollBox::onUpAction( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NDefs::EAP_DOWN )
+    if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
         handleKeyboardGamepadScroll( -1 );
 
-    else if( rEvent.user.code == NDefs::EAP_UP )
+    else if( rEvent.user.code == static_cast<int>(EActionPress::UP) )
         m_endScroll = true;
 }
 
@@ -234,10 +234,10 @@ void CUIScrollBox::onUpAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIScrollBox::onDownAction( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NDefs::EAP_DOWN )
+    if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
         handleKeyboardGamepadScroll( 1 );
 
-    else if( rEvent.user.code == NDefs::EAP_UP )
+    else if( rEvent.user.code == static_cast<int>(EActionPress::UP) )
         m_endScroll = true;
 }
 
@@ -264,7 +264,7 @@ void CUIScrollBox::onDownScroll( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIScrollBox::onTabLeft( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NDefs::EAP_DOWN )
+    if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
         handlePageScroll( -1 );
 }
 
@@ -273,7 +273,7 @@ void CUIScrollBox::onTabLeft( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIScrollBox::onTabRight( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NDefs::EAP_DOWN )
+    if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
         handlePageScroll( 1 );
 }
 

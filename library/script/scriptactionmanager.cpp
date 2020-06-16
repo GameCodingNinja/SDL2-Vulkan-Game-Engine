@@ -49,12 +49,12 @@ namespace NScriptActionManager
     ************************************************************************/
     bool WasAction1(const SDL_Event & rEvent, const std::string & actionStr, uint actionPress, CActionMgr & actionMgr)
     {
-        return actionMgr.wasAction(rEvent, actionStr, NDefs::EActionPress(actionPress));
+        return actionMgr.wasAction(rEvent, actionStr, EActionPress(actionPress));
     }
 
     uint WasAction2(const SDL_Event & rEvent, const std::string & actionStr, CActionMgr & actionMgr)
     {
-        return actionMgr.wasAction(rEvent, actionStr);
+        return static_cast<int>(actionMgr.wasAction(rEvent, actionStr));
     }
 
     /************************************************************************

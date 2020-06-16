@@ -11,20 +11,16 @@
 #include <utilities/xmlparsehelper.h>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CObject::CObject() :
-    m_parameters(NDefs::VISIBLE),
+    m_parameters(VISIBLE),
     m_scale(1,1,1)
 {
 }
 
-/************************************************************************
-*    DESC:  Destructor
-************************************************************************/
 CObject::~CObject()
-{
-}
+{}
 
 /************************************************************************
 *    DESC:  Get the object's position
@@ -39,14 +35,14 @@ const CPoint<float> & CObject::getPos() const
 ************************************************************************/
 void CObject::setPos( const CPoint<float> & position )
 {
-    m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
+    m_parameters.add( TRANSLATE | TRANSFORM );
 
     m_pos = position;
 }
 
 void CObject::setPos( float x, float y, float z )
 {
-    m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
+    m_parameters.add( TRANSLATE | TRANSFORM );
 
     m_pos.set( x, y, z );
 }
@@ -56,14 +52,14 @@ void CObject::setPos( float x, float y, float z )
 ************************************************************************/
 void CObject::incPos( const CPoint<float> & position )
 {
-    m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
+    m_parameters.add( TRANSLATE | TRANSFORM );
 
     m_pos += position;
 }
 
 void CObject::incPos( float x, float y, float z )
 {
-    m_parameters.add( NDefs::TRANSLATE | NDefs::TRANSFORM );
+    m_parameters.add( TRANSLATE | TRANSFORM );
 
     m_pos.inc( x, y, z );
 }
@@ -82,7 +78,7 @@ void CObject::invertPos()
 ************************************************************************/
 void CObject::setRot( const CPoint<float> & rotation, bool convertToRadians )
 {
-    m_parameters.add( NDefs::ROTATE | NDefs::TRANSFORM );
+    m_parameters.add( ROTATE | TRANSFORM );
 
     m_rot = rotation;
     
@@ -94,7 +90,7 @@ void CObject::setRot( const CPoint<float> & rotation, bool convertToRadians )
 
 void CObject::setRot( float x, float y, float z, bool convertToRadians )
 {
-    m_parameters.add( NDefs::ROTATE | NDefs::TRANSFORM );
+    m_parameters.add( ROTATE | TRANSFORM );
     
     if( convertToRadians )
         m_rot.set( x * defs_DEG_TO_RAD, y * defs_DEG_TO_RAD, z * defs_DEG_TO_RAD );
@@ -108,7 +104,7 @@ void CObject::setRot( float x, float y, float z, bool convertToRadians )
 ************************************************************************/
 void CObject::incRot( const CPoint<float> & rotation, bool convertToRadians )
 {
-    m_parameters.add( NDefs::ROTATE | NDefs::TRANSFORM );
+    m_parameters.add( ROTATE | TRANSFORM );
 
     if( convertToRadians )
         m_rot += rotation * defs_DEG_TO_RAD;
@@ -120,7 +116,7 @@ void CObject::incRot( const CPoint<float> & rotation, bool convertToRadians )
 
 void CObject::incRot( float x, float y, float z, bool convertToRadians )
 {
-    m_parameters.add( NDefs::ROTATE | NDefs::TRANSFORM );
+    m_parameters.add( ROTATE | TRANSFORM );
     
     if( convertToRadians )
         m_rot.inc( x * defs_DEG_TO_RAD, y * defs_DEG_TO_RAD, z * defs_DEG_TO_RAD );
@@ -142,14 +138,14 @@ const CPoint<float> & CObject::getRot() const
 ************************************************************************/
 void CObject::setScale( const CPoint<float> & scale )
 {
-    m_parameters.add( NDefs::SCALE | NDefs::TRANSFORM );
+    m_parameters.add( SCALE | TRANSFORM );
 
     m_scale = scale;
 }
 
 void CObject::setScale( float x, float y, float z )
 {
-    m_parameters.add( NDefs::SCALE | NDefs::TRANSFORM );
+    m_parameters.add( SCALE | TRANSFORM );
 
     m_scale.set( x, y, z );
 }
@@ -159,14 +155,14 @@ void CObject::setScale( float x, float y, float z )
 ************************************************************************/
 void CObject::incScale( const CPoint<float> & scale )
 {
-    m_parameters.add( NDefs::SCALE | NDefs::TRANSFORM );
+    m_parameters.add( SCALE | TRANSFORM );
 
     m_scale += scale;
 }
 
 void CObject::incScale( float x, float y, float z )
 {
-    m_parameters.add( NDefs::SCALE | NDefs::TRANSFORM );
+    m_parameters.add( SCALE | TRANSFORM );
 
     m_scale.inc( x, y, z );
 }
@@ -192,14 +188,14 @@ const CPoint<float> & CObject::getCenterPos() const
 ************************************************************************/
 void CObject::setCenterPos( const CPoint<float> & position )
 {
-    m_parameters.add( NDefs::CENTER_POINT | NDefs::TRANSFORM );
+    m_parameters.add( CENTER_POINT | TRANSFORM );
 
     m_centerPos = position;
 }
 
 void CObject::setCenterPos( float x, float y, float z )
 {
-    m_parameters.add( NDefs::CENTER_POINT | NDefs::TRANSFORM );
+    m_parameters.add( CENTER_POINT | TRANSFORM );
 
     m_centerPos.set( x, y, z );
 }
@@ -211,7 +207,7 @@ void CObject::setCropOffset( const CSize<int16_t> & offset )
 {
     if( !m_centerPos.isEmpty() || !offset.isEmpty() )
     {
-        m_parameters.add( NDefs::CROP_OFFSET | NDefs::TRANSFORM );
+        m_parameters.add( CROP_OFFSET | TRANSFORM );
 
         m_cropOffset = offset;
     }
@@ -223,9 +219,9 @@ void CObject::setCropOffset( const CSize<int16_t> & offset )
 void CObject::setVisible( bool value )
 {
     if( value )
-        m_parameters.add( NDefs::VISIBLE );
+        m_parameters.add( VISIBLE );
     else
-        m_parameters.remove( NDefs::VISIBLE );
+        m_parameters.remove( VISIBLE );
 }
 
 /************************************************************************
@@ -233,7 +229,7 @@ void CObject::setVisible( bool value )
 ************************************************************************/
 bool CObject::isVisible() const
 {
-    return m_parameters.isSet( NDefs::VISIBLE );
+    return m_parameters.isSet( VISIBLE );
 }
 
 /************************************************************************
@@ -241,19 +237,19 @@ bool CObject::isVisible() const
 ************************************************************************/
 void CObject::copyTransform( const CObject * pObject )
 {
-    if( pObject->m_parameters.isSet( NDefs::TRANSLATE ) )
+    if( pObject->m_parameters.isSet( TRANSLATE ) )
         setPos( pObject->m_pos );
 
-    if( pObject->m_parameters.isSet( NDefs::ROTATE ) )
+    if( pObject->m_parameters.isSet( ROTATE ) )
         setRot( pObject->m_rot, false );
 
-    if( pObject->m_parameters.isSet( NDefs::SCALE ) )
+    if( pObject->m_parameters.isSet( SCALE ) )
         setScale( pObject->m_scale );
     
-    if( pObject->m_parameters.isSet( NDefs::CENTER_POINT ) )
+    if( pObject->m_parameters.isSet( CENTER_POINT ) )
         setCenterPos( pObject->m_centerPos );
     
-    if( pObject->m_parameters.isSet( NDefs::CROP_OFFSET ) )
+    if( pObject->m_parameters.isSet( CROP_OFFSET ) )
         setCropOffset( pObject->m_cropOffset );
 }
 

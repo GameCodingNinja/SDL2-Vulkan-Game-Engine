@@ -138,7 +138,7 @@ void CPhysicsComponent3D::update( CSprite * pSprite )
         btTransform trans;
         m_upRigidBody->getMotionState()->getWorldTransform(trans);
         
-        pSprite->getParameters().add( NDefs::ROTATE | NDefs::PHYSICS_TRANSFORM );
+        pSprite->getParameters().add( CObject::ROTATE | CObject::PHYSICS_TRANSFORM );
     
         // Set the position
         const btVector3 & btVec = trans.getOrigin();

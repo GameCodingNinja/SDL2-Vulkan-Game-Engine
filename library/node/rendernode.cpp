@@ -19,12 +19,15 @@
 #include <boost/format.hpp>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CRenderNode::CRenderNode( uint8_t nodeId, uint8_t parentId ) :
     CNode(nodeId, parentId)
 {
 }
+
+CRenderNode::~CRenderNode()
+{}
 
 /***************************************************************************
 *    DESC:  Update the nodes.
@@ -49,12 +52,12 @@ void CRenderNode::update( iNode * pNode )
             if( pNextNode != nullptr )
             {
                 // Update the children
-                if( pNextNode->getType() == NDefs::ENT_SPRITE )
+                if( pNextNode->getType() == ENodeType::SPRITE )
                 {
                     pNextNode->getSprite()->physicsUpdate();
                     pNextNode->getSprite()->update();
                 }
-                else if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
+                else if( pNextNode->getType() == ENodeType::UI_CONTROL )
                 {
                     pNextNode->getControl()->update();
                 }
@@ -90,7 +93,7 @@ void CRenderNode::transform( iNode * pNode )
             if( pNextNode != nullptr )
             {
                 // Transform the object
-                if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
+                if( pNextNode->getType() == ENodeType::UI_CONTROL )
                     pNextNode->getControl()->transform( *pNode->getObject() );
                     
                 else
@@ -128,10 +131,10 @@ void CRenderNode::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandB
             if( pNextNode != nullptr )
             {
                 // Record the command buffer
-                if( pNextNode->getType() == NDefs::ENT_SPRITE )
+                if( pNextNode->getType() == ENodeType::SPRITE )
                     pNextNode->getSprite()->recordCommandBuffer( index, cmdBuffer, camera );
 
-                else if( pNextNode->getType() == NDefs::ENT_UI_CONTROL )
+                else if( pNextNode->getType() == ENodeType::UI_CONTROL )
                     pNextNode->getControl()->recordCommandBuffer( index, cmdBuffer, camera );
 
                 // Call a recursive function again

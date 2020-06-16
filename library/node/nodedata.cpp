@@ -19,7 +19,7 @@
 #include <cstring>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CNodeData::CNodeData( 
     const XMLNode & node,
@@ -34,7 +34,7 @@ CNodeData::CNodeData(
         m_nodeId(nodeId),
         m_parenNodetId(parenNodetId),
         m_userId(userId),
-        m_nodeType(NDefs::ENT_NULL),
+        m_nodeType(ENodeType::_NULL_),
         m_controlType(NUIControlDefs::ECT_NULL),
         m_hasChildrenNodes(false)
 {
@@ -49,29 +49,29 @@ CNodeData::CNodeData(
 
         if( std::strcmp( childNode.getName(), "object" ) == 0 )
         {
-            m_nodeType = NDefs::ENT_OBJECT;
+            m_nodeType = ENodeType::OBJECT;
             break;
         }
         else if( std::strcmp( childNode.getName(), "sprite" ) == 0 )
         {
-            m_nodeType = NDefs::ENT_SPRITE;
+            m_nodeType = ENodeType::SPRITE;
             break;
         }
         else if( std::strcmp( childNode.getName(), "uiMeter" ) == 0 )
         {
-            m_nodeType = NDefs::ENT_UI_CONTROL;
+            m_nodeType = ENodeType::UI_CONTROL;
             m_controlType = NUIControlDefs::ECT_METER;
             break;
         }
         else if( std::strcmp( childNode.getName(), "uiProgressBar" ) == 0 )
         {
-            m_nodeType = NDefs::ENT_UI_CONTROL;
+            m_nodeType = ENodeType::UI_CONTROL;
             m_controlType = NUIControlDefs::ECT_PROGRESS_BAR;
             break;
         }
     }
 
-    if( m_nodeType == NDefs::ENT_NULL )
+    if( m_nodeType == ENodeType::_NULL_ )
         throw NExcept::CCriticalException("Node Load Error!",
                 boost::str( boost::format("Node type not defined (%s).\n\n%s\nLine: %s")
                     % nodeName % __FUNCTION__ % __LINE__ ));
@@ -88,11 +88,14 @@ CNodeData::CNodeData(
         m_nodeId(defs_DEFAULT_NODE_ID),
         m_parenNodetId(defs_DEFAULT_NODE_ID),
         m_userId(defs_DEFAULT_ID),
-        m_nodeType(NDefs::ENT_SPRITE),
+        m_nodeType(ENodeType::SPRITE),
         m_controlType(NUIControlDefs::ECT_NULL),
         m_hasChildrenNodes(false)
 {
 }
+
+CNodeData::~CNodeData()
+{}
 
 /************************************************************************
 *    DESC:  Get the node Name
@@ -129,7 +132,7 @@ int CNodeData::getUserId() const
 /************************************************************************
 *    DESC:  Get the node type
 ************************************************************************/
-NDefs::ENodeType CNodeData::getNodeType() const
+ENodeType CNodeData::getNodeType() const
 {
     return m_nodeType;
 }

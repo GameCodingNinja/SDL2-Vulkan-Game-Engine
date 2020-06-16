@@ -28,7 +28,7 @@ CFontProperties::CFontProperties( const std::string fontName ) :
     CFontMgr::Instance().isFont( m_fontName );
 }
 
-CFontProperties::CFontProperties( const std::string fontName, NDefs::EHorzAlignment hAlign, NDefs::EVertAlignment vAlign ) :
+CFontProperties::CFontProperties( const std::string fontName, EHorzAlignment hAlign, EVertAlignment vAlign ) :
     m_fontName(fontName),
     m_hAlign(hAlign),
     m_vAlign(vAlign)
@@ -37,7 +37,7 @@ CFontProperties::CFontProperties( const std::string fontName, NDefs::EHorzAlignm
     CFontMgr::Instance().isFont( m_fontName );
 }
 
-CFontProperties::CFontProperties( const std::string fontName, NDefs::EHorzAlignment hAlign, NDefs::EVertAlignment vAlign, float kerning ) :
+CFontProperties::CFontProperties( const std::string fontName, EHorzAlignment hAlign, EVertAlignment vAlign, float kerning ) :
     m_fontName(fontName),
     m_hAlign(hAlign),
     m_vAlign(vAlign),
@@ -99,7 +99,7 @@ void CFontProperties::loadFromNode( const XMLNode & node )
     if( !alignmentNode.isEmpty() )
     {
         // Set the default alignment
-        m_hAlign = NParseHelper::LoadHorzAlignment( alignmentNode, NDefs::EHA_HORZ_CENTER );
-        m_vAlign = NParseHelper::LoadVertAlignment( alignmentNode, NDefs::EVA_VERT_CENTER );
+        m_hAlign = NParseHelper::LoadHorzAlignment( alignmentNode, EHorzAlignment::HORZ_CENTER );
+        m_vAlign = NParseHelper::LoadVertAlignment( alignmentNode, EVertAlignment::VERT_CENTER );
     }
 }

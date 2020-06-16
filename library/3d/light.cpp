@@ -11,7 +11,7 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CLight::CLight( NDefs::ELightType lightType ) :
+CLight::CLight( ELightType lightType ) :
     m_type(lightType),
     m_radius(0.f),
     m_enable(false)

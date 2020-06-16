@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Object Visual Data interface class
 ************************************************************************/
 
-#ifndef __iobjectvisualdata_h__
-#define __iobjectvisualdata_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -27,8 +26,9 @@ class iObjectVisualData
 {
 public:
 
-    // Destructor
-    virtual ~iObjectVisualData(){};
+    // Constructor / Destructor
+    iObjectVisualData();
+    virtual ~iObjectVisualData();
 
     // Load thes object data from node
     virtual void loadFromNode( const XMLNode & objectNode, const std::string & name )
@@ -39,8 +39,8 @@ public:
     {}
 
     // Get the gne type
-    virtual NDefs::EGenerationType getGenerationType() const
-    { return NDefs::EGT_NULL; }
+    virtual EGenType getGenerationType() const
+    { return EGenType::_NULL_; }
 
     // Get the texture
     virtual const CTexture & getTexture( uint index = 0 ) const
@@ -94,5 +94,3 @@ private:
     static CSpriteSheet m_null_spriteSheet;
     static CModel m_null_model;
 };
-
-#endif

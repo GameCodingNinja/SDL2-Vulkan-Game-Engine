@@ -13,13 +13,13 @@
 #include <utilities/genfunc.h>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
     CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
     m_userId = rNodeData.getUserId();
-    m_type = NDefs::ENT_OBJECT;
+    m_type = ENodeType::OBJECT;
 
     // Create a CRC16 of the node name
     if( !rNodeData.getNodeName().empty() )
@@ -32,6 +32,9 @@ CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
     // Load the transforms from XML node
     CObjectTransform::loadTransFromNode( rNodeData.getXMLNode() );
 }
+
+CObjectNode::~CObjectNode()
+{}
 
 /***************************************************************************
 *    DESC:  Transform the nodes

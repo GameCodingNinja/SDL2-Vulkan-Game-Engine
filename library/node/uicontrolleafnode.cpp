@@ -16,14 +16,14 @@
 #include <utilities/genfunc.h>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CUIControlLeafNode::CUIControlLeafNode( std::unique_ptr<CUIControl> upControl, const CNodeData & rNodeData ) :
     iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
 {
     m_upControl = std::move(upControl);
     m_userId = rNodeData.getUserId();
-    m_type = NDefs::ENT_UI_CONTROL;
+    m_type = ENodeType::UI_CONTROL;
 
     // Create a CRC16 of the node name
     if( !rNodeData.getNodeName().empty() )
@@ -32,6 +32,9 @@ CUIControlLeafNode::CUIControlLeafNode( std::unique_ptr<CUIControl> upControl, c
     m_upControl->loadFromNode( rNodeData.getXMLNode() );
     m_upControl->init();
 }
+
+CUIControlLeafNode::~CUIControlLeafNode()
+{}
 
 /***************************************************************************
 *    DESC:  Update the sprite.

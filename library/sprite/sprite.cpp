@@ -32,19 +32,19 @@ CSprite::CSprite( const iObjectData & objectData ) :
     if( objectData.is2D() )
     {
         // Create the visual component
-        if( objectData.getVisualData().getGenerationType() == NDefs::EGT_QUAD )
+        if( objectData.getVisualData().getGenerationType() == EGenType::QUAD )
             m_upVisualComponent.reset( new CVisualComponentQuad( objectData ) );
 
-        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SPRITE_SHEET )
+        else if( objectData.getVisualData().getGenerationType() == EGenType::SPRITE_SHEET )
             m_upVisualComponent.reset( new CVisualComponentSpriteSheet( objectData ) );
 
-        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_SCALED_FRAME )
+        else if( objectData.getVisualData().getGenerationType() == EGenType::SCALED_FRAME )
             m_upVisualComponent.reset( new CVisualComponentScaledFrame( objectData ) );
 
-        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_FONT )
+        else if( objectData.getVisualData().getGenerationType() == EGenType::FONT )
             m_upVisualComponent.reset( new CVisualComponentFont( objectData ) );
         
-        else if( objectData.getVisualData().getGenerationType() == NDefs::EGT_NULL )
+        else if( objectData.getVisualData().getGenerationType() == EGenType::_NULL_ )
             m_upVisualComponent.reset( new CVisualComponentNull( objectData ) );
 
         // Create the physics component
@@ -71,6 +71,7 @@ CSprite::CSprite( const iObjectData & objectData ) :
 ************************************************************************/
 CSprite::~CSprite()
 {
+    // Needs to be here for unique_ptr creation other wide default constructor is used has compiler error
 }
 
 /************************************************************************
@@ -265,7 +266,7 @@ void CSprite::setFrame( uint index )
     {
         m_upVisualComponent->setFrame( index );
 
-        if( m_upVisualComponent->getGenerationType() == NDefs::EGT_SPRITE_SHEET )
+        if( m_upVisualComponent->getGenerationType() == EGenType::SPRITE_SHEET )
             setCropOffset( m_upVisualComponent->getCropOffset( index ) );
     }
 }
@@ -311,11 +312,11 @@ void CSprite::applyRotation( CMatrix & matrix )
     if( m_rObjectData.is3D() )
     {
         // Add in the center point prior to rotation
-        if( m_parameters.isSet( NDefs::CENTER_POINT ) )
+        if( m_parameters.isSet( CENTER_POINT ) )
             matrix.translate( m_centerPos );
         
         // Add in the rotation if this is NOT a physics transformation
-        if( !m_parameters.isSet( NDefs::PHYSICS_TRANSFORM ) )
+        if( !m_parameters.isSet( PHYSICS_TRANSFORM ) )
         {
             m_upVisualComponent->getRotMatrix().initilizeMatrix();
             m_upVisualComponent->getRotMatrix().rotate( m_rot );
@@ -325,7 +326,7 @@ void CSprite::applyRotation( CMatrix & matrix )
         matrix.multiply3x3( m_upVisualComponent->getRotMatrix() );
         
         // Subtract the center point after rotation to put back in original position
-        if( m_parameters.isSet( NDefs::CENTER_POINT ) )
+        if( m_parameters.isSet( CENTER_POINT ) )
             matrix.translate( -m_centerPos );
     }
     else

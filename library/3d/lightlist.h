@@ -30,7 +30,7 @@ public:
     // Add a light
     void add(
         const std::string & name,
-        NDefs::ELightType lightType,
+        ELightType lightType,
         const CColor & color,
         bool enable = false,
         const CPoint<float> & posDir = CPoint<float>(0,0,0),

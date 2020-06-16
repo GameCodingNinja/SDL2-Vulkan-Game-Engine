@@ -14,12 +14,6 @@
 class CUISlider : public CUISubControl
 {
 public:
-
-    enum EOrientation
-    {
-        EO_HORIZONTAL,
-        EO_VERTICAL
-    };
     
     // Constructor
     CUISlider( const std::string & group );
@@ -118,7 +112,7 @@ private:
     bool m_sliderBtnHold;
 
     // The current press type
-    NDefs::EActionPress m_pressType;
+    EActionPress m_pressType;
 };
 
 #endif

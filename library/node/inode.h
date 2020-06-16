@@ -32,17 +32,10 @@ class iNode
 public:
 
     // Constructor
-    iNode( uint8_t nodeId = defs_DEFAULT_NODE_ID, uint8_t parentId = defs_DEFAULT_NODE_ID ) :
-        m_type(NDefs::ENT_NULL),
-        m_handle(m_hAtomicIter++),
-        m_userId(defs_DEFAULT_ID),
-        m_nodeId(nodeId),
-        m_parentId(parentId),
-        m_crcUserId(0)
-    {}
+    iNode( uint8_t nodeId = defs_DEFAULT_NODE_ID, uint8_t parentId = defs_DEFAULT_NODE_ID );
 
     // Destructor
-    virtual ~iNode(){}
+    virtual ~iNode();
 
     // Get the next node
     virtual nodeVecIter_t getNodeIter()
@@ -99,7 +92,7 @@ public:
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}
     
     // Get the node type
-    virtual NDefs::ENodeType getType() const
+    virtual ENodeType getType() const
     { return m_type; }
     
     // Get the object
@@ -117,7 +110,7 @@ public:
 protected:
 
     // Node type
-    NDefs::ENodeType m_type;
+    ENodeType m_type;
 
     // Atomic handle incrementer
     static std::atomic<handle16_t> m_hAtomicIter;

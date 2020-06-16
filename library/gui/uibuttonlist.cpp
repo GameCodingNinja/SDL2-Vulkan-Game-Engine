@@ -128,25 +128,25 @@ void CUIButtonList::dec()
 ************************************************************************/
 void CUIButtonList::onDownAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == NDefs::EAP_DOWN) && m_ActionMask.isSet( NUIControlDefs::EAR_DOWN ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIControlDefs::EAR_DOWN ) )
         dec();
 }
 
 void CUIButtonList::onUpAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == NDefs::EAP_DOWN) && m_ActionMask.isSet( NUIControlDefs::EAR_UP ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIControlDefs::EAR_UP ) )
         inc();
 }
 
 void CUIButtonList::onLeftAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == NDefs::EAP_DOWN) && m_ActionMask.isSet( NUIControlDefs::EAR_LEFT ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIControlDefs::EAR_LEFT ) )
         dec();
 }
 
 void CUIButtonList::onRightAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == NDefs::EAP_DOWN) && m_ActionMask.isSet( NUIControlDefs::EAR_RIGHT ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIControlDefs::EAR_RIGHT ) )
         inc();
 }
 

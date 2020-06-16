@@ -152,8 +152,11 @@ void CStrategy::loadFromFile( const std::string & file )
  ************************************************************************/
 CNodeDataList & CStrategy::getData( const std::string & name, const std::string & _group )
 {
-    // Normal senerio is that the actor data has been loaded for this actor strategy
+    // Normal senerio is that the data has been loaded for this strategy
     auto iter = m_dataMap.find( name );
+
+    // If the data can't be found, this could be a simple one-off sprite node 
+    // which can be generated from the group and object data name
     if( iter == m_dataMap.end() )
     {
         std::string group = _group;
@@ -165,11 +168,11 @@ CNodeDataList & CStrategy::getData( const std::string & name, const std::string 
             group = CObjectDataMgr::Instance().findGroup( name );
 
             if( !group.empty() )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node data generated from group search (%s-%s)!") % name % group ) );
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Simple Strategy node generated from group search (%s-%s)!") % group % name ) );
         }
         else
         {
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Actor Strategy node data generated from group param (%s-%s)!") % name % group ) );
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Simple Strategy node generated from group and object name (%s-%s)!") % group % name ) );
         }
 
         // If we found group that has an object of the same name, create the data and pass it along

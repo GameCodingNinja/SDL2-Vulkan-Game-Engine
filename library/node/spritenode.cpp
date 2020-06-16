@@ -15,14 +15,14 @@
 #include <utilities/genfunc.h>
 
 /************************************************************************
-*    DESC:  Constructor
+*    DESC:  Constructor / Destructor
 ************************************************************************/
 CSpriteNode::CSpriteNode( const CNodeData & rNodeData ) :
         CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
         CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) )
 {
     m_userId = rNodeData.getUserId();
-    m_type = NDefs::ENT_SPRITE;
+    m_type = ENodeType::SPRITE;
 
     // Create a CRC16 of the node name
     if( !rNodeData.getNodeName().empty() )
@@ -37,6 +37,9 @@ CSpriteNode::CSpriteNode( const CNodeData & rNodeData ) :
     // Init the sprite
     CSprite::init();
 }
+
+CSpriteNode::~CSpriteNode()
+{}
 
 /***************************************************************************
 *    DESC:  Update the nodes
