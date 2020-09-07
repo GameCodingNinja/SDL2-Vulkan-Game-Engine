@@ -520,8 +520,8 @@ void CDeviceVulkan::createLogicalDevice(
     if( (vkResult = vkCreateDevice( m_physicalDevice, &createInfo, nullptr, &m_logicalDevice )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create logical device! %s") % getError(vkResult) ) );
 
-    if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
-        throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCmdPushDescriptorSetKHR!" );
+    //if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
+    //    throw NExcept::CCriticalException( "Vulkan Error!", "Unable to find PFN_vkCmdPushDescriptorSetKHR!" );
 
     // Get a handle to the queue family for graphics, present & transfer - Could be different but most likely in the same queue family
     for( auto & iter : queueFamilyIndexVec )

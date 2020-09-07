@@ -12,6 +12,9 @@
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
+// SDL lib dependencies
+#include <SDL2/SDL.h>
+
 namespace NSmart
 {
     //*****************************************************************************

@@ -102,7 +102,7 @@ void CDevice::create( const std::string & pipelineCfg )
     // If we want validation, add it and debug reporting extension
     if( CSettings::Instance().isValidationLayers() )
     {
-        #if !defined(__ANDROID__)
+        #if !(defined(__ANDROID__) || defined(__arm__))
         validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
         #endif
         instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
@@ -114,7 +114,7 @@ void CDevice::create( const std::string & pipelineCfg )
 
     // Enable extension required for push descriptors
     instanceExtensionNameVec.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
-    physicalDeviceExtensionNameVec.push_back(VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME);
+    //physicalDeviceExtensionNameVec.push_back(VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME);
 
     // Create the Vulkan instance and graphics pipeline
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, physicalDeviceExtensionNameVec );
