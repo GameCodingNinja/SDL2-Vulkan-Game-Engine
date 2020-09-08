@@ -1,5 +1,5 @@
 
-# Add the game level executable files
+# Add the game level executable files /usr/lib/arm-linux-gnueabihf/libvulkan.so 
 add_executable(
     ${PROJECT_NAME}
     game/game.cpp
@@ -13,7 +13,7 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
         ${CMAKE_BINARY_DIR}/angelscript/libangelscript.a
         ${CMAKE_BINARY_DIR}/Box2D/libBox2D.a
         ${CMAKE_BINARY_DIR}/bulletPhysics/libbulletPhysics.a
-        /usr/lib/arm-linux-gnueabihf/libvulkan.so 
+        ${Vulkan_LIBRARY}
         /usr/lib/arm-linux-gnueabihf/libSDL2.so
         /usr/lib/arm-linux-gnueabihf/libSDL2_mixer.so )
 else()
