@@ -13,7 +13,7 @@
             <filePath file="data/objects/2d/menu/control/game_start_label.ctrl"/>
             <position x="0" y="-50" z="0"/>
             <fontStringLst>
-                <string text="Test Message"/>
+                <string text="Touch anywhere on the|screen where you want|the ball to drop."/>
             </fontStringLst>
         </control>
 

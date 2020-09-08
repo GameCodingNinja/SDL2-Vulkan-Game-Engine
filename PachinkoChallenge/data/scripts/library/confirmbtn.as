@@ -4,6 +4,7 @@
 
 //
 //  Execution script for a button control to change to the confirmation menu
+//  NOTE: The control that initiated the confirmation is the passed in control
 //
 void ConfirmBtn_execute( uiControl & control )
 {
