@@ -25,6 +25,9 @@ set(SDL2_INCLUDE_DIRS /usr/include/SDL2)
 set(SDL2_LIBRARY /usr/lib/libSDL2.so)
 set(SDL2MIXER_LIBRARY /usr/lib/libSDL2_mixer.so)
 
+# Use the normal means to find the other packages
+find_package(Vulkan REQUIRED)
+
 # List all the include directories
 include_directories(
     ${SDL2_INCLUDE_DIRS}

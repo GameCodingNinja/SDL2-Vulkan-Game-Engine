@@ -30,32 +30,19 @@ set(SDL2_INCLUDE_DIRS /usr/include/SDL2)
 set(SDL2_LIBRARY /usr/lib/libSDL2.so)
 set(SDL2MIXER_LIBRARY /usr/lib/libSDL2_mixer.so)
 
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
-    # List all the include directories
-    include_directories(
-        ${SDL2_INCLUDE_DIRS}
-        ${SDL2MIXER_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIRS}
-        ../
-        ../bulletPhysics/src
-        ../library
-        ../angelscript/include
-    	../angelscript/add_on )
-else()
-    # Use the normal means to find the other packages
-    find_package(Vulkan REQUIRED)
+# Use the normal means to find the other packages
+find_package(Vulkan REQUIRED)
 
-    # List all the include directories
-    include_directories(
-        ${SDL2_INCLUDE_DIRS}
-        ${SDL2MIXER_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIRS}
-        ../
-        ../bulletPhysics/src
-        ../library
-        ../angelscript/include
-    	../angelscript/add_on )
-endif()
+# List all the include directories
+include_directories(
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2MIXER_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ../
+    ../bulletPhysics/src
+    ../library
+    ../angelscript/include
+    ../angelscript/add_on )
 
 # List the directories in the order they are to be built
 # This doesn't execute the build but more like queue's them up in the below order
