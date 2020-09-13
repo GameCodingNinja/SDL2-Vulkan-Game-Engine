@@ -106,15 +106,16 @@ void CDevice::create( const std::string & pipelineCfg )
         validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
         #endif
         instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
-
-        // Print out extension list for validation layers
-        for( auto iter : instanceExtensionNameVec )
-            NGenFunc::PostDebugMsg( "Instance Extension: " + std::string(iter));
     }
 
     // Enable extension required for push descriptors
     instanceExtensionNameVec.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
     //physicalDeviceExtensionNameVec.push_back(VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME);
+
+    // Print out extension list for validation layers
+    printDebug( "Physical Device Extension(s)", physicalDeviceExtensionNameVec );
+    printDebug( "Instance Extension(s)", instanceExtensionNameVec );
+    printDebug( "Vaklidation Layers(s)", validationNameVec );
 
     // Create the Vulkan instance and graphics pipeline
     CDeviceVulkan::create( validationNameVec, instanceExtensionNameVec, physicalDeviceExtensionNameVec );

@@ -20,6 +20,7 @@
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
+#include <system/physicaldevice.h>
 
 // Forward declaration(s)
 class CTexture;
@@ -141,13 +142,10 @@ private:
     virtual void createSurface() = 0;
     
     // get the queue family index and decrement the queue count
-    uint32_t getQueueFamilyIndex( uint32_t queueMask );
+    uint32_t getQueueFamilyIndex( CPhysicalDevice & phyDev, uint32_t queueMask );
 
     // get the present queue family index and decrement the queue count
     uint32_t getPresentQueueFamilyIndex();
-
-    // Find the graphics queue family index. This is used to determine which physical device to select
-    uint32_t findGraphicsQueueFamilyIndex( VkPhysicalDevice physicalDevice );
     
     // Find the GPU memory type
     uint32_t findMemoryType( uint32_t typeFilter, VkMemoryPropertyFlags properties );
@@ -244,15 +242,28 @@ private:
     const char * getDeviceType( VkPhysicalDeviceType deviceType );
 
 protected:
+
+    // Print debug info
+    void printDebug( const VkApplicationInfo & appInfo );
+    void printDebug( const CPhysicalDevice & phyDev, uint32_t index );
+    void printDebugPhyDev();
+    void printDebug( const std::string & title, const std::vector<const char*> & dataVec );
+    void printDebug( const VkSurfaceCapabilitiesKHR & surfCap );
+    void printDebug( const std::vector<VkSurfaceFormatKHR> & surfFormatVec, const VkSurfaceFormatKHR & surfFormat );
+
+protected:
     
     // Vulkan instance
     VkInstance m_vulkanInstance;
     
     // Vulkan rendering surface
     VkSurfaceKHR m_vulkanSurface;
+
+    // Physical device vec
+    std::vector<CPhysicalDevice> m_phyDevVec;
     
-    // The selected GPU
-    VkPhysicalDevice m_physicalDevice;
+    // Physical Device index
+    uint32_t m_phyDevIndex;
     
     // Vulkan logical device
     VkDevice m_logicalDevice;
@@ -274,9 +285,6 @@ protected:
     
     // Present queue handle
     VkQueue m_transferQueue;
-
-    // Vector for tracking to alloocation of queues
-    std::vector<VkQueueFamilyProperties> m_queueFamilyPropVec;
 
     // Vector of queue families indices used when creating the swap chain
     // when the graphic and present queue families are not the same
