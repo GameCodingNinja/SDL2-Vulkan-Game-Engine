@@ -94,6 +94,7 @@ add_library(
         system/device.cpp
         system/uniformbufferobject.cpp
         system/pushdescriptorset.cpp
+        system/physicaldevice.cpp
         utilities/xmlparsehelper.cpp
         utilities/statcounter.cpp
         utilities/genfunc.cpp

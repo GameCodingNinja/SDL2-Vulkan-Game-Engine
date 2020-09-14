@@ -19,6 +19,9 @@
 // Boost lib dependencies
 #include <boost/format.hpp>
 
+// Standard lib dependencies
+#include <bitset>
+
 /************************************************************************
 *    DESC:  Validation layer callback
 ************************************************************************/
@@ -44,7 +47,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayerCallback(
 CDeviceVulkan::CDeviceVulkan() :
     m_vulkanInstance(VK_NULL_HANDLE),
     m_vulkanSurface(VK_NULL_HANDLE),
-    m_physicalDevice(VK_NULL_HANDLE),
+    m_phyDevIndex(UINT32_MAX),
     m_logicalDevice(VK_NULL_HANDLE),
     m_graphicsQueueFamilyIndex(VK_NULL_HANDLE),
     m_presentQueueFamilyIndex(VK_NULL_HANDLE),
@@ -64,34 +67,35 @@ CDeviceVulkan::CDeviceVulkan() :
     vkDebugReportCallbackEXT(VK_NULL_HANDLE),
     vkDestroyDebugReportCallbackEXT(nullptr)
 {
-    m_vulkanErrorMap.emplace( VK_SUCCESS,                        "Vulkan Success!" );
-    m_vulkanErrorMap.emplace( VK_NOT_READY,                      "Vulkan Not Ready!" );
-    m_vulkanErrorMap.emplace( VK_TIMEOUT,                        "Vulkan Timeout!" );
-    m_vulkanErrorMap.emplace( VK_EVENT_SET,                      "Vulkan Event Set!" );
-    m_vulkanErrorMap.emplace( VK_EVENT_RESET,                    "Vulkan Event Reset!" );
-    m_vulkanErrorMap.emplace( VK_INCOMPLETE,                     "Vulkan Incomplete!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_OUT_OF_HOST_MEMORY,       "Vulkan Out Of Host memory!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_OUT_OF_DEVICE_MEMORY,     "Vulkan Out Of Device Memory!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_INITIALIZATION_FAILED,    "Vulkan Initialization Failed!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_DEVICE_LOST,              "Vulkan Device Lost!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_MEMORY_MAP_FAILED,        "Vulkan Memory Map Failed!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_LAYER_NOT_PRESENT,        "Vulkan Layer Not Present!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_EXTENSION_NOT_PRESENT,    "Vulkan nExtension Not Present!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_FEATURE_NOT_PRESENT,      "Vulkan Feature Not Present!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_INCOMPATIBLE_DRIVER,      "Vulkan Incompatible Driver!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_TOO_MANY_OBJECTS,         "Vulkan Too Many Objects!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_FORMAT_NOT_SUPPORTED,     "Vulkan Format Not Supported!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_FRAGMENTED_POOL,          "Vulkan Fragmented Pool!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_OUT_OF_POOL_MEMORY,       "Vulkan Out Of Pool Memory!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_INVALID_EXTERNAL_HANDLE,  "Vulkan Invalid External Handle!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_SURFACE_LOST_KHR,         "Vulkan Surface Lost KHR!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_NATIVE_WINDOW_IN_USE_KHR, "Vulkan Native Window In Use KHR!" );
-    m_vulkanErrorMap.emplace( VK_SUBOPTIMAL_KHR,                 "Vulkan Suboptimal KHR!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_OUT_OF_DATE_KHR,          "Vulkan Out Of Date KHR!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_INCOMPATIBLE_DISPLAY_KHR, "Vulkan Incompatible Display KHR!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_VALIDATION_FAILED_EXT,    "Vulkan Validation Failed Ext!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_INVALID_SHADER_NV,        "Vulkan Invalid Shader NV!" );
-    m_vulkanErrorMap.emplace( VK_ERROR_NOT_PERMITTED_EXT,        "Vulkan Not Permitted Ext!" );
+    m_vulkanErrorMap = {
+        {VK_SUCCESS,                        "Vulkan Success!"},
+        {VK_NOT_READY,                      "Vulkan Not Ready!"},
+        {VK_TIMEOUT,                        "Vulkan Timeout!"},
+        {VK_EVENT_SET,                      "Vulkan Event Set!"},
+        {VK_EVENT_RESET,                    "Vulkan Event Reset!"},
+        {VK_INCOMPLETE,                     "Vulkan Incomplete!"},
+        {VK_ERROR_OUT_OF_HOST_MEMORY,       "Vulkan Out Of Host memory!"},
+        {VK_ERROR_OUT_OF_DEVICE_MEMORY,     "Vulkan Out Of Device Memory!"},
+        {VK_ERROR_INITIALIZATION_FAILED,    "Vulkan Initialization Failed!"},
+        {VK_ERROR_DEVICE_LOST,              "Vulkan Device Lost!"},
+        {VK_ERROR_MEMORY_MAP_FAILED,        "Vulkan Memory Map Failed!"},
+        {VK_ERROR_LAYER_NOT_PRESENT,        "Vulkan Layer Not Present!"},
+        {VK_ERROR_EXTENSION_NOT_PRESENT,    "Vulkan nExtension Not Present!"},
+        {VK_ERROR_FEATURE_NOT_PRESENT,      "Vulkan Feature Not Present!"},
+        {VK_ERROR_INCOMPATIBLE_DRIVER,      "Vulkan Incompatible Driver!"},
+        {VK_ERROR_TOO_MANY_OBJECTS,         "Vulkan Too Many Objects!"},
+        {VK_ERROR_FORMAT_NOT_SUPPORTED,     "Vulkan Format Not Supported!"},
+        {VK_ERROR_FRAGMENTED_POOL,          "Vulkan Fragmented Pool!"},
+        {VK_ERROR_OUT_OF_POOL_MEMORY,       "Vulkan Out Of Pool Memory!"},
+        {VK_ERROR_INVALID_EXTERNAL_HANDLE,  "Vulkan Invalid External Handle!"},
+        {VK_ERROR_SURFACE_LOST_KHR,         "Vulkan Surface Lost KHR!"},
+        {VK_ERROR_NATIVE_WINDOW_IN_USE_KHR, "Vulkan Native Window In Use KHR!"},
+        {VK_SUBOPTIMAL_KHR,                 "Vulkan Suboptimal KHR!"},
+        {VK_ERROR_OUT_OF_DATE_KHR,          "Vulkan Out Of Date KHR!"},
+        {VK_ERROR_INCOMPATIBLE_DISPLAY_KHR, "Vulkan Incompatible Display KHR!"},
+        {VK_ERROR_VALIDATION_FAILED_EXT,    "Vulkan Validation Failed Ext!"},
+        {VK_ERROR_INVALID_SHADER_NV,        "Vulkan Invalid Shader NV!"},
+        {VK_ERROR_NOT_PERMITTED_EXT,        "Vulkan Not Permitted Ext!"} };
 }
 
 
@@ -289,6 +293,8 @@ void CDeviceVulkan::createVulkanInstance(
     appInfo.engineVersion = CSettings::Instance().getEngineVersion();
     appInfo.apiVersion = VK_MAKE_VERSION(CSettings::Instance().getMajorVersion(), CSettings::Instance().getMinorVersion(), 0);
 
+    printDebug( appInfo );
+
     VkInstanceCreateInfo instCreateInfo = {};
     instCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     instCreateInfo.pApplicationInfo = &appInfo;
@@ -354,57 +360,50 @@ void CDeviceVulkan::selectPhysicalDevice()
     if( (vkResult = vkEnumeratePhysicalDevices(m_vulkanInstance, &gpuCount, physicalDeviceHandleVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not enumerate physical device info! %s") % getError(vkResult) ) );
 
+    // Get all the physical device info
+    for( uint32_t i = 0; i < physicalDeviceHandleVec.size(); i++ )
+    {
+        m_phyDevVec.emplace_back( physicalDeviceHandleVec[i] );
+        printDebug( m_phyDevVec.back(), i );
+    }
+
     // Select the discrete GPU if one is available that supports the graphics bit
     m_graphicsQueueFamilyIndex = UINT32_MAX;
-    for( auto iter : physicalDeviceHandleVec )
+    m_phyDevIndex = UINT32_MAX;
+    for( uint32_t i = 0; i < m_phyDevVec.size(); i++ )
     {
-        auto props = VkPhysicalDeviceProperties{};
-        vkGetPhysicalDeviceProperties(iter, &props);
-
-        // Print out the GPU if validation layers is enabled getDeviceType
-        if( CSettings::Instance().isValidationLayers() )
-        {
-            NGenFunc::PostDebugMsg( "Physical Device Properties...");
-            NGenFunc::PostDebugMsg( "  GPU Name: " + std::string(props.deviceName));
-            NGenFunc::PostDebugMsg( "  GPU Type: " + std::string(getDeviceType(props.deviceType)));
-            NGenFunc::PostDebugMsg( "  GPU Driver Version: " + std::to_string(props.driverVersion));
-            NGenFunc::PostDebugMsg( "  GPU Vender Id: " + std::to_string(props.vendorID));
-            NGenFunc::PostDebugMsg( "  GPU Device Id: " + std::to_string(props.deviceID));
-            NGenFunc::PostDebugMsg( "  Max Image 1D: " + std::to_string(props.limits.maxImageDimension1D));
-            NGenFunc::PostDebugMsg( "  Max Image 2D: " + std::to_string(props.limits.maxImageDimension2D));
-            NGenFunc::PostDebugMsg( "  Max Image 3D: " + std::to_string(props.limits.maxImageDimension3D));
-            NGenFunc::PostDebugMsg( "  Max Viewports: " + std::to_string(props.limits.maxViewports));
-        }
-
         // Find the queue family on this graphics device
-        m_graphicsQueueFamilyIndex = findGraphicsQueueFamilyIndex( iter );
+        m_graphicsQueueFamilyIndex = getQueueFamilyIndex( m_phyDevVec[i], VK_QUEUE_GRAPHICS_BIT );
 
         // If we found a discrete GPU, our work here is done
-        if( props.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )
+        if( m_phyDevVec[i].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )
         {
             if( m_graphicsQueueFamilyIndex != UINT32_MAX )
             {
-                m_physicalDevice = iter;
+                m_phyDevIndex = i;
                 break;
             }
         }
 
+        // Not a discrete GPU so we'll keep looking
         if( m_graphicsQueueFamilyIndex != UINT32_MAX )
-            m_physicalDevice = iter;
+            m_phyDevIndex = i;
     }
 
-    if( (m_physicalDevice == nullptr) || (m_graphicsQueueFamilyIndex == UINT32_MAX) )
+    if( (m_phyDevIndex == UINT32_MAX) || (m_graphicsQueueFamilyIndex == UINT32_MAX) )
         throw NExcept::CCriticalException( "Vulkan Error!", "Suitable GPU could not be found!" );
 
     // Make sure we have a swap chain
-    if( !isDeviceExtension( m_physicalDevice, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
+    if( !isDeviceExtension( m_phyDevVec[m_phyDevIndex].pDev, VK_KHR_SWAPCHAIN_EXTENSION_NAME ) )
         throw NExcept::CCriticalException( "Vulkan Error!", "No swap chain support!" );
 
     // Find the remaining queue families for present and transfer
     m_presentQueueFamilyIndex = getPresentQueueFamilyIndex();
     // If a generic transfer family queue index can't be found, use a graphics family queue index
-    if( (m_transferQueueFamilyIndex = getQueueFamilyIndex( VK_QUEUE_TRANSFER_BIT | VK_QUEUE_GRAPHICS_BIT )) == UINT32_MAX )
-        m_transferQueueFamilyIndex = getQueueFamilyIndex( VK_QUEUE_GRAPHICS_BIT );
+    if( (m_transferQueueFamilyIndex = getQueueFamilyIndex( m_phyDevVec[m_phyDevIndex], VK_QUEUE_TRANSFER_BIT | VK_QUEUE_GRAPHICS_BIT )) == UINT32_MAX )
+        m_transferQueueFamilyIndex = getQueueFamilyIndex( m_phyDevVec[m_phyDevIndex], VK_QUEUE_GRAPHICS_BIT );
+    
+    printDebugPhyDev();
 }
 
 
@@ -498,7 +497,7 @@ void CDeviceVulkan::createLogicalDevice(
 
     // Get all the features supported on this device
     VkPhysicalDeviceFeatures physicalDeviceFeatures;
-    vkGetPhysicalDeviceFeatures( m_physicalDevice, &physicalDeviceFeatures );
+    vkGetPhysicalDeviceFeatures( m_phyDevVec[m_phyDevIndex].pDev, &physicalDeviceFeatures );
 
     VkDeviceCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
@@ -517,7 +516,7 @@ void CDeviceVulkan::createLogicalDevice(
     }
 
     // Create the logical device
-    if( (vkResult = vkCreateDevice( m_physicalDevice, &createInfo, nullptr, &m_logicalDevice )) )
+    if( (vkResult = vkCreateDevice( m_phyDevVec[m_phyDevIndex].pDev, &createInfo, nullptr, &m_logicalDevice )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create logical device! %s") % getError(vkResult) ) );
 
     //if( !(vkCmdPushDescriptorSetKHR = (PFN_vkCmdPushDescriptorSetKHR)vkGetDeviceProcAddr( m_logicalDevice, "vkCmdPushDescriptorSetKHR" )) )
@@ -559,18 +558,20 @@ void CDeviceVulkan::setupSwapChain()
 
     // Get the device surface capabilities
     VkSurfaceCapabilitiesKHR surfCapabilities = {};
-    if( (vkResult = GetPhysicalDeviceSurfaceCapabilities( m_physicalDevice, m_vulkanSurface, &surfCapabilities )) )
+    if( (vkResult = GetPhysicalDeviceSurfaceCapabilities( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfCapabilities )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface capabilities! %s") % getError(vkResult) ) );
+    
+    printDebug( surfCapabilities );
 
     // Get the best surface format
     VkSurfaceFormatKHR surfaceFormat;
     uint32_t surfaceFormatCount;
-    if( (vkResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, nullptr)) || (surfaceFormatCount == 0) )
+    if( (vkResult = GetPhysicalDeviceSurfaceFormats( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfaceFormatCount, nullptr)) || (surfaceFormatCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface format count! %s") % getError(vkResult) ) );
 
     std::vector<VkSurfaceFormatKHR> surfaceFormatVec(surfaceFormatCount);
 
-    if( (vkResult = GetPhysicalDeviceSurfaceFormats( m_physicalDevice, m_vulkanSurface, &surfaceFormatCount, surfaceFormatVec.data())) )
+    if( (vkResult = GetPhysicalDeviceSurfaceFormats( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfaceFormatCount, surfaceFormatVec.data())) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface formats! %s") % getError(vkResult) ) );
 
     // Init to the first format in the event the below two fail
@@ -593,15 +594,17 @@ void CDeviceVulkan::setupSwapChain()
         }
     }
 
+    printDebug( surfaceFormatVec, surfaceFormat );
+
     // Get the best presentation mode
     VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_FIFO_KHR;
     uint32_t surfacePresModeCount;
-    if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
+    if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError(vkResult) ) );
 
     std::vector<VkPresentModeKHR> surfacePresModeVec(surfacePresModeCount);
 
-    if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_physicalDevice, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data() )) )
+    if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation modes! %s") % getError(vkResult) ) );
 
     for( const auto & presentMode : surfacePresModeVec )
@@ -1220,10 +1223,12 @@ void CDeviceVulkan::recreateSwapChain()
 uint32_t CDeviceVulkan::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
 {
     VkPhysicalDeviceMemoryProperties memProperties;
-    vkGetPhysicalDeviceMemoryProperties( m_physicalDevice, &memProperties );
+    vkGetPhysicalDeviceMemoryProperties( m_phyDevVec[m_phyDevIndex].pDev, &memProperties );
 
-    for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
-        if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
+    for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
+    {
+        if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
+        {
             return i;
         }
     }
@@ -1256,62 +1261,27 @@ bool CDeviceVulkan::isDeviceExtension( VkPhysicalDevice physicalDevice, const ch
 
 
 /***************************************************************************
-*   DESC:  Find the graphics queue family index. This is used to determine
-*          which physical device to select.
-*          NOTE: We are taking this oppertunity to save the queue families to
-*                vector
-****************************************************************************/
-uint32_t CDeviceVulkan::findGraphicsQueueFamilyIndex( VkPhysicalDevice physicalDevice )
-{
-    // Get the queue family count for this physical device
-    uint32_t queueFamilyCount = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
-
-    if( queueFamilyCount > 0 )
-    {
-        m_queueFamilyPropVec.resize(queueFamilyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, m_queueFamilyPropVec.data());
-
-        for( uint32_t i = 0; i < m_queueFamilyPropVec.size(); ++i )
-        {
-            if( (m_queueFamilyPropVec[i].queueCount > 0) &&
-                (m_queueFamilyPropVec[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) )
-            {
-                // Decrement the queue count for this family
-                // This vector is used for handing out available queues from each family
-                m_queueFamilyPropVec[i].queueCount--;
-
-                return i;
-            }
-        }
-    }
-
-    return UINT32_MAX;
-}
-
-
-/***************************************************************************
 *   DESC:  get the queue family present index and decrement the queue count
 *          NOTE: If the queue is in the same family as the graphic
 *                then the graphics queue will be used
 ****************************************************************************/
 uint32_t CDeviceVulkan::getPresentQueueFamilyIndex()
 {
-    if( m_physicalDevice == VK_NULL_HANDLE )
+    if( m_phyDevIndex == UINT32_MAX )
         throw NExcept::CCriticalException( "Vulkan Error!", "Need to select physical device before query for queue families!" );
 
     // Find family present index
-    for( uint32_t i = 0; i < m_queueFamilyPropVec.size(); ++i )
+    for( uint32_t i = 0; i < m_phyDevVec[m_phyDevIndex].queueFamilyPropVec.size(); ++i )
     {
         VkBool32 presentSupport = false;
-        vkGetPhysicalDeviceSurfaceSupportKHR(m_physicalDevice, i, m_vulkanSurface, &presentSupport);
+        vkGetPhysicalDeviceSurfaceSupportKHR(m_phyDevVec[m_phyDevIndex].pDev, i, m_vulkanSurface, &presentSupport);
 
-        if( presentSupport && (m_queueFamilyPropVec[i].queueCount > 0) )
+        if( presentSupport && (m_phyDevVec[m_phyDevIndex].queueFamilyPropVec[i].queueCount > 0) )
         {
             // Decrement the queue count for this family if it's not the same family index as the graphic queue
             // This vector is used for handing out available queues from each family
             if( i != m_graphicsQueueFamilyIndex )
-                m_queueFamilyPropVec[i].queueCount--;
+                m_phyDevVec[m_phyDevIndex].queueFamilyPropVec[i].queueCount--;
 
             return i;
         }
@@ -1324,17 +1294,17 @@ uint32_t CDeviceVulkan::getPresentQueueFamilyIndex()
 /***************************************************************************
 *   DESC:  Get the queue family index
 ****************************************************************************/
-uint32_t CDeviceVulkan::getQueueFamilyIndex( uint32_t queueMask )
+uint32_t CDeviceVulkan::getQueueFamilyIndex( CPhysicalDevice & phyDev, uint32_t queueMask )
 {
     // Find family based on bit flag
-    for( uint32_t i = 0; i < m_queueFamilyPropVec.size(); ++i )
+    for( uint32_t i = 0; i < phyDev.queueFamilyPropVec.size(); ++i )
     {
-        if( (m_queueFamilyPropVec[i].queueCount > 0) &&
-            (m_queueFamilyPropVec[i].queueFlags & queueMask) )
+        if( (phyDev.queueFamilyPropVec[i].queueCount > 0) &&
+            (phyDev.queueFamilyPropVec[i].queueFlags & queueMask) )
         {
             // Decrement the queue count for this family
             // This vector is used for handing out available queues from each family
-            m_queueFamilyPropVec[i].queueCount--;
+            phyDev.queueFamilyPropVec[i].queueCount--;
 
             return i;
         }
@@ -1352,7 +1322,7 @@ VkFormat CDeviceVulkan::findSupportedFormat( const std::vector<VkFormat> & candi
     for( VkFormat format : candidates )
     {
         VkFormatProperties props;
-        vkGetPhysicalDeviceFormatProperties( m_physicalDevice, format, &props );
+        vkGetPhysicalDeviceFormatProperties( m_phyDevVec[m_phyDevIndex].pDev, format, &props );
 
         if( tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features )
             return format;
@@ -1731,7 +1701,7 @@ void CDeviceVulkan::generateMipmaps( VkImage image, VkFormat imageFormat, int32_
 {
     // Check if image format supports linear blitting
     VkFormatProperties formatProperties;
-    vkGetPhysicalDeviceFormatProperties( m_physicalDevice, imageFormat, &formatProperties );
+    vkGetPhysicalDeviceFormatProperties( m_phyDevVec[m_phyDevIndex].pDev, imageFormat, &formatProperties );
 
     if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT))
         throw NExcept::CCriticalException( "Vulkan Error!", "texture image format does not support linear blitting!" );
@@ -2085,3 +2055,158 @@ const char * CDeviceVulkan::getDeviceType( VkPhysicalDeviceType deviceType )
 
     return "Unknown";
 }
+
+/***************************************************************************
+*   DESC:  Print debug info
+****************************************************************************/
+void CDeviceVulkan::printDebug( const VkApplicationInfo & appInfo )
+{
+    NGenFunc::PostDebugMsg( 
+        boost::str( boost::format(
+            "Application Info...\n"
+            "  Structure Type: %u\n"
+            "  App Name: %s\n"
+            "  App Version: %u\n"
+            "  Engine Name: %s\n"
+            "  Engine Version: %u\n"
+            "  API Version: %u\n" )
+            % appInfo.sType
+            % appInfo.pApplicationName
+            % appInfo.applicationVersion
+            % appInfo.pEngineName
+            % appInfo.engineVersion
+            % appInfo.apiVersion ));
+}
+
+
+void CDeviceVulkan::printDebug( const CPhysicalDevice & phyDev, uint32_t index )
+{
+    NGenFunc::PostDebugMsg( 
+        boost::str( boost::format(
+            "Physical Device Properties (%u)...\n"
+            "  GPU Name: %s\n"
+            "  GPU Type: %s\n"
+            "  GPU Driver Version: %u\n"
+            "  GPU Vender Id: %u\n"
+            "  GPU Device Id: %u\n"
+            "  Max Image 1D: %u\n"
+            "  Max Image 2D: %u\n"
+            "  Max Image 3D: %u\n"
+            "  Max Viewports: %u\n")
+            % index
+            % phyDev.prop.deviceName
+            % getDeviceType(phyDev.prop.deviceType)
+            % phyDev.prop.driverVersion
+            % phyDev.prop.vendorID
+            % phyDev.prop.deviceID
+            % phyDev.prop.limits.maxImageDimension1D
+            % phyDev.prop.limits.maxImageDimension2D
+            % phyDev.prop.limits.maxImageDimension3D
+            % phyDev.prop.limits.maxViewports ));
+
+    for( uint32_t i = 0; i < phyDev.queueFamilyPropVec.size(); ++i )
+    {
+        NGenFunc::PostDebugMsg( 
+            boost::str( boost::format(
+                "  Queue Family Properties (%u)...\n"
+                "    Queue Flags: b%s\n"
+                "    Queue Count: %u\n"
+                "    Timestamp Valid Bits: 0x%04x\n"
+                "    Min Image Transfer Granularity: %u x %u x %u\n"
+                "    Graphics Bit: %s\n"
+                "    Compute Bit: %s\n"
+                "    Transfer Bit: %s\n"
+                "    Sparse Binding Bit: %s\n"
+                "    Protecte Bit: %s\n" )
+                % i
+                % std::bitset<32>(phyDev.queueFamilyPropVec[i].queueFlags).to_string()
+                % phyDev.queueFamilyPropVec[i].queueCount
+                % phyDev.queueFamilyPropVec[i].timestampValidBits
+                % phyDev.queueFamilyPropVec[i].minImageTransferGranularity.width
+                % phyDev.queueFamilyPropVec[i].minImageTransferGranularity.height
+                % phyDev.queueFamilyPropVec[i].minImageTransferGranularity.depth
+                % (phyDev.queueFamilyPropVec[i].queueFlags & VK_QUEUE_GRAPHICS_BIT ? "true" : "false")
+                % (phyDev.queueFamilyPropVec[i].queueFlags & VK_QUEUE_COMPUTE_BIT ? "true" : "false")
+                % (phyDev.queueFamilyPropVec[i].queueFlags & VK_QUEUE_TRANSFER_BIT ? "true" : "false")
+                % (phyDev.queueFamilyPropVec[i].queueFlags & VK_QUEUE_SPARSE_BINDING_BIT ? "true" : "false")
+                % (phyDev.queueFamilyPropVec[i].queueFlags & VK_QUEUE_PROTECTED_BIT ? "true" : "false") ));
+    }
+}
+
+void CDeviceVulkan::printDebugPhyDev()
+{
+    NGenFunc::PostDebugMsg( 
+            boost::str( boost::format(
+                "  Seletced Physical Device Index: %u\n"
+                "  Seletced Graphics Queue Family Index: %u\n"
+                "  Seletced Transfer Queue Family Index: %u\n"
+                "  Seletced Presentation Queue Family Index: %u\n" )
+                % m_phyDevIndex
+                % m_graphicsQueueFamilyIndex
+                % m_transferQueueFamilyIndex
+                % m_presentQueueFamilyIndex ));
+}
+
+void CDeviceVulkan::printDebug( const std::string & title, const std::vector<const char*> & dataVec )
+{
+    if( !dataVec.empty() )
+    {
+        std::string buf;
+        for( auto iter : dataVec )
+            buf += "  " + std::string(iter) + "\n";
+
+        NGenFunc::PostDebugMsg( 
+            boost::str( boost::format("%s...\n%s")
+                % title
+                % buf ));
+    }
+}
+
+void CDeviceVulkan::printDebug( const VkSurfaceCapabilitiesKHR & surfCap )
+{
+    NGenFunc::PostDebugMsg( 
+        boost::str( boost::format(
+            "Surface Capabilities...\n"
+            "  Min Image Count: %u\n"
+            "  Max Image Count: %u\n"
+            "  Current Extent: %u x %u\n"
+            "  Min Image Extent: %u x %u\n"
+            "  Max Image Extent: %u x %u\n"
+            "  Max Image Array Layers: %u\n"
+            "  Supported Transform Flags: b%s\n"
+            "  Current Transform Flags: 0x%04x\n"
+            "  Supported Composite Alpha Flags: b%s\n"
+            "  Supported Usage Flags: b%s\n" )
+            % surfCap.minImageCount
+            % surfCap.maxImageCount
+            % surfCap.currentExtent.width
+            % surfCap.currentExtent.height
+            % surfCap.minImageExtent.width
+            % surfCap.minImageExtent.height
+            % surfCap.maxImageExtent.width
+            % surfCap.maxImageExtent.height
+            % surfCap.maxImageArrayLayers
+            % std::bitset<32>(surfCap.supportedTransforms).to_string()
+            % std::bitset<32>(surfCap.currentTransform).to_string()
+            % std::bitset<32>(surfCap.supportedCompositeAlpha).to_string()
+            % std::bitset<32>(surfCap.supportedUsageFlags).to_string() ));
+}
+
+void CDeviceVulkan::printDebug( const std::vector<VkSurfaceFormatKHR> & surfFormatVec, const VkSurfaceFormatKHR & surfFormat )
+{
+    NGenFunc::PostDebugMsg( "Surface Format(s)...\n" );
+
+    for( auto iter : surfFormatVec)
+    {
+        NGenFunc::PostDebugMsg( 
+            boost::str( boost::format(
+                "%s"
+                "  Format: %u\n"
+                "  Color Space: %u\n" )
+                % (surfFormat.format == iter.format && surfFormat.colorSpace == iter.colorSpace ? "  SELECTED\n" : "")
+                % iter.format
+                % iter.colorSpace ));
+    }
+}
+
+
