@@ -4,7 +4,22 @@
 			"path": "."
 		},
 		{
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/library"
+			"path": "../library"
+		},
+		{
+			"path": "../angelscript"
+		},
+		{
+			"path": "../bulletPhysics"
+		},
+		{
+			"path": "../Box2D"
+		},
+		{
+			"path": "../../SDL2"
+		},
+		{
+			"path": "../../SDL2_mixer"
 		}
 	],
 	"settings": {

@@ -16,7 +16,6 @@
 			"path": "../Box2D"
 		},
 		{
-			"name": "SDL2",
 			"path": "../../SDL2"
 		}
 	],

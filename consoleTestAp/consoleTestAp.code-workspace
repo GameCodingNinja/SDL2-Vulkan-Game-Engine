@@ -4,22 +4,22 @@
 			"path": "."
 		},
 		{
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/library"
+			"path": "../library"
 		},
 		{
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript"
+			"path": "../angelscript"
 		},
 		{
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/bulletPhysics"
+			"path": "../bulletPhysics"
 		},
 		{
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D"
+			"path": "../Box2D"
 		},
 		{
-			"path": "/home/howie/Development/SDL2"
+			"path": "../../SDL2"
 		},
 		{
-			"path": "/home/howie/Development/SDL2_mixer"
+			"path": "../../SDL2_mixer"
 		}
 	],
 	"settings": {
