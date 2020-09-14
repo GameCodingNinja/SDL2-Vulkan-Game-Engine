@@ -4,20 +4,20 @@
 			"path": "."
 		},
 		{
-			"name": "Library",
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/library"
+			"path": "../library"
 		},
 		{
-			"name": "AngelScript",
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/angelscript"
+			"path": "../angelscript"
+		},
+		{
+			"path": "../bulletPhysics"
+		},
+		{
+			"path": "../Box2D"
 		},
 		{
 			"name": "SDL2",
-			"path": "/home/howie/Development/SDL2"
-		},
-		{
-			"name": "Box2D",
-			"path": "/home/howie/Development/SDL2-Vulkan-Game-Engine/Box2D"
+			"path": "../../SDL2"
 		}
 	],
 	"settings": {
