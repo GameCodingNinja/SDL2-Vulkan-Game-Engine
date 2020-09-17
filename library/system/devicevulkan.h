@@ -250,6 +250,7 @@ protected:
     void printDebug( const std::string & title, const std::vector<const char*> & dataVec );
     void printDebug( const VkSurfaceCapabilitiesKHR & surfCap );
     void printDebug( const std::vector<VkSurfaceFormatKHR> & surfFormatVec, const VkSurfaceFormatKHR & surfFormat );
+    void printDebug( const VkSwapchainCreateInfoKHR & swapchainInfo );
 
 protected:
     
@@ -294,7 +295,7 @@ protected:
     VkSwapchainKHR m_swapchain;
     
     // Swap chain info
-    VkSwapchainCreateInfoKHR m_swapchainInfo = {};
+    VkSwapchainCreateInfoKHR m_swapchainInfo {};
     
     // Render pass
     VkRenderPass m_renderPass;

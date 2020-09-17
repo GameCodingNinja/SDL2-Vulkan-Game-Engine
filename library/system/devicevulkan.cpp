@@ -685,6 +685,8 @@ void CDeviceVulkan::setupSwapChain()
     }
 
     m_swapchainInfo.imageExtent = swapchainExtent;
+
+    printDebug( m_swapchainInfo );
 }
 
 
@@ -714,7 +716,9 @@ void CDeviceVulkan::createSwapChain()
 
     // Print out info if the swap images don't match
     if( m_swapchainInfo.minImageCount != swapChainImageCount )
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Swap chain image don't match! (%d / %d)") % m_swapchainInfo.minImageCount % swapChainImageCount ));
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Swap chain image count doesn't match! (%u / %u)") % m_swapchainInfo.minImageCount % swapChainImageCount ));
+    else
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Swap chain image count: %u") % swapChainImageCount ));
 
     m_swapChainImageViewVec.reserve( swapChainImageCount );
 
@@ -1133,8 +1137,8 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
         depthStencil.depthTestEnable = VK_FALSE;
         depthStencil.depthWriteEnable = VK_FALSE;
         depthStencil.back.compareOp = VK_COMPARE_OP_ALWAYS;
-	depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
-	depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
+        depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
+        depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
     }
     
     depthStencil.front = depthStencil.back;
@@ -2137,10 +2141,10 @@ void CDeviceVulkan::printDebugPhyDev()
 {
     NGenFunc::PostDebugMsg( 
             boost::str( boost::format(
-                "  Seletced Physical Device Index: %u\n"
-                "  Seletced Graphics Queue Family Index: %u\n"
-                "  Seletced Transfer Queue Family Index: %u\n"
-                "  Seletced Presentation Queue Family Index: %u\n" )
+                "  SELECTED Physical Device Index: %u\n"
+                "  SELECTED Graphics Queue Family Index: %u\n"
+                "  SELECTED Transfer Queue Family Index: %u\n"
+                "  SELECTED Presentation Queue Family Index: %u\n" )
                 % m_phyDevIndex
                 % m_graphicsQueueFamilyIndex
                 % m_transferQueueFamilyIndex
@@ -2209,4 +2213,30 @@ void CDeviceVulkan::printDebug( const std::vector<VkSurfaceFormatKHR> & surfForm
     }
 }
 
-
+void CDeviceVulkan::printDebug( const VkSwapchainCreateInfoKHR & swapchainInfo )
+{
+    NGenFunc::PostDebugMsg( 
+        boost::str( boost::format(
+            "Swapchain Create Info...\n"
+            "  sType: %u\n"
+            "  flags: b%s\n"
+            "  Min Image Count: %u\n"
+            "  Image Extent: %u x %u\n"
+            "  Image Array Layers: %u\n"
+            "  Image Sharing Mode: 0x%04x\n"
+            "  Pretransform: 0x%04x\n"
+            "  Composite Alpha: 0x%04x\n"
+            "  Present Mode: b%s\n"
+            "  Clipped: %s\n" )
+            % swapchainInfo.sType
+            % std::bitset<32>(swapchainInfo.flags).to_string()
+            % swapchainInfo.minImageCount
+            % swapchainInfo.imageExtent.width
+            % swapchainInfo.imageExtent.height
+            % swapchainInfo.imageArrayLayers
+            % swapchainInfo.imageSharingMode
+            % swapchainInfo.preTransform
+            % swapchainInfo.compositeAlpha
+            % std::bitset<32>(swapchainInfo.presentMode).to_string()
+            % (swapchainInfo.clipped ? "true" : "false") ));
+}

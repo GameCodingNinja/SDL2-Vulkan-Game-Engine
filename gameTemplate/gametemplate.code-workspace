@@ -98,7 +98,19 @@
 			"compare": "cpp",
 			"concepts": "cpp",
 			"ranges": "cpp",
-			"stop_token": "cpp"
+			"stop_token": "cpp",
+			"*.ipp": "cpp",
+			"csetjmp": "cpp",
+			"csignal": "cpp",
+			"codecvt": "cpp",
+			"coroutine": "cpp",
+			"forward_list": "cpp",
+			"regex": "cpp",
+			"rope": "cpp",
+			"slist": "cpp",
+			"scoped_allocator": "cpp",
+			"shared_mutex": "cpp",
+			"span": "cpp"
 		},
 		"editor.autoClosingBrackets": "never"
 	}
