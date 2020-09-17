@@ -251,6 +251,7 @@ protected:
     void printDebug( const VkSurfaceCapabilitiesKHR & surfCap );
     void printDebug( const std::vector<VkSurfaceFormatKHR> & surfFormatVec, const VkSurfaceFormatKHR & surfFormat );
     void printDebug( const VkSwapchainCreateInfoKHR & swapchainInfo );
+    void printDebug( const std::vector<VkDeviceQueueCreateInfo> & queueInfoVec );
 
 protected:
     

@@ -471,6 +471,7 @@ void CDeviceVulkan::createLogicalDevice(
             // If this is the same family, get the family index and inc the queue count
             if( iter.queueFamilyIndex == queueFamilyIndexVec[i].m_queueFamilyIndex )
             {
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Queue family index increment count: %s") % queueFamilyIndexVec[i].m_typeStr ));
                 queueFamilyIndexVec[i].m_queueIndex = iter.queueCount;
                 iter.queueCount++;
                 found = true;
@@ -484,12 +485,14 @@ void CDeviceVulkan::createLogicalDevice(
         {
             if( queueFamilyIndexVec[i].m_queueFamilyIndex != UINT32_MAX )
             {
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Queue family index added to Create vector: %s") % queueFamilyIndexVec[i].m_typeStr ));
                 devQueueCreateInfoVec.emplace_back( deviceQueueInfo );
                 devQueueCreateInfoVec.back().queueFamilyIndex = queueFamilyIndexVec[i].m_queueFamilyIndex;
             }
             // If the queue family index was not found, reuse the graphics queue family index
             else
             {
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Queue family index using graphics family index: %s") % queueFamilyIndexVec[i].m_typeStr ));
                 queueFamilyIndexVec[i].m_queueFamilyIndex = m_graphicsQueueFamilyIndex;
             }
         }
@@ -534,6 +537,8 @@ void CDeviceVulkan::createLogicalDevice(
     // If the present queue was not set, use the graphics queue
     if( m_presentQueue == VK_NULL_HANDLE )
         m_presentQueue = m_graphicsQueue;
+
+    printDebug( devQueueCreateInfoVec );
 }
 
 
@@ -648,7 +653,7 @@ void CDeviceVulkan::setupSwapChain()
     // Determine the number of VkImage's to use in the swap chain.
     uint32_t minImageCount = surfCapabilities.minImageCount;
 
-    if( CSettings::Instance().getTripleBuffering() )
+    if( CSettings::Instance().getTripleBuffering() && minImageCount < 3 )
         ++minImageCount;
 
     // Application might settle for fewer images than desired
@@ -2204,7 +2209,7 @@ void CDeviceVulkan::printDebug( const std::vector<VkSurfaceFormatKHR> & surfForm
 {
     NGenFunc::PostDebugMsg( "Surface Format(s)...\n" );
 
-    for( auto iter : surfFormatVec)
+    for( auto & iter : surfFormatVec)
     {
         NGenFunc::PostDebugMsg( 
             boost::str( boost::format(
@@ -2243,4 +2248,23 @@ void CDeviceVulkan::printDebug( const VkSwapchainCreateInfoKHR & swapchainInfo )
             % swapchainInfo.compositeAlpha
             % std::bitset<32>(swapchainInfo.presentMode).to_string()
             % (swapchainInfo.clipped ? "true" : "false") ));
+}
+
+void CDeviceVulkan::printDebug( const std::vector<VkDeviceQueueCreateInfo> & queueInfoVec )
+{
+    NGenFunc::PostDebugMsg( "Device Queue Create Info...\n" );
+
+    for( auto & iter : queueInfoVec)
+    {
+        NGenFunc::PostDebugMsg( 
+            boost::str( boost::format(
+                "  sType: %u\n"
+                "  flags: b%s\n"
+                "  Queue Family Index: %u\n"
+                "  Queue Count: %u\n" )
+                % iter.sType
+                % std::bitset<32>(iter.flags).to_string()
+                % iter.queueFamilyIndex
+                % iter.queueCount ));
+    }
 }
