@@ -49,9 +49,9 @@ CDeviceVulkan::CDeviceVulkan() :
     m_vulkanSurface(VK_NULL_HANDLE),
     m_phyDevIndex(UINT32_MAX),
     m_logicalDevice(VK_NULL_HANDLE),
-    m_graphicsQueueFamilyIndex(VK_NULL_HANDLE),
-    m_presentQueueFamilyIndex(VK_NULL_HANDLE),
-    m_transferQueueFamilyIndex(VK_NULL_HANDLE),
+    m_graphicsQueueFamilyIndex(UINT32_MAX),
+    m_presentQueueFamilyIndex(UINT32_MAX),
+    m_transferQueueFamilyIndex(UINT32_MAX),
     m_graphicsQueue(VK_NULL_HANDLE),
     m_presentQueue(VK_NULL_HANDLE),
     m_transferQueue(VK_NULL_HANDLE),
@@ -1301,7 +1301,7 @@ uint32_t CDeviceVulkan::getPresentQueueFamilyIndex()
 uint32_t CDeviceVulkan::getQueueFamilyIndex( CPhysicalDevice & phyDev, uint32_t queueMask )
 {
     // Find family based on bit flag
-    for( uint32_t i = 0; i < phyDev.queueFamilyPropVec.size(); ++i )
+    for( uint32_t i = 0; i < phyDev.queueFamilyPropVec.size(); i++ )
     {
         if( (phyDev.queueFamilyPropVec[i].queueCount > 0) &&
             (phyDev.queueFamilyPropVec[i].queueFlags & queueMask) )
@@ -2121,7 +2121,7 @@ void CDeviceVulkan::printDebug( const CPhysicalDevice & phyDev, uint32_t index )
                 "    Compute Bit: %s\n"
                 "    Transfer Bit: %s\n"
                 "    Sparse Binding Bit: %s\n"
-                "    Protecte Bit: %s\n" )
+                "    Protected Bit: %s\n" )
                 % i
                 % std::bitset<32>(phyDev.queueFamilyPropVec[i].queueFlags).to_string()
                 % phyDev.queueFamilyPropVec[i].queueCount
@@ -2140,15 +2140,19 @@ void CDeviceVulkan::printDebug( const CPhysicalDevice & phyDev, uint32_t index )
 void CDeviceVulkan::printDebugPhyDev()
 {
     NGenFunc::PostDebugMsg( 
-            boost::str( boost::format(
-                "  SELECTED Physical Device Index: %u\n"
-                "  SELECTED Graphics Queue Family Index: %u\n"
-                "  SELECTED Transfer Queue Family Index: %u\n"
-                "  SELECTED Presentation Queue Family Index: %u\n" )
-                % m_phyDevIndex
-                % m_graphicsQueueFamilyIndex
-                % m_transferQueueFamilyIndex
-                % m_presentQueueFamilyIndex ));
+        boost::str( boost::format(
+            "  %s Physical Device Index: %u\n"
+            "  %s Graphics Queue Family Index: %u\n"
+            "  %s Transfer Queue Family Index: %u\n"
+            "  %s Presentation Queue Family Index: %u\n" )
+            % (m_phyDevIndex < UINT32_MAX ? "SELECTED" : "UNAVAILABLE")
+            % m_phyDevIndex
+            % (m_graphicsQueueFamilyIndex < UINT32_MAX ? "SELECTED" : "UNAVAILABLE")
+            % m_graphicsQueueFamilyIndex
+            % (m_transferQueueFamilyIndex < UINT32_MAX ? "SELECTED" : "UNAVAILABLE")
+            % m_transferQueueFamilyIndex
+            % (m_presentQueueFamilyIndex < UINT32_MAX ? "SELECTED" : "UNAVAILABLE")
+            % m_presentQueueFamilyIndex ));
 }
 
 void CDeviceVulkan::printDebug( const std::string & title, const std::vector<const char*> & dataVec )
