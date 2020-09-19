@@ -16,6 +16,7 @@
     </groupList>
 
     <groupList groupName="(state)" byteCodeFile="data/scripts/state.bin">
+        <file path="data/scripts/library/defs.as"/>
         <file path="data/scripts/library/shared_utilities.as"/>
         <file path="data/scripts/library/shared_sprite_utilities.as"/>
         <file path="data/scripts/library/shared_visual_utilities.as"/>
@@ -27,7 +28,6 @@
         <file path="data/scripts/library/defs.as"/>
         <file path="data/scripts/library/menudefs.as"/>
         <file path="data/scripts/library/shared_utilities.as"/>
-        <file path="data/scripts/source/level/leveldefs.as"/>
         <file path="data/scripts/source/game/main.as"/>
         <file path="data/scripts/source/game/game.as"/>
         <file path="data/scripts/source/game/gamedefs.as"/>
@@ -39,13 +39,6 @@
         <file path="data/scripts/source/state/titlescreenstate.as"/>
         <file path="data/scripts/source/state/loadstate.as"/>
         <file path="data/scripts/source/state/level1state.as"/>
-    </groupList>
-  
-    <groupList groupName="(level_1)" byteCodeFile="data/scripts/level_1.bin">
-        <file path="data/scripts/library/shared_utilities.as"/>
-        <file path="data/scripts/library/defs.as"/>
-        <file path="data/scripts/source/level/leveldefs.as"/>
-        <file path="data/scripts/source/level/level1.as"/>
     </groupList>
 
 </listTable>

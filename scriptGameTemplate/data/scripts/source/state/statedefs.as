@@ -23,3 +23,12 @@ namespace NStateDefs
         ESE_THREAD_LOAD_COMPLETE,
     }
 }
+
+namespace NLevelDefs
+{
+    enum ESpriteId
+    {
+        SPRITE_PEG = -2,
+        SPRITE_MULTI = 0
+    }
+}

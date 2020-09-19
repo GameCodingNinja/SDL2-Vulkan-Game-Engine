@@ -4,7 +4,7 @@
         <sprite objectName="peg" group="(level_1)">
             <!-- Will use the default group but you can also specify the group for the script -->
             <scriptLst>
-                <script peg_off="Level1_PegOff" group="(level_1)"/>
+                <script peg_off="Level_PegOff" group="(main)"/>
             </scriptLst>
         </sprite>
     </node>

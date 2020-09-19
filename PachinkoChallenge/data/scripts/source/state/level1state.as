@@ -5,12 +5,6 @@
 //  DESC:       Level 1 state
 //
 
-enum ESpriteId
-{
-    SPRITE_PEG = -2,
-    SPRITE_MULTI = 0
-};
-
 final class CRunState : CCommonState
 {
     // Strategy array of names for easy creation and destruction of stratigies
@@ -66,7 +60,6 @@ final class CRunState : CCommonState
     //
     void destroy() override
     {
-        ScriptMgr.freeGroup( "(level_1)" );
         ObjectDataMgr.freeGroup( "(level_1)" );
         StrategyMgr.deleteStrategyAry( mStrategyAry );
         Device.deleteCommandPoolGroup( "(level_1)" );
@@ -209,12 +202,12 @@ final class CRunState : CCommonState
     //
     void beginContact( CSprite & spriteA, CSprite & spriteB )
     {
-        if( spriteA.getId() == SPRITE_PEG )
+        if( spriteA.getId() == NLevelDefs::SPRITE_PEG )
         {
             spriteA.resetAndRecycle();
             spriteA.setFrame(1);
         }
-        else if( spriteB.getId() == SPRITE_PEG )
+        else if( spriteB.getId() == NLevelDefs::SPRITE_PEG )
         {
             spriteB.resetAndRecycle();
             spriteB.setFrame(1);
@@ -226,11 +219,11 @@ final class CRunState : CCommonState
     //
     void endContact( CSprite & spriteA, CSprite & spriteB )
     {
-        if( spriteA.getId() == SPRITE_PEG )
+        if( spriteA.getId() == NLevelDefs::SPRITE_PEG )
         {
             spriteA.stopAndRestart( "peg_off" );
         }
-        else if( spriteB.getId() == SPRITE_PEG )
+        else if( spriteB.getId() == NLevelDefs::SPRITE_PEG )
         {
             spriteB.stopAndRestart( "peg_off" );
         }
@@ -243,7 +236,6 @@ final class CRunState : CCommonState
 void LoadRunAssets()
 {
     ObjectDataMgr.loadGroup( "(level_1)" );
-    ScriptMgr.loadGroup( "(level_1)" );
     
     // Create the physics world
     PhysicsWorldManager2D.createWorld( "(game)" );
@@ -255,4 +247,42 @@ void LoadRunAssets()
     // Send a message to indicate the load is done
     DispatchEvent( NStateDefs::ESE_THREAD_LOAD_COMPLETE );
 }
-    
+
+
+//
+//  AI Update script
+//
+void Level_BallAI( CSprite & sprite )
+{
+    while(true)
+    {
+        if( sprite.getPos().y > 1700.f )
+        {
+            StrategyMgr.getStrategy("_level_1_ball_").destroy(sprite.getHandle());
+            break;
+        }
+        else if(
+            (sprite.getPos().y > 1600.f) && 
+            (abs(sprite.getPos().x) < 720) && 
+            !sprite.getParameters().isSet(NLevelDefs::ESS_BANG_UP_AWARD) )
+        {
+            // Set the state so as to not enter this if again
+            sprite.getParameters().add(NLevelDefs::ESS_BANG_UP_AWARD);
+
+            // Dispatch message to bang this one up
+            DispatchEvent(NLevelDefs::ELE_BANG_UP_AWARD);
+        }
+
+        Suspend();
+    }
+}
+
+//
+//  AI Update script
+//
+void Level_PegOff( CSprite & sprite )
+{
+    Hold( 200 );
+
+    sprite.setFrame(0);
+}

@@ -90,12 +90,12 @@ final class CTitleScreenState : CCommonState
     //
     void beginContact( CSprite & spriteA, CSprite & spriteB )
     {
-        if( spriteA.getId() == SPRITE_PEG )
+        if( spriteA.getId() == NTitleDefs::SPRITE_PEG )
         {
             spriteA.resetAndRecycle();
             spriteA.setFrame(1);
         }
-        else if( spriteB.getId() == SPRITE_PEG )
+        else if( spriteB.getId() == NTitleDefs::SPRITE_PEG )
         {
             spriteB.resetAndRecycle();
             spriteB.setFrame(1);
@@ -107,11 +107,11 @@ final class CTitleScreenState : CCommonState
     //
     void endContact( CSprite & spriteA, CSprite & spriteB )
     {
-        if( spriteA.getId() == SPRITE_PEG )
+        if( spriteA.getId() == NTitleDefs::SPRITE_PEG )
         {
             spriteA.stopAndRestart( "peg_off" );
         }
-        else if( spriteB.getId() == SPRITE_PEG )
+        else if( spriteB.getId() == NTitleDefs::SPRITE_PEG )
         {
             spriteB.stopAndRestart( "peg_off" );
         }

@@ -23,3 +23,31 @@ namespace NStateDefs
         ESE_THREAD_LOAD_COMPLETE
     }
 }
+
+namespace NTitleDefs
+{
+    enum ESpriteId
+    {
+        SPRITE_PEG = -2
+    }
+}
+
+namespace NLevelDefs
+{
+    enum ELevelEvent
+    {
+        ELE_LEVEL_USER_EVENTS = 0x8200,
+        ELE_BANG_UP_AWARD,
+    }
+
+    enum ESpriteState
+    {
+        ESS_BANG_UP_AWARD = NDefs::OBJ_STATE1,
+    }
+
+    enum ESpriteId
+    {
+        SPRITE_PEG = -2,
+        SPRITE_MULTI = 0
+    }
+}

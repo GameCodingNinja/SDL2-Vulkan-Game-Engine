@@ -6,7 +6,7 @@
             <scale x=".9" y=".9" z="1"/>
             <!-- Will use the default group but you can also specify the group for the script -->
             <scriptLst>
-                <script ball_ai="Level1_BallAI" group="(level_1)" prepareOnInit="true"/>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -16,7 +16,7 @@
         
         <sprite objectName="triangle_green">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -26,7 +26,7 @@
         
         <sprite objectName="triangle_blue">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -36,7 +36,7 @@
         
         <sprite objectName="circle_green">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -46,7 +46,7 @@
         
         <sprite objectName="circle_blue">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 
@@ -56,7 +56,7 @@
         
         <sprite objectName="circle_red">
             <scriptLst>
-                <script ball_ai="Level1_BallAI" prepareOnInit="true"/>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
         </sprite>
 

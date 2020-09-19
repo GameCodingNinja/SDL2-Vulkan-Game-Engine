@@ -3,7 +3,7 @@
     <node name="peg">
         <sprite>
             <scriptLst>
-                <script peg_off="Level_PegOff"/>
+                <script peg_off="Level_PegOff" group="(main)" />
             </scriptLst>
         </sprite>
     </node>
