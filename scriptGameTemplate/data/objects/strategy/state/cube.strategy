@@ -6,7 +6,7 @@
             <position x="0" y="0" z="0"/>
             <scale x="3" y="3" z="3"/>
             <scriptLst>
-                <script rotate="State_RotateCube" group="(state)"/>
+                <script rotate="State_RotateCube" group="(main)"/>
             </scriptLst>
         </sprite>
 

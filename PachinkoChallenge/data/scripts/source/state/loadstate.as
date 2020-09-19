@@ -37,7 +37,7 @@ final class CLoadState : CCommonState
         StrategyMgr.loadStrategy( "data/objects/strategy/state/loadscreen.loader" );
         
         // Start the fade in and animation
-        Spawn("State_FadeIn", "(state)");
+        Spawn("State_FadeIn");
     }
     
     //
@@ -51,7 +51,7 @@ final class CLoadState : CCommonState
                 assetLoad();
             
             else if( event.type == NStateDefs::ESE_THREAD_LOAD_COMPLETE )
-                Spawn("State_FadeOut", "(state)");
+                Spawn("State_FadeOut");
             
             else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
                 mChangeState = true;

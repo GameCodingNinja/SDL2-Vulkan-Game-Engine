@@ -39,7 +39,6 @@ final class CStartUpState : CCommonState
         StrategyMgr.loadListTable( "data/objects/strategy/strategyTable.lst" );
         
         // Load group specific assets
-        ScriptMgr.loadGroup( "(state)" );
         ObjectDataMgr.loadGroup( "(startup)" );
         
         // Add the command buffers to the menu manager
@@ -49,7 +48,7 @@ final class CStartUpState : CCommonState
         StrategyMgr.loadStrategy( "data/objects/strategy/state/startup.loader" );
         
         // Do the fade in
-        Spawn("State_StartUpFadeIn", "(state)");
+        Spawn("State_StartUpFadeIn");
     }
     
     //
@@ -63,7 +62,7 @@ final class CStartUpState : CCommonState
                 SpawnByThread("LoadStartUpAssets");
             
             else if( event.type == NStateDefs::ESE_THREAD_LOAD_COMPLETE )
-                Spawn("State_FadeOut", "(state)");
+                Spawn("State_FadeOut");
             
             else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
                 mChangeState = true;

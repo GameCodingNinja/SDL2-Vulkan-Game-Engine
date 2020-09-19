@@ -47,7 +47,7 @@ final class CTitleScreenState : CCommonState
         mPhysicsWorld.EnableContactListener();
         
         // Do the fade in
-        Spawn("State_FadeIn", "(state)");
+        Spawn("State_FadeIn");
     }
     
     //
@@ -61,7 +61,7 @@ final class CTitleScreenState : CCommonState
         {
             // Check for the "game change state" message
             if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
-                Spawn("State_FadeOut", "(state)");
+                Spawn("State_FadeOut");
             
             else if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )
                 MenuMgr.allow();

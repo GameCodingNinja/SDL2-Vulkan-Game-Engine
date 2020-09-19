@@ -95,7 +95,7 @@ final class CRunState : CCommonState
         @mCamera = CameraMgr.get( "level_camera" );
         
         // Do the fade in
-        Spawn("State_FadeIn", "(state)");
+        Spawn("State_FadeIn");
     }
     
     //
@@ -109,7 +109,7 @@ final class CRunState : CCommonState
         {
             // Check for the "game change state" message
             if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
-                Spawn("State_FadeOut", "(state)");
+                Spawn("State_FadeOut");
 
             else if( event.type == NLevelDefs::ELE_BANG_UP_AWARD )
                 mWinMeterCtrl.incBangUp( multiplier );

@@ -5,7 +5,7 @@
         <sprite objectName="loadAnim">
             <dynamicOffset right="150" bottom="150"/>
             <scriptLst>
-                <script loadAnimationLoop="State_LoopAnimation" group="(state)"/>
+                <script loadAnimationLoop="State_LoopAnimation" group="(main)"/>
             </scriptLst>
         </sprite>
 
