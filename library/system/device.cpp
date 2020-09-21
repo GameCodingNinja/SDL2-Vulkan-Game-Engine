@@ -75,9 +75,8 @@ void CDevice::create( const std::string & pipelineCfg )
     const CSize<int> size( CSettings::Instance().getSize() );
 
     uint32_t flags( SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN );
-    #if !(defined(__IOS__) || defined(__ANDROID__))
-    flags |= SDL_WINDOW_RESIZABLE;
-    #endif
+    if ( !CSettings::Instance().isMobileDevice() )
+        flags |= SDL_WINDOW_RESIZABLE;
 
     // Create window
     m_pWindow = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.getW(), size.getH(), flags );

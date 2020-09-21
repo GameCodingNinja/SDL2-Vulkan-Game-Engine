@@ -908,23 +908,24 @@ bool CUIControl::activateFirstInactiveControl()
 {
     // If a mouse was used, set the control as active but don't animate it.
     // This allows us to use the keys to scroll when pressed
-    #if !(defined(__IOS__) || defined(__ANDROID__))
-    if( CActionMgr::Instance().wasLastDeviceMouse() )
+    if ( !CSettings::Instance().isMobileDevice() )
     {
-        if( !isDisabled() )
+        if( CActionMgr::Instance().wasLastDeviceMouse() )
         {
-            m_lastState = m_state = NUIControlDefs::ECS_ACTIVE;
+            if( !isDisabled() )
+            {
+                m_lastState = m_state = NUIControlDefs::ECS_ACTIVE;
 
-            // Animate the control if the mouse just happens to be in it
-            if( isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
-                return activateControl();
-            
-            return true;
+                // Animate the control if the mouse just happens to be in it
+                if( isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
+                    return activateControl();
+                
+                return true;
+            }
+
+            return false;
         }
-
-        return false;
     }
-    #endif
 
     return activateControl();
 }

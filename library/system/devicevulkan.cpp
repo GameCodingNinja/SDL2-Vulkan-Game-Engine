@@ -602,7 +602,7 @@ void CDeviceVulkan::setupSwapChain()
     printDebug( surfaceFormatVec, surfaceFormat );
 
     // Get the best presentation mode
-    VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_FIFO_KHR;
+    VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
     uint32_t surfacePresModeCount;
     if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError(vkResult) ) );
@@ -614,13 +614,18 @@ void CDeviceVulkan::setupSwapChain()
 
     for( const auto & presentMode : surfacePresModeVec )
     {
-        if( presentMode == VK_PRESENT_MODE_MAILBOX_KHR )
+        if( presentMode == VK_PRESENT_MODE_FIFO_KHR )
         {
             surfacePresMode = presentMode;
-            break;
+            if ( CSettings::Instance().getVSync() )
+                break;
         }
-        else if( presentMode == VK_PRESENT_MODE_IMMEDIATE_KHR )
+        else if( presentMode == VK_PRESENT_MODE_MAILBOX_KHR )
+        {
             surfacePresMode = presentMode;
+            if ( !CSettings::Instance().getVSync() )
+                break;
+        }
     }
 
     // Init the pre-transform
