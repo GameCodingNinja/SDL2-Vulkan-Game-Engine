@@ -130,32 +130,28 @@ void CSettings::loadXML()
                 m_engineVersion = std::atoi(infoNode.getAttribute("engineVersion"));
         }
 
-        #if defined(__IOS__) || defined(__ANDROID__)
-
-        SDL_DisplayMode dm;
-        SDL_GetDesktopDisplayMode(0, &dm);
-
-        m_size.w = dm.w;
-        m_size.h = dm.h;
-
-        #endif
-
         const XMLNode displayListNode = m_mainNode.getChildNode("display");
         if( !displayListNode.isEmpty() )
         {
-            #if !(defined(__IOS__) || defined(__ANDROID__))
-
-            // Get the attributes from the "resolution" node
-            const XMLNode resolutionNode = displayListNode.getChildNode("resolution");
-            if( !resolutionNode.isEmpty() )
+            if (m_mobileDevice)
             {
-                m_size.w = std::atoi(resolutionNode.getAttribute("width"));
-                m_size.h = std::atoi(resolutionNode.getAttribute("height"));
-
-                m_fullScreen = ( std::strcmp( resolutionNode.getAttribute("fullscreen"), "true" ) == 0 );
+                SDL_DisplayMode dm;
+                SDL_GetDesktopDisplayMode(0, &dm);
+                m_size.w = dm.w;
+                m_size.h = dm.h;
             }
+            else
+            {
+                // Get the attributes from the "resolution" node
+                const XMLNode resolutionNode = displayListNode.getChildNode("resolution");
+                if( !resolutionNode.isEmpty() )
+                {
+                    m_size.w = std::atoi(resolutionNode.getAttribute("width"));
+                    m_size.h = std::atoi(resolutionNode.getAttribute("height"));
 
-            #endif
+                    m_fullScreen = ( std::strcmp( resolutionNode.getAttribute("fullscreen"), "true" ) == 0 );
+                }
+            }
 
             // Get the attributes from the "defaultHeight" node
             const XMLNode defResNode = displayListNode.getChildNode("default");
@@ -241,10 +237,15 @@ void CSettings::loadXML()
             const XMLNode backBufferNode = deviceNode.getChildNode("backbuffer");
             if( !backBufferNode.isEmpty() )
             {
-                #if !(defined(__IOS__) || defined(__ANDROID__))
-                m_tripleBuffering = ( std::strcmp( backBufferNode.getAttribute("tripleBuffering"), "true" ) == 0 );
-                #endif
-                m_vSync = ( std::strcmp( backBufferNode.getAttribute("VSync"), "true" ) == 0 );
+                if( m_mobileDevice )
+                {
+                    m_vSync = true;
+                }
+                else
+                {
+                    m_tripleBuffering = ( std::strcmp( backBufferNode.getAttribute("tripleBuffering"), "true" ) == 0 );
+                    m_vSync = ( std::strcmp( backBufferNode.getAttribute("VSync"), "true" ) == 0 );
+                }                
             }
 
             const XMLNode joypadNode = deviceNode.getChildNode("joypad");
