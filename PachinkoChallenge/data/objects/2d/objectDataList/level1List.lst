@@ -172,6 +172,18 @@
             </physics>
         </object>
 
+        <object name="strawberry">
+            <visual>
+                <texture file="data/textures/level/strawberry.png"/>
+            </visual>
+            <physics world="(game)">
+                <body type="static"/>
+                <fixtureLst>
+                    <fixture shape="circle" radius="2" sensor="true"/>
+                </fixtureLst>
+            </physics>
+        </object>
+
         <object name="meter_frame">
             <visual>
                 <texture file="data/textures/menu/16x16_5_pixel_frame.png"/>

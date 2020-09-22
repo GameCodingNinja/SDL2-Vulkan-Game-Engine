@@ -1,5 +1,8 @@
 <loader>
 
+    <strategy name="_level_1_multi_" cmdBufPool="(level_1)" camera="level_camera">
+        <node name="strawberry" instance="strawberry" active="false"/>
+    </strategy>
     <strategy name="_level_1_ball_" cmdBufPool="(level_1)" camera="level_camera"/>
     <strategy name="_level_1_ui_" defaultGroup="(level_1)" cmdBufPool="(level_1)">
         <node name="uiBackground" instance="uiBackground"/>

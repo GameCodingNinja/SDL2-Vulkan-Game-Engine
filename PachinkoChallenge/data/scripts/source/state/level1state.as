@@ -8,7 +8,7 @@
 final class CRunState : CCommonState
 {
     // Strategy array of names for easy creation and destruction of stratigies
-    array<string> mStrategyAry = {"_level_1_stage_","_level_1_ball_","_level_1_ui_"};
+    array<string> mStrategyAry = {"_level_1_stage_","_level_1_multi_","_level_1_ball_","_level_1_ui_"};
 
     // Ball list
     array<string> mBallAry = 
@@ -20,8 +20,12 @@ final class CRunState : CCommonState
     CPhysicsWorld2D @mPhysicsWorld;
 
     // Actor strategy reference(s)
+    Strategy @mMultiStrategy;
     Strategy @mBallStrategy;
     Strategy @mUIStrategy;
+
+    // Multipler sprite
+    CSprite @mMultiSprite;
 
     // Level camera for orthographic point calculations
     CCamera @mCamera;
@@ -78,11 +82,15 @@ final class CRunState : CCommonState
         
         // Enable the needed strategies
         StrategyMgr.activateStrategyAry( mStrategyAry );
+        @mMultiStrategy = StrategyMgr.getStrategy( "_level_1_multi_" );
         @mBallStrategy = StrategyMgr.getStrategy( "_level_1_ball_" );
         @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
         @mWinMeterCtrl = mUIStrategy.getNode("uiWinMeter").getControl();
         @mUITimerSprite = mUIStrategy.getNode("uiTimerText").getSprite();
         @mUIMultiSprite = mUIStrategy.getNode("uiMultplierText").getSprite();
+
+        // Get the multipler sprite
+        @mMultiSprite = mMultiStrategy.activateNode("strawberry").getSprite();
 
         // Make the next ball visible
         mUIStrategy.activateNode(mBallAry[mNextBallIndex]);

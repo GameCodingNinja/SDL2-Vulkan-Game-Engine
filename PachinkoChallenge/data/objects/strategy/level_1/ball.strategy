@@ -93,4 +93,14 @@
 
     </node>
 
+    <node name="strawberry">
+        
+        <sprite objectName="strawberry">
+            <!--<scriptLst>
+                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
+            </scriptLst>-->
+        </sprite>
+
+    </node>
+
 </strategy>

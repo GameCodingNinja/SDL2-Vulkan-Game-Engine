@@ -24,6 +24,10 @@
         <file path="data/objects/strategy/level_1/ball.strategy"/>
     </groupList>
 
+    <groupList groupName="_level_1_multi_">
+        <file path="data/objects/strategy/level_1/multi.strategy"/>
+    </groupList>
+
     <groupList groupName="_level_1_ui_">
         <file path="data/objects/strategy/level_1/ui.strategy"/>
     </groupList>
