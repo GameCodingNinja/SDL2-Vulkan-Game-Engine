@@ -195,13 +195,6 @@ void Control_Selected_Visible( CSprite & sprite )
 /************************************************************************
 *    DESC:  Animates the selected state for solid
 ************************************************************************/
-void Control_Solid_Selected_visible( CSprite & sprite )
-{
-    Ctrl_Selected( sprite, 1.5, .6 );
-
-    sprite.setColor( sprite.getDefaultColor() );
-}
-
 void Control_Selected( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.7, .6 );
@@ -209,79 +202,18 @@ void Control_Selected( CSprite & sprite )
     sprite.setVisible( false );
 }
 
+void Control_Selected_frame_visible( CSprite & sprite )
+{
+    Ctrl_Selected( sprite, 1.7, .6 );
+
+    sprite.setDefaultColor();
+}
+
 void Control_Solid_Selected( CSprite & sprite )
 {
     Ctrl_Selected( sprite, 1.5, .6 );
 
     sprite.setVisible( false );
-}
-
-
-/************************************************************************
-*    DESC:  Animates the selected state and sets final color to white
-************************************************************************/
-void Control_Selected_frame_highlight( CSprite & sprite )
-{
-    Ctrl_Selected( sprite, 1.7, .6 );
-
-    sprite.setColor( 1, 1, 1, 1 );
-}
-
-
-/************************************************************************
-*    DESC:  Fast display of selected state
-************************************************************************/
-void Ctrl_Fast_Selected( CSprite & sprite, float hiHSV )
-{
-    sprite.setVisible( true );
-
-    CColor hiColor = sprite.getDefaultColor();
-    hiColor.transformHSV( 0, 1, hiHSV );
-
-    sprite.setColor( hiColor );
-}
-
-void Control_Fast_Face_Selected( CSprite & sprite )
-{
-    Ctrl_Fast_Selected( sprite, 1.7 );
-
-    Hold( 80 );
-
-    sprite.setDefaultColor();
-}
-
-void Control_Fast_Face_Selected_Act( CSprite & sprite )
-{
-    Ctrl_Fast_Selected( sprite, 1.7 );
-
-    Hold( 80 );
-
-    sprite.setDefaultColor();
-
-    DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
-}
-
-void Control_Fast_Selected( CSprite & sprite )
-{
-    Ctrl_Fast_Selected( sprite, 1.5 );
-
-    Hold( 80 );
-
-    sprite.setVisible( false );
-}
-
-void Control_Fast_Solid_Selected( CSprite & sprite )
-{
-    Ctrl_Fast_Selected( sprite, 1.3 );
-
-    Hold( 80 );
-
-    sprite.setVisible( false );
-}
-
-void Control_slider_btn_Selected( CSprite & sprite )
-{
-    Ctrl_Fast_Selected( sprite, 1.7 );
 }
 
 

@@ -22,7 +22,7 @@
     <menuControls>
       
         <control name="start_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_150x65.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_200x75.ctrl"/>
             <position x="0" y="150" z="0"/>
             <fontStringLst>
                 <string text="Start"/>

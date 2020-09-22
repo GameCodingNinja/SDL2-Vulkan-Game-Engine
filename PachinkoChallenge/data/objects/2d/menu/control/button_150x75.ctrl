@@ -2,7 +2,7 @@
 
     <spriteList>
 
-        <sprite objectName="150x65_button_solid">
+        <sprite objectName="150x75_button_solid">
             <scriptLst>
                 <script disable="Control_Hidden"/>
                 <script inactive="Control_Hidden"/>
@@ -11,12 +11,12 @@
             </scriptLst>
         </sprite>
     
-        <sprite objectName="150x65_button_frame">
+        <sprite objectName="150x75_button_frame">
             <scriptLst>
-                <script disable="Control_Hidden"/>
-                <script inactive="Control_Hidden"/>
+                <script disable="Control_Disabled"/>
+                <script inactive="Control_Inactive"/>
                 <script active="Control_Active"/>
-                <script select="Control_Selected"/>
+                <script select="Control_Selected_frame_visible"/>
             </scriptLst>
         </sprite>
 

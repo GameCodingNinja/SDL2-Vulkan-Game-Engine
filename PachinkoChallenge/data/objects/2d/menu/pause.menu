@@ -25,7 +25,7 @@
 
         <!-- Resume Button -->
         <control name="resume_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_300x65.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_345x75.ctrl"/>
             <position x="0" y="0" z="0"/>
             <fontStringLst>
                 <string text="Resume"/>
@@ -43,7 +43,7 @@
 
         <!-- Main Menu Button -->
         <control name="main_menu_btn" faction="decision_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_300x65.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_345x75.ctrl"/>
             <position x="0" y="100" z="0"/>
             <fontStringLst>
                 <string text="Main Menu"/>

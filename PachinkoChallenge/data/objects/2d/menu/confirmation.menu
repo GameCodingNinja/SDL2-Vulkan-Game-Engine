@@ -22,7 +22,7 @@
     <menuControls>
       
         <control name="no_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_150x65.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_150x75.ctrl"/>
             <position x="150" y="150" z="0"/>
             <fontStringLst>
                 <string text="No"/>
@@ -39,7 +39,7 @@
         </control>
 
         <control name="yes_btn" controlType="button" defaultState="inactive">
-            <filePath file="data/objects/2d/menu/control/button_150x65.ctrl"/>
+            <filePath file="data/objects/2d/menu/control/button_150x75.ctrl"/>
             <position x="-150" y="150" z="0"/>
             <fontStringLst>
                 <string text="Yes"/>

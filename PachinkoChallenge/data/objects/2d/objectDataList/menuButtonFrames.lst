@@ -32,11 +32,18 @@
             <size width="235" height="85"/>
         </object>
 
-        <object name="150x65_button_frame">
+        <object name="200x75_button_frame">
             <visual>
                 <texture file="data/textures/menu/16x16_4_pixel_frame.png"/>
             </visual>
-            <size width="150" height="65"/>
+            <size width="200" height="75"/>
+        </object>
+
+        <object name="150x75_button_frame">
+            <visual>
+                <texture file="data/textures/menu/16x16_4_pixel_frame.png"/>
+            </visual>
+            <size width="150" height="75"/>
         </object>
 
     </objectList>

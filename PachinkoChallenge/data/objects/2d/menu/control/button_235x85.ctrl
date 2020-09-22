@@ -1,0 +1,35 @@
+<UIControl>
+
+    <spriteList>
+
+        <sprite objectName="235x85_button_solid">
+            <scriptLst>
+                <script disable="Control_Hidden"/>
+                <script inactive="Control_Hidden"/>
+                <script active="Control_Solid_Active"/>
+                <script select="Control_Solid_Selected"/>
+            </scriptLst>
+        </sprite>
+    
+        <sprite objectName="235x85_button_frame">
+            <scriptLst>
+                <script disable="Control_Disabled"/>
+                <script inactive="Control_Inactive"/>
+                <script active="Control_Active"/>
+                <script select="Control_Selected_frame_visible"/>
+            </scriptLst>
+        </sprite>
+
+        <sprite objectName="control_font">
+            <font fontName="dejavu_sans_bold_70"/>
+            <scriptLst>
+                <script disable="Control_Disabled"/>
+                <script inactive="Control_Inactive"/>
+                <script active="Control_Active"/>
+                <script select="Control_Selected_Dispatch_Exe"/>
+            </scriptLst>
+        </sprite>
+
+    </spriteList>
+
+</UIControl>

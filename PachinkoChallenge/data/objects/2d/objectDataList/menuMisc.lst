@@ -29,12 +29,20 @@
             <size width="231" height="81"/>
         </object>
 
-        <object name="150x65_button_solid">
+        <object name="200x75_button_solid">
             <visual>
                 <pipeline id="2d_solid"/>
                 <color r="25" g="54" b="84" a="0.8"/>
             </visual>
-            <size width="146" height="61"/>
+            <size width="196" height="71"/>
+        </object>
+
+        <object name="150x75_button_solid">
+            <visual>
+                <pipeline id="2d_solid"/>
+                <color r="25" g="54" b="84" a="0.8"/>
+            </visual>
+            <size width="146" height="71"/>
         </object>
 
         <object name="control_font">
