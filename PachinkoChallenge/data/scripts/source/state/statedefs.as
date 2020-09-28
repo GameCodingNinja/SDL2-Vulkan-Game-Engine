@@ -48,6 +48,6 @@ namespace NLevelDefs
     enum ESpriteId
     {
         SPRITE_PEG = -2,
-        SPRITE_MULTI = 0
+        SPRITE_MULTI = -3
     }
 }

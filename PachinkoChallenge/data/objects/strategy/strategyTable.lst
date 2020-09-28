@@ -16,19 +16,19 @@
         <file path="data/objects/strategy/state/loadscreen.strategy"/>
     </groupList>
 
-    <groupList groupName="_level_1_stage_">
+    <groupList groupName="_level_stage_">
         <file path="data/objects/strategy/level_1/stage.strategy"/>
     </groupList>
     
-    <groupList groupName="_level_1_ball_">
+    <groupList groupName="_level_ball_">
         <file path="data/objects/strategy/level_1/ball.strategy"/>
     </groupList>
 
-    <groupList groupName="_level_1_multi_">
+    <groupList groupName="_level_multi_">
         <file path="data/objects/strategy/level_1/multi.strategy"/>
     </groupList>
 
-    <groupList groupName="_level_1_ui_">
+    <groupList groupName="_level_ui_">
         <file path="data/objects/strategy/level_1/ui.strategy"/>
     </groupList>
   

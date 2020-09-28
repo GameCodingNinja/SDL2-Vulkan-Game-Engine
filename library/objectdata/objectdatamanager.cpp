@@ -56,7 +56,7 @@ const iObjectData & CObjectDataMgr::getData( const std::string & group, const st
     auto iter = mapIter->second.find( name );
     if( iter == mapIter->second.end() )
         throw NExcept::CCriticalException("Obj Data List Get Data Error!",
-            boost::str( boost::format("Object data list name can't be found (%s).\n\n%s\nLine: (%s - %s)")
+            boost::str( boost::format("Object data list name can't be found (%s - %s).\n\n%s\nLine: (%s)")
                 % group % name % __FUNCTION__ % __LINE__ ));
 
     return *iter->second.get();

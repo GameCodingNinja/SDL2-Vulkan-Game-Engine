@@ -3,6 +3,8 @@
     <!-- Node name will be used for the object name look up if one isn't defined -->
     <node name="peg">
         <sprite>
+            <!-- Default the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="-50000" y="-50000"/>
             <scriptLst>
                 <script peg_off="Title_PegOff" group="(main)"/>
             </scriptLst>

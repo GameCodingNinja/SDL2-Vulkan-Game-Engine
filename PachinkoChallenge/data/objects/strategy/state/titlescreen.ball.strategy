@@ -4,6 +4,8 @@
     <node name="square_green">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50100"/>
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
@@ -15,6 +17,8 @@
     <node name="square_blue">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50200"/>
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
@@ -26,6 +30,8 @@
     <node name="square_red">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50300"/>
             <scale x=".9" y=".9" z="1"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
@@ -37,6 +43,8 @@
     <node name="triangle_green">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50400"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
@@ -47,6 +55,8 @@
     <node name="triangle_blue">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50500"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
@@ -57,6 +67,8 @@
     <node name="triangle_red">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50600"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
@@ -67,6 +79,8 @@
     <node name="circle_green">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50700"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
@@ -77,6 +91,8 @@
     <node name="circle_blue">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50800"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>
@@ -87,6 +103,8 @@
     <node name="circle_red">
         
         <sprite>
+            <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
+            <position x="50000" y="50900"/>
             <scriptLst>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
             </scriptLst>

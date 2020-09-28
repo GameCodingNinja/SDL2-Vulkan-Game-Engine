@@ -2,12 +2,6 @@
 
     <spriteList>
 
-        <!-- Meter label -->
-        <sprite objectName="level_font">
-            <position x="0" y="-56" z="0"/>
-            <font fontName="dejavu_sans_reg_40" fontString="Win Meter"/>
-        </sprite>
-
         <sprite objectName="meter_frame"/>
 
         <!-- The last font sprite is the one used to display the meter value -->

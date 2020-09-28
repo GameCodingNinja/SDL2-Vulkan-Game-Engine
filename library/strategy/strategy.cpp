@@ -168,11 +168,11 @@ CNodeDataList & CStrategy::getData( const std::string & name, const std::string 
             group = CObjectDataMgr::Instance().findGroup( name );
 
             if( !group.empty() )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("Simple Strategy node generated from group search (%s-%s)!") % group % name ) );
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Simple Strategy node sprite auto generated from group search (%s, %s)!") % group % name ) );
         }
         else
         {
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Simple Strategy node generated from group and object name (%s-%s)!") % group % name ) );
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Simple Strategy node sprite auto generated from group and object name (%s, %s)!") % group % name ) );
         }
 
         // If we found group that has an object of the same name, create the data and pass it along

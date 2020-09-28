@@ -1,6 +1,6 @@
 <loader>
 
-    <strategy name="_level_1_stage_" defaultName="peg" defaultGroup="(level_1)" cmdBufPool="(level_1)" camera="level_camera">
+    <strategy name="_level_stage_" defaultName="peg" defaultGroup="(level_1)" cmdBufPool="(level_1)" camera="level_camera">
 
         <node>
             <sprite>

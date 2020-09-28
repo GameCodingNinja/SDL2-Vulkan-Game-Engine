@@ -8,7 +8,7 @@
 final class CRunState : CCommonState
 {
     // Strategy array of names for easy creation and destruction of stratigies
-    array<string> mStrategyAry = {"_level_1_stage_","_level_1_multi_","_level_1_ball_","_level_1_ui_"};
+    array<string> mStrategyAry = {"_level_stage_","_level_multi_","_level_ball_","_level_ui_"};
 
     // Ball list
     array<string> mBallAry = 
@@ -19,7 +19,7 @@ final class CRunState : CCommonState
     // Physics world object
     CPhysicsWorld2D @mPhysicsWorld;
 
-    // Actor strategy reference(s)
+    // Strategy reference(s)
     Strategy @mMultiStrategy;
     Strategy @mBallStrategy;
     Strategy @mUIStrategy;
@@ -30,17 +30,22 @@ final class CRunState : CCommonState
     // Level camera for orthographic point calculations
     CCamera @mCamera;
 
-    // Reference to meter control
-    uiControl @mWinMeterCtrl;
-
-    // Reference to timer text sprite
+    // Timer text sprite
     CSprite @mUITimerSprite;
 
-    // Multiplier sprite
-    CSprite @mUIMultiSprite;
+    // Player UI sprites
+    uiControl @mUIPlayerWinMeterCtrl;
+    CSprite @mUIPlayerMultiTxtSprite;
+    CSprite @mUIPlayerStrawberrySprite;
+
+    // Goal Multi sprite
+    CSprite @uiGoalMultiSprite;
 
     // Points multiplier
-    uint multiplier = 1;
+    uint mMultiplier = 1;
+
+    // Goal multiplier
+    uint mGoalMultiplier = 10;
 
     // Next ball index
     int mNextBallIndex = RandInt(0,mBallAry.length()-1);
@@ -82,12 +87,16 @@ final class CRunState : CCommonState
         
         // Enable the needed strategies
         StrategyMgr.activateStrategyAry( mStrategyAry );
-        @mMultiStrategy = StrategyMgr.getStrategy( "_level_1_multi_" );
-        @mBallStrategy = StrategyMgr.getStrategy( "_level_1_ball_" );
-        @mUIStrategy = StrategyMgr.getStrategy( "_level_1_ui_" );
-        @mWinMeterCtrl = mUIStrategy.getNode("uiWinMeter").getControl();
+        @mMultiStrategy = StrategyMgr.getStrategy( "_level_multi_" );
+        @mBallStrategy = StrategyMgr.getStrategy( "_level_ball_" );
+        @mUIStrategy = StrategyMgr.getStrategy( "_level_ui_" );
+
+        // Get the needed nodes/sprites/controls
+        @mUIPlayerWinMeterCtrl = mUIStrategy.getNode("uiPlayerWinMeter").getControl();
+        @mUIPlayerMultiTxtSprite = mUIStrategy.getNode("uiPlayerMultiText").getSprite();
+        @mUIPlayerStrawberrySprite = mUIStrategy.getNode("uiPlayerStrawberry").getSprite();
         @mUITimerSprite = mUIStrategy.getNode("uiTimerText").getSprite();
-        @mUIMultiSprite = mUIStrategy.getNode("uiMultplierText").getSprite();
+        @uiGoalMultiSprite = mUIStrategy.getNode("uiGoalMulti").getSprite();
 
         // Get the multipler sprite
         @mMultiSprite = mMultiStrategy.activateNode("strawberry").getSprite();
@@ -120,7 +129,7 @@ final class CRunState : CCommonState
                 Spawn("State_FadeOut");
 
             else if( event.type == NLevelDefs::ELE_BANG_UP_AWARD )
-                mWinMeterCtrl.incBangUp( multiplier );
+                mUIPlayerWinMeterCtrl.incBangUp( mMultiplier );
             
             else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
             {
@@ -139,6 +148,8 @@ final class CRunState : CCommonState
                     MenuMgr.activateTree( "pause_tree" );
 
                     // Start the game
+                    mGoalMultiplier = 10;
+                    uiGoalMultiSprite.createFontString("" + mGoalMultiplier);
                     mGameActive = true;
                     mTimePointStart.now( GetDurationMinutes(1) );
                 }
@@ -186,6 +197,15 @@ final class CRunState : CCommonState
 
         if( mGameActive )
         {
+            if(mMultiplier >= mGoalMultiplier)
+            {
+                mTimePointStart += GetDurationSeconds(30);
+                mGoalMultiplier += 10;
+                uiGoalMultiSprite.createFontString("" + mGoalMultiplier);
+                mUITimerSprite.prepare("reset_flash");
+                uiGoalMultiSprite.prepare("reset_flash");
+            }
+
             CTimePoint timePoint;
             CTimeDuration duration( mTimePointStart - timePoint );
             if( duration.getNanoseconds() > 0 )
@@ -219,6 +239,16 @@ final class CRunState : CCommonState
         {
             spriteB.resetAndRecycle();
             spriteB.setFrame(1);
+        }
+        else if( spriteA.getId() == NLevelDefs::SPRITE_MULTI )
+        {
+            mMultiplier += spriteB.getId();
+            mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
+        }
+        else if( spriteB.getId() == NLevelDefs::SPRITE_MULTI )
+        {
+            mMultiplier += spriteA.getId();
+            mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
         }
     }
 
@@ -258,7 +288,7 @@ void LoadRunAssets()
 
 
 //
-//  AI Update script
+//  Ball AI Update script
 //
 void Level_BallAI( CSprite & sprite )
 {
@@ -266,16 +296,16 @@ void Level_BallAI( CSprite & sprite )
     {
         if( sprite.getPos().y > 1700.f )
         {
-            StrategyMgr.getStrategy("_level_1_ball_").destroy(sprite.getHandle());
+            StrategyMgr.getStrategy("_level_ball_").destroy(sprite.getHandle());
             break;
         }
         else if(
             (sprite.getPos().y > 1600.f) && 
             (abs(sprite.getPos().x) < 720) && 
-            !sprite.getParameters().isSet(NLevelDefs::ESS_BANG_UP_AWARD) )
+            !sprite.getParameters().isSet(NDefs::OBJ_STATE1) )
         {
             // Set the state so as to not enter this if again
-            sprite.getParameters().add(NLevelDefs::ESS_BANG_UP_AWARD);
+            sprite.getParameters().add(NDefs::OBJ_STATE1);
 
             // Dispatch message to bang this one up
             DispatchEvent(NLevelDefs::ELE_BANG_UP_AWARD);
@@ -283,6 +313,43 @@ void Level_BallAI( CSprite & sprite )
 
         Suspend();
     }
+}
+
+//
+//  Time reset flash script
+//
+void Level_TimeResetFlash( CSprite & sprite )
+{
+    CColor hiColor = sprite.getDefaultColor();
+    hiColor.transformHSV( 0, 1, 2 );
+
+    CColor lowColor = sprite.getDefaultColor();
+    lowColor.transformHSV( 0, 1, .6 );
+
+    sprite.setColor( hiColor );
+
+    NSpriteUtils::ColorTo( 120, lowColor, sprite );
+    NSpriteUtils::ColorTo( 100, hiColor, sprite );
+    NSpriteUtils::ColorTo( 200, sprite.getDefaultColor(), sprite );
+}
+
+//
+//  Time reset flash script
+//
+void Level_MultiIncFlash( CSprite & sprite )
+{
+    CColor hiColor = sprite.getDefaultColor();
+    hiColor.transformHSV( 0, 1, 2 );
+
+    CColor lowColor = sprite.getDefaultColor();
+    lowColor.transformHSV( 0, 1, .6 );
+
+    sprite.setColor( hiColor );
+
+    NSpriteUtils::ColorTo( 120, lowColor, sprite );
+    NSpriteUtils::ColorTo( 100, hiColor, sprite );
+
+    sprite.setColor( sprite.getDefaultColor() );
 }
 
 //

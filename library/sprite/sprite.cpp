@@ -91,12 +91,18 @@ void CSprite::load( const XMLNode & node )
 }
 
 /************************************************************************
-*    DESC:  Update the physics transforms
+*    DESC:  Reload the sprite node
+*    NOTE:  This function is for reloading the sprite after it was initially
+*           created. One use case is that a basic sprite is created by
+*           the strategy to then be reloaded by the strategy loader
 ************************************************************************/
-void CSprite::loadTransforms( const XMLNode & node )
+void CSprite::reload( const XMLNode & node )
 {
-    // Load the transform data
-    loadTransFromNode( node );
+    // Load the sprite data
+    load( node );
+
+    // Init
+    init();
     
     if( m_upPhysicsComponent )
         m_upPhysicsComponent->setTransform(m_pos.x, m_pos.y, m_rot.z);

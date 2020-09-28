@@ -48,8 +48,11 @@ public:
     // Load the sprite data
     void load( const XMLNode & node );
 
-    // Load just the transforms from node
-    void loadTransforms( const XMLNode & node );
+    // Reload the sprite node
+    // NOTE:  This function is for reloading the sprite after it was initially
+    //        created. One use case is that a basic sprite is created by
+    //        the strategy to then be reloaded by the strategy loader
+    void reload( const XMLNode & node );
     
     // Init the physics
     void initPhysics();

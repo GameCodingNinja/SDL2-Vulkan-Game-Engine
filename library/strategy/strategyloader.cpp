@@ -187,7 +187,7 @@ namespace NStrategyloader
     void init( const XMLNode & nodeXML, CSprite * pSprite )
     {
         // Set any transforms
-        pSprite->loadTransforms( nodeXML );
+        pSprite->reload( nodeXML );
 
         // See if there are any scripts that need to be prepared
         for( int i = 0; i < nodeXML.nChildNode("script"); ++i )

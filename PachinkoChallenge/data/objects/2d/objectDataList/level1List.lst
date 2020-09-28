@@ -192,7 +192,7 @@
                 </mesh>
                 <color r="48" g="97" b="153" a="1"/>
             </visual>
-            <size width="200" height="70"/>
+            <size width="400" height="70"/>
         </object>
 
         <object name="uiBackground">

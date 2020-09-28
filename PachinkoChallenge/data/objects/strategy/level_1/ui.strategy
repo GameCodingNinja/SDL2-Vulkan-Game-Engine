@@ -1,11 +1,17 @@
 <strategy defaultGroup="(level_1)">
+
+    <node name="uiBackground">
+        <sprite>
+            <position x="0" y="-890" z="0"/>
+        </sprite>
+    </node>
     
-    <node name="uiWinMeter">
+    <node name="uiPlayerWinMeter">
         <uiMeter name="win_meter" controlType="meter" defaultState="inactive">
             <filePath file="data/objects/strategy/level_1/win_meter.ctrl"/>
-            <position x="-400" y="-870" z="0"/>
+            <position x="-300" y="-870" z="0"/>
             <!-- Max size of font string in meter -->
-            <size width="190" height="70"/>
+            <size width="390" height="70"/>
             <!-- <meterScript onInit="Meter_OnInit" onStart="Meter_OnStart" onStop="Meter_OnStop" onClear="Meter_OnClear"/> -->
             <bangRange fastBangTime="500" scaleType="axis">
                 <range target="500" bangUpType="rampUp" velocity="15.0"  estimatedTime="200" slowStartTime="100"/>
@@ -17,10 +23,29 @@
         </uiMeter>
     </node>
 
-    <node name="uiBackground">
+    <node name="uiPlayerStrawberry">
         
-        <sprite>
-            <position x="0" y="-890" z="0"/>
+        <sprite objectName="strawberry">
+            <position x="-470" y="-930" z="0"/>
+            <scale x="0.4" y="0.4" z="0.4"/>
+            <scriptLst>
+                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
+                <script inc_flash="Level_MultiIncFlash" group="(main)"/>
+            </scriptLst>
+        </sprite>
+
+    </node>
+
+    <node name="uiPlayerMultiText">
+        
+        <sprite objectName="level_font">
+            <position x="-440" y="-930" z="0"/>
+            <font fontName="dejavu_sans_bold_45" fontString="1">
+                <alignment horzAlign="left"/>
+            </font>
+            <scriptLst>
+                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
+            </scriptLst>
         </sprite>
 
     </node>
@@ -28,20 +53,47 @@
     <node name="uiTimerText">
         
         <sprite objectName="level_font">
-            <position x="70" y="-890" z="0"/>
-            <scale x="1.4" y="1.6" z="1.4"/>
+            <position x="110" y="-860" z="0"/>
+            <scale x="1.5" y="1.5" z="1.5"/>
             <font fontName="dejavu_sans_bold_70" fontString="00:00"/>
+            <scriptLst>
+                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
+            </scriptLst>
         </sprite>
 
     </node>
 
-    <node name="uiMultplierText">
+    <node name="uiGoalText">
         
         <sprite objectName="level_font">
-            <position x="-270" y="-870" z="0"/>
-            <font fontName="dejavu_sans_bold_70" fontString="1X">
+            <position x="-30" y="-930" z="0"/>
+            <scale x="1" y="1" z="1"/>
+            <font fontName="dejavu_sans_reg_40" fontString="Goal">
                 <alignment horzAlign="left"/>
             </font>
+        </sprite>
+
+    </node>
+
+    <node name="uiGoalStrawberry">
+        
+        <sprite objectName="strawberry">
+            <position x="70" y="-930" z="0"/>
+            <scale x="0.4" y="0.4" z="0.4"/>
+        </sprite>
+
+    </node>
+
+    <node name="uiGoalMulti">
+        
+        <sprite objectName="level_font">
+            <position x="100" y="-930" z="0"/>
+            <font fontName="dejavu_sans_bold_45" fontString="0">
+                <alignment horzAlign="left"/>
+            </font>
+            <scriptLst>
+                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
+            </scriptLst>
         </sprite>
 
     </node>

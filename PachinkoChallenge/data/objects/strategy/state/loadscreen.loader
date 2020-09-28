@@ -2,11 +2,7 @@
 
     <strategy name="_load_" cmdBufPool="(load)" activate="true">
     
-        <node name="loadAnim">
-            <sprite>
-                <script prepare="loadAnimationLoop"/>
-            </sprite>
-        </node>
+        <node name="loadAnim"/>
 
     </strategy>
   

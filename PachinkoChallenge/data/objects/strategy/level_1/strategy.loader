@@ -1,14 +1,18 @@
 <loader>
-
-    <strategy name="_level_1_multi_" cmdBufPool="(level_1)" camera="level_camera">
+    <!-- This is the strategy creation order -->
+    <strategy name="_level_multi_" cmdBufPool="(level_1)" camera="level_camera">
         <node name="strawberry" instance="strawberry" active="false"/>
     </strategy>
-    <strategy name="_level_1_ball_" cmdBufPool="(level_1)" camera="level_camera"/>
-    <strategy name="_level_1_ui_" defaultGroup="(level_1)" cmdBufPool="(level_1)">
+    <strategy name="_level_ball_" cmdBufPool="(level_1)" camera="level_camera"/>
+    <strategy name="_level_ui_" defaultGroup="(level_1)" cmdBufPool="(level_1)">
         <node name="uiBackground" instance="uiBackground"/>
-        <node name="uiWinMeter" instance="uiWinMeter"/>
+        <node name="uiPlayerWinMeter" instance="uiPlayerWinMeter"/>
+        <node name="uiPlayerStrawberry" instance="uiPlayerStrawberry"/>
+        <node name="uiPlayerMultiText" instance="uiPlayerMultiText"/>
         <node name="uiNextBallText"/>
-        <node name="uiMultplierText" instance="uiMultplierText"/>
+        <node name="uiGoalText" instance="uiGoalText"/>
+        <node name="uiGoalStrawberry" instance="uiGoalStrawberry"/>
+        <node name="uiGoalMulti" instance="uiGoalMulti"/>
         <node name="uiTimerText" instance="uiTimerText"/>
         <node name="square_red" instance="square_red" active="false"/>
         <node name="square_blue" instance="square_blue" active="false"/>

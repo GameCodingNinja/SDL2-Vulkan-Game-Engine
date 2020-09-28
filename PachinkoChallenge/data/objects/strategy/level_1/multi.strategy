@@ -1,11 +1,9 @@
-<strategy defaultGroup="(level_1)">
+<strategy defaultGroup="(level_1)" defaultId="-3">
 
     <node name="strawberry">
         
-        <sprite objectName="strawberry">
-            <!--<scriptLst>
-                <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>-->
+        <sprite>
+            <position x="0" y="1450"/>
         </sprite>
 
     </node>
