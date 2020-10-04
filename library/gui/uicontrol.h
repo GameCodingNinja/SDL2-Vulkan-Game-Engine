@@ -152,8 +152,11 @@ public:
     // Get the size of this control
     const CSize<float> & getSize() const override;
     
-    // an this control scroll?
+    // Can this control scroll?
     bool canScroll( int msg ) override;
+
+    // Prepare the script Id function to run
+    virtual bool prepare( const std::string & scriptFuncId, bool forceUpdate = false ) override;
 
 protected:
 

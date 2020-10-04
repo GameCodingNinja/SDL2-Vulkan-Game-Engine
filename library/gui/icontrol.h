@@ -173,6 +173,9 @@ public:
     virtual void setAlpha( float alpha ) = 0;
     float getAlpha() const;
 
+    // Prepare the script Id function to run
+    virtual bool prepare( const std::string & scriptFuncId, bool forceUpdate = false ) = 0;
+
     // Interface sub controls
 
     // Number of sub controls

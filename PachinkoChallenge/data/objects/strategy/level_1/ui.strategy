@@ -28,10 +28,6 @@
         <sprite objectName="strawberry">
             <position x="-470" y="-930" z="0"/>
             <scale x="0.4" y="0.4" z="0.4"/>
-            <scriptLst>
-                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
-                <script inc_flash="Level_MultiIncFlash" group="(main)"/>
-            </scriptLst>
         </sprite>
 
     </node>
@@ -44,7 +40,7 @@
                 <alignment horzAlign="left"/>
             </font>
             <scriptLst>
-                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
+                <script inc_flash="Level_MultiIncFlash" group="(main)"/>
             </scriptLst>
         </sprite>
 

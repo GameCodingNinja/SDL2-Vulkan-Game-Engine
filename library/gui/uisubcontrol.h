@@ -90,6 +90,9 @@ public:
     // Number of sub controls
     virtual size_t size() override;
 
+    // Prepare the script Id function to run
+    virtual bool prepare( const std::string & scriptFuncId, bool forceUpdate = false ) override;
+
 protected:
 
     // Load the control specific info from XML node

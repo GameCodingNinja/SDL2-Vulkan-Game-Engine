@@ -226,6 +226,17 @@ final class CRunState : CCommonState
     }
 
     //
+    //  Player Multiplier increase
+    //
+    void playerMultiInc( CSprite & sprite )
+    {
+        mMultiplier += sprite.getId();
+        mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
+        mUIPlayerMultiTxtSprite.prepare("inc_flash");
+        mUIPlayerWinMeterCtrl.prepare("inc_flash");
+    }
+
+    //
     //  Begin contact physics callback
     //
     void beginContact( CSprite & spriteA, CSprite & spriteB )
@@ -242,13 +253,11 @@ final class CRunState : CCommonState
         }
         else if( spriteA.getId() == NLevelDefs::SPRITE_MULTI )
         {
-            mMultiplier += spriteB.getId();
-            mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
+            playerMultiInc( spriteB );
         }
         else if( spriteB.getId() == NLevelDefs::SPRITE_MULTI )
         {
-            mMultiplier += spriteA.getId();
-            mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
+            playerMultiInc( spriteA );
         }
     }
 

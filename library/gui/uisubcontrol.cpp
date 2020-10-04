@@ -685,3 +685,17 @@ size_t CUISubControl::size()
 {
     return m_pSubControlVec.size();
 }
+
+
+/************************************************************************
+*    DESC:  Prepare the script function Id to run
+************************************************************************/
+bool CUISubControl::prepare( const std::string & scriptFuncId, bool forceUpdate )
+{
+    bool result {};
+
+    for( auto iter : m_pSubControlVec )
+        result |= iter->prepare( scriptFuncId, forceUpdate );
+    
+    return result;
+}

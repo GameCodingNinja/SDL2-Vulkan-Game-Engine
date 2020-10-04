@@ -687,6 +687,35 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
 
 
 /************************************************************************
+*    DESC:  Prepare the script function Id to run
+************************************************************************/
+bool CUIControl::prepare( const std::string & scriptFuncId, bool forceUpdate )
+{
+    bool result {};
+
+    // Have the component respond to the prepare
+    auto iter = m_scriptFunctionMap.find( scriptFuncId );
+    if( iter != m_scriptFunctionMap.end() )
+    {
+        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+
+        // Allow the script to execute and return it's context to the queue
+        // for the scripts that don't animate
+        if( forceUpdate )
+            m_scriptComponent.update();
+
+        result = true;
+    }
+
+    // Have the individual sprites respond to the prepare
+    for( auto iter : m_pSpriteVec )
+        result |= iter->prepare( scriptFuncId, forceUpdate );
+
+    return result;
+}
+
+
+/************************************************************************
 *    DESC:  Reset and recycle the contexts
 ************************************************************************/
 void CUIControl::reset( bool complete )
