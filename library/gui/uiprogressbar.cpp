@@ -150,7 +150,7 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
-void CUIProgressBar::transform( const CObjectTransform & object )
+void CUIProgressBar::transform( const CObject & object )
 {
     CUIControl::transform( object );
 

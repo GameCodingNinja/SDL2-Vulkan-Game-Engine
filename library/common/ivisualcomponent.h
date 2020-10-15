@@ -28,7 +28,7 @@ class iObjectData;
 class CFontProperties;
 class CFontData;
 class CCamera;
-class CObjectTransform;
+class CObject;
 struct XMLNode;
 
 class iVisualComponent : public CVisual
@@ -45,7 +45,7 @@ public:
     virtual void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CObjectTransform * const pObject,
+        const CObject * const pObject,
         const CCamera & camera ) {}
     
     // Set/Get the color

@@ -8,7 +8,7 @@
 #define __camera_h__
 
 // Physical component dependency
-#include <common/objecttransform.h>
+#include <common/object.h>
 
 // Game lib dependencies
 #include <utilities/matrix.h>
@@ -17,7 +17,7 @@
 // Forward Declarations
 struct XMLNode;
 
-class CCamera : public CObjectTransform
+class CCamera : public CObject
 {
 public:
 

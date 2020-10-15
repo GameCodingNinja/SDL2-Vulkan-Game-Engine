@@ -299,13 +299,13 @@ void CStrategy::deactivateNode( const std::string & instanceName )
 void CStrategy::setPos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos = -position;
-    CObjectTransform::setPos( m_worldValPos );
+    CObject::setPos( m_worldValPos );
 }
 
 void CStrategy::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.set( -x, -y, -z );
-    CObjectTransform::setPos( m_worldValPos );
+    CObject::setPos( m_worldValPos );
 }
 
 /************************************************************************
@@ -314,13 +314,13 @@ void CStrategy::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 void CStrategy::incPos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos.inc( -position.x, -position.y, -position.z );
-    CObjectTransform::incPos( m_worldValPos );
+    CObject::incPos( m_worldValPos );
 }
 
 void CStrategy::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.inc( -x, -y, -z );
-    CObjectTransform::incPos( m_worldValPos );
+    CObject::incPos( m_worldValPos );
 }
 
 /************************************************************************
@@ -360,7 +360,7 @@ void CStrategy::update()
 ************************************************************************/
 void CStrategy::transform()
 {
-    CObjectTransform::transform();
+    CObject::transform();
 
     for( auto iter : m_pNodeVec )
         iter->transform( *this );

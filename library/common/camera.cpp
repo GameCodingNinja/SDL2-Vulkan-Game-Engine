@@ -112,7 +112,7 @@ void CCamera::init()
     createProjectionMatrix();
     
     // Do the initial transform
-    CObjectTransform::transform();
+    CObject::transform();
     
     // Calculate the final matrix
     calcFinalMatrix();
@@ -160,13 +160,13 @@ const CMatrix & CCamera::getProjectionMatrix() const
 void CCamera::setPos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos = -position;
-    CObjectTransform::setPos( m_worldValPos );
+    CObject::setPos( m_worldValPos );
 }
 
 void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.set( -x, -y, -z );
-    CObjectTransform::setPos( m_worldValPos );
+    CObject::setPos( m_worldValPos );
 }
 
 
@@ -176,13 +176,13 @@ void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 void CCamera::incPos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos.inc( -position.x, -position.y, -position.z );
-    CObjectTransform::incPos( m_worldValPos );
+    CObject::incPos( m_worldValPos );
 }
 
 void CCamera::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.inc( -x, -y, -z );
-    CObjectTransform::incPos( m_worldValPos );
+    CObject::incPos( m_worldValPos );
 }
 
 
@@ -202,7 +202,7 @@ void CCamera::transform()
 {
     const bool wasTransformed( m_parameters.isSet( TRANSFORM ) );
     
-    CObjectTransform::transform();
+    CObject::transform();
     
     if( wasTransformed )
         calcFinalMatrix();

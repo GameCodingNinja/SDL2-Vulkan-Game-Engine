@@ -10,14 +10,14 @@
 
 // Physical component dependency
 #include <node/rendernode.h>
-#include <common/objecttransform.h>
+#include <common/object.h>
 
 // Forward declaration(s)
 class CNodeData;
 
 // Make use of multiple inheritance so that the object can return
 // a pointer to the node without having to keep a pointer to it
-class CObjectNode : public CRenderNode, public CObjectTransform
+class CObjectNode : public CRenderNode, public CObject
 {
 public:
     
@@ -29,10 +29,10 @@ public:
     
     // Transform the nodes
     void transform() override;
-    void transform( const CObjectTransform & object ) override;
+    void transform( const CObject & object ) override;
     
     // Get the sprite
-    CObjectTransform * getObject() override;
+    CObject * getObject() override;
 };
 
 #endif

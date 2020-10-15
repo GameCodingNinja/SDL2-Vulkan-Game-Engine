@@ -324,7 +324,7 @@ void CUIScrollBox::update()
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
-void CUIScrollBox::transform( const CObjectTransform & object )
+void CUIScrollBox::transform( const CObject & object )
 {
     // Call the parent
     CUISubControl::transform( object );

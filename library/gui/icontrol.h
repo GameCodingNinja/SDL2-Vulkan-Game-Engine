@@ -8,7 +8,7 @@
 #pragma once
 
 // Physical component dependency
-#include <common/objecttransform.h>
+#include <common/object.h>
 
 // Game lib dependencies
 #include <gui/uicontroldefs.h>
@@ -31,7 +31,7 @@ class CSelectMsgCracker;
 class CScrollParam;
 struct XMLNode;
 
-class iControl : public CObjectTransform, boost::noncopyable
+class iControl : public CObject, boost::noncopyable
 {
 public:
 

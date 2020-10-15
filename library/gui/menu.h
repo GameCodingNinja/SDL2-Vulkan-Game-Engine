@@ -9,14 +9,13 @@
 #define __menu_h__
 
 // Physical component dependency
-#include <common/objecttransform.h>
+#include <common/object.h>
 
 // Game lib dependencies
 #include <gui/menudefs.h>
 #include <gui/icontrolnavnode.h>
 #include <gui/icontrol.h>
 #include <gui/scrollparam.h>
-#include <script/scriptcomponent.h>
 #include <common/dynamicoffset.h>
 
 // Boost lib dependencies
@@ -32,7 +31,7 @@
 class CSprite;
 union SDL_Event;
 
-class CMenu : public CObjectTransform, boost::noncopyable
+class CMenu : public CObject, boost::noncopyable
 {
 public:
 
@@ -56,7 +55,7 @@ public:
 
     // Transform the menu
     void transform() override;
-    void transform( const CObjectTransform & object ) override;
+    void transform( const CObject & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );
@@ -191,12 +190,6 @@ private:
 
     // Scrolling parameters
     CScrollParam m_scrollParam;
-    
-    // The script conponent
-    CScriptComponent m_scriptComponent;
-    
-    // Script function map. Tie events to script functions
-    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
     
     // menu alpha value
     float m_alpha;

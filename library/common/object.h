@@ -10,9 +10,14 @@
 #include <common/size.h>
 #include <common/point.h>
 #include <utilities/bitmask.h>
+#include <utilities/matrix.h>
+#include <script/scriptcomponent.h>
 
 // Standard lib dependencies
 #include <cstdint>
+#include <string>
+#include <map>
+#include <tuple>
 
 // Forward declaration(s)
 struct XMLNode;
@@ -106,12 +111,48 @@ public:
 
     // Is the object visible
     bool isVisible() const;
+
+public: // transform related members
     
     // Copy the transform to the passed in object
     void copyTransform( const CObject * pObject );
     
     // Get the parameters
     CBitmask<uint16_t> & getParameters();
+
+    // Transform - One call for those objects that don't have parents
+    virtual void transform();
+    virtual void transform( const CObject & object );
+
+    // Get the object's matrix
+    const CMatrix & getMatrix() const;
+    
+    // Get the object's rotation matrix
+    virtual const CMatrix & getRotMatrix() const;
+    virtual CMatrix & getRotMatrix();
+
+    // Was this object transformed?
+    bool wasTranformed() const;
+
+    // Force the transform
+    void forceTransform();
+    
+    // Get the object's translated position
+    const CPoint<float> & getTransPos() const;
+    
+    // Use a point to set a column - used for 3d physics
+    virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){};
+
+protected: // transform related members
+
+    // Transform the object in local space
+    void transformLocal( CMatrix & matrix );
+    
+    // Apply the scale
+    virtual void applyScale( CMatrix & matrix );
+
+    // Apply the rotation
+    virtual void applyRotation( CMatrix & matrix );
 
 protected:
     
@@ -133,4 +174,18 @@ protected:
     
     // Offset due to a sprite sheet crop.
     CSize<int16_t> m_cropOffset;
+
+    // Translated position
+    CPoint<float> m_transPos;
+
+protected: // transform related members
+
+    // local matrix
+    CMatrix m_matrix;
+
+    // The script part of the sprite
+    CScriptComponent m_scriptComponent;
+    
+    // Script function map. Execute scripts with an id
+    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
 };

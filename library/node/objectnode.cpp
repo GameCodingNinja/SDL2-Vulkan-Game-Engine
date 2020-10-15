@@ -30,7 +30,7 @@ CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
         m_crcUserId = NGenFunc::CalcCRC16( rNodeData.getNodeName() );
 
     // Load the transforms from XML node
-    CObjectTransform::loadTransFromNode( rNodeData.getXMLNode() );
+    CObject::loadTransFromNode( rNodeData.getXMLNode() );
 }
 
 CObjectNode::~CObjectNode()
@@ -42,15 +42,15 @@ CObjectNode::~CObjectNode()
 ****************************************************************************/
 void CObjectNode::transform()
 {
-    CObjectTransform::transform();
+    CObject::transform();
 
     // Call inherited for recursion of children
     CRenderNode::transform();
 }
 
-void CObjectNode::transform( const CObjectTransform & object )
+void CObjectNode::transform( const CObject & object )
 {
-    CObjectTransform::transform( object );
+    CObject::transform( object );
 
     // Call inherited for recursion of children
     CRenderNode::transform();
@@ -59,7 +59,7 @@ void CObjectNode::transform( const CObjectTransform & object )
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CObjectNode::getObject()
+CObject * CObjectNode::getObject()
 {
-    return static_cast<CObjectTransform *>(this);
+    return static_cast<CObject *>(this);
 }

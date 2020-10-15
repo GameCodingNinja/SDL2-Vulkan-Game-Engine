@@ -35,7 +35,7 @@ public:
     void loadControlFromNode( const XMLNode & controlNode ) override;
     
     // Transform the control
-    void transform( const CObjectTransform & object ) override;
+    void transform( const CObject & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera ) override;

@@ -9,7 +9,7 @@
 #include <node/spritenode.h>
 
 // Game lib dependencies
-#include <common/objecttransform.h>
+#include <common/object.h>
 #include <node/nodedata.h>
 #include <objectdata/objectdatamanager.h>
 #include <utilities/genfunc.h>
@@ -66,7 +66,7 @@ void CSpriteNode::transform()
     CRenderNode::transform();
 }
 
-void CSpriteNode::transform( const CObjectTransform & object )
+void CSpriteNode::transform( const CObject & object )
 {
     CSprite::transform( object );
 
@@ -97,7 +97,7 @@ CSprite * CSpriteNode::getSprite()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CSpriteNode::getObject()
+CObject * CSpriteNode::getObject()
 {
-    return static_cast<CObjectTransform *>(this);
+    return static_cast<CObject *>(this);
 }

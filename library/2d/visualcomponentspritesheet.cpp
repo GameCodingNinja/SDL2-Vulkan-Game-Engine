@@ -40,7 +40,7 @@ void CVisualComponentSpriteSheet::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CObjectTransform * const pObject,
+    const CObject * const pObject,
     const CCamera & camera )
 {
     // Setup the uniform buffer object

@@ -8,20 +8,17 @@
 #pragma once
 
 // Physical component dependency
-#include <common/objecttransform.h>
+#include <common/object.h>
 
 // Game lib dependencies
 #include <common/defs.h>
-#include <script/scriptcomponent.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
 
 // Standard lib dependencies
 #include <string>
-#include <map>
 #include <memory>
-#include <tuple>
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -35,7 +32,7 @@ class CCamera;
 struct XMLNode;
 union SDL_Event;
 
-class CSprite : public CObjectTransform, boost::noncopyable
+class CSprite : public CObject, boost::noncopyable
 {
 public:
 
@@ -130,10 +127,4 @@ private:
     
     // The physics part of the sprite
     std::unique_ptr<iPhysicsComponent> m_upPhysicsComponent;
-    
-    // The script part of the sprite
-    CScriptComponent m_scriptComponent;
-    
-    // Script function map. Execute scripts with an id
-    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
 };

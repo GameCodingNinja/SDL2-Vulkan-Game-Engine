@@ -22,7 +22,7 @@
 // Forward declaration(s)
 class CSprite;
 class CCamera;
-class CObjectTransform;
+class CObject;
 class CUIControl;
 
 typedef std::vector<class iNode *>::iterator nodeVecIter_t;
@@ -86,7 +86,7 @@ public:
     // Transform the nodes
     virtual void transform(){}
     // Used to transform object on a sector
-    virtual void transform( const CObjectTransform & object ){}
+    virtual void transform( const CObject & object ){}
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}
@@ -96,7 +96,7 @@ public:
     { return m_type; }
     
     // Get the object
-    virtual CObjectTransform * getObject()
+    virtual CObject * getObject()
     { return nullptr; }
     
     // Get the sprite

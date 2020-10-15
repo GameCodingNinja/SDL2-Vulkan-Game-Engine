@@ -52,7 +52,7 @@ void CUIControlLeafNode::transform()
     m_upControl->transform();
 }
 
-void CUIControlLeafNode::transform( const CObjectTransform & object )
+void CUIControlLeafNode::transform( const CObject & object )
 {
     m_upControl->transform( object );
 }
@@ -77,7 +77,7 @@ CUIControl * CUIControlLeafNode::getControl()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CUIControlLeafNode::getObject()
+CObject * CUIControlLeafNode::getObject()
 {
-    return static_cast<CObjectTransform *>(m_upControl.get());
+    return static_cast<CObject *>(m_upControl.get());
 }

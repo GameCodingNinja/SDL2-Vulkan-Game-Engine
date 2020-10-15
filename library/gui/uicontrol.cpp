@@ -174,7 +174,7 @@ void CUIControl::update()
 ************************************************************************/
 void CUIControl::transform()
 {
-    CObjectTransform::transform();
+    CObject::transform();
 
     for( auto iter : m_pSpriteVec )
         iter->transform( *this );
@@ -182,9 +182,9 @@ void CUIControl::transform()
     transformCollision();
 }
 
-void CUIControl::transform( const CObjectTransform & object )
+void CUIControl::transform( const CObject & object )
 {
-    CObjectTransform::transform( object );
+    CObject::transform( object );
 
     for( auto iter : m_pSpriteVec )
         iter->transform( *this );

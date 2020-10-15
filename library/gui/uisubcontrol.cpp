@@ -183,7 +183,7 @@ void CUISubControl::update()
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
-void CUISubControl::transform( const CObjectTransform & object )
+void CUISubControl::transform( const CObject & object )
 {
     // Call the parent
     CUIControl::transform( object );

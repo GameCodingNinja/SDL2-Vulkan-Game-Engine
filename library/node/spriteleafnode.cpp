@@ -10,7 +10,7 @@
 #include <node/spriteleafnode.h>
 
 // Game lib dependencies
-#include <common/objecttransform.h>
+#include <common/object.h>
 #include <node/nodedata.h>
 #include <objectdata/objectdatamanager.h>
 #include <utilities/genfunc.h>
@@ -60,7 +60,7 @@ void CSpriteLeafNode::transform()
 }
 
 // Used to transform object on a sector
-void CSpriteLeafNode::transform( const CObjectTransform & object )
+void CSpriteLeafNode::transform( const CObject & object )
 {
     CSprite::transform( object );
 }
@@ -85,7 +85,7 @@ CSprite * CSpriteLeafNode::getSprite()
 /************************************************************************
 *    DESC:  Get the object
 ************************************************************************/
-CObjectTransform * CSpriteLeafNode::getObject()
+CObject * CSpriteLeafNode::getObject()
 {
-    return static_cast<CObjectTransform *>(this);
+    return static_cast<CObject *>(this);
 }

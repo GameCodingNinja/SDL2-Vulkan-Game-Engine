@@ -148,7 +148,6 @@ add_library(
         common/worldvalue.cpp
         common/camera.cpp
         common/object.cpp
-        common/objecttransform.cpp
         common/fontdata.cpp
         common/fontproperties.cpp
         common/ivisualcomponent.cpp

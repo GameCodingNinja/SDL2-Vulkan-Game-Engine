@@ -33,7 +33,7 @@ public:
     
     // Transform the nodes
     void transform() override;
-    void transform( const CObjectTransform & object ) override;
+    void transform( const CObject & object ) override;
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
@@ -43,7 +43,7 @@ public:
     CSprite * getSprite() override;
 
     // Get the object
-    CObjectTransform * getObject() override;
+    CObject * getObject() override;
 };
 
 #endif

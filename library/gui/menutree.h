@@ -27,7 +27,7 @@
 #include <SDL2/SDL.h>
 
 // Forward declaration(s)
-class CObjectTransform;
+class CObject;
 class CMenu;
 class CCamera;
 
@@ -57,7 +57,7 @@ public:
 
     // Transform the menu tree
     void transform();
-    void transform( const CObjectTransform & object );
+    void transform( const CObject & object );
     
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );

@@ -12,7 +12,7 @@
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>
 #include <sprite/sprite.h>
-#include <common/objecttransform.h>
+#include <common/object.h>
 #include <gui/uicontrol.h>
 
 // Boost lib dependencies

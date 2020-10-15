@@ -43,7 +43,7 @@ public:
     void recordCommandBuffer( 
         uint32_t index,
         VkCommandBuffer cmdBuffer,
-        const CObjectTransform * const pObject,
+        const CObject * const pObject,
         const CCamera & camera ) final;
 
     // Get the rotation matrix
@@ -60,7 +60,7 @@ private:
         uint32_t index,
         CDevice & device,
         const iObjectVisualData & rVisualData,
-        const CObjectTransform * const pObject,
+        const CObject * const pObject,
         const CCamera & camera );
 
 private:

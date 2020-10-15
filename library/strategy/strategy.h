@@ -9,7 +9,7 @@
 #define __strategy_h__
 
 // Physical component dependency
-#include <common/objecttransform.h>
+#include <common/object.h>
 
 // Game lib dependencies
 #include <common/worldvalue.h>
@@ -27,7 +27,7 @@ class CNodeDataList;
 class iNode;
 class CCamera;
 
-class CStrategy : public CObjectTransform
+class CStrategy : public CObject
 {
 public:
 

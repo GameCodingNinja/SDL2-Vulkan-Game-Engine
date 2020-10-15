@@ -68,7 +68,7 @@ CVisualComponent3D::~CVisualComponent3D()
 void CVisualComponent3D::recordCommandBuffer(
     uint32_t index,
     VkCommandBuffer cmdBuffer,
-    const CObjectTransform * const pObject,
+    const CObject * const pObject,
     const CCamera & camera )
 {
     if( m_active )
@@ -120,7 +120,7 @@ void CVisualComponent3D::updateUBO(
     uint32_t index,
     CDevice & device,
     const iObjectVisualData & rVisualData,
-    const CObjectTransform * const pObject,
+    const CObject * const pObject,
     const CCamera & camera )
 {
     // Setup the uniform buffer object

@@ -24,7 +24,7 @@
 
 namespace NStrategyloader
 {
-    void init( const XMLNode & nodeXML, CObjectTransform * pObject );
+    void init( const XMLNode & nodeXML, CObject * pObject );
     void init( const XMLNode & nodeXML, CSprite * pSprite );
 
     /************************************************************************
@@ -178,7 +178,7 @@ namespace NStrategyloader
     /************************************************************************
      *    DESC:  Init the object with the xmlNode data
      ************************************************************************/
-    void init( const XMLNode & nodeXML, CObjectTransform * pObject )
+    void init( const XMLNode & nodeXML, CObject * pObject )
     {
         // Set any transforms
         pObject->loadTransFromNode( nodeXML );

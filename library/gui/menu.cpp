@@ -392,7 +392,7 @@ void CMenu::transform()
 {
     if( isVisible() )
     {
-        CObjectTransform::transform();
+        CObject::transform();
 
         for( auto iter : m_pSpriteVec )
             iter->transform( *this );
@@ -408,11 +408,11 @@ void CMenu::transform()
     }
 }
 
-void CMenu::transform( const CObjectTransform & object )
+void CMenu::transform( const CObject & object )
 {
     if( isVisible() )
     {
-        CObjectTransform::transform( object );
+        CObject::transform( object );
 
         for( auto iter : m_pSpriteVec )
             iter->transform( *this );

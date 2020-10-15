@@ -337,7 +337,7 @@ void CSprite::applyRotation( CMatrix & matrix )
     }
     else
     {
-        CObjectTransform::applyRotation( matrix );
+        CObject::applyRotation( matrix );
     }
 }
 

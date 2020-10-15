@@ -18,7 +18,6 @@
 #include <common/size.h>
 #include <common/quad.h>
 #include <common/rect.h>
-#include <script/scriptcomponent.h>
 
 // Standard lib dependencies
 #include <memory>
@@ -49,7 +48,7 @@ public:
 
     // Transform the control
     virtual void transform() override;
-    virtual void transform( const CObjectTransform & object ) override;
+    virtual void transform( const CObject & object ) override;
     
     // Record the command buffer for all the sprite objects that are to be rendered
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera ) override;
@@ -206,9 +205,6 @@ protected:
 
 private:
 
-    // Script component object
-    CScriptComponent m_scriptComponent;
-
     // control's default state
     NUIControlDefs::EControlState m_defaultState;
 
@@ -237,9 +233,6 @@ private:
 
     // Mouse selection type
     EActionPress m_mouseSelectType;
-
-    // On state script function names
-    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
 
     // Scrolling parameters
     CScrollParam m_scrollParam;
