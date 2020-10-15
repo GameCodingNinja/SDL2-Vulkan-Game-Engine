@@ -102,7 +102,7 @@ void CDevice::create( const std::string & pipelineCfg )
     if( CSettings::Instance().isValidationLayers() )
     {
         #if !(defined(__ANDROID__) || defined(__arm__))
-        validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation");
+        //validationNameVec.push_back("VK_LAYER_LUNARG_standard_validation"); // Started causing problems 10-14-20
         #endif
         instanceExtensionNameVec.push_back( VK_EXT_DEBUG_REPORT_EXTENSION_NAME );
     }
