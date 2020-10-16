@@ -57,6 +57,13 @@ public:
         STATE6              = 0x4000,
         STATE7              = 0x8000
     };
+
+    enum
+    {
+        GROUP,
+        FUNC_ID,
+        PREPARE_ON_INIT_FLAG
+    };
     
     CObject();
     virtual ~CObject();
@@ -143,6 +150,20 @@ public: // transform related members
     // Use a point to set a column - used for 3d physics
     virtual void setRotMatrixColumn( const int col, const float x, const float y, const float z ){};
 
+public: // script related members
+
+    // Prepare the script Id function to run
+    bool prepare( const std::string & scriptFuncId, const bool forceUpdate = false );
+
+    // Stop the script and recycle the context
+    bool stopAndRecycle( const std::string & scriptFuncId );
+
+    // Stop the script, recycle and start the execution
+    bool stopAndRestart( const std::string & scriptFuncId, bool forceUpdate = false );
+
+    // Copy over the script functions
+    void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap );
+
 protected: // transform related members
 
     // Transform the object in local space
@@ -153,6 +174,14 @@ protected: // transform related members
 
     // Apply the rotation
     virtual void applyRotation( CMatrix & matrix );
+
+protected: // script related members
+
+    // Load the script functions from node and add them to the map
+    void loadScriptFromNode( const XMLNode & node, const std::string & group );
+
+    // Prepare any script functions that are flagged to prepareOnInit
+    void initScriptFunc();
 
 protected:
     

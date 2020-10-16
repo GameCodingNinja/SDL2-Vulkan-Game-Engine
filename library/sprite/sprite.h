@@ -69,20 +69,8 @@ public:
     // Record the command buffers
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );
     
-    // Init the script functions
-    void initScriptFunctions( const XMLNode & node );
-    
-    // Prepare the script Id function to run
-    bool prepare( const std::string & scriptFuncId, bool forceUpdate = false );
-
-    // Stop the script and recycle the context
-    bool stopAndRecycle( const std::string & scriptFuncId );
-
-    // Stop the script, recycle and start the execution
-    bool stopAndRestart( const std::string & scriptFuncId, bool forceUpdate = false );
-    
-    // Copy over the script functions
-    void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap );
+    // Load the script functions from node and add them to the map
+    void loadScriptFromNode( const XMLNode & node );
     
     // Get the object data
     const iObjectData & getObjectData() const;

@@ -153,6 +153,7 @@ namespace NScriptStrategy
 
         // iNode specific functions
         Throw( pEngine->RegisterObjectMethod("iNode", "CSprite & getSprite()",            WRAP_MFN(iNode, getSprite),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("iNode", "CObject & getObject()",            WRAP_MFN(iNode, getObject),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "uiControl & getControl()",         WRAP_MFN(iNode, getControl),     asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & next()",                   WRAP_MFN(iNode, next),           asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "int getType()",                    WRAP_MFN(iNode, getType),        asCALL_GENERIC) );
@@ -161,6 +162,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & getChildNode(string &in)", WRAP_MFN(iNode, getChildNode),   asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "iNode & getNode()",              WRAP_OBJ_LAST(GetiNode),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "iNode & getNode()",              WRAP_OBJ_LAST(GetiNode),         asCALL_GENERIC) );
 
         // Register type
         Throw( pEngine->RegisterObjectType("Strategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );

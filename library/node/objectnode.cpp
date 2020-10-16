@@ -31,6 +31,12 @@ CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
 
     // Load the transforms from XML node
     CObject::loadTransFromNode( rNodeData.getXMLNode() );
+
+    // Load the script functions
+    CObject::loadScriptFromNode( rNodeData.getXMLNode(), rNodeData.getGroup() );
+
+    // Prepare any script functions that are flagged to prepareOnInit
+    CObject::initScriptFunc();
 }
 
 CObjectNode::~CObjectNode()

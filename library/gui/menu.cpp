@@ -67,7 +67,7 @@ void CMenu::load( const std::string & filePath )
     const XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str(), "menu" );
 
     // Init the script functions
-    initScriptFunctions( mainNode );
+    loadScriptFromNode( mainNode );
 
     // Load the scroll data from node
     m_scrollParam.loadFromNode( mainNode.getChildNode( "scroll" ) );
@@ -148,12 +148,11 @@ void CMenu::load( const std::string & filePath )
 
 
 /************************************************************************
-*    DESC:  Init the script functions and add them to the map
-*           This function loads the attribute info reguardless of what it is
+*    DESC:  Load the script functions from node and add them to the map
 ************************************************************************/
-void CMenu::initScriptFunctions( const XMLNode & node )
+void CMenu::loadScriptFromNode( const XMLNode & node )
 {
-    NParseHelper::initScriptFunctions( node, m_scriptFunctionMap, m_group );
+    CObject::loadScriptFromNode( node, m_group );
 }
 
 
@@ -172,7 +171,7 @@ void CMenu::loadStaticSpriteFromNode( const XMLNode & node )
     m_pSpriteVec.back()->loadTransFromNode( node );
 
     // Init the script functions
-    m_pSpriteVec.back()->initScriptFunctions( node );
+    m_pSpriteVec.back()->loadScriptFromNode( node );
 }
 
 

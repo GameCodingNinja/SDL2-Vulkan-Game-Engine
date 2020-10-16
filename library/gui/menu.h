@@ -102,8 +102,8 @@ private:
     // Set the dynamic position
     void setDynamicPos();
     
-    // Init the script functions
-    void initScriptFunctions( const XMLNode & node );
+    // Load the script functions from node and add them to the map
+    void loadScriptFromNode( const XMLNode & node );
 
     // Load a static sprite from an XML node
     void loadStaticSpriteFromNode( const XMLNode & node );
