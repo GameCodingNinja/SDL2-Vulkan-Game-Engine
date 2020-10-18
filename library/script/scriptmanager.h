@@ -13,7 +13,7 @@
 
 // Game lib dependencies
 #include <utilities/smartpointers.h>
-#include <script/scriptdefs.h>
+#include <script/scriptparam.h>
 
 // Standard lib dependencies
 #include <string>

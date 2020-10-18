@@ -756,9 +756,9 @@ void CMenu::prepare( const std::string & scriptFuncId, uint type, int code )
     if( iter != m_scriptFunctionMap.end() )
     {
         if( scriptFuncId == "event" )
-            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this, type, code} );
+            m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this, type, code} );
         else
-            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+            m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
     }
 }
 

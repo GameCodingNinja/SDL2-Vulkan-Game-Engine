@@ -9,7 +9,7 @@
 #define __script_component_h__
 
 // Game lib dependencies
-#include <script/scriptdefs.h>
+#include <script/scriptparam.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>

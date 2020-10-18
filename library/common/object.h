@@ -12,6 +12,7 @@
 #include <utilities/bitmask.h>
 #include <utilities/matrix.h>
 #include <script/scriptcomponent.h>
+#include <script/scriptpreparefunc.h>
 
 // Standard lib dependencies
 #include <cstdint>
@@ -56,13 +57,6 @@ public:
         STATE5              = 0x2000,
         STATE6              = 0x4000,
         STATE7              = 0x8000
-    };
-
-    enum
-    {
-        GROUP,
-        FUNC_ID,
-        PREPARE_ON_INIT_FLAG
     };
     
     CObject();
@@ -152,6 +146,9 @@ public: // transform related members
 
 public: // script related members
 
+    // Prepare any script functions that are flagged to prepareOnInit
+    void prepareOnInit();
+
     // Prepare the script Id function to run
     bool prepare( const std::string & scriptFuncId, const bool forceUpdate = false );
 
@@ -162,7 +159,7 @@ public: // script related members
     bool stopAndRestart( const std::string & scriptFuncId, bool forceUpdate = false );
 
     // Copy over the script functions
-    void copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap );
+    void copyScriptFunctions( const std::map<std::string, CScriptPrepareFunc> & scriptFunctionMap );
 
 protected: // transform related members
 
@@ -179,9 +176,6 @@ protected: // script related members
 
     // Load the script functions from node and add them to the map
     void loadScriptFromNode( const XMLNode & node, const std::string & group );
-
-    // Prepare any script functions that are flagged to prepareOnInit
-    void initScriptFunc();
 
 protected:
     
@@ -216,5 +210,5 @@ protected: // transform related members
     CScriptComponent m_scriptComponent;
     
     // Script function map. Execute scripts with an id
-    std::map<const std::string, std::tuple<std::string, std::string, bool>> m_scriptFunctionMap;
+    std::map<const std::string, CScriptPrepareFunc> m_scriptFunctionMap;
 };

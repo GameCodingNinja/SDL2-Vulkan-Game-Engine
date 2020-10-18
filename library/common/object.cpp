@@ -432,12 +432,11 @@ void CObject::loadScriptFromNode( const XMLNode & node, const std::string & grou
 /************************************************************************
 *    DESC:  Prepare any script functions that are flagged to prepareOnInit
 ************************************************************************/
-void CObject::initScriptFunc()
+void CObject::prepareOnInit()
 {
-    // Prepare any script functions that have been flagged
     for( auto & iter : m_scriptFunctionMap )
-        if( std::get<PREPARE_ON_INIT_FLAG>(iter.second) )
-            m_scriptComponent.prepare( std::get<GROUP>(iter.second), std::get<FUNC_ID>(iter.second), {this} );
+        if( iter.second.prepareOnInit )
+            prepare( iter.first );
 }
 
 /************************************************************************
@@ -448,7 +447,7 @@ bool CObject::prepare( const std::string & scriptFuncId, const bool forceUpdate 
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+        m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
 
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
@@ -469,7 +468,7 @@ bool CObject::stopAndRecycle( const std::string & scriptFuncId )
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.stopAndRecycle( std::get<1>(iter->second) );
+        m_scriptComponent.stopAndRecycle( iter->second.funcId );
 
         return true;
     }
@@ -485,7 +484,7 @@ bool CObject::stopAndRestart( const std::string & scriptFuncId, bool forceUpdate
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.stopAndRestart( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+        m_scriptComponent.stopAndRestart( iter->second.group, iter->second.funcId, {this} );
 
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
@@ -501,7 +500,7 @@ bool CObject::stopAndRestart( const std::string & scriptFuncId, bool forceUpdate
 /************************************************************************
 *    DESC:  Copy over the script functions
 ************************************************************************/
-void CObject::copyScriptFunctions( const std::map<std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap )
+void CObject::copyScriptFunctions( const std::map<std::string, CScriptPrepareFunc> & scriptFunctionMap )
 {
     for( auto & iter : scriptFunctionMap )
         m_scriptFunctionMap.emplace( iter );

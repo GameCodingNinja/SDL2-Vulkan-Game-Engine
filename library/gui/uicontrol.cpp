@@ -679,9 +679,9 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
     if( iter != m_scriptFunctionMap.end() )
     {
         if( controlState == NUIControlDefs::ECS_EVENT )
-            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this, type, code} );
+            m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this, type, code} );
         else
-            m_scriptComponent.prepare( std::get<0>(iter->second), std::get<1>(iter->second), {this} );
+            m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
     }
 }
 

@@ -126,7 +126,8 @@ void CSprite::init()
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->createFontString();
 
-    initScriptFunc();
+    // Prepare any script functions that are flagged to prepareOnInit
+    prepareOnInit();
 }
 
 /************************************************************************

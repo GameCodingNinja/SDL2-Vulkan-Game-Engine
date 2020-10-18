@@ -17,6 +17,7 @@
 #include <common/vertex.h>
 #include <common/dynamicoffset.h>
 #include <utilities/xmlParser.h>
+#include <script/scriptpreparefunc.h>
 
 // Standard lib dependencies
 #include <assert.h>
@@ -71,7 +72,7 @@ namespace NParseHelper
     // Init the script functions and add them to the map
     void initScriptFunctions(
         const XMLNode & node,
-        std::map<const std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap,
+        std::map<const std::string, CScriptPrepareFunc> & scriptFunctionMap,
         const std::string & rGroup );
 }
 

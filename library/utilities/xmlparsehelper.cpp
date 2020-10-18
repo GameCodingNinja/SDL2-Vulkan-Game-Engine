@@ -418,7 +418,7 @@ namespace NParseHelper
     ************************************************************************/
     void initScriptFunctions(
         const XMLNode & node,
-        std::map<const std::string, std::tuple<std::string, std::string, bool>> & scriptFunctionMap,
+        std::map<const std::string, CScriptPrepareFunc> & scriptFunctionMap,
         const std::string & rGroup )
     {
         // Check for scripting - Add an empty string for scripts not defined
@@ -450,7 +450,12 @@ namespace NParseHelper
                     if( scriptNode.isAttributeSet( "prepareOnInit" ) )
                         prepareOnInit = ( std::strcmp( scriptNode.getAttribute("prepareOnInit"), "true" ) == 0 );
 
-                    scriptFunctionMap.emplace( attrName, std::forward_as_tuple(group, attrValue, prepareOnInit) );
+                    bool forceUpdate = false;
+                    if( scriptNode.isAttributeSet( "forceUpdate" ) )
+                        forceUpdate = ( std::strcmp( scriptNode.getAttribute("forceUpdate"), "true" ) == 0 );
+
+                    scriptFunctionMap.emplace( 
+                        std::piecewise_construct, std::forward_as_tuple(attrName), std::forward_as_tuple(group, attrValue, prepareOnInit, forceUpdate) );
                 }
             }
         }

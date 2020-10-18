@@ -36,7 +36,7 @@ CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
     CObject::loadScriptFromNode( rNodeData.getXMLNode(), rNodeData.getGroup() );
 
     // Prepare any script functions that are flagged to prepareOnInit
-    CObject::initScriptFunc();
+    CObject::prepareOnInit();
 }
 
 CObjectNode::~CObjectNode()

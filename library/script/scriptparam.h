@@ -1,18 +1,13 @@
 
 /************************************************************************
-*    FILE NAME:       scriptdefs.h
+*    FILE NAME:       scriptparam.h
 *
-*    DESCRIPTION:     Class template
+*    DESCRIPTION:     Script parameter types
 ************************************************************************/
 
-#ifndef __script_defs_h__
-#define __script_defs_h__
+#pragma once
 
-// Game lib dependencies
 #include <common/defs.h>
-
-// Forward declaration(s)
-class CVisualComponent2D;
 
 class CScriptParam
 {
@@ -71,5 +66,3 @@ template<> inline int    CScriptParam::get() const { return m_paramVal.intVal; }
 template<> inline uint   CScriptParam::get() const { return m_paramVal.uintVal; }
 template<> inline float  CScriptParam::get() const { return m_paramVal.floatVal; }
 template<> inline void * CScriptParam::get() const { return m_paramVal.pRegObjVal; }
-
-#endif
