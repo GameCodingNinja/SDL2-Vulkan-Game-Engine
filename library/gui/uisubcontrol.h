@@ -91,7 +91,7 @@ public:
     virtual size_t size() override;
 
     // Prepare the script Id function to run
-    virtual bool prepare( const std::string & scriptFuncId, bool forceUpdate = false ) override;
+    virtual bool prepare( const std::string & scriptFuncId ) override;
 
 protected:
 

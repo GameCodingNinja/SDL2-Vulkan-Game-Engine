@@ -4,8 +4,8 @@
 
         <sprite objectName="key_binding_scroll_box_frame">
             <scriptLst>
-                <script disable="Control_Disabled"/>
-                <script inactive="Control_Inactive"/>
+                <script disable="Control_Disabled" forceUpdate="true"/>
+                <script inactive="Control_Inactive" forceUpdate="true"/>
                 <script active="Control_Active"/>
             </scriptLst>
         </sprite>
@@ -54,7 +54,7 @@
                 <string text="Menu Select"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -69,7 +69,7 @@
                 <string text="Menu Escape"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -84,7 +84,7 @@
                 <string text="Menu Back"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -99,7 +99,7 @@
                 <string text="Menu Toggle"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -114,7 +114,7 @@
                 <string text="Menu Tab Left"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -129,7 +129,7 @@
                 <string text="Menu Tab Right"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -152,7 +152,7 @@
                 <string text="Up"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -167,7 +167,7 @@
                 <string text="Down"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -182,7 +182,7 @@
                 <string text="Left"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -197,7 +197,7 @@
                 <string text="Right"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -212,7 +212,7 @@
                 <string text="Shoot"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>
@@ -227,7 +227,7 @@
                 <string text="Deccelerate"/>
             </fontStringLst>
             <scriptLst>
-                <script init="KeyBindBtn_init"/>
+                <script init="KeyBindBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="KeyBindBtn_execute"/>

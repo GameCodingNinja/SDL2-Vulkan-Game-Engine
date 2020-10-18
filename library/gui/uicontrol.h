@@ -136,9 +136,6 @@ public:
     // Check if control is a sub control
     virtual bool isSubControl() const override;
     
-    // Call a script function map key for sprite
-    void callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate = false ) override;
-    
     // Set the alpha value of this menu
     virtual void setAlpha( float alpha ) override;
     
@@ -155,7 +152,7 @@ public:
     bool canScroll( int msg ) override;
 
     // Prepare the script Id function to run
-    virtual bool prepare( const std::string & scriptFuncId, bool forceUpdate = false ) override;
+    virtual bool prepare( const std::string & scriptFuncId ) override;
 
 protected:
 

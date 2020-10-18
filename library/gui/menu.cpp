@@ -344,7 +344,8 @@ void CMenu::init()
     for( auto iter : m_pControlVec )
         iter->init();
     
-    prepare( "init" );
+    // Prepare any script functions that are flagged to prepareOnInit
+    prepareOnInit();
 }
 
 
@@ -759,6 +760,10 @@ void CMenu::prepare( const std::string & scriptFuncId, uint type, int code )
             m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this, type, code} );
         else
             m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
+        
+        // Force an update
+        if( iter->second.forceUpdate )
+            m_scriptComponent.update();
     }
 }
 

@@ -4,8 +4,8 @@
 
         <sprite objectName="250x90_slider_selection_frame">
             <scriptLst>
-                <script disable="Control_Hidden"/>
-                <script inactive="Control_Hidden"/>
+                <script disable="Control_Hidden" forceUpdate="true"/>
+                <script inactive="Control_Hidden" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
             </scriptLst>
@@ -14,8 +14,8 @@
         <sprite objectName="230x10_slider_frame">
             <position x="0" y="-15" z="0"/>
             <scriptLst>
-                <script disable="Control_Disabled"/>
-                <script inactive="Control_Inactive"/>
+                <script disable="Control_Disabled" forceUpdate="true"/>
+                <script inactive="Control_Inactive" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
             </scriptLst>
@@ -27,8 +27,8 @@
                 <alignment horzAlign="left" vertAlign="center"/>
             </font>
             <scriptLst>
-                <script disable="Control_Disabled"/>
-                <script inactive="Control_Inactive"/>
+                <script disable="Control_Disabled" forceUpdate="true"/>
+                <script inactive="Control_Inactive" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
             </scriptLst>

@@ -2,7 +2,7 @@
 
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
-    <!-- Supports init, transIn, transOut, event -->
+    <!-- Supports transIn, transOut, event -->
     <scriptLst>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -31,7 +31,7 @@
                 <string text="x"/>
             </fontStringLst>
             <action actionType="close"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -46,7 +46,7 @@
                 <string text="^"/>
             </fontStringLst>
             <action actionType="back"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -64,9 +64,9 @@
             <navigate up="settings_apply_btn" down="full_screen_check_box"/>
             <scroll startDelay="750" scrollDelay="350" left="true" right="true"/>
             <actionResponse left="true" right="true"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
-                <script init="ResolutionBtn_init"/>
+                <script init="ResolutionBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="ResolutionBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script change="ResolutionBtn_change"/>
@@ -83,9 +83,9 @@
             </fontStringLst>
             <!-- Supports up, down, left, right -->
             <navigate up="resolution_btn_lst" down="v-sync_check_box"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
-                <script init="FullScreenCheckbox_init"/>
+                <script init="FullScreenCheckbox_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="FullScreenCheckbox_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -103,7 +103,7 @@
             </fontStringLst>
             <!-- Supports up, down, left, right -->
             <navigate up="full_screen_check_box" down="settings_dead_zone_slider"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -121,9 +121,9 @@
             <!-- Supports up, down, left, right -->
             <navigate up="v-sync_check_box" down="settings_apply_btn"/>
             <scroll startDelay="750" scrollDelay="100" left="true" right="true"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
-                <script init="DeadZoneSlider_init"/>
+                <script init="DeadZoneSlider_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="DeadZoneSlider_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="DeadZoneSlider_select"/>
@@ -140,9 +140,9 @@
             </fontStringLst>
             <!-- Supports up, down, left, right -->
             <navigate up="settings_dead_zone_slider" down="resolution_btn_lst"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, execute & event -->
             <scriptLst>
-                <script init="ApplyBtn_init"/>
+                <script init="ApplyBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="ApplyBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

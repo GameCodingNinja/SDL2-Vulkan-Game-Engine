@@ -442,7 +442,7 @@ void CObject::prepareOnInit()
 /************************************************************************
 *    DESC:  Prepare the script function Id to run
 ************************************************************************/
-bool CObject::prepare( const std::string & scriptFuncId, const bool forceUpdate )
+bool CObject::prepare( const std::string & scriptFuncId )
 {
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
@@ -451,7 +451,7 @@ bool CObject::prepare( const std::string & scriptFuncId, const bool forceUpdate 
 
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
-        if( forceUpdate )
+        if( iter->second.forceUpdate )
             m_scriptComponent.update();
 
         return true;
@@ -479,16 +479,15 @@ bool CObject::stopAndRecycle( const std::string & scriptFuncId )
 /************************************************************************
 *    DESC:  Stop the script, recycle and start the execution
 ************************************************************************/
-bool CObject::stopAndRestart( const std::string & scriptFuncId, bool forceUpdate )
+bool CObject::stopAndRestart( const std::string & scriptFuncId )
 {
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
         m_scriptComponent.stopAndRestart( iter->second.group, iter->second.funcId, {this} );
 
-        // Allow the script to execute and return it's context to the queue
-        // for the scripts that don't animate
-        if( forceUpdate )
+        // Force an update
+        if( iter->second.forceUpdate )
             m_scriptComponent.update();
 
         return true;

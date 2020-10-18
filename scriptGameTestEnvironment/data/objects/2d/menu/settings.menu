@@ -63,7 +63,7 @@
             <actionResponse left="true" right="true"/>
             <scriptLst>
                 <script active="Control_OnActive"/>
-                <script init="ControlResolution_OnInit"/>
+                <script init="ControlResolution_OnInit" prepareOnInit="true" forceUpdate="true"/>
             </scriptLst>
         </control>
 
@@ -110,7 +110,7 @@
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-                <script init="ControlDeadZoneSlider_OnInit"/>
+                <script init="ControlDeadZoneSlider_OnInit" prepareOnInit="true" forceUpdate="true"/>
             </scriptLst>
         </control>
 

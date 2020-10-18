@@ -136,9 +136,6 @@ public:
     // Check if control is a sub control
     virtual bool isSubControl() const = 0;
     
-    // Call a script function map key for sprite
-    virtual void callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate = false ) = 0;
-    
     // Get the pointer to the active control
     virtual iControl * getPtrToActiveControl() = 0;
     
@@ -174,7 +171,7 @@ public:
     float getAlpha() const;
 
     // Prepare the script Id function to run
-    virtual bool prepare( const std::string & scriptFuncId, bool forceUpdate = false ) = 0;
+    virtual bool prepare( const std::string & scriptFuncId ) = 0;
 
     // Interface sub controls
 

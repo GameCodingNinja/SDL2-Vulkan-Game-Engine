@@ -66,7 +66,7 @@
             <actionResponse left="true" right="true"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
-                <script init="ResolutionBtn_init"/>
+                <script init="ResolutionBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="ResolutionBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script change="ResolutionBtn_change"/>
@@ -85,7 +85,7 @@
             <navigate up="resolution_btn_lst" down="v-sync_check_box"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
-                <script init="FullScreenCheckbox_init"/>
+                <script init="FullScreenCheckbox_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="FullScreenCheckbox_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -123,7 +123,7 @@
             <scroll startDelay="750" scrollDelay="100" left="true" right="true"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
-                <script init="DeadZoneSlider_init"/>
+                <script init="DeadZoneSlider_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="DeadZoneSlider_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="DeadZoneSlider_select"/>
@@ -142,7 +142,7 @@
             <navigate up="settings_dead_zone_slider" down="resolution_btn_lst"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, execute & event -->
             <scriptLst>
-                <script init="ApplyBtn_init"/>
+                <script init="ApplyBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="ApplyBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

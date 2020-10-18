@@ -550,8 +550,8 @@ void CUIControl::init()
     for( auto iter : m_pSpriteVec )
         iter->init();
     
-    // Prepare script function associated with handling this game event
-    prepareControlScriptFunction( NUIControlDefs::ECS_INIT );
+    // Prepare any script functions that are flagged to prepareOnInit
+    prepareOnInit();
 }
 
 
@@ -561,15 +561,9 @@ void CUIControl::init()
 void CUIControl::prepareSpriteScriptFunction( NUIControlDefs::EControlState controlState )
 {
     std::string scriptFuncMapKey = "null";
-    bool forceUpdate(false);
 
     switch( controlState )
     {
-        case NUIControlDefs::ECS_INIT:
-            scriptFuncMapKey = "init";
-            forceUpdate = true;
-        break;
-
         case NUIControlDefs::ECS_TRANS_IN:
             scriptFuncMapKey = "transIn";
         break;
@@ -580,12 +574,10 @@ void CUIControl::prepareSpriteScriptFunction( NUIControlDefs::EControlState cont
 
         case NUIControlDefs::ECS_DISABLE:
             scriptFuncMapKey = "disable";
-            forceUpdate = true;
         break;
 
         case NUIControlDefs::ECS_INACTIVE:
             scriptFuncMapKey = "inactive";
-            forceUpdate = true;
         break;
 
         case NUIControlDefs::ECS_ACTIVE:
@@ -606,18 +598,8 @@ void CUIControl::prepareSpriteScriptFunction( NUIControlDefs::EControlState cont
         break;
     };
 
-    // Force an update for states that just change settings and don't animate
-    callSpriteScriptFuncKey( scriptFuncMapKey, forceUpdate );
-}
-
-
-/************************************************************************
-*    DESC:  Call a script function map key for sprite
-************************************************************************/
-void CUIControl::callSpriteScriptFuncKey( const std::string & scriptFuncMapKey, bool forceUpdate )
-{
     for( auto iter : m_pSpriteVec )
-        iter->prepare( scriptFuncMapKey, forceUpdate );
+        iter->prepare( scriptFuncMapKey );
 }
 
 
@@ -632,10 +614,6 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
     {
         case NUIControlDefs::ECS_NULL:
             scriptFuncMapKey = "null";
-        break;
-
-        case NUIControlDefs::ECS_INIT:
-            scriptFuncMapKey = "init";
         break;
 
         case NUIControlDefs::ECS_TRANS_IN:
@@ -682,6 +660,10 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
             m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this, type, code} );
         else
             m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
+        
+        // Force an update
+        if( iter->second.forceUpdate )
+            m_scriptComponent.update();
     }
 }
 
@@ -689,13 +671,13 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
 /************************************************************************
 *    DESC:  Prepare the script function Id to run
 ************************************************************************/
-bool CUIControl::prepare( const std::string & scriptFuncId, bool forceUpdate )
+bool CUIControl::prepare( const std::string & scriptFuncId )
 {
-    bool result = CObject::prepare( scriptFuncId, forceUpdate );
+    bool result = CObject::prepare( scriptFuncId);
 
     // Have the individual sprites respond to the prepare
     for( auto iter : m_pSpriteVec )
-        result |= iter->prepare( scriptFuncId, forceUpdate );
+        result |= iter->prepare( scriptFuncId );
 
     return result;
 }

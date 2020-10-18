@@ -1,6 +1,6 @@
 <menu>
     
-    <!-- Supports init, transIn, transOut, event -->
+    <!-- Supports transIn, transOut, event -->
     <scriptLst>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -29,7 +29,7 @@
             </fontStringLst>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptLst>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
