@@ -64,7 +64,7 @@ void CMenuTree::init()
         // If we have a root menu, add it to the path
         m_pMenuPathVec.push_back( m_pRootMenu );
 
-        m_pRootMenu->activateMenu();
+        m_pRootMenu->activateRootMenu();
     }
 }
 

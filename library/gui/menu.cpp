@@ -350,13 +350,12 @@ void CMenu::init()
 
 
 /************************************************************************
-*    DESC:  Activate this menu because it's probably a root menu
+*    DESC:  Activate the root menu
 ************************************************************************/
-void CMenu::activateMenu()
+void CMenu::activateRootMenu()
 {
     m_state = NMenuDefs::EMS_IDLE;
-    setVisible(true);
-    setAlpha(1.f);
+    prepare( "activateRootMenu" );
     activateFirstInactiveControl();
 }
 
@@ -873,20 +872,17 @@ CScrollParam & CMenu::getScrollParam( int msg )
 ************************************************************************/
 void CMenu::setAlpha( float alpha )
 {
-    if( isVisible() )
-    {
-        for( auto iter : m_pSpriteVec )
-            iter->getVisualComponent()->setAlpha( alpha );
+    for( auto iter : m_pSpriteVec )
+        iter->getVisualComponent()->setAlpha( alpha );
 
-        for( auto iter : m_pStaticControlVec )
-            iter->setAlpha( alpha );
+    for( auto iter : m_pStaticControlVec )
+        iter->setAlpha( alpha );
 
-        for( auto iter : m_pMouseOnlyControlVec )
-            iter->setAlpha( alpha );
+    for( auto iter : m_pMouseOnlyControlVec )
+        iter->setAlpha( alpha );
 
-        for( auto iter : m_pControlVec )
-            iter->setAlpha( alpha );
-    }
+    for( auto iter : m_pControlVec )
+        iter->setAlpha( alpha );
 
     m_alpha = alpha;
 }

@@ -4,6 +4,7 @@
     
     <!-- Supports transIn & transOut -->
     <scriptList>
+        <script activateRootMenu="Menu_ActivateRootMenu" forceUpdate="true"/>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
     </scriptList>

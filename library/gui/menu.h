@@ -47,8 +47,8 @@ public:
     // Init the menu
     void init();
 
-    // Activate this menu because it's probably a root menu
-    void activateMenu();
+    // Activate the root menu
+    void activateRootMenu();
 
     // Update the menu
     void update();
