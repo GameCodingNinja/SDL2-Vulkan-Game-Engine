@@ -422,7 +422,7 @@ namespace NParseHelper
         const std::string & rGroup )
     {
         // Check for scripting - Add an empty string for scripts not defined
-        XMLNode scriptLstNode = node.getChildNode( "scriptLst" );
+        XMLNode scriptLstNode = node.getChildNode( "scriptList" );
         if( !scriptLstNode.isEmpty() )
         {
             for( int i = 0; i < scriptLstNode.nChildNode(); ++i )

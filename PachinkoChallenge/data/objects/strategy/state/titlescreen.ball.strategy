@@ -7,9 +7,9 @@
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50100"/>
             <scale x=".9" y=".9" z="1"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -20,9 +20,9 @@
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50200"/>
             <scale x=".9" y=".9" z="1"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -33,9 +33,9 @@
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50300"/>
             <scale x=".9" y=".9" z="1"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -45,9 +45,9 @@
         <sprite>
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50400"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -57,9 +57,9 @@
         <sprite>
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50500"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -69,9 +69,9 @@
         <sprite>
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50600"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -81,9 +81,9 @@
         <sprite>
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50700"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -93,9 +93,9 @@
         <sprite>
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50800"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -105,9 +105,9 @@
         <sprite>
             <!-- Default and stagger the initial position off screen so as to not incure any init collisions with other objects -->
             <position x="50000" y="50900"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Title_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>

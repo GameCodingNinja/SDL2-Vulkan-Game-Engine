@@ -4,9 +4,9 @@
         
         <sprite objectName="loadAnim">
             <dynamicOffset right="150" bottom="150"/>
-            <scriptLst>
+            <scriptList>
                 <script loadAnimationLoop="State_LoopAnimation" group="(main)"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>

@@ -3,10 +3,10 @@
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
     <!-- Supports transIn & transOut -->
-    <scriptLst>
+    <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
-    </scriptLst>
+    </scriptList>
 
     <menuControls>
 
@@ -14,98 +14,98 @@
         <control name="continue_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="-140" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Continue"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="exit_btn" down="new_game_btn"/>
             <!-- Supports disabled, inactive, active, select & execute -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ControlConfirm_OnExecute"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- New Game Button -->
         <control name="new_game_btn" controlType="button" defaultState="disabled">
             <filePath file="data/objects/2d/menu/control/button_spin_275x55.ctrl"/>
             <position x="0" y="-84" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="New Game"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="continue_btn" down="load_game_btn"/>
             <!-- Supports disabled, inactive, active, select & execute -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Load Game Button -->
         <control name="load_game_btn" controlType="button" defaultState="disabled">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="-28" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Load Game"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="new_game_btn" down="settings_btn"/>
             <!-- Supports disabled, inactive, active, select & execute -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
       
         <!-- Settings Button -->
         <control name="settings_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="28" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Settings"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="load_game_btn" down="key_binding_btn"/>
             <!-- Supports disabled, inactive, active, select & execute -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Key Bindings Button -->
         <control name="key_binding_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="84" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Key Bindings"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
             <navigate up="settings_btn" down="exit_btn"/>
             <!-- Supports disabled, inactive, active, select & execute -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Exit Game Button -->
         <control name="exit_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="140" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Exit Game"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="key_binding_btn" down="continue_btn"/>
             <!-- Supports disabled, inactive, active, select & execute -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ControlConfirm_OnExecute"/>
-            </scriptLst>
+            </scriptList>
         </control> 
 
     </menuControls>

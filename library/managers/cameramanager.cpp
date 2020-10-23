@@ -39,7 +39,7 @@ CCameraMgr::~CCameraMgr()
 void CCameraMgr::load( const std::string & filePath )
 {
     // Open and parse the XML file:
-    const XMLNode node = XMLNode::openFileHelper(filePath.c_str(), "cameraLst");
+    const XMLNode node = XMLNode::openFileHelper(filePath.c_str(), "cameraList");
 
     if( !node.isEmpty() )
     {

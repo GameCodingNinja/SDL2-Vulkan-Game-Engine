@@ -3,9 +3,9 @@
     <spriteList>
 
         <sprite objectName="meter_frame">
-            <scriptLst>
+            <scriptList>
                 <script inc_flash="Level_MultiIncFlash" group="(main)"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
         <!-- The last font sprite is the one used to display the meter value -->
@@ -14,9 +14,9 @@
             <font fontName="dejavu_sans_cond_60">
                 <attributes kerning="-2"/>
             </font>
-            <scriptLst>
+            <scriptList>
                 <script inc_flash="Level_MultiIncFlash" group="(main)"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </spriteList>

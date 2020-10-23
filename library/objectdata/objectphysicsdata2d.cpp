@@ -85,7 +85,7 @@ void CObjectPhysicsData2D::loadFromNode( const XMLNode & objectNode )
         }
 
         // The body of the physics sprite used for physics
-        const XMLNode fixtureLstNode = physicsNode.getChildNode( "fixtureLst" );
+        const XMLNode fixtureLstNode = physicsNode.getChildNode( "fixtureList" );
         if( !fixtureLstNode.isEmpty() )
         {
             // Allocate all the needed fixtures
@@ -139,7 +139,7 @@ void CObjectPhysicsData2D::loadFromNode( const XMLNode & objectNode )
                     iter.m_sensor = (std::strcmp(fixtureNode.getAttribute( "sensor" ), "true") == 0);
 
                 // See if there is a vert list
-                const XMLNode vertLstNode = fixtureNode.getChildNode("vertLst");
+                const XMLNode vertLstNode = fixtureNode.getChildNode("vertList");
                 if( !vertLstNode.isEmpty() )
                 {
                     iter.m_vertVec.reserve( vertLstNode.nChildNode() );

@@ -2,10 +2,10 @@
 
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
-    <scriptLst>
+    <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
-    </scriptLst>
+    </scriptList>
 
     <staticMenuControls>
 
@@ -13,9 +13,9 @@
         <control controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/menu_label.ctrl"/>
             <position x="0" y="-150" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Pause"/>
-            </fontStringLst>
+            </fontStringList>
         </control>
 
     </staticMenuControls>
@@ -26,14 +26,14 @@
         <control name="close_btn" controlType="button" defaultState="inactive" mouseOnlyCtrl="true">
             <filePath file="data/objects/2d/menu/control/close_button.ctrl"/>
             <position x="140" y="-160" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="x"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="close"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
     
     </mouseOnlyControls>
@@ -44,77 +44,77 @@
         <control name="resume_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="-90" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Resume"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="back"/>
             <navigate up="exit_btn" down="settings_btn"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Settings Button -->
         <control name="settings_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="-35" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Settings"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="settings_menu"/>
             <navigate up="resume_btn" down="key_binding_btn"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Key Bindings Button -->
         <control name="key_binding_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="20" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Key Bindings"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
             <navigate up="settings_btn" down="main_menu_btn"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Main Menu Button -->
         <control name="main_menu_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="75" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Main Menu"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="key_binding_btn" down="exit_btn"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ControlConfirm_OnExecute"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Exit Game Button -->
         <control name="exit_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
             <position x="0" y="130" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Exit Game"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <navigate up="main_menu_btn" down="resume_btn"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ControlConfirm_OnExecute"/>
-            </scriptLst>
+            </scriptList>
         </control> 
 
     </menuControls>

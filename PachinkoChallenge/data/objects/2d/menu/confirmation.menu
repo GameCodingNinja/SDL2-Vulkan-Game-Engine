@@ -1,10 +1,10 @@
 <menu>
     
     <!-- Supports transIn, transOut, event -->
-    <scriptLst>
+    <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
-    </scriptLst>
+    </scriptList>
 
     <staticMenuControls>
 
@@ -12,9 +12,9 @@
         <control name="message_lbl" controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/confirmation_label.ctrl"/>
             <position x="0" y="-50" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Test Message"/>
-            </fontStringLst>
+            </fontStringList>
         </control>
 
     </staticMenuControls>
@@ -24,35 +24,35 @@
         <control name="no_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_150x75.ctrl"/>
             <position x="150" y="150" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="No"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
             <!-- Supports up, down, left, right -->
             <navigate left="yes_btn"/>
             <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <control name="yes_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_150x75.ctrl"/>
             <position x="-150" y="150" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Yes"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
             <!-- Supports up, down, left, right -->
             <navigate right="no_btn"/>
             <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
     </menuControls>

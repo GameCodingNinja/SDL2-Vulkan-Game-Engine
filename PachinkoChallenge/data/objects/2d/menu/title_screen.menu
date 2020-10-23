@@ -3,10 +3,10 @@
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
     <!-- Supports transIn, transOut, event -->
-    <scriptLst>
+    <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
-    </scriptLst>
+    </scriptList>
 
     <menuControls>
 
@@ -14,33 +14,33 @@
         <control name="continue_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_235x85.ctrl"/>
             <position x="-200" y="0" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Start"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ConfirmBtn_execute"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Score Button -->
         <control name="score_btn" controlType="button" defaultState="disabled">
             <filePath file="data/objects/2d/menu/control/button_235x85.ctrl"/>
             <position x="200" y="0" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Score"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="settings_menu"/>
             <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
     </menuControls>

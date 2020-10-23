@@ -54,7 +54,7 @@ void iControl::loadFromNode( const XMLNode & node )
     loadDynamicOffsetFromNode( node );
 
     // See if we have a list of strings
-    XMLNode stringLstNode = node.getChildNode( "fontStringLst" );
+    XMLNode stringLstNode = node.getChildNode( "fontStringList" );
     if( !stringLstNode.isEmpty() )
     {
         for( int i = 0; i < stringLstNode.nChildNode(); ++i )

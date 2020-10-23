@@ -3,22 +3,22 @@
     <spriteList>
 
         <sprite objectName="275x55_button_frame">
-            <scriptLst>
+            <scriptList>
                 <script disable="Control_Hidden" forceUpdate="true"/>
                 <script inactive="Control_Hidden" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
         <sprite objectName="control_font">
             <font fontName="dejavu_sans_cond_32"/>
-            <scriptLst>
+            <scriptList>
                 <script disable="Control_Disabled" forceUpdate="true"/>
                 <script inactive="Control_Inactive" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected_Dispatch_Exe"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </spriteList>
@@ -31,10 +31,10 @@
         <control controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_arrow.ctrl"/>
             <position x="-110" y="0" z="0"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Increment Button -->
@@ -42,10 +42,10 @@
             <filePath file="data/objects/2d/menu/control/button_arrow.ctrl"/>
             <position x="110" y="0" z="0"/>
             <rotation z="180"/>
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
     </subControlList>

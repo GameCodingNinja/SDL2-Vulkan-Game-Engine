@@ -3,10 +3,10 @@
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
     <!-- Supports init, transIn, transOut, event -->
-    <scriptLst>
+    <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
-    </scriptLst>
+    </scriptList>
 
     <staticMenuControls>
 
@@ -14,9 +14,9 @@
         <control controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/menu_label.ctrl"/>
             <position x="-15" y="-180" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Settings"/>
-            </fontStringLst>
+            </fontStringList>
         </control>
 
     </staticMenuControls>
@@ -27,30 +27,30 @@
         <control name="close_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/close_button.ctrl"/>
             <position x="130" y="-180" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="x"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="close"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- mouse-only back Button -->
         <control name="back_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/back_button.ctrl"/>
             <position x="100" y="-180" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="^"/>
-            </fontStringLst>
+            </fontStringList>
             <action actionType="back"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
     
     </mouseOnlyControls>
@@ -65,49 +65,49 @@
             <scroll startDelay="750" scrollDelay="350" left="true" right="true"/>
             <actionResponse left="true" right="true"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script init="ResolutionBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="ResolutionBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script change="ResolutionBtn_change"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Full Screen Check Box -->
         <control name="full_screen_check_box" controlType="check_box" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/check_box_245x55.ctrl"/>
             <position x="0" y="-55" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Full Screen"/>
                 <string text="x"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports up, down, left, right -->
             <navigate up="resolution_btn_lst" down="v-sync_check_box"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script init="FullScreenCheckbox_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="FullScreenCheckbox_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="FullScreenCheckbox_execute"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- V_Sync Check Box -->
         <control name="v-sync_check_box" controlType="check_box" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/check_box_245x55.ctrl"/>
             <position x="0" y="5" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="V-Sync"/>
                 <string text="x"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports up, down, left, right -->
             <navigate up="full_screen_check_box" down="settings_dead_zone_slider"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- slider Control -->
@@ -115,39 +115,39 @@
             <filePath file="data/objects/2d/menu/control/deadzone_slider.ctrl"/>
             <position x="0" y="85" z="0"/>
             <settings orientation="HORZ" minValue="0" maxValue="30" defValue="0" incValue="1" displayValueAsInt="true"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="GPad Deadzone: %d%%"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports up, down, left, right -->
             <navigate up="v-sync_check_box" down="settings_apply_btn"/>
             <scroll startDelay="750" scrollDelay="100" left="true" right="true"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script init="DeadZoneSlider_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="DeadZoneSlider_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="DeadZoneSlider_select"/>
                 <script change="DeadZoneSlider_change"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Apply Button -->
         <control name="settings_apply_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_145x55.ctrl"/>
             <position x="0" y="165" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Apply"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports up, down, left, right -->
             <navigate up="settings_dead_zone_slider" down="resolution_btn_lst"/>
             <!-- Supports init, transIn, transOut, disabled, inactive, active, select, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script init="ApplyBtn_init" prepareOnInit="true" forceUpdate="true"/>
                 <script transIn="ApplyBtn_transIn"/>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ApplyBtn_execute"/>
-            </scriptLst>
+            </scriptList>
         </control>
     
     </menuControls>

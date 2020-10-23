@@ -20,9 +20,9 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="circle" radius="48" density="0.1" restitution="0.3"/>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
     
@@ -32,9 +32,9 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="circle" radius="48" density="0.2" restitution="0.6"/>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -44,9 +44,9 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="circle" radius="48" density="0.3" restitution="0.9"/>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
     
@@ -56,11 +56,11 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon" density="0.1" restitution="0.2">
                         <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -70,11 +70,11 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon" density="0.2" restitution="0.3">
                         <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -84,11 +84,11 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon" density="0.3" restitution="0.4">
                         <sizeMod top="-4" bottom="-3" left="-4" right="-3"/>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -98,15 +98,15 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon" density="0.1" restitution="0.2">
-                        <vertLst>
+                        <vertList>
                             <vert x="50" y="5"/>
                             <vert x="5" y="94"/>
                             <vert x="94" y="94"/>
-                        </vertLst>
+                        </vertList>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -116,15 +116,15 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon" density="0.2" restitution="0.4">
-                        <vertLst>
+                        <vertList>
                             <vert x="50" y="5"/>
                             <vert x="5" y="94"/>
                             <vert x="94" y="94"/>
-                        </vertLst>
+                        </vertList>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
         
@@ -134,15 +134,15 @@
             </visual>
             <physics world="(game)">
                 <body type="dynamic"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon" density="0.3" restitution="0.6">
-                        <vertLst>
+                        <vertList>
                             <vert x="50" y="5"/>
                             <vert x="5" y="94"/>
                             <vert x="94" y="94"/>
-                        </vertLst>
+                        </vertList>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -152,9 +152,9 @@
             </visual>
             <physics world="(game)">
                 <body type="static"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="circle" radius="17"/>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -164,11 +164,11 @@
             </visual>
             <physics world="(game)">
                 <body type="static"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="polygon">
                         <sizeMod top="-4" bottom="-4" left="-4" right="-4"/>
                     </fixture>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 
@@ -178,9 +178,9 @@
             </visual>
             <physics world="(game)">
                 <body type="static"/>
-                <fixtureLst>
+                <fixtureList>
                     <fixture shape="circle" radius="2" sensor="true"/>
-                </fixtureLst>
+                </fixtureList>
             </physics>
         </object>
 

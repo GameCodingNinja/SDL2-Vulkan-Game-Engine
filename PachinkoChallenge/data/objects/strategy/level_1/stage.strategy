@@ -2,9 +2,9 @@
 
     <node name="peg">
         <sprite>
-            <scriptLst>
+            <scriptList>
                 <script peg_off="Level_PegOff" group="(main)" />
-            </scriptLst>
+            </scriptList>
         </sprite>
     </node>
 

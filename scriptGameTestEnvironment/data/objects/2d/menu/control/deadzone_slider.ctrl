@@ -3,22 +3,22 @@
     <spriteList>
 
         <sprite objectName="250x90_slider_selection_frame">
-            <scriptLst>
+            <scriptList>
                 <script disable="Control_Hidden" forceUpdate="true"/>
                 <script inactive="Control_Hidden" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
         <sprite objectName="230x10_slider_frame">
             <position x="0" y="-15" z="0"/>
-            <scriptLst>
+            <scriptList>
                 <script disable="Control_Disabled" forceUpdate="true"/>
                 <script inactive="Control_Inactive" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
         <sprite objectName="control_font">
@@ -26,12 +26,12 @@
             <font fontName="dejavu_sans_cond_26">
                 <alignment horzAlign="left" vertAlign="center"/>
             </font>
-            <scriptLst>
+            <scriptList>
                 <script disable="Control_Disabled" forceUpdate="true"/>
                 <script inactive="Control_Inactive" forceUpdate="true"/>
                 <script active="Control_Active"/>
                 <script select="Control_Selected"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </spriteList>

@@ -39,9 +39,9 @@
             <font fontName="dejavu_sans_bold_45" fontString="1">
                 <alignment horzAlign="left"/>
             </font>
-            <scriptLst>
+            <scriptList>
                 <script inc_flash="Level_MultiIncFlash" group="(main)"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -52,9 +52,9 @@
             <position x="110" y="-860" z="0"/>
             <scale x="1.5" y="1.5" z="1.5"/>
             <font fontName="dejavu_sans_bold_70" fontString="00:00"/>
-            <scriptLst>
+            <scriptList>
                 <script reset_flash="Level_TimeResetFlash" group="(main)"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -87,9 +87,9 @@
             <font fontName="dejavu_sans_bold_45" fontString="0">
                 <alignment horzAlign="left"/>
             </font>
-            <scriptLst>
+            <scriptList>
                 <script reset_flash="Level_TimeResetFlash" group="(main)"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>

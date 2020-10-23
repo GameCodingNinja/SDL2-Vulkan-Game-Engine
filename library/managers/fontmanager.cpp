@@ -37,7 +37,7 @@ CFontMgr::~CFontMgr()
 void CFontMgr::load( const std::string & filePath )
 {
     // open this file and parse
-    const XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str(), "fontLst" );
+    const XMLNode mainNode = XMLNode::openFileHelper( filePath.c_str(), "fontList" );
 
     // Get the group the textures will be saves as
     const XMLNode listGroupNode = mainNode.getChildNode( "listGroup" );

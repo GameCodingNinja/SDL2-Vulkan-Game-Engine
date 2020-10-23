@@ -5,9 +5,9 @@
         <sprite objectName="square_red">
             <scale x=".9" y=".9" z="1"/>
             <!-- Will use the default group but you can also specify the group for the script -->
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -15,9 +15,9 @@
     <node name="triangle_green">
         
         <sprite objectName="triangle_green">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -25,9 +25,9 @@
     <node name="triangle_blue">
         
         <sprite objectName="triangle_blue">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -35,9 +35,9 @@
     <node name="circle_green">
         
         <sprite objectName="circle_green">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -45,9 +45,9 @@
     <node name="circle_blue">
         
         <sprite objectName="circle_blue">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -55,9 +55,9 @@
     <node name="circle_red">
         
         <sprite objectName="circle_red">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>

@@ -3,10 +3,10 @@
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
     <!-- Supports transIn, transOut, event -->
-    <scriptLst>
+    <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
-    </scriptLst>
+    </scriptList>
 
     <staticMenuControls>
 
@@ -14,9 +14,9 @@
         <control controlType="label" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/menu_label.ctrl"/>
             <position x="0" y="-120" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Pause"/>
-            </fontStringLst>
+            </fontStringList>
         </control>
 
     </staticMenuControls>
@@ -27,37 +27,37 @@
         <control name="resume_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_345x75.ctrl"/>
             <position x="0" y="0" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Resume"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
             <!-- Supports up, down, left, right -->
             <navigate up="main_menu_btn" down="main_menu_btn"/>
             <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
-            </scriptLst>
+            </scriptList>
         </control>
 
         <!-- Main Menu Button -->
         <control name="main_menu_btn" faction="decision_btn" controlType="button" defaultState="inactive">
             <filePath file="data/objects/2d/menu/control/button_345x75.ctrl"/>
             <position x="0" y="100" z="0"/>
-            <fontStringLst>
+            <fontStringList>
                 <string text="Main Menu"/>
-            </fontStringLst>
+            </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="resume_btn" down="resume_btn"/>
             <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
-            <scriptLst>
+            <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
                 <script execute="ConfirmBtn_execute"/>
-            </scriptLst>
+            </scriptList>
         </control> 
 
     </menuControls>

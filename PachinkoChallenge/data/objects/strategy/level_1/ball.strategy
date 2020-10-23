@@ -4,9 +4,9 @@
         
         <sprite objectName="square_green_physics">
             <scale x=".9" y=".9" z="1"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -15,9 +15,9 @@
         
         <sprite objectName="square_blue_physics">
             <scale x=".9" y=".9" z="1"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -26,9 +26,9 @@
         
         <sprite objectName="square_red_physics">
             <scale x=".9" y=".9" z="1"/>
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -36,9 +36,9 @@
     <node name="triangle_green" id="1">
         
         <sprite objectName="triangle_green_physics">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -46,9 +46,9 @@
     <node name="triangle_blue" id="1">
         
         <sprite objectName="triangle_blue_physics">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -56,9 +56,9 @@
     <node name="triangle_red" id="1">
         
         <sprite objectName="triangle_red_physics">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -66,9 +66,9 @@
     <node name="circle_green" id="1">
         
         <sprite objectName="circle_green_physics">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -76,9 +76,9 @@
     <node name="circle_blue" id="1">
         
         <sprite objectName="circle_blue_physics">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>
@@ -86,9 +86,9 @@
     <node name="circle_red" id="1">
         
         <sprite objectName="circle_red_physics">
-            <scriptLst>
+            <scriptList>
                 <script ball_ai="Level_BallAI" group="(main)" prepareOnInit="true"/>
-            </scriptLst>
+            </scriptList>
         </sprite>
 
     </node>

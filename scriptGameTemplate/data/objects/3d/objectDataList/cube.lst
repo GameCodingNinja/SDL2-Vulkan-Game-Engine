@@ -8,14 +8,14 @@
         </visual>
         <physics world="">
             <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
-            <fixtureLst>
+            <fixtureList>
                 <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
                     <!-- vert list for polygon shapes - max of 8
                     Box2D polygons are defined using Counter Clockwise Winding (CCW)
                     <vert x="" y=""/> -->
                     <sizeMod top="0" bottom="0" left="0" right="0"/>
                 </fixture>
-            </fixtureLst>
+            </fixtureList>
         </physics>
     </default>
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
