@@ -10,6 +10,7 @@ namespace NMenuDefs
     {
         // Menu events
         EME_MENU_USER_EVENTS = 0x8000,
+        EME_MENU_ROOT_TRANS_IN,
         EME_MENU_TRANS_IN,
         EME_MENU_TRANS_OUT,
         EME_MENU_ESCAPE_ACTION,

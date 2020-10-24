@@ -104,18 +104,13 @@ void CMenuMgr::freeGroup( const std::string & group )
         // Remove it from the tree vectors if it is there
         for( auto & treeIter : treeMapIter->second )
         {
+            auto pTreeVec = &m_pActiveMenuTreeVec;
             if( treeIter.second.isInterfaceTree() )
-            {
-                auto interIter = std::find( m_pActiveInterTreeVec.begin(), m_pActiveInterTreeVec.end(), &treeIter.second );
-                if( interIter != m_pActiveInterTreeVec.end() )
-                    m_pActiveInterTreeVec.erase( interIter );
-            }
-            else
-            {
-                auto menuIter = std::find( m_pActiveMenuTreeVec.begin(), m_pActiveMenuTreeVec.end(), &treeIter.second );
-                if( menuIter != m_pActiveMenuTreeVec.end() )
-                    m_pActiveMenuTreeVec.erase( menuIter );
-            }
+                pTreeVec = &m_pActiveInterTreeVec;
+
+            auto interIter = std::find( pTreeVec->begin(), pTreeVec->end(), &treeIter.second );
+            if( interIter != pTreeVec->end() )
+                pTreeVec->erase( interIter );
         }
 
         m_menuTreeMapMap.erase( treeMapIter );
@@ -418,24 +413,16 @@ void CMenuMgr::activateTree( const std::string & group, const std::string & tree
         auto treeIter = groupIter->second.find( treeStr );
         if( treeIter != groupIter->second.end() )
         {
+            auto pTreeVec = &m_pActiveMenuTreeVec;
             if( treeIter->second.isInterfaceTree() )
-            {
-                if( std::find( m_pActiveInterTreeVec.begin(), m_pActiveInterTreeVec.end(), &treeIter->second ) != m_pActiveInterTreeVec.end() )
-                    throw NExcept::CCriticalException("Menu Tree Activate Error!",
-                        boost::str( boost::format("Menu tree already active (%s - %s).\n\n%s\nLine: %s")
-                            % group % treeStr % __FUNCTION__ % __LINE__ ));
+                pTreeVec = &m_pActiveMenuTreeVec;
 
-                m_pActiveInterTreeVec.push_back( &treeIter->second );
-            }
-            else
-            {
-                if( std::find( m_pActiveMenuTreeVec.begin(), m_pActiveMenuTreeVec.end(), &treeIter->second ) != m_pActiveMenuTreeVec.end() )
-                    throw NExcept::CCriticalException("Menu Tree Activate Error!",
-                        boost::str( boost::format("Menu tree already active (%s - %s).\n\n%s\nLine: %s")
-                            % group % treeStr % __FUNCTION__ % __LINE__ ));
+            if( std::find( pTreeVec->begin(), pTreeVec->end(), &treeIter->second ) != pTreeVec->end() )
+                throw NExcept::CCriticalException("Menu Tree Activate Error!",
+                    boost::str( boost::format("Menu tree already active (%s - %s).\n\n%s\nLine: %s")
+                        % group % treeStr % __FUNCTION__ % __LINE__ ));
 
-                m_pActiveMenuTreeVec.push_back( &treeIter->second );
-            }
+            pTreeVec->push_back( &treeIter->second );
 
             // Init the tree for use
             treeIter->second.init();
@@ -496,18 +483,13 @@ void CMenuMgr::deactivateTree( const std::string & group, const std::string & tr
         if( treeIter != groupIter->second.end() )
         {
             // Remove the tree from the vector
+            auto pTreeVec = &m_pActiveMenuTreeVec;
             if( treeIter->second.isInterfaceTree() )
-            {
-                auto iter = std::find( m_pActiveInterTreeVec.begin(), m_pActiveInterTreeVec.end(), &treeIter->second );
-                if( iter != m_pActiveInterTreeVec.end() )
-                    m_pActiveInterTreeVec.erase( iter );
-            }
-            else
-            {
-                auto iter = std::find( m_pActiveMenuTreeVec.begin(), m_pActiveMenuTreeVec.end(), &treeIter->second );
-                if( iter != m_pActiveMenuTreeVec.end() )
-                    m_pActiveMenuTreeVec.erase( iter );
-            }
+                pTreeVec = &m_pActiveMenuTreeVec;
+
+            auto iter = std::find( pTreeVec->begin(), pTreeVec->end(), &treeIter->second );
+            if( iter != pTreeVec->end() )
+                pTreeVec->erase( iter );
         }
         else
         {
