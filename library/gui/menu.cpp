@@ -43,7 +43,6 @@ CMenu::CMenu( const std::string & name, const std::string & group ) :
     setVisible(false);
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -56,7 +55,6 @@ CMenu::~CMenu()
     NDelFunc::DeleteVectorPointers( m_pControlVec );
     NDelFunc::DeleteVectorPointers( m_pSpriteVec );
 }
-
 
 /************************************************************************
 *    DESC:  Load the menu info from file
@@ -146,7 +144,6 @@ void CMenu::load( const std::string & filePath )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the script functions from node and add them to the map
 ************************************************************************/
@@ -154,7 +151,6 @@ void CMenu::loadScriptFromNode( const XMLNode & node )
 {
     CObject::loadScriptFromNode( node, m_group );
 }
-
 
 /************************************************************************
 *    DESC:  Load a static sprite from an XML node
@@ -174,7 +170,6 @@ void CMenu::loadStaticSpriteFromNode( const XMLNode & node )
     m_pSpriteVec.back()->loadScriptFromNode( node );
 }
 
-
 /************************************************************************
 *    DESC:  Load static controls from an XML node
 ************************************************************************/
@@ -191,7 +186,6 @@ void CMenu::loadStaticControlFromNode( XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load mouse only controls from an XML node
 ************************************************************************/
@@ -204,7 +198,6 @@ void CMenu::loadMouseOnlyControlFromNode( const XMLNode & node )
     if( !m_pMouseOnlyControlVec.back()->getName().empty() )
         m_pControlMap.emplace( m_pMouseOnlyControlVec.back()->getName(), m_pMouseOnlyControlVec.back() );
 }
-
 
 /************************************************************************
 *    DESC:  Load a control from an XML node
@@ -239,7 +232,6 @@ void CMenu::loadControlFromNode( XMLNode & node, NavHelperMap & navNodeMap )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the dynamic offset data from node
 ************************************************************************/
@@ -253,7 +245,6 @@ void CMenu::loadDynamicOffsetFromNode( const XMLNode & node )
     setDynamicPos();
 }
 
-
 /************************************************************************
 *    DESC:  Set the dynamic position
 ************************************************************************/
@@ -263,7 +254,6 @@ void CMenu::setDynamicPos()
     if( !m_dynamicOffset.isEmpty() )
         setPos( m_dynamicOffset.getPos() );
 }
-
 
 /************************************************************************
 *    DESC:  Reset the dynamic position
@@ -282,7 +272,6 @@ void CMenu::resetDynamicPos()
         iter->setDynamicPos();
 }
 
-
 /************************************************************************
 *    DESC:  Find the reference nodes
 ************************************************************************/
@@ -300,7 +289,6 @@ void CMenu::findNodes(
         setNodes( navNode, nodeIndex, "right", iControlNavNode::ENAV_NODE_RIGHT, navNodeMap );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Find the reference nodes
@@ -329,7 +317,6 @@ void CMenu::setNodes(
     }
 }
 
-
 /************************************************************************
 *    DESC:  Init the menu controls
 ************************************************************************/
@@ -348,17 +335,20 @@ void CMenu::init()
     prepareOnInit();
 }
 
-
 /************************************************************************
-*    DESC:  Activate the root menu
+*    DESC:  Init the root menu
 ************************************************************************/
-void CMenu::activateRootMenu()
+void CMenu::initRootMenu()
 {
     m_state = NMenuDefs::EMS_IDLE;
-    prepare( "activateRootMenu" );
+    if( !prepare( "initRootMenu" ) )
+    {
+        setAlpha(1.f);
+        setVisible(true);
+    }
+
     activateFirstInactiveControl();
 }
-
 
 /************************************************************************
 *    DESC:  Update the menu
@@ -367,22 +357,18 @@ void CMenu::update()
 {
     m_scriptComponent.update();
 
-    if( isVisible() )
-    {
-        for( auto iter : m_pSpriteVec )
-            iter->update();
+    for( auto iter : m_pSpriteVec )
+        iter->update();
 
-        for( auto iter : m_pStaticControlVec )
-            iter->update();
+    for( auto iter : m_pStaticControlVec )
+        iter->update();
 
-        for( auto iter : m_pMouseOnlyControlVec )
-            iter->update();
+    for( auto iter : m_pMouseOnlyControlVec )
+        iter->update();
 
-        for( auto iter : m_pControlVec )
-            iter->update();
-    }
+    for( auto iter : m_pControlVec )
+        iter->update();
 }
-
 
 /************************************************************************
 *    DESC:  Transform the menu
@@ -427,7 +413,6 @@ void CMenu::transform( const CObject & object )
     }
 }
 
-
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
@@ -450,7 +435,6 @@ void CMenu::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const C
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get the name of the menu
 ************************************************************************/
@@ -458,7 +442,6 @@ const std::string & CMenu::getName() const
 {
     return m_name;
 }
-
 
 /************************************************************************
 *    DESC:  Handle events
@@ -472,7 +455,11 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
     for( auto iter : m_pMouseOnlyControlVec )
         iter->handleEvent( rEvent );
 
-    if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
+    if( rEvent.type == NMenuDefs::EME_MENU_ROOT_TRANS_IN )
+    {
+        onRootTransIn( rEvent );
+    }
+    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
     {
         onTransIn( rEvent );
     }
@@ -544,7 +531,7 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnUpAction message
+*    DESC:  Handle onUpAction message
 ************************************************************************/
 void CMenu::onUpAction( const SDL_Event & rEvent )
 {
@@ -552,7 +539,7 @@ void CMenu::onUpAction( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnMenuDown message
+*    DESC:  Handle onMenuDown message
 ************************************************************************/
 void CMenu::onDownAction( const SDL_Event & rEvent )
 {
@@ -560,7 +547,7 @@ void CMenu::onDownAction( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnMenuLeft message
+*    DESC:  Handle onMenuLeft message
 ************************************************************************/
 void CMenu::onLeftAction( const SDL_Event & rEvent )
 {
@@ -568,13 +555,12 @@ void CMenu::onLeftAction( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnRightAction message
+*    DESC:  Handle onRightAction message
 ************************************************************************/
 void CMenu::onRightAction( const SDL_Event & rEvent )
 {
     navigateMenu( iControlNavNode::ENAV_NODE_RIGHT );
 }
-
 
 /************************************************************************
 *    DESC:  Navigate the menu. Find the next control node that isn't
@@ -610,9 +596,8 @@ void CMenu::navigateMenu( iControlNavNode::ENavNode navNodeAction )
     }
 }
 
-
 /************************************************************************
-*    DESC:  Handle OnMouseMove message
+*    DESC:  Handle onMouseMove message
 ************************************************************************/
 void CMenu::onMouseMove( const SDL_Event & rEvent )
 {
@@ -629,9 +614,8 @@ void CMenu::onMouseMove( const SDL_Event & rEvent )
             iter->deactivateControl();
 }
 
-
 /************************************************************************
-*    DESC:  Handle OnSelectAction message
+*    DESC:  Handle onSelectAction message
 ************************************************************************/
 void CMenu::onSelectAction( const SDL_Event & rEvent )
 {
@@ -695,7 +679,7 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnSetActiveControl message
+*    DESC:  Handle onSetActiveControl message
 ************************************************************************/
 void CMenu::onSetActiveControl( const SDL_Event & rEvent )
 {
@@ -705,7 +689,7 @@ void CMenu::onSetActiveControl( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnReactivate message
+*    DESC:  Handle onReactivate message
 ************************************************************************/
 void CMenu::onReactivate( const SDL_Event & rEvent )
 {
@@ -713,13 +697,17 @@ void CMenu::onReactivate( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnTransIn message
+*    DESC:  Handle onRootTransIn message
 ************************************************************************/
-void CMenu::onTransIn( const SDL_Event & rEvent )
+void CMenu::onRootTransIn( const SDL_Event & rEvent )
 {
     if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
     {
-        prepare( "transIn" );
+        if( !prepare( "rootTransIn" ) )
+        {
+            setAlpha(1.f);
+            setVisible(true);
+        }
 
         m_state = NMenuDefs::EMS_ACTIVE;
     }
@@ -730,13 +718,40 @@ void CMenu::onTransIn( const SDL_Event & rEvent )
 }
 
 /************************************************************************
-*    DESC:  Handle OnTransOut message
+*    DESC:  Handle onTransIn message
+************************************************************************/
+void CMenu::onTransIn( const SDL_Event & rEvent )
+{
+    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    {
+        if( !prepare( "transIn" ) )
+        {
+            setAlpha(1.f);
+            setVisible(true);
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_END );
+        }
+
+        m_state = NMenuDefs::EMS_ACTIVE;
+    }
+    else if( rEvent.user.code == NMenuDefs::ETC_END )
+    {
+        m_state = NMenuDefs::EMS_IDLE;
+    }
+}
+
+/************************************************************************
+*    DESC:  Handle onTransOut message
 ************************************************************************/
 void CMenu::onTransOut( const SDL_Event & rEvent )
 {
     if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
     {
-        prepare( "transOut" );
+        if( !prepare( "transOut" ) )
+        {
+            setAlpha(0.f);
+            setVisible(false);
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_END );
+        }
 
         m_state = NMenuDefs::EMS_ACTIVE;
     }
@@ -746,11 +761,10 @@ void CMenu::onTransOut( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Prepare the script function to run
 ************************************************************************/
-void CMenu::prepare( const std::string & scriptFuncId, uint type, int code )
+bool CMenu::prepare( const std::string & scriptFuncId, uint type, int code )
 {
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
@@ -763,9 +777,12 @@ void CMenu::prepare( const std::string & scriptFuncId, uint type, int code )
         // Force an update
         if( iter->second.forceUpdate )
             m_scriptComponent.update();
+        
+        return true;
     }
-}
 
+    return false;
+}
 
 /************************************************************************
 *    DESC:  Set the first inactive control to be active
@@ -790,7 +807,6 @@ void CMenu::activateFirstInactiveControl()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Reset all controls
 ************************************************************************/
@@ -802,7 +818,6 @@ void CMenu::reset()
     for( auto iter : m_pMouseOnlyControlVec )
         iter->reset( true );
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the control in question
@@ -821,7 +836,6 @@ iControl * CMenu::getPtrToControl( const std::string & name )
     // Pass back the pointer if found
     return iter->second;
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the active control
@@ -842,7 +856,6 @@ iControl * CMenu::getPtrToActiveControl()
     return pResult;
 }
 
-
 /************************************************************************
 *    DESC:  Does this menu use dynamic offsets
 ************************************************************************/
@@ -850,7 +863,6 @@ bool CMenu::isDynamicOffset()
 {
     return !m_dynamicOffset.isEmpty();
 }
-
 
 /************************************************************************
 *    DESC:  Get the scroll params
@@ -865,7 +877,6 @@ CScrollParam & CMenu::getScrollParam( int msg )
 
     return m_scrollParam;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get the alpha value of this menu
@@ -892,7 +903,6 @@ float CMenu::getAlpha()
     return m_alpha;
 }
 
-
 /************************************************************************
 *    DESC:  Is the menu idle
 ************************************************************************/
@@ -900,7 +910,6 @@ bool CMenu::isIdle()
 {
     return (m_state == NMenuDefs::EMS_IDLE);
 }
-
 
 /************************************************************************
 *    DESC:  Is the menu active

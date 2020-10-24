@@ -47,8 +47,8 @@ public:
     // Init the menu
     void init();
 
-    // Activate the root menu
-    void activateRootMenu();
+    // Init the root menu
+    void initRootMenu();
 
     // Update the menu
     void update();
@@ -142,12 +142,13 @@ private:
     void onSelectAction( const SDL_Event & rEvent );
     void onSetActiveControl( const SDL_Event & rEvent );
     void onReactivate( const SDL_Event & rEvent );
+    void onRootTransIn( const SDL_Event & rEvent );
     void onTransIn( const SDL_Event & rEvent );
     void onTransOut( const SDL_Event & rEvent );
     void onMouseMove( const SDL_Event & rEvent );
     
     // Prepare the script function to run
-    void prepare( const std::string & scriptFuncId, uint type = 0, int code = 0 );
+    bool prepare( const std::string & scriptFuncId, uint type = 0, int code = 0 );
 
     // Set the first inactive control to be active
     void activateFirstInactiveControl();

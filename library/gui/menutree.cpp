@@ -43,14 +43,12 @@ CMenuTree::CMenuTree(
         m_pDefaultMenu = &iter->second;
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CMenuTree::~CMenuTree()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Init the tree for use
@@ -64,36 +62,33 @@ void CMenuTree::init()
         // If we have a root menu, add it to the path
         m_pMenuPathVec.push_back( m_pRootMenu );
 
-        m_pRootMenu->activateRootMenu();
+        m_pRootMenu->initRootMenu();
     }
 }
-
 
 /************************************************************************
 *    DESC:  Update the menu tree
 ************************************************************************/
 void CMenuTree::update()
 {
-    if( !m_pMenuPathVec.empty() )
-        m_pMenuPathVec.back()->update();
+    for( auto iter : m_pMenuPathVec )
+        iter->update();
 }
-
 
 /************************************************************************
 *    DESC:  Transform the menu tree
 ************************************************************************/
 void CMenuTree::transform()
 {
-    if( !m_pMenuPathVec.empty() )
-        m_pMenuPathVec.back()->transform();
+    for( auto iter : m_pMenuPathVec )
+        iter->transform();
 }
 
 void CMenuTree::transform( const CObject & object )
 {
-    if( !m_pMenuPathVec.empty() )
-        m_pMenuPathVec.back()->transform( object );
+    for( auto iter : m_pMenuPathVec )
+        iter->transform( object );
 }
-
 
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
@@ -101,19 +96,17 @@ void CMenuTree::transform( const CObject & object )
 ****************************************************************************/
 void CMenuTree::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera )
 {
-    if( !m_pMenuPathVec.empty() )
-        m_pMenuPathVec.back()->recordCommandBuffer( index, cmdBuf, camera );
+    for( auto iter : m_pMenuPathVec )
+        iter->recordCommandBuffer( index, cmdBuf, camera );
 }
 
-
 /************************************************************************
-*    DESC:  Is a menu active?
+*    DESC:  Is a tree active?
 ************************************************************************/
 bool CMenuTree::isActive()
 {
     return !m_pMenuPathVec.empty();
 }
-
 
 /************************************************************************
 *    DESC:  Does this tee have a root menu
@@ -122,7 +115,6 @@ bool CMenuTree::hasRootMenu()
 {
     return (m_pRootMenu != nullptr);
 }
-
 
 /************************************************************************
 *    DESC:  Handle events
@@ -175,7 +167,6 @@ void CMenuTree::handleEvent( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Activate a menu
 ************************************************************************/
@@ -217,7 +208,6 @@ void CMenuTree::activateMenu( const std::string & menuName )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Transition the menu
 ************************************************************************/
@@ -258,7 +248,6 @@ void CMenuTree::transitionMenu()
         }
     }
 }
-
 
 /************************************************************************
 *    DESC:  Handle OnEscape message
@@ -419,7 +408,6 @@ void CMenuTree::onTransIn( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get the active menu
 ************************************************************************/
@@ -433,7 +421,6 @@ CMenu & CMenuTree::getActiveMenu()
     return *m_pMenuPathVec.back();
 }
 
-
 /************************************************************************
 *    DESC:  Get the scroll param data
 ************************************************************************/
@@ -446,7 +433,6 @@ CScrollParam & CMenuTree::getScrollParam( int msg )
 
     return m_pMenuPathVec.back()->getScrollParam( msg );
 }
-
 
 /************************************************************************
 *    DESC:  Is a menu item active
@@ -462,7 +448,6 @@ bool CMenuTree::isMenuItemActive()
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Is this an interface tree
 ************************************************************************/
@@ -470,7 +455,6 @@ bool CMenuTree::isInterfaceTree() const
 {
     return m_interfaceTree;
 }
-
 
 /************************************************************************
 *    DESC:  Get the name of the tree
