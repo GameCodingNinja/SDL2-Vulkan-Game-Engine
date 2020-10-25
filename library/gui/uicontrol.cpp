@@ -276,6 +276,10 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
     {
         onReactivate( rEvent );
     }
+    else if( rEvent.type == NMenuDefs::EME_MENU_ROOT_TRANS_IN )
+    {
+        onRootTransIn( rEvent );
+    }
     else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
     {
         onTransIn( rEvent );
@@ -287,6 +291,23 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
 
     // Prepare script function associated with handling this game event
     prepareControlScriptFunction( NUIControlDefs::ECS_EVENT, rEvent.type, rEvent.user.code );
+}
+
+
+/************************************************************************
+*    DESC:  Handle OnRootTransIn message
+************************************************************************/
+void CUIControl::onRootTransIn( const SDL_Event & rEvent )
+{
+    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    {
+        // Set the script functions for the current displayed state
+        if( m_lastState != m_state )
+            setDisplayState();
+
+        // Prepare script function associated with handling this game event
+        prepareControlScriptFunction( NUIControlDefs::ECS_ROOT_TRANS_IN );
+    }
 }
 
 
@@ -564,6 +585,10 @@ void CUIControl::prepareSpriteScriptFunction( NUIControlDefs::EControlState cont
 
     switch( controlState )
     {
+        case NUIControlDefs::ECS_ROOT_TRANS_IN:
+            scriptFuncMapKey = "rootTransIn";
+        break;
+
         case NUIControlDefs::ECS_TRANS_IN:
             scriptFuncMapKey = "transIn";
         break;
@@ -614,6 +639,10 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
     {
         case NUIControlDefs::ECS_NULL:
             scriptFuncMapKey = "null";
+        break;
+
+        case NUIControlDefs::ECS_ROOT_TRANS_IN:
+            scriptFuncMapKey = "rootTransIn";
         break;
 
         case NUIControlDefs::ECS_TRANS_IN:

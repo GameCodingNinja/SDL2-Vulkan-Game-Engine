@@ -1,6 +1,6 @@
 <menu>
     
-    <!-- Supports transIn, transOut, event -->
+    <!-- Supports initRootMenu, rootTransIn, transIn, transOut, event -->
     <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -31,7 +31,7 @@
             <action actionType="back"/>
             <!-- Supports up, down, left, right -->
             <navigate left="yes_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -48,7 +48,7 @@
             <action actionType="back"/>
             <!-- Supports up, down, left, right -->
             <navigate right="no_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

@@ -97,6 +97,12 @@ public:
     void setAlpha( float alpha );
     float getAlpha();
 
+    // Set the first inactive control to be active
+    void activateFirstInactiveControl();
+
+    // Deactivate all controls
+    void deactivateAllControls();
+
 private:
     
     // Set the dynamic position
@@ -149,9 +155,6 @@ private:
     
     // Prepare the script function to run
     bool prepare( const std::string & scriptFuncId, uint type = 0, int code = 0 );
-
-    // Set the first inactive control to be active
-    void activateFirstInactiveControl();
 
 private:
 

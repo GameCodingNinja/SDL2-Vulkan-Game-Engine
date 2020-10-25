@@ -173,6 +173,7 @@ protected:
     virtual void onSelectExecute( const SDL_Event & rEvent );
     void onSetActiveControl( const SDL_Event & rEvent );
     void onReactivate( const SDL_Event & rEvent );
+    void onRootTransIn( const SDL_Event & rEvent );
     void onTransIn( const SDL_Event & rEvent );
     void onTransOut( const SDL_Event & rEvent );
     

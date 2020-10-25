@@ -2,7 +2,7 @@
   
     <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
     
-    <!-- Supports transIn, transOut, event -->
+    <!-- Supports initRootMenu, rootTransIn, transIn, transOut, event -->
     <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -21,7 +21,7 @@
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="exit_btn" down="new_game_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -40,7 +40,7 @@
             <action actionType="to_menu" executionAction="settings_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="continue_btn" down="load_game_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -58,7 +58,7 @@
             <action actionType="to_menu" executionAction="settings_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="new_game_btn" down="settings_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -76,7 +76,7 @@
             <action actionType="to_menu" executionAction="settings_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="load_game_btn" down="key_binding_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -94,7 +94,7 @@
             <action actionType="to_menu" executionAction="key_bindings_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="settings_btn" down="exit_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -112,7 +112,7 @@
             <action actionType="to_menu" executionAction="confirmation_menu"/>
             <!-- Supports up, down, left, right -->
             <navigate up="key_binding_btn" down="continue_btn"/>
-            <!-- Supports transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

@@ -1,6 +1,6 @@
 <menu>
     
-    <!-- Supports init, transIn, transOut, event -->
+    <!-- Supports initRootMenu, rootTransIn, transIn, transOut, event -->
     <scriptList>
         <script transIn="Menu_TransIn"/>
         <script transOut="Menu_TransOut"/>
@@ -49,7 +49,7 @@
             </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="close"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>
@@ -65,7 +65,7 @@
             </fontStringList>
             <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
             <action actionType="back"/>
-            <!-- Supports init, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
             <scriptList>
                 <script active="Control_OnActive"/>
                 <script select="Control_OnSelect"/>

@@ -345,9 +345,8 @@ void CMenu::initRootMenu()
     {
         setAlpha(1.f);
         setVisible(true);
+        activateFirstInactiveControl();
     }
-
-    activateFirstInactiveControl();
 }
 
 /************************************************************************
@@ -375,42 +374,36 @@ void CMenu::update()
 ************************************************************************/
 void CMenu::transform()
 {
-    if( isVisible() )
-    {
-        CObject::transform();
+    CObject::transform();
 
-        for( auto iter : m_pSpriteVec )
-            iter->transform( *this );
+    for( auto iter : m_pSpriteVec )
+        iter->transform( *this );
 
-        for( auto iter : m_pStaticControlVec )
-            iter->transform( *this );
+    for( auto iter : m_pStaticControlVec )
+        iter->transform( *this );
 
-        for( auto iter : m_pMouseOnlyControlVec )
-            iter->transform( *this );
+    for( auto iter : m_pMouseOnlyControlVec )
+        iter->transform( *this );
 
-        for( auto iter : m_pControlVec )
-            iter->transform( *this );
-    }
+    for( auto iter : m_pControlVec )
+        iter->transform( *this );
 }
 
 void CMenu::transform( const CObject & object )
 {
-    if( isVisible() )
-    {
-        CObject::transform( object );
+    CObject::transform( object );
 
-        for( auto iter : m_pSpriteVec )
-            iter->transform( *this );
+    for( auto iter : m_pSpriteVec )
+        iter->transform( *this );
 
-        for( auto iter : m_pStaticControlVec )
-            iter->transform( *this );
+    for( auto iter : m_pStaticControlVec )
+        iter->transform( *this );
 
-        for( auto iter : m_pMouseOnlyControlVec )
-            iter->transform( *this );
+    for( auto iter : m_pMouseOnlyControlVec )
+        iter->transform( *this );
 
-        for( auto iter : m_pControlVec )
-            iter->transform( *this );
-    }
+    for( auto iter : m_pControlVec )
+        iter->transform( *this );
 }
 
 /***************************************************************************
@@ -707,6 +700,7 @@ void CMenu::onRootTransIn( const SDL_Event & rEvent )
         {
             setAlpha(1.f);
             setVisible(true);
+            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ROOT_TRANS_IN, NMenuDefs::ETC_END );
         }
 
         m_state = NMenuDefs::EMS_ACTIVE;
@@ -805,6 +799,15 @@ void CMenu::activateFirstInactiveControl()
             iter->getControl()->deactivateControl();
         }
     }
+}
+
+/************************************************************************
+*    DESC:  Deactivate all controls
+************************************************************************/
+void CMenu::deactivateAllControls()
+{
+    for( auto iter : m_pControlNodeVec )
+        iter->getControl()->deactivateControl();
 }
 
 /************************************************************************

@@ -129,6 +129,8 @@ namespace NScriptMenu
         Throw( pEngine->RegisterObjectMethod("CMenu", "uiControl & getActiveControl()",                        WRAP_MFN(CMenu, getPtrToActiveControl), asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CMenu", "bool isActive()",                                       WRAP_MFN(CMenu, isActive),              asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void activateFirstInactiveControl()",                   WRAP_MFN(CMenu, activateFirstInactiveControl), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CMenu", "void deactivateAllControls()",                          WRAP_MFN(CMenu, deactivateAllControls), asCALL_GENERIC) );
 
         // Object pos, rot & scale
         Throw( pEngine->RegisterObjectMethod("CMenu", "void setVisible(bool)",                                 WRAP_OBJ_LAST(SetVisible), asCALL_GENERIC) );
