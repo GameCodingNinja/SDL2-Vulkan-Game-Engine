@@ -588,105 +588,109 @@ void CMenuMgr::transitionMenu( const std::string & group, const std::string & tr
 void CMenuMgr::handleEvent( const SDL_Event & rEvent )
 {
     // Convert keyboard, mouse and controller messages in action type messages
-    if( m_allow && (rEvent.type > SDL_SYSWMEVENT) && (rEvent.type < SDL_CLIPBOARDUPDATE) )
+    if( (rEvent.type > SDL_SYSWMEVENT) && (rEvent.type < SDL_CLIPBOARDUPDATE) )
     {
-        // Message TESTING code
-        /*if( rEvent.type == SDL_CONTROLLERBUTTONDOWN )
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Controller Button: %d") % ((int)rEvent.cbutton.button) ) );
-        else if( rEvent.type == SDL_JOYBUTTONDOWN )
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Joystick Button: %d") % ((int)rEvent.cbutton.button) ) );
-        else if( rEvent.type == SDL_MOUSEMOTION )
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Mouse Motion: x = %d, y = %d") % ((int)rEvent.motion.x) % ((int)rEvent.motion.y) ) );
-        else if( rEvent.type == SDL_MOUSEBUTTONDOWN )
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Mouse Button Down: %d") % ((int)rEvent.button.button) ) );
-        else if( rEvent.type == SDL_MOUSEBUTTONUP )
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Mouse Button Up: %d") % ((int)rEvent.button.button) ) );
-        else if( rEvent.type == SDL_KEYDOWN )
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Key Button: %d") % ((int)rEvent.key.keysym.sym) ) );
+        // Only allow hardware events when it's time to handle them
+        if( m_allow )
+        {
+            // Message TESTING code
+            /*if( rEvent.type == SDL_CONTROLLERBUTTONDOWN )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Controller Button: %d") % ((int)rEvent.cbutton.button) ) );
+            else if( rEvent.type == SDL_JOYBUTTONDOWN )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Joystick Button: %d") % ((int)rEvent.cbutton.button) ) );
+            else if( rEvent.type == SDL_MOUSEMOTION )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Mouse Motion: x = %d, y = %d") % ((int)rEvent.motion.x) % ((int)rEvent.motion.y) ) );
+            else if( rEvent.type == SDL_MOUSEBUTTONDOWN )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Mouse Button Down: %d") % ((int)rEvent.button.button) ) );
+            else if( rEvent.type == SDL_MOUSEBUTTONUP )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Mouse Button Up: %d") % ((int)rEvent.button.button) ) );
+            else if( rEvent.type == SDL_KEYDOWN )
+                NGenFunc::PostDebugMsg( boost::str( boost::format("Key Button: %d") % ((int)rEvent.key.keysym.sym) ) );
 
-        else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
-        {
-            if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Left: x = %d") % ((int)rEvent.caxis.value) ) );
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Left: y = %d") % ((int)rEvent.caxis.value) ) );
-            if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Right: x = %d") % ((int)rEvent.caxis.value) ) );
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Right: y = %d") % ((int)rEvent.caxis.value) ) );
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("CTrigger Left: %d") % ((int)rEvent.caxis.value) ) );
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("CTrigger Right: %d") % ((int)rEvent.caxis.value) ) );
-        }
-        else if( rEvent.type == SDL_JOYAXISMOTION )
-        {
-            if( rEvent.jaxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("Joystick Left: x = %d") % ((int)rEvent.jaxis.value) ) );
-            else if( rEvent.jaxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
-                NGenFunc::PostDebugMsg( boost::str( boost::format("Joystick Left: y = %d") % ((int)rEvent.jaxis.value) ) );
-        }*/
-
-        // Only the default tree can execute an escape or toggle when none are active.
-        if( CActionMgr::Instance().wasAction( rEvent, m_escapeAction, EActionPress::DOWN ) )
-        {
-            dispatchEscapeAction();
-        }
-        else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, EActionPress::DOWN ) )
-        {
-            dispatchToggleAction();
-        }
-        else if( m_active )
-        {
-            EActionPress pressType;
-
-            // common and can result in many messages which is why it's specifically defined here
-            if( rEvent.type == SDL_MOUSEMOTION )
+            else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
             {
-                // Allow the mouse move message to get eaten when action handling is disabled.
-                handleEventForTrees( rEvent );
+                if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Left: x = %d") % ((int)rEvent.caxis.value) ) );
+                else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Left: y = %d") % ((int)rEvent.caxis.value) ) );
+                if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Right: x = %d") % ((int)rEvent.caxis.value) ) );
+                else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("CAxis Right: y = %d") % ((int)rEvent.caxis.value) ) );
+                else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("CTrigger Left: %d") % ((int)rEvent.caxis.value) ) );
+                else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("CTrigger Right: %d") % ((int)rEvent.caxis.value) ) );
             }
-            // Need to pack multiple data items into one 32-bit int for this message
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_selectAction )) > EActionPress::IDLE )
+            else if( rEvent.type == SDL_JOYAXISMOTION )
             {
-                // Need to pack a lot of information into one 32 bit int
-                CSelectMsgCracker msgCracker;
-                msgCracker.setPressType( static_cast<int>(pressType) );
-                msgCracker.setDeviceId( static_cast<int>(CActionMgr::Instance().getLastDeviceUsed()) );
+                if( rEvent.jaxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("Joystick Left: x = %d") % ((int)rEvent.jaxis.value) ) );
+                else if( rEvent.jaxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("Joystick Left: y = %d") % ((int)rEvent.jaxis.value) ) );
+            }*/
 
-                if( msgCracker.getDeviceId() == EDeviceId::MOUSE )
+            // Only the default tree can execute an escape or toggle when none are active.
+            if( CActionMgr::Instance().wasAction( rEvent, m_escapeAction, EActionPress::DOWN ) )
+            {
+                dispatchEscapeAction();
+            }
+            else if( CActionMgr::Instance().wasAction( rEvent, m_toggleAction, EActionPress::DOWN ) )
+            {
+                dispatchToggleAction();
+            }
+            else if( m_active )
+            {
+                EActionPress pressType;
+
+                // common and can result in many messages which is why it's specifically defined here
+                if( rEvent.type == SDL_MOUSEMOTION )
                 {
-                    msgCracker.setX( rEvent.button.x );
-                    msgCracker.setY( rEvent.button.y );
+                    // Allow the mouse move message to get eaten when action handling is disabled.
+                    handleEventForTrees( rEvent );
                 }
+                // Need to pack multiple data items into one 32-bit int for this message
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_selectAction )) > EActionPress::IDLE )
+                {
+                    // Need to pack a lot of information into one 32 bit int
+                    CSelectMsgCracker msgCracker;
+                    msgCracker.setPressType( static_cast<int>(pressType) );
+                    msgCracker.setDeviceId( static_cast<int>(CActionMgr::Instance().getLastDeviceUsed()) );
 
-                NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_SELECT_ACTION, msgCracker.getPackedUnit() );
-            }
-            else if( CActionMgr::Instance().wasAction( rEvent, m_backAction, EActionPress::DOWN ) )
-                NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_BACK_ACTION );
+                    if( msgCracker.getDeviceId() == EDeviceId::MOUSE )
+                    {
+                        msgCracker.setX( rEvent.button.x );
+                        msgCracker.setY( rEvent.button.y );
+                    }
 
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_upAction )) > EActionPress::IDLE )
-                NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_UP_ACTION), static_cast<int>(pressType) );
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_SELECT_ACTION, msgCracker.getPackedUnit() );
+                }
+                else if( CActionMgr::Instance().wasAction( rEvent, m_backAction, EActionPress::DOWN ) )
+                    NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_BACK_ACTION );
 
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_downAction )) > EActionPress::IDLE )
-                NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_DOWN_ACTION), static_cast<int>(pressType) );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_upAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_UP_ACTION), static_cast<int>(pressType) );
 
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_leftAction )) > EActionPress::IDLE )
-                NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_LEFT_ACTION), static_cast<int>(pressType) );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_downAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_DOWN_ACTION), static_cast<int>(pressType) );
 
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_rightAction )) > EActionPress::IDLE )
-                NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_RIGHT_ACTION), static_cast<int>(pressType) );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_leftAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_LEFT_ACTION), static_cast<int>(pressType) );
 
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabLeft )) > EActionPress::IDLE )
-                NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_TAB_LEFT), static_cast<int>(pressType) );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_rightAction )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_RIGHT_ACTION), static_cast<int>(pressType) );
 
-            else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabRight )) > EActionPress::IDLE )
-                NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_TAB_RIGHT), static_cast<int>(pressType) );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabLeft )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_TAB_LEFT), static_cast<int>(pressType) );
 
-            // If none of the predefined actions have been hit, just send the message for processing
-            else
-            {
-                handleEventForTrees( rEvent );
+                else if( (pressType = CActionMgr::Instance().wasAction( rEvent, m_tabRight )) > EActionPress::IDLE )
+                    NGenFunc::DispatchEvent( static_cast<int>(NMenuDefs::EME_MENU_TAB_RIGHT), static_cast<int>(pressType) );
+
+                // If none of the predefined actions have been hit, just send the message for processing
+                else
+                {
+                    handleEventForTrees( rEvent );
+                }
             }
         }
     }
