@@ -29,6 +29,7 @@ class CSprite;
 class CPhysicsWorld2D;
 class b2Body;
 class CFixture;
+class b2Fixture;
 
 class CPhysicsComponent2D : public iPhysicsComponent, boost::noncopyable
 {
@@ -54,9 +55,6 @@ public:
     // Get the body
     b2Body * getBody() override;
 
-    // Is this component active?
-    bool isActive() override;
-    
     // Set the physics position and rotation
     void setTransform( float x, float y, float angle = 0, bool resetVelocity = true ) override;
     
@@ -73,6 +71,25 @@ public:
     bool isBodyTypeStatic() override;
     bool isBodyTypeKinematic() override;
     bool isBodyTypeDynamic() override;
+
+    // Set/get the active state of this body
+    void setActive(bool value) override;
+    bool isActive() override;
+
+    // Set/get the awake state of this body
+    void setAwake(bool value) override;
+    bool isAwake() override;
+
+    // Set/get the fixed rotation state of this body
+    void setFixedRotation(bool value) override;
+    bool isFixedRotation() override;
+
+    // Set/get the sleeping allowed state of this body
+    void setSleepingAllowed(bool value) override;
+    bool isSleepingAllowed() override;
+
+    // Set the same contact filtering to all the fixtures
+    void setContactFilter(uint16_t categoryBits = 0x0001, uint16_t maskBits = 0xFFFF, int16_t groupIndex = 0, int fixtureIndex = -1) override;
 
 private:
 
@@ -109,6 +126,10 @@ private:
     // The physics body the sprite belongs to
     // NOTE: If we own this pointer, we'll need to free it
     b2Body * m_pBody = nullptr;
+
+    // vector list of fixtures
+    // NOTE: If we DON't own this pointer!
+    std::vector<b2Fixture *> m_fixtureVec;
 
     // Pixels to meters conversion
     const float PIXELS_TO_METERS;

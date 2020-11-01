@@ -18,6 +18,7 @@
 #include <sprite/sprite.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/statcounter.h>
+#include <utilities/genfunc.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -72,6 +73,8 @@ void CPhysicsComponent2D::init( const CSprite & sprite )
 ************************************************************************/
 void CPhysicsComponent2D::destroy()
 {
+    m_fixtureVec.clear();
+
     if( m_pBody != nullptr )
     {
         m_pWorld->destroyBody( m_pBody );
@@ -98,6 +101,8 @@ void CPhysicsComponent2D::createBody( const CSprite & sprite )
         bodyDef.position.Set( sprite.getPos().getX() * PIXELS_TO_METERS, sprite.getPos().getY() * PIXELS_TO_METERS );
         bodyDef.angle = -sprite.getRot().getZ();
         bodyDef.userData = (void*)&sprite;
+        bodyDef.bullet = physicsData.isBullet();
+        bodyDef.allowSleep = physicsData.allowSleep();
 
         // Create the body
         m_pBody = m_pWorld->createBody( bodyDef );
@@ -147,7 +152,14 @@ void CPhysicsComponent2D::createCircularShapeFixture( const CSprite & sprite, co
     f.isSensor = fixture.m_sensor;
     f.userData = (void*)&sprite;
 
-    m_pBody->CreateFixture( &f );
+    auto pFixture = m_pBody->CreateFixture( &f );
+    if( pFixture == nullptr )
+        throw NExcept::CCriticalException("Physics Edge Fixture error!",
+                boost::str( boost::format("Failed to create fixture (%s).\n\n%s\nLine: %s")
+                    % sprite.getObjectData().getName() % __FUNCTION__ % __LINE__ ));
+
+    pFixture->SetFilterData( fixture.m_filter );
+    m_fixtureVec.push_back( pFixture );
 }
 
 
@@ -187,7 +199,14 @@ void CPhysicsComponent2D::createEdgeShapeFixture( const CSprite & sprite, const 
     f.isSensor = fixture.m_sensor;
     f.userData = (void*)&sprite;
 
-    m_pBody->CreateFixture( &f );
+    auto pFixture = m_pBody->CreateFixture( &f );
+    if( pFixture == nullptr )
+        throw NExcept::CCriticalException("Physics Edge Fixture error!",
+                boost::str( boost::format("Failed to create fixture (%s).\n\n%s\nLine: %s")
+                    % sprite.getObjectData().getName() % __FUNCTION__ % __LINE__ ));
+
+    pFixture->SetFilterData( fixture.m_filter );
+    m_fixtureVec.push_back( pFixture );
 }
 
 
@@ -253,7 +272,14 @@ void CPhysicsComponent2D::createPolygonShapeFixture( const CSprite & sprite, con
     f.isSensor = fixture.m_sensor;
     f.userData = (void*)&sprite;
 
-    m_pBody->CreateFixture( &f );
+    auto pFixture = m_pBody->CreateFixture( &f );
+    if( pFixture == nullptr )
+        throw NExcept::CCriticalException("Physics Edge Fixture error!",
+                boost::str( boost::format("Failed to create fixture (%s).\n\n%s\nLine: %s")
+                    % sprite.getObjectData().getName() % __FUNCTION__ % __LINE__ ));
+
+    pFixture->SetFilterData( fixture.m_filter );
+    m_fixtureVec.push_back( pFixture );
 }
 
 
@@ -293,7 +319,14 @@ void CPhysicsComponent2D::createChainShapeFixture( const CSprite & sprite, const
     f.isSensor = fixture.m_sensor;
     f.userData = (void*)&sprite;
 
-    m_pBody->CreateFixture( &f );
+    auto pFixture = m_pBody->CreateFixture( &f );
+    if( pFixture == nullptr )
+        throw NExcept::CCriticalException("Physics Edge Fixture error!",
+                boost::str( boost::format("Failed to create fixture (%s).\n\n%s\nLine: %s")
+                    % sprite.getObjectData().getName() % __FUNCTION__ % __LINE__ ));
+
+    pFixture->SetFilterData( fixture.m_filter );
+    m_fixtureVec.push_back( pFixture );
 }
 
 
@@ -336,16 +369,6 @@ void CPhysicsComponent2D::update( CSprite * pSprite )
             pSprite->setRot( 0, 0, angle, false );
         }
     }
-}
-
-
-/************************************************************************
-*    DESC:  Is this component active?
-*           If this sprite is using physics then it must have a fixture
-************************************************************************/
-bool CPhysicsComponent2D::isActive()
-{
-    return (m_pBody != nullptr);
 }
 
 
@@ -430,3 +453,101 @@ bool CPhysicsComponent2D::isBodyTypeDynamic()
     return (BODY_TYPE == b2_dynamicBody);
 }
 
+/************************************************************************
+*    DESC:  Set/get the active state of this body
+************************************************************************/
+void CPhysicsComponent2D::setActive(bool value)
+{
+    if( m_pBody != nullptr )
+        m_pBody->SetActive(value);
+}
+
+bool CPhysicsComponent2D::isActive()
+{
+    if( m_pBody != nullptr )
+        return m_pBody->IsActive();
+
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Set/get the awake state of this body
+************************************************************************/
+void CPhysicsComponent2D::setAwake(bool value)
+{
+    if( m_pBody != nullptr )
+        m_pBody->SetAwake(value);
+}
+
+bool CPhysicsComponent2D::isAwake()
+{
+    if( m_pBody == nullptr )
+        return m_pBody->IsAwake();
+    
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Set/get the fixed rotation state of this body
+************************************************************************/
+void CPhysicsComponent2D::setFixedRotation(bool value)
+{
+    if( m_pBody != nullptr )
+        m_pBody->SetFixedRotation(value);
+}
+
+bool CPhysicsComponent2D::isFixedRotation()
+{
+    if( m_pBody == nullptr )
+        return m_pBody->IsFixedRotation();
+    
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Set/get the sleeping allowed state of this body
+************************************************************************/
+void CPhysicsComponent2D::setSleepingAllowed(bool value)
+{
+    if( m_pBody != nullptr )
+        m_pBody->SetSleepingAllowed(value);
+}
+
+bool CPhysicsComponent2D::isSleepingAllowed()
+{
+    if( m_pBody == nullptr )
+        return m_pBody->IsSleepingAllowed();
+    
+    return false;
+}
+
+
+/************************************************************************
+*    DESC:  Set the same contact filtering to all the fixtures
+************************************************************************/
+void CPhysicsComponent2D::setContactFilter(uint16_t categoryBits, uint16_t maskBits, int16_t groupIndex, int fixtureIndex)
+{
+    if( m_pBody != nullptr && !m_fixtureVec.empty() )
+    {
+        b2Filter filter;
+        filter.categoryBits = categoryBits;
+        filter.maskBits = maskBits;
+        filter.groupIndex = groupIndex;
+
+        if( fixtureIndex < 0 )
+        {
+            for( auto iter : m_fixtureVec )
+                iter->SetFilterData(filter);
+        }
+        else
+        {
+            if( fixtureIndex < static_cast<int>(m_fixtureVec.size()) )
+                m_fixtureVec.at(fixtureIndex)->SetFilterData(filter);
+            else
+                NGenFunc::PostDebugMsg( "WARNING: Contact filtering out of range!" );
+        }
+    }
+}

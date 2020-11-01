@@ -265,6 +265,33 @@ namespace NScriptSprite
             NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
+    void SetActive(bool value, CSprite & sprite)
+    {
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->setActive( value );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
+    }
+
+    void SetAwake(bool value, CSprite & sprite)
+    {
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->setAwake( value );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
+    }
+
+    void SetContactFilter(uint16_t categoryBits, uint16_t maskBits, int16_t groupIndex, int fixtureIndex, CSprite & sprite)
+    {
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->setContactFilter( categoryBits, maskBits, groupIndex, fixtureIndex );
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
+    }
+
     void DestroyPhysics(CSprite & sprite)
     {
         auto component = sprite.getPhysicsComponent();
@@ -483,7 +510,11 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setLinearVelocity(float, float)",                                               WRAP_OBJ_LAST(SetLinearVelocity),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setAngularVelocity(float)",                                                     WRAP_OBJ_LAST(SetAngularVelocity),  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",                                 WRAP_OBJ_LAST(ApplyAngularImpulse), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void destroyPhysics()",                                                              WRAP_OBJ_LAST(DestroyPhysics), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsActive(bool)",                                                        WRAP_OBJ_LAST(SetActive),           asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsAwake(bool)",                                                         WRAP_OBJ_LAST(SetAwake),            asCALL_GENERIC) );
+
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsContactFilter(uint16 a=1, uint16 b=0xFFFF, int16 c=0, int d=-1)",     WRAP_OBJ_LAST(SetContactFilter),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void destroyPhysics()",                                                              WRAP_OBJ_LAST(DestroyPhysics),      asCALL_GENERIC) );
 
         // Script specific functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void update()",                                   WRAP_MFN(CSprite,   update),          asCALL_GENERIC) );

@@ -51,6 +51,9 @@ public:
     // Specify if physics is active
     bool isActive() const override;
 
+    // Is this body a bullet
+    bool isBullet() const override;
+
 private:
 
     // The name of the physics world
@@ -64,6 +67,12 @@ private:
     
     // If we want to prevent the object from rotating due to physicss
     bool m_fixedRotation;
+
+    // Is this body a bullet
+    bool m_bullet;
+
+    // Is sleeping allowed
+    bool m_sleepingAllowed;
     
     // vector of fixtures
     std::vector<CFixture> m_fixtureVec;

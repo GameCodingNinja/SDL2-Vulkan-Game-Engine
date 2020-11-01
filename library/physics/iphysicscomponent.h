@@ -36,9 +36,6 @@ public:
     // Update the physics
     virtual void update( CSprite * pSprite ){}
     
-    // Is this component active?
-    virtual bool isActive() { return false; }
-    
     // Get the body
     virtual b2Body * getBody() { return nullptr; }
     
@@ -73,6 +70,25 @@ public:
     virtual bool isBodyTypeStatic(){return false;}
     virtual bool isBodyTypeKinematic(){return false;}
     virtual bool isBodyTypeDynamic(){return false;}
+
+    // Set/get the active state of this body
+    virtual void setActive(bool value) {}
+    virtual bool isActive() { return false; }
+
+    // Set/get the awake state of this body
+    virtual void setAwake(bool value){}
+    virtual bool isAwake(){ return false; }
+
+    // Set/get the fixed rotation state of this body
+    virtual void setFixedRotation(bool value) {}
+    virtual bool isFixedRotation() { return false; }
+
+    // Set/get the sleeping allowed state of this body
+    virtual void setSleepingAllowed(bool value){}
+    virtual bool isSleepingAllowed(){ return false; }
+
+    // Set the same contact filtering to all the fixtures
+    virtual void setContactFilter(uint16_t categoryBits = 0x0001, uint16_t maskBits = 0xFFFF, int16_t groupIndex = 0, int fixtureIndex = -1){}
 };
 
 #endif

@@ -105,7 +105,16 @@
 			"ranges": "cpp",
 			"stop_token": "cpp",
 			"coroutine": "cpp",
-			"scoped_allocator": "cpp"
+			"scoped_allocator": "cpp",
+			"csetjmp": "cpp",
+			"csignal": "cpp",
+			"codecvt": "cpp",
+			"forward_list": "cpp",
+			"regex": "cpp",
+			"rope": "cpp",
+			"slist": "cpp",
+			"shared_mutex": "cpp",
+			"span": "cpp"
 		}
 	}
 }

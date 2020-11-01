@@ -332,23 +332,24 @@ void Level_BallAI( CSprite & sprite )
 {
     while(true)
     {
-        if( sprite.getPos().y > 1700.f )
+        if( sprite.getPos().y > 1800.f )
         {
-            // Destroy the physics to avoid unhandled collisions
-            sprite.destroyPhysics();
             StrategyMgr.getStrategy("_level_ball_").destroy(sprite.getHandle());
             break;
         }
-        else if(
-            (sprite.getPos().y > 1600.f) && 
-            (abs(sprite.getPos().x) < 720) && 
-            !sprite.getParameters().isSet(NDefs::OBJ_STATE1) )
+        else if( (sprite.getPos().y > 1600.f) && !sprite.getParameters().isSet(NDefs::OBJ_STATE1) )
         {
+            // This will disable collision detection.
+            // Need to do this so that this sprite, which is about to be deleted, 
+            // isn't returned by the physics callback functions because it could be a dead pointer by then
+            sprite.setPhysicsContactFilter(0);
+
             // Set the state so as to not enter this if again
             sprite.getParameters().add(NDefs::OBJ_STATE1);
 
             // Dispatch message to bang this one up
-            DispatchEvent(NLevelDefs::ELE_BANG_UP_AWARD);
+            if( abs(sprite.getPos().x) < 720 )
+                DispatchEvent(NLevelDefs::ELE_BANG_UP_AWARD);
         }
 
         Suspend();

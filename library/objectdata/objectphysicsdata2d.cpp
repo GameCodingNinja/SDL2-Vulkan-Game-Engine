@@ -26,7 +26,9 @@ CObjectPhysicsData2D::CObjectPhysicsData2D() :
     m_bodyType(b2BodyType(defs_NULL_BODY_TYPE)),
     m_linearDamping(0),
     m_angularDamping(0),
-    m_fixedRotation(false)
+    m_fixedRotation(false),
+    m_bullet(false),
+    m_sleepingAllowed(true)
 {
 }
 
@@ -82,6 +84,14 @@ void CObjectPhysicsData2D::loadFromNode( const XMLNode & objectNode )
             // Whether the rotation due to physicss is fixed
             if( bodyNode.isAttributeSet("fixedRotation") )
                 m_fixedRotation = (std::strcmp( bodyNode.getAttribute("fixedRotation"), "true") == 0);
+
+            // Is this body a bullet
+            if( bodyNode.isAttributeSet("bullet") )
+                m_bullet = (std::strcmp( bodyNode.getAttribute("bullet"), "true") == 0);
+
+            // Is sleeping allowed
+            if( bodyNode.isAttributeSet("sleepingAllowed") )
+                m_sleepingAllowed = (std::strcmp( bodyNode.getAttribute("sleepingAllowed"), "true") == 0);
         }
 
         // The body of the physics sprite used for physics
@@ -254,4 +264,13 @@ const std::vector<CFixture> & CObjectPhysicsData2D::getFixtureVec() const
 bool CObjectPhysicsData2D::isActive() const
 {
     return (!m_world.empty() && (m_bodyType != b2BodyType(defs_NULL_BODY_TYPE)));
+}
+
+
+/************************************************************************
+*    DESC:  Is this body a bullet
+************************************************************************/
+bool CObjectPhysicsData2D::isBullet() const
+{
+    return m_bullet;
 }

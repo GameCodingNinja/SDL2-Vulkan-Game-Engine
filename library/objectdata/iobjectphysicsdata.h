@@ -125,6 +125,13 @@ public:
     virtual const CPoint<float> & getPlaneNormal() const
     { return m_null_point; }
     
+    // Is this body a bullet
+    virtual bool isBullet() const
+    { return false; }
+
+    // Is sleeping allowed?
+    virtual bool allowSleep() const
+    { return true; }
     
 private:
     
