@@ -29,6 +29,9 @@ public:
     // NOTE: Function must be called externally at the right time
     //       when the sprite has been setup with it's initial offsets
     virtual void init( const CSprite & sprite ){}
+
+    // Destroy the physics
+    virtual void destroy(){}
     
     // Update the physics
     virtual void update( CSprite * pSprite ){}
@@ -65,6 +68,11 @@ public:
 
     // Set the restitution
     virtual void setRestitution(const float rest){}
+
+    // Is body type
+    virtual bool isBodyTypeStatic(){return false;}
+    virtual bool isBodyTypeKinematic(){return false;}
+    virtual bool isBodyTypeDynamic(){return false;}
 };
 
 #endif

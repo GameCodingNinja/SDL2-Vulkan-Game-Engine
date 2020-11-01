@@ -229,7 +229,11 @@ namespace NScriptSprite
     {
         auto component = sprite.getPhysicsComponent();
         if( component != nullptr )
+        {
             component->setTransform( x, y, angle, resetVelocity );
+            if( component->isBodyTypeStatic() )
+                sprite.setPos(x, y, sprite.getPos().z);
+        }
         else
             NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
@@ -261,6 +265,15 @@ namespace NScriptSprite
             NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
+    void DestroyPhysics(CSprite & sprite)
+    {
+        auto component = sprite.getPhysicsComponent();
+        if( component != nullptr )
+            component->destroy();
+        else
+            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
+    }
+
     void ScriptResetAndRecycle(CSprite & sprite)
     {
         sprite.getScriptComponent().resetAndRecycle();
@@ -268,22 +281,46 @@ namespace NScriptSprite
 
     int GetSpriteId(CSprite & sprite)
     {
-        return dynamic_cast<iNode *>(&sprite)->getId();
+        auto pNode = dynamic_cast<iNode *>(&sprite);
+        if( pNode )
+            return pNode->getId();
+        else
+            NGenFunc::PostDebugMsg( "Dynamic cast failed to get sprite Id." );
+
+        return -1;
     }
 
     handle16_t GetSpriteHandle(CSprite & sprite)
     {
-        return dynamic_cast<iNode *>(&sprite)->getHandle();
+        auto pNode = dynamic_cast<iNode *>(&sprite);
+        if( pNode )
+            return pNode->getHandle();
+        else
+            NGenFunc::PostDebugMsg( "Dynamic cast failed to get sprite Id." );
+
+        return handle16_t(-1);
     }
 
     int GetObjectId(CObject & object)
     {
-        return dynamic_cast<iNode *>(&object)->getId();
+        auto pNode = dynamic_cast<iNode *>(&object);
+        if( pNode )
+            return pNode->getId();
+        else
+            NGenFunc::PostDebugMsg( "Dynamic cast failed to get object Id." );
+
+        return -1;
     }
 
     handle16_t GetObjectHandle(CObject & object)
     {
-        return dynamic_cast<iNode *>(&object)->getHandle();
+        auto pNode = dynamic_cast<iNode *>(&object);
+        if( pNode )
+            return pNode->getHandle();
+        else
+            NGenFunc::PostDebugMsg( "Dynamic cast failed to get object Id." );
+
+        return handle16_t(-1);
     }
 
 
@@ -446,6 +483,7 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setLinearVelocity(float, float)",                                               WRAP_OBJ_LAST(SetLinearVelocity),   asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setAngularVelocity(float)",                                                     WRAP_OBJ_LAST(SetAngularVelocity),  asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void applyAngularImpulse(float, bool wake = false)",                                 WRAP_OBJ_LAST(ApplyAngularImpulse), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void destroyPhysics()",                                                              WRAP_OBJ_LAST(DestroyPhysics), asCALL_GENERIC) );
 
         // Script specific functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void update()",                                   WRAP_MFN(CSprite,   update),          asCALL_GENERIC) );

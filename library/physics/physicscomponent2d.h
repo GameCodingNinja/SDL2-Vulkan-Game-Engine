@@ -45,6 +45,9 @@ public:
     //       when the sprite has been setup with it's initial offsets
     void init( const CSprite & sprite ) override;
 
+    // Destroy the physics
+    void destroy() override;
+
     // Update the physics
     void update( CSprite * pSprite ) override;
     
@@ -65,6 +68,11 @@ public:
     
     // Set the angular impulse
     void applyAngularImpulse( float value, bool wake = false ) override;
+
+    // Is body type
+    bool isBodyTypeStatic() override;
+    bool isBodyTypeKinematic() override;
+    bool isBodyTypeDynamic() override;
 
 private:
 

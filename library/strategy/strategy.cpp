@@ -336,6 +336,10 @@ void CStrategy::destroy( const handle16_t handle )
 ****************************************************************************/
 void CStrategy::update()
 {
+    // Remove and deleted nodes from the active list and map
+    // Deleting it here allows for one cycle to complete before deleting
+    deleteFromActiveList();
+
     for( auto iter : m_pNodeVec )
         iter->update();
     
@@ -350,9 +354,6 @@ void CStrategy::update()
     
     // Remove nodes from the active list
     removeFromActiveList();
-    
-    // Remove and deleted nodes from the active list and map
-    deleteFromActiveList();
 }
 
 /************************************************************************

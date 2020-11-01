@@ -48,11 +48,8 @@ CPhysicsComponent2D::CPhysicsComponent2D( const iObjectData & objectData ) :
 ************************************************************************/
 CPhysicsComponent2D::~CPhysicsComponent2D()
 {
-    if( m_pBody != nullptr )
-    {
-        m_pWorld->destroyBody( m_pBody );
-        m_pBody = nullptr;
-    }
+    // Destroy the physics
+    destroy();
 }
 
 
@@ -67,6 +64,18 @@ void CPhysicsComponent2D::init( const CSprite & sprite )
     {
         createBody( sprite );
         createFixture( sprite );
+    }
+}
+
+/************************************************************************
+*    DESC:  Destroy the physics
+************************************************************************/
+void CPhysicsComponent2D::destroy()
+{
+    if( m_pBody != nullptr )
+    {
+        m_pWorld->destroyBody( m_pBody );
+        m_pBody = nullptr;
     }
 }
 
@@ -401,3 +410,23 @@ b2Body * CPhysicsComponent2D::getBody()
 
     return m_pBody;
 }
+
+
+/************************************************************************
+*    DESC:  Is body type
+************************************************************************/
+bool CPhysicsComponent2D::isBodyTypeStatic()
+{
+    return (BODY_TYPE == b2_staticBody);
+}
+
+bool CPhysicsComponent2D::isBodyTypeKinematic()
+{
+    return (BODY_TYPE == b2_kinematicBody);
+}
+
+bool CPhysicsComponent2D::isBodyTypeDynamic()
+{
+    return (BODY_TYPE == b2_dynamicBody);
+}
+

@@ -15,6 +15,27 @@ final class CRunState : CCommonState
         {"square_red","square_green","square_blue",
         "triangle_red","triangle_blue","triangle_green",
         "circle_red","circle_blue","circle_green"};
+
+    // Multiplier positions
+    array<int> mMultiXPosAllAry = {-640,-480,-320,-160,0,160,320,480,640};
+
+    // A multidimensional to hold the spots to randomly place the multiplier based on it's current position.
+    array<array<int>> mMultiXPosAry = {
+        {-160,0,160,320,480,640},
+        {0,160,320,480,640},
+        {160,320,480,640},
+        {-640,320,480,640},
+        {-640,-480,480,640},
+        {-640,-480,-320,640},
+        {-640,-480,-320,-160},
+        {-640,-480,-320,-160,0},
+        {-640,-480,-320,-160,0,160} };
+
+    // Multiplier Y position
+    int mMultiY = 1450;
+
+    // Index of multiplier position
+    int mMultiIndexPos;
     
     // Physics world object
     CPhysicsWorld2D @mPhysicsWorld;
@@ -100,6 +121,8 @@ final class CRunState : CCommonState
 
         // Get the multipler sprite
         @mMultiSprite = mMultiStrategy.activateNode("strawberry").getSprite();
+        mMultiIndexPos = RandInt(0,mMultiXPosAllAry.length()-1);
+        mMultiSprite.setPhysicsTransform(mMultiXPosAllAry[mMultiIndexPos], mMultiY);
 
         // Make the next ball visible
         mUIStrategy.activateNode(mBallAry[mNextBallIndex]);
@@ -234,6 +257,12 @@ final class CRunState : CCommonState
         mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
         mUIPlayerMultiTxtSprite.prepare("inc_flash");
         mUIPlayerWinMeterCtrl.prepare("inc_flash");
+
+        array<int> @posAry = mMultiXPosAry[mMultiIndexPos];
+        int index = RandInt(0,posAry.length()-1);
+        int offsetX = posAry[index];
+        mMultiIndexPos = mMultiXPosAllAry.find(offsetX);
+        mMultiSprite.setPhysicsTransform(offsetX, mMultiY);
     }
 
     //
@@ -305,6 +334,8 @@ void Level_BallAI( CSprite & sprite )
     {
         if( sprite.getPos().y > 1700.f )
         {
+            // Destroy the physics to avoid unhandled collisions
+            sprite.destroyPhysics();
             StrategyMgr.getStrategy("_level_ball_").destroy(sprite.getHandle());
             break;
         }
