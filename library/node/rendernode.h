@@ -35,6 +35,9 @@ public:
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
+
+    // Destroy the physics
+    virtual void destroyPhysics() override;
     
 private:
     
@@ -46,6 +49,9 @@ private:
     
     // Record command buffer recursive function
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera );
+
+    // Destroy the physics
+    void destroyPhysics( iNode * pNode );
 };
 
 #endif

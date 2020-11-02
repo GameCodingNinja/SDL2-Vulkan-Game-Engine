@@ -164,6 +164,15 @@ void CSprite::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const
         m_upVisualComponent->recordCommandBuffer( index, cmdBuf, this, camera );
 }
 
+/***************************************************************************
+*    DESC:  Destroy the physics
+****************************************************************************/
+void CSprite::destroyPhysics()
+{
+    if( m_upPhysicsComponent )
+        m_upPhysicsComponent->destroy();
+}
+
 /************************************************************************
 *    DESC:  Get the visual component
 ************************************************************************/

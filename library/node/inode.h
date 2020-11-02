@@ -90,6 +90,9 @@ public:
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}
+
+    // Destroy the physics
+    virtual void destroyPhysics(){}
     
     // Get the node type
     virtual ENodeType getType() const

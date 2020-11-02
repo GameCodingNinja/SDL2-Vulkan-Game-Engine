@@ -14,6 +14,7 @@
 #include <sprite/sprite.h>
 #include <common/object.h>
 #include <gui/uicontrol.h>
+#include <physics/iphysicscomponent.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -139,6 +140,41 @@ void CRenderNode::recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandB
 
                 // Call a recursive function again
                 recordCommandBuffer( pNextNode, index, cmdBuffer, camera );
+            }
+        }
+        while( pNextNode != nullptr );
+    }
+}
+
+
+/***************************************************************************
+*    DESC:  Destroy the physics
+****************************************************************************/
+void CRenderNode::destroyPhysics()
+{
+    destroyPhysics( this );
+}
+
+void CRenderNode::destroyPhysics( iNode * pNode )
+{
+    if( pNode != nullptr )
+    {
+        iNode * pNextNode;
+        auto nodeIter = pNode->getNodeIter();
+
+        do
+        {
+            // get the next node
+            pNextNode = pNode->next(nodeIter);
+
+            if( pNextNode != nullptr )
+            {
+                // If this is a sprite, destroy the physics
+                if( pNextNode->getType() == ENodeType::SPRITE )
+                    pNextNode->getSprite()->destroyPhysics();
+                
+                // Call a recursive function again
+                destroyPhysics( pNextNode );
             }
         }
         while( pNextNode != nullptr );

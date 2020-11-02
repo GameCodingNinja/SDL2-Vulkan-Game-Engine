@@ -42,6 +42,9 @@ public:
     // for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ) override;
 
+    // Destroy the physics
+    void destroyPhysics() override;
+
     // Get the sprite
     CSprite * getSprite() override;
 

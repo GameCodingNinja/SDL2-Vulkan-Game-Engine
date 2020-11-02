@@ -86,6 +86,17 @@ void CSpriteNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer
     CRenderNode::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
+/***************************************************************************
+*    DESC:  Destroy the physics
+****************************************************************************/
+void CSpriteNode::destroyPhysics()
+{
+    CSprite::destroyPhysics();
+    
+    // Call inherited for recursion of children
+    CRenderNode::destroyPhysics();
+}
+
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/

@@ -68,6 +68,9 @@ public:
 
     // Record the command buffers
     void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, const CCamera & camera );
+
+    // Destroy the physics
+    void destroyPhysics();
     
     // Load the script functions from node and add them to the map
     void loadScriptFromNode( const XMLNode & node );

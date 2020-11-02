@@ -74,6 +74,14 @@ void CSpriteLeafNode::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBu
     CSprite::recordCommandBuffer( index, cmdBuffer, camera );
 }
 
+/***************************************************************************
+*    DESC:  Destroy the physics
+****************************************************************************/
+void CSpriteLeafNode::destroyPhysics()
+{
+    CSprite::destroyPhysics();
+}
+
 /************************************************************************
 *    DESC:  Get the sprite
 ************************************************************************/

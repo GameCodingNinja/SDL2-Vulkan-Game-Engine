@@ -292,15 +292,6 @@ namespace NScriptSprite
             NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
     }
 
-    void DestroyPhysics(CSprite & sprite)
-    {
-        auto component = sprite.getPhysicsComponent();
-        if( component != nullptr )
-            component->destroy();
-        else
-            NGenFunc::PostDebugMsg( "WARNING: Physics component does not exist." );
-    }
-
     void ScriptResetAndRecycle(CSprite & sprite)
     {
         sprite.getScriptComponent().resetAndRecycle();
@@ -471,22 +462,22 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(CPoint &in, bool convertToRadians = true)", WRAP_OBJ_LAST(IncSpriteRot1), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSprite", "void incRot(float x = 0, float y = 0, float z = 0, bool convertToRadians = true)", WRAP_OBJ_LAST(IncSpriteRot2), asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetSpriteScale1), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetSpriteScale2), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncSpriteScale1), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncSpriteScale2), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                       WRAP_MFN(CSprite, getScale),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "CBitmask & getParameters()",                            WRAP_MFN(CSprite, getParameters), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(CPoint & in)",                            WRAP_OBJ_LAST(SetSpriteScale1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void setScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(SetSpriteScale2),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(CPoint & in)",                            WRAP_OBJ_LAST(IncSpriteScale1),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void incScale(float x = 1, float y = 1, float z = 1)",  WRAP_OBJ_LAST(IncSpriteScale2),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "const CPoint & getScale() const",                       WRAP_MFN(CSprite, getScale),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "CBitmask & getParameters()",                            WRAP_MFN(CSprite, getParameters),  asCALL_GENERIC) );
 
         // Object specific functions
-        Throw( pEngine->RegisterObjectMethod("CObject", "void setVisible(bool)",                               WRAP_MFN(CObject, setVisible),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "bool isVisible() const",                              WRAP_MFN(CObject, isVisible),     asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getRot() const",                       WRAP_MFN(CObject, getRot),        asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getPos() const",                       WRAP_MFN(CObject, getPos),        asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getTransPos() const",                  WRAP_MFN(CObject, getTransPos),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getCenterPos() const",                 WRAP_MFN(CObject, getCenterPos),  asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getScale() const",                     WRAP_MFN(CObject, getScale),      asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "CBitmask & getParameters()",                          WRAP_MFN(CObject, getParameters), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "void setVisible(bool)",                               WRAP_MFN(CObject, setVisible),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "bool isVisible() const",                              WRAP_MFN(CObject, isVisible),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getRot() const",                       WRAP_MFN(CObject, getRot),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getPos() const",                       WRAP_MFN(CObject, getPos),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getTransPos() const",                  WRAP_MFN(CObject, getTransPos),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getCenterPos() const",                 WRAP_MFN(CObject, getCenterPos),   asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "const CPoint & getScale() const",                     WRAP_MFN(CObject, getScale),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "CBitmask & getParameters()",                          WRAP_MFN(CObject, getParameters),  asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CObject", "void setPos(CPoint &in)",                             WRAP_OBJ_LAST(SetObjectPos1),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CObject", "void setPos(float x = 0, float y = 0, float z = 0)",  WRAP_OBJ_LAST(SetObjectPos2),      asCALL_GENERIC) );
@@ -514,7 +505,7 @@ namespace NScriptSprite
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsAwake(bool)",                                                         WRAP_OBJ_LAST(SetAwake),            asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CSprite", "void setPhysicsContactFilter(uint16 a=1, uint16 b=0xFFFF, int16 c=0, int d=-1)",     WRAP_OBJ_LAST(SetContactFilter),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSprite", "void destroyPhysics()",                                                              WRAP_OBJ_LAST(DestroyPhysics),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "void destroyPhysics()",                                                              WRAP_MFN(CSprite, destroyPhysics),  asCALL_GENERIC) );
 
         // Script specific functions
         Throw( pEngine->RegisterObjectMethod("CSprite", "void update()",                                   WRAP_MFN(CSprite,   update),          asCALL_GENERIC) );

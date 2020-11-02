@@ -134,9 +134,14 @@ namespace NScriptStrategy
         return pStrategy;
     }
 
-    iNode * GetiNode(CSprite & sprite)
+    iNode * GetiNodeFromSprite(CSprite & sprite)
     {
         return dynamic_cast<iNode *>(&sprite);
+    }
+
+    iNode * GetiNodeFromObject(CObject & object)
+    {
+        return dynamic_cast<iNode *>(&object);
     }
     
     /************************************************************************
@@ -161,8 +166,8 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("iNode", "handle getHandle()",               WRAP_MFN(iNode, getHandle),      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("iNode", "iNode & getChildNode(string &in)", WRAP_MFN(iNode, getChildNode),   asCALL_GENERIC) );
 
-        Throw( pEngine->RegisterObjectMethod("CSprite", "iNode & getNode()",              WRAP_OBJ_LAST(GetiNode),         asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CObject", "iNode & getNode()",              WRAP_OBJ_LAST(GetiNode),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSprite", "iNode & getNode()",                                     WRAP_OBJ_LAST(GetiNodeFromSprite), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CObject", "iNode & getNode()",                                   WRAP_OBJ_LAST(GetiNodeFromObject), asCALL_GENERIC) );
 
         // Register type
         Throw( pEngine->RegisterObjectType("Strategy", 0, asOBJ_REF|asOBJ_NOCOUNT) );
