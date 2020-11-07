@@ -9,7 +9,7 @@
 #define __menu_tree_h__
 
 // Game lib dependencies
-#include <gui/menudefs.h>
+#include <gui/uidefs.h>
 #include <gui/scrollparam.h>
 
 // Boost lib dependencies
@@ -127,7 +127,7 @@ private:
     std::vector<CMenu *> m_pMenuPathVec;
 
     // menu tree state
-    NMenuDefs::EMenuTreeState m_state;
+    EMenuTreeState m_state;
 };
 
 #endif

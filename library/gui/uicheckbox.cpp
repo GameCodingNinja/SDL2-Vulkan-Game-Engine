@@ -16,9 +16,9 @@
 ************************************************************************/
 CUICheckBox::CUICheckBox( const std::string & group ) :
     CUIControl( group ),
-    m_toggleState(false)
+    m_toggleState(NUIDefs::OFF)
 {
-    m_type = NUIControlDefs::ECT_CHECK_BOX;
+    m_type = EControlType::CHECK_BOX;
 }
 
 
@@ -56,7 +56,7 @@ bool CUICheckBox::getToggleState()
 ************************************************************************/
 void CUICheckBox::onSelectExecute( const SDL_Event & rEvent )
 {
-    if( getState() == NUIControlDefs::ECS_SELECT )
+    if( getState() == EControlState::SELECT )
         m_toggleState = !m_toggleState;
 
     CUIControl::onSelectExecute( rEvent );
@@ -72,6 +72,6 @@ void CUICheckBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, c
     for( size_t i = 0; i < m_pSpriteVec.size()-1; ++i )
         m_pSpriteVec[i]->recordCommandBuffer( index, cmdBuf, camera );
 
-    if( m_toggleState == NUIControlDefs::TOGGLE_STATE_ON )
+    if( m_toggleState == static_cast<bool>(NUIDefs::ON) )
         m_pSpriteVec.back()->recordCommandBuffer( index, cmdBuf, camera );
 }

@@ -225,7 +225,7 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
 
     // In a traditional game, want the pause menu to display when the game is sent to the background
     else if( (rEvent.type == SDL_APP_WILLENTERBACKGROUND) && !CMenuMgr::Instance().isMenuActive() )
-        NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ESCAPE_ACTION );
+        NGenFunc::DispatchEvent( NMenuEvent::ESCAPE_ACTION );
 
     return false;
 }

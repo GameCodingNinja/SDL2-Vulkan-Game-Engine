@@ -12,7 +12,6 @@
 #include <common/object.h>
 
 // Game lib dependencies
-#include <gui/menudefs.h>
 #include <gui/icontrolnavnode.h>
 #include <gui/icontrol.h>
 #include <gui/scrollparam.h>
@@ -187,7 +186,7 @@ private:
     iControlNavNode * m_pActiveNode;
 
     // menu state
-    NMenuDefs::EMenuState m_state;
+    EMenuState m_state;
 
     // Dynamic offset
     CDynamicOffset m_dynamicOffset;

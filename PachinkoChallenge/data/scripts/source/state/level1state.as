@@ -242,8 +242,8 @@ final class CRunState : CCommonState
 
                 // Switch out the default menus and activate
                 MenuMgr.deactivateTree( "pause_tree" );
-                MenuMgr.activateTree( "game_start_tree" );
-                MenuMgr.transitionMenu( "game_start_tree" );
+                MenuMgr.activateTree( "game_over_tree" );
+                MenuMgr.transitionMenu( "confirmation_menu" );
             }
         }
     }

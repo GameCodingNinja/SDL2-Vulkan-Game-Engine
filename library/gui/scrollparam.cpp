@@ -9,7 +9,7 @@
 #include <gui/scrollparam.h>
 
 // Game lib dependencies
-#include <gui/menudefs.h>
+#include <gui/uidefs.h>
 #include <utilities/xmlParser.h>
 
 // Standard lib dependencies
@@ -37,16 +37,16 @@ void CScrollParam::loadFromNode( const XMLNode & node )
         m_scrollDelay = std::atoi(node.getAttribute( "scrollDelay" ));
 
         if( node.isAttributeSet( "up" ) && (std::strcmp( node.getAttribute( "up" ), "true" ) == 0) )
-            m_scrollTypesMap.emplace( NMenuDefs::EME_MENU_UP_ACTION, NMenuDefs::EME_MENU_SCROLL_UP );
+            m_scrollTypesMap.emplace( NMenuEvent::UP_ACTION, NMenuEvent::SCROLL_UP );
 
         if( node.isAttributeSet( "down" ) && (std::strcmp( node.getAttribute( "down" ), "true" ) == 0) )
-            m_scrollTypesMap.emplace( NMenuDefs::EME_MENU_DOWN_ACTION, NMenuDefs::EME_MENU_SCROLL_DOWN );
+            m_scrollTypesMap.emplace( NMenuEvent::DOWN_ACTION, NMenuEvent::SCROLL_DOWN );
 
         if( node.isAttributeSet( "left" ) && (std::strcmp( node.getAttribute( "left" ), "true" ) == 0) )
-            m_scrollTypesMap.emplace( NMenuDefs::EME_MENU_LEFT_ACTION, NMenuDefs::EME_MENU_SCROLL_LEFT );
+            m_scrollTypesMap.emplace( NMenuEvent::LEFT_ACTION, NMenuEvent::SCROLL_LEFT );
 
         if( node.isAttributeSet( "right" ) && (std::strcmp( node.getAttribute( "right" ), "true" ) == 0) )
-            m_scrollTypesMap.emplace( NMenuDefs::EME_MENU_RIGHT_ACTION, NMenuDefs::EME_MENU_SCROLL_RIGHT );
+            m_scrollTypesMap.emplace( NMenuEvent::RIGHT_ACTION, NMenuEvent::SCROLL_RIGHT );
     }
 }
 

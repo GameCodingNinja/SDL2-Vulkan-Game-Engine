@@ -29,7 +29,7 @@ CUIProgressBar::CUIProgressBar( const std::string & group ) :
     m_spriteApplyIndex(0),
     m_orentation(EOrientation::HORZ)
 {
-    m_type = NUIControlDefs::ECT_PROGRESS_BAR;
+    m_type = EControlType::PROGRESS_BAR;
 }
 
 

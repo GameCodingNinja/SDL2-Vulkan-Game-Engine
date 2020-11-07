@@ -13,7 +13,6 @@
 #include <common/defs.h>
 #include <common/point.h>
 #include <common/sensor.h>
-#include <gui/menudefs.h>
 
 // Boost lib dependencies
 #include <boost/bimap.hpp>

@@ -15,7 +15,6 @@
 #include <utilities/settings.h>
 #include <utilities/exceptionhandling.h>
 #include <utilities/deletefuncs.h>
-#include <gui/menudefs.h>
 #include <gui/messagecracker.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
@@ -33,9 +32,9 @@
 ************************************************************************/
 CUIControl::CUIControl( const std::string & group ) :
     iControl( group ),
-    m_state(NUIControlDefs::ECS_NULL),
-    m_lastState(NUIControlDefs::ECS_NULL),
-    m_actionType(NUIControlDefs::ECAT_NULL),
+    m_state(EControlState::_NULL),
+    m_lastState(EControlState::_NULL),
+    m_actionType(EControlActionType::_NULL),
     m_mouseSelectType(EActionPress::UP)
 {
 }
@@ -257,40 +256,40 @@ void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, co
 ************************************************************************/
 void CUIControl::handleEvent( const SDL_Event & rEvent )
 {
-    if( rEvent.type == NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE )
+    if( rEvent.type == NMenuEvent::CONTROL_STATE_CHANGE )
     {
         onStateChange( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_SELECT_EXECUTE )
+    else if( rEvent.type == NMenuEvent::SELECT_EXECUTE )
     {
         onSelectExecute( rEvent );
     }
     // Menu after trans in, makes a control active
-    else if( rEvent.type == NMenuDefs::EME_MENU_SET_ACTIVE_CONTROL )
+    else if( rEvent.type == NMenuEvent::SET_ACTIVE_CONTROL )
     {
         onSetActiveControl( rEvent );
     }
     // Called by script to reactive a control after the select animation completes
     // if this control and it's menu is designed to be selected again.
-    else if( rEvent.type == NMenuDefs::EME_MENU_REACTIVATE )
+    else if( rEvent.type == NMenuEvent::REACTIVATE )
     {
         onReactivate( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_ROOT_TRANS_IN )
+    else if( rEvent.type == NMenuEvent::ROOT_TRANS_IN )
     {
         onRootTransIn( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
+    else if( rEvent.type == NMenuEvent::TRANS_IN )
     {
         onTransIn( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_OUT )
+    else if( rEvent.type == NMenuEvent::TRANS_OUT )
     {
         onTransOut( rEvent );
     }
 
     // Prepare script function associated with handling this game event
-    prepareControlScriptFunction( NUIControlDefs::ECS_EVENT, rEvent.type, rEvent.user.code );
+    prepareControlScriptFunction( EControlState::EVENT, rEvent.type, rEvent.user.code );
 }
 
 
@@ -299,14 +298,14 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onRootTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    if( rEvent.user.code == NUIDefs::BEGIN )
     {
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
             setDisplayState();
 
         // Prepare script function associated with handling this game event
-        prepareControlScriptFunction( NUIControlDefs::ECS_ROOT_TRANS_IN );
+        prepareControlScriptFunction( EControlState::ROOT_TRANS_IN );
     }
 }
 
@@ -316,14 +315,14 @@ void CUIControl::onRootTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    if( rEvent.user.code == NUIDefs::BEGIN )
     {
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
             setDisplayState();
 
         // Prepare script function associated with handling this game event
-        prepareControlScriptFunction( NUIControlDefs::ECS_TRANS_IN );
+        prepareControlScriptFunction( EControlState::TRANS_IN );
     }
 }
 
@@ -332,7 +331,7 @@ void CUIControl::onTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onTransOut( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    if( rEvent.user.code == NUIDefs::BEGIN )
     {
         // Reset the control
         reset();
@@ -345,7 +344,7 @@ void CUIControl::onTransOut( const SDL_Event & rEvent )
             setDisplayState();
 
         // Prepare script function associated with handling this game event
-        prepareControlScriptFunction( NUIControlDefs::ECS_TRANS_OUT );
+        prepareControlScriptFunction( EControlState::TRANS_OUT );
     }
 }
 
@@ -357,7 +356,7 @@ void CUIControl::onStateChange( const SDL_Event & rEvent )
     // This control is the focus of the state change
     // The control's "this" pointer is used as a means of identification
     if( rEvent.user.data1 == (void *)this )
-        changeState( NUIControlDefs::EControlState(rEvent.user.code) );
+        changeState( EControlState(rEvent.user.code) );
     else
         deactivateControl();
 }
@@ -367,28 +366,28 @@ void CUIControl::onStateChange( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onSelectExecute( const SDL_Event & rEvent )
 {
-    if( m_state == NUIControlDefs::ECS_SELECT )
+    if( m_state == EControlState::SELECT )
     {
-        if( m_actionType == NUIControlDefs::ECAT_TO_TREE )
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TO_TREE, 0, &m_executionAction );
+        if( m_actionType == EControlActionType::TO_TREE )
+            NGenFunc::DispatchEvent( NMenuEvent::TO_TREE, 0, &m_executionAction );
 
-        else if( m_actionType == NUIControlDefs::ECAT_TO_MENU )
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TO_MENU, 0, &m_executionAction, this );
+        else if( m_actionType == EControlActionType::TO_MENU )
+            NGenFunc::DispatchEvent( NMenuEvent::TO_MENU, 0, &m_executionAction, this );
 
-        else if( m_actionType == NUIControlDefs::ECAT_BACK )
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_BACK_ACTION );
+        else if( m_actionType == EControlActionType::BACK )
+            NGenFunc::DispatchEvent( NMenuEvent::BACK_ACTION );
 
-        else if( m_actionType == NUIControlDefs::ECAT_CLOSE )
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TOGGLE_ACTION );
+        else if( m_actionType == EControlActionType::CLOSE )
+            NGenFunc::DispatchEvent( NMenuEvent::TOGGLE_ACTION );
 
-        else if( m_actionType == NUIControlDefs::ECAT_GAME_STATE_CHANGE )
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_GAME_STATE_CHANGE, NMenuDefs::ETC_BEGIN, &m_executionAction );
+        else if( m_actionType == EControlActionType::GAME_STATE_CHANGE )
+            NGenFunc::DispatchEvent( NMenuEvent::GAME_STATE_CHANGE, NUIDefs::BEGIN, &m_executionAction );
 
-        else if( m_actionType == NUIControlDefs::ECAT_QUIT_GAME )
+        else if( m_actionType == EControlActionType::QUIT_GAME )
             NGenFunc::DispatchEvent( SDL_QUIT );
 
         // Prepare script function associated with handling this game event
-        prepareControlScriptFunction( NUIControlDefs::ECS_EXECUTE );
+        prepareControlScriptFunction( EControlState::EXECUTE );
     }
 }
 
@@ -399,10 +398,10 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
 void CUIControl::onSetActiveControl( const SDL_Event & rEvent )
 {
     // Set the last active control to be active again
-    if( (rEvent.user.code == NMenuDefs::EAC_LAST_ACTIVE_CONTROL) &&
-        (m_lastState > NUIControlDefs::ECS_INACTIVE))
+    if( (rEvent.user.code == NUIDefs::LAST_ACTIVE_CONTROL) &&
+        (m_lastState > EControlState::INACTIVE))
     {
-        m_lastState = m_state = NUIControlDefs::ECS_ACTIVE;
+        m_lastState = m_state = EControlState::ACTIVE;
 
         // Don't animate the control if the mouse was used
         if( !CActionMgr::Instance().wasLastDeviceMouse() ||
@@ -420,9 +419,9 @@ void CUIControl::onSetActiveControl( const SDL_Event & rEvent )
 void CUIControl::onReactivate( const SDL_Event & rEvent )
 {
     // Set the last active control to be active again
-    if( m_state > NUIControlDefs::ECS_INACTIVE )
+    if( m_state > EControlState::INACTIVE )
     {
-        m_lastState = m_state = NUIControlDefs::ECS_ACTIVE;
+        m_lastState = m_state = EControlState::ACTIVE;
 
         // Don't animate the control if the mouse was used
         if( !CActionMgr::Instance().wasLastDeviceMouse() ||
@@ -450,8 +449,8 @@ bool CUIControl::onMouseMove( const SDL_Event & rEvent )
         if( !isActive() )
         {
             NGenFunc::DispatchEvent(
-                NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-                NUIControlDefs::ECS_ACTIVE,
+                NMenuEvent::CONTROL_STATE_CHANGE,
+                static_cast<int>(EControlState::ACTIVE),
                 (void *)this );
         }
     }
@@ -463,7 +462,7 @@ bool CUIControl::onMouseMove( const SDL_Event & rEvent )
 /************************************************************************
 *    DESC:  Change the control state
 ************************************************************************/
-void CUIControl::changeState( NUIControlDefs::EControlState state )
+void CUIControl::changeState( EControlState state )
 {
     if( m_state != state )
     {
@@ -488,7 +487,7 @@ bool CUIControl::activateControl()
     // The focus has switched to this control
     if( !isDisabled() )
     {
-        m_lastState = m_state = NUIControlDefs::ECS_ACTIVE;
+        m_lastState = m_state = EControlState::ACTIVE;
 
         recycleContext();
         setDisplayState();
@@ -506,8 +505,8 @@ bool CUIControl::activateControl()
 void CUIControl::deactivateControl()
 {
     // The focus has switched away from this control
-    if( (m_lastState == NUIControlDefs::ECS_NULL) ||
-        (m_lastState > NUIControlDefs::ECS_INACTIVE) )
+    if( (m_lastState == EControlState::_NULL) ||
+        (m_lastState > EControlState::INACTIVE) )
     {
         // Reset the control
         reset();
@@ -525,10 +524,10 @@ void CUIControl::deactivateControl()
 ************************************************************************/
 void CUIControl::disableControl()
 {
-    if( (m_lastState == NUIControlDefs::ECS_NULL) ||
-        (m_lastState > NUIControlDefs::ECS_DISABLE) )
+    if( (m_lastState == EControlState::_NULL) ||
+        (m_lastState > EControlState::DISABLE) )
     {
-        m_lastState = m_state = NUIControlDefs::ECS_DISABLE;
+        m_lastState = m_state = EControlState::DISABLE;
 
         recycleContext();
         setDisplayState();
@@ -541,9 +540,9 @@ void CUIControl::disableControl()
 ************************************************************************/
 void CUIControl::enableControl()
 {
-    if( m_lastState <= NUIControlDefs::ECS_DISABLE )
+    if( m_lastState <= EControlState::DISABLE )
     {
-        m_lastState = m_state = NUIControlDefs::ECS_INACTIVE;
+        m_lastState = m_state = EControlState::INACTIVE;
 
         recycleContext();
         setDisplayState();
@@ -579,44 +578,44 @@ void CUIControl::init()
 /************************************************************************
 *    DESC:  Prepare the sprite script function
 ************************************************************************/
-void CUIControl::prepareSpriteScriptFunction( NUIControlDefs::EControlState controlState )
+void CUIControl::prepareSpriteScriptFunction( EControlState controlState )
 {
     std::string scriptFuncMapKey = "null";
 
     switch( controlState )
     {
-        case NUIControlDefs::ECS_ROOT_TRANS_IN:
+        case EControlState::ROOT_TRANS_IN:
             scriptFuncMapKey = "rootTransIn";
         break;
 
-        case NUIControlDefs::ECS_TRANS_IN:
+        case EControlState::TRANS_IN:
             scriptFuncMapKey = "transIn";
         break;
 
-        case NUIControlDefs::ECS_TRANS_OUT:
+        case EControlState::TRANS_OUT:
             scriptFuncMapKey = "transOut";
         break;
 
-        case NUIControlDefs::ECS_DISABLE:
+        case EControlState::DISABLE:
             scriptFuncMapKey = "disable";
         break;
 
-        case NUIControlDefs::ECS_INACTIVE:
+        case EControlState::INACTIVE:
             scriptFuncMapKey = "inactive";
         break;
 
-        case NUIControlDefs::ECS_ACTIVE:
+        case EControlState::ACTIVE:
             scriptFuncMapKey = "active";
         break;
 
-        case NUIControlDefs::ECS_SELECT:
+        case EControlState::SELECT:
             scriptFuncMapKey = "select";
         break;
 
-        case NUIControlDefs::ECS_EXECUTE:
-        case NUIControlDefs::ECS_EVENT:
-        case NUIControlDefs::ECS_NULL:
-        case NUIControlDefs::ECS_CHANGE:
+        case EControlState::EXECUTE:
+        case EControlState::EVENT:
+        case EControlState::_NULL:
+        case EControlState::CHANGE:
             throw NExcept::CCriticalException("Control State NULL!",
                 boost::str( boost::format("Control state can't use this state for sprites (%s)!\n\n%s\nLine: %s")
                     % scriptFuncMapKey %  __FUNCTION__ % __LINE__ ));
@@ -631,53 +630,53 @@ void CUIControl::prepareSpriteScriptFunction( NUIControlDefs::EControlState cont
 /************************************************************************
 *    DESC:  Prepare the script function to run
 ************************************************************************/
-void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState controlState, uint type, int code )
+void CUIControl::prepareControlScriptFunction( EControlState controlState, uint type, int code )
 {
     std::string scriptFuncMapKey = "null";
 
     switch( controlState )
     {
-        case NUIControlDefs::ECS_NULL:
+        case EControlState::_NULL:
             scriptFuncMapKey = "null";
         break;
 
-        case NUIControlDefs::ECS_ROOT_TRANS_IN:
+        case EControlState::ROOT_TRANS_IN:
             scriptFuncMapKey = "rootTransIn";
         break;
 
-        case NUIControlDefs::ECS_TRANS_IN:
+        case EControlState::TRANS_IN:
             scriptFuncMapKey = "transIn";
         break;
 
-        case NUIControlDefs::ECS_TRANS_OUT:
+        case EControlState::TRANS_OUT:
             scriptFuncMapKey = "transOut";
         break;
 
-        case NUIControlDefs::ECS_DISABLE:
+        case EControlState::DISABLE:
             scriptFuncMapKey = "disable";
         break;
 
-        case NUIControlDefs::ECS_INACTIVE:
+        case EControlState::INACTIVE:
             scriptFuncMapKey = "inactive";
         break;
 
-        case NUIControlDefs::ECS_ACTIVE:
+        case EControlState::ACTIVE:
             scriptFuncMapKey = "active";
         break;
 
-        case NUIControlDefs::ECS_SELECT:
+        case EControlState::SELECT:
             scriptFuncMapKey = "select";
         break;
 
-        case NUIControlDefs::ECS_CHANGE:
+        case EControlState::CHANGE:
             scriptFuncMapKey = "change";
         break;
 
-        case NUIControlDefs::ECS_EXECUTE:
+        case EControlState::EXECUTE:
             scriptFuncMapKey = "execute";
         break;
 
-        case NUIControlDefs::ECS_EVENT:
+        case EControlState::EVENT:
             scriptFuncMapKey = "event";
         break;
     };
@@ -685,7 +684,7 @@ void CUIControl::prepareControlScriptFunction( NUIControlDefs::EControlState con
     auto iter = m_scriptFunctionMap.find( scriptFuncMapKey );
     if( iter != m_scriptFunctionMap.end() )
     {
-        if( controlState == NUIControlDefs::ECS_EVENT )
+        if( controlState == EControlState::EVENT )
             m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this, type, code} );
         else
             m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
@@ -717,8 +716,8 @@ bool CUIControl::prepare( const std::string & scriptFuncId )
 ************************************************************************/
 void CUIControl::reset( bool complete )
 {
-    if( m_state > NUIControlDefs::ECS_INACTIVE )
-        m_state = NUIControlDefs::ECS_INACTIVE;
+    if( m_state > EControlState::INACTIVE )
+        m_state = EControlState::INACTIVE;
 
     if( complete )
         m_lastState = m_state;
@@ -741,19 +740,19 @@ void CUIControl::recycleContext()
 void CUIControl::setDefaultState( const std::string & value )
 {
     if( value == "inactive" )
-        m_defaultState = NUIControlDefs::ECS_INACTIVE;
+        m_defaultState = EControlState::INACTIVE;
 
     else if( value == "active" )
-        m_defaultState = NUIControlDefs::ECS_ACTIVE;
+        m_defaultState = EControlState::ACTIVE;
 
     else if( value == "disabled" )
-        m_defaultState = NUIControlDefs::ECS_DISABLE;
+        m_defaultState = EControlState::DISABLE;
 
     else if( value == "selected" )
-        m_defaultState = NUIControlDefs::ECS_SELECT;
+        m_defaultState = EControlState::SELECT;
 }
 
-void CUIControl::setDefaultState( NUIControlDefs::EControlState value )
+void CUIControl::setDefaultState( EControlState value )
 {
     m_defaultState = value;
 }
@@ -771,12 +770,12 @@ void CUIControl::revertToDefaultState()
 /************************************************************************
 *    DESC:  Get/Set the state of this control
 ************************************************************************/
-NUIControlDefs::EControlState CUIControl::getState() const
+EControlState CUIControl::getState() const
 {
     return m_state;
 }
 
-void CUIControl::setState( NUIControlDefs::EControlState state, bool setLastState )
+void CUIControl::setState( EControlState state, bool setLastState )
 {
     m_state = state;
 
@@ -788,12 +787,12 @@ void CUIControl::setState( NUIControlDefs::EControlState state, bool setLastStat
 /************************************************************************
 *    DESC:  Get/Set the control's action type
 ************************************************************************/
-NUIControlDefs::EControlActionType CUIControl::getActionType()
+EControlActionType CUIControl::getActionType()
 {
     return m_actionType;
 }
 
-void CUIControl::setActionType( NUIControlDefs::EControlActionType value )
+void CUIControl::setActionType( EControlActionType value )
 {
     m_actionType = value;
 }
@@ -801,28 +800,28 @@ void CUIControl::setActionType( NUIControlDefs::EControlActionType value )
 void CUIControl::setActionType( const std::string & value )
 {
     if( value == "to_idle" )
-        m_actionType = NUIControlDefs::ECAT_IDLE;
+        m_actionType = EControlActionType::IDLE;
 
     else if( value == "to_tree" )
-        m_actionType = NUIControlDefs::ECAT_TO_TREE;
+        m_actionType = EControlActionType::TO_TREE;
 
     else if( value == "to_menu" )
-        m_actionType = NUIControlDefs::ECAT_TO_MENU;
+        m_actionType = EControlActionType::TO_MENU;
 
     else if( value == "back" )
-        m_actionType = NUIControlDefs::ECAT_BACK;
+        m_actionType = EControlActionType::BACK;
 
     else if( value == "close" )
-        m_actionType = NUIControlDefs::ECAT_CLOSE;
+        m_actionType = EControlActionType::CLOSE;
 
     else if( value == "change_focus" )
-        m_actionType = NUIControlDefs::ECAT_CHANGE_FOCUS;
+        m_actionType = EControlActionType::CHANGE_FOCUS;
 
     else if( value == "game_state_change" )
-        m_actionType = NUIControlDefs::ECAT_GAME_STATE_CHANGE;
+        m_actionType = EControlActionType::GAME_STATE_CHANGE;
 
     else if( value == "quit_game" )
-        m_actionType = NUIControlDefs::ECAT_QUIT_GAME;
+        m_actionType = EControlActionType::QUIT_GAME;
 }
 
 
@@ -915,8 +914,8 @@ bool CUIControl::handleSelectAction( const CSelectMsgCracker & msgCracker )
         (isActive() && !msgCracker.isDeviceMouse() && msgCracker.isPressDown()) )
     {
         NGenFunc::DispatchEvent(
-            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControlDefs::ECS_SELECT,
+            NMenuEvent::CONTROL_STATE_CHANGE,
+            static_cast<int>(EControlState::SELECT),
             (void *)this );
 
         return true;
@@ -940,7 +939,7 @@ bool CUIControl::activateFirstInactiveControl()
         {
             if( !isDisabled() )
             {
-                m_lastState = m_state = NUIControlDefs::ECS_ACTIVE;
+                m_lastState = m_state = EControlState::ACTIVE;
 
                 // Animate the control if the mouse just happens to be in it
                 if( isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
@@ -1007,27 +1006,27 @@ void CUIControl::setStringToList( const std::string & str )
 ************************************************************************/
 bool CUIControl::isDisabled()
 {
-    return m_state == NUIControlDefs::ECS_DISABLE;
+    return m_state == EControlState::DISABLE;
 }
 
 bool CUIControl::isInactive()
 {
-    return m_state == NUIControlDefs::ECS_INACTIVE;
+    return m_state == EControlState::INACTIVE;
 }
 
 bool CUIControl::isActive()
 {
-    return (m_state == NUIControlDefs::ECS_ACTIVE);
+    return (m_state == EControlState::ACTIVE);
 }
 
 bool CUIControl::isSelected()
 {
-    return (m_state == NUIControlDefs::ECS_SELECT);
+    return (m_state == EControlState::SELECT);
 }
 
 bool CUIControl::isSelectable()
 {
-    return ((m_state == NUIControlDefs::ECS_INACTIVE) || (m_state == NUIControlDefs::ECS_ACTIVE));
+    return ((m_state == EControlState::INACTIVE) || (m_state == EControlState::ACTIVE));
 }
 
 

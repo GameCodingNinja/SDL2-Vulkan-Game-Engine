@@ -73,10 +73,10 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
     CCommonState::handleEvent( rEvent );
 
     // Event sent from menu
-    if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
+    if( rEvent.type == NMenuEvent::GAME_STATE_CHANGE )
     {
         // Prepare the script to fade in the screen
-        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+        if( rEvent.user.code == NUIDefs::BEGIN )
             m_scriptComponent.prepare( "(state)", "State_FadeOut" );
     }
     // Event sent from script

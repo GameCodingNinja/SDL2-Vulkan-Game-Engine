@@ -15,8 +15,6 @@
 #include <utilities/xmlparsehelper.h>
 #include <utilities/genfunc.h>
 #include <objectdata/objectdatamanager.h>
-#include <gui/menudefs.h>
-#include <gui/uicontroldefs.h>
 #include <gui/uicontrolfactory.h>
 #include <gui/messagecracker.h>
 #include <managers/actionmanager.h>
@@ -36,7 +34,7 @@ CMenu::CMenu( const std::string & name, const std::string & group ) :
     m_name(name),
     m_group(group),
     m_pActiveNode(nullptr),
-    m_state(NMenuDefs::EMS_INACTIVE),
+    m_state(EMenuState::INACTIVE),
     m_alpha(0.f)
 {
     // The menu needs to default hidden
@@ -340,7 +338,7 @@ void CMenu::init()
 ************************************************************************/
 void CMenu::initRootMenu()
 {
-    m_state = NMenuDefs::EMS_IDLE;
+    m_state = EMenuState::IDLE;
     if( !prepare( "initRootMenu" ) )
     {
         setAlpha(1.f);
@@ -448,45 +446,45 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
     for( auto iter : m_pMouseOnlyControlVec )
         iter->handleEvent( rEvent );
 
-    if( rEvent.type == NMenuDefs::EME_MENU_ROOT_TRANS_IN )
+    if( rEvent.type == NMenuEvent::ROOT_TRANS_IN )
     {
         onRootTransIn( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_IN )
+    else if( rEvent.type == NMenuEvent::TRANS_IN )
     {
         onTransIn( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_TRANS_OUT )
+    else if( rEvent.type == NMenuEvent::TRANS_OUT )
     {
         onTransOut( rEvent );
     }
-    else if( rEvent.type == NMenuDefs::EME_MENU_REACTIVATE )
+    else if( rEvent.type == NMenuEvent::REACTIVATE )
     {
         onReactivate( rEvent );
     }
-    else if( m_state == NMenuDefs::EMS_IDLE )
+    else if( m_state == EMenuState::IDLE )
     {
-        if( rEvent.type == NMenuDefs::EME_MENU_SELECT_ACTION )
+        if( rEvent.type == NMenuEvent::SELECT_ACTION )
         {
             onSelectAction( rEvent );
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_SET_ACTIVE_CONTROL )
+        else if( rEvent.type == NMenuEvent::SET_ACTIVE_CONTROL )
         {
             onSetActiveControl( rEvent );
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_UP )
+        else if( rEvent.type == NMenuEvent::SCROLL_UP )
         {
             onUpAction( rEvent );
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_DOWN )
+        else if( rEvent.type == NMenuEvent::SCROLL_DOWN )
         {
             onDownAction( rEvent );
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_LEFT )
+        else if( rEvent.type == NMenuEvent::SCROLL_LEFT )
         {
             onLeftAction( rEvent );
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_RIGHT )
+        else if( rEvent.type == NMenuEvent::SCROLL_RIGHT )
         {
             onRightAction( rEvent );
         }
@@ -494,24 +492,24 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
         {
             onMouseMove( rEvent );
         }
-        else if( (rEvent.type >= NMenuDefs::EME_MENU_UP_ACTION) &&
-                 (rEvent.type <= NMenuDefs::EME_MENU_RIGHT_ACTION) )
+        else if( (rEvent.type >= NMenuEvent::UP_ACTION) &&
+                 (rEvent.type <= NMenuEvent::RIGHT_ACTION) )
         {
             if( rEvent.user.code == static_cast<int>(EActionPress::DOWN) )
             {
-                if( rEvent.type == NMenuDefs::EME_MENU_UP_ACTION )
+                if( rEvent.type == NMenuEvent::UP_ACTION )
                 {
                     onUpAction( rEvent );
                 }
-                else if( rEvent.type == NMenuDefs::EME_MENU_DOWN_ACTION )
+                else if( rEvent.type == NMenuEvent::DOWN_ACTION )
                 {
                     onDownAction( rEvent );
                 }
-                if( rEvent.type == NMenuDefs::EME_MENU_LEFT_ACTION )
+                if( rEvent.type == NMenuEvent::LEFT_ACTION )
                 {
                     onLeftAction( rEvent );
                 }
-                else if( rEvent.type == NMenuDefs::EME_MENU_RIGHT_ACTION )
+                else if( rEvent.type == NMenuEvent::RIGHT_ACTION )
                 {
                     onRightAction( rEvent );
                 }
@@ -578,8 +576,8 @@ void CMenu::navigateMenu( iControlNavNode::ENavNode navNodeAction )
                 m_pActiveNode = pNavNode;
 
                 NGenFunc::DispatchEvent(
-                    NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-                    NUIControlDefs::ECS_ACTIVE,
+                    NMenuEvent::CONTROL_STATE_CHANGE,
+                    static_cast<int>(EControlState::ACTIVE),
                     pNavNode->getControl() );
 
                 break;
@@ -623,8 +621,8 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
 
         // Set the state to active which will block all messages until the state is reset to idle
         auto pCtrl = m_pActiveNode->getControl()->getPtrToActiveControl();
-        if( (pCtrl != nullptr) && (pCtrl->getActionType() > NUIControlDefs::ECAT_IDLE) )
-            m_state = NMenuDefs::EMS_ACTIVE;
+        if( (pCtrl != nullptr) && (pCtrl->getActionType() > EControlActionType::IDLE) )
+            m_state = EMenuState::ACTIVE;
     }
     else if( msgCracker.isDeviceMouse() )
     {
@@ -636,8 +634,8 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
                 selectionFound = true;
 
                 // Set the state to active which will block all messages until the state is reset to idle
-                if( iter->getActionType() > NUIControlDefs::ECAT_IDLE )
-                    m_state = NMenuDefs::EMS_ACTIVE;
+                if( iter->getActionType() > EControlActionType::IDLE )
+                    m_state = EMenuState::ACTIVE;
 
                 break;
             }
@@ -661,8 +659,8 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
                 {
                     // Set the state to active which will block all messages until the state is reset to idle
                     auto pCtrl = m_pActiveNode->getControl()->getPtrToActiveControl();
-                    if( (pCtrl != nullptr) && (pCtrl->getActionType() > NUIControlDefs::ECAT_IDLE) )
-                        m_state = NMenuDefs::EMS_ACTIVE;
+                    if( (pCtrl != nullptr) && (pCtrl->getActionType() > EControlActionType::IDLE) )
+                        m_state = EMenuState::ACTIVE;
 
                     break;
                 }
@@ -677,7 +675,7 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
 void CMenu::onSetActiveControl( const SDL_Event & rEvent )
 {
     // Set the first inactive control to active
-    if( rEvent.user.code == NMenuDefs::EAC_FIRST_ACTIVE_CONTROL )
+    if( rEvent.user.code == NUIDefs::FIRST_ACTIVE_CONTROL )
         activateFirstInactiveControl();
 }
 
@@ -686,7 +684,7 @@ void CMenu::onSetActiveControl( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onReactivate( const SDL_Event & rEvent )
 {
-    m_state = NMenuDefs::EMS_IDLE;
+    m_state = EMenuState::IDLE;
 }
 
 /************************************************************************
@@ -694,20 +692,20 @@ void CMenu::onReactivate( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onRootTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    if( rEvent.user.code == NUIDefs::BEGIN )
     {
         if( !prepare( "rootTransIn" ) )
         {
             setAlpha(1.f);
             setVisible(true);
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_ROOT_TRANS_IN, NMenuDefs::ETC_END );
+            NGenFunc::DispatchEvent( NMenuEvent::ROOT_TRANS_IN, NUIDefs::END );
         }
 
-        m_state = NMenuDefs::EMS_ACTIVE;
+        m_state = EMenuState::ACTIVE;
     }
-    else if( rEvent.user.code == NMenuDefs::ETC_END )
+    else if( rEvent.user.code == NUIDefs::END )
     {
-        m_state = NMenuDefs::EMS_IDLE;
+        m_state = EMenuState::IDLE;
     }
 }
 
@@ -716,20 +714,20 @@ void CMenu::onRootTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    if( rEvent.user.code == NUIDefs::BEGIN )
     {
         if( !prepare( "transIn" ) )
         {
             setAlpha(1.f);
             setVisible(true);
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_IN, NMenuDefs::ETC_END );
+            NGenFunc::DispatchEvent( NMenuEvent::TRANS_IN, NUIDefs::END );
         }
 
-        m_state = NMenuDefs::EMS_ACTIVE;
+        m_state = EMenuState::ACTIVE;
     }
-    else if( rEvent.user.code == NMenuDefs::ETC_END )
+    else if( rEvent.user.code == NUIDefs::END )
     {
-        m_state = NMenuDefs::EMS_IDLE;
+        m_state = EMenuState::IDLE;
     }
 }
 
@@ -738,20 +736,20 @@ void CMenu::onTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onTransOut( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+    if( rEvent.user.code == NUIDefs::BEGIN )
     {
         if( !prepare( "transOut" ) )
         {
             setAlpha(0.f);
             setVisible(false);
-            NGenFunc::DispatchEvent( NMenuDefs::EME_MENU_TRANS_OUT, NMenuDefs::ETC_END );
+            NGenFunc::DispatchEvent( NMenuEvent::TRANS_OUT, NUIDefs::END );
         }
 
-        m_state = NMenuDefs::EMS_ACTIVE;
+        m_state = EMenuState::ACTIVE;
     }
-    else if( rEvent.user.code == NMenuDefs::ETC_END )
+    else if( rEvent.user.code == NUIDefs::END )
     {
-        m_state = NMenuDefs::EMS_INACTIVE;
+        m_state = EMenuState::INACTIVE;
     }
 }
 
@@ -849,7 +847,7 @@ iControl * CMenu::getPtrToActiveControl()
 
     for( auto iter : m_pControlVec )
     {
-        if( iter->getState() > NUIControlDefs::ECS_INACTIVE )
+        if( iter->getState() > EControlState::INACTIVE )
         {
             pResult = iter->getPtrToActiveControl();
             break;
@@ -911,7 +909,7 @@ float CMenu::getAlpha()
 ************************************************************************/
 bool CMenu::isIdle()
 {
-    return (m_state == NMenuDefs::EMS_IDLE);
+    return (m_state == EMenuState::IDLE);
 }
 
 /************************************************************************
@@ -919,5 +917,5 @@ bool CMenu::isIdle()
 ************************************************************************/
 bool CMenu::isActive()
 {
-    return (m_state == NMenuDefs::EMS_ACTIVE);
+    return (m_state == EMenuState::ACTIVE);
 }

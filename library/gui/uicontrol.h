@@ -12,7 +12,6 @@
 #include <gui/icontrol.h>
 
 // Game lib dependencies
-#include <gui/menudefs.h>
 #include <gui/scrollparam.h>
 #include <gui/messagecracker.h>
 #include <common/size.h>
@@ -60,11 +59,11 @@ public:
     void revertToDefaultState() override;
 
     // Get/Set the state of this control
-    NUIControlDefs::EControlState getState() const override;
-    void setState( NUIControlDefs::EControlState state, bool setLastState = false ) override;
+    EControlState getState() const override;
+    void setState( EControlState state, bool setLastState = false ) override;
 
     // Get the type of action
-    NUIControlDefs::EControlActionType getActionType() override;
+    EControlActionType getActionType() override;
 
     // Get the execution action
     const std::string & getExecutionAction() override;
@@ -73,7 +72,7 @@ public:
     virtual void reset( bool complete = false ) override;
 
     // Set the type of action
-    void setActionType( NUIControlDefs::EControlActionType value ) override;
+    void setActionType( EControlActionType value ) override;
     void setActionType( const std::string & value ) override;
 
     // Set the execution action
@@ -103,7 +102,7 @@ public:
     void setStringToList( const std::string & str ) override;
 
     // Change the control state
-    void changeState( NUIControlDefs::EControlState state ) override;
+    void changeState( EControlState state ) override;
 
     // Is this control active/selected
     bool isDisabled() override;
@@ -160,10 +159,10 @@ protected:
     void setDisplayState();
 
     // Prepare the sprite script function
-    void prepareSpriteScriptFunction( NUIControlDefs::EControlState controlState );
+    void prepareSpriteScriptFunction( EControlState controlState );
 
     // Prepare the control script function to run
-    void prepareControlScriptFunction( NUIControlDefs::EControlState controlState, uint type = 0, int code = 0 );
+    void prepareControlScriptFunction( EControlState controlState, uint type = 0, int code = 0 );
 
     // Recycle the contexts
     void recycleContext();
@@ -190,7 +189,7 @@ private:
     virtual void loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCount ) override;
 
     // Set the default state of this control
-    void setDefaultState( NUIControlDefs::EControlState value );
+    void setDefaultState( EControlState value );
     void setDefaultState( const std::string & value );
     
     // Transform the collision
@@ -204,17 +203,17 @@ protected:
 private:
 
     // control's default state
-    NUIControlDefs::EControlState m_defaultState;
+    EControlState m_defaultState;
 
     // control's current state
-    NUIControlDefs::EControlState m_state;
-    NUIControlDefs::EControlState m_lastState;
+    EControlState m_state;
+    EControlState m_lastState;
 
     // Name of the action to perform under the correct circumstances
     std::string m_executionAction;
 
     // How the control should respond when selected
-    NUIControlDefs::EControlActionType m_actionType;
+    EControlActionType m_actionType;
 
     // This control's size
     CSize<float> m_size;

@@ -9,8 +9,8 @@
 
 namespace NUIControlDefs
 {
-    const bool TOGGLE_STATE_ON(true);
-    const bool TOGGLE_STATE_OFF(false);
+    //const bool TOGGLE_STATE_ON(true);
+    //const bool TOGGLE_STATE_OFF(false);
 
     // Value for no active control
     const int NO_ACTIVE_CONTROL(-1);

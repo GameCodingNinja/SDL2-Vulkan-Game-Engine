@@ -9,8 +9,6 @@
 #include <gui/uislider.h>
 
 // Game lib dependencies
-#include <gui/menudefs.h>
-#include <gui/uicontroldefs.h>
 #include <utilities/genfunc.h>
 #include <utilities/xmlParser.h>
 #include <utilities/settings.h>
@@ -39,7 +37,7 @@ CUISlider::CUISlider( const std::string & group ) :
     m_sliderBtnHold(false),
     m_pressType( EActionPress::IDLE)
 {
-    m_type = NUIControlDefs::ECT_SLIDER;
+    m_type = EControlType::SLIDER;
 }
 
 
@@ -172,7 +170,7 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
             incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio );
 
         // Prepare script function associated with handling this game event
-        prepareControlScriptFunction( NUIControlDefs::ECS_CHANGE );
+        prepareControlScriptFunction( EControlState::CHANGE );
     }
 
     return result;
@@ -203,7 +201,7 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
                 incSliderMovePos( dif.y );
 
             // Prepare script function associated with handling this game event
-            prepareControlScriptFunction( NUIControlDefs::ECS_SELECT );
+            prepareControlScriptFunction( EControlState::SELECT );
         }
     }
     else if( msgCracker.getPressType() != getMouseSelectType() )
@@ -235,15 +233,15 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
     {
         // Send a message to blink the button
         NGenFunc::DispatchEvent(
-            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControlDefs::ECS_SELECT,
+            NMenuEvent::CONTROL_STATE_CHANGE,
+            static_cast<int>(EControlState::SELECT),
             getSubControl() );
 
         incSlider(value);
 
         // Prepare script function associated with handling this game event
         if( prepareOnSelect )
-            prepareControlScriptFunction( NUIControlDefs::ECS_SELECT );
+            prepareControlScriptFunction( EControlState::SELECT );
     }
 }
 

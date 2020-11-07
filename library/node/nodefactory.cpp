@@ -70,11 +70,11 @@ namespace NNodeFactory
         std::unique_ptr<CUIControl> upControl;
         iNode * pNode(nullptr);
 
-        if( rNodeData.getControlType() == NUIControlDefs::ECT_METER )
+        if( rNodeData.getControlType() == EControlType::METER )
         {
             upControl.reset( new CUIMeter( rNodeData.getGroup() ) );
         }
-        else if( rNodeData.getControlType() == NUIControlDefs::ECT_PROGRESS_BAR )
+        else if( rNodeData.getControlType() == EControlType::PROGRESS_BAR )
         {
             upControl.reset( new CUIProgressBar( rNodeData.getGroup() ) );
         }

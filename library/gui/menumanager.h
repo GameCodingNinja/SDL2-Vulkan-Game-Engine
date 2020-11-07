@@ -14,7 +14,6 @@
 // Game lib dependencies
 #include <utilities/matrix.h>
 #include <utilities/genfunc.h>
-#include <gui/menudefs.h>
 #include <gui/menu.h>
 #include <common/camera.h>
 

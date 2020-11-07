@@ -14,7 +14,6 @@
 #include <utilities/genfunc.h>
 #include <utilities/exceptionhandling.h>
 #include <gui/uicontrolfactory.h>
-#include <gui/menudefs.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -33,7 +32,7 @@ CUISubControl::CUISubControl( const std::string & group ) :
     m_pActiveNode(nullptr),
     m_respondsToSelectMsg(false)
 {
-    m_type = NUIControlDefs::ECT_SUB_CONTROL;
+    m_type = EControlType::SUB_CONTROL;
 }
 
 
@@ -221,51 +220,51 @@ void CUISubControl::handleEvent( const SDL_Event & rEvent )
 
     if( isActive() )
     {
-        if( (rEvent.type >= NMenuDefs::EME_MENU_UP_ACTION) &&
-            (rEvent.type <= NMenuDefs::EME_MENU_RIGHT_ACTION) )
+        if( (rEvent.type >= NMenuEvent::UP_ACTION) &&
+            (rEvent.type <= NMenuEvent::RIGHT_ACTION) )
         {
-            if( rEvent.type == NMenuDefs::EME_MENU_UP_ACTION )
+            if( rEvent.type == NMenuEvent::UP_ACTION )
             {
                 onUpAction( rEvent );
             }
-            else if( rEvent.type == NMenuDefs::EME_MENU_DOWN_ACTION )
+            else if( rEvent.type == NMenuEvent::DOWN_ACTION )
             {
                 onDownAction( rEvent );
             }
-            if( rEvent.type == NMenuDefs::EME_MENU_LEFT_ACTION )
+            if( rEvent.type == NMenuEvent::LEFT_ACTION )
             {
                 onLeftAction( rEvent );
             }
-            else if( rEvent.type == NMenuDefs::EME_MENU_RIGHT_ACTION )
+            else if( rEvent.type == NMenuEvent::RIGHT_ACTION )
             {
                 onRightAction( rEvent );
             }
         }
-        else if( (rEvent.type >= NMenuDefs::EME_MENU_SCROLL_UP) &&
-                 (rEvent.type <= NMenuDefs::EME_MENU_SCROLL_RIGHT) )
+        else if( (rEvent.type >= NMenuEvent::SCROLL_UP) &&
+                 (rEvent.type <= NMenuEvent::SCROLL_RIGHT) )
         {
-            if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_UP )
+            if( rEvent.type == NMenuEvent::SCROLL_UP )
             {
                 onUpScroll( rEvent );
             }
-            else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_DOWN )
+            else if( rEvent.type == NMenuEvent::SCROLL_DOWN )
             {
                 onDownScroll( rEvent );
             }
-            else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_LEFT )
+            else if( rEvent.type == NMenuEvent::SCROLL_LEFT )
             {
                 onLeftScroll( rEvent );
             }
-            else if( rEvent.type == NMenuDefs::EME_MENU_SCROLL_RIGHT )
+            else if( rEvent.type == NMenuEvent::SCROLL_RIGHT )
             {
                 onRightScroll( rEvent );
             }
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_TAB_LEFT )
+        else if( rEvent.type == NMenuEvent::TAB_LEFT )
         {
             onTabLeft( rEvent );
         }
-        else if( rEvent.type == NMenuDefs::EME_MENU_TAB_RIGHT )
+        else if( rEvent.type == NMenuEvent::TAB_RIGHT )
         {
             onTabRight( rEvent );
         }
@@ -377,8 +376,8 @@ void CUISubControl::navigateMenu( iControlNavNode::ENavNode navNode )
                 m_pActiveNode = pNavNode;
 
                 NGenFunc::DispatchEvent(
-                    NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-                    NUIControlDefs::ECS_ACTIVE,
+                    NMenuEvent::CONTROL_STATE_CHANGE,
+                    static_cast<int>(EControlState::ACTIVE),
                     pNavNode->getControl() );
 
                 break;
@@ -400,13 +399,13 @@ void CUISubControl::onStateChange( const SDL_Event & rEvent )
     }
     else
     {
-        NUIControlDefs::EControlState state = NUIControlDefs::EControlState(rEvent.user.code);
+        EControlState state = static_cast<EControlState>(rEvent.user.code);
 
         iControl * pCtrl = findSubControl( rEvent.user.data1 );
 
         // Restart the active state of the sub control if something
         // changed in the child controls or their children controls
-        if( (state == NUIControlDefs::ECS_ACTIVE) && (pCtrl != nullptr) )
+        if( (state == EControlState::ACTIVE) && (pCtrl != nullptr) )
         {
             if( pCtrl->getState() != state )
             {
@@ -418,7 +417,7 @@ void CUISubControl::onStateChange( const SDL_Event & rEvent )
             }
         }
         // The sub control doesn't respond to selected message
-        else if( state < NUIControlDefs::ECS_SELECT )
+        else if( state < EControlState::SELECT )
             CUIControl::onStateChange( rEvent );
     }
 }
@@ -667,7 +666,7 @@ iControl * CUISubControl::getPtrToActiveControl()
 
     for( auto iter : m_pSubControlVec )
     {
-        if( iter->getState() > NUIControlDefs::ECS_INACTIVE )
+        if( iter->getState() > EControlState::INACTIVE )
         {
             pResult = iter->getPtrToActiveControl();
             break;

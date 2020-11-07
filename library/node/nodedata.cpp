@@ -35,7 +35,7 @@ CNodeData::CNodeData(
         m_parenNodetId(parenNodetId),
         m_userId(userId),
         m_nodeType(ENodeType::_NULL_),
-        m_controlType(NUIControlDefs::ECT_NULL),
+        m_controlType(EControlType::_NULL),
         m_hasChildrenNodes(false)
 {
     // Does this node have children nodes?
@@ -60,13 +60,13 @@ CNodeData::CNodeData(
         else if( std::strcmp( childNode.getName(), "uiMeter" ) == 0 )
         {
             m_nodeType = ENodeType::UI_CONTROL;
-            m_controlType = NUIControlDefs::ECT_METER;
+            m_controlType = EControlType::METER;
             break;
         }
         else if( std::strcmp( childNode.getName(), "uiProgressBar" ) == 0 )
         {
             m_nodeType = ENodeType::UI_CONTROL;
-            m_controlType = NUIControlDefs::ECT_PROGRESS_BAR;
+            m_controlType = EControlType::PROGRESS_BAR;
             break;
         }
     }
@@ -89,7 +89,7 @@ CNodeData::CNodeData(
         m_parenNodetId(defs_DEFAULT_NODE_ID),
         m_userId(defs_DEFAULT_ID),
         m_nodeType(ENodeType::SPRITE),
-        m_controlType(NUIControlDefs::ECT_NULL),
+        m_controlType(EControlType::_NULL),
         m_hasChildrenNodes(false)
 {
 }
@@ -140,7 +140,7 @@ ENodeType CNodeData::getNodeType() const
 /************************************************************************
 *    DESC:  Get the control type
 ************************************************************************/
-NUIControlDefs::EControlType CNodeData::getControlType() const
+EControlType CNodeData::getControlType() const
 {
     return m_controlType;
 }

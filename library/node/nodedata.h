@@ -12,7 +12,7 @@
 #include <sprite/spritedata.h>
 
 // Game lib dependencies
-#include <gui/uicontroldefs.h>
+#include <gui/uidefs.h>
 
 class CNodeData : public CSpriteData
 {
@@ -52,7 +52,7 @@ public:
     ENodeType getNodeType() const;
 
     // Get the control type
-    NUIControlDefs::EControlType getControlType() const;
+    EControlType getControlType() const;
 
     // Does this node have children?
     bool hasChildrenNodes() const;
@@ -75,7 +75,7 @@ private:
     ENodeType m_nodeType;
 
     // Control type of node
-    NUIControlDefs::EControlType m_controlType;
+    EControlType m_controlType;
 
     // Does this node have children nodes?
     bool m_hasChildrenNodes;

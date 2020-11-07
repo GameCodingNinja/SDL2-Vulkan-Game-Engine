@@ -40,7 +40,7 @@ CUIScrollBox::CUIScrollBox( const std::string & group ) :
     m_visStartPos(0),
     m_visEndPos(0),
     m_maxMoveAmount(0),
-    m_activeScrollCtrl(NUIControlDefs::NO_ACTIVE_CONTROL),
+    m_activeScrollCtrl(NUIDefs::NO_ACTIVE_CONTROL),
     m_firstScrollCtrlIndex(0),
     m_scrollSpeed(0.05),
     m_pageSpeed(0.05),
@@ -52,7 +52,7 @@ CUIScrollBox::CUIScrollBox( const std::string & group ) :
     m_scrollMsg(false),
     m_endScrollSelection(false)
 {
-    m_type = NUIControlDefs::ECT_SCROLL_BOX;
+    m_type = EControlType::SCROLL_BOX;
 }
 
 
@@ -200,7 +200,7 @@ void CUIScrollBox::handleEvent( const SDL_Event & rEvent )
     if( rEvent.wheel.type == SDL_MOUSEWHEEL )
     {
         // Invalidate the active control
-        m_activeScrollCtrl = NUIControlDefs::NO_ACTIVE_CONTROL;
+        m_activeScrollCtrl = NUIDefs::NO_ACTIVE_CONTROL;
 
         // Get the current scroll position
         m_scrollCurPos = getSubControl()->incSliderMovePos( -(rEvent.wheel.y * 50) );
@@ -286,7 +286,7 @@ bool CUIScrollBox::onMouseMove( const SDL_Event & rEvent )
     bool result = CUISubControl::onMouseMove( rEvent );
 
     // Invalidate the active control
-    m_activeScrollCtrl = NUIControlDefs::NO_ACTIVE_CONTROL;
+    m_activeScrollCtrl = NUIDefs::NO_ACTIVE_CONTROL;
 
     if( getSubControl()->isSliderMouseDown() )
     {
@@ -374,7 +374,7 @@ bool CUIScrollBox::activateFirstInactiveControl()
         }
     }
 
-    return m_activeScrollCtrl != NUIControlDefs::NO_ACTIVE_CONTROL;
+    return m_activeScrollCtrl != NUIDefs::NO_ACTIVE_CONTROL;
 }
 
 
@@ -456,7 +456,7 @@ void CUIScrollBox::handlePageScroll( int scrollVector )
                 // Deactivate the last control if the scrolling has been activated
                 if( m_scrollVector )
                 {
-                    if( m_activeScrollCtrl != NUIControlDefs::NO_ACTIVE_CONTROL )
+                    if( m_activeScrollCtrl != NUIDefs::NO_ACTIVE_CONTROL )
                         m_pScrollControlVec[m_activeScrollCtrl]->deactivateControl();
                 }
             }
@@ -517,8 +517,8 @@ CBitmask<uint> CUIScrollBox::selectNextControl( int scrollVector )
     if( scrollResult.isSet(IN_VIEWABLE_AREA) && !scrollResult.isSet(NEW_ACTIVE_CTRL) )
     {
         NGenFunc::DispatchEvent(
-            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControlDefs::ECS_ACTIVE,
+            NMenuEvent::CONTROL_STATE_CHANGE,
+            static_cast<int>(EControlState::ACTIVE),
             (void *)m_pScrollControlVec[m_activeScrollCtrl] );
     }
 
@@ -594,7 +594,7 @@ bool CUIScrollBox::setActiveCtrlToViewableArea( int scrollVector )
     // If the active control is not within the active area, make it so that it will be the first one selected
     if( (m_activeScrollCtrl < m_firstScrollCtrlIndex) || (m_activeScrollCtrl >= (m_firstScrollCtrlIndex + m_visibleCount)) )
     {
-        if( m_activeScrollCtrl != NUIControlDefs::NO_ACTIVE_CONTROL )
+        if( m_activeScrollCtrl != NUIDefs::NO_ACTIVE_CONTROL )
             m_pScrollControlVec[m_activeScrollCtrl]->deactivateControl();
 
         m_activeScrollCtrl = m_firstScrollCtrlIndex;
@@ -651,13 +651,13 @@ CBitmask<uint> CUIScrollBox::scrollToTheNextCtrlInViewableArea( int scrollVector
 ************************************************************************/
 bool CUIScrollBox::activateScrollCtrl( int scrollControlIndex )
 {
-    if( (scrollControlIndex != NUIControlDefs::NO_ACTIVE_CONTROL) &&
+    if( (scrollControlIndex != NUIDefs::NO_ACTIVE_CONTROL) &&
         (scrollControlIndex < (int)m_pScrollControlVec.size()) &&
         !m_pScrollControlVec.at(scrollControlIndex)->isDisabled() )
     {
         NGenFunc::DispatchEvent(
-            NMenuDefs::EME_MENU_CONTROL_STATE_CHANGE,
-            NUIControlDefs::ECS_ACTIVE,
+            NMenuEvent::CONTROL_STATE_CHANGE,
+            static_cast<int>(EControlState::ACTIVE),
             (void *)m_pScrollControlVec[scrollControlIndex] );
 
         return true;
@@ -934,7 +934,7 @@ iControl * CUIScrollBox::getPtrToActiveControl()
     {
         for( auto iter : m_pScrollControlVec )
         {
-            if( iter->getState() > NUIControlDefs::ECS_INACTIVE )
+            if( iter->getState() > EControlState::INACTIVE )
             {
                 pResult = iter->getPtrToActiveControl();
                 break;

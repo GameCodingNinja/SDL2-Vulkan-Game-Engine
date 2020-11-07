@@ -52,9 +52,9 @@ void CCommonState::handleEvent( const SDL_Event & rEvent )
     CMenuMgr::Instance().handleEvent( rEvent );
 
     // Check for the "game change state" message
-    if( rEvent.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE )
+    if( rEvent.type == NMenuEvent::GAME_STATE_CHANGE )
     {
-        if( rEvent.user.code == NMenuDefs::ETC_BEGIN )
+        if( rEvent.user.code == NUIDefs::BEGIN )
         {
             // Block all message processing in the menu manager
             CMenuMgr::Instance().allow( false );
