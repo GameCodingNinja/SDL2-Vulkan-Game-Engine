@@ -133,11 +133,11 @@ private:
         const XMLNode & node,
         int nodeIndex,
         std::string attr,
-        iControlNavNode::ENavNode navNode,
+        EAction action,
         NavHelperMap & navNodeMap );
 
     // Navigate the menu
-    void navigateMenu( iControlNavNode::ENavNode navNodeAction );
+    void navigateMenu( EAction action );
 
     // Message handlers
     void onUpAction( const SDL_Event & rEvent );

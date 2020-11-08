@@ -376,34 +376,34 @@ namespace NParseHelper
             
             if( dynamicOffsetNode.isAttributeSet( "left" ) )
             {
-                dynamicOffset.add( CDynamicOffset::EDO_LEFT );
+                dynamicOffset.add( NOffset::LEFT );
                 dynamicOffset.setX( std::atof( dynamicOffsetNode.getAttribute( "left" ) ) );
             }
             else if( dynamicOffsetNode.isAttributeSet( "right" ) )
             {
-                dynamicOffset.add( CDynamicOffset::EDO_RIGHT );
+                dynamicOffset.add( NOffset::RIGHT );
                 dynamicOffset.setX( std::atof( dynamicOffsetNode.getAttribute( "right" ) ) );
             }
             else if( dynamicOffsetNode.isAttributeSet( "horzCenter" ) )
             {
-                dynamicOffset.add( CDynamicOffset::EDO_HORZ_CENTER );
+                dynamicOffset.add( NOffset::HORZ_CENTER );
                 dynamicOffset.setX( std::atof( dynamicOffsetNode.getAttribute( "horzCenter" ) ) );
             }
 
             if( dynamicOffsetNode.isAttributeSet( "top" ) )
             {
-                dynamicOffset.add( CDynamicOffset::EDO_TOP );
+                dynamicOffset.add( NOffset::TOP );
                 dynamicOffset.setY( std::atof( dynamicOffsetNode.getAttribute( "top" ) ) );
             }
 
             else if( dynamicOffsetNode.isAttributeSet( "bottom" ) )
             {
-                dynamicOffset.add( CDynamicOffset::EDO_BOTTOM );
+                dynamicOffset.add( NOffset::BOTTOM );
                 dynamicOffset.setY( std::atof( dynamicOffsetNode.getAttribute( "bottom" ) ) );
             }
             else if( dynamicOffsetNode.isAttributeSet( "vertCenter" ) )
             {
-                dynamicOffset.add( CDynamicOffset::EDO_VERT_CENTER );
+                dynamicOffset.add( NOffset::VERT_CENTER );
                 dynamicOffset.setX( std::atof( dynamicOffsetNode.getAttribute( "vertCenter" ) ) );
             }
         }

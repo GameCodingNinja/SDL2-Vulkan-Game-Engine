@@ -16,7 +16,7 @@
 ************************************************************************/
 CUICheckBox::CUICheckBox( const std::string & group ) :
     CUIControl( group ),
-    m_toggleState(NAction::OFF)
+    m_toggleState(static_cast<bool>(EAction::OFF))
 {
     m_type = EControlType::CHECK_BOX;
 }
@@ -72,6 +72,6 @@ void CUICheckBox::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, c
     for( size_t i = 0; i < m_pSpriteVec.size()-1; ++i )
         m_pSpriteVec[i]->recordCommandBuffer( index, cmdBuf, camera );
 
-    if( m_toggleState == static_cast<bool>(NAction::ON) )
+    if( m_toggleState == static_cast<bool>(EAction::ON) )
         m_pSpriteVec.back()->recordCommandBuffer( index, cmdBuf, camera );
 }

@@ -36,7 +36,7 @@ CUIMeter::CUIMeter( const std::string & group ) :
     m_fastBangTime(0.0),
     m_bangUp(false),
     m_pSprite(nullptr),
-    m_scaleType(EST_AXIS)
+    m_scaleType(AXIS)
 {
     m_type = EControlType::METER;
 }
@@ -64,7 +64,7 @@ void CUIMeter::loadFromNode( const XMLNode & node )
     if( !bangRangeNode.isEmpty() )
     {
         std::map<std::string, EBangType> bangTypeMap
-            {{"rampUp", EBT_RAMP_UP}, {"linear", EBT_LINEAR}, {"hybrid", EBT_HYBRID}};
+            {{"rampUp", RAMP_UP}, {"linear", LINEAR}, {"hybrid", HYBRID}};
 
         m_bangRangeVec.reserve( bangRangeNode.nChildNode() );
 
@@ -73,7 +73,7 @@ void CUIMeter::loadFromNode( const XMLNode & node )
 
         // Set the scale type - How the font is scaled to fit within the meter
         if( std::strcmp( bangRangeNode.getAttribute("scaleType"), "accurate" ) == 0 )
-            m_scaleType = EST_ACCURATE;
+            m_scaleType = ACCURATE;
 
         for( int i = 0; i < bangRangeNode.nChildNode(); ++i )
         {
@@ -211,18 +211,18 @@ void CUIMeter::initBangRange( const CBangRange & bangRange )
     double range( m_targetValue - m_currentValue );
 
     // Ramp up from start to finish
-    if( bangRange.m_bangType == EBT_RAMP_UP )
+    if( bangRange.m_bangType == RAMP_UP )
     {
         m_impulse = range / (bangRange.m_estimatedTime * bangRange.m_estimatedTime * 1000.0);
         m_acceleration = m_impulse;
     }
     // Linear bang up from the start
-    else if( bangRange.m_bangType == EBT_LINEAR )
+    else if( bangRange.m_bangType == LINEAR )
     {
         m_acceleration = range / (bangRange.m_estimatedTime * 1000.0);
     }
     // combination of ramp up and linear
-    else if( bangRange.m_bangType == EBT_HYBRID )
+    else if( bangRange.m_bangType == HYBRID )
     {
         m_terminalVelocity = range / (bangRange.m_estimatedTime * 1000.0);
         m_impulse = range / (bangRange.m_estimatedTime * bangRange.m_estimatedTime * 500.0);
@@ -265,7 +265,7 @@ void CUIMeter::update()
         const double elapsedTime = CHighResTimer::Instance().getElapsedTime();
 
         // Ramp up from start to finish
-        if( m_bangRange.m_bangType == EBT_RAMP_UP )
+        if( m_bangRange.m_bangType == RAMP_UP )
         {
             m_currentValue += m_velocity * elapsedTime;
 
@@ -280,7 +280,7 @@ void CUIMeter::update()
             }
         }
         // Linear bang up from the start
-        else if( m_bangRange.m_bangType == EBT_LINEAR )
+        else if( m_bangRange.m_bangType == LINEAR )
         {
             m_currentValue += m_velocity;
 
@@ -288,7 +288,7 @@ void CUIMeter::update()
                 m_velocity += m_acceleration * elapsedTime;
         }
         // combination of ramp up and linear
-        else if( m_bangRange.m_bangType == EBT_HYBRID )
+        else if( m_bangRange.m_bangType == HYBRID )
         {
             m_currentValue += m_velocity;
 
@@ -355,9 +355,9 @@ void CUIMeter::displayValue()
 
             CPoint<float> scale( m_pSprite->getScale() );
             if( dif.w < dif.h )
-                scale.set(dif.w, (m_scaleType == EST_AXIS ? 1.f : dif.w), 1.f);
+                scale.set(dif.w, (m_scaleType == AXIS ? 1.f : dif.w), 1.f);
             else
-                scale.set((m_scaleType == EST_AXIS ? 1.f : dif.h), dif.h, 1.f);
+                scale.set((m_scaleType == AXIS ? 1.f : dif.h), dif.h, 1.f);
 
             m_pSprite->setScale( scale );
         }

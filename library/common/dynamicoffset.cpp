@@ -14,7 +14,7 @@
 /************************************************************************
 *    DESC:  Add to the bit mask
 ************************************************************************/ 
-void CDynamicOffset::add( EDynamicOffset value )
+void CDynamicOffset::add( int value )
 {
     m_parameters.add( value );
 }
@@ -57,22 +57,22 @@ CPoint<float> CDynamicOffset::getPos( CSize<float> defaultHalfSize )
     // Strip out any fractional component for correct rendering
     defaultHalfSize.round();
 
-    if( m_parameters.isSet( CDynamicOffset::EDO_LEFT ) )
+    if( m_parameters.isSet( NOffset::LEFT ) )
         pos.x = -(defaultHalfSize.w - point.x);
 
-    else if( m_parameters.isSet( CDynamicOffset::EDO_RIGHT ) )
+    else if( m_parameters.isSet( NOffset::RIGHT ) )
         pos.x = defaultHalfSize.w - point.x;
 
-    else if( m_parameters.isSet( CDynamicOffset::EDO_HORZ_CENTER ) )
+    else if( m_parameters.isSet( NOffset::HORZ_CENTER ) )
         pos.x = point.x;
 
-    if( m_parameters.isSet( CDynamicOffset::EDO_TOP ) )
+    if( m_parameters.isSet( NOffset::TOP ) )
         pos.y = -(defaultHalfSize.h - point.y);
 
-    else if( m_parameters.isSet( CDynamicOffset::EDO_BOTTOM ) )
+    else if( m_parameters.isSet( NOffset::BOTTOM ) )
         pos.y = defaultHalfSize.h - point.y;
 
-    else if( m_parameters.isSet( EDO_VERT_CENTER ) )
+    else if( m_parameters.isSet( NOffset::VERT_CENTER ) )
         pos.y = point.y;
 
     return pos;

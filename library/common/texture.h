@@ -18,14 +18,13 @@
 #include <system/vulkan.h>
 
 // Texture type
-enum ETextureType
+enum class ETextureType
 {
-    ETT_NULL = -1,
-    ETT_DIFFUSE,
-    ETT_NORMAL,
-    ETT_SPECULAR,
-    ETT_DISPLACEMENT,
-    ETT_MAX_TEXT_TYPES,
+    _NULL = -1,
+    DIFFUSE,
+    NORMAL,
+    SPECULAR,
+    DISPLACEMENT
 };
 
 class CTexture
@@ -51,7 +50,7 @@ public:
     CSize<int32_t> size;
     
     // Texture type
-    ETextureType type = ETT_DIFFUSE;
+    ETextureType type = ETextureType::DIFFUSE;
     
     // Texture file path
     std::string textFilePath;
@@ -64,7 +63,7 @@ public:
         textFilePath.clear();
         mipLevels = 1;
         size.clear();
-        type = ETT_DIFFUSE;
+        type = ETextureType::DIFFUSE;
 
         if( textureImage != VK_NULL_HANDLE )
         {

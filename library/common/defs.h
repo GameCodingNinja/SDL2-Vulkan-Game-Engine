@@ -101,7 +101,7 @@ enum class ETextFilter
     ANISOTROPIC_16X = 16
 };
 
-/*enum class ETimeFormat
+enum class ETimeFormat
 {
     ETF_MIL = 0b0001,
     ETF_S_MIL = 0b0011,
@@ -110,7 +110,7 @@ enum class ETextFilter
     ETF_S = 0b0010,
     ETF_M_S = 0b0110,
     ETF_H_M_S = 0b1110,
-};*/
+};
 
 enum class EProjectionType
 {
@@ -126,3 +126,17 @@ enum class ENodeType: uint8_t
     SPRITE,
     UI_CONTROL,
 };
+
+namespace NOffset
+{
+    enum EOffset
+    {
+        _NULL       = 0,
+        LEFT        = 1,
+        RIGHT       = 2,
+        HORZ_CENTER = 4,
+        TOP         = 8,
+        BOTTOM      = 16,
+        VERT_CENTER = 32
+    };
+}

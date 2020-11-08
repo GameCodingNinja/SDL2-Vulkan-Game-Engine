@@ -72,15 +72,15 @@ private:
     
     enum EBangType
     {
-        EBT_RAMP_UP,
-        EBT_LINEAR,
-        EBT_HYBRID
+        RAMP_UP,
+        LINEAR,
+        HYBRID
     };
     
     enum EScaleType
     {
-        EST_AXIS,
-        EST_ACCURATE
+        AXIS,
+        ACCURATE
     };
     
     class CBangRange

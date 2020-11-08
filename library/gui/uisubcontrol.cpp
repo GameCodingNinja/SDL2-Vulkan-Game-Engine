@@ -129,10 +129,10 @@ void CUISubControl::findNodes(
     const XMLNode navNode = node.getChildNode( "navigate" );
     if( !navNode.isEmpty() )
     {
-        setNodes( navNode, nodeIndex, "up", iControlNavNode::ENAV_NODE_UP, navNodeMap );
-        setNodes( navNode, nodeIndex, "down", iControlNavNode::ENAV_NODE_DOWN, navNodeMap );
-        setNodes( navNode, nodeIndex, "left", iControlNavNode::ENAV_NODE_LEFT, navNodeMap );
-        setNodes( navNode, nodeIndex, "right", iControlNavNode::ENAV_NODE_RIGHT, navNodeMap );
+        setNodes( navNode, nodeIndex, "up",    EAction::UP,    navNodeMap );
+        setNodes( navNode, nodeIndex, "down",  EAction::DOWN,  navNodeMap );
+        setNodes( navNode, nodeIndex, "left",  EAction::LEFT,  navNodeMap );
+        setNodes( navNode, nodeIndex, "right", EAction::RIGHT, navNodeMap );
     }
 }
 
@@ -144,7 +144,7 @@ void CUISubControl::setNodes(
     const XMLNode & node,
     int nodeIndex,
     std::string attr,
-    iControlNavNode::ENavNode navNode,
+    EAction action,
     NavHelperMap & navNodeMap )
 {
     if( node.isAttributeSet( attr.c_str() ) )
@@ -153,7 +153,7 @@ void CUISubControl::setNodes(
         auto iter = navNodeMap.find( name );
         if( iter != navNodeMap.end() )
         {
-            m_pControlNodeVec[nodeIndex]->setNode( navNode, iter->second );
+            m_pControlNodeVec[nodeIndex]->setNode( action, iter->second );
         }
         else
         {
@@ -277,7 +277,7 @@ void CUISubControl::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onUpAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_UP );
+    navigateMenu( EAction::UP );
 }
 
 /************************************************************************
@@ -285,7 +285,7 @@ void CUISubControl::onUpAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onDownAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_DOWN );
+    navigateMenu( EAction::DOWN );
 }
 
 /************************************************************************
@@ -293,7 +293,7 @@ void CUISubControl::onDownAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onLeftAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_LEFT );
+    navigateMenu( EAction::LEFT );
 }
 
 /************************************************************************
@@ -301,7 +301,7 @@ void CUISubControl::onLeftAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onRightAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_RIGHT );
+    navigateMenu( EAction::RIGHT );
 }
 
 /************************************************************************
@@ -309,7 +309,7 @@ void CUISubControl::onRightAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onUpScroll( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_UP );
+    navigateMenu( EAction::UP );
 }
 
 /************************************************************************
@@ -317,7 +317,7 @@ void CUISubControl::onUpScroll( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onDownScroll( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_DOWN );
+    navigateMenu( EAction::DOWN );
 }
 
 /************************************************************************
@@ -325,7 +325,7 @@ void CUISubControl::onDownScroll( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onLeftScroll( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_LEFT );
+    navigateMenu( EAction::LEFT );
 }
 
 /************************************************************************
@@ -333,7 +333,7 @@ void CUISubControl::onLeftScroll( const SDL_Event & rEvent )
 ************************************************************************/
 void CUISubControl::onRightScroll( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_RIGHT );
+    navigateMenu( EAction::RIGHT );
 }
 
 /************************************************************************
@@ -357,7 +357,7 @@ void CUISubControl::onTabRight( const SDL_Event & rEvent )
 *    DESC:  Navigate the menu. Find the next control node that isn't
 *           disabled and make it the active control node
 ************************************************************************/
-void CUISubControl::navigateMenu( iControlNavNode::ENavNode navNode )
+void CUISubControl::navigateMenu( EAction action )
 {
     if( m_pActiveNode != nullptr )
     {
@@ -365,7 +365,7 @@ void CUISubControl::navigateMenu( iControlNavNode::ENavNode navNode )
 
         do
         {
-            pNavNode = pNavNode->getNode( navNode );
+            pNavNode = pNavNode->getNode( action );
 
             if( pNavNode == nullptr )
             {

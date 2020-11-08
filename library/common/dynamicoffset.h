@@ -16,19 +16,8 @@ class CDynamicOffset
 {
 public:
 
-    enum EDynamicOffset
-    {
-        EDO_NULL=0,
-        EDO_LEFT=1,
-        EDO_RIGHT=2,
-        EDO_HORZ_CENTER=4,
-        EDO_TOP=8,
-        EDO_BOTTOM=16,
-        EDO_VERT_CENTER=32,
-    };
-
     // Add to the bit mask
-    void add( EDynamicOffset value );
+    void add( int value );
 
     // Set/Get X
     void setX( float value );

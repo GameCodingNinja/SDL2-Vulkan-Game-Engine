@@ -281,10 +281,10 @@ void CMenu::findNodes(
     const XMLNode navNode = node.getChildNode( "navigate" );
     if( !navNode.isEmpty() )
     {
-        setNodes( navNode, nodeIndex, "up",    iControlNavNode::ENAV_NODE_UP,    navNodeMap );
-        setNodes( navNode, nodeIndex, "down",  iControlNavNode::ENAV_NODE_DOWN,  navNodeMap );
-        setNodes( navNode, nodeIndex, "left",  iControlNavNode::ENAV_NODE_LEFT,  navNodeMap );
-        setNodes( navNode, nodeIndex, "right", iControlNavNode::ENAV_NODE_RIGHT, navNodeMap );
+        setNodes( navNode, nodeIndex, "up",    EAction::UP,    navNodeMap );
+        setNodes( navNode, nodeIndex, "down",  EAction::DOWN,  navNodeMap );
+        setNodes( navNode, nodeIndex, "left",  EAction::LEFT,  navNodeMap );
+        setNodes( navNode, nodeIndex, "right", EAction::RIGHT, navNodeMap );
     }
 }
 
@@ -295,7 +295,7 @@ void CMenu::setNodes(
     const XMLNode & node,
     int nodeIndex,
     std::string attr,
-    iControlNavNode::ENavNode navNode,
+    EAction action,
     NavHelperMap & navNodeMap )
 {
     if( node.isAttributeSet( attr.c_str() ) )
@@ -304,7 +304,7 @@ void CMenu::setNodes(
         auto iter = navNodeMap.find( name );
         if( iter != navNodeMap.end() )
         {
-            m_pControlNodeVec.at(nodeIndex)->setNode( navNode, iter->second );
+            m_pControlNodeVec.at(nodeIndex)->setNode( action, iter->second );
         }
         else
         {
@@ -526,7 +526,7 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onUpAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_UP );
+    navigateMenu( EAction::UP );
 }
 
 /************************************************************************
@@ -534,7 +534,7 @@ void CMenu::onUpAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onDownAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_DOWN );
+    navigateMenu( EAction::DOWN );
 }
 
 /************************************************************************
@@ -542,7 +542,7 @@ void CMenu::onDownAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onLeftAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_LEFT );
+    navigateMenu( EAction::LEFT );
 }
 
 /************************************************************************
@@ -550,14 +550,14 @@ void CMenu::onLeftAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onRightAction( const SDL_Event & rEvent )
 {
-    navigateMenu( iControlNavNode::ENAV_NODE_RIGHT );
+    navigateMenu( EAction::RIGHT );
 }
 
 /************************************************************************
 *    DESC:  Navigate the menu. Find the next control node that isn't
 *           disabled and make it the active control node
 ************************************************************************/
-void CMenu::navigateMenu( iControlNavNode::ENavNode navNodeAction )
+void CMenu::navigateMenu( EAction action )
 {
     if( m_pActiveNode != nullptr )
     {
@@ -565,7 +565,7 @@ void CMenu::navigateMenu( iControlNavNode::ENavNode navNodeAction )
 
         do
         {
-            pNavNode = pNavNode->getNode( navNodeAction );
+            pNavNode = pNavNode->getNode( action );
 
             if( pNavNode == nullptr )
             {

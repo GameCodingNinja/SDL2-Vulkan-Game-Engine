@@ -136,13 +136,13 @@ private:
         const XMLNode & node,
         int nodeIndex,
         std::string attr,
-        iControlNavNode::ENavNode navNode,
+        EAction action,
         NavHelperMap & navNodeMap );
 
 private:
 
     // Navigate the menu
-    void navigateMenu( iControlNavNode::ENavNode navNode );
+    void navigateMenu( EAction action );
 
 protected:
 

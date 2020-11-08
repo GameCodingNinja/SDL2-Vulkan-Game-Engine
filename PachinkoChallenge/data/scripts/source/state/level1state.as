@@ -337,7 +337,7 @@ void Level_BallAI( CSprite & sprite )
             StrategyMgr.getStrategy("_level_ball_").destroy(sprite.getHandle());
             break;
         }
-        else if( (sprite.getPos().y > 1600.f) && !sprite.getParameters().isSet(NObjectParams::OBJ_STATE1) )
+        else if( (sprite.getPos().y > 1600.f) && !sprite.getParameters().isSet(NObjectParams::STATE1) )
         {
             // This will disable collision detection.
             // Need to do this so that this sprite, which is about to be deleted, 
@@ -345,7 +345,7 @@ void Level_BallAI( CSprite & sprite )
             sprite.setPhysicsContactFilter(0);
 
             // Set the state so as to not enter this if again
-            sprite.getParameters().add(NObjectParams::OBJ_STATE1);
+            sprite.getParameters().add(NObjectParams::STATE1);
 
             // Dispatch message to bang this one up
             if( abs(sprite.getPos().x) < 720 )

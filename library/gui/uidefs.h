@@ -14,23 +14,6 @@ namespace NUIDefs
     };
 }
 
-namespace NAction
-{
-    enum EAction
-    {
-        DEC   = 0,
-        INC   = 1,
-
-        UP    = 1,
-        DOWN  = 2,
-        LEFT  = 4,
-        RIGHT = 8,
-
-        ON = true,
-        OFF = false
-    };
-}
-
 namespace NActiveControl
 {
     enum EActiveControl
@@ -48,6 +31,20 @@ namespace NTransCode
         END
     };
 }
+
+enum class EAction
+{
+    DEC   = 0,
+    INC   = 1,
+
+    UP    = 1,
+    DOWN  = 2,
+    LEFT  = 4,
+    RIGHT = 8,
+
+    ON = true,
+    OFF = false
+};
 
 enum class EControlType
 {
@@ -94,13 +91,6 @@ enum class EControlActionType
 };
 
 enum class EMenuState
-{
-    INACTIVE,
-    IDLE,
-    ACTIVE
-};
-
-enum class EMenuTreeState
 {
     INACTIVE,
     IDLE,

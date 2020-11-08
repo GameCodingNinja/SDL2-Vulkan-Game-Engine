@@ -32,7 +32,7 @@ CMenuTree::CMenuTree(
     m_pRootMenu( nullptr),
     m_pDefaultMenu( nullptr ),
     m_interfaceTree( interfaceTree ),
-    m_state( EMenuTreeState::IDLE )
+    m_state( EMenuState::IDLE )
 {
     auto iter = rMenuMap.find( rootMenu );
     if( iter != rMenuMap.end() )
@@ -127,7 +127,7 @@ void CMenuTree::handleEvent( const SDL_Event & rEvent )
         if( !m_pMenuPathVec.empty() )
             m_pMenuPathVec.back()->handleEvent( rEvent );
 
-        if( m_state == EMenuTreeState::IDLE )
+        if( m_state == EMenuState::IDLE )
         {
             if( rEvent.type == NMenuEvent::ESCAPE_ACTION )
             {
@@ -189,7 +189,7 @@ void CMenuTree::activateMenu( const std::string & menuName )
         m_pMenuPathVec.push_back( &iter->second );
 
         // Set the state as "active" so that input messages are ignored
-        m_state = EMenuTreeState::ACTIVE;
+        m_state = EMenuState::ACTIVE;
 
         // Start the transition in
         NGenFunc::DispatchEvent( NMenuEvent::TRANS_IN, NTransCode::BEGIN );
@@ -200,7 +200,7 @@ void CMenuTree::activateMenu( const std::string & menuName )
         if( m_pMenuPathVec.back() != m_pRootMenu )
         {
             // Set the state as "active" so that input messages are ignored
-            m_state = EMenuTreeState::ACTIVE;
+            m_state = EMenuState::ACTIVE;
 
             // Start the transition out
             NGenFunc::DispatchEvent( NMenuEvent::TRANS_OUT, NTransCode::BEGIN );
@@ -230,7 +230,7 @@ void CMenuTree::transitionMenu()
         m_toMenu = m_pDefaultMenu->getName();
 
         // Set the state as "active" so that input messages are ignored
-        m_state = EMenuTreeState::ACTIVE;
+        m_state = EMenuState::ACTIVE;
 
         // Start the transition in
         NGenFunc::DispatchEvent( NMenuEvent::TRANS_IN, NTransCode::BEGIN );
@@ -241,7 +241,7 @@ void CMenuTree::transitionMenu()
         if( m_pMenuPathVec.back() != m_pRootMenu )
         {
             // Set the state as "active" so that input messages are ignored
-            m_state = EMenuTreeState::ACTIVE;
+            m_state = EMenuState::ACTIVE;
 
             // Start the transition out
             NGenFunc::DispatchEvent( NMenuEvent::TRANS_OUT, NTransCode::BEGIN );
@@ -339,7 +339,7 @@ void CMenuTree::onToMenu( const SDL_Event & rEvent )
         ((void *)m_pMenuPathVec.back()->getPtrToActiveControl() == rEvent.user.data2) )
     {
         // Set the state as "active" so that input messages are ignored
-        m_state = EMenuTreeState::ACTIVE;
+        m_state = EMenuState::ACTIVE;
 
         // Get the name of the menu we are transitioning to
         // This is also used as a flag to indicate moving deaper into the menu tree
@@ -383,7 +383,7 @@ void CMenuTree::onTransOut( const SDL_Event & rEvent )
         // Normally, after one menu transitions out, the next menu transitions in
         // Only set the idle state if this transition out is final
         if( m_pMenuPathVec.empty() )
-            m_state = EMenuTreeState::IDLE;
+            m_state = EMenuState::IDLE;
     }
 }
 
@@ -401,7 +401,7 @@ void CMenuTree::onTransIn( const SDL_Event & rEvent )
             (m_toMenu.empty()) ? NActiveControl::LAST : NActiveControl::FIRST );
 
         // Set to idle to allow for input messages to come through
-        m_state = EMenuTreeState::IDLE;
+        m_state = EMenuState::IDLE;
 
         // Clear in the event we start backing out of the menu tree
         m_toMenu.clear();

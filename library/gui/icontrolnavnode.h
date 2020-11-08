@@ -6,8 +6,10 @@
 *                     This class does NOT own any of then pointers
 ************************************************************************/
 
-#ifndef __icontrol_nav_node_h__
-#define __icontrol_nav_node_h__
+#pragma once
+
+// Game lib dependencies
+#include <gui/uidefs.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -18,14 +20,6 @@ class iControl;
 class iControlNavNode : public boost::noncopyable
 {
 public:
-
-    enum ENavNode
-    {
-        ENAV_NODE_UP = 0,
-        ENAV_NODE_DOWN,
-        ENAV_NODE_LEFT,
-        ENAV_NODE_RIGHT
-    };
 
     // Constructor
     iControlNavNode( iControl * pControl )
@@ -41,27 +35,27 @@ public:
     { return m_piControl; }
 
     // Set/Get Right Node
-    void setNode( ENavNode navNode, iControlNavNode * pNode )
+    void setNode( EAction action, iControlNavNode * pNode )
     {
-        if( navNode == ENAV_NODE_UP )
+        if( action == EAction::UP )
             m_pUpNode = pNode;
-        else if( navNode == ENAV_NODE_DOWN )
+        else if( action == EAction::DOWN )
             m_pDownNode = pNode;
-        else if( navNode == ENAV_NODE_LEFT )
+        else if( action == EAction::LEFT )
             m_pLeftNode = pNode;
-        else if( navNode == ENAV_NODE_RIGHT )
+        else if( action == EAction::RIGHT )
             m_pRightNode = pNode;
     }
 
-    iControlNavNode * getNode( ENavNode navNode )
+    iControlNavNode * getNode( EAction action )
     {
-        if( navNode == ENAV_NODE_UP )
+        if( action == EAction::UP )
             return m_pUpNode;
-        else if( navNode == ENAV_NODE_DOWN )
+        else if( action == EAction::DOWN )
             return m_pDownNode;
-        else if( navNode == ENAV_NODE_LEFT )
+        else if( action == EAction::LEFT )
             return m_pLeftNode;
-        else if( navNode == ENAV_NODE_RIGHT )
+        else if( action == EAction::RIGHT )
             return m_pRightNode;
 
         return nullptr;
@@ -78,5 +72,3 @@ private:
     iControlNavNode * m_pLeftNode;
     iControlNavNode * m_pRightNode;
 };
-
-#endif

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Relative Offset class
 ************************************************************************/
 
-#ifndef __relative_offset_h__
-#define __relative_offset_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -17,20 +16,12 @@ class CRelativeOffset
 {
 public:
 
-    enum ERelativeOffset
-    {
-        ERO_NULL=0,
-        EDO_X=1,
-        EDO_Y=2,
-        EDO_Z=4,
-    };
-
     // And to the bit mask
-    void add( ERelativeOffset value )
+    void add( int value )
     { m_parameters.Add( value ); }
     
     // Check if bits were set
-    bool isSet( EDynamicOffset value )
+    bool isSet( int value )
     { return m_parameters.IsSet( value ); }
 
     // Is the dynamic offset being used
@@ -45,22 +36,22 @@ public:
         // Strip out any fractional component for correct rendering
         defaultHalfSize.Round();
 
-        if( m_parameters.IsSet( CDynamicOffset::EDO_LEFT ) )
+        if( m_parameters.IsSet( NOffset::LEFT ) )
             pos.x = -(screenCenter.w - point.x);
 
-        else if( m_parameters.IsSet( CDynamicOffset::EDO_RIGHT ) )
+        else if( m_parameters.IsSet( NOffset::RIGHT ) )
             pos.x = screenCenter.w - point.x;
 
-        else if( m_parameters.IsSet( CDynamicOffset::EDO_HORZ_CENTER ) )
+        else if( m_parameters.IsSet( NOffset::HORZ_CENTER ) )
             pos.x = point.x;
 
-        if( m_parameters.IsSet( CDynamicOffset::EDO_TOP ) )
+        if( m_parameters.IsSet( NOffset::TOP ) )
             pos.y = screenCenter.h - point.y;
             
-        else if( m_parameters.IsSet( CDynamicOffset::EDO_BOTTOM ) )
+        else if( m_parameters.IsSet( NOffset::BOTTOM ) )
             pos.y = -(screenCenter.h - point.y);
 
-        else if( m_parameters.IsSet( EDO_VERT_CENTER ) )
+        else if( m_parameters.IsSet( NOffset::VERT_CENTER ) )
             pos.y = point.y;
 
         return pos;
@@ -75,5 +66,3 @@ private:
     CPoint<float> point;
 
 };
-
-#endif

@@ -42,7 +42,7 @@ namespace NLevelDefs
 
     enum ESpriteState
     {
-        ESS_BANG_UP_AWARD = NObjectParams::OBJ_STATE1,
+        ESS_BANG_UP_AWARD = NObjectParams::STATE1,
     }
 
     enum ESpriteId

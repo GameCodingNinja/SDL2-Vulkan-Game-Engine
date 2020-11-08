@@ -175,13 +175,13 @@ namespace NObjectParams
         VISIBLE             = 0x100,
 
         // States
-        OBJ_STATE1          = 0x200,
-        OBJ_STATE2          = 0x400,
-        OBJ_STATE3          = 0x800,
-        OBJ_STATE4          = 0x1000,
-        OBJ_STATE5          = 0x2000,
-        OBJ_STATE6          = 0x4000,
-        OBJ_STATE7          = 0x8000
+        STATE1              = 0x200,
+        STATE2              = 0x400,
+        STATE3              = 0x800,
+        STATE4              = 0x1000,
+        STATE5              = 0x2000,
+        STATE6              = 0x4000,
+        STATE7              = 0x8000
     }
 }
 

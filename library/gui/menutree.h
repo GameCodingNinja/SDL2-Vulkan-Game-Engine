@@ -126,8 +126,8 @@ private:
     // Do not free. We DON'T own the pointers
     std::vector<CMenu *> m_pMenuPathVec;
 
-    // menu tree state
-    EMenuTreeState m_state;
+    // menu state
+    EMenuState m_state;
 };
 
 #endif
