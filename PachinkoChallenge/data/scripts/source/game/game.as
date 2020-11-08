@@ -71,6 +71,11 @@ class CGame
             // Free the current state assets
             mGameState.destroy();
 
+            // Process any lingering messages so that the new state isn't
+            // getting hammered by a bunch of queued up messages
+            PollEvents();
+            ActionMgr.resetLastUsedDevice();
+
             if( nextState == NStateDefs::EGS_TITLE_SCREEN )
                 @mGameState = CTitleScreenState();
 

@@ -131,6 +131,7 @@ void CGame::doStateChange()
         // Process any lingering messages so that the new state isn't
         // getting hammered by a bunch of queued up messages
         pollEvents();
+        CActionMgr::Instance().resetLastUsedDevice();
 
         if( nextState == NStateDefs::EGS_TITLE_SCREEN )
             upGameState.reset( new CTitleScreenState );

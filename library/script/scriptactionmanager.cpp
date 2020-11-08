@@ -204,6 +204,7 @@ namespace NScriptActionManager
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasWindowEvent(uint, uint &out, int &out, int &out)", WRAP_MFN(CActionMgr, wasWindowEvent),            asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "string getDeviceActionStr(int, string &in, bool &out)",    WRAP_MFN(CActionMgr, getDeviceActionStr),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "string resetAction(int, string &in, int, bool &out)",      WRAP_MFN(CActionMgr, resetAction),               asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "void resetLastUsedDevice()",                               WRAP_MFN(CActionMgr, resetLastUsedDevice),       asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateButtonEvents(uint &out, int &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateButtonEvents), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateDisplayEvents(uint &out, uint &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateDisplayEvents), asCALL_GENERIC) );

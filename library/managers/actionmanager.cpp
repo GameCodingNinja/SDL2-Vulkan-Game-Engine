@@ -10,6 +10,7 @@
 
 // Game lib dependencies
 #include <utilities/genfunc.h>
+#include <gui/uidefs.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -889,6 +890,12 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
             m_lastAnalogRight.y = rEvent.caxis.value;
         
         m_lastDeviceUsed = EDeviceId::GAMEPAD;
+    }
+    else if( (rEvent.type == NMenuEvent::ROOT_TRANS_IN ||
+        rEvent.type == NMenuEvent::TRANS_IN) &&
+        rEvent.user.code == NTransCode::END )
+    {
+        resetLastUsedDevice();
     }
     /*else if( rEvent.type == SDL_SENSORUPDATE )
     {
