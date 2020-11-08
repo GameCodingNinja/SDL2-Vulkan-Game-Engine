@@ -57,25 +57,25 @@ void CUIButtonList::loadFromNode( const XMLNode & node )
     if( actionResponse.isAttributeSet( "up" ) &&
         (std::strcmp( actionResponse.getAttribute("up"), "true" ) == 0) )
     {
-        m_ActionMask.add( NUIDefs::UP );
+        m_ActionMask.add( NAction::UP );
     }
 
     if( actionResponse.isAttributeSet( "down" ) &&
         (std::strcmp( actionResponse.getAttribute("down"), "true" ) == 0) )
     {
-        m_ActionMask.add( NUIDefs::DOWN );
+        m_ActionMask.add( NAction::DOWN );
     }
 
     if( actionResponse.isAttributeSet( "left" ) &&
         (std::strcmp( actionResponse.getAttribute("left"), "true" ) == 0) )
     {
-        m_ActionMask.add( NUIDefs::LEFT );
+        m_ActionMask.add( NAction::LEFT );
     }
 
     if( actionResponse.isAttributeSet( "right" ) &&
         (std::strcmp( actionResponse.getAttribute("right"), "true" ) == 0) )
     {
-        m_ActionMask.add( NUIDefs::RIGHT );
+        m_ActionMask.add( NAction::RIGHT );
     }
 }
 
@@ -108,7 +108,7 @@ void CUIButtonList::inc()
     NGenFunc::DispatchEvent(
             NMenuEvent::CONTROL_STATE_CHANGE,
             static_cast<int>(EControlState::SELECT),
-            (void *)m_pSubControlVec[NUIDefs::INC] );
+            (void *)m_pSubControlVec[NAction::INC] );
 }
 
 void CUIButtonList::dec()
@@ -116,7 +116,7 @@ void CUIButtonList::dec()
     NGenFunc::DispatchEvent(
         NMenuEvent::CONTROL_STATE_CHANGE,
         static_cast<int>(EControlState::SELECT),
-        (void *)m_pSubControlVec[NUIDefs::DEC] );
+        (void *)m_pSubControlVec[NAction::DEC] );
 }
 
 
@@ -125,25 +125,25 @@ void CUIButtonList::dec()
 ************************************************************************/
 void CUIButtonList::onDownAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIDefs::DOWN ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NAction::DOWN ) )
         dec();
 }
 
 void CUIButtonList::onUpAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIDefs::UP ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NAction::UP ) )
         inc();
 }
 
 void CUIButtonList::onLeftAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIDefs::LEFT ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NAction::LEFT ) )
         dec();
 }
 
 void CUIButtonList::onRightAction( const SDL_Event & rEvent )
 {
-    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NUIDefs::RIGHT ) )
+    if( (rEvent.user.code == static_cast<int>(EActionPress::DOWN)) && m_ActionMask.isSet( NAction::RIGHT ) )
         inc();
 }
 
@@ -153,25 +153,25 @@ void CUIButtonList::onRightAction( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIButtonList::onDownScroll( const SDL_Event & rEvent )
 {
-    if( m_ActionMask.isSet( NUIDefs::DOWN ) )
+    if( m_ActionMask.isSet( NAction::DOWN ) )
         dec();
 }
 
 void CUIButtonList::onUpScroll( const SDL_Event & rEvent )
 {
-    if( m_ActionMask.isSet( NUIDefs::UP ) )
+    if( m_ActionMask.isSet( NAction::UP ) )
         inc();
 }
 
 void CUIButtonList::onLeftScroll( const SDL_Event & rEvent )
 {
-    if( m_ActionMask.isSet( NUIDefs::LEFT ) )
+    if( m_ActionMask.isSet( NAction::LEFT ) )
         dec();
 }
 
 void CUIButtonList::onRightScroll( const SDL_Event & rEvent )
 {
-    if( m_ActionMask.isSet( NUIDefs::RIGHT ) )
+    if( m_ActionMask.isSet( NAction::RIGHT ) )
         inc();
 }
 
@@ -187,7 +187,7 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
 
     if( state == EControlState::SELECT )
     {
-        if( (void *)m_pSubControlVec[NUIDefs::DEC] == rEvent.user.data1 )
+        if( (void *)m_pSubControlVec[NAction::DEC] == rEvent.user.data1 )
         {
             // Dec the list
             decList();
@@ -198,7 +198,7 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
             // Prepare script function associated with handling this game event
             prepareControlScriptFunction( EControlState::CHANGE );
         }
-        else if( (void *)m_pSubControlVec[NUIDefs::INC] == rEvent.user.data1 )
+        else if( (void *)m_pSubControlVec[NAction::INC] == rEvent.user.data1 )
         {
             // Inc the list
             incList();

@@ -4,8 +4,7 @@
       <file path="data/scripts/library/shared_utilities.as"/>
       <file path="data/scripts/library/shared_sprite_utilities.as"/>
       <file path="data/scripts/library/defs.as"/>
-      <file path="data/scripts/library/menudefs.as"/>
-      <file path="data/scripts/library/uicontroldefs.as"/>
+      <file path="data/scripts/library/uidefs.as"/>
       <file path="data/scripts/library/menu.as"/>
       <file path="data/scripts/library/confirmbtn.as"/>
       <file path="data/scripts/library/resolutionbtn.as"/>
@@ -17,7 +16,7 @@
     
     <groupList groupName="(main)" byteCodeFile="data/scripts/main.bin">
         <file path="data/scripts/library/defs.as"/>
-        <file path="data/scripts/library/menudefs.as"/>
+        <file path="data/scripts/library/uidefs.as"/>
         <file path="data/scripts/library/shared_utilities.as"/>
         <file path="data/scripts/library/shared_sprite_utilities.as"/>
         <file path="data/scripts/library/shared_visual_utilities.as"/>

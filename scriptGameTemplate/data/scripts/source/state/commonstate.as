@@ -34,7 +34,7 @@ class CCommonState : iGameState
     void handleEvent( const CEvent & event ) override
     {
         // Check for the "game change state" message
-        if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
+        if( (event.type == NMenuEvent::GAME_STATE_CHANGE) && (event.user.code == NTransCode::BEGIN) )
         {
             // Block all message processing in the menu manager
             MenuMgr.allow( false );

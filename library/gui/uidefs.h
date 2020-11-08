@@ -8,21 +8,44 @@
 
 namespace NUIDefs
 {
-    enum
+    enum EUIDefs
     {
-        NO_ACTIVE_CONTROL = -1,
-        ON = true,
-        OFF = false,
-        DEC = 0,
-        INC = 1,
-        UP = 1,
-        DOWN = 2,
-        LEFT = 4,
+        NO_ACTIVE_CONTROL = -1
+    };
+}
+
+namespace NAction
+{
+    enum EAction
+    {
+        DEC   = 0,
+        INC   = 1,
+
+        UP    = 1,
+        DOWN  = 2,
+        LEFT  = 4,
         RIGHT = 8,
-        FIRST_ACTIVE_CONTROL = 1,
-        LAST_ACTIVE_CONTROL = 2,
-        BEGIN = 1,
-        END = 2,
+
+        ON = true,
+        OFF = false
+    };
+}
+
+namespace NActiveControl
+{
+    enum EActiveControl
+    {
+        FIRST,
+        LAST
+    };
+}
+
+namespace NTransCode
+{
+    enum ETransCode
+    {
+        BEGIN,
+        END
     };
 }
 
@@ -86,7 +109,7 @@ enum class EMenuTreeState
 
 namespace NMenuEvent
 {
-    enum
+    enum EEvent
     {
         USER_EVENTS = 0x8000,
         ROOT_TRANS_IN,

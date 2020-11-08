@@ -57,10 +57,10 @@ final class CTitleScreenState : CCommonState
     {
         CCommonState::handleEvent( event );
         
-        if( event.type > NDefs::SDL_USEREVENT )
+        if( event.type > NEvents::SDL_USEREVENT )
         {
             // Check for the "game change state" message
-            if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
+            if( (event.type == NMenuEvent::GAME_STATE_CHANGE) && (event.user.code == NTransCode::BEGIN) )
                 Spawn("State_FadeOut");
             
             else if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )

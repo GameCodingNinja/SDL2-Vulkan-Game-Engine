@@ -38,9 +38,9 @@ final class CApplyBtn
     void enableIfChanged()
     {
         if( shouldEnable() )
-            mControl.changeState( NUIControlDefs::ECS_INACTIVE );
+            mControl.changeState( NControlState::INACTIVE );
         else
-            mControl.changeState( NUIControlDefs::ECS_DISABLE );
+            mControl.changeState( NControlState::DISABLE );
     }
 
     //
@@ -74,8 +74,8 @@ final class CApplyBtn
         Settings.saveSettings();
 
         // Reactivate the menu now that we are done
-        mControl.changeState( NUIControlDefs::ECS_DISABLE );
-        DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
+        mControl.changeState( NControlState::DISABLE );
+        DispatchEvent( NMenuEvent::REACTIVATE );
     }
 };
 
@@ -94,7 +94,7 @@ void ApplyBtn_init( uiControl & control )
 //
 void ApplyBtn_transIn( uiControl & control )
 {
-    control.changeState( NUIControlDefs::ECS_DISABLE );
+    control.changeState( NControlState::DISABLE );
 }
 
 //

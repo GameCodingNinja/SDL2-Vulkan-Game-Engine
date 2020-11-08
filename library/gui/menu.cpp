@@ -675,7 +675,7 @@ void CMenu::onSelectAction( const SDL_Event & rEvent )
 void CMenu::onSetActiveControl( const SDL_Event & rEvent )
 {
     // Set the first inactive control to active
-    if( rEvent.user.code == NUIDefs::FIRST_ACTIVE_CONTROL )
+    if( rEvent.user.code == NActiveControl::FIRST )
         activateFirstInactiveControl();
 }
 
@@ -692,18 +692,18 @@ void CMenu::onReactivate( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onRootTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NUIDefs::BEGIN )
+    if( rEvent.user.code == NTransCode::BEGIN )
     {
         if( !prepare( "rootTransIn" ) )
         {
             setAlpha(1.f);
             setVisible(true);
-            NGenFunc::DispatchEvent( NMenuEvent::ROOT_TRANS_IN, NUIDefs::END );
+            NGenFunc::DispatchEvent( NMenuEvent::ROOT_TRANS_IN, NTransCode::END );
         }
 
         m_state = EMenuState::ACTIVE;
     }
-    else if( rEvent.user.code == NUIDefs::END )
+    else if( rEvent.user.code == NTransCode::END )
     {
         m_state = EMenuState::IDLE;
     }
@@ -714,18 +714,18 @@ void CMenu::onRootTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NUIDefs::BEGIN )
+    if( rEvent.user.code == NTransCode::BEGIN )
     {
         if( !prepare( "transIn" ) )
         {
             setAlpha(1.f);
             setVisible(true);
-            NGenFunc::DispatchEvent( NMenuEvent::TRANS_IN, NUIDefs::END );
+            NGenFunc::DispatchEvent( NMenuEvent::TRANS_IN, NTransCode::END );
         }
 
         m_state = EMenuState::ACTIVE;
     }
-    else if( rEvent.user.code == NUIDefs::END )
+    else if( rEvent.user.code == NTransCode::END )
     {
         m_state = EMenuState::IDLE;
     }
@@ -736,18 +736,18 @@ void CMenu::onTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CMenu::onTransOut( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NUIDefs::BEGIN )
+    if( rEvent.user.code == NTransCode::BEGIN )
     {
         if( !prepare( "transOut" ) )
         {
             setAlpha(0.f);
             setVisible(false);
-            NGenFunc::DispatchEvent( NMenuEvent::TRANS_OUT, NUIDefs::END );
+            NGenFunc::DispatchEvent( NMenuEvent::TRANS_OUT, NTransCode::END );
         }
 
         m_state = EMenuState::ACTIVE;
     }
-    else if( rEvent.user.code == NUIDefs::END )
+    else if( rEvent.user.code == NTransCode::END )
     {
         m_state = EMenuState::INACTIVE;
     }

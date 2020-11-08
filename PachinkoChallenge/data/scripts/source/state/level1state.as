@@ -145,10 +145,10 @@ final class CRunState : CCommonState
     {
         CCommonState::handleEvent( event );
         
-        if( event.type > NDefs::SDL_USEREVENT )
+        if( event.type > NEvents::SDL_USEREVENT )
         {
             // Check for the "game change state" message
-            if( (event.type == NMenuDefs::EME_MENU_GAME_STATE_CHANGE) && (event.user.code == NMenuDefs::ETC_BEGIN) )
+            if( (event.type == NMenuEvent::GAME_STATE_CHANGE) && (event.user.code == NTransCode::BEGIN) )
                 Spawn("State_FadeOut");
 
             else if( event.type == NLevelDefs::ELE_BANG_UP_AWARD )
@@ -162,9 +162,9 @@ final class CRunState : CCommonState
                 // Set the flag to change the state
                 mChangeState = true;
             }
-            else if( event.type == NMenuDefs::EME_MENU_TRANS_OUT )
+            else if( event.type == NMenuEvent::TRANS_OUT )
             {
-                if( event.user.code == NMenuDefs::ETC_END && !mGameActive )
+                if( event.user.code == NTransCode::END && !mGameActive )
                 {
                     // Switch out the default menus
                     MenuMgr.deactivateTree( "game_start_tree" );
@@ -178,9 +178,9 @@ final class CRunState : CCommonState
                 }
             }
         }
-        else if( event.type == NDefs::SDL_MOUSEBUTTONUP )
+        else if( event.type == NEvents::SDL_MOUSEBUTTONUP )
         {
-            if( !MenuMgr.isActive() && ActionMgr.wasAction(event, "drop_ball", NDefs::EAP_UP) )
+            if( !MenuMgr.isActive() && ActionMgr.wasAction(event, "drop_ball", NActionPress::UP) )
             {
                 // Strictly a mouse only game which is why I'm using the button event x & y
                 CPoint pos= mCamera.toOrthoCoord( event.button.x, event.button.y );
@@ -233,7 +233,7 @@ final class CRunState : CCommonState
             CTimeDuration duration( mTimePointStart - timePoint );
             if( duration.getNanoseconds() > 0 )
             {
-                mUITimerSprite.createFontString( FormatTimeDuration( mTimePointStart - timePoint, NDefs::ETF_M_S ) );
+                mUITimerSprite.createFontString( FormatTimeDuration( mTimePointStart - timePoint, NTimeFormat::ETF_M_S ) );
             }
             else
             {
@@ -337,7 +337,7 @@ void Level_BallAI( CSprite & sprite )
             StrategyMgr.getStrategy("_level_ball_").destroy(sprite.getHandle());
             break;
         }
-        else if( (sprite.getPos().y > 1600.f) && !sprite.getParameters().isSet(NDefs::OBJ_STATE1) )
+        else if( (sprite.getPos().y > 1600.f) && !sprite.getParameters().isSet(NObjectParams::OBJ_STATE1) )
         {
             // This will disable collision detection.
             // Need to do this so that this sprite, which is about to be deleted, 
@@ -345,7 +345,7 @@ void Level_BallAI( CSprite & sprite )
             sprite.setPhysicsContactFilter(0);
 
             // Set the state so as to not enter this if again
-            sprite.getParameters().add(NDefs::OBJ_STATE1);
+            sprite.getParameters().add(NObjectParams::OBJ_STATE1);
 
             // Dispatch message to bang this one up
             if( abs(sprite.getPos().x) < 720 )

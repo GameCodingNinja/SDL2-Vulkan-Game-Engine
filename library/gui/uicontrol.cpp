@@ -298,7 +298,7 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onRootTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NUIDefs::BEGIN )
+    if( rEvent.user.code == NTransCode::BEGIN )
     {
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
@@ -315,7 +315,7 @@ void CUIControl::onRootTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onTransIn( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NUIDefs::BEGIN )
+    if( rEvent.user.code == NTransCode::BEGIN )
     {
         // Set the script functions for the current displayed state
         if( m_lastState != m_state )
@@ -331,7 +331,7 @@ void CUIControl::onTransIn( const SDL_Event & rEvent )
 ************************************************************************/
 void CUIControl::onTransOut( const SDL_Event & rEvent )
 {
-    if( rEvent.user.code == NUIDefs::BEGIN )
+    if( rEvent.user.code == NTransCode::BEGIN )
     {
         // Reset the control
         reset();
@@ -381,7 +381,7 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
             NGenFunc::DispatchEvent( NMenuEvent::TOGGLE_ACTION );
 
         else if( m_actionType == EControlActionType::GAME_STATE_CHANGE )
-            NGenFunc::DispatchEvent( NMenuEvent::GAME_STATE_CHANGE, NUIDefs::BEGIN, &m_executionAction );
+            NGenFunc::DispatchEvent( NMenuEvent::GAME_STATE_CHANGE, NTransCode::BEGIN, &m_executionAction );
 
         else if( m_actionType == EControlActionType::QUIT_GAME )
             NGenFunc::DispatchEvent( SDL_QUIT );
@@ -398,7 +398,7 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
 void CUIControl::onSetActiveControl( const SDL_Event & rEvent )
 {
     // Set the last active control to be active again
-    if( (rEvent.user.code == NUIDefs::LAST_ACTIVE_CONTROL) &&
+    if( (rEvent.user.code == NActiveControl::LAST) &&
         (m_lastState > EControlState::INACTIVE))
     {
         m_lastState = m_state = EControlState::ACTIVE;

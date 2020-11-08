@@ -45,7 +45,7 @@ final class CLoadState : CCommonState
     //
     void handleEvent( const CEvent & event ) override
     {
-        if( event.type > NDefs::SDL_USEREVENT )
+        if( event.type > NEvents::SDL_USEREVENT )
         {
             if( event.type == NStateDefs::ESE_FADE_IN_COMPLETE )
                 assetLoad();

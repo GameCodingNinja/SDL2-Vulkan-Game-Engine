@@ -10,8 +10,7 @@
 
     <groupList groupName="(menu)">
         <file path="data/objects/scripts/defs.as"/>
-        <file path="data/objects/scripts/menudefs.as"/>
-        <file path="data/objects/scripts/uicontroldefs.as"/>
+        <file path="data/objects/scripts/uidefs.as"/>
         <file path="data/objects/scripts/shared_utilities.as"/>
         <file path="data/objects/scripts/shared_sprite_utilities.as"/>
         <file path="data/objects/scripts/menu.as"/>

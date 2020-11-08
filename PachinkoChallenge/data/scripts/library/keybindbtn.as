@@ -25,14 +25,14 @@ void KeyBindBtn_init( uiControl & control )
             deviceAry[i].createFontString( actionStr );
 
         if( !configurable )
-            deviceAry[i].changeState( NUIControlDefs::ECS_DISABLE );
+            deviceAry[i].changeState( NControlState::DISABLE );
         else
             btnDisabled = false;
     }
 
     // If all devices are not configuable, disable the button
     if( btnDisabled )
-        control.changeState( NUIControlDefs::ECS_DISABLE );
+        control.changeState( NControlState::DISABLE );
 }
 
 //
@@ -58,22 +58,22 @@ void KeyBindBtn_event( uiControl & control, uint type, int code )
         uint index = 0;
         while( (index = ActionMgr.enumerateButtonEvents( eventType, eventCode, data, index )) > 0 )
         {
-            if( eventType == NDefs::SDL_KEYUP )
+            if( eventType == NEvents::SDL_KEYUP )
             {
                 Print("Type: KEYBOARD, code: "+eventCode+", data: "+data+", index: "+index);
-                KeyBindBtn_bindButtonPress( control, type, NDefs::KEYBOARD, eventCode );
+                KeyBindBtn_bindButtonPress( control, type, NDeviceId::KEYBOARD, eventCode );
                 break;
             }
-            else if( eventType == NDefs::SDL_MOUSEBUTTONUP )
+            else if( eventType == NEvents::SDL_MOUSEBUTTONUP )
             {
                 Print("Type: MOUSE, code: "+eventCode+", data: "+data+", index: "+index);
-                KeyBindBtn_bindButtonPress( control, type, NDefs::MOUSE, eventCode );
+                KeyBindBtn_bindButtonPress( control, type, NDeviceId::MOUSE, eventCode );
                 break;
             }
-            else if( eventType == NDefs::SDL_CONTROLLERBUTTONUP )
+            else if( eventType == NEvents::SDL_CONTROLLERBUTTONUP )
             {
                 Print("Type: GAMEPAD, code: "+eventCode+", data: "+data+", index: "+index);
-                KeyBindBtn_bindButtonPress( control, type, NDefs::GAMEPAD, eventCode );
+                KeyBindBtn_bindButtonPress( control, type, NDeviceId::GAMEPAD, eventCode );
                 break;
             }
         }
@@ -86,13 +86,13 @@ void KeyBindBtn_event( uiControl & control, uint type, int code )
 void KeyBindBtn_bindButtonPress( uiControl & control, uint type, int deviceId, int code )
 {
     string labelStr = "keyboard";
-    if( deviceId == NDefs::MOUSE )
+    if( deviceId == NDeviceId::MOUSE )
         labelStr = "mouse";
-    else if( deviceId == NDefs::GAMEPAD )
+    else if( deviceId == NDeviceId::GAMEPAD )
         labelStr = "gamepad";
 
     // Check for escape to disable key mapping process
-    if( code != NDefs::KEYCODE_RETURN )
+    if( code != NKeyCodes::KEYCODE_RETURN )
     {
         // Reset the action
         bool configurable = false;
@@ -112,7 +112,7 @@ void KeyBindBtn_bindButtonPress( uiControl & control, uint type, int deviceId, i
     ActionMgr.enableAction();
 
     // Dispatch a message to clear the selected control and put it back into active state
-    DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
+    DispatchEvent( NMenuEvent::REACTIVATE );
 }
 
 //
@@ -141,5 +141,5 @@ void KeyBindBtn_reset( uiControl & control )
     }
 
     // Dispatch the message to reactivate the menu
-    DispatchEvent( NMenuDefs::EME_MENU_REACTIVATE );
+    DispatchEvent( NMenuEvent::REACTIVATE );
 }

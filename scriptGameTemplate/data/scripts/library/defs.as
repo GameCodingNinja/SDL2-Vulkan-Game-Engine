@@ -4,9 +4,18 @@
 *    DESCRIPTION:     common defines
 ************************************************************************/
 
-namespace NDefs
+const double M_PI       = 3.14159265358979323846; // pi
+const double M_PI_2     = 1.57079632679489661923; // pi/2
+const double M_PI_4     = 0.78539816339744830962; // pi/4
+const double M_1_PI     = 0.31830988618379067154; // 1/pi
+const double M_2_PI     = 0.63661977236758134308; // 2/pi
+const double M_2_SQRTPI = 1.12837916709551257390; // 2/sqrt(pi)
+const double M_SQRT2    = 1.41421356237309504880; // sqrt(2)
+const double M_SQRT1_2  = 0.70710678118654752440; // 1/sqrt(2)
+
+namespace NEvents
 {
-    shared enum ESDL_EVENTS
+    shared enum EEvents
     {
         SDL_FIRSTEVENT     = 0,     /**< Unused (do not remove) */
 
@@ -118,13 +127,19 @@ namespace NDefs
         */
         SDL_LASTEVENT    = 0xFFFF
     }
+}
 
-    shared enum EKEY_CODES
+namespace NKeyCodes
+{
+    shared enum EKeyCodes
     {
         KEYCODE_UNKNOWN = 0,
         KEYCODE_RETURN = 27,
     }
+}
 
+namespace NDeviceId
+{
     shared enum EDeviceId
     {
         DEVICE_NULL=-1,
@@ -133,11 +148,63 @@ namespace NDefs
         GAMEPAD,
         MAX_UNIQUE_DEVICES
     };
+}
 
-    shared enum EActionPress
+namespace NObjectParams
+{
+    shared enum EObjectParams
     {
-        EAP_IDLE = 0,
-        EAP_DOWN,
-        EAP_UP
-    };
+        // No parameters
+        NONE                = 0x00,
+
+        // Transform parameters
+        TRANSLATE           = 0x01,
+        ROTATE	            = 0x02,
+        SCALE	            = 0x04,
+        CENTER_POINT        = 0x08,
+        CROP_OFFSET         = 0x10,
+
+        // Translate parameters
+        TRANSFORM           = 0x20,
+        WAS_TRANSFORMED     = 0x40,
+
+        // Matrix rotation
+        PHYSICS_TRANSFORM   = 0x80,
+
+        // Visible bit
+        VISIBLE             = 0x100,
+
+        // States
+        OBJ_STATE1          = 0x200,
+        OBJ_STATE2          = 0x400,
+        OBJ_STATE3          = 0x800,
+        OBJ_STATE4          = 0x1000,
+        OBJ_STATE5          = 0x2000,
+        OBJ_STATE6          = 0x4000,
+        OBJ_STATE7          = 0x8000
+    }
+}
+
+namespace NTimeFormat
+{
+    shared enum ETimeFormat
+    {
+        ETF_MIL = 0x01,
+        ETF_S_MIL = 0x03,
+        ETF_M_S_MIL = 0x07,
+        ETF_H_M_S_MIL = 0x0f,
+        ETF_S = 0x02,
+        ETF_M_S = 0x06,
+        ETF_H_M_S = 0x0e,
+    }
+}
+
+namespace NActionPress
+{
+    enum EActionPress
+    {
+        IDLE = 0,
+        DOWN,
+        UP
+    }
 }
