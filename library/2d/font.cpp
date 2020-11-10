@@ -27,14 +27,12 @@ CFont::CFont( const std::string & filePath )
 {
 }
 
-
 /************************************************************************
 *    DESC:  Destructor
 ************************************************************************/
 CFont::~CFont()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load from XML file
@@ -94,7 +92,6 @@ void CFont::load( const std::string & group )
     m_texture = CDevice::Instance().createTexture( group, m_filePath + ".png" );
 }
 
-
 /************************************************************************
 *    DESC:  Get the data for this character
 ************************************************************************/
@@ -111,7 +108,6 @@ const CCharData & CFont::getCharData( char id ) const
     return iter->second;
 }
 
-
 /************************************************************************
 *    DESC:  Get the line height
 ************************************************************************/
@@ -119,7 +115,6 @@ float CFont::getLineHeight() const
 {
     return m_lineHeight;
 }
-
 
 /************************************************************************
 *    DESC:  Get the baseline offset
@@ -129,7 +124,6 @@ float CFont::getBaselineOffset() const
     return m_baselineOffset;
 }
 
-
 /************************************************************************
 *    DESC:  Get the horzontal padding
 ************************************************************************/
@@ -137,7 +131,6 @@ float CFont::getHorzPadding() const
 {
     return m_horzPadding;
 }
-
 
 /************************************************************************
 *    DESC:  Get the vertical padding
@@ -147,7 +140,6 @@ float CFont::getVertPadding() const
     return m_vertPadding;
 }
 
-
 /************************************************************************
 *    DESC:  Get the texture size
 ************************************************************************/
@@ -156,7 +148,6 @@ const CSize<int> & CFont::getTextureSize() const
     return m_texture.size;
 }
 
-
 /************************************************************************
 *    DESC:  Get the texture ID
 ************************************************************************/
@@ -164,7 +155,6 @@ uint32_t CFont::getTextureID() const
 {
     return 0;
 }
-
 
 /************************************************************************
 *    DESC:  Get the texture

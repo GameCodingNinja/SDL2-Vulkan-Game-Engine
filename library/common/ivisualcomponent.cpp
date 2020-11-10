@@ -32,7 +32,6 @@ iVisualComponent::iVisualComponent( const iObjectData & objectData ) :
 {
 }
 
-
 /************************************************************************
 *    DESC:  Set/Get the color
 ************************************************************************/
@@ -51,7 +50,6 @@ const CColor & iVisualComponent::getColor() const
 {
     return m_color;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get the additive color
@@ -72,7 +70,6 @@ const CColor & iVisualComponent::getAdditiveColor()
     return m_additive;
 }
 
-
 /************************************************************************
 *    DESC:  Set/Get the default color
 ************************************************************************/
@@ -85,7 +82,6 @@ const CColor & iVisualComponent::getDefaultColor() const
 {
     return m_rDefaultColor;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get the alpha
@@ -106,7 +102,6 @@ float iVisualComponent::getAlpha() const
     return m_color.a;
 }
 
-
 /************************************************************************
 *    DESC:  Set/Get the default alpha
 ************************************************************************/
@@ -119,7 +114,6 @@ float iVisualComponent::getDefaultAlpha() const
 {
     return m_rDefaultColor.a;
 }
-
 
 /************************************************************************
 *    DESC:  Set the frame ID from index
@@ -134,7 +128,6 @@ uint iVisualComponent::getCurrentFrame() const
     return m_frameIndex;
 }
 
-
 /************************************************************************
 *    DESC:  Is this a font sprite
 ************************************************************************/
@@ -143,7 +136,6 @@ bool iVisualComponent::isFontSprite() const
     return (GENERATION_TYPE == EGenType::FONT);
 }
 
-
 /************************************************************************
 *    DESC:  Get the generation type
 ************************************************************************/
@@ -151,7 +143,6 @@ EGenType iVisualComponent::getGenerationType() const
 {
     return GENERATION_TYPE;
 }
-
 
 /************************************************************************
 *    DESC:  Get the crop offset

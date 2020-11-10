@@ -4,8 +4,7 @@
 *    DESCRIPTION:     sensor class
 ************************************************************************/  
 
-#ifndef __sensor_h__
-#define __sensor_h__
+#pragma once
 
 #if defined(_WINDOWS)
 #pragma warning(disable : 4244)
@@ -28,5 +27,3 @@ public:
         v1(s.v1),v2(s.v2),v3(s.v3),v4(s.v4),v5(s.v5),v6(s.v6)
     {}
 };
-
-#endif

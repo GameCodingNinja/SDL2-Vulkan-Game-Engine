@@ -5,8 +5,7 @@
 *    DESCRIPTION:     3D Normal class
 ************************************************************************/  
 
-#ifndef __normal_h__
-#define __normal_h__
+#pragma once
 
 // Physical component dependency
 #include <common/point.h>
@@ -34,6 +33,3 @@ public:
     }
 
 };
-
-#endif  // __normal_h__
-

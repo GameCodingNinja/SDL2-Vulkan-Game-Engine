@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for user interface check box buttons
 ************************************************************************/
 
-#ifndef __ui_check_box_h__
-#define __ui_check_box_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uicontrol.h>
@@ -37,5 +36,3 @@ private:
     // Select state
     bool m_toggleState;
 };
-
-#endif

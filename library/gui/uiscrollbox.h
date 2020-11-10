@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for user interface scroll boxes
 ************************************************************************/
 
-#ifndef __ui_scroll_box_h__
-#define __ui_scroll_box_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uisubcontrol.h>
@@ -225,5 +224,3 @@ private:
     // Flag to allow for end scroll selection
     bool m_endScrollSelection;
 };
-
-#endif

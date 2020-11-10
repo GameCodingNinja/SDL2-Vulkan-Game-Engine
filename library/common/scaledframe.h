@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for holding scaled frame data
 ************************************************************************/
 
-#ifndef __scaled_frame_h__
-#define __scaled_frame_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/size.h>
@@ -24,5 +23,3 @@ public:
     // Is there a bottom frame?
     bool m_bottomFrame = true;
 };
-
-#endif

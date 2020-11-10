@@ -4,8 +4,7 @@
 *    DESCRIPTION:     font properties class
 ************************************************************************/  
 
-#ifndef __font_properties_h__
-#define __font_properties_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -54,5 +53,3 @@ public:
     // add spacing to the lines
     float m_lineWrapHeight = 0.f;
 };
-
-#endif

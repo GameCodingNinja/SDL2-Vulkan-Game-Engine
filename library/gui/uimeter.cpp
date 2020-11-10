@@ -41,14 +41,12 @@ CUIMeter::CUIMeter( const std::string & group ) :
     m_type = EControlType::METER;
 }
 
-
 /************************************************************************
 *    DESC:  Destructor
 ************************************************************************/
 CUIMeter::~CUIMeter()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the control info from XML node
@@ -93,7 +91,6 @@ void CUIMeter::loadFromNode( const XMLNode & node )
     m_maxFontStrSize = NParseHelper::LoadSize( node );
 }
 
-
 /************************************************************************
 *    DESC:  Load the control specific info from XML node
 ************************************************************************/
@@ -114,7 +111,6 @@ void CUIMeter::loadControlFromNode( const XMLNode & controlNode )
                 % m_name % __FUNCTION__ % __LINE__ ));
 }
 
-
 /************************************************************************
 *    DESC:  Init the control
 ************************************************************************/
@@ -126,7 +122,6 @@ void CUIMeter::init()
     if( !m_pSprite->hasScriptFunctions() )
         displayValue();
 }
-
 
 /************************************************************************
 *    DESC:  Set the amount to the meter without banging up
@@ -143,7 +138,6 @@ void CUIMeter::setMeterValue( const double amount )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Start the bang range
 ************************************************************************/
@@ -158,7 +152,6 @@ void CUIMeter::startBangUp( const double amount )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Increment the bang up
 ************************************************************************/
@@ -169,7 +162,6 @@ void CUIMeter::incBangUp( const double amount )
 
     setBangRange();
 }
-
 
 /************************************************************************
 *    DESC:  Set the bang range
@@ -191,7 +183,6 @@ void CUIMeter::setBangRange()
     if( !found )
         initBangRange( m_bangRangeVec.back() );
 }
-
 
 /************************************************************************
 *    DESC:  Init the bang range
@@ -236,7 +227,6 @@ void CUIMeter::initBangRange( const CBangRange & bangRange )
     m_pSprite->prepare( "start" );
 }
 
-
 /************************************************************************
 *    DESC:  Do a fast bang
 ************************************************************************/
@@ -251,7 +241,6 @@ void CUIMeter::fastBang()
             m_acceleration = acceleration;
     }
 }
-
 
 /************************************************************************
 *    DESC:  Update the control
@@ -331,7 +320,6 @@ void CUIMeter::update()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Display the value in the meter
 ************************************************************************/
@@ -364,7 +352,6 @@ void CUIMeter::displayValue()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Is the meter banging
 ************************************************************************/
@@ -372,7 +359,6 @@ bool CUIMeter::isBanging()
 {
     return m_bangUp;
 }
-
 
 /************************************************************************
 *    DESC:  Clear the meter

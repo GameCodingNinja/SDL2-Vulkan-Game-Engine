@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class for user interface meters
 ************************************************************************/
 
-#ifndef __ui_meter_h__
-#define __ui_meter_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uicontrol.h>
@@ -162,5 +161,3 @@ private:
     // Scale on axis or accurate
     EScaleType m_scaleType;
 };
-
-#endif

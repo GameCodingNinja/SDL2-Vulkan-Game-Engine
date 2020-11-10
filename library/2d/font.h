@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Font class
 ************************************************************************/  
 
-#ifndef __font_h__
-#define __font_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/size.h>
@@ -31,7 +30,6 @@ public:
     // Amount to advance
     float xAdvance;
 };
-
 
 class CFont
 {
@@ -90,5 +88,3 @@ private:
     // The texture
     CTexture m_texture;
 };
-
-#endif  // __font_h__

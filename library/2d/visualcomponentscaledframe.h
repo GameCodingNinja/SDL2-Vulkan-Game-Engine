@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
-#ifndef __visual_component_scaledframe_h__
-#define __visual_component_scaledframe_h__
+#pragma once
 
 // Physical component dependency
 #include <2d/visualcomponentquad.h>
@@ -34,5 +33,3 @@ private:
         const CObject * const pObject,
         const CCamera & camera ) override;
 };
-
-#endif

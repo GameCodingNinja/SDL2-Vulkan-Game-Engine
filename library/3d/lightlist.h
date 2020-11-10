@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Light List Class
 ************************************************************************/
 
-#ifndef __light_list_h__
-#define __light_list_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -44,7 +43,3 @@ private:
     std::map<std::string, class CLight> m_lightMap;
 
 };
-
-#endif  // __light_list_h__
-
-

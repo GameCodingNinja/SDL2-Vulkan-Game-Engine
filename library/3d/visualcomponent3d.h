@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the visual part of the sprite
 ************************************************************************/
 
-#ifndef __visual_component_3d_h__
-#define __visual_component_3d_h__
+#pragma once
 
 // Physical component dependency
 #include <common/ivisualcomponent.h>
@@ -87,5 +86,3 @@ private:
     // Basically used for normal calculations
     CMatrix m_rotMatrix;
 };
-
-#endif

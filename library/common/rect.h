@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Rect class
 ************************************************************************/  
 
-#ifndef __rect_h__
-#define __rect_h__
+#pragma once
 
 #if defined(_WINDOWS)
 #pragma warning(disable : 4244)
@@ -152,5 +151,3 @@ public:
         return false;
     }
 };
-
-#endif

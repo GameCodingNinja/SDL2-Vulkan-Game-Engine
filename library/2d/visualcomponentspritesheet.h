@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
-#ifndef __visual_component_spritesheet_h__
-#define __visual_component_spritesheet_h__
+#pragma once
 
 // Physical component dependency
 #include <2d/visualcomponentquad.h>
@@ -42,5 +41,3 @@ private:
     // Sprite sheet Glyph UV
     CRect<float> m_glyphUV;
 };
-
-#endif

@@ -39,7 +39,6 @@ CUIControl::CUIControl( const std::string & group ) :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -47,7 +46,6 @@ CUIControl::~CUIControl()
 {
     NDelFunc::DeleteVectorPointers( m_pSpriteVec );
 }
-
 
 /************************************************************************
 *    DESC:  Load the control info from XML node
@@ -93,7 +91,6 @@ void CUIControl::loadFromNode( const XMLNode & node )
     revertToDefaultState();
 }
 
-
 /************************************************************************
 *    DESC:  Load the control specific info from XML node
 ************************************************************************/
@@ -115,7 +112,6 @@ void CUIControl::loadControlFromNode( const XMLNode & node )
         }
     }
 }
-
 
 /************************************************************************
 *    DESC:  Load a sprite from an XML node
@@ -155,7 +151,6 @@ void CUIControl::loadSpriteFromNode( const XMLNode & node, size_t & fontSpriteCo
     }
 }
 
-
 /************************************************************************
 *    DESC:  Update the control
 ************************************************************************/
@@ -166,7 +161,6 @@ void CUIControl::update()
     for( auto iter : m_pSpriteVec )
         iter->update();
 }
-
 
 /************************************************************************
 *    DESC:  Transform the control
@@ -190,7 +184,6 @@ void CUIControl::transform( const CObject & object )
 
     transformCollision();
 }
-
 
 /************************************************************************
 *    DESC:  Transform the collision
@@ -239,7 +232,6 @@ void CUIControl::transformCollision()
     }
 }
 
-
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
@@ -249,7 +241,6 @@ void CUIControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf, co
     for( auto iter : m_pSpriteVec )
         iter->recordCommandBuffer( index, cmdBuf, camera );
 }
-
 
 /************************************************************************
 *    DESC:  Handle events
@@ -292,7 +283,6 @@ void CUIControl::handleEvent( const SDL_Event & rEvent )
     prepareControlScriptFunction( EControlState::EVENT, rEvent.type, rEvent.user.code );
 }
 
-
 /************************************************************************
 *    DESC:  Handle OnRootTransIn message
 ************************************************************************/
@@ -308,7 +298,6 @@ void CUIControl::onRootTransIn( const SDL_Event & rEvent )
         prepareControlScriptFunction( EControlState::ROOT_TRANS_IN );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Handle OnTransIn message
@@ -391,7 +380,6 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Handle OnSetActiveControl message
 ************************************************************************/
@@ -433,7 +421,6 @@ void CUIControl::onReactivate( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Handle the mouse move
 ************************************************************************/
@@ -458,7 +445,6 @@ bool CUIControl::onMouseMove( const SDL_Event & rEvent )
     return result;
 }
 
-
 /************************************************************************
 *    DESC:  Change the control state
 ************************************************************************/
@@ -477,7 +463,6 @@ void CUIControl::changeState( EControlState state )
         m_lastState = m_state;
     }
 }
-
 
 /************************************************************************
 *    DESC:  Activate the control
@@ -498,7 +483,6 @@ bool CUIControl::activateControl()
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Deactivate the control
 ************************************************************************/
@@ -518,7 +502,6 @@ void CUIControl::deactivateControl()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Disable the control
 ************************************************************************/
@@ -534,7 +517,6 @@ void CUIControl::disableControl()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Enable the control to the inactive state
 ************************************************************************/
@@ -549,7 +531,6 @@ void CUIControl::enableControl()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Set the sprite's display based on it's current state
 ************************************************************************/
@@ -558,7 +539,6 @@ void CUIControl::setDisplayState()
     // Set the script function
     prepareSpriteScriptFunction( m_state );
 }
-
 
 /************************************************************************
 *    DESC:  Init the control
@@ -573,7 +553,6 @@ void CUIControl::init()
     // Prepare any script functions that are flagged to prepareOnInit
     prepareOnInit();
 }
-
 
 /************************************************************************
 *    DESC:  Prepare the sprite script function
@@ -625,7 +604,6 @@ void CUIControl::prepareSpriteScriptFunction( EControlState controlState )
     for( auto iter : m_pSpriteVec )
         iter->prepare( scriptFuncMapKey );
 }
-
 
 /************************************************************************
 *    DESC:  Prepare the script function to run
@@ -695,7 +673,6 @@ void CUIControl::prepareControlScriptFunction( EControlState controlState, uint 
     }
 }
 
-
 /************************************************************************
 *    DESC:  Prepare the script function Id to run
 ************************************************************************/
@@ -710,7 +687,6 @@ bool CUIControl::prepare( const std::string & scriptFuncId )
     return result;
 }
 
-
 /************************************************************************
 *    DESC:  Reset and recycle the contexts
 ************************************************************************/
@@ -723,7 +699,6 @@ void CUIControl::reset( bool complete )
         m_lastState = m_state;
 }
 
-
 /************************************************************************
 *    DESC:  Recycle the contexts
 ************************************************************************/
@@ -732,7 +707,6 @@ void CUIControl::recycleContext()
     for( auto iter : m_pSpriteVec )
         iter->getScriptComponent().resetAndRecycle();
 }
-
 
 /************************************************************************
 *    DESC:  Set the default state of this control
@@ -757,7 +731,6 @@ void CUIControl::setDefaultState( EControlState value )
     m_defaultState = value;
 }
 
-
 /************************************************************************
 *    DESC:  Set the control to their default behavior
 ************************************************************************/
@@ -765,7 +738,6 @@ void CUIControl::revertToDefaultState()
 {
     m_state = m_defaultState;
 }
-
 
 /************************************************************************
 *    DESC:  Get/Set the state of this control
@@ -782,7 +754,6 @@ void CUIControl::setState( EControlState state, bool setLastState )
     if( setLastState )
         m_lastState = state;
 }
-
 
 /************************************************************************
 *    DESC:  Get/Set the control's action type
@@ -824,7 +795,6 @@ void CUIControl::setActionType( const std::string & value )
         m_actionType = EControlActionType::QUIT_GAME;
 }
 
-
 /************************************************************************
 *    DESC:  Get/Set the execution action
 ************************************************************************/
@@ -837,7 +807,6 @@ void CUIControl::setExecutionAction( const std::string & action )
 {
     m_executionAction = action;
 }
-
 
 /************************************************************************
 *    DESC:  Create the font string
@@ -867,7 +836,6 @@ void CUIControl::createFontString( int stringIndex, int spriteIndex )
         createFontString( m_stringVec[stringIndex], spriteIndex );
 }
 
-
 /************************************************************************
 *    DESC:  Set the font string
 ************************************************************************/
@@ -890,7 +858,6 @@ void CUIControl::setFontString( const std::string & fontString, int spriteIndex 
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get the string vector
 ************************************************************************/
@@ -898,7 +865,6 @@ const std::vector<std::string> & CUIControl::getStringVec() const
 {
     return m_stringVec;
 }
-
 
 /************************************************************************
 *    DESC:  Handle the select action
@@ -923,7 +889,6 @@ bool CUIControl::handleSelectAction( const CSelectMsgCracker & msgCracker )
 
     return false;
 }
-
 
 /************************************************************************
 *    DESC: Set the first inactive control to be active
@@ -955,7 +920,6 @@ bool CUIControl::activateFirstInactiveControl()
     return activateControl();
 }
 
-
 /************************************************************************
 *    DESC:  Is the point in the control
 ************************************************************************/
@@ -968,7 +932,6 @@ bool CUIControl::isPointInControl( const CPoint<float> & pos )
 {
     return m_collisionQuad.isPointInQuad( pos.x, pos.y );
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the control if found
@@ -1000,7 +963,6 @@ void CUIControl::setStringToList( const std::string & str )
     m_stringVec.push_back( str );
 }
 
-
 /************************************************************************
 *    DESC:  Is this control disabled/active/selected
 ************************************************************************/
@@ -1029,7 +991,6 @@ bool CUIControl::isSelectable()
     return ((m_state == EControlState::INACTIVE) || (m_state == EControlState::ACTIVE));
 }
 
-
 /************************************************************************
 *    DESC:  Get the collision position
 ************************************************************************/
@@ -1037,7 +998,6 @@ const CPoint<float> & CUIControl::getCollisionPos() const
 {
     return m_collisionCenter;
 }
-
 
 /************************************************************************
 *    DESC:  Get the scroll params
@@ -1047,7 +1007,6 @@ CScrollParam & CUIControl::getScrollParam()
     return m_scrollParam;
 }
 
-
 /************************************************************************
 *    DESC:  Check if control is a sub control
 ************************************************************************/
@@ -1055,7 +1014,6 @@ bool CUIControl::isSubControl() const
 {
     return false;
 }
-
 
 /************************************************************************
 *    DESC:  Set the alpha value of this control
@@ -1068,7 +1026,6 @@ void CUIControl::setAlpha( float alpha )
     m_alpha = alpha;
 }
 
-
 /************************************************************************
 *    DESC:  Get the pointer to the active control
 *           This is mostly needed for sub controls
@@ -1078,7 +1035,6 @@ iControl * CUIControl::getPtrToActiveControl()
     return this;
 }
 
-
 /************************************************************************
 *    DESC:  Get the mouse select type
 ************************************************************************/
@@ -1087,7 +1043,6 @@ EActionPress CUIControl::getMouseSelectType() const
     return m_mouseSelectType;
 }
 
-
 /************************************************************************
 *    DESC:  Get the size of this control
 ************************************************************************/
@@ -1095,7 +1050,6 @@ const CSize<float> & CUIControl::getSize() const
 {
     return m_size;
 }
-
 
 /************************************************************************
 *    DESC:  Can this control scroll?

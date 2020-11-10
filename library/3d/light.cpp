@@ -18,14 +18,12 @@ CLight::CLight( ELightType lightType ) :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor                                                             
 ************************************************************************/
 CLight::~CLight()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Enable/disable light
@@ -34,7 +32,6 @@ void CLight::enable( bool value )
 {
     m_enable = value;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get the position / direction
@@ -48,7 +45,6 @@ const CPoint<float> & CLight::getPosDir() const
 {
     return m_posDir;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get the color

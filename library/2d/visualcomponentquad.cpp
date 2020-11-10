@@ -50,7 +50,6 @@ CVisualComponentQuad::CVisualComponentQuad( const iObjectData & objectData ) :
     //         m_pushDescSet );
 }
 
-
 /************************************************************************
 *    desc:  destructor                                                             
 ************************************************************************/
@@ -59,7 +58,6 @@ CVisualComponentQuad::~CVisualComponentQuad()
     CDevice::Instance().AddToDeleteQueue( m_uniformBufVec );
     CDevice::Instance().recycleDescriptorSet( m_pDescriptorSet );
 }
-
 
 /***************************************************************************
 *   DESC:  Record the command buffers
@@ -108,7 +106,6 @@ void CVisualComponentQuad::recordCommandBuffer(
     }
 }
 
-
 /************************************************************************
 *    DESC:  Update the UBO buffer
 ************************************************************************/
@@ -130,7 +127,6 @@ void CVisualComponentQuad::updateUBO(
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
-
 
 /************************************************************************
 *    DESC:  Set the frame ID from index
@@ -165,7 +161,6 @@ void CVisualComponentQuad::setFrame( uint index )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Is recording the command buffer allowed?
 ************************************************************************/
@@ -173,7 +168,6 @@ bool CVisualComponentQuad::allowCommandRecording()
 {
     return ((GENERATION_TYPE > EGenType::_NULL_) && (GENERATION_TYPE < EGenType::FONT));
 }
-
 
 /************************************************************************
 *    DESC:  Get the size

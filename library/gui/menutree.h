@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class that hold a tree of menus
 ************************************************************************/
 
-#ifndef __menu_tree_h__
-#define __menu_tree_h__
+#pragma once
 
 // Game lib dependencies
 #include <gui/uidefs.h>
@@ -129,5 +128,3 @@ private:
     // menu state
     EMenuState m_state;
 };
-
-#endif

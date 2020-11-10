@@ -54,14 +54,12 @@ CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
     init();
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CCamera::~CCamera()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Init the camera
@@ -92,7 +90,6 @@ void CCamera::loadFromNode( const XMLNode & node )
         invertPos();
 }
 
-
 /************************************************************************
 *    DESC:  Init the camera
 ************************************************************************/
@@ -117,7 +114,6 @@ void CCamera::init()
     // Calculate the final matrix
     calcFinalMatrix();
 }
-
 
 /************************************************************************
 *    DESC:  Create the projection matrix
@@ -144,7 +140,6 @@ void CCamera::createProjectionMatrix()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get the projected matrix
 ************************************************************************/  
@@ -152,7 +147,6 @@ const CMatrix & CCamera::getProjectionMatrix() const
 {
     return m_projectionMatrix;
 }
-
 
 /************************************************************************
 *    DESC:  Set the world value position
@@ -169,7 +163,6 @@ void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
     CObject::setPos( m_worldValPos );
 }
 
-
 /************************************************************************
 *    DESC:  Increment the world value position
 ************************************************************************/  
@@ -185,7 +178,6 @@ void CCamera::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
     CObject::incPos( m_worldValPos );
 }
 
-
 /************************************************************************
 *    DESC:  Get the world value position
 ************************************************************************/
@@ -193,7 +185,6 @@ const CPoint<CWorldValue> & CCamera::getWorldValuePos() const
 {
     return m_worldValPos;
 }
-
 
 /************************************************************************
 *    DESC:  Transform
@@ -208,7 +199,6 @@ void CCamera::transform()
         calcFinalMatrix();
 }
 
-
 /************************************************************************
 *    DESC:  Calculate the final matrix
 ************************************************************************/
@@ -219,7 +209,6 @@ void CCamera::calcFinalMatrix()
     m_finalMatrix.mergeMatrix( m_projectionMatrix );
 }
 
-
 /************************************************************************
 *    DESC:  Get the final matrix
 ************************************************************************/  
@@ -227,7 +216,6 @@ const CMatrix & CCamera::getFinalMatrix() const
 {
     return m_finalMatrix;
 }
-
 
 /************************************************************************
 *    DESC:  Convert to orthographic screen coordinates
@@ -245,7 +233,6 @@ CPoint<float> CCamera::toOrthoCoord( const CPoint<float> & position )
     return pos;
 }
 
-
 /************************************************************************
 *    DESC:  Apply the rotation
 ************************************************************************/
@@ -257,7 +244,6 @@ void CCamera::applyRotation( CMatrix & matrix )
     // Since the rotation has already been done, multiply it into the matrix
     matrix.multiply3x3( m_rotMatrix );
 }
-
 
 /************************************************************************
 *    DESC:  Get the rotation matrix

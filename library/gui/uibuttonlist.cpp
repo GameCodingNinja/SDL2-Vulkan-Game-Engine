@@ -35,14 +35,12 @@ CUIButtonList::CUIButtonList( const std::string & group ) :
     m_type = EControlType::BUTTON_LIST;
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CUIButtonList::~CUIButtonList()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the control info from XML node
@@ -79,7 +77,6 @@ void CUIButtonList::loadFromNode( const XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the control specific info from XML node
 ************************************************************************/
@@ -99,7 +96,6 @@ void CUIButtonList::loadControlFromNode( const XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Inc/Dec control
 ************************************************************************/
@@ -118,7 +114,6 @@ void CUIButtonList::dec()
         static_cast<int>(EControlState::SELECT),
         (void *)m_pSubControlVec[static_cast<int>(EAction::DEC)] );
 }
-
 
 /************************************************************************
 *    DESC:  Handle Onmessage
@@ -147,7 +142,6 @@ void CUIButtonList::onRightAction( const SDL_Event & rEvent )
         inc();
 }
 
-
 /************************************************************************
 *    DESC:  Handle OnLeftScroll message
 ************************************************************************/
@@ -174,7 +168,6 @@ void CUIButtonList::onRightScroll( const SDL_Event & rEvent )
     if( m_ActionMask.isSet( static_cast<int>(EAction::RIGHT) ) )
         inc();
 }
-
 
 /************************************************************************
 *    DESC:  Handle OnStateChange message
@@ -212,7 +205,6 @@ void CUIButtonList::onStateChange( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Inc the list
 ************************************************************************/
@@ -233,7 +225,6 @@ void CUIButtonList::decList()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Update the display
 ************************************************************************/
@@ -245,7 +236,6 @@ void CUIButtonList::updateDisplay()
         m_pSpriteVec.at(m_imageLstIndex)->getVisualComponent()->setFrame( m_activeIndex );
 }
 
-
 /************************************************************************
 *    DESC: Set the first inactive control to be active
 *    NOTE: Don't want this functuality for the button list
@@ -254,7 +244,6 @@ bool CUIButtonList::activateFirstInactiveControl()
 {
     return CUIControl::activateFirstInactiveControl();
 } 
-
 
 /************************************************************************
 *    DESC:  Get/Set the active index
@@ -271,7 +260,6 @@ void CUIButtonList::setActiveIndex( int index )
     // Update the display
     updateDisplay();
 }
-
 
 /************************************************************************
 *    DESC:  Number of items in the list box

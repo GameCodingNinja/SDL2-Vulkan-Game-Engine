@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for user interface progress bar
 ************************************************************************/
 
-#ifndef __ui_progress_bar_h__
-#define __ui_progress_bar_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uicontrol.h>
@@ -95,5 +94,3 @@ private:
         EVertAlignment vert;
     } m_alignment;
 };
-
-#endif

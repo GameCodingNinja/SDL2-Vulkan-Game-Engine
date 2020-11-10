@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for user interface buttons
 ************************************************************************/
 
-#ifndef __ui_button_list_h__
-#define __ui_button_list_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uisubcontrol.h>
@@ -81,5 +80,3 @@ private:
     // Indicates if the control responds to up, down, left or right
     CBitmask<uint> m_ActionMask;
 };
-
-#endif

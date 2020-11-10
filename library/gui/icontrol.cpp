@@ -23,14 +23,12 @@ iControl::iControl( const std::string & group ) :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 iControl::~iControl()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the control info from XML node
@@ -75,7 +73,6 @@ void iControl::loadFromNode( const XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the dynamic offset data from node
 ************************************************************************/
@@ -89,7 +86,6 @@ void iControl::loadDynamicOffsetFromNode( const XMLNode & node )
     setDynamicPos();
 }
 
-
 /************************************************************************
 *    DESC:  Set the dynamic position
 ************************************************************************/
@@ -100,7 +96,6 @@ void iControl::setDynamicPos()
         setPos( m_dynamicOffset.getPos() );
 }
 
-
 /************************************************************************
 *    DESC:  Get the object group name
 ************************************************************************/
@@ -108,7 +103,6 @@ const std::string & iControl::getGroup() const
 {
     return m_group;
 }
-
 
 /************************************************************************
 *    DESC:  Get the control name
@@ -118,7 +112,6 @@ const std::string & iControl::getName() const
     return m_name;
 }
 
-
 /************************************************************************
 *    DESC:  Get the control type
 ************************************************************************/
@@ -127,7 +120,6 @@ EControlType iControl::getType() const
     return m_type;
 }
 
-
 /************************************************************************
 *    DESC:  Get the faction name
 ************************************************************************/
@@ -135,7 +127,6 @@ const std::string & iControl::getFaction() const
 {
     return m_faction;
 }
-
 
 /************************************************************************
 *    DESC:  Get the alpha value of this control

@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Mesh class
 ************************************************************************/  
 
-#ifndef __mesh_h__
-#define __mesh_h__
+#pragma once
 
 // Game lib dependencies
 #include <system/memorybuffer.h>
@@ -35,5 +34,3 @@ public:
     // Number of IBO needed for rendering
     int m_iboCount = 0;
 };
-
-#endif

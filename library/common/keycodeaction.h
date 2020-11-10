@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for holding key codes to test for action events
 ************************************************************************/
 
-#ifndef __key_code_action_h__
-#define __key_code_action_h__
+#pragma once
 
 // Standard lib dependencies
 #include <vector>
@@ -53,4 +52,3 @@ private:
     std::vector<int> m_id;
 };
 
-#endif

@@ -35,7 +35,6 @@ CMenuMgr::CMenuMgr() :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -43,7 +42,6 @@ CMenuMgr::~CMenuMgr()
 {
     SDL_RemoveTimer( m_scrollTimerId );
 }
-
 
 /************************************************************************
  *    DESC:  Load the menu group
@@ -84,7 +82,6 @@ void CMenuMgr::loadGroup( const std::string & group, const bool doInit )
         initGroup( group );
 }
 
-
 /************************************************************************
  *    DESC:  Free the menu group
  ************************************************************************/
@@ -122,7 +119,6 @@ void CMenuMgr::freeGroup( const std::string & group )
         m_menuMapMap.erase( menuMapIter );
 }
 
-
 /************************************************************************
 *    DESC:  Clear all memory
 ************************************************************************/
@@ -136,7 +132,6 @@ void CMenuMgr::clear()
     m_menuTreeMapMap.clear();
     m_menuMapMap.clear();
 }
-
 
 /************************************************************************
  *    DESC:  Init a menu group
@@ -158,7 +153,6 @@ void CMenuMgr::initGroup( const std::string & group )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the menu/tree info from file
 ************************************************************************/
@@ -173,7 +167,6 @@ void CMenuMgr::load( const std::string & group, const std::string & filePath )
     // Load the trees from node
     loadTreesFromNode( group, node );
 }
-
 
 /************************************************************************
 *    DESC:  Load the menus from node
@@ -215,7 +208,6 @@ void CMenuMgr::loadMenusFromNode( const std::string & group, const XMLNode & nod
         iter.first->second.load( menuNode.getAttribute( "file" ) );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Load the trees from node
@@ -290,7 +282,6 @@ void CMenuMgr::loadTreesFromNode( const std::string & group, const XMLNode & nod
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the menu action list
 ************************************************************************/
@@ -311,7 +302,6 @@ void CMenuMgr::loadMenuAction( const std::string & filePath )
     m_tabRight = node.getChildNode( "tabRight" ).getText();
     m_defaultTree = node.getChildNode( "defaultTree" ).getText();
 }
-
 
 /************************************************************************
 *    DESC:  Activate a tree to be used by tree name only
@@ -372,7 +362,6 @@ void CMenuMgr::activateMenu( const std::string & group, const std::string & tree
                 % group % treeStr % __FUNCTION__ % __LINE__ ));
     }
 }
-
 
 /************************************************************************
 *    DESC:  Activate a tree to be used by tree name only
@@ -442,7 +431,6 @@ void CMenuMgr::activateTree( const std::string & group, const std::string & tree
     }
 }
 
-
 /************************************************************************
 *    DESC:  Deactivate a tree to be used
 *           NOTE: Assumes unique tree names
@@ -506,7 +494,6 @@ void CMenuMgr::deactivateTree( const std::string & group, const std::string & tr
     }
 }
 
-
 /************************************************************************
 *    DESC:  Clear the active trees
 ************************************************************************/
@@ -519,7 +506,6 @@ void CMenuMgr::clearActiveTrees()
     m_pActiveMenuTreeVec.clear();
     m_pActiveInterTreeVec.clear();
 }
-
 
 /************************************************************************
 *    DESC:  Transition a tree's default menu
@@ -580,7 +566,6 @@ void CMenuMgr::transitionMenu( const std::string & group, const std::string & tr
                 % group % treeStr % __FUNCTION__ % __LINE__ ));
     }
 }
-
 
 /************************************************************************
 *    DESC:  Handle input events and dispatch menu events
@@ -711,7 +696,6 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Dispatch the escape action
 ************************************************************************/
@@ -725,7 +709,6 @@ void CMenuMgr::dispatchEscapeAction()
         NGenFunc::DispatchEvent( NMenuEvent::ESCAPE_ACTION, 0, &pTree->getName() );
 }
 
-
 /************************************************************************
 *    DESC:  Dispatch the toggle action
 ************************************************************************/
@@ -738,7 +721,6 @@ void CMenuMgr::dispatchToggleAction()
     else
         NGenFunc::DispatchEvent( NMenuEvent::TOGGLE_ACTION, 0, &pTree->getName() );
 }
-
 
 /************************************************************************
 *    DESC:  Handle input events depending on if this is a menu or interface tree
@@ -767,7 +749,6 @@ void CMenuMgr::handleEventForTrees( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Handle input events depending on if this is a menu or interface tree
 ************************************************************************/
@@ -782,7 +763,6 @@ void CMenuMgr::handleEventForScrolling( const SDL_Event & rEvent )
         }
     }
 }
-
 
 /************************************************************************
 *    DESC:  Handle input events for menu scrolling
@@ -812,7 +792,6 @@ bool CMenuMgr::handleMenuScrolling(
 
     return menuActive;
 }
-
 
 /************************************************************************
 *    DESC:  Update the menu
@@ -845,7 +824,6 @@ bool CMenuMgr::update( const std::vector<CMenuTree *> & activeTreeVec )
     
     return menuActive;
 }
-
 
 /************************************************************************
 *    DESC:  Transform the menu
@@ -881,7 +859,6 @@ void CMenuMgr::transform( const std::vector<CMenuTree *> & activeTreeVec )
     }
 }
 
-
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
@@ -908,7 +885,6 @@ void CMenuMgr::recordCommandBuffer( uint32_t index )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Is this menu system active?
 ************************************************************************/
@@ -916,7 +892,6 @@ bool CMenuMgr::isActive()
 {
     return m_active;
 }
-
 
 /************************************************************************
 *    DESC:  Is this standard menu system active?
@@ -930,7 +905,6 @@ bool CMenuMgr::isMenuActive()
 
     return false;
 }
-
 
 /************************************************************************
 *    DESC:  Is a menu item active
@@ -955,7 +929,6 @@ bool CMenuMgr::isMenuItemActive()
     return result;
 }
 
-
 /************************************************************************
 *    DESC:  Is a interface item active
 ************************************************************************/
@@ -978,7 +951,6 @@ bool CMenuMgr::isInterfaceItemActive()
 
     return result;
 }
-
 
 /************************************************************************
 *    DESC:  Get reference to the menu in question
@@ -1008,7 +980,6 @@ CMenu & CMenuMgr::getMenu( const std::string & nameStr )
     return menuIter->second;
 }
 
-
 /************************************************************************
 *    DESC:  Get reference to the first active menu.
 *           NOTE: Only call this function if you are certain it will not fail
@@ -1034,7 +1005,6 @@ CMenu & CMenuMgr::getActiveMenu()
     return *pMenu;
 }
 
-
 /************************************************************************
 *    DESC:  Get a pointer to the active tree
 ************************************************************************/
@@ -1054,7 +1024,6 @@ CMenuTree * CMenuMgr::getActiveTree()
     return pTree;
 }
 
-
 /************************************************************************
 *    DESC:  Get the name of the default tree
 ************************************************************************/
@@ -1062,7 +1031,6 @@ const std::string & CMenuMgr::getDefaultTreeName()
 {
     return m_defaultTree;
 }
-
 
 /************************************************************************
 *    DESC:  Reset the transform
@@ -1074,7 +1042,6 @@ void CMenuMgr::resetTransform()
             iter.second.forceTransform();
 }
 
-
 /************************************************************************
 *    DESC:  Reset the dynamic positions of menus
 ************************************************************************/
@@ -1084,7 +1051,6 @@ void CMenuMgr::resetDynamicOffset()
         for( auto & iter : grpIter.second )
             iter.second.resetDynamicPos();
 }
-
 
 /************************************************************************
 *    DESC:  Timer call back function for
@@ -1098,7 +1064,6 @@ Uint32 CMenuMgr::scrollTimerCallbackFunc( Uint32 interval, void *param )
     return pScrollParam->getScrollDelay();
 }
 
-
 /************************************************************************
 *    DESC:  Allow message processing
 ************************************************************************/
@@ -1106,7 +1071,6 @@ void CMenuMgr::allow( bool allow )
 {
     m_allow = allow;
 }
-
 
 /************************************************************************
 *    DESC:  Set the command buffer vec

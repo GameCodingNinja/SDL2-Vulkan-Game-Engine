@@ -5,8 +5,7 @@
 *    DESCRIPTION:     class for user interface controls
 ************************************************************************/
 
-#ifndef __ui_control_h__
-#define __ui_control_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/icontrol.h>
@@ -234,5 +233,3 @@ private:
     // Scrolling parameters
     CScrollParam m_scrollParam;
 };
-
-#endif

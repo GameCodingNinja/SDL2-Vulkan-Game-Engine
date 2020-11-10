@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class for user interface labels
 ************************************************************************/
 
-#ifndef __ui_label_h__
-#define __ui_label_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uicontrol.h>
@@ -20,5 +19,3 @@ public:
     // Destructor
     virtual ~CUILabel();
 };
-
-#endif

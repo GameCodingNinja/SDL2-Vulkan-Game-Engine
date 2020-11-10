@@ -25,7 +25,6 @@ CVisualComponentSpriteSheet::CVisualComponentSpriteSheet( const iObjectData & ob
     m_frameIndex = objectData.getVisualData().getSpriteSheet().getDefaultIndex();
 }
 
-
 /************************************************************************
 *    desc:  destructor                                                             
 ************************************************************************/
@@ -56,7 +55,6 @@ void CVisualComponentSpriteSheet::updateUBO(
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
 
-
 /************************************************************************
 *    DESC:  Get the crop offset
 ************************************************************************/
@@ -64,7 +62,6 @@ const CSize<int> & CVisualComponentSpriteSheet::getCropOffset( uint index ) cons
 {
     return m_rObjectData.getVisualData().getSpriteSheet().getGlyph( index ).getCropOffset();
 }
-
 
 /************************************************************************
 *    DESC:  Set the frame ID from index

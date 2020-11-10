@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling scroll parameter data
 ************************************************************************/
 
-#ifndef __scroll_param_h__
-#define __scroll_param_h__
+#pragma once
 
 // Standard lib dependencies
 #include <map>
@@ -50,5 +49,3 @@ private:
     // The scroll message to send from the timer
     int m_msg;
 };
-
-#endif

@@ -21,14 +21,12 @@ CUICheckBox::CUICheckBox( const std::string & group ) :
     m_type = EControlType::CHECK_BOX;
 }
 
-
 /************************************************************************
 *    DESC:  destructor                                                             
 ************************************************************************/
 CUICheckBox::~CUICheckBox()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Set the Select state of this control
@@ -39,7 +37,6 @@ void CUICheckBox::setToggleState( bool value )
 {
     m_toggleState = value;
 }
-
 
 /************************************************************************
 *    DESC:  Get the Select state of this control
@@ -61,7 +58,6 @@ void CUICheckBox::onSelectExecute( const SDL_Event & rEvent )
 
     CUIControl::onSelectExecute( rEvent );
 }
-
 
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite

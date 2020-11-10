@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Null visual component
 ************************************************************************/
 
-#ifndef __visual_component_null_h__
-#define __visual_component_null_h__
+#pragma once
 
 // Physical component dependency
 #include <common/ivisualcomponent.h>
@@ -27,5 +26,3 @@ public:
     // Destructor
     virtual ~CVisualComponentNull();
 };
-
-#endif

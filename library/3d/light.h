@@ -5,8 +5,7 @@
 *    DESCRIPTION:     light class
 ************************************************************************/
 
-#ifndef __light_h__
-#define __light_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -51,7 +50,3 @@ private:
     bool m_enable;
 
 };
-
-#endif  // __classtemplate_h__
-
-

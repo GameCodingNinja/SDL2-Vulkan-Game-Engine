@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for holding texture data
 ************************************************************************/
 
-#ifndef __texture_h__
-#define __texture_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/size.h>
@@ -90,5 +89,3 @@ public:
         }
     }
 };
-
-#endif

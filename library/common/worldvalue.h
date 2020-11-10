@@ -5,9 +5,7 @@
 *    DESCRIPTION:     World value class
 ************************************************************************/
 
-#ifndef __world_value_h__
-#define __world_value_h__
-
+#pragma once
 
 class CWorldValue
 {
@@ -96,5 +94,3 @@ private:
     static int SECTOR_SIZE;
     static int HALF_SECTOR_SIZE;
 };
-
-#endif

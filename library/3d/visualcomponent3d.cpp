@@ -49,7 +49,6 @@ CVisualComponent3D::CVisualComponent3D( const iObjectData & objectData ) :
         m_pushDescSetVec[i] );*/
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -60,7 +59,6 @@ CVisualComponent3D::~CVisualComponent3D()
     for( auto iter : m_pDescriptorSetVec )
         CDevice::Instance().recycleDescriptorSet( iter );
 }
-
 
 /***************************************************************************
 *   DESC:  Record the command buffers
@@ -112,7 +110,6 @@ void CVisualComponent3D::recordCommandBuffer(
     }
 }
 
-
 /************************************************************************
 *    DESC:  Update the UBO buffer
 ************************************************************************/
@@ -135,7 +132,6 @@ void CVisualComponent3D::updateUBO(
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
 
-
 /************************************************************************
 *    DESC:  Get the rotation matrix
 ************************************************************************/
@@ -148,7 +144,6 @@ CMatrix & CVisualComponent3D::getRotMatrix()
 {
     return m_rotMatrix;
 }
-
 
 /************************************************************************
 *    DESC:  Use a point to set a column - used for 3d physics

@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Vertex class
 ************************************************************************/  
 
-#ifndef __vertex_h__
-#define __vertex_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -60,5 +59,3 @@ namespace NVertex
     // Get the vertex input attribute description
     std::vector<VkVertexInputAttributeDescription> getAttributeDesc( const std::string & vertAttrDes );
 }
-
-#endif

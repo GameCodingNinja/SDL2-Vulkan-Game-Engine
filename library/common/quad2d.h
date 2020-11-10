@@ -6,8 +6,7 @@
 *    DESCRIPTION:     quad 2d class
 ************************************************************************/  
 
-#ifndef __quad_2d_h__
-#define __quad_2d_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/vertex.h>
@@ -26,5 +25,3 @@ public:
     NVertex::vert_uv vert[4];
 
 };
-
-#endif

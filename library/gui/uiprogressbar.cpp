@@ -32,14 +32,12 @@ CUIProgressBar::CUIProgressBar( const std::string & group ) :
     m_type = EControlType::PROGRESS_BAR;
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CUIProgressBar::~CUIProgressBar()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the control info from XML node
@@ -98,7 +96,6 @@ void CUIProgressBar::loadFromNode( const XMLNode & node )
     setSizePos();
 }
 
-
 /************************************************************************
 *    DESC:  Load the control specific info from XML node
 *
@@ -146,7 +143,6 @@ void CUIProgressBar::loadControlFromNode( const XMLNode & controlNode )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Transform the control
 ************************************************************************/
@@ -157,7 +153,6 @@ void CUIProgressBar::transform( const CObject & object )
     if( m_upStencilMaskSprite )
         m_upStencilMaskSprite->transform( *this );
 }
-
 
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
@@ -186,7 +181,6 @@ void CUIProgressBar::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf
         CUIControl::recordCommandBuffer( index, cmdBuf, camera );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Calculate the progress bar size and position
@@ -234,7 +228,6 @@ void CUIProgressBar::setSizePos()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Set/Get/Inc current value
 ************************************************************************/
@@ -253,7 +246,6 @@ void CUIProgressBar::incProgressBarValue( float value )
     m_curValue += value;
 }
 
-
 /************************************************************************
 *    DESC:  Set/Get min value
 ************************************************************************/
@@ -266,7 +258,6 @@ float CUIProgressBar::getProgressBarMinValue()
 {
     return m_minValue;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get max value

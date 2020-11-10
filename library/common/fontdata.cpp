@@ -21,7 +21,6 @@ void CFontData::copy( const CFontData & obj )
     m_fontProp.copy( obj.m_fontProp );
 }
 
-
 /************************************************************************
 *    DESC:  Load the font properties from XML node
 ************************************************************************/ 

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the visual part of a sprite
 ************************************************************************/
 
-#ifndef __visual_component_font_h__
-#define __visual_component_font_h__
+#pragma once
 
 // Physical component dependency
 #include <2d/visualcomponentquad.h>
@@ -93,5 +92,3 @@ private:
     // ibo count
     size_t m_iboCount;
 };
-
-#endif

@@ -28,7 +28,6 @@ CVisualComponentFont::CVisualComponentFont( const iObjectData & objectData ) :
 {
 }
 
-
 /************************************************************************
 *    desc:  destructor                                                             
 ************************************************************************/
@@ -57,7 +56,6 @@ void CVisualComponentFont::updateUBO(
     // Update the uniform buffer
     device.updateUniformBuffer( ubo, m_uniformBufVec[index].m_deviceMemory );
 }
-
 
 /***************************************************************************
 *   DESC:  Record the command buffers
@@ -106,7 +104,6 @@ void CVisualComponentFont::recordCommandBuffer(
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the font properties from XML node
 ************************************************************************/
@@ -114,7 +111,6 @@ void CVisualComponentFont::loadFontPropFromNode( const XMLNode & node )
 {
     m_fontData.loadFromNode( node );
 }
-
 
 /************************************************************************
 *    DESC:  Set the font data
@@ -124,7 +120,6 @@ void CVisualComponentFont::setFontData( const CFontData & fontData )
     m_fontData.copy( fontData );
 }
 
-
 /************************************************************************
 *    DESC:  Set the font properties
 ************************************************************************/
@@ -133,7 +128,6 @@ void CVisualComponentFont::setFontProperties( const CFontProperties & fontProp )
     m_fontData.m_fontProp.copy( fontProp );
 }
 
-
 /************************************************************************
 *    DESC:  Create the font string
 ************************************************************************/
@@ -141,7 +135,6 @@ void CVisualComponentFont::createFontString()
 {
     createFontString( m_fontData.m_fontString );
 }
-
 
 /************************************************************************
 *    DESC:  Create the font string
@@ -403,7 +396,6 @@ void CVisualComponentFont::createFontString( const std::string & fontString )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Add up all the character widths
 ************************************************************************/
@@ -495,7 +487,6 @@ std::vector<float> CVisualComponentFont::calcLineWidthOffset(
     return lineWidthOffsetVec;
 }
 
-
 /************************************************************************
 *    DESC:  Add the line width to the vector based on horz alignment
 ************************************************************************/
@@ -520,7 +511,6 @@ void CVisualComponentFont::addLineWithToVec(
     lineWidthOffsetVec.back() = (int)lineWidthOffsetVec.back();
 }
 
-
 /************************************************************************
 *    DESC:  Get/Set the displayed font string
 ************************************************************************/
@@ -534,7 +524,6 @@ void CVisualComponentFont::setFontString( const std::string & fontString )
     m_fontData.m_fontString = fontString;
 }
 
-
 /************************************************************************
 *    DESC:  Get the size
 ************************************************************************/
@@ -542,7 +531,6 @@ const CSize<float> & CVisualComponentFont::getSize() const
 {
     return m_fontData.m_fontStrSize;
 }
-
 
 /************************************************************************
 *    DESC:  Is recording the command buffer allowed?

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     3D quaternion class
 ************************************************************************/  
 
-#ifndef __quaternion_h__
-#define __quaternion_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -356,5 +355,3 @@ public:
         }
     }
 };
-
-#endif

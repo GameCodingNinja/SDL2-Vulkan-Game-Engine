@@ -35,7 +35,6 @@ CUISubControl::CUISubControl( const std::string & group ) :
     m_type = EControlType::SUB_CONTROL;
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -44,7 +43,6 @@ CUISubControl::~CUISubControl()
     NDelFunc::DeleteVectorPointers( m_pControlNodeVec );
     NDelFunc::DeleteVectorPointers( m_pSubControlVec );
 }
-
 
 /************************************************************************
 *    DESC:  Load the control specific info from XML node
@@ -104,7 +102,6 @@ void CUISubControl::loadControlFromNode( const XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Init the control
 ************************************************************************/
@@ -116,7 +113,6 @@ void CUISubControl::init()
     for( auto iter : m_pSubControlVec )
         iter->init();
 }
-
 
 /************************************************************************
 *    DESC:  Find the reference nodes
@@ -135,7 +131,6 @@ void CUISubControl::findNodes(
         setNodes( navNode, nodeIndex, "right", EAction::RIGHT, navNodeMap );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Find the reference nodes
@@ -164,7 +159,6 @@ void CUISubControl::setNodes(
     }
 }
 
-
 /************************************************************************
 *    DESC:  Update the control
 ************************************************************************/
@@ -177,7 +171,6 @@ void CUISubControl::update()
     for( auto iter : m_pSubControlVec )
         iter->update();
 }
-
 
 /************************************************************************
 *    DESC:  Transform the control
@@ -192,7 +185,6 @@ void CUISubControl::transform( const CObject & object )
         iter->transform( *this );
 }
 
-
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
 *           objects that are to be rendered
@@ -205,7 +197,6 @@ void CUISubControl::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuf,
     for( auto iter : m_pSubControlVec )
         iter->recordCommandBuffer( index, cmdBuf, camera );
 }
-
 
 /************************************************************************
 *    DESC:  Handle events
@@ -270,7 +261,6 @@ void CUISubControl::handleEvent( const SDL_Event & rEvent )
         }
     }
 }
-
 
 /************************************************************************
 *    DESC:  Handle OnUpAction message
@@ -352,7 +342,6 @@ void CUISubControl::onTabRight( const SDL_Event & rEvent )
     // Do nothing
 }
 
-
 /************************************************************************
 *    DESC:  Navigate the menu. Find the next control node that isn't
 *           disabled and make it the active control node
@@ -386,7 +375,6 @@ void CUISubControl::navigateMenu( EAction action )
         while( true );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Handle OnStateChange message
@@ -422,7 +410,6 @@ void CUISubControl::onStateChange( const SDL_Event & rEvent )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Reset and recycle the contexts
 ************************************************************************/
@@ -433,7 +420,6 @@ void CUISubControl::reset( bool complete )
     for( auto iter : m_pSubControlVec )
         iter->reset( complete );
 }
-
 
 /************************************************************************
 *    DESC:  Handle the mouse move
@@ -451,7 +437,6 @@ bool CUISubControl::onMouseMove( const SDL_Event & rEvent )
     return result || found;
 }
 
-
 /************************************************************************
 *    DESC:  Handle the sub control mouse move
 ************************************************************************/
@@ -464,7 +449,6 @@ bool CUISubControl::onSubControlMouseMove( const SDL_Event & rEvent )
 
     return result;
 }
-
 
 /************************************************************************
 *    DESC:  Handle the select action
@@ -484,7 +468,6 @@ bool CUISubControl::handleSelectAction( const CSelectMsgCracker & msgCracker )
 
     return false;
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the control if found
@@ -510,7 +493,6 @@ iControl * CUISubControl::findControl( void * pVoid )
 
     return pCtrl;
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the subcontrol if found
@@ -539,7 +521,6 @@ iControl * CUISubControl::findSubControl( void * pVoid )
     return pCtrl;
 }
 
-
 /************************************************************************
 *    DESC:  Get the sub control via index
 *
@@ -554,7 +535,6 @@ iControl * CUISubControl::getSubControl( uint index )
 
     return m_pSubControlVec.at(index);
 }
-
 
 /************************************************************************
 *    DESC: Set the first inactive control to be active
@@ -586,7 +566,6 @@ bool CUISubControl::activateFirstInactiveControl()
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Deactivate the control
 ************************************************************************/
@@ -597,7 +576,6 @@ void CUISubControl::deactivateControl()
     deactivateSubControl();
 }
 
-
 /************************************************************************
 *    DESC:  Deactivate the sub control
 ************************************************************************/
@@ -607,7 +585,6 @@ void CUISubControl::deactivateSubControl()
         iter->deactivateControl();
 }
 
-
 /************************************************************************
 *    DESC:  Check if control is a sub control
 ************************************************************************/
@@ -615,7 +592,6 @@ bool CUISubControl::isSubControl() const
 {
     return true;
 }
-
 
 /************************************************************************
 *    DESC:  Disable the control
@@ -628,7 +604,6 @@ void CUISubControl::disableControl()
         iter->disableControl();
 }
 
-
 /************************************************************************
 *    DESC:  Enable the control to the inactive state
 ************************************************************************/
@@ -640,7 +615,6 @@ void CUISubControl::enableControl()
         iter->enableControl();
 }
 
-
 /************************************************************************
 *    DESC:  Set the alpha value of this control
 ************************************************************************/
@@ -651,7 +625,6 @@ void CUISubControl::setAlpha( float alpha )
     for( auto iter : m_pSubControlVec )
         iter->setAlpha( alpha );
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the active control
@@ -676,7 +649,6 @@ iControl * CUISubControl::getPtrToActiveControl()
     return pResult;
 } 
 
-
 /************************************************************************
 *    DESC:  Number of sub controls
 ************************************************************************/
@@ -684,7 +656,6 @@ size_t CUISubControl::size()
 {
     return m_pSubControlVec.size();
 }
-
 
 /************************************************************************
 *    DESC:  Prepare the script function Id to run

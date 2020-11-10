@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Quad class
 ************************************************************************/
 
-#ifndef __quad_h__
-#define __quad_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -356,7 +355,4 @@ public:
 
         return result;
     }
-
 };
-
-#endif

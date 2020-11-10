@@ -4,8 +4,7 @@
 *    DESCRIPTION:     3D collision mesh class
 ************************************************************************/  
 
-#ifndef __collision_mesh_3d_h__
-#define __collision_mesh_3d_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -24,5 +23,3 @@ public:
     // Index buffer
     std::vector<uint16_t> m_ibo;
 };
-
-#endif

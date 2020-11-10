@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CVisual Class
 ************************************************************************/
 
-#ifndef __visual_h__
-#define __visual_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/color.h>
@@ -25,5 +24,3 @@ protected:
     // Additive Color
     static CColor m_additive;
 };
-
-#endif

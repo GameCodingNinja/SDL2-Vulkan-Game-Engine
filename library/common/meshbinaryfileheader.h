@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Header for mesh files outputed in binary
 ************************************************************************/
 
-#ifndef __meshbinaryfileheader_h__
-#define __meshbinaryfileheader_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -156,6 +155,3 @@ public:
     uint16_t uv[3];
 
 };
-
-
-#endif  // __meshbinaryfileheader_h__

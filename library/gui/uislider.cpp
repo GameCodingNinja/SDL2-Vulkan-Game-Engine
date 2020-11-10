@@ -40,14 +40,12 @@ CUISlider::CUISlider( const std::string & group ) :
     m_type = EControlType::SLIDER;
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CUISlider::~CUISlider()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the control info from XML node
@@ -82,7 +80,6 @@ void CUISlider::loadFromNode( const XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Load the control specific info from XML node
 *
@@ -105,7 +102,6 @@ void CUISlider::loadControlFromNode( const XMLNode & node )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Init the control
 ************************************************************************/
@@ -115,7 +111,6 @@ void CUISlider::init()
 
     updateSlider();
 }
-
 
 /************************************************************************
 *    DESC:  Handle OnLeftAction message
@@ -176,7 +171,6 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
     return result;
 }
 
-
 /************************************************************************
 *    DESC:  Handle the select action
 ************************************************************************/
@@ -212,7 +206,6 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
     return result;
 }
 
-
 /************************************************************************
 *    DESC:  Deactivate the control
 ************************************************************************/
@@ -222,7 +215,6 @@ void CUISlider::deactivateControl()
 
     m_pressType = EActionPress::IDLE;
 }
-
 
 /************************************************************************
 *    DESC:  Handle the slider change
@@ -245,7 +237,6 @@ void CUISlider::handleSliderChange( float value, bool prepareOnSelect )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Set the slider min value
 ************************************************************************/
@@ -254,7 +245,6 @@ void CUISlider::setSliderMinValue( float value )
     m_minValue = value;
 }
 
-
 /************************************************************************
 *    DESC:  Set the slider max value
 ************************************************************************/
@@ -262,7 +252,6 @@ void CUISlider::setSliderMaxValue( float value )
 {
     m_maxValue = value;
 }
-
 
 /************************************************************************
 *    DESC:  Set the slider inc value
@@ -283,7 +272,6 @@ float CUISlider::getSliderPosValue()
     return m_curValue;
 }
 
-
 /************************************************************************
 *    DESC:  Set the slider inc value
 ************************************************************************/
@@ -294,7 +282,6 @@ void CUISlider::incSlider( float value )
     // Update the slider
     updateSlider();
 }
-
 
 /************************************************************************
 *    DESC:  Inc the slider based on mouse movement
@@ -308,7 +295,6 @@ float CUISlider::incSliderMovePos( float value )
 
     return m_curValue;
 }
-
 
 /************************************************************************
 *    DESC:  Update the slider
@@ -339,7 +325,6 @@ void CUISlider::updateSlider()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Cap the slider value
 ************************************************************************/
@@ -352,7 +337,6 @@ void CUISlider::capSliderValue()
     else if( m_curValue > m_maxValue )
         m_curValue = m_maxValue;
 }
-
 
 /************************************************************************
 *    DESC:  Set the position of the slider
@@ -371,7 +355,6 @@ void CUISlider::setSliderPos()
             getSubControl()->setPos( m_defaultPos + CPoint<float>(0,pos,0) );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Is the mouse down

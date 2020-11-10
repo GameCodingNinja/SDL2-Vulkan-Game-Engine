@@ -4,8 +4,7 @@
 *    DESCRIPTION:     uv class
 ************************************************************************/  
 
-#ifndef __uv_h__
-#define __uv_h__
+#pragma once
 
 #if defined(_WINDOWS)
 #pragma warning(disable : 4244)
@@ -33,5 +32,3 @@ public:
         *this = obj;
     }
 };
-
-#endif

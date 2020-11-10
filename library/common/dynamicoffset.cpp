@@ -19,7 +19,6 @@ void CDynamicOffset::add( int value )
     m_parameters.add( value );
 }
 
-
 /************************************************************************
 *    DESC:  Set X
 ************************************************************************/ 
@@ -27,7 +26,6 @@ void CDynamicOffset::setX( float value )
 {
     point.x = value;
 }
-
 
 /************************************************************************
 *    DESC:  Set Y
@@ -37,7 +35,6 @@ void CDynamicOffset::setY( float value )
     point.y = value;
 }
 
-
 /************************************************************************
 *    DESC:  Is the dynamic offset being used
 ************************************************************************/ 
@@ -45,7 +42,6 @@ bool CDynamicOffset::isEmpty() const
 {
     return m_parameters.isEmpty();
 }
-
 
 /************************************************************************
 *    DESC:  Get the dynamic position

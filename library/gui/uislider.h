@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for user interface slider
 ************************************************************************/
 
-#ifndef __ui_slider_h__
-#define __ui_slider_h__
+#pragma once
 
 // Physical component dependency
 #include <gui/uisubcontrol.h>
@@ -114,5 +113,3 @@ private:
     // The current press type
     EActionPress m_pressType;
 };
-
-#endif

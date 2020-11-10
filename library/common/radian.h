@@ -5,8 +5,7 @@
 *    DESCRIPTION:     3D Radian class
 ************************************************************************/  
 
-#ifndef __radian_h__
-#define __radian_h__
+#pragma once
 
 // Physical component dependency
 #include <common/point.h>
@@ -37,5 +36,3 @@ public:
     {
     }
 };
-
-#endif

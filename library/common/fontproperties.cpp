@@ -47,7 +47,6 @@ CFontProperties::CFontProperties( const std::string fontName, EHorzAlignment hAl
     CFontMgr::Instance().isFont( m_fontName );
 }
 
-
 /************************************************************************
 *    DESC:  Copy the data
 ************************************************************************/ 
@@ -64,7 +63,6 @@ void CFontProperties::copy( const CFontProperties & obj )
     // Throws an exception if font is not loaded
     CFontMgr::Instance().isFont( m_fontName );
 }
-
 
 /************************************************************************
 *    DESC:  Load the font properties from XML node

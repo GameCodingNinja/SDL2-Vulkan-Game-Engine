@@ -4,8 +4,7 @@
 *    DESCRIPTION:     class that holds the camera position and rotation
 ************************************************************************/
 
-#ifndef __camera_h__
-#define __camera_h__
+#pragma once
 
 // Physical component dependency
 #include <common/object.h>
@@ -98,5 +97,3 @@ private:
     float m_minZDist;
     float m_maxZDist;
 };
-
-#endif

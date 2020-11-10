@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for user interface menu
 ************************************************************************/
 
-#ifndef __menu_h__
-#define __menu_h__
+#pragma once
 
 // Physical component dependency
 #include <common/object.h>
@@ -197,5 +196,3 @@ private:
     // menu alpha value
     float m_alpha;
 };
-
-#endif

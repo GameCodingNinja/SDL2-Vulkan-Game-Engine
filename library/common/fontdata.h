@@ -4,8 +4,7 @@
 *    DESCRIPTION:     fontdata class
 ************************************************************************/  
 
-#ifndef __font_data_h__
-#define __font_data_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/fontproperties.h>
@@ -36,5 +35,3 @@ public:
     // Not use full for multi-line strings
     CSize<float> m_fontStrSize;
 };
-
-#endif

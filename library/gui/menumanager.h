@@ -5,8 +5,7 @@
 *    DESCRIPTION:     menu manager class singleton
 ************************************************************************/
 
-#ifndef __menu_manager_h__
-#define __menu_manager_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -244,5 +243,3 @@ Target * CMenuMgr::getPtrToActiveControl( const std::string & menuName )
 
     return pControl;
 }*/
-
-#endif

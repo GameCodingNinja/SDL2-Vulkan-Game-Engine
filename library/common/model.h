@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Model class
 ************************************************************************/  
 
-#ifndef __model_h__
-#define __model_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/mesh.h>
@@ -17,5 +16,3 @@ public:
     // Loaded mesh data
     std::vector<CMesh> m_meshVec;
 };
-
-#endif
