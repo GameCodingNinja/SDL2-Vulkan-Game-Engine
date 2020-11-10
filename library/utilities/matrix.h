@@ -4,8 +4,7 @@
 *    DESCRIPTION:     4x4 Matrix math class
 ************************************************************************/
 
-#ifndef __matrix_h__
-#define __matrix_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/normal.h>
@@ -18,19 +17,29 @@
 // Standard lib dependencies
 #include <cstdint>
 
-enum
-{
-    m00, m01, m02, m03,
-    m10, m11, m12, m13,
-    m20, m21, m22, m23,
-    m30, m31, m32, m33,
-    mMax
-};
-
 // The 3D view matrix class:
 class CMatrix
 {
 public:
+
+    enum
+    {
+        NO_ROT = 0,
+        ROT_Z = 1,
+        ROT_Y = 2,
+        ROT_X = 4,
+        ROT_ALL = ROT_Z | ROT_Y | ROT_X
+    };
+
+    enum
+    {
+        m00, m01, m02, m03,
+        m10, m11, m12, m13,
+        m20, m21, m22, m23,
+        m30, m31, m32, m33,
+        mMax
+    };
+
     // Constructor
     CMatrix();
 
@@ -158,6 +167,3 @@ private:
     float matrix[mMax];
 
 };
-
-
-#endif  // __matrix_h__
