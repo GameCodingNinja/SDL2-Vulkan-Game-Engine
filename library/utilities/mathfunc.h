@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Math utility functions
 ************************************************************************/  
 
-#ifndef __math_func_2d_h__
-#define __math_func_2d_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -32,5 +31,3 @@ namespace NMathFunc
     // Get the mouse's position in 3D
     CPoint<float> MouseTo3D( float mx, float my, CCamera matCam, CMatrix matProj );
 }
-
-#endif

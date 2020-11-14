@@ -5,8 +5,7 @@
 *    DESCRIPTION:     font manager class singleton
 ************************************************************************/  
 
-#ifndef __font_manager_h__
-#define __font_manager_h__
+#pragma once
 
 // Game lib dependencies
 #include <2d/font.h>
@@ -54,5 +53,3 @@ private:
     // Group name
     std::string m_group;
 };
-
-#endif

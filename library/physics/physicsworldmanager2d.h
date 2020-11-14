@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Box2D b2World wrapper class singleton
 ************************************************************************/
 
-#ifndef __physics_world_manager_2d_h__
-#define __physics_world_manager_2d_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -57,5 +56,3 @@ private:
     // Map of physics worlds
     std::map<const std::string, CPhysicsWorld2D *> m_pWorld2dMap;
 };
-
-#endif

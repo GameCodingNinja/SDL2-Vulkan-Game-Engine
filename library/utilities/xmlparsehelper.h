@@ -4,8 +4,7 @@
 *    DESCRIPTION:     General xml parse helper functions
 ************************************************************************/           
 
-#ifndef __xml_parse_helper_h__
-#define __xml_parse_helper_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -75,5 +74,3 @@ namespace NParseHelper
         std::map<const std::string, CScriptPrepareFunc> & scriptFunctionMap,
         const std::string & rGroup );
 }
-
-#endif

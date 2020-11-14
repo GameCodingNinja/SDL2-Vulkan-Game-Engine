@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class to handle a bit mask
 ************************************************************************/
 
-#ifndef __bit_mask_h__
-#define __bit_mask_h__
+#pragma once
 
 template <typename type>
 class CBitmask
@@ -121,5 +120,3 @@ private:
     type bitmask;
 
 };
-
-#endif

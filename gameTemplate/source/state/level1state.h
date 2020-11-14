@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CLevel1State Class State
 ************************************************************************/
 
-#ifndef __level_1_state_h__
-#define __level_1_state_h__
+#pragma once
 
 // Physical component dependency
 #include "commonstate.h"
@@ -62,5 +61,3 @@ private:
         SPRITE_PEG = -2
     };
 };
-
-#endif

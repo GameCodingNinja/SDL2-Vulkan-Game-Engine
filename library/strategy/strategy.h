@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Strategy class
 ************************************************************************/
 
-#ifndef __strategy_h__
-#define __strategy_h__
+#pragma once
 
 // Physical component dependency
 #include <common/object.h>
@@ -143,5 +142,3 @@ protected:
     //       and the pool will be freed at the end of the state
     std::vector<VkCommandBuffer> m_commandBufVec;
 };
-
-#endif

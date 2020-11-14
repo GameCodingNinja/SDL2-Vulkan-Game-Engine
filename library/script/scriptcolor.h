@@ -5,13 +5,10 @@
 *    DESCRIPTION:     CColor script object registration
 ************************************************************************/
 
-#ifndef __script_color_h__
-#define __script_color_h__
+#pragma once
 
 namespace NScriptColor
 {
     // Register Script Object
     void Register();
 }
-
-#endif

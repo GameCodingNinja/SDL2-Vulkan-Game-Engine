@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CRunState Class State
 ************************************************************************/
 
-#ifndef __title_screen_state_h__
-#define __title_screen_state_h__
+#pragma once
 
 // Physical component dependency
 #include "commonstate.h"
@@ -33,5 +32,3 @@ public:
     // Static load function
     static void load();
 };
-
-#endif

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     game settings class
 ************************************************************************/
 
-#ifndef __settings_h__
-#define __settings_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
@@ -264,5 +263,3 @@ private:
     bool m_loadByteCode;
     bool m_stripDebugInfo;
 };
-
-#endif

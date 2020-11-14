@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Wrapper class for Bullet physics
 ************************************************************************/
 
-#ifndef __physics_world_3d_h__
-#define __physics_world_3d_h__
+#pragma once
 
 // Bullet Physics lib dependencies
 #include <btBulletDynamicsCommon.h>
@@ -86,5 +85,3 @@ private:
     // The ratio of time between steps
     float m_timeRatio;
 };
-
-#endif

@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Uniform Buffer Object
 ************************************************************************/
 
-#ifndef __uniform_buffer_object_h__
-#define __uniform_buffer_object_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/matrix.h>
@@ -52,5 +51,3 @@ namespace NUBO
     // Get the UBO size
     int GetUboSize( const std::string & ubo );
 }
-
-#endif

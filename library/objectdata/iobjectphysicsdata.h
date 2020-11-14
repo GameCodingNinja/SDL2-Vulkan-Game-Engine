@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Object physics Data interface class
 ************************************************************************/
 
-#ifndef __iobjectphysicsdata_h__
-#define __iobjectphysicsdata_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -139,5 +138,3 @@ private:
     static std::vector<CFixture> m_null_fixture_vec;
     static CPoint<float> m_null_point;
 };
-
-#endif

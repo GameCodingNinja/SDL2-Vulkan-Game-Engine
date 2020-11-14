@@ -5,8 +5,7 @@
 *    DESCRIPTION:     These defs are custom per game project
 ************************************************************************/
 
-#ifndef __state_defs_h__
-#define __state_defs_h__
+#pragma once
 
 namespace NStateDefs
 {
@@ -28,5 +27,3 @@ namespace NStateDefs
         ESE_THREAD_LOAD_COMPLETE,
     };
 }
-
-#endif

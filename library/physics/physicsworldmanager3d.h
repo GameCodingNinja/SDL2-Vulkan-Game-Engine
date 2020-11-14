@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Physics manager class singleton
 ************************************************************************/
 
-#ifndef __physics_world_manager_h__
-#define __physics_world_manager_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -57,5 +56,3 @@ private:
     // Map of physics worlds
     std::map<const std::string, CPhysicsWorld3D> m_pWorld3dMap;
 };
-
-#endif

@@ -6,8 +6,7 @@
 *                     no children to keep the overhead low
 ************************************************************************/
 
-#ifndef __sprite_leaf_node_h__
-#define __sprite_leaf_node_h__
+#pragma once
 
 // Physical component dependency
 #include <node/inode.h>
@@ -60,5 +59,3 @@ private:
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & viewProj );
     void recordCommandBuffer( iNode * pNode, uint32_t index, VkCommandBuffer cmdBuffer, const CMatrix & rotMatrix, const CMatrix & viewProj );
 };
-
-#endif

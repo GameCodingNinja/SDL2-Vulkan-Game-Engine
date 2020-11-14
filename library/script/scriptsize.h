@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CSize script object registration
 ************************************************************************/
 
-#ifndef __script_size_h__
-#define __script_size_h__
+#pragma once
 
 namespace NScriptSize
 {
@@ -14,4 +13,3 @@ namespace NScriptSize
     void Register();
 }
 
-#endif

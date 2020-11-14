@@ -7,8 +7,7 @@
 *                     to keep the overhead low
 ************************************************************************/
 
-#ifndef __uicontrol_leaf_node_h__
-#define __uicontrol_leaf_node_h__
+#pragma once
 
 // Physical component dependency
 #include <node/inode.h>
@@ -54,5 +53,3 @@ protected:
     // Node data
     std::unique_ptr<CUIControl> m_upControl;
 };
-
-#endif

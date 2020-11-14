@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Play list class
 ************************************************************************/
 
-#ifndef __play_list_h__
-#define __play_list_h__
+#pragma once
 
 // Game lib dependencies
 #include <sound/sound.h>
@@ -93,5 +92,3 @@ private:
     // null sound
     static CSound m_null_Sound;
 };
-
-#endif

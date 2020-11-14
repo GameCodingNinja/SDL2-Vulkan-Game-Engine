@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CStartUp Class State
 ************************************************************************/
 
-#ifndef __start_up_state_h__
-#define __start_up_state_h__
+#pragma once
 
 // Physical component dependency
 #include "commonstate.h"
@@ -41,7 +40,3 @@ private:
     std::string m_errorTitle;
     std::string m_errorMsg;
 };
-
-#endif
-
-

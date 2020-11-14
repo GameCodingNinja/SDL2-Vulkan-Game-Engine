@@ -5,13 +5,10 @@
 *    DESCRIPTION:     Event script stub object registration
 ************************************************************************/
 
-#ifndef __script_event_stub_h__
-#define __script_event_stub_h__
+#pragma once
 
 namespace NScriptEventStub
 {
     // Register Script Object
     void Register();
 }
-
-#endif

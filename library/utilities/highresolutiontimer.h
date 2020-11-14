@@ -4,8 +4,7 @@
 *    DESCRIPTION:     high resolution timer class
 ************************************************************************/
 
-#ifndef __highresolutiontimer_h__
-#define __highresolutiontimer_h__
+#pragma once
 
 // Standard lib dependencies
 #include <cstdint>
@@ -63,5 +62,3 @@ private:
     float m_fps;
 
 };
-
-#endif

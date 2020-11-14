@@ -5,8 +5,7 @@
 *    DESCRIPTION:     camera manager class singleton
 ************************************************************************/  
 
-#ifndef __camera_manager_h__
-#define __camera_manager_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/camera.h>
@@ -71,5 +70,3 @@ private:
     // that need to be transformed
     std::vector<CCamera *> m_transVec;
 };
-
-#endif

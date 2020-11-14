@@ -4,8 +4,7 @@
 *    DESCRIPTION:     push descriptor set
 ************************************************************************/  
 
-#ifndef __push_descriptor_set_h__
-#define __push_descriptor_set_h__
+#pragma once
 
 // Standard lib dependencies
 #include <deque>
@@ -37,5 +36,3 @@ public:
     std::deque<VkDescriptorBufferInfo> m_descriptorBufferInfoDeq;
     std::deque<VkDescriptorImageInfo> m_descriptorImageInfoDeq;
 };
-
-#endif

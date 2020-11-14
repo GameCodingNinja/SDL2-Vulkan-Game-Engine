@@ -4,8 +4,7 @@
 *    DESCRIPTION:     General mutipurpose functions
 ************************************************************************/           
 
-#ifndef __genfunc_h__
-#define __genfunc_h__
+#pragma once
 
 // Standard lib dependencies
 #include <string>
@@ -62,5 +61,3 @@ namespace NGenFunc
         return result;
     }
 }
-
-#endif

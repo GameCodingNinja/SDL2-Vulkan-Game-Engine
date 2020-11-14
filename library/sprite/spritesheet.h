@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for holding sprite sheet data
 ************************************************************************/
 
-#ifndef __sprite_sheet_h__
-#define __sprite_sheet_h__
+#pragma once
 
 // Game lib dependencies
 #include <sprite/spritesheetglyph.h>
@@ -86,5 +85,3 @@ private:
     // A map of all the glyphs
     std::map< std::string, CSpriteSheetGlyph > m_glyphMap;
 };
-
-#endif

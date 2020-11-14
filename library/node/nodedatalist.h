@@ -6,8 +6,7 @@
 *                     list for easy Parent/child node creation
 ************************************************************************/
 
-#ifndef __node_data_list_h__
-#define __node_data_list_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -60,5 +59,3 @@ private:
     // Vector of the node data
     std::vector<CNodeData> m_dataVec;
 };
-
-#endif

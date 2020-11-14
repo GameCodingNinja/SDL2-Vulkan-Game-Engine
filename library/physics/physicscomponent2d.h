@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the physics part of the sprite
 ************************************************************************/
 
-#ifndef __physics_component_2d_h__
-#define __physics_component_2d_h__
+#pragma once
 
 // Physical component dependency
 #include <physics/iphysicscomponent.h>
@@ -139,5 +138,3 @@ private:
     // NOTE: Do not free. We don't own this pointer.
     CPhysicsWorld2D * m_pWorld;
 };
-
-#endif

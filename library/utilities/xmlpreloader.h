@@ -7,8 +7,7 @@
 *                     only be allocated in there specific state 
 ************************************************************************/
 
-#ifndef __xml_preloader_h__
-#define __xml_preloader_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/xmlParser.h>
@@ -50,5 +49,3 @@ private:
     // Map of XML nodes
     std::map<const std::string, XMLNode> m_xmlNodeMap;
 };
-
-#endif

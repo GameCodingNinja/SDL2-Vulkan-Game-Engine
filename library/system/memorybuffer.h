@@ -4,8 +4,7 @@
 *    DESCRIPTION:     VK Memory Buffer class
 ************************************************************************/  
 
-#ifndef __memory_buffer_h__
-#define __memory_buffer_h__
+#pragma once
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -43,5 +42,3 @@ public:
         }
     }
 };
-
-#endif

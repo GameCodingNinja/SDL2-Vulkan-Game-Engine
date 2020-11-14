@@ -5,8 +5,7 @@
 *    DESCRIPTION:     gamestate interface Class
 ************************************************************************/
 
-#ifndef __i_game_state_h__
-#define __i_game_state_h__
+#pragma once
 
 // Game dependencies
 #include "statemessage.h"
@@ -93,5 +92,3 @@ protected:
     bool m_changeState = false;
 
 };
-
-#endif

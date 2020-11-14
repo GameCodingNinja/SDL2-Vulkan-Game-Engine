@@ -5,8 +5,7 @@
 *    DESCRIPTION:     UI Control node that allows for children
 ************************************************************************/
 
-#ifndef __uicontrol_node_h__
-#define __uicontrol_node_h__
+#pragma once
 
 // Physical component dependency
 #include <node/rendernode.h>
@@ -53,5 +52,3 @@ protected:
     // Node data
     std::unique_ptr<CUIControl> m_upControl;
 };
-
-#endif

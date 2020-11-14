@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Physical device class
 ************************************************************************/
 
-#ifndef __physical_device_h__
-#define __physical_device_h__
+#pragma once
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -29,5 +28,3 @@ public:
     // Vector of queue family properties
     std::vector<VkQueueFamilyProperties> queueFamilyPropVec;
 };
-
-#endif

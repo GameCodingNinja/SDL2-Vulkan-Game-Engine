@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class factory for node creation
 ************************************************************************/
 
-#ifndef __node_factory_h__
-#define __node_factory_h__
+#pragma once
 
 // Forward declaration(s)
 class iNode;
@@ -16,5 +15,3 @@ namespace NNodeFactory
     // Create the control
     iNode * Create( const CNodeData & rNodeData );
 };
-
-#endif

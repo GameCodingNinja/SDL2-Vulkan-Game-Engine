@@ -9,8 +9,7 @@
 *                           parent id
 ************************************************************************/
 
-#ifndef __node_h__
-#define __node_h__
+#pragma once
 
 // Physical component dependency
 #include <node/inode.h>
@@ -58,5 +57,3 @@ protected:
     // Node vector of children
     std::vector<iNode *> m_nodeVec;
 };
-
-#endif

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class used for Vulkan API implementation
 ************************************************************************/
 
-#ifndef __device_vulkan_h__
-#define __device_vulkan_h__
+#pragma once
 
 // Game lib dependencies
 #include <system/memorybuffer.h>
@@ -341,5 +340,3 @@ protected:
     // General purpose mutex
     std::mutex m_mutex;
 };
-
-#endif

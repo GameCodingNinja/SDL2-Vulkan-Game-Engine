@@ -6,8 +6,7 @@
 *                     does a state change.
 ************************************************************************/
 
-#ifndef __load_state_h__
-#define __load_state_h__
+#pragma once
 
 // Physical component dependency
 #include "commonstate.h"
@@ -49,5 +48,3 @@ private:
     std::string m_errorTitle;
     std::string m_errorMsg;
 };
-
-#endif

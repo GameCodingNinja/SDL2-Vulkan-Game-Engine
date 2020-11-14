@@ -5,8 +5,7 @@
 *    DESCRIPTION:     iphysicscomponent Class
 ************************************************************************/
 
-#ifndef __i_physics_component_h__
-#define __i_physics_component_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/point.h>
@@ -90,5 +89,3 @@ public:
     // Set the same contact filtering to all the fixtures
     virtual void setContactFilter(uint16_t categoryBits = 0x0001, uint16_t maskBits = 0xFFFF, int16_t groupIndex = 0, int fixtureIndex = -1){}
 };
-
-#endif

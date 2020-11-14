@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Strategy manager singleton
 ************************************************************************/
 
-#ifndef __strategy_manager_h__
-#define __strategy_manager_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -106,5 +105,3 @@ private:
     // Vector of strategy pointers
     std::vector<CStrategy *> m_pStrategyVec;
 };
-
-#endif

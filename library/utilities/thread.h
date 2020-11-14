@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CThread Class
 ************************************************************************/
 
-#ifndef __thread_h__
-#define __thread_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/deletefuncs.h>
@@ -139,8 +138,4 @@ namespace thread
 
     template<class T> bool CThread<T>::m_threadRunning = false;
 
-}	// namespace thread
-
-#endif  // __thread_h__
-
-
+}

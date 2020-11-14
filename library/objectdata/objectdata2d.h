@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class that holds a 2D object data
 ************************************************************************/
 
-#ifndef __object_data_2d_h__
-#define __object_data_2d_h__
+#pragma once
 
 // Physical component dependency
 #include <objectdata/iobjectdata.h>
@@ -85,5 +84,3 @@ private:
     float m_radius;
     float m_radiusSquared;
 };
-
-#endif

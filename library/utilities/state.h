@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class for state machine handling
 ************************************************************************/
 
-#ifndef __state_h__
-#define __state_h__
+#pragma once
 
 // Standard lib dependencies
 #include <vector>
@@ -66,5 +65,3 @@ private:
     // This states level
     std::size_t level;
 };
-
-#endif

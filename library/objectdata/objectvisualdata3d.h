@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class containing the 2D object's visual data
 ************************************************************************/
 
-#ifndef __object_visual_data_3d_h__
-#define __object_visual_data_3d_h__
+#pragma once
 
 // Physical component dependency
 #include <objectdata/iobjectvisualdata.h>
@@ -63,5 +62,3 @@ private:
     // model file path
     std::string m_modelFile;
 };
-
-#endif

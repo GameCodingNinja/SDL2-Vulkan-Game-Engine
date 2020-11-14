@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Desrriptor set class
 ************************************************************************/
 
-#ifndef __descriptor_set_h__
-#define __descriptor_set_h__
+#pragma once
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -30,5 +29,3 @@ public:
     // NOTE: Defaulted to true because it will be active when first allocated
     bool m_active = true;
 };
-
-#endif

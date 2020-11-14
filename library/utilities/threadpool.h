@@ -36,8 +36,7 @@ int main()
 }
 */
 
-#ifndef __thread_pool_h__
-#define __thread_pool_h__
+#pragma once
 
 // Standard lib dependencies
 #include <vector>
@@ -181,5 +180,3 @@ void CThreadPool::post(F&& f, Args&&... args)
     m_condition.notify_one();
     #endif
 }
-
-#endif

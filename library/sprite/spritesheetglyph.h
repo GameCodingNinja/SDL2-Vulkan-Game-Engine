@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class to hold sprite sheet glyph data
 ************************************************************************/
 
-#ifndef __sprite_sheet_glyph_h__
-#define __sprite_sheet_glyph_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/size.h>
@@ -56,5 +55,3 @@ private:
     // Crop Offset
     CSize<int> m_cropOffset;
 };
-
-#endif

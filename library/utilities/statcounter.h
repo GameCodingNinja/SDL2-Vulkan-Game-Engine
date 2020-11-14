@@ -4,8 +4,7 @@
 *    DESCRIPTION:     3D stat counter class singleton
 ************************************************************************/  
 
-#ifndef __stat_counter_h__
-#define __stat_counter_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/timer.h>
@@ -85,5 +84,3 @@ private:
     // Stat counter signal
     StatCounterSignal m_statCounterSignal;
 };
-
-#endif

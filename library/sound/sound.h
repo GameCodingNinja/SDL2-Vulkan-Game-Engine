@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class to hold the sound pointer and type
 ************************************************************************/  
 
-#ifndef __sound_h__
-#define __sound_h__
+#pragma once
 
 // Standard lib dependencies
 #include <string>
@@ -80,5 +79,3 @@ private:
     // Sounds current volume
     int16_t m_volume;
 };
-
-#endif

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Object Data interface class
 ************************************************************************/
 
-#ifndef __iobjectdata_h__
-#define __iobjectdata_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/size.h>
@@ -73,5 +72,3 @@ private:
 
     static CSize<float> m_null_size;
 };
-
-#endif

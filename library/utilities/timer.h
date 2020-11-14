@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Timer Class
 ************************************************************************/
 
-#ifndef __timer_h__
-#define __timer_h__
+#pragma once
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -61,5 +60,3 @@ private:
     // This value allows a disabled timer to act as expired or not
     bool m_disableValue;
 };
-
-#endif

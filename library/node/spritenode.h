@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Sprite node that allows for children
 ************************************************************************/
 
-#ifndef __sprite_node_h__
-#define __sprite_node_h__
+#pragma once
 
 // Physical component dependency
 #include <node/rendernode.h>
@@ -48,5 +47,3 @@ public:
     // Get the object
     CObject * getObject() override;
 };
-
-#endif

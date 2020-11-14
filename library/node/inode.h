@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Node interface class. Also used as a leaf node
 ************************************************************************/
 
-#ifndef __i_node_h__
-#define __i_node_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -134,5 +133,3 @@ protected:
     // So that the string doesn't have to be stored
     uint16_t m_crcUserId;
 };
-
-#endif

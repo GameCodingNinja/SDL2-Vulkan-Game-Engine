@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for handling the scripting
 ************************************************************************/
 
-#ifndef __script_component_h__
-#define __script_component_h__
+#pragma once
 
 // Game lib dependencies
 #include <script/scriptparam.h>
@@ -61,5 +60,3 @@ private:
     // NOTE: This class does not own the pointer
     std::vector<asIScriptContext *> m_pContextVec;
 };
-
-#endif

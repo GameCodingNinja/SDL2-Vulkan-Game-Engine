@@ -5,8 +5,7 @@
 *    DESCRIPTION:     This class is custom per game project
 ************************************************************************/
 
-#ifndef __state_message_h__
-#define __state_message_h__
+#pragma once
 
 // Game dependencies
 #include "statedefs.h"
@@ -32,5 +31,3 @@ private:
     NStateDefs::EGameState m_loadState   : 16;
     NStateDefs::EGameState m_unloadState : 16;
 };
-
-#endif

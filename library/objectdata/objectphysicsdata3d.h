@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class containing the 3D object's physics data
 ************************************************************************/
 
-#ifndef __object_physics_data_3d_h__
-#define __object_physics_data_3d_h__
+#pragma once
 
 // Physical component dependency
 #include <objectdata/iobjectphysicsdata.h>
@@ -92,5 +91,3 @@ private:
     // Collision group and mask
     short m_collisionGroup, m_collisionMask;
 };
-
-#endif  // __object_physics_data_3d_h__

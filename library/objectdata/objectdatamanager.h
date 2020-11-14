@@ -5,8 +5,7 @@
 *					  for later loading
 ************************************************************************/
 
-#ifndef __object_data_manager_h__
-#define __object_data_manager_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -68,5 +67,3 @@ private:
     // Map in a map of all the objects' data
     std::map<const std::string, std::map<const std::string, std::unique_ptr<iObjectData>> > m_objectDataMapMap;
 };
-
-#endif

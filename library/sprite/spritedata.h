@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Sprite Data Class
 ************************************************************************/
 
-#ifndef __sprite_data_h__
-#define __sprite_data_h__
+#pragma once
 
 // Game lib dependencies
 #include <common/defs.h>
@@ -55,5 +54,3 @@ private:
     // Object name
     std::string m_objectName;
 };
-
-#endif

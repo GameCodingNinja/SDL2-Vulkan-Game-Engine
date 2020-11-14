@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Sound Manager class singleton
 ************************************************************************/
 
-#ifndef __sound_manager_h__
-#define __sound_manager_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -108,5 +107,3 @@ private:
     CPlayList m_null_playLst;
     CSound m_null_sound;
 };
-
-#endif

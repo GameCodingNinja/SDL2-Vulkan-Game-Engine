@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class timeduration
 ************************************************************************/
 
-#ifndef __time_duration_h__
-#define __time_duration_h__
+#pragma once
 
 // Standard lib dependencies
 #include <chrono>
@@ -227,5 +226,3 @@ private:
 
     std::chrono::nanoseconds m_duration;
 };
-
-#endif

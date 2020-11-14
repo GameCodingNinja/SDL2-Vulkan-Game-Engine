@@ -5,13 +5,10 @@
 *    DESCRIPTION:     CMenuMgr script object registration
 ************************************************************************/
 
-#ifndef __script_menu_manager_h__
-#define __script_menu_manager_h__
+#pragma once
 
 namespace NScriptMenuManager
 {
     // Register Script Object
     void Register();
 }
-
-#endif

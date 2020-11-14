@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Class that holds a 3D object data for
 ************************************************************************/
 
-#ifndef __object_data_3d_h__
-#define __object_data_3d_h__
+#pragma once
 
 // Physical component dependency
 #include <objectdata/iobjectdata.h>
@@ -76,5 +75,3 @@ private:
     float m_radius;
     float m_radiusSquared;
 };
-
-#endif

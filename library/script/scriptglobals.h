@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Global function registration
 ************************************************************************/
 
-#ifndef __script_globals_h__
-#define __script_globals_h__
+#pragma once
 
 namespace NScriptGlobals
 {
@@ -15,5 +14,3 @@ namespace NScriptGlobals
     // Register Script Object
     void Register();
 }
-
-#endif

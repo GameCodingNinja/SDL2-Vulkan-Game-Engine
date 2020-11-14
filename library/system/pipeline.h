@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Set of classes for dynamic creration of pipelines
 ************************************************************************/
 
-#ifndef __pipeline_data_h__
-#define __pipeline_data_h__
+#pragma once
 
 // Vulkan lib dependencies
 #include <system/vulkan.h>
@@ -99,5 +98,3 @@ public:
     // Flag if this is the stencil pipeline
     bool m_stencilPipeline = false;
 };
-
-#endif  // __pipeline_data_h__

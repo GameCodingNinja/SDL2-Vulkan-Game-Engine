@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class for loading and saving AngelScript byte code
 ************************************************************************/
 
-#ifndef __byte_code_stream_h__
-#define __byte_code_stream_h__
+#pragma once
 
 // Physical component dependency
 #include <angelscript.h>
@@ -41,5 +40,3 @@ private:
     // Scoped file handle pointer
     NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> m_scpFile;
 };
-
-#endif

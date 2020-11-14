@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CCommonState Class State
 ************************************************************************/
 
-#ifndef __common_state_h__
-#define __common_state_h__
+#pragma once
 
 // Physical component dependency
 #include "igamestate.h"
@@ -58,5 +57,3 @@ private:
     // game state map
     std::map<std::string, NStateDefs::EGameState> m_gameStateMap;
 };
-
-#endif

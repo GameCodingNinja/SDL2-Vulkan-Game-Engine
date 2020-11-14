@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Exception handling classes
 ************************************************************************/           
 
-#ifndef __exception_handling_h__
-#define __exception_handling_h__
+#pragma once
 
 // Standard lib dependencies
 #include <string>
@@ -46,5 +45,3 @@ namespace NExcept
         CCriticalException( std::string title, std::string msg ) : IException(title, msg) {}
     };
 }
-
-#endif  // __exception_handling_h__

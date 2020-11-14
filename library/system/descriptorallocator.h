@@ -4,8 +4,7 @@
 *    DESCRIPTION:     Decsriptor allocator class
 ************************************************************************/
 
-#ifndef __decsriptor_allocator_h__
-#define __decsriptor_allocator_h__
+#pragma once
 
 // Game lib dependencies
 #include <system/descriptorset.h>
@@ -24,5 +23,3 @@ public:
     std::vector<VkDescriptorPool> m_descriptorPoolVec;
     std::deque<std::vector<CDescriptorSet>> m_descriptorSetDeqVec;
 };
-
-#endif

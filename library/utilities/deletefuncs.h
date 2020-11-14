@@ -6,8 +6,7 @@
  *
  *****************************************************************************/
 
-#ifndef _deletefuncs_h
-#define _deletefuncs_h
+#pragma once
 
 // Standard lib dependencies.
 #include <map>
@@ -273,5 +272,3 @@ namespace NDelFunc
         obj.clear();
     }
 }
-
-#endif // _deletefunc_h

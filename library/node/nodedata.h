@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Node Data Class
 ************************************************************************/
 
-#ifndef __node_data_h__
-#define __node_data_h__
+#pragma once
 
 // Physical component dependency
 #include <sprite/spritedata.h>
@@ -80,5 +79,3 @@ private:
     // Does this node have children nodes?
     bool m_hasChildrenNodes;
 };
-
-#endif

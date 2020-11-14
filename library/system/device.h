@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Interface class to Vulkan API
 ************************************************************************/
 
-#ifndef __device_h__
-#define __device_h__
+#pragma once
 
 // Physical component dependency
 #include <system/devicevulkan.h>
@@ -382,5 +381,3 @@ private:
     // The clear color
     CColor m_clearColor;
 };
-
-#endif

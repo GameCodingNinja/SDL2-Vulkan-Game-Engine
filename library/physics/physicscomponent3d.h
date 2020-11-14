@@ -5,8 +5,7 @@
  *    DESCRIPTION:     Class for handling the physics part of the sprite
  ************************************************************************/
 
-#ifndef __physics_component_3d_h__
-#define __physics_component_3d_h__
+#pragma once
 
 // Physical component dependency
 #include <physics/iphysicscomponent.h>
@@ -71,7 +70,3 @@ private:
     // Rigid body safe pointer
     std::unique_ptr<btRigidBody> m_upRigidBody;
 };
-
-#endif
-
-

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class time point
 ************************************************************************/
 
-#ifndef __time_point_h__
-#define __time_point_h__
+#pragma once
 
 // Game lib dependencies
 #include <utilities/timeduration.h>
@@ -118,5 +117,3 @@ private:
     // Time point of this class
     std::chrono::high_resolution_clock::time_point m_timePoint;
 };
-
-#endif

@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Base class for common manager behaviors
 ************************************************************************/
 
-#ifndef __manager_base_h__
-#define __manager_base_h__
+#pragma once
 
 // Standard lib dependencies
 #include <string>
@@ -39,5 +38,3 @@ protected:
     // Mobile extension
     std::string m_mobileExt;
 };
-
-#endif

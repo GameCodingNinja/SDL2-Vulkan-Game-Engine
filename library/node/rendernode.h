@@ -6,8 +6,7 @@
 *                     game loop render functions
 ************************************************************************/
 
-#ifndef __render_node_h__
-#define __render_node_h__
+#pragma once
 
 // Physical component dependency
 #include <node/node.h>
@@ -53,5 +52,3 @@ private:
     // Destroy the physics
     void destroyPhysics( iNode * pNode );
 };
-
-#endif

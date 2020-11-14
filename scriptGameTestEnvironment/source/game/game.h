@@ -5,8 +5,7 @@
 *    DESCRIPTION:     CGame class
 ************************************************************************/
 
-#ifndef __game_h__
-#define __game_h__
+#pragma once
 
 // Standard lib dependencies
 #include <string>
@@ -59,5 +58,3 @@ private:
 };
 
 int FilterEvents( void * userdata, SDL_Event * pEvent );
-
-#endif

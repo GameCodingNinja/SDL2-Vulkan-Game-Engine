@@ -6,8 +6,7 @@
  *
  *****************************************************************************/
 
-#ifndef _smart_pointers_h_
-#define _smart_pointers_h_
+#pragma once
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>
@@ -193,5 +192,3 @@ namespace NSmart
         T * ptr;
     };
 }
-
-#endif

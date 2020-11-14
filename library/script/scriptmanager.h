@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Class to manage AngelScripts
 ************************************************************************/
 
-#ifndef __script_manager_h__
-#define __script_manager_h__
+#pragma once
 
 // Physical component dependency
 #include <managers/managerbase.h>
@@ -154,5 +153,3 @@ private:
     // Holds the list table map
     std::map<const std::string, std::string> m_byteCodeFileMap;
 };
-
-#endif

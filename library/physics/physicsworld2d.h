@@ -5,8 +5,7 @@
 *    DESCRIPTION:     Wrapper class for Box2D's b2World
 ************************************************************************/
 
-#ifndef __physics_world_2d_h__
-#define __physics_world_2d_h__
+#pragma once
 
 // Game lib dependencies
 #include <Box2D/Box2D.h>
@@ -124,5 +123,3 @@ private:
     std::tuple<std::string, std::string> m_deleteFixtureTuple;
     std::tuple<std::string, std::string> m_deleteJointTuple;
 };
-
-#endif

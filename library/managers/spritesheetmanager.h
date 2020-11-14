@@ -6,8 +6,7 @@
 *                     so that the same large complex xml is not reloaded.
 ************************************************************************/
 
-#ifndef __sprite_sheet_manager_h__
-#define __sprite_sheet_manager_h__
+#pragma once
 
 // Game lib dependencies
 #include <sprite/spritesheet.h>
@@ -46,5 +45,3 @@ private:
     // Map of sprite sheet data
     std::map< const std::string, CSpriteSheet > m_spriteSheetMap;
 };
-
-#endif
