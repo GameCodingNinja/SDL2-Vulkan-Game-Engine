@@ -46,7 +46,7 @@ CGame::CGame() :
     CCameraMgr::Instance().load( "data/objects/camera.lst" );
 
     if( CSettings::Instance().isDebugMode() )
-        CStatCounter::Instance().connect( boost::bind(&CGame::statStringCallBack, this, _1) );
+        CStatCounter::Instance().connect( std::bind(&CGame::statStringCallBack, this, std::placeholders::_1) );
 }
 
 

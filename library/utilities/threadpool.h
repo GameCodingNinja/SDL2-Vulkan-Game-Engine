@@ -90,6 +90,9 @@ public:
     // Get the mutex
     std::mutex & getMutex();
 
+    // Get the thread count
+    size_t threadCount();
+
 private:
     
     // Constructor
@@ -101,7 +104,7 @@ private:
 private:
     
     // need to keep track of threads so we can join them
-    std::vector< std::thread > m_threadVec;
+    std::vector< std::thread> m_threadVec;
     
     // the task queue
     std::queue< std::function<void()> > m_tasks;

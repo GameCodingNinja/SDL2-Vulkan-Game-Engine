@@ -19,7 +19,6 @@ CThreadPool::CThreadPool() :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -27,7 +26,6 @@ CThreadPool::~CThreadPool()
 {
     stop();
 }
-
 
 /************************************************************************
 *    DESC:  Thread pool init
@@ -89,7 +87,6 @@ void CThreadPool::init( const int minThreads, const int maxThreads )
     #endif
 }
 
-
 /************************************************************************
 *    DESC:  Wait for the jobs to complete
 *           NOTE: Only works when the futures are stored internally
@@ -128,7 +125,6 @@ void CThreadPool::unlock()
     #endif
 }
 
-
 /************************************************************************
 *    DESC:  Stop the thread
 ************************************************************************/
@@ -154,11 +150,18 @@ void CThreadPool::stop()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get the mutex
 ************************************************************************/
 std::mutex & CThreadPool::getMutex()
 {
     return m_mutex;
+}
+
+/************************************************************************
+*    DESC:  Get the thread count
+************************************************************************/
+size_t CThreadPool::threadCount()
+{
+    return m_threadVec.size();
 }

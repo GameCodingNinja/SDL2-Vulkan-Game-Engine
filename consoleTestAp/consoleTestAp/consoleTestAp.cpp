@@ -2,6 +2,98 @@
 //
 
 #include <iostream>
+#include <vector>
+#include <chrono>
+#include <algorithm>
+#include <atomic> 
+#include <utilities/threadpool.h>
+
+
+typedef uint64_t calcType;
+//typedef __uint128_t calcType;
+
+calcType OVERFLOW_MASK = 0xC000000000000000; // 64-bit
+//calcType OVERFLOW_MASK = 0xC0000000000000000000000000000000; // 128-bit
+
+std::recursive_mutex mutex;
+
+std::atomic<bool> overflowed( false );
+
+std::atomic<calcType> atomic_value(1);
+
+void Calc()
+{
+    calcType test;
+    calcType overflow;
+    calcType preTestValue;
+    calcType MASK = OVERFLOW_MASK;
+    int counter;
+
+    do
+    {
+        preTestValue = test = ++atomic_value;
+        counter = 0;
+
+        do
+        {
+            if ((test & 1) == 0) // faster
+                test >>= 1;
+            //if ((test % 2) == 0)
+                //test /= 2;
+            else
+            {
+                overflow = test;
+                test = (test * 3) + 1;
+
+                // Test for overflow
+                if( (test & MASK) && (((test - 1) / 3) != overflow) )
+                {
+                    std::scoped_lock<std::recursive_mutex> lock(mutex);
+                    std::cout << "Initial Value: " << preTestValue << "; Value to overflow: " << overflow << "; Cycle Count: " << counter << std::endl;
+
+                    overflowed = true;
+                    test = 0;
+                }
+            }
+
+            ++counter;
+        }
+        while (test > 1);
+    }
+    while (test > 0);
+}
+
+int main()
+{
+    std::vector< std::future<void> > jobVec;
+
+    std::cout << "Test started..." << std::endl;
+
+    // Allocate max threads
+    CThreadPool::Instance().init( 4, 0 );
+
+    for( size_t i = 0; i < CThreadPool::Instance().threadCount(); i++ )
+        CThreadPool::Instance().post(Calc);
+
+    do
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+
+        std::scoped_lock<std::recursive_mutex> lock(mutex);
+        std::cout << "Value Reached: " << atomic_value << std::endl;
+    }
+    while (!overflowed);
+    
+    std::cout << "Test started..." << std::endl;
+    
+    CThreadPool::Instance().stop();
+}
+
+
+
+
+
+/*#include <iostream>
 #include <string>
 #include <map>
 #include <boost/crc.hpp> 
@@ -21,7 +113,7 @@ int main()
 
 
     return 0;
-}
+}*/
 	
 /*#include <iostream>
 #include <chrono>
