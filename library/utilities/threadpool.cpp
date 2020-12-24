@@ -46,21 +46,47 @@ void CThreadPool::init( const int minThreads, const int maxThreads )
     // Get the number of hardware cores. May return 0 if can't determine
     const int maxCores = std::thread::hardware_concurrency();
 
+    std::string threadCountType = "Default";
+    // Allow for half of all the threads
+    if( maxThreads == -2 )
+    {
+        threadCountType = "Half";
+        threads = maxCores / 2;
+        if( threads < 2 )
+            threads = 2;
+    }
+    // Allow for the maximum number of threads minus 1
+    else if( maxThreads == -1 )
+    {
+        threadCountType = "Max minus 1";
+        threads = maxCores-1;
+        if( threads < 2 )
+            threads = 2;
+    }
     // Allow for the maximum number of threads
-    if( ((maxThreads == 0) || (maxThreads > maxCores)) && (threads < maxCores) )
+    else if( ((maxThreads == 0) || (maxThreads >= maxCores)) && (minThreads <= maxCores) )
+    {
+        threadCountType = "Max";
         threads = maxCores;
-
+        if( threads == 0 )
+            threads = 2;
+    }
     // Use defined thread count
-    else if( (maxThreads > threads) && (maxThreads <= maxCores) )
+    else if( (maxThreads > minThreads) && (maxThreads <= maxCores) )
+    {
+        threadCountType = "Range";
         threads = maxThreads;
+    }
 
     NGenFunc::PostDebugMsg( 
         boost::str( boost::format(
             "Thread Info...\n"
+            "  Thread count type: %s\n"
             "  Max cores: %u\n"
             "  Min threads: %u\n"
             "  Max threads: %u\n"
             "  Threads in pool: %u\n" )
+            % threadCountType
             % maxCores
             % minThreads
             % maxThreads
@@ -104,23 +130,6 @@ void CThreadPool::init( const int minThreads, const int maxThreads )
 }
 
 /************************************************************************
-*    DESC:  Wait for the jobs to complete
-*           NOTE: Only works when the futures are stored internally
-************************************************************************/
-void CThreadPool::wait()
-{
-    #if !defined(__thread_disable__)
-    // Wait for all the jobs to finish
-    // get() is a blocking call, waiting for each job to return
-    for( auto && iter : m_jobVec ) iter.get();
-
-    // Clear the vector because all jobs are done
-    m_jobVec.clear();
-    #endif
-}
-
-
-/************************************************************************
 *    DESC:  Lock mutex for Synchronization
 ************************************************************************/
 void CThreadPool::lock()
@@ -129,7 +138,6 @@ void CThreadPool::lock()
     m_mutex.lock();
     #endif
 }
-
 
 /************************************************************************
 *    DESC:  Unlock mutex for Synchronization
@@ -160,7 +168,6 @@ void CThreadPool::stop()
             iter.join();
         #endif
 
-        m_jobVec.clear();
         m_tasks = std::queue< std::function<void()> >();
         m_threadVec.clear();
     }

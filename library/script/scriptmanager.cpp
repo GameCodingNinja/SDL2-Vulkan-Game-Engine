@@ -13,13 +13,11 @@
 #include <utilities/genfunc.h>
 #include <utilities/statcounter.h>
 #include <utilities/settings.h>
+#include <utilities/threadpool.h>
 #include <script/bytecodestream.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
-
-// Standard lib dependencies
-#include <thread>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
@@ -469,10 +467,18 @@ void CScriptMgr::spawnByThread( const std::string & funcName, const std::string 
         // and requires the use of a cleanup function call asThreadCleanup
         pContex = getContext();
         prepare( grp, funcName, pContex );
-        
-        // Execute the script from thread
-        std::thread load( &CScriptMgr::executeFromThread, this, pContex );
-        load.detach();
+
+        // Use the thread pool if active.
+        if( CThreadPool::Instance().threadCount() )
+        {
+            CThreadPool::Instance().post( &CScriptMgr::executeFromThread, this, pContex );
+        }
+        else
+        {
+            // Execute the script from thread
+            std::thread load( &CScriptMgr::executeFromThread, this, pContex );
+            load.detach();
+        }
     }
 }
 

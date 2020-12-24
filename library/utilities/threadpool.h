@@ -63,13 +63,9 @@ public:
         return threadPool;
     }
 
-    // Post Lambda to the work queue and return future
+    // Post to the work queue and return future
     template<typename F, typename... Args>
-    auto postRetFut(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>;
-    
-    // Post Lambda to the work queue and store future internally
-    template<typename F, typename... Args>
-    void post(F&& f, Args&&... args);
+    auto post(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>;
     
     // Thread pool init
     void init( const int minThreads, const int maxThreads );
@@ -108,9 +104,6 @@ private:
     
     // the task queue
     std::queue< std::function<void()> > m_tasks;
-    
-    // Store future to wait for end of job que
-    std::vector< std::future<void> > m_jobVec;
 
     // synchronization
     std::mutex m_queue_mutex;
@@ -121,12 +114,11 @@ private:
     std::atomic_bool m_stop;
 };
 
-
 /************************************************************************
-*    desc:  Post Lambda to the work queue and return future
+*    desc:  Post to the work queue and return future
 ************************************************************************/
 template<typename F, typename... Args>
-auto CThreadPool::postRetFut(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>
+auto CThreadPool::post(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>
 {
     using return_type = std::invoke_result_t<F, Args...>;
     
@@ -154,32 +146,4 @@ auto CThreadPool::postRetFut(F&& f, Args&&... args) -> std::future<std::invoke_r
     #endif
 
     return res;
-}
-
-
-/************************************************************************
-*    desc:  Post Lambda to the work queue and store future internally
-************************************************************************/
-template<typename F, typename... Args>
-void CThreadPool::post(F&& f, Args&&... args)
-{
-    #if defined(__thread_disable__)
-    f();
-    #else
-    auto task = std::make_shared < std::packaged_task <void()> >(
-            std::bind(std::forward<F>(f), std::forward<Args>(args)...) );
-
-    m_jobVec.emplace_back( task->get_future() );
-    {
-        std::unique_lock<std::mutex> lock( m_queue_mutex );
-
-        // don't allow enqueueing after stopping the pool
-        if( m_stop )
-            throw std::runtime_error("enqueue on stopped ThreadPool");
-
-        m_tasks.emplace( [task]{ (*task)(); } );
-    }
-    
-    m_condition.notify_one();
-    #endif
 }

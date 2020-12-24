@@ -194,14 +194,16 @@ void CGame::pollEvents()
 ****************************************************************************/
 void CGame::recordCommandBuffer( uint32_t cmdBufIndex )
 {
+    std::vector< std::future<void> > jobs;
+
     auto & strategyVec = CStrategyMgr::Instance().getStrategyVec();
     for( auto iter : strategyVec )
-        CThreadPool::Instance().post(
-            std::bind(&CStrategy::recordCommandBuffer, iter, std::placeholders::_1), cmdBufIndex);
+        jobs.emplace_back( CThreadPool::Instance().post( &CStrategy::recordCommandBuffer, iter, cmdBufIndex ) );
 
-    CThreadPool::Instance().post( std::bind(&CMenuMgr::recordCommandBuffer, &CMenuMgr::Instance(), std::placeholders::_1), cmdBufIndex);
+    jobs.emplace_back( CThreadPool::Instance().post( &CMenuMgr::recordCommandBuffer, &CMenuMgr::Instance(), cmdBufIndex ) );
 
-    CThreadPool::Instance().wait();
+    // Wait for all the jobs to finish
+    for( auto && iter : jobs ) iter.get();
 
     CStrategyMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
     CMenuMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );

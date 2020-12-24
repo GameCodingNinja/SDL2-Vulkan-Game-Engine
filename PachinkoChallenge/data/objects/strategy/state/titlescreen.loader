@@ -1,7 +1,7 @@
 <loader>
 
     <!-- One off Strategy node creation. Bypasses the need to create a strategy file -->
-    <strategy name="_title_background_" cmdBufPool="|title_background|">
+    <strategy name="_title_background_">
     
         <node group="(title)" name="background">
             <sprite>
@@ -12,7 +12,7 @@
     </strategy>
 
     <!-- One off Strategy node creation. Bypasses the need to create a strategy file -->
-    <strategy name="_title_actor_" defaultGroup="(title)" camera="title_anim_camera" cmdBufPool="|title_actor|">
+    <strategy name="_title_actor_" defaultGroup="(title)" camera="title_anim_camera">
 
         <node name="circle_blue"/>
         <node name="circle_green"/>
@@ -27,7 +27,7 @@
     </strategy>
 
     <!-- One off Strategy node creation. Bypasses the need to create a strategy file -->
-    <strategy name="_title_text_" cmdBufPool="|title_text|">
+    <strategy name="_title_text_">
 
         <node group="(title)" name="title">
             <sprite>

@@ -7,12 +7,21 @@
             "options": {
                 "cwd": "${workspaceRoot}/build"
             },
-            "command": "make -j -l --no-print-directory",
+            "command": "make --no-print-directory",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Multi-core Build",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "make -j -l --no-print-directory",
+            "problemMatcher": []
         },
         {
             "label": "CMake Debug",
