@@ -68,18 +68,17 @@ namespace NStrategyloader
                                 pStrategy->setCamera( cameraId );
                         }
 
-                        // Create the command buffer if defined
+                        // Create the command pool
+                        std::string cmdBufPoolName;
                         if( startegyXML.isAttributeSet("cmdBufPool") )
-                        {
-                            const std::string cmdBufPool = startegyXML.getAttribute( "cmdBufPool" );
+                            cmdBufPoolName = startegyXML.getAttribute( "cmdBufPool" );
 
-                            if( !cmdBufPool.empty() )
-                            {
-                                auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPool );
-                                pStrategy->setCommandBuffers( cmdBuf );
-                            }
-                        }
-
+                        if( cmdBufPoolName.empty() )
+                            cmdBufPoolName = strategyName;
+                        
+                        auto cmdBuf = CDevice::Instance().createSecondaryCommandBuffers( cmdBufPoolName );
+                        pStrategy->setCommandBuffers( cmdBuf );
+                        
                         // Load the nodes for the startegy
                         for( int node = 0; node < startegyXML.nChildNode(); ++node )
                         {

@@ -385,6 +385,14 @@ void CStrategy::recordCommandBuffer( uint32_t index )
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
+/***************************************************************************
+*    DESC:  Update the secondary command buffer vector
+****************************************************************************/
+void CStrategy::updateSecondaryCmdBuf( uint32_t index )
+{
+    CDevice::Instance().updateSecondaryCmdBuf( m_commandBufVec.at(index) );
+}
+
 /************************************************************************
 *    DESC:  Get the pointer to the node
 ************************************************************************/

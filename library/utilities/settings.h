@@ -126,6 +126,12 @@ public:
     // Get the chunk size.
     int getChunkSize() const;
 
+    // Get the minimum thread count
+    int getMinThreadCount() const;
+    
+    // Get the maximum thread count
+    int getMaxThreadCount() const;
+
     // Get the sector size
     int getSectorSize() const;
 
@@ -235,6 +241,12 @@ private:
     
     // Do we clear the target buffer
     bool m_clearTargetBuffer;
+
+    // Minimum thread count
+    int m_minThreadCount;
+    
+    // Max thread count. Value of zero means use max hardware threads to cores
+    int m_maxThreadCount;
 
     // the sector size
     float m_sectorSize;

@@ -1,10 +1,10 @@
 <loader>
     <!-- This is the strategy creation order -->
-    <strategy name="_level_multi_" cmdBufPool="(level_1)" camera="level_camera">
+    <strategy name="_level_multi_" camera="level_camera">
         <node name="strawberry" instance="strawberry" active="false"/>
     </strategy>
-    <strategy name="_level_ball_" cmdBufPool="(level_1)" camera="level_camera"/>
-    <strategy name="_level_ui_" defaultGroup="(level_1)" cmdBufPool="(level_1)">
+    <strategy name="_level_ball_" camera="level_camera"/>
+    <strategy name="_level_ui_" defaultGroup="(level_1)">
         <node name="uiBackground" instance="uiBackground"/>
         <node name="uiPlayerWinMeter" instance="uiPlayerWinMeter"/>
         <node name="uiPlayerStrawberry" instance="uiPlayerStrawberry"/>

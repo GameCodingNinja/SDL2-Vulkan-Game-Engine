@@ -217,6 +217,15 @@ void CStrategyMgr::recordCommandBuffer( uint32_t index )
         iter->recordCommandBuffer( index );
 }
 
+/***************************************************************************
+*    DESC:  Update the secondary command buffer vector
+****************************************************************************/
+void CStrategyMgr::updateSecondaryCmdBuf( uint32_t index )
+{
+    for( auto iter : m_pStrategyVec )
+        iter->updateSecondaryCmdBuf( index );
+}
+
 
 /************************************************************************
 *    DESC:  Get the pointer to the strategy

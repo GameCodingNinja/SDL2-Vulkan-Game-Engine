@@ -58,7 +58,7 @@ public:
     void destroy();
 
     // Update the command buffer vector
-    void updateCommandBuffer( VkCommandBuffer cmdBuf );
+    void updateSecondaryCmdBuf( VkCommandBuffer cmdBuf );
 
     // Render the frame
     void render();

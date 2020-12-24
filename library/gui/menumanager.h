@@ -95,6 +95,9 @@ public:
     // Record the command buffer for all the sprite objects that are to be rendered
     void recordCommandBuffer( uint32_t index );
 
+    // Update the secondary command buffer vector
+    void updateSecondaryCmdBuf( uint32_t index );
+
     // Get reference to the menu in question
     CMenu & getMenu( const std::string & nameStr );
     

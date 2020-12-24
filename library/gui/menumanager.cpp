@@ -885,6 +885,14 @@ void CMenuMgr::recordCommandBuffer( uint32_t index )
     }
 }
 
+/***************************************************************************
+*    DESC:  Update the secondary command buffer vector
+****************************************************************************/
+void CMenuMgr::updateSecondaryCmdBuf( uint32_t index )
+{
+    CDevice::Instance().updateSecondaryCmdBuf( m_commandBufVec.at(index) );
+}
+
 /************************************************************************
 *    DESC:  Is this menu system active?
 ************************************************************************/

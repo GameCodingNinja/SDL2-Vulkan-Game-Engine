@@ -10,6 +10,10 @@
 
 // Game lib dependencies
 #include <utilities/settings.h>
+#include <utilities/genfunc.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -49,6 +53,18 @@ void CThreadPool::init( const int minThreads, const int maxThreads )
     // Use defined thread count
     else if( (maxThreads > threads) && (maxThreads <= maxCores) )
         threads = maxThreads;
+
+    NGenFunc::PostDebugMsg( 
+        boost::str( boost::format(
+            "Thread Info...\n"
+            "  Max cores: %u\n"
+            "  Min threads: %u\n"
+            "  Max threads: %u\n"
+            "  Threads in pool: %u\n" )
+            % maxCores
+            % minThreads
+            % maxThreads
+            % threads ));
 
     m_threadVec.reserve( threads );
 

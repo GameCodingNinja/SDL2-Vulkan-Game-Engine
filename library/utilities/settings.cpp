@@ -49,6 +49,8 @@ CSettings::CSettings() :
     m_chunksize(1024),
     m_activateDepthBuffer(false),
     m_activateStencilBuffer(false),
+    m_minThreadCount(2),
+    m_maxThreadCount(2),
     m_sectorSize(512),
     m_sectorSizeHalf(256),
     m_anisotropicLevel(ETextFilter::ANISOTROPIC_0X),
@@ -254,6 +256,17 @@ void CSettings::loadXML()
                 m_gamepadEnabled = true;
                 m_gamepadStickDeadZone = std::atoi(joypadNode.getAttribute("stickDeadZone"));
             }
+
+            const XMLNode threadNode = deviceNode.getChildNode("threads");
+            if( !threadNode.isEmpty() )
+            {
+                if( threadNode.isAttributeSet("minThreadCount") )
+                    m_minThreadCount = std::atoi(threadNode.getAttribute("minThreadCount"));
+
+                if( threadNode.isAttributeSet("maxThreadCount") )
+                    m_maxThreadCount = std::atoi(threadNode.getAttribute("maxThreadCount"));
+            }
+
 
             // Get the attribute from the "depthStencilBuffer" node
             const XMLNode depthStencilBufferNode = deviceNode.getChildNode("depthStencilBuffer");
@@ -678,6 +691,26 @@ int CSettings::getChunkSize() const
 {
     return m_chunksize;
 }
+
+
+/************************************************************************
+*    DESC:  Get the minimum thread count
+************************************************************************/
+int CSettings::getMinThreadCount() const
+{
+    return m_minThreadCount;
+}
+
+
+/************************************************************************
+*    DESC:  Get the maximum thread count
+*           Value of zero means use max hardware threads to no of cores
+************************************************************************/
+int CSettings::getMaxThreadCount() const
+{
+    return m_maxThreadCount;
+}
+
 
 
 /************************************************************************

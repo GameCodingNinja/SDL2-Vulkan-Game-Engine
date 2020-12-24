@@ -14,7 +14,9 @@
 #include <utilities/statcounter.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/genfunc.h>
+#include <utilities/threadpool.h>
 #include <strategy/strategymanager.h>
+#include <strategy/strategy.h>
 #include <managers/actionmanager.h>
 #include <managers/cameramanager.h>
 #include <gui/menumanager.h>
@@ -67,6 +69,9 @@ CGame::CGame()
     
     if( CSettings::Instance().isDebugMode() )
         CStatCounter::Instance().connect( std::bind(&CGame::statStringCallBack, this, std::placeholders::_1) );
+
+    // Allocate max threads
+    CThreadPool::Instance().init( CSettings::Instance().getMinThreadCount(), CSettings::Instance().getMaxThreadCount() );
 }
 
 
@@ -189,8 +194,17 @@ void CGame::pollEvents()
 ****************************************************************************/
 void CGame::recordCommandBuffer( uint32_t cmdBufIndex )
 {
-    CStrategyMgr::Instance().recordCommandBuffer( cmdBufIndex );
-    CMenuMgr::Instance().recordCommandBuffer( cmdBufIndex );
+    auto & strategyVec = CStrategyMgr::Instance().getStrategyVec();
+    for( auto iter : strategyVec )
+        CThreadPool::Instance().post(
+            std::bind(&CStrategy::recordCommandBuffer, iter, std::placeholders::_1), cmdBufIndex);
+
+    CThreadPool::Instance().post( std::bind(&CMenuMgr::recordCommandBuffer, &CMenuMgr::Instance(), std::placeholders::_1), cmdBufIndex);
+
+    CThreadPool::Instance().wait();
+
+    CStrategyMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
+    CMenuMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
 }
 
 

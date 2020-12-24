@@ -88,6 +88,9 @@ public:
     // Clear all nodes
     void clear();
 
+    // Update the secondary command buffer vector
+    void updateSecondaryCmdBuf( uint32_t index );
+
 protected:
 
     // Get the node data by name

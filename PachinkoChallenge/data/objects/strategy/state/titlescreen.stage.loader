@@ -1,6 +1,6 @@
 <loader>
 
-    <strategy name="_title_stage_" defaultName="peg" defaultGroup="(title)" camera="title_anim_camera" cmdBufPool="(title)">
+    <strategy name="_title_stage_" defaultName="peg" defaultGroup="(title)" camera="title_anim_camera" cmdBufPool="!title_stage!">
 
         <node>
             <sprite>

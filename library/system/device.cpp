@@ -242,7 +242,7 @@ void CDevice::destroySwapChain()
 /***************************************************************************
 *   DESC:  Update the command buffer vector
 ****************************************************************************/
-void CDevice::updateCommandBuffer( VkCommandBuffer cmdBuf )
+void CDevice::updateSecondaryCmdBuf( VkCommandBuffer cmdBuf )
 {
     m_secondaryCommandBufVec.push_back( cmdBuf );
 }
@@ -1193,9 +1193,6 @@ void CDevice::endCommandBuffer( VkCommandBuffer cmdBuffer )
 {
     // Stop recording the command buffer
     vkEndCommandBuffer( cmdBuffer );
-
-    // Pass the command buffer to the queue
-    updateCommandBuffer( cmdBuffer );
 }
 
 
