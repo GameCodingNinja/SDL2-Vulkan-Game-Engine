@@ -20,6 +20,7 @@ final class CTitleScreenState : CCommonState
     //
     void destroy() override
     {
+        SoundMgr.stopAllSound();
         Device.deleteCommandPoolGroup( "(title)" );
         
         StrategyMgr.deleteStrategy( "_title_" );

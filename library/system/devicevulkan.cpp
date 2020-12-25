@@ -40,7 +40,6 @@ VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayerCallback(
     return VK_FALSE;
 }
 
-
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
@@ -98,14 +97,12 @@ CDeviceVulkan::CDeviceVulkan() :
         {VK_ERROR_NOT_PERMITTED_EXT,        "Vulkan Not Permitted Ext!"} };
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CDeviceVulkan::~CDeviceVulkan()
 {
 }
-
 
 /***************************************************************************
 *   DESC:  Create Vulkan instance
@@ -156,7 +153,6 @@ void CDeviceVulkan::create(
     // Create the primary command buffers
     createPrimaryCommandBuffers();
 }
-
 
 /***************************************************************************
 *   DESC:  Destroy the window and Vulkan instance
@@ -222,7 +218,6 @@ void CDeviceVulkan::destroy()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Destroy the swap chain
 ****************************************************************************/
@@ -274,7 +269,6 @@ void CDeviceVulkan::destroySwapChain()
         }
     }
 }
-
 
 /***************************************************************************
 *   DESC:  Create the vulkan instance
@@ -341,7 +335,6 @@ void CDeviceVulkan::createVulkanInstance(
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Select a physical device (GPU)
 *          NOTE: This involves picking the GPU with the graphics bit
@@ -405,7 +398,6 @@ void CDeviceVulkan::selectPhysicalDevice()
     
     printDebugPhyDev();
 }
-
 
 /***************************************************************************
 *   DESC:  Create the logical device
@@ -540,7 +532,6 @@ void CDeviceVulkan::createLogicalDevice(
 
     printDebug( devQueueCreateInfoVec );
 }
-
 
 /***************************************************************************
 *   DESC:  Setup the swap chain to be created
@@ -699,7 +690,6 @@ void CDeviceVulkan::setupSwapChain()
     printDebug( m_swapchainInfo );
 }
 
-
 /***************************************************************************
 *   DESC:  Create the swap chain
 ****************************************************************************/
@@ -735,7 +725,6 @@ void CDeviceVulkan::createSwapChain()
     for( uint32_t i = 0; i < swapChainImageCount; ++i )
         m_swapChainImageViewVec.push_back( createImageView( swapChainImage[i], m_swapchainInfo.imageFormat, 1, VK_IMAGE_ASPECT_COLOR_BIT ) );
 }
-
 
 /***************************************************************************
 *   DESC:  Create the render pass
@@ -808,7 +797,6 @@ void CDeviceVulkan::createRenderPass()
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create render pass! %s") % getError(vkResult) ) );
 }
 
-
 /***************************************************************************
 *   DESC:  Create the primary command pool
 ****************************************************************************/
@@ -817,7 +805,6 @@ void CDeviceVulkan::createPrimaryCommandPool()
     m_primaryCmdPool = createCommandPool( m_graphicsQueueFamilyIndex );
     m_transferCmdPool = createCommandPool( m_transferQueueFamilyIndex );
 }
-
 
 /***************************************************************************
 *   DESC:  Create depth resources
@@ -853,7 +840,6 @@ void CDeviceVulkan::createDepthResources()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Create the frame buffer
 ****************************************************************************/
@@ -884,7 +870,6 @@ void CDeviceVulkan::createFrameBuffer()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Create the Semaphores and fences
 ****************************************************************************/
@@ -911,7 +896,6 @@ void CDeviceVulkan::createSyncObjects()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Create the command buffers
 ****************************************************************************/
@@ -929,7 +913,6 @@ void CDeviceVulkan::createPrimaryCommandBuffers()
     if( (vkResult = vkAllocateCommandBuffers( m_logicalDevice, &commandBufferAllocateInfo, m_primaryCmdBufVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not allocate command buffers! %s") % getError(vkResult) ) );
 }
-
 
 /***************************************************************************
 *   DESC:  Create the command buffers
@@ -950,7 +933,6 @@ std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCom
 
     return cmdBufVec;
 }
-
 
 /***************************************************************************
 *   DESC:  Create the descriptor set layout
@@ -1005,7 +987,6 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
     return descriptorSetLayout;
 }
 
-
 /***************************************************************************
 *   DESC:  Create the pipeline layout
 ****************************************************************************/
@@ -1023,7 +1004,6 @@ VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout desc
 
     return pipelineLayout;
 }
-
 
 /***************************************************************************
 *   DESC:  Create the pipeline
@@ -1178,7 +1158,6 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError(vkResult) ) );
 }
 
-
 /***************************************************************************
 *   DESC:  Create the shader
 ****************************************************************************/
@@ -1198,7 +1177,6 @@ VkShaderModule CDeviceVulkan::createShader( const std::string & filePath )
 
     return shaderModule;
 }
-
 
 /***************************************************************************
 *   DESC:  Recreate swap chain
@@ -1230,7 +1208,6 @@ void CDeviceVulkan::recreateSwapChain()
     createFrameBuffer();
 }
 
-
 /***************************************************************************
 *   DESC:  Find the GPU memory type
 ****************************************************************************/
@@ -1249,7 +1226,6 @@ uint32_t CDeviceVulkan::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlag
 
     throw NExcept::CCriticalException( "Vulkan Error!", "Failed to find suitable memory type!" );
 }
-
 
 /***************************************************************************
 *   DESC:  Check if the device extension is supported
@@ -1272,7 +1248,6 @@ bool CDeviceVulkan::isDeviceExtension( VkPhysicalDevice physicalDevice, const ch
 
     return false;
 }
-
 
 /***************************************************************************
 *   DESC:  get the queue family present index and decrement the queue count
@@ -1304,7 +1279,6 @@ uint32_t CDeviceVulkan::getPresentQueueFamilyIndex()
     return UINT32_MAX;
 }
 
-
 /***************************************************************************
 *   DESC:  Get the queue family index
 ****************************************************************************/
@@ -1327,7 +1301,6 @@ uint32_t CDeviceVulkan::getQueueFamilyIndex( CPhysicalDevice & phyDev, uint32_t 
     return UINT32_MAX;
 }
 
-
 /***************************************************************************
 *   DESC:  Find supported format
 ****************************************************************************/
@@ -1347,7 +1320,6 @@ VkFormat CDeviceVulkan::findSupportedFormat( const std::vector<VkFormat> & candi
 
     return VK_FORMAT_UNDEFINED;
 }
-
 
 /***************************************************************************
 *   DESC:  Find the depth format
@@ -1370,7 +1342,6 @@ VkFormat CDeviceVulkan::findDepthFormat()
 
     return format;
 }
-
 
 /***************************************************************************
 *   DESC:  Create image
@@ -1420,7 +1391,6 @@ void CDeviceVulkan::createImage(
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not bind image memory! %s") % getError(vkResult) ) );
 }
 
-
 /***************************************************************************
 *   DESC:  Create a buffer
 ****************************************************************************/
@@ -1456,7 +1426,6 @@ void CDeviceVulkan::createBuffer(
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Could not bind buffer memory! %s") % getError(vkResult) ) );
 }
 
-
 /***************************************************************************
 *   DESC:  Copy a buffer
 ****************************************************************************/
@@ -1470,7 +1439,6 @@ void CDeviceVulkan::copyBuffer( VkBuffer srcBuffer, VkBuffer dstBuffer, VkDevice
 
     endSingleTimeCommands( commandBuffer );
 }
-
 
 /***************************************************************************
 *   DESC:  Find the queue family index
@@ -1509,7 +1477,6 @@ void CDeviceVulkan::endSingleTimeCommands( VkCommandBuffer commandBuffer )
 
     vkFreeCommandBuffers( m_logicalDevice, m_transferCmdPool, 1, &commandBuffer);
 }
-
 
 /***************************************************************************
 *   DESC:  Transition image layout
@@ -1586,7 +1553,6 @@ void CDeviceVulkan::transitionImageLayout( VkImage image, VkFormat format, VkIma
     endSingleTimeCommands( commandBuffer );
 }
 
-
 /***************************************************************************
 *   DESC:  Copy a buffer to an image
 ****************************************************************************/
@@ -1613,7 +1579,6 @@ void CDeviceVulkan::copyBufferToImage( VkBuffer buffer, VkImage image, uint32_t 
     endSingleTimeCommands( commandBuffer );
 }
 
-
 /***************************************************************************
 *   DESC:  Create the command pool
 ****************************************************************************/
@@ -1631,7 +1596,6 @@ VkCommandPool CDeviceVulkan::createCommandPool( uint32_t queueFamilyIndex )
 
     return commandPool;
 }
-
 
 /***************************************************************************
 *   DESC:  Create texture
@@ -1706,7 +1670,6 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
     // Create the texture sampler
     texture.textureSampler = createTextureSampler( texture.mipLevels );
 }
-
 
 /***************************************************************************
 *   DESC:  Generate Mipmaps
@@ -1798,7 +1761,6 @@ void CDeviceVulkan::generateMipmaps( VkImage image, VkFormat imageFormat, int32_
     endSingleTimeCommands(commandBuffer);
 }
 
-
 /***************************************************************************
 *   DESC:  Create texture sampler
 ****************************************************************************/
@@ -1833,7 +1795,6 @@ VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
     return textureSampler;
 }
 
-
 /***************************************************************************
 *   DESC:  Create the image view
 ****************************************************************************/
@@ -1861,7 +1822,6 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 
     return imageView;
 }
-
 
 /***************************************************************************
 *   DESC:  Create descriptor pool
@@ -1914,7 +1874,6 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
     return descriptorPool;
 }
 
-
 /***************************************************************************
 *   DESC:  Allocate the descriptor sets
 ****************************************************************************/
@@ -1938,7 +1897,6 @@ std::vector<VkDescriptorSet> CDeviceVulkan::allocateDescriptorSetVec(
 
     return descriptorSetVec;
 }
-
 
 /***************************************************************************
 *   DESC:  update descriptor sets
@@ -2015,7 +1973,6 @@ void CDeviceVulkan::updateDescriptorSetVec(
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Create the uniform buffer Vec for ubo buffer writes
 ****************************************************************************/
@@ -2034,7 +1991,6 @@ std::vector<CMemoryBuffer> CDeviceVulkan::createUniformBufferVec( VkDeviceSize s
     return uniformBufVec;
 }
 
-
 /***************************************************************************
 *   DESC:  Get Vulkan error
 ****************************************************************************/
@@ -2048,7 +2004,6 @@ const char * CDeviceVulkan::getError( VkResult result )
 
     return "Vulkan Unknown Error";
 }
-
 
 /***************************************************************************
 *   DESC:  Get the GPU type
@@ -2091,7 +2046,6 @@ void CDeviceVulkan::printDebug( const VkApplicationInfo & appInfo )
             % appInfo.engineVersion
             % appInfo.apiVersion ));
 }
-
 
 void CDeviceVulkan::printDebug( const CPhysicalDevice & phyDev, uint32_t index )
 {

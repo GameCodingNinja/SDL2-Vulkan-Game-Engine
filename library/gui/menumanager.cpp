@@ -890,7 +890,8 @@ void CMenuMgr::recordCommandBuffer( uint32_t index )
 ****************************************************************************/
 void CMenuMgr::updateSecondaryCmdBuf( uint32_t index )
 {
-    CDevice::Instance().updateSecondaryCmdBuf( m_commandBufVec.at(index) );
+    if( m_active && !m_commandBufVec.empty() )
+        CDevice::Instance().updateSecondaryCmdBuf( m_commandBufVec.at(index) );
 }
 
 /************************************************************************

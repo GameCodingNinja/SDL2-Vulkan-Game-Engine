@@ -23,9 +23,9 @@
 #include <managers/actionmanager.h>
 #include <managers/cameramanager.h>
 #include <gui/menumanager.h>
+#include <sound/soundmanager.h>
 
 // Boost lib dependencies
-#include <boost/bind.hpp>
 #include <boost/format.hpp>
 
 // SDL lib dependencies
@@ -57,6 +57,9 @@ CGame::~CGame()
 {
     // Free all objects
     upGameState.reset();
+
+    // Stop all the sound
+    CSoundMgr::Instance().stopAllSound();
     
     // Free the menu assets
     CMenuMgr::Instance().clear();

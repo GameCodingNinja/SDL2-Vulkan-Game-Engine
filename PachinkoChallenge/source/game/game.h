@@ -52,7 +52,7 @@ private:
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t cmdBufIndex );
+    void recordCommandBuffer( const uint32_t cmdBufIndex );
 };
 
 int FilterEvents( void * userdata, SDL_Event * pEvent );

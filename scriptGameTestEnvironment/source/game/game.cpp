@@ -68,14 +68,12 @@ CGame::CGame()
         CStatCounter::Instance().connect( std::bind(&CGame::statStringCallBack, this, std::placeholders::_1) );
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CGame::~CGame()
 {
 }
-
 
 /***************************************************************************
 *   DESC:  Create the game Window
@@ -91,7 +89,6 @@ void CGame::create()
     // Game start init
     init();
 }
-
 
 /************************************************************************
 *    DESC:  Init the game
@@ -156,7 +153,6 @@ void CGame::registerGameFunc()
     Throw( pEngine->RegisterGlobalFunction("void PollEvents()", WRAP_MFN(CGame, pollEvents), asCALL_GENERIC, this) );
 }
 
-
 /***************************************************************************
 *   DESC:  Poll for game events
 ****************************************************************************/
@@ -176,7 +172,6 @@ void CGame::pollEvents()
     }
 }
 
-
 /***************************************************************************
 *    decs:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
@@ -185,8 +180,10 @@ void CGame::recordCommandBuffer( uint32_t cmdBufIndex )
 {
     CStrategyMgr::Instance().recordCommandBuffer( cmdBufIndex );
     CMenuMgr::Instance().recordCommandBuffer( cmdBufIndex );
-}
 
+    CStrategyMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
+    CMenuMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
+}
 
 /************************************************************************
 *    DESC:  Callback for the state string
@@ -196,7 +193,6 @@ void CGame::statStringCallBack( const std::string & statStr )
     if( !CSettings::Instance().getFullScreen() )
         SDL_SetWindowTitle( CDevice::Instance().getWindow(), statStr.c_str() );
 }
-
 
 /************************************************************************
 *    DESC:  Handle events
@@ -226,7 +222,6 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
     return false;
 }
 
-
 /***************************************************************************
 *   DESC:  Display error massage
 ****************************************************************************/
@@ -234,7 +229,6 @@ void CGame::displayErrorMsg( const std::string & title, const std::string & msg 
 {
     CDevice::Instance().displayErrorMsg( title, msg );
 }
-
 
 /***************************************************************************
 *    decs:  Filter out events we don't want

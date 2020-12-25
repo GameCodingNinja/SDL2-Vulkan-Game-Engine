@@ -113,7 +113,8 @@
             "slist": "cpp",
             "scoped_allocator": "cpp",
             "shared_mutex": "cpp",
-            "span": "cpp"
+            "span": "cpp",
+            "source_location": "cpp"
         }
 	}
 }

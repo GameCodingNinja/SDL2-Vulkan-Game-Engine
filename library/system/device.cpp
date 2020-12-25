@@ -40,14 +40,12 @@ CDevice::CDevice() :
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CDevice::~CDevice()
 {
 }
-
 
 /***************************************************************************
 *   DESC: Init the device
@@ -64,7 +62,6 @@ void CDevice::init( std::function<void(uint32_t)> callback )
     // Set the command buffer call back to be called from the game
     RecordCommandBufferCallback = callback;
 }
-
 
 /***************************************************************************
 *   DESC:  Create the window and Vulkan instance
@@ -131,7 +128,6 @@ void CDevice::create( const std::string & pipelineCfg )
     initSensors();
 }
 
-
 /***************************************************************************
 *   DESC:  Destroy the window and Vulkan instance
 ****************************************************************************/
@@ -152,7 +148,6 @@ void CDevice::destroy()
     // Quit SDL subsystems
     SDL_Quit();
 }
-
 
 /***************************************************************************
 *   DESC:  A controlled way to destroy the game created assets
@@ -218,7 +213,6 @@ void CDevice::destroyAssets()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Destroy the swap chain
 ****************************************************************************/
@@ -238,7 +232,6 @@ void CDevice::destroySwapChain()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Update the command buffer vector
 ****************************************************************************/
@@ -246,7 +239,6 @@ void CDevice::updateSecondaryCmdBuf( VkCommandBuffer cmdBuf )
 {
     m_secondaryCommandBufVec.push_back( cmdBuf );
 }
-
 
 /***************************************************************************
 *   DESC:  Record the command buffers
@@ -299,7 +291,6 @@ void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
             "Vulkan Error!",
             boost::str( boost::format("Could not record command buffer! %s") % getError(vkResult) ) );
 }
-
 
 /***************************************************************************
 *   DESC:  Render the frame
@@ -386,7 +377,6 @@ void CDevice::render()
     m_frameCounter++;
 }
 
-
 /************************************************************************
  *    DESC: Handle memory operations based on frame counter
  ************************************************************************/
@@ -410,7 +400,6 @@ void CDevice::frameCounterMemoryOperations()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Create the surface
 ****************************************************************************/
@@ -420,7 +409,6 @@ void CDevice::createSurface()
         throw NExcept::CCriticalException("Could not create Vulkan surface!", SDL_GetError() );
 }
 
-
 /************************************************************************
 *    DESC:  Create the command buffers from the pool group
 ************************************************************************/
@@ -428,7 +416,6 @@ std::vector<VkCommandBuffer> CDevice::createSecondaryCommandBuffers( const std::
 {
     return CDeviceVulkan::createSecondaryCommandBuffers( createSecondaryCommandPool( group ) );
 }
-
 
 /************************************************************************
 *    DESC:  Create the command pool group
@@ -448,7 +435,6 @@ VkCommandPool CDevice::createSecondaryCommandPool( const std::string & group )
 
     return iter->second;
 }
-
 
 /************************************************************************
 *    DESC:  Load the image from file path
@@ -481,7 +467,6 @@ CTexture & CDevice::createTexture( const std::string & group, const std::string 
     return iter->second;
 }
 
-
 /***************************************************************************
 *   DESC:  Create the uniform buffer
 ****************************************************************************/
@@ -494,7 +479,6 @@ std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( uint32_t pipelineInd
     // Create the uniform buffer
     return CDeviceVulkan::createUniformBufferVec( rDescriptorData.m_descriptorVec.front().m_ubo.uboSize );
 }
-
 
 /***************************************************************************
 *   DESC:  Create push descriptor set
@@ -567,7 +551,6 @@ void CDevice::createPushDescriptorSet(
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Get the descriptor sets
 ****************************************************************************/
@@ -629,7 +612,6 @@ CDescriptorSet * CDevice::getDescriptorSet(
     return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData );
 }
 
-
 /***************************************************************************
 *   DESC:  Allocate the descriptor pool and first sets
 ****************************************************************************/
@@ -659,7 +641,6 @@ CDescriptorSet * CDevice::allocateDescriptorPoolSet(
     return &allocIter->second.m_descriptorSetDeqVec.back().back();
 }
 
-
 /***************************************************************************
 *   DESC:  Update the descriptor set
 ****************************************************************************/
@@ -675,7 +656,6 @@ void CDevice::updateDescriptorSet(
     CDeviceVulkan::updateDescriptorSetVec( pDescriptorSet->m_descriptorVec, texture, rDescData, uniformBufVec );
 }
 
-
 /***************************************************************************
 *   DESC:  Recycle the descriptor set
 ****************************************************************************/
@@ -687,7 +667,6 @@ void CDevice::recycleDescriptorSet( CDescriptorSet * pDescriptorSet )
         pDescriptorSet->m_frameRecycleOffset = m_frameCounter + m_framebufferVec.size();
     }
 }
-
 
 /************************************************************************
 *    DESC:  Create the pipelines from config file
@@ -750,7 +729,6 @@ void CDevice::createPipelines( const std::string & filePath )
         m_descriptorDataMap.emplace( descId, descriptorData );
     }
 
-
     // Create the shaders
     const XMLNode shaderLstNode = node.getChildNode("shaderList");
 
@@ -780,7 +758,6 @@ void CDevice::createPipelines( const std::string & filePath )
         VkPipelineLayout pipelineLayout = CDeviceVulkan::createPipelineLayout( descriptorSetLayout );
         m_pipelineLayoutMap.emplace( iter.first, pipelineLayout );
     }
-
 
     // Create the pipeline list
     const XMLNode pipelineLstNode = node.getChildNode("pipelineList");
@@ -857,7 +834,6 @@ void CDevice::createPipelines( const std::string & filePath )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Recreate the pipeline
 ************************************************************************/
@@ -866,7 +842,6 @@ void CDevice::recreatePipelines()
     for( auto & iter : m_pipelineDataVec )
         CDeviceVulkan::createPipeline( iter );
 }
-
 
 /***************************************************************************
 *   DESC:  Create the shader
@@ -884,7 +859,6 @@ VkShaderModule CDevice::createShader( const std::string & filePath )
     return iter->second;
 }
 
-
 /************************************************************************
 *    DESC:  Delete group assets
 ************************************************************************/
@@ -899,7 +873,6 @@ void CDevice::deleteGroupAssets( const std::string & group )
     // Delete the model group
     deleteModelGroup( group );
 }
-
 
 /************************************************************************
 *    DESC:  Delete the texture in a group
@@ -919,7 +892,6 @@ void CDevice::deleteTextureGroup( const std::string & group )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Delete the command pool group
 ************************************************************************/
@@ -936,7 +908,6 @@ void CDevice::deleteCommandPoolGroup( const std::string & group )
         m_commandPoolMap.erase( iter );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Delete the memory buffer group
@@ -955,7 +926,6 @@ void CDevice::deleteMemoryBufferGroup( const std::string & group )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Delete the model group
 *           NOTE: No VK elements to delete here because the textures, 
@@ -969,7 +939,6 @@ void CDevice::deleteModelGroup( const std::string & group )
         m_modelMapMap.erase( mapIter );
 }
 
-
 /***************************************************************************
 *   DESC:  Enable/disable v-sync
 ****************************************************************************/
@@ -978,7 +947,6 @@ void CDevice::enableVSync( bool enable )
     //if( SDL_GL_SetSwapInterval( (enable == true) ? 1 : 0 ) < 0 )
     //    NGenFunc::PostDebugMsg( boost::str( boost::format("Warning: Unable to set VSync! SDL GL Error: %s") % SDL_GetError() ) );
 }
-
 
 /***************************************************************************
 *   DESC:  Set full screen or windowed mode
@@ -1000,7 +968,6 @@ void CDevice::setFullScreen( bool fullscreen )
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Display error message
 ****************************************************************************/
@@ -1012,7 +979,6 @@ void CDevice::displayErrorMsg( const std::string & title, const std::string & ms
     NGenFunc::PostDebugMsg( boost::str( boost::format("Error: %s, %s") % title.c_str() % msg.c_str() ) );
 }
 
-
 /***************************************************************************
 *   DESC:  Set window title
 ****************************************************************************/
@@ -1021,7 +987,6 @@ void CDevice::setWindowTitle( const std::string & title )
     if( m_pWindow )
         SDL_SetWindowTitle( m_pWindow, title.c_str() );
 }
-
 
 /***************************************************************************
 *   DESC:  Init the sensors
@@ -1038,7 +1003,6 @@ void CDevice::initSensors()
     }
 }
 
-
 /***************************************************************************
 *   DESC:  Init current gamepads plugged in at startup
 ****************************************************************************/
@@ -1052,7 +1016,6 @@ void CDevice::initStartupGamepads()
         for( int i = 0; i < SDL_NumJoysticks(); ++i )
             addGamepad( i );
 }
-
 
 /***************************************************************************
 *   DESC:  Add/Remove the game pad
@@ -1089,7 +1052,6 @@ size_t CDevice::getGamepadCount()
     return m_pGamepadMap.size();
 }
 
-
 /***************************************************************************
 *   DESC:  Get window
 ****************************************************************************/
@@ -1097,7 +1059,6 @@ SDL_Window * CDevice::getWindow()
 {
     return m_pWindow;
 }
-
 
 /***************************************************************************
 *   DESC:  Show/Hide the Window
@@ -1110,7 +1071,6 @@ void CDevice::showWindow( bool visible )
         SDL_HideWindow( m_pWindow );
 }
 
-
 /***************************************************************************
 *   DESC:  Wait for Vulkan render to finish
 ****************************************************************************/
@@ -1121,7 +1081,6 @@ void CDevice::waitForIdle()
         vkDeviceWaitIdle( m_logicalDevice );
 }
 
-
 /***************************************************************************
 *   DESC:  Get the pipeline
 ****************************************************************************/
@@ -1129,7 +1088,6 @@ const CPipelineData & CDevice::getPipelineData( int index ) const
 {
     return m_pipelineDataVec.at(index);
 }
-
 
 /***************************************************************************
 *   DESC:  Get the pipeline index
@@ -1143,7 +1101,6 @@ int CDevice::getPipelineIndex( const std::string & id )
     return iter->second;
 }
 
-
 /***************************************************************************
 *   DESC:  Get descriptor data map
 ****************************************************************************/
@@ -1151,7 +1108,6 @@ const std::map< const std::string, CDescriptorData > & CDevice::getDescriptorDat
 {
     return m_descriptorDataMap;
 }
-
 
 /***************************************************************************
 *   DESC:  Get descriptor data
@@ -1164,7 +1120,6 @@ const CDescriptorData & CDevice::getDescriptorData( const std::string & id ) con
 
     return iter->second;
 }
-
 
 /***************************************************************************
 *   DESC:  Begin the recording of the command buffer
@@ -1185,7 +1140,6 @@ void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer )
     vkBeginCommandBuffer( cmdBuffer, &cmdBeginInfo );
 }
 
-
 /***************************************************************************
 *   DESC:  End the recording of the command buffer
 ****************************************************************************/
@@ -1194,7 +1148,6 @@ void CDevice::endCommandBuffer( VkCommandBuffer cmdBuffer )
     // Stop recording the command buffer
     vkEndCommandBuffer( cmdBuffer );
 }
-
 
 /************************************************************************
 *    DESC: Get the memory buffer if it exists
@@ -1214,7 +1167,6 @@ CMemoryBuffer CDevice::getMemoryBuffer( const std::string & group, const std::st
     return mapIter->second;
 }
 
-
 /************************************************************************
 *    DESC:  Create the shared font IBO buffer
 ************************************************************************/
@@ -1233,7 +1185,6 @@ void CDevice::createSharedFontIBO( std::vector<uint16_t> & iboVec )
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get the shared font ibo buffer
 ************************************************************************/
@@ -1242,7 +1193,6 @@ CMemoryBuffer & CDevice::getSharedFontIBO()
     return m_sharedFontIbo;
 }
 
-
 /************************************************************************
 *    DESC:  Get the shared font ibo max indice count
 ************************************************************************/
@@ -1250,7 +1200,6 @@ size_t CDevice::getSharedFontIBOMaxIndiceCount()
 {
     return m_currentMaxFontIndices;
 }
-
 
 /************************************************************************
 *    DESC:  Add a delete function to the delete map
@@ -1288,7 +1237,6 @@ void CDevice::AddToDeleteQueue( std::vector<CMemoryBuffer> & memoryBufVec )
         AddToDeleteQueue( iter );
 }
 
-
 /************************************************************************
  *    DESC: Create a model
  ************************************************************************/
@@ -1316,7 +1264,6 @@ void CDevice::createModel(
     // Copy the mesh data to the passed in mesh vector
     model = mapIter->second;
 }
-
 
 /************************************************************************
  *    DESC: Load 3d mesh file
@@ -1350,7 +1297,6 @@ void CDevice::loadFrom3DM(
         // Load without textures
         //LoadFromFile( scpFile.get(), fileHeader, filePath, modelVec );
 }
-
 
 /************************************************************************
  *    DESC: Load 3d mesh file with textures
@@ -1465,7 +1411,6 @@ void CDevice::load3DM(
     }
 }
 
-
 /************************************************************************
  *    DESC: Do the tag check to insure we are in the correct spot
  ************************************************************************/
@@ -1480,9 +1425,7 @@ void CDevice::tagCheck( SDL_RWops * file, const std::string & filePath )
         throw NExcept::CCriticalException( "Visual Mesh Load Error!",
             boost::str( boost::format( "Tag check mismatch (%s).\n\n%s\nLine: %s" )
                 % filePath % __FUNCTION__ % __LINE__ ) );
-
 }
-
 
 /************************************************************************
  *    DESC: Is the transfer queue unique to allow for loading and
@@ -1493,7 +1436,6 @@ bool CDevice::isTransferQueueUnique()
     return (m_transferQueue != m_graphicsQueue);
 }
 
-
 /************************************************************************
  *    DESC: Get the number of frames since the start of the game
  ************************************************************************/
@@ -1501,7 +1443,6 @@ uint32_t CDevice::getFrameCounter()
 {
     return m_frameCounter;
 }
-
 
 /************************************************************************
  *    DESC: Change the resolution
@@ -1535,7 +1476,6 @@ void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
     handleResolutionChange( size.getW(), size.getH() );
 }
 
-
 /***************************************************************************
 *   DESC:  Handle the resolution change
 ****************************************************************************/
@@ -1554,7 +1494,6 @@ void CDevice::handleResolutionChange( int width, int height )
     CCameraMgr::Instance().rebuildProjectionMatrix();
 }
 
-
 /***************************************************************************
 *   DESC:  Set the clear color
 ****************************************************************************/
@@ -1562,7 +1501,6 @@ void CDevice::setClearColor( float r, float g, float b, float a )
 {
     m_clearColor.set( r, g, b, a );
 }
-
 
 /************************************************************************
 *    DESC:  Delete a secondary command buffer of a specific group

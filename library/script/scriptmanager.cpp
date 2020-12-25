@@ -571,17 +571,27 @@ void CScriptMgr::executeScript( asIScriptContext * pContext )
         // Execute the script and check for errors
         // Since the script can be suspended, this also is used to continue execution
         const int execReturnCode = pContext->Execute();
-        if( execReturnCode == asEXECUTION_ERROR )
+        if( execReturnCode == asEXECUTION_ERROR || execReturnCode == asEXECUTION_EXCEPTION )
         {
-            throw NExcept::CCriticalException( "Error Calling Script!",
-                boost::str( boost::format("There was an error executing the script (%s).")
-                    % pContext->GetExceptionString() ));
-        }
-        else if( execReturnCode == asEXECUTION_EXCEPTION )
-        {
-            throw NExcept::CCriticalException("Error Calling Script!",
-                boost::str( boost::format("There was an error executing the script (%s).")
-                    % pContext->GetExceptionString() ));
+            std::string errorStr = boost::str( boost::format("ERROR executing script (%s).")
+                % pContext->GetExceptionString() );
+
+            for( asUINT i = 0; i < pContext->GetCallstackSize(); i++ )
+            {
+                asIScriptFunction *func;
+                const char *scriptSection;
+                int line, column;
+                func = pContext->GetFunction(i);
+                line = pContext->GetLineNumber(i, &column, &scriptSection);
+
+                errorStr += boost::str( boost::format("\n  %s; %s; %d, %d")
+                    % scriptSection
+                    % func->GetDeclaration()
+                    % line
+                    % column );
+            }
+            
+            throw NExcept::CCriticalException( "Error Calling Script!", errorStr );
         }
     }
 }

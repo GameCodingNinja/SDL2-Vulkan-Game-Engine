@@ -94,10 +94,13 @@ void CCommonState::transform()
 *    DESC:  Record the command buffer vector in the device
 *           for all the sprite objects that are to be rendered
 ****************************************************************************/
-void CCommonState::recordCommandBuffer( uint32_t index )
+void CCommonState::recordCommandBuffer( uint32_t cmdBufIndex )
 {
-    CStrategyMgr::Instance().recordCommandBuffer( index );
-    CMenuMgr::Instance().recordCommandBuffer( index );
+    CStrategyMgr::Instance().recordCommandBuffer( cmdBufIndex );
+    CMenuMgr::Instance().recordCommandBuffer( cmdBufIndex );
+
+    CStrategyMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
+    CMenuMgr::Instance().updateSecondaryCmdBuf( cmdBufIndex );
 }
 
 

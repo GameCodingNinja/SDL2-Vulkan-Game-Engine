@@ -117,20 +117,20 @@ namespace NScriptSound
         // Register type
         Throw( pEngine->RegisterObjectType( "CSoundMgr", 0, asOBJ_REF|asOBJ_NOCOUNT) );
         
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void loadListTable(string &in)",                     WRAP_OBJ_LAST(LoadListTable), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void loadGroup(string &in)",                         WRAP_OBJ_LAST(LoadGroup),     asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void freeGroup(string &in)",                         WRAP_OBJ_LAST(FreeGroup),     asCALL_GENERIC) );
-        
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void play(string &in, string &in, int loopCount=0)", WRAP_MFN(CSoundMgr, play),        asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void pause(string &in, string &in)",                 WRAP_MFN(CSoundMgr, pause),       asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void resume(string &in, string &in)",                WRAP_MFN(CSoundMgr, resume),      asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void stop(string &in, string &in)",                  WRAP_MFN(CSoundMgr, stop),        asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void setVolume(string &in, string &in, int)",        WRAP_MFN(CSoundMgr, setVolume),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "int getVolume(string &in, string &in) const",        WRAP_MFN(CSoundMgr, getVolume),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "bool isPlaying(string &in, string &in) const",       WRAP_MFN(CSoundMgr, isPlaying),   asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "bool isPaused(string &in, string &in) const",        WRAP_MFN(CSoundMgr, isPaused),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "CSound & getSound(string &in, string &in)",          WRAP_MFN(CSoundMgr, getSound),    asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "CPlayList & getPlayList(string &in, string &in)",    WRAP_MFN(CSoundMgr, getPlayList), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void loadListTable(string &in)",                     WRAP_OBJ_LAST(LoadListTable),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void loadGroup(string &in)",                         WRAP_OBJ_LAST(LoadGroup),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void freeGroup(string &in)",                         WRAP_OBJ_LAST(FreeGroup),          asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void stopAllSound()",                                WRAP_MFN(CSoundMgr, stopAllSound), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void play(string &in, string &in, int loopCount=0)", WRAP_MFN(CSoundMgr, play),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void pause(string &in, string &in)",                 WRAP_MFN(CSoundMgr, pause),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void resume(string &in, string &in)",                WRAP_MFN(CSoundMgr, resume),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void stop(string &in, string &in)",                  WRAP_MFN(CSoundMgr, stop),         asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "void setVolume(string &in, string &in, int)",        WRAP_MFN(CSoundMgr, setVolume),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "int getVolume(string &in, string &in) const",        WRAP_MFN(CSoundMgr, getVolume),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "bool isPlaying(string &in, string &in) const",       WRAP_MFN(CSoundMgr, isPlaying),    asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "bool isPaused(string &in, string &in) const",        WRAP_MFN(CSoundMgr, isPaused),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "CSound & getSound(string &in, string &in)",          WRAP_MFN(CSoundMgr, getSound),     asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSoundMgr", "CPlayList & getPlayList(string &in, string &in)",    WRAP_MFN(CSoundMgr, getPlayList),  asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CSoundMgr SoundMgr", &CSoundMgr::Instance()) );

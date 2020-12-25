@@ -5,6 +5,13 @@
 //  DESC:       Level 1 state
 //
 
+enum ELevelState
+{
+    ELS_IDLE,
+    ELS_ACTIVE,
+    ELS_GAME_OVER
+};
+
 final class CRunState : CCommonState
 {
     // Strategy array of names for easy creation and destruction of stratigies
@@ -75,7 +82,7 @@ final class CRunState : CCommonState
     CTimePoint mTimePointStart;
 
     // Game active flag
-    bool mGameActive = false;
+    ELevelState mLevelState = ELS_IDLE;
     
     //
     //  Constructor
@@ -90,6 +97,7 @@ final class CRunState : CCommonState
     //
     void destroy() override
     {
+        SoundMgr.stopAllSound();
         ObjectDataMgr.freeGroup( "(level_1)" );
         StrategyMgr.deleteStrategyAry( mStrategyAry );
         Device.deleteCommandPoolGroup( "(level_1)" );
@@ -164,17 +172,26 @@ final class CRunState : CCommonState
             }
             else if( event.type == NMenuEvent::TRANS_OUT )
             {
-                if( event.user.code == NTransCode::END && !mGameActive )
+                if( event.user.code == NTransCode::END )
                 {
-                    // Switch out the default menus
-                    MenuMgr.deactivateTree( "game_start_tree" );
-                    MenuMgr.activateTree( "pause_tree" );
+                    if( mLevelState == ELS_IDLE )
+                    {
+                        // Switch out the default menus
+                        MenuMgr.deactivateTree( "game_start_tree" );
+                        MenuMgr.activateTree( "pause_tree" );
 
-                    // Start the game
-                    mGoalMultiplier = 10;
-                    uiGoalMultiSprite.createFontString("" + mGoalMultiplier);
-                    mGameActive = true;
-                    mTimePointStart.now( GetDurationMinutes(1) );
+                        // Start the game
+                        mGoalMultiplier = 10;
+                        uiGoalMultiSprite.createFontString("" + mGoalMultiplier);
+                        mLevelState = ELS_ACTIVE;
+                        mTimePointStart.now( GetDurationMinutes(1) );
+                    }
+                    else if( mLevelState == ELS_GAME_OVER )
+                    {
+                        // Switch out the default menus
+                        MenuMgr.deactivateTree( "game_over_tree" );
+                        MenuMgr.activateTree( "pause_tree" );
+                    }
                 }
             }
         }
@@ -218,7 +235,7 @@ final class CRunState : CCommonState
     {
         CCommonState::update();
 
-        if( mGameActive )
+        if( mLevelState == ELS_ACTIVE )
         {
             if(mMultiplier >= mGoalMultiplier)
             {
@@ -238,12 +255,12 @@ final class CRunState : CCommonState
             else
             {
                 mUITimerSprite.createFontString( "00:00" );
-                mGameActive = false;
+                mLevelState = ELS_GAME_OVER;
 
-                // Switch out the default menus and activate
+                // Switch out the default menus, activate and transition tree's default menu
                 MenuMgr.deactivateTree( "pause_tree" );
                 MenuMgr.activateTree( "game_over_tree" );
-                MenuMgr.transitionMenu( "confirmation_menu" );
+                MenuMgr.transitionMenu( "game_over_tree" );
             }
         }
     }
