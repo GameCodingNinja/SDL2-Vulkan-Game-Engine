@@ -14,9 +14,9 @@ class CScriptPrepareFunc
 {
 public:
     
-    CScriptPrepareFunc(const std::string & grp, const std::string & fId, bool prep, bool force) :
+    CScriptPrepareFunc(const std::string & grp, const std::string & fName, bool prep, bool force) :
         group(grp),
-        funcId(fId),
+        funcName(fName),
         prepareOnInit(prep),
         forceUpdate(force)
     {}
@@ -25,7 +25,7 @@ public:
     std::string group;
 
     // Function Id
-    std::string funcId;
+    std::string funcName;
 
     // Prepare on Init flag
     bool prepareOnInit = false;

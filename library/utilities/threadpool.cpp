@@ -188,3 +188,11 @@ size_t CThreadPool::threadCount()
 {
     return m_threadVec.size();
 }
+
+/************************************************************************
+*    DESC:  Is the thread pool active
+************************************************************************/
+bool CThreadPool::isActive()
+{
+    return !m_threadVec.empty();
+}

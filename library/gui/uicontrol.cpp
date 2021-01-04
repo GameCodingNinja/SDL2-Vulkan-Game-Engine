@@ -375,7 +375,7 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
         else if( m_actionType == EControlActionType::QUIT_GAME )
             NGenFunc::DispatchEvent( SDL_QUIT );
 
-        // Prepare script function associated with handling this game event
+        // Prepare script function associated with handling this event
         prepareControlScriptFunction( EControlState::EXECUTE );
     }
 }
@@ -663,9 +663,9 @@ void CUIControl::prepareControlScriptFunction( EControlState controlState, uint 
     if( iter != m_scriptFunctionMap.end() )
     {
         if( controlState == EControlState::EVENT )
-            m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this, type, code} );
+            m_scriptComponent.prepare( iter->second.group, iter->second.funcName, {this, type, code} );
         else
-            m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
+            m_scriptComponent.prepare( iter->second.group, iter->second.funcName, {this} );
         
         // Force an update
         if( iter->second.forceUpdate )

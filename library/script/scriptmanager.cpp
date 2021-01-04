@@ -469,7 +469,7 @@ void CScriptMgr::spawnByThread( const std::string & funcName, const std::string 
         prepare( grp, funcName, pContex );
 
         // Use the thread pool if active.
-        if( CThreadPool::Instance().threadCount() )
+        if( CThreadPool::Instance().isActive() )
         {
             CThreadPool::Instance().post( &CScriptMgr::executeFromThread, this, pContex );
         }

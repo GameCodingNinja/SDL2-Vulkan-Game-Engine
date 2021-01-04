@@ -541,6 +541,291 @@ struct Constructor <T (A0, A1, A2, A3)> {
 				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value);
 	}
 };
+
+// Extend to allow for 5 parameters
+template <typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Wrapper<void (*)(A0, A1, A2, A3, A4)> {
+	template <void (*fp)(A0, A1, A2, A3, A4)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value));
+	}
+};
+template <typename R, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Wrapper<R (*)(A0, A1, A2, A3, A4)> {
+	template <R (*fp)(A0, A1, A2, A3, A4)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Wrapper<void (T::*)(A0, A1, A2, A3, A4)> {
+	template <void (T::*fp)(A0, A1, A2, A3, A4)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Wrapper<R (T::*)(A0, A1, A2, A3, A4)> {
+	template <R (T::*fp)(A0, A1, A2, A3, A4)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Wrapper<void (T::*)(A0, A1, A2, A3, A4) const> {
+	template <void (T::*fp)(A0, A1, A2, A3, A4) const>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Wrapper<R (T::*)(A0, A1, A2, A3, A4) const> {
+	template <R (T::*fp)(A0, A1, A2, A3, A4) const>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct ObjFirst<void (*)(T, A0, A1, A2, A3, A4)> {
+	template <void (*fp)(T, A0, A1, A2, A3, A4)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((fp)(
+				Proxy<T>::cast(gen->GetObject()),
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct ObjFirst<R (*)(T, A0, A1, A2, A3, A4)> {
+	template <R (*fp)(T, A0, A1, A2, A3, A4)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((fp)(
+				Proxy<T>::cast(gen->GetObject()),
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct ObjLast<void (*)(A0, A1, A2, A3, A4, T)> {
+	template <void (*fp)(A0, A1, A2, A3, A4, T)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+				Proxy<T>::cast(gen->GetObject())));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct ObjLast<R (*)(A0, A1, A2, A3, A4, T)> {
+	template <R (*fp)(A0, A1, A2, A3, A4, T)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+				Proxy<T>::cast(gen->GetObject())));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4>
+struct Constructor <T (A0, A1, A2, A3, A4)> {
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetObject()) T(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value);
+	}
+};
+
+// Extend to allow for 6 parameters
+template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Wrapper<void (*)(A0, A1, A2, A3, A4, A5)> {
+	template <void (*fp)(A0, A1, A2, A3, A4, A5)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename R, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Wrapper<R (*)(A0, A1, A2, A3, A4, A5)> {
+	template <R (*fp)(A0, A1, A2, A3, A4, A5)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Wrapper<void (T::*)(A0, A1, A2, A3, A4, A5)> {
+	template <void (T::*fp)(A0, A1, A2, A3, A4, A5)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Wrapper<R (T::*)(A0, A1, A2, A3, A4, A5)> {
+	template <R (T::*fp)(A0, A1, A2, A3, A4, A5)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Wrapper<void (T::*)(A0, A1, A2, A3, A4, A5) const> {
+	template <void (T::*fp)(A0, A1, A2, A3, A4, A5) const>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Wrapper<R (T::*)(A0, A1, A2, A3, A4, A5) const> {
+	template <R (T::*fp)(A0, A1, A2, A3, A4, A5) const>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((static_cast<T *>(gen->GetObject())->*fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct ObjFirst<void (*)(T, A0, A1, A2, A3, A4, A5)> {
+	template <void (*fp)(T, A0, A1, A2, A3, A4, A5)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((fp)(
+				Proxy<T>::cast(gen->GetObject()),
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct ObjFirst<R (*)(T, A0, A1, A2, A3, A4, A5)> {
+	template <R (*fp)(T, A0, A1, A2, A3, A4, A5)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((fp)(
+				Proxy<T>::cast(gen->GetObject()),
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct ObjLast<void (*)(A0, A1, A2, A3, A4, A5, T)> {
+	template <void (*fp)(A0, A1, A2, A3, A4, A5, T)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value,
+				Proxy<T>::cast(gen->GetObject())));
+	}
+};
+template <typename T, typename R, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct ObjLast<R (*)(A0, A1, A2, A3, A4, A5, T)> {
+	template <R (*fp)(A0, A1, A2, A3, A4, A5, T)>
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetAddressOfReturnLocation()) Proxy<R>((fp)(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value,
+				Proxy<T>::cast(gen->GetObject())));
+	}
+};
+template <typename T, typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+struct Constructor <T (A0, A1, A2, A3, A4, A5)> {
+	static void f(AS_NAMESPACE_QUALIFIER asIScriptGeneric * gen) {
+		new (gen->GetObject()) T(
+				static_cast<Proxy <A0> *>(gen->GetAddressOfArg(0))->value,
+				static_cast<Proxy <A1> *>(gen->GetAddressOfArg(1))->value,
+				static_cast<Proxy <A2> *>(gen->GetAddressOfArg(2))->value,
+				static_cast<Proxy <A3> *>(gen->GetAddressOfArg(3))->value,
+                static_cast<Proxy <A4> *>(gen->GetAddressOfArg(4))->value,
+                static_cast<Proxy <A5> *>(gen->GetAddressOfArg(5))->value);
+	}
+};
+
 template <typename T>
 struct Id {
 	template <T fn_ptr> AS_NAMESPACE_QUALIFIER asSFuncPtr  f(void) { return asFUNCTION(&Wrapper<T>::template f<fn_ptr>); }

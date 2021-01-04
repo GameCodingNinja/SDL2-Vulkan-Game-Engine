@@ -38,6 +38,7 @@ namespace NLevelDefs
     {
         ELE_LEVEL_USER_EVENTS = 0x8200,
         ELE_BANG_UP_AWARD,
+        ELE_RESTART_GAME,
     }
 
     enum ESpriteState

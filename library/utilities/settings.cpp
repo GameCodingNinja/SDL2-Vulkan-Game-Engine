@@ -27,6 +27,7 @@
 CSettings::CSettings() :
     m_filePath("data/settings/settings.cfg"),
     m_debugMode(true),
+    m_autoplay(false),
     m_debugAsMobile(false),
     m_mobileDevice(false),
     m_size(1280,768),
@@ -68,14 +69,12 @@ CSettings::CSettings() :
     #endif
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CSettings::~CSettings()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Init the file path for loading the settings file
@@ -84,7 +83,6 @@ void CSettings::initFilePath( const std::string & filePath )
 {
     m_filePath = filePath;
 }
-
 
 /************************************************************************
 *    DESC:  Load settings data from xml file
@@ -107,7 +105,11 @@ void CSettings::loadXML()
             if( debugNode.isAttributeSet("debugMode") )
                 m_debugMode = ( std::strcmp( debugNode.getAttribute("debugMode"), "true" ) == 0 );
             
-            // Do we force mobile debug mode
+            // Do we enable autoplay
+            if( debugNode.isAttributeSet("autoPlay") )
+                m_autoplay = ( std::strcmp( debugNode.getAttribute("autoPlay"), "true" ) == 0 );
+            
+            // Do we enable mobile debug mode
             if( debugNode.isAttributeSet("debugAsMobile") )
                 m_debugAsMobile = ( m_debugMode && std::strcmp( debugNode.getAttribute("debugAsMobile"), "true" ) == 0 );
             
@@ -336,13 +338,17 @@ void CSettings::loadXML()
     }
 }
 
-
 /************************************************************************
 *    DESC:  Get debug info
 ************************************************************************/
 bool CSettings::isDebugMode() const
 {
     return m_debugMode;
+}
+
+bool CSettings::isAutoplay() const
+{
+    return m_autoplay;
 }
 
 bool CSettings::isDebugAsMobile() const
@@ -354,8 +360,6 @@ bool CSettings::isMobileDevice() const
 {
     return m_mobileDevice;
 }
-
-
 
 /************************************************************************
 *    DESC:  Get game info
@@ -379,7 +383,6 @@ uint32_t CSettings::getEngineVersion() const
 {
     return m_engineVersion;
 }
-
 
 /************************************************************************
 *    DESC:  Calculate the ratios
@@ -414,7 +417,6 @@ void CSettings::calcRatio()
     m_orthoAspectRatio.w = m_size.w / m_default_size.w;
 }
 
-
 /************************************************************************
 *    DESC:  Get/Set game window size
 ************************************************************************/
@@ -428,7 +430,6 @@ void CSettings::setSize( const CSize<float> & size )
     m_size = size;
 }
 
-
 /************************************************************************
 *    DESC:  Get game window size / 2
 *
@@ -439,7 +440,6 @@ const CSize<float> & CSettings::getSizeHalf() const
     return m_size_half;
 }
 
-
 /************************************************************************
 *    DESC:  Get native size specified in config file
 ************************************************************************/
@@ -447,7 +447,6 @@ const CSize<float> & CSettings::getNativeSize() const
 {
     return m_native_size;
 }
-
 
 /************************************************************************
 *    DESC:  Get native size specified in config file and calc width
@@ -457,7 +456,6 @@ const CSize<float> & CSettings::getDefaultSize() const
     return m_default_size;
 }
 
-
 /************************************************************************
 *    DESC:  Get default size in half
 ************************************************************************/
@@ -465,7 +463,6 @@ const CSize<float> & CSettings::getDefaultSizeHalf() const
 {
     return m_default_size_half;
 }
-
 
 /************************************************************************
 *    DESC:  Height and width screen ratio for orthographic objects
@@ -484,7 +481,6 @@ float CSettings::getOrthoAspectRatioOrientation() const
         return m_orthoAspectRatio.h;
 }
 
-
 /************************************************************************
 *    DESC: Height and width screen ratio for perspective projection
 ************************************************************************/
@@ -492,7 +488,6 @@ const CSize<float> & CSettings::getScreenAspectRatio() const
 {
     return m_screenAspectRatio;
 }
-
 
 /************************************************************************
 *    DESC:  Get/Set vSync?
@@ -507,7 +502,6 @@ void CSettings::setVSync( bool value )
     m_vSync = value;
 }
 
-
 /************************************************************************
 *    DESC:  Get the Vulkan major version
 ************************************************************************/
@@ -515,7 +509,6 @@ int CSettings::getMajorVersion() const
 {
     return m_major;
 }
-
 
 /************************************************************************
 *    DESC:  Get the Vulkan minor version
@@ -525,7 +518,6 @@ int CSettings::getMinorVersion() const
     return m_minor;
 }
 
-
 /************************************************************************
 *    DESC:  Do we want validation layers
 ************************************************************************/
@@ -533,7 +525,6 @@ bool CSettings::isValidationLayers() const
 {
     return m_validationLayers;
 }
-
 
 /************************************************************************
 *    DESC:  Get the view angle
@@ -543,7 +534,6 @@ float CSettings::getViewAngle() const
     return m_viewAngle;
 }
 
-
 /************************************************************************
 *    DESC:  Get the minimum z distance
 ************************************************************************/
@@ -551,7 +541,6 @@ float CSettings::getMinZdist() const
 {
     return m_minZdist;
 }
-
 
 /************************************************************************
 *    DESC:  Get the maximum z distance
@@ -561,7 +550,6 @@ float CSettings::getMaxZdist() const
     return m_maxZdist;
 }
 
-
 /************************************************************************
 *    DESC:  Is the gamepad enabled
 ************************************************************************/
@@ -569,7 +557,6 @@ bool CSettings::isGamePadEnabled() const
 {
     return m_gamepadEnabled;
 }
-
 
 /************************************************************************
 *    DESC:  Get the gamepad stick dead zone
@@ -579,7 +566,6 @@ int CSettings::getGamePadStickDeadZone() const
     return m_gamepadStickDeadZone;
 }
 
-
 /************************************************************************
 *    DESC:  Set the gamepad stick dead zone
 ************************************************************************/
@@ -587,7 +573,6 @@ void CSettings::setGamePadStickDeadZone( int value )
 {
     m_gamepadStickDeadZone = value;
 }
-
 
 /************************************************************************
 *    DESC:  Get/Set full screen
@@ -602,7 +587,6 @@ void CSettings::setFullScreen( bool value )
     m_fullScreen = value;
 }
 
-
 /************************************************************************
 *    DESC:  Is the depth buffer activated by default
 ************************************************************************/
@@ -611,7 +595,6 @@ bool CSettings::activateDepthBuffer() const
     return m_activateDepthBuffer;
 }
 
-
 /************************************************************************
 *    DESC:  Is the stencil buffer activated by default
 ************************************************************************/
@@ -619,7 +602,6 @@ bool CSettings::activateStencilBuffer() const
 {
     return m_activateStencilBuffer;
 }
-
 
 /************************************************************************
 *    DESC:  Get the script members
@@ -654,7 +636,6 @@ bool CSettings::getStripDebugInfo() const
     return m_stripDebugInfo;
 }
 
-
 /************************************************************************
 *    DESC:  Get the sound frequency
 ************************************************************************/
@@ -662,7 +643,6 @@ int CSettings::getFrequency() const
 {
     return m_frequency;
 }
-
 
 /************************************************************************
 *    DESC:  Get the sound channels: mono, stero, quad, suround, etc
@@ -672,7 +652,6 @@ int CSettings::getSoundChannels() const
     return m_sound_channels;
 }
 
-
 /************************************************************************
 *    DESC:  Get the number of channels used for mixing
 ************************************************************************/
@@ -680,7 +659,6 @@ int CSettings::getMixChannels() const
 {
     return m_mix_channels;
 }
-
 
 /************************************************************************
 *    DESC:  Get the chunk size. The amount of memory used for mixing.
@@ -692,7 +670,6 @@ int CSettings::getChunkSize() const
     return m_chunksize;
 }
 
-
 /************************************************************************
 *    DESC:  Get the minimum thread count
 ************************************************************************/
@@ -700,7 +677,6 @@ int CSettings::getMinThreadCount() const
 {
     return m_minThreadCount;
 }
-
 
 /************************************************************************
 *    DESC:  Get the maximum thread count
@@ -710,7 +686,6 @@ int CSettings::getMaxThreadCount() const
 {
     return m_maxThreadCount;
 }
-
 
 
 /************************************************************************
@@ -725,7 +700,6 @@ void CSettings::setAnisotropicLevel( int level )
 {
     m_anisotropicLevel = static_cast<ETextFilter>(level);
 }
-
 
 /************************************************************************
 *    DESC:  Get the sector size
@@ -743,7 +717,6 @@ int CSettings::getSectorSizeHalf() const
     return m_sectorSizeHalf;
 }
 
-
 /************************************************************************
 *    DESC:  Get the projection type
 ************************************************************************/
@@ -752,7 +725,6 @@ EProjectionType CSettings::getProjectionType() const
     return m_projectionType;
 }
 
-
 /************************************************************************
 *    DESC:  Get the projection scale
 ************************************************************************/
@@ -760,7 +732,6 @@ float CSettings::getProjectionScale() const
 {
     return m_projectionScale;
 }
-
 
 /************************************************************************
 *    DESC:  Set/Get debug string visible
@@ -775,7 +746,6 @@ bool CSettings::getDebugStrVisible() const
     return m_debugStrVisible;
 }
 
-
 /************************************************************************
 *    desc:  Do we want triple buffering?
 ************************************************************************/
@@ -783,7 +753,6 @@ bool CSettings::getTripleBuffering() const
 {
     return m_tripleBuffering;
 }
-
 
 /************************************************************************
 *    DESC:  Save the settings file

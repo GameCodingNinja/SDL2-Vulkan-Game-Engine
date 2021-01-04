@@ -178,7 +178,10 @@ namespace NScriptUIControl
         Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getGroup() const",                       WRAP_OBJ_LAST(GetGroup),                        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getFaction() const",                     WRAP_OBJ_LAST(GetFaction),                      asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("uiControl", "const string & getExecutionAction() const",             WRAP_MFN(iControl, getExecutionAction),         asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("uiControl", "bool prepare(string &in, bool f = false)",              WRAP_MFN(iControl,   prepare),                  asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "bool prepare(string &in, bool f = false)",              WRAP_MFN(iControl, prepare),                    asCALL_GENERIC) );
+
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void removeScriptFunction(string &in)",                 WRAP_MFN(iControl, removeScriptFunction),        asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("uiControl", "void addScriptFunction(string &in, string &in, string &in, bool f1 = false, bool f2 = false, bool f3 = false)", WRAP_MFN(iControl, addScriptFunction), asCALL_GENERIC) );
         
         // Object pos, rot & scale
         Throw( pEngine->RegisterObjectMethod("uiControl", "void setVisible(bool)",                                 WRAP_OBJ_LAST(SetVisible),                         asCALL_GENERIC) );

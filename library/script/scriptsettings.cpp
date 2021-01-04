@@ -54,6 +54,7 @@ namespace NScriptSettings
         
         Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugMode()",                   WRAP_MFN(CSettings, isDebugMode),          asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "bool isDebugAsMobile()",               WRAP_MFN(CSettings, isDebugAsMobile),      asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "bool isAutoplay()",                    WRAP_MFN(CSettings, isAutoplay),           asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "bool isMobileDevice()",                WRAP_MFN(CSettings, isMobileDevice),       asCALL_GENERIC) );
         
         Throw( pEngine->RegisterObjectMethod("CSettings", "int getGamePadStickDeadZone()",        WRAP_MFN(CSettings, getGamePadStickDeadZone), asCALL_GENERIC) );

@@ -89,6 +89,9 @@ public:
     // Get the thread count
     size_t threadCount();
 
+    // Is the thread pool active
+    bool isActive();
+
 private:
     
     // Constructor

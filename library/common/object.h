@@ -113,6 +113,18 @@ public:
     // Is the object visible
     bool isVisible() const;
 
+    // Remove the script function from the map
+    void removeScriptFunction( const std::string & scriptFuncId );
+
+    // Add a script function to the map
+    void addScriptFunction(
+        const std::string & scriptFuncId,
+        const std::string & group,
+        const std::string & funcName,
+        const bool prepareOnInit = false,
+        const bool forceUpdate = false,
+        const bool overwrite = false );
+
 public: // transform related members
     
     // Copy the transform to the passed in object

@@ -136,6 +136,9 @@ protected:
     // Set of handles to delete
     std::vector<handle16_t> m_deleteVec;
 
+    // Clear all vector
+    std::vector<iNode *> m_clearAllVec;
+
     // Clear all nodes flag
     bool m_clearAllNodesFlag = false;
 

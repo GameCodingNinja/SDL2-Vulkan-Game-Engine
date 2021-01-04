@@ -17,6 +17,8 @@
 #include <node/nodedatalist.h>
 #include <node/nodedata.h>
 #include <node/inode.h>
+#include <sprite/sprite.h>
+#include <physics/iphysicscomponent.h>
 #include <system/device.h>
 #include <common/camera.h>
 #include <managers/cameramanager.h>
@@ -38,6 +40,7 @@ CStrategy::CStrategy() :
 CStrategy::~CStrategy()
 {
     clearAllNodes();
+    NDelFunc::DeleteVectorPointers( m_clearAllVec );
 }
 
 /************************************************************************
@@ -45,39 +48,45 @@ CStrategy::~CStrategy()
  ************************************************************************/
 void CStrategy::clearAllNodes()
 {
-    // Build a unique list of nodes to delete
-    // A node pointer can be in more then one container
-    std::vector<iNode *> deleteList;
-
     for( auto & mapIter : m_pNodeMap )
     {
-        auto vecIter = std::find( deleteList.begin(), deleteList.end(), mapIter.second );
-        if( vecIter == deleteList.end() )
-            deleteList.push_back( mapIter.second );
+        auto vecIter = std::find( m_clearAllVec.begin(), m_clearAllVec.end(), mapIter.second );
+        if( vecIter == m_clearAllVec.end() )
+            m_clearAllVec.push_back( mapIter.second );
     }
 
-    for( auto * iter : m_pNodeVec )
+    for( auto iter : m_pNodeVec )
     {
-        auto vecIter = std::find( deleteList.begin(), deleteList.end(), iter );
-        if( vecIter == deleteList.end() )
-            deleteList.push_back( iter );
+        auto vecIter = std::find( m_clearAllVec.begin(), m_clearAllVec.end(), iter );
+        if( vecIter == m_clearAllVec.end() )
+            m_clearAllVec.push_back( iter );
     }
 
-    for( auto * iter : m_pActivateVec )
+    for( auto iter : m_pActivateVec )
     {
-        auto vecIter = std::find( deleteList.begin(), deleteList.end(), iter );
-        if( vecIter == deleteList.end() )
-            deleteList.push_back( iter );
+        auto vecIter = std::find( m_clearAllVec.begin(), m_clearAllVec.end(), iter );
+        if( vecIter == m_clearAllVec.end() )
+            m_clearAllVec.push_back( iter );
     }
 
-    for( auto * iter : m_pDeactivateVec )
+    for( auto iter : m_pDeactivateVec )
     {
-        auto vecIter = std::find( deleteList.begin(), deleteList.end(), iter );
-        if( vecIter == deleteList.end() )
-            deleteList.push_back( iter );
+        auto vecIter = std::find( m_clearAllVec.begin(), m_clearAllVec.end(), iter );
+        if( vecIter == m_clearAllVec.end() )
+            m_clearAllVec.push_back( iter );
     }
 
-    NDelFunc::DeleteVectorPointers( deleteList );
+    // Disable the physics
+    for( auto iter : m_clearAllVec )
+    {
+        auto pSprite = iter->getSprite();
+        if( pSprite != nullptr )
+        {
+            auto pPhysics = pSprite->getPhysicsComponent();
+            if( pPhysics != nullptr )
+                pPhysics->setContactFilter(0);
+        }
+    }
 
     m_pNodeMap.clear();
     m_pNodeVec.clear();
@@ -471,6 +480,10 @@ void CStrategy::removeFromActiveList()
 ************************************************************************/
 void CStrategy::deleteFromActiveList()
 {
+    // Clear all nodes
+    if( !m_clearAllVec.empty() )
+        NDelFunc::DeleteVectorPointers( m_clearAllVec );
+
     if( !m_deleteVec.empty() )
     {
         for( auto handle : m_deleteVec )

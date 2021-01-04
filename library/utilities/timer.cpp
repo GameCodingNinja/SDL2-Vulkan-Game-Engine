@@ -23,7 +23,6 @@ CTimer::CTimer(double interval, bool startExpired)
         setExpired();
     else
         reset();
-
 }
 
 CTimer::CTimer()
@@ -33,14 +32,12 @@ CTimer::CTimer()
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CTimer::~CTimer()
 {
 }
-
 
 /***************************************************************************
 *   DESC:  Reset the timer to start over
@@ -51,7 +48,6 @@ void CTimer::reset()
     m_disabled = false;
 }
 
-
 /***************************************************************************
 *   DESC:  Set the time to have expired
 ****************************************************************************/
@@ -59,7 +55,6 @@ void CTimer::setExpired()
 {
     m_expiredTime = CHighResTimer::Instance().getTime();
 }
-
 
 /***************************************************************************
 *   DESC:  Set the timer interval
@@ -69,7 +64,6 @@ void CTimer::set( double interval )
     m_timeInterval = interval;
     reset();
 }
-
 
 /***************************************************************************
 *   DESC:  Has the timer expired
@@ -93,7 +87,6 @@ bool CTimer::expired( bool resetOnExpire )
     return result;
 }
 
-
 /***************************************************************************
 *   DESC:  Disable this timer
 ****************************************************************************/
@@ -101,7 +94,6 @@ void CTimer::disable( bool disabled )
 {
     m_disabled = disabled;
 }
-
 
 /***************************************************************************
 *   DESC:  Set the value returned by Expired when the timer is disabled

@@ -9,11 +9,16 @@ enum ELevelState
 {
     ELS_IDLE,
     ELS_ACTIVE,
-    ELS_GAME_OVER
+    ELS_GAME_OVER,
+    ELS_GAME_RESTART
 };
+
 
 final class CRunState : CCommonState
 {
+    bool DEBUG_AUTOPLAY = false;
+    CTimer debugTimer(300);
+
     // Strategy array of names for easy creation and destruction of stratigies
     array<string> mStrategyAry = {"_level_stage_","_level_multi_","_level_ball_","_level_ui_"};
 
@@ -28,15 +33,22 @@ final class CRunState : CCommonState
 
     // A multidimensional to hold the spots to randomly place the multiplier based on it's current position.
     array<array<int>> mMultiXPosAry = {
-        {-160,0,160,320,480,640},
-        {0,160,320,480,640},
-        {160,320,480,640},
-        {-640,320,480,640},
-        {-640,-480,480,640},
-        {-640,-480,-320,640},
-        {-640,-480,-320,-160},
-        {-640,-480,-320,-160,0},
-        {-640,-480,-320,-160,0,160} };
+        {-480,-320,-160,0,160,320,480,640},
+        {-640,-320,-160,0,160,320,480,640},
+        {-640,-480,-160,0,160,320,480,640},
+        {-640,-480,-320,0,160,320,480,640},
+        {-640,-480,-320,-160,160,320,480,640},
+        {-640,-480,-320,-160,0,320,480,640},
+        {-640,-480,-320,-160,0,160,480,640},
+        {-640,-480,-320,-160,0,160,320,640},
+        {-640,-480,-320,-160,0,160,320,480} };
+
+    // Initial start timer
+    int mInitialStartTime = 1000 * 60 + 900;
+    int mLevelUpIncMultiTime = 1000 * 30 + 900;
+    int mMultiUpIncMultiTime = 1000 * 2;
+    int mInitialMultiGoal = 10;
+    int mIncMultiGoal = 10;
 
     // Multiplier Y position
     int mMultiY = 1450;
@@ -64,19 +76,23 @@ final class CRunState : CCommonState
     // Player UI sprites
     uiControl @mUIPlayerWinMeterCtrl;
     CSprite @mUIPlayerMultiTxtSprite;
+    CSprite @mUIPlayerLevelTxtSprite;
     CSprite @mUIPlayerStrawberrySprite;
 
     // Goal Multi sprite
     CSprite @uiGoalMultiSprite;
 
     // Points multiplier
-    uint mMultiplier = 1;
+    uint mMultiplier;
 
     // Goal multiplier
-    uint mGoalMultiplier = 10;
+    uint mGoalMultiplier;
+
+    // Level
+    int mLevel;
 
     // Next ball index
-    int mNextBallIndex = RandInt(0,mBallAry.length()-1);
+    int mNextBallIndex = -1;
 
     // Start of the timer time point
     CTimePoint mTimePointStart;
@@ -109,6 +125,10 @@ final class CRunState : CCommonState
     //
     void init() override
     {
+        // Determine debug and autoplay mode
+        if( Settings.isDebugMode() && Settings.isAutoplay() )
+            DEBUG_AUTOPLAY = true;
+
         // Unblock the menu messaging and activate needed trees(s)
         MenuMgr.allow();
         MenuMgr.activateTree( "game_start_tree" );
@@ -123,17 +143,15 @@ final class CRunState : CCommonState
         // Get the needed nodes/sprites/controls
         @mUIPlayerWinMeterCtrl = mUIStrategy.getNode("uiPlayerWinMeter").getControl();
         @mUIPlayerMultiTxtSprite = mUIStrategy.getNode("uiPlayerMultiText").getSprite();
+        @mUIPlayerLevelTxtSprite = mUIStrategy.getNode("uiPlayerLevelText").getSprite();
         @mUIPlayerStrawberrySprite = mUIStrategy.getNode("uiPlayerStrawberry").getSprite();
         @mUITimerSprite = mUIStrategy.getNode("uiTimerText").getSprite();
         @uiGoalMultiSprite = mUIStrategy.getNode("uiGoalMulti").getSprite();
 
         // Get the multipler sprite
-        @mMultiSprite = mMultiStrategy.activateNode("strawberry").getSprite();
+        @mMultiSprite = mMultiStrategy.getNode("strawberry").getSprite();
         mMultiIndexPos = RandInt(0,mMultiXPosAllAry.length()-1);
         mMultiSprite.setPhysicsTransform(mMultiXPosAllAry[mMultiIndexPos], mMultiY);
-
-        // Make the next ball visible
-        mUIStrategy.activateNode(mBallAry[mNextBallIndex]);
         
         // Get the physics world
         @mPhysicsWorld = PhysicsWorldManager2D.getWorld( "(game)" );
@@ -161,7 +179,11 @@ final class CRunState : CCommonState
 
             else if( event.type == NLevelDefs::ELE_BANG_UP_AWARD )
                 mUIPlayerWinMeterCtrl.incBangUp( mMultiplier );
-            
+
+            else if( event.type == NLevelDefs::ELE_RESTART_GAME )
+            {
+                mLevelState = ELS_GAME_RESTART;
+            }
             else if( event.type == NStateDefs::ESE_FADE_OUT_COMPLETE )
             {
                 // Clear out all the trees
@@ -174,23 +196,34 @@ final class CRunState : CCommonState
             {
                 if( event.user.code == NTransCode::END )
                 {
-                    if( mLevelState == ELS_IDLE )
+                    if( mLevelState == ELS_IDLE || mLevelState == ELS_GAME_RESTART )
                     {
                         // Switch out the default menus
                         MenuMgr.deactivateTree( "game_start_tree" );
+                        MenuMgr.deactivateTree( "game_over_tree" );
                         MenuMgr.activateTree( "pause_tree" );
 
                         // Start the game
-                        mGoalMultiplier = 10;
+                        mLevel = 1;
+                        mMultiplier = 1;
+                        showNextBall();
+                        moveMultiplier();
+                        mBallStrategy.clear();
+                        mUIPlayerWinMeterCtrl.setMeterValue(0);
+                        mUIPlayerMultiTxtSprite.createFontString( "" + mMultiplier );
+                        mUIPlayerLevelTxtSprite.createFontString( "Level " + mLevel );
+                        mGoalMultiplier = mInitialMultiGoal;
                         uiGoalMultiSprite.createFontString("" + mGoalMultiplier);
+                        mTimePointStart.now( GetDurationMilliseconds(mInitialStartTime) );
+
+                        // Make the multiplier visible
+                        if( mLevelState == ELS_IDLE )
+                            mMultiStrategy.activateNode("strawberry");
+
+                        if( DEBUG_AUTOPLAY )
+                            debugTimer.reset();
+
                         mLevelState = ELS_ACTIVE;
-                        mTimePointStart.now( GetDurationMinutes(1) );
-                    }
-                    else if( mLevelState == ELS_GAME_OVER )
-                    {
-                        // Switch out the default menus
-                        MenuMgr.deactivateTree( "game_over_tree" );
-                        MenuMgr.activateTree( "pause_tree" );
                     }
                 }
             }
@@ -198,24 +231,40 @@ final class CRunState : CCommonState
         else if( event.type == NEvents::SDL_MOUSEBUTTONUP )
         {
             if( !MenuMgr.isActive() && ActionMgr.wasAction(event, "drop_ball", NActionPress::UP) )
-            {
-                // Strictly a mouse only game which is why I'm using the button event x & y
-                CPoint pos= mCamera.toOrthoCoord( event.button.x, event.button.y );
-                CSprite @sprite = mBallStrategy.create(mBallAry[mNextBallIndex]).getSprite();
-                sprite.setPhysicsTransform(pos.x, -1400);
-                sprite.applyAngularImpulse(RandFloat(-0.5, 0.5));
+                dropBall( event.button.x );
+        }
+    }
 
-                // Randomly generate the next ball
-                int lastBallIndex = mNextBallIndex;
-                mNextBallIndex = RandInt(0,mBallAry.length()-1);
+    //
+    //  Show the next ball
+    //
+    void dropBall( int x )
+    {
+        // Strictly a mouse only game which is why I'm using the button event x & y
+        CPoint pos= mCamera.toOrthoCoord( x, 0 );
+        CSprite @sprite = mBallStrategy.create(mBallAry[mNextBallIndex]).getSprite();
+        sprite.setPhysicsTransform(pos.x, -1400);
+        sprite.applyAngularImpulse(RandFloat(-0.5, 0.5));
 
-                // Hide the last UI ball and show the next one
-                if( lastBallIndex != mNextBallIndex )
-                {
-                    mUIStrategy.deactivateNode( mBallAry[lastBallIndex] );
-                    mUIStrategy.activateNode( mBallAry[mNextBallIndex] );
-                }
-            }
+        // Show the next ball
+        showNextBall();
+    }
+
+    //
+    //  Show the next ball
+    //
+    void showNextBall()
+    {
+        // Randomly generate the next ball
+        int lastBallIndex = mNextBallIndex;
+        mNextBallIndex = RandInt(0,mBallAry.length()-1);
+
+        // Hide the last UI ball and show the next one
+        if( lastBallIndex != mNextBallIndex )
+        {
+            if( lastBallIndex > -1 )
+                mUIStrategy.deactivateNode( mBallAry[lastBallIndex] );
+            mUIStrategy.activateNode( mBallAry[mNextBallIndex] );
         }
     }
     
@@ -239,11 +288,13 @@ final class CRunState : CCommonState
         {
             if(mMultiplier >= mGoalMultiplier)
             {
-                mTimePointStart += GetDurationSeconds(30);
-                mGoalMultiplier += 10;
+                mTimePointStart += GetDurationMilliseconds(mLevelUpIncMultiTime);
+                mGoalMultiplier += mIncMultiGoal;
                 uiGoalMultiSprite.createFontString("" + mGoalMultiplier);
                 mUITimerSprite.prepare("reset_flash");
                 uiGoalMultiSprite.prepare("reset_flash");
+                mUIPlayerLevelTxtSprite.createFontString( "Level: " + ++mLevel );
+                mUIPlayerLevelTxtSprite.prepare("reset_flash");
             }
 
             CTimePoint timePoint;
@@ -251,6 +302,12 @@ final class CRunState : CCommonState
             if( duration.getNanoseconds() > 0 )
             {
                 mUITimerSprite.createFontString( FormatTimeDuration( mTimePointStart - timePoint, NTimeFormat::ETF_M_S ) );
+
+                if( DEBUG_AUTOPLAY && debugTimer.expired(true) )
+                {
+                    int pos = RandInt(120, 590);
+                    dropBall( pos + (mMultiXPosAllAry[mMultiIndexPos] / 4) );
+                }
             }
             else
             {
@@ -260,6 +317,7 @@ final class CRunState : CCommonState
                 // Switch out the default menus, activate and transition tree's default menu
                 MenuMgr.deactivateTree( "pause_tree" );
                 MenuMgr.activateTree( "game_over_tree" );
+                gameOverConfirmMenuInit();
                 MenuMgr.transitionMenu( "game_over_tree" );
             }
         }
@@ -275,6 +333,17 @@ final class CRunState : CCommonState
         mUIPlayerMultiTxtSprite.prepare("inc_flash");
         mUIPlayerWinMeterCtrl.prepare("inc_flash");
 
+        mTimePointStart += GetDurationMilliseconds(mMultiUpIncMultiTime);
+
+        // Move the multiplier to a new position on the screen
+        moveMultiplier();
+    }
+
+    //
+    //  Move the multiplier to a new position on the screen
+    //
+    void moveMultiplier()
+    {
         array<int> @posAry = mMultiXPosAry[mMultiIndexPos];
         int index = RandInt(0,posAry.length()-1);
         int offsetX = posAry[index];
@@ -321,7 +390,34 @@ final class CRunState : CCommonState
             spriteB.stopAndRestart( "peg_off" );
         }
     }
+
+    //
+    //  Setup confirm menu for game over
+    //
+    void gameOverConfirmMenuInit()
+    {
+        uiControl @yesBtn = MenuMgr.getMenu( "confirmation_menu" ).getControl( "yes_btn" );
+        uiControl @noBtn = MenuMgr.getMenu( "confirmation_menu" ).getControl( "no_btn" );
+        uiControl @msgLbl = MenuMgr.getMenu( "confirmation_menu" ).getControl( "message_lbl" );
+
+        msgLbl.createFontString( "Game Over!|Do you want to|try again?" );
+
+        yesBtn.addScriptFunction("execute", "(main)", "RestartGameMsg", false, false, true);
+        yesBtn.setActionType( "back" );
+        yesBtn.setExecutionAction( "" );
+
+        noBtn.setActionType( "game_state_change" );
+        noBtn.setExecutionAction( "title_screen_state" );
+    }
 };
+
+//
+//  Send message to restart game
+//
+void RestartGameMsg( uiControl & control )
+{
+    DispatchEvent( NLevelDefs::ELE_RESTART_GAME );
+}
 
 //
 //  Functions for loading the assets for this state

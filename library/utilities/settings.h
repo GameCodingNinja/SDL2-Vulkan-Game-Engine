@@ -38,6 +38,7 @@ public:
     // Get debug info
     bool isDebugMode() const;
     bool isDebugAsMobile() const;
+    bool isAutoplay() const;
     bool isMobileDevice() const;
 
     // Get game info
@@ -173,6 +174,7 @@ private:
     
     // debug members
     bool m_debugMode;
+    bool m_autoplay;
     bool m_debugAsMobile;
     bool m_mobileDevice;
     

@@ -9,6 +9,7 @@
         <node name="uiPlayerWinMeter" instance="uiPlayerWinMeter"/>
         <node name="uiPlayerStrawberry" instance="uiPlayerStrawberry"/>
         <node name="uiPlayerMultiText" instance="uiPlayerMultiText"/>
+        <node name="uiPlayerLevelText" instance="uiPlayerLevelText"/>
         <node name="uiNextBallText"/>
         <node name="uiGoalText" instance="uiGoalText"/>
         <node name="uiGoalStrawberry" instance="uiGoalStrawberry"/>

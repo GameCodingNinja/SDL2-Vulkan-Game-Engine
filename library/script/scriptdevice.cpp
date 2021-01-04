@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       scriptdevice.cpp
 *
-*    DESCRIPTION:     CHighResTimer script object registration
+*    DESCRIPTION:     CDevice script object registration
 ************************************************************************/
 
 // Physical component dependency

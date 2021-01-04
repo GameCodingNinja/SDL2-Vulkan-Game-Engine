@@ -46,6 +46,20 @@
 
     </node>
 
+    <node name="uiPlayerLevelText">
+        
+        <sprite objectName="level_font">
+            <position x="-100" y="-930" z="0"/>
+            <font fontName="dejavu_sans_bold_45" fontString="Level 1">
+                <alignment horzAlign="right"/>
+            </font>
+            <scriptList>
+                <script reset_flash="Level_TimeResetFlash" group="(main)"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+
     <node name="uiTimerText">
         
         <sprite objectName="level_font">

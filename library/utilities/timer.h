@@ -37,7 +37,7 @@ public:
     void reset();
 
     // Set the timer interval
-    void set(double interval);
+    void set( double interval );
 
     // Set the timer interval
     void disable( bool disabled = true );

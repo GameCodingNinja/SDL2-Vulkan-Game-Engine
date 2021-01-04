@@ -9,6 +9,7 @@
 
 // Game lib dependencies
 #include <utilities/xmlparsehelper.h>
+#include <utilities/genfunc.h>
 
 /************************************************************************
 *    DESC:  Constructor / Destructor
@@ -422,6 +423,39 @@ void CObject::forceTransform()
 }
 
 /************************************************************************
+*    DESC:  Remove the script function from the map
+************************************************************************/
+void CObject::removeScriptFunction( const std::string & scriptFuncId )
+{
+    auto iter = m_scriptFunctionMap.find( scriptFuncId );
+    if( iter != m_scriptFunctionMap.end() )
+        m_scriptFunctionMap.erase( iter );
+}
+
+/************************************************************************
+*    DESC:  Add a script function to the map
+************************************************************************/
+void CObject::addScriptFunction(
+    const std::string & scriptFuncId,
+    const std::string & group,
+    const std::string & funcName,
+    const bool prepareOnInit,
+    const bool forceUpdate,
+    const bool overwrite )
+{
+    auto iter = m_scriptFunctionMap.find( scriptFuncId );
+    if( iter != m_scriptFunctionMap.end() )
+    {
+        if( !overwrite )
+            NGenFunc::PostDebugMsg( boost::str( boost::format("WARNING: Add script function already exists (%s).") %scriptFuncId ) );
+        m_scriptFunctionMap.erase( iter );
+    }
+
+    m_scriptFunctionMap.emplace( 
+        std::piecewise_construct, std::forward_as_tuple(scriptFuncId), std::forward_as_tuple(group, funcName, prepareOnInit, forceUpdate) );
+}
+
+/************************************************************************
 *    DESC:  Load the script functions from node and add them to the map
 ************************************************************************/
 void CObject::loadScriptFromNode( const XMLNode & node, const std::string & group )
@@ -447,7 +481,7 @@ bool CObject::prepare( const std::string & scriptFuncId )
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.prepare( iter->second.group, iter->second.funcId, {this} );
+        m_scriptComponent.prepare( iter->second.group, iter->second.funcName, {this} );
 
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
@@ -468,7 +502,7 @@ bool CObject::stopAndRecycle( const std::string & scriptFuncId )
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.stopAndRecycle( iter->second.funcId );
+        m_scriptComponent.stopAndRecycle( iter->second.funcName );
 
         return true;
     }
@@ -484,7 +518,7 @@ bool CObject::stopAndRestart( const std::string & scriptFuncId )
     auto iter = m_scriptFunctionMap.find( scriptFuncId );
     if( iter != m_scriptFunctionMap.end() )
     {
-        m_scriptComponent.stopAndRestart( iter->second.group, iter->second.funcId, {this} );
+        m_scriptComponent.stopAndRestart( iter->second.group, iter->second.funcName, {this} );
 
         // Force an update
         if( iter->second.forceUpdate )
