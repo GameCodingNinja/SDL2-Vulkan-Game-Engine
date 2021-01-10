@@ -58,99 +58,6 @@ namespace NScriptActionManager
     }
 
     /************************************************************************
-    *    DESC:  Enumerate Mouse Wheel Events generic
-    *    prototype: uint enumerateButtonEvents(
-    *               uint & windowID, int & x, int & y, uint & direction, uint startIndex = 0)
-    ************************************************************************/
-    void EnumerateMouseWheelEvents(asIScriptGeneric * pScriptGen)
-    {
-        // Extract the arguments
-        uint & windowID = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(0));
-        int & x = *reinterpret_cast<int*>(pScriptGen->GetArgAddress(1));
-        int & y = *reinterpret_cast<int*>(pScriptGen->GetArgAddress(2));
-        uint & direction = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(3));
-        uint startIndex = pScriptGen->GetArgDWord(4);
-
-        pScriptGen->SetReturnDWord( CActionMgr::Instance().enumerateMouseWheelEvents( windowID, x, y, direction, startIndex ) );
-    }
-
-    /************************************************************************
-    *    DESC:  Enumerate Mouse Wheel Events generic
-    *    prototype: uint enumerateWindowEvents(
-    *               uint & event, uint & windowID, int & data1, int & data2, uint startIndex = 0 )
-    ************************************************************************/
-    void EnumerateWindowEvents(asIScriptGeneric * pScriptGen)
-    {
-        // Extract the arguments
-        uint & event = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(0));
-        uint & windowID = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(1));
-        int & data1 = *reinterpret_cast<int*>(pScriptGen->GetArgAddress(2));
-        int & data2 = *reinterpret_cast<int*>(pScriptGen->GetArgAddress(3));
-        uint startIndex = pScriptGen->GetArgDWord(4);
-
-        pScriptGen->SetReturnDWord( CActionMgr::Instance().enumerateWindowEvents( event, windowID, data1, data2, startIndex ) );
-    }
-
-    /************************************************************************
-    *    DESC:  Enumerate Touch Finger Events generic
-    *    prototype: uint enumerateTouchFingerEvents(
-    *               uint & event, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex = 0)
-    ************************************************************************/
-    void EnumerateTouchFingerEvents(asIScriptGeneric * pScriptGen)
-    {
-        // Extract the arguments
-        uint & event = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(0));
-        int64_t & touchId = *reinterpret_cast<int64_t*>(pScriptGen->GetArgAddress(1));
-        int64_t & fingerId = *reinterpret_cast<int64_t*>(pScriptGen->GetArgAddress(2));
-        float & x = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(3));
-        float & y = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(4));
-        float & dx = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(5));
-        float & dy = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(6));
-        float & pressure = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(7));
-        uint startIndex = pScriptGen->GetArgDWord(8);
-
-        pScriptGen->SetReturnDWord( CActionMgr::Instance().enumerateTouchFingerEvents( event, touchId, fingerId, x, y, dx, dy, pressure, startIndex ) );
-    }
-
-    /************************************************************************
-    *    DESC:  Enumerate Multiple Finger Events generic
-    *    prototype: uint enumerateMultipleFingerEvents(
-    *               int64_t & touchId, float & dTheta, float & dDist, float & x, float & y, uint & numFingers, uint startIndex = 0 )
-    ************************************************************************/
-    void EnumerateMultipleFingerEvents(asIScriptGeneric * pScriptGen)
-    {
-        // Extract the arguments
-        int64_t & touchId = *reinterpret_cast<int64_t*>(pScriptGen->GetArgAddress(0));
-        float & dTheta = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(1));
-        float & dDist = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(2));
-        float & x = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(3));
-        float & y = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(4));
-        uint & numFingers = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(5));
-        uint startIndex = pScriptGen->GetArgDWord(6);
-
-        pScriptGen->SetReturnDWord( CActionMgr::Instance().enumerateMultipleFingerEvents( touchId, dTheta, dDist, x, y, numFingers, startIndex ) );
-    }
-
-    /************************************************************************
-    *    DESC:  Enumerate Dollar Gesture Events generic
-    *    prototype: uint enumerateDollarGestureEvents(
-    *               int64_t & touchId, int64_t & gestureId, uint & numFingers, float & error, float & x, float & y, uint startIndex = 0 )
-    ************************************************************************/
-    void EnumerateDollarGestureEvents(asIScriptGeneric * pScriptGen)
-    {
-        // Extract the arguments
-        int64_t & touchId = *reinterpret_cast<int64_t*>(pScriptGen->GetArgAddress(0));
-        int64_t & gestureId = *reinterpret_cast<int64_t*>(pScriptGen->GetArgAddress(1));
-        uint & numFingers = *reinterpret_cast<uint*>(pScriptGen->GetArgAddress(2));
-        float & error = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(3));
-        float & x = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(4));
-        float & y = *reinterpret_cast<float*>(pScriptGen->GetArgAddress(5));
-        uint startIndex = pScriptGen->GetArgDWord(6);
-
-        pScriptGen->SetReturnDWord( CActionMgr::Instance().enumerateDollarGestureEvents( touchId, gestureId, numFingers, error, x, y, startIndex ) );
-    }
-
-    /************************************************************************
     *    DESC:  Register global functions
     ************************************************************************/
     void Register()
@@ -208,11 +115,11 @@ namespace NScriptActionManager
 
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateButtonEvents(uint &out, int &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateButtonEvents), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateDisplayEvents(uint &out, uint &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateDisplayEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateMouseWheelEvents(uint &out, int &out, int &out, uint &out, uint startIndex = 0)", asFUNCTION(EnumerateMouseWheelEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateWindowEvents(uint &out, uint &out, int &out, int &out, uint startIndex = 0)", asFUNCTION(EnumerateWindowEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateTouchFingerEvents(uint &out, int64 &out, int64 &out, float &out, float &out, float &out, float &out, float &out, uint startIndex = 0)", asFUNCTION(EnumerateTouchFingerEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateMultipleFingerEvents(int64 &out, float &out, float &out, float &out, float &out, uint &out, uint startIndex = 0)", asFUNCTION(EnumerateMultipleFingerEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateDollarGestureEvents(int64 &out, int64 &out, uint &out, float &out, float &out, float &out, uint startIndex = 0)", asFUNCTION(EnumerateDollarGestureEvents), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateMouseWheelEvents(uint &out, int &out, int &out, uint &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateMouseWheelEvents), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateWindowEvents(uint &out, uint &out, int &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateWindowEvents), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateTouchFingerEvents(uint &out, int64 &out, int64 &out, float &out, float &out, float &out, float &out, float &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateTouchFingerEvents), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateMultipleFingerEvents(int64 &out, float &out, float &out, float &out, float &out, uint &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateMultipleFingerEvents), asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateDollarGestureEvents(int64 &out, int64 &out, uint &out, float &out, float &out, float &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateDollarGestureEvents), asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CActionMgr ActionMgr", &CActionMgr::Instance()) );
