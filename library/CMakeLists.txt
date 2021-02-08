@@ -31,10 +31,18 @@
 #        slot/slotgroupfactory.cpp
 #        slot/animatedcycleresults.cpp
 
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name
+project(library VERSION 2.84)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add the files to the library
 add_library(
-    library STATIC
+    ${PROJECT_NAME} STATIC
         gui/icontrol.cpp
         gui/uibutton.cpp
         gui/menumanager.cpp
@@ -161,22 +169,14 @@ add_library(
         soil/stb_image_aug.c
         soil/SOIL.c
         soil/image_helper.c
-        soil/image_DXT.c )
+        soil/image_DXT.c
+)
 
-include_directories(
-    objectdata
-    script
-    system
-    sprite
-    node
-    strategy
-    utilities
-    managers
-    physics
-    2d
-    3d
-    gui
-    slot
-    common
-    soil )
-
+target_include_directories(
+    ${PROJECT_NAME} PUBLIC
+        .
+        ../
+        ../angelscript/include
+        ../angelscript/add_on
+        ../bulletPhysics/src
+)

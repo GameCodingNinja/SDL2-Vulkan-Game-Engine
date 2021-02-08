@@ -4,14 +4,19 @@
 # cmake -DCMAKE_BUILD_TYPE=Release ..
 # make
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 include(ExternalProject)
 
-project(consoleTestAp VERSION 1.0 LANGUAGES CXX)
+project(DesignerApp VERSION 1.0 LANGUAGES CXX)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread")
 
 # Use the normal means to find the other packages
 find_package(Vulkan REQUIRED)
@@ -21,7 +26,10 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 # Add the game level executable files
 add_executable(
     ${PROJECT_NAME}
-        consoleTestAp/consoleTestAp.cpp
+    source/main.cpp
+    source/mainwindow.cpp
+    source/mainwindow.h
+    source/mainwindow.ui
 )
 
 # Create library specific path variables
@@ -65,27 +73,16 @@ ExternalProject_Add(
     INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
 )
 
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
-    set(SDL_LIB_DIR /usr/lib/arm-linux-gnueabihf/)
-else()
-    set(SDL_LIB_DIR /usr/lib/)
-endif()
-
-# Append external libraries and includes. Libs need to be listed in order of dependency for some reason
-list(APPEND EXTRA_LIBS ${library_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}library${CMAKE_STATIC_LIBRARY_SUFFIX})
+# Append external libraries and includes
 list(APPEND EXTRA_LIBS ${bulletPhysics_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}bulletPhysics${CMAKE_STATIC_LIBRARY_SUFFIX})
 list(APPEND EXTRA_LIBS ${Box2D_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}Box2D${CMAKE_STATIC_LIBRARY_SUFFIX})
 list(APPEND EXTRA_LIBS ${angelscript_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}angelscript${CMAKE_STATIC_LIBRARY_SUFFIX})
-list(APPEND EXTRA_LIBS ${Vulkan_LIBRARY})
-list(APPEND EXTRA_LIBS ${SDL_LIB_DIR}${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX})
-list(APPEND EXTRA_LIBS ${SDL_LIB_DIR}${CMAKE_SHARED_LIBRARY_PREFIX}SDL2_mixer${CMAKE_SHARED_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS ${library_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}library${CMAKE_STATIC_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS /usr/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS /usr/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2_mixer${CMAKE_SHARED_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS Qt${QT_VERSION_MAJOR}::Widgets)
 list(APPEND EXTRA_INCLUDES /usr/include/SDL2)
-list(APPEND EXTRA_INCLUDES ${PARENT_SOURCE_DIR})
 list(APPEND EXTRA_INCLUDES ${Boost_INCLUDE_DIRS})
-list(APPEND EXTRA_INCLUDES ${library_SOURCE_DIR})
-list(APPEND EXTRA_INCLUDES ${angelscript_SOURCE_DIR}/include)
-list(APPEND EXTRA_INCLUDES ${angelscript_SOURCE_DIR}/add_on)
-list(APPEND EXTRA_INCLUDES ${bulletPhysics_SOURCE_DIR}/src)
 
 # Target all the libraries
 target_link_libraries(

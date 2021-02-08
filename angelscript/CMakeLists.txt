@@ -1,7 +1,15 @@
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name
+project(angelscript VERSION 2.84)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add the files to the library
 add_library(
-    angelscript STATIC
+    ${PROJECT_NAME} STATIC
         source/as_atomic.cpp
         source/as_builder.cpp
         source/as_bytecode.cpp
@@ -40,9 +48,13 @@ add_library(
         add_on/scriptstdstring/scriptstdstring.cpp
         add_on/scriptarray/scriptarray.cpp
         add_on/scriptdictionary/scriptdictionary.cpp
-        add_on/scriptmath/scriptmath.cpp )
+        add_on/scriptmath/scriptmath.cpp
+)
 
-include_directories(include)
+target_include_directories(
+    ${PROJECT_NAME} PUBLIC
+        include
+)
 
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
     enable_language(ASM)

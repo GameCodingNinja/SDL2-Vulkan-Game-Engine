@@ -1,54 +1,101 @@
-# To build a release version on Linux, from within the gameTemplate folder
+# To build a release version on Linux, from within this project folder
 # mkdir release
 # cd release
 # cmake -DCMAKE_BUILD_TYPE=Release ..
 # make
 
-cmake_minimum_required(VERSION 3.0.1)
+cmake_minimum_required(VERSION 3.10)
+include(ExternalProject)
 
-project(gametemplate)
+project(gametemplate VERSION 1.0 LANGUAGES CXX)
 
-# The version number.
-set(gametemplate_VERSION_MAJOR 1)
-set(gametemplate_VERSION_MINOR 0)
-
-# Check for C++17, -Wall = show warnings; -Wextra = more warnings
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
-if(COMPILER_SUPPORTS_CXX17)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread")
-else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler.")
-endif()
-
-# Need to do this to find SDL2 libraries
-#INCLUDE(FindPkgConfig)
-#PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-#PKG_SEARCH_MODULE(SDL2MIXER REQUIRED SDL2_mixer)
-
-set(SDL2_INCLUDE_DIRS /usr/include/SDL2)
-set(SDL2_LIBRARY /usr/lib/libSDL2.so)
-set(SDL2MIXER_LIBRARY /usr/lib/libSDL2_mixer.so)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread")
 
 # Use the normal means to find the other packages
 find_package(Vulkan REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
-# List all the include directories
-include_directories(
-    ${SDL2_INCLUDE_DIRS}
-    ${SDL2MIXER_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
-    ../
-    ../bulletPhysics/src
-    ../library
-    ../angelscript/include
-    ../angelscript/add_on )
+# Add the game level executable files
+add_executable(
+    ${PROJECT_NAME}
+    source/game/game.cpp
+    source/game/main.cpp
+)
 
-# List the directories in the order they are to be built
-# This doesn't execute the build but more like queue's them up in the below order
-add_subdirectory( ../bulletPhysics ${CMAKE_CURRENT_BINARY_DIR}/bulletPhysics )
-add_subdirectory( ../angelscript ${CMAKE_CURRENT_BINARY_DIR}/angelscript )
-add_subdirectory( ../Box2D ${CMAKE_CURRENT_BINARY_DIR}/Box2D )
-add_subdirectory( ../library ${CMAKE_CURRENT_BINARY_DIR}/library )
-add_subdirectory( source )
+# Create library specific path variables
+get_filename_component(PARENT_SOURCE_DIR ${PROJECT_SOURCE_DIR} DIRECTORY)
+set(bulletPhysics_SOURCE_DIR ${PARENT_SOURCE_DIR}/bulletPhysics)
+set(Box2D_SOURCE_DIR ${PARENT_SOURCE_DIR}/Box2D)
+set(angelscript_SOURCE_DIR ${PARENT_SOURCE_DIR}/angelscript)
+set(library_SOURCE_DIR ${PARENT_SOURCE_DIR}/library)
 
+# ExternalProject_Add cmake files are generated during the build command
+
+# Add the external project library.
+ExternalProject_Add(
+    library
+    SOURCE_DIR ${library_SOURCE_DIR}
+    BINARY_DIR ${library_SOURCE_DIR}/build
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
+)
+
+# Add the external project Bullet Physics.
+ExternalProject_Add(
+    bulletPhysics
+    SOURCE_DIR ${bulletPhysics_SOURCE_DIR}
+    BINARY_DIR ${bulletPhysics_SOURCE_DIR}/build
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
+)
+
+# Add the external project Box2D.
+ExternalProject_Add(
+    Box2D
+    SOURCE_DIR ${Box2D_SOURCE_DIR}
+    BINARY_DIR ${Box2D_SOURCE_DIR}/build
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
+)
+
+# Add the external project angelscript.
+ExternalProject_Add(
+    angelscript
+    SOURCE_DIR ${angelscript_SOURCE_DIR}
+    BINARY_DIR ${angelscript_SOURCE_DIR}/build
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
+)
+
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
+    set(SDL_LIB_DIR /usr/lib/arm-linux-gnueabihf/)
+else()
+    set(SDL_LIB_DIR /usr/lib/)
+endif()
+
+# Append external libraries and includes. Libs need to be listed in order of dependency for some reason
+list(APPEND EXTRA_LIBS ${library_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}library${CMAKE_STATIC_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS ${bulletPhysics_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}bulletPhysics${CMAKE_STATIC_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS ${Box2D_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}Box2D${CMAKE_STATIC_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS ${angelscript_SOURCE_DIR}/build/${CMAKE_STATIC_LIBRARY_PREFIX}angelscript${CMAKE_STATIC_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS ${Vulkan_LIBRARY})
+list(APPEND EXTRA_LIBS ${SDL_LIB_DIR}${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX})
+list(APPEND EXTRA_LIBS ${SDL_LIB_DIR}${CMAKE_SHARED_LIBRARY_PREFIX}SDL2_mixer${CMAKE_SHARED_LIBRARY_SUFFIX})
+list(APPEND EXTRA_INCLUDES /usr/include/SDL2)
+list(APPEND EXTRA_INCLUDES ${PARENT_SOURCE_DIR})
+list(APPEND EXTRA_INCLUDES ${Boost_INCLUDE_DIRS})
+list(APPEND EXTRA_INCLUDES ${library_SOURCE_DIR})
+list(APPEND EXTRA_INCLUDES ${angelscript_SOURCE_DIR}/include)
+list(APPEND EXTRA_INCLUDES ${angelscript_SOURCE_DIR}/add_on)
+list(APPEND EXTRA_INCLUDES ${bulletPhysics_SOURCE_DIR}/src)
+
+# Target all the libraries
+target_link_libraries(
+    ${PROJECT_NAME} PRIVATE
+        ${EXTRA_LIBS}
+)
+
+# Target all then includes
+target_include_directories(
+    ${PROJECT_NAME} PRIVATE
+        ${EXTRA_INCLUDES}
+)

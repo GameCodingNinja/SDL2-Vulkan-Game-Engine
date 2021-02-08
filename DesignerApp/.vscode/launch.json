@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/pachinkoChallenge",
+            "program": "${workspaceFolder}/build/DesignerApp",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

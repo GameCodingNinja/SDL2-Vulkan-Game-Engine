@@ -1,3 +1,8 @@
+# To build a release version on Linux, from within this project folder
+# mkdir release
+# cd release
+# cmake -DCMAKE_BUILD_TYPE=Release ..
+# make
 
 # Add the game level executable files
 add_executable(

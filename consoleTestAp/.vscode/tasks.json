@@ -7,7 +7,7 @@
             "options": {
                 "cwd": "${workspaceRoot}/build"
             },
-            "command": "make -j -l --no-print-directory",
+            "command": "cmake --build .",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

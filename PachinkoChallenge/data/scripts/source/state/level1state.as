@@ -23,8 +23,13 @@ final class CRunState : CCommonState
     array<string> mStrategyAry = {"_level_stage_","_level_multi_","_level_ball_","_level_ui_"};
 
     // Ball list
-    array<string> mBallAry = 
+    /*array<string> mBallAry = 
         {"square_red","square_green","square_blue",
+        "triangle_red","triangle_blue","triangle_green",
+        "circle_red","circle_blue","circle_green"};*/
+
+    array<string> mBallAry = 
+        {"circle_red","circle_blue","circle_green",
         "triangle_red","triangle_blue","triangle_green",
         "circle_red","circle_blue","circle_green"};
 

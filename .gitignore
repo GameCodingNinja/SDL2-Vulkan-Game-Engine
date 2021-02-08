@@ -1,6 +1,23 @@
 /org.libsdl.testgles
 
-/gameTemplate/.vscode/ipch
+/cmakeTutoral/build/
+
+/cmakeTutoralLib/build/
+
+/DesignerApp/Win32/
+/DesignerApp/AS_DEBUG/
+/DesignerApp/.vs/
+/DesignerApp/DesignerApp.sdf
+/DesignerApp/DesignerApp.VC.opendb
+/DesignerApp/build/
+
+/testApp/Win32/
+/testApp/AS_DEBUG/
+/testApp/.vs/
+/testApp/DesignerApp.sdf
+/testApp/DesignerApp.VC.opendb
+/testApp/build/
+
 /gameTemplate/Win32/
 /gameTemplate/AS_DEBUG/
 /gameTemplate/.vs/
@@ -50,17 +67,18 @@
 /org.howiesfunware.template/.idea
 /org.howiesfunware.template/app/.externalNativeBuild
 
-/library/.vscode/ipch
-/library/Win32/
+/library/build/
 
-/angelscript/.vscode/ipch
 /angelscript/projects/msvc2015/Win32/
 /angelscript/projects/msvc2015/angelscript.vcxproj.user
+/angelscript/build/
 
 /Box2D/Win32/
 /Box2D/Box2D.vcxproj.user
+/Box2D/build/
 
 /bulletPhysics/build3/vs2010/Win32/
+/bulletPhysics/build/
 
 /*.user
 /scriptGameTestEnvironment/build/
