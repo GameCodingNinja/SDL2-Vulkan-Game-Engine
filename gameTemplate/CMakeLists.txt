@@ -104,3 +104,6 @@ target_include_directories(
     ${PROJECT_NAME} PRIVATE
         ${EXTRA_INCLUDES}
 )
+
+message(STATUS "Extra Libs ${EXTRA_LIBS}")
+message(STATUS "Extra Inc ${EXTRA_INCLUDES}")
