@@ -47,7 +47,7 @@
             "options": {
                 "cwd": "${workspaceRoot}"
             },
-            "command": "${workspaceRoot}/build/source/pachinkoChallenge",
+            "command": "${workspaceRoot}/build/pachinkoChallenge",
             "problemMatcher": []
         }
     ]

@@ -47,7 +47,7 @@
             "options": {
                 "cwd": "${workspaceRoot}"
             },
-            "command": "${workspaceRoot}/build/source/gametemplate",
+            "command": "${workspaceRoot}/build/gametemplate",
             "problemMatcher": []
         }
     ]
