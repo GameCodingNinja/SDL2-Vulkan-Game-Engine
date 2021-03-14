@@ -2,6 +2,7 @@
 
     <strategy name="_load_" cmdBufPool="(load)" activate="true">
     
+        <!-- Node name will be used for the object name look up if one isn't defined -->
         <node name="loadAnim">
             <sprite>
                 <script prepare="loadAnimationLoop"/>

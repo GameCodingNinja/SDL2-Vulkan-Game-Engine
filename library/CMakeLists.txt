@@ -39,6 +39,8 @@ project(library VERSION 2.84)
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+# Added -g to generate debug info
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread -g")
 
 # Add the files to the library
 add_library(

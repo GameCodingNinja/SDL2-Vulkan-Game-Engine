@@ -3,8 +3,8 @@
     <!-- One off Strategy node creation for simple nodes that don't define scripts. Bypasses the need to create a strategy file -->
     <strategy name="_title_" cmdBufPool="(title)">
     
-        <!-- Node name will be used for the object name look up if one isn't defined -->
-        <node name="background" group="(title)"/>
+        <!-- Node name will be used for simlple sprite object name look up if one isn't defined -->
+        <node name="background"/>
 
     </strategy>
 

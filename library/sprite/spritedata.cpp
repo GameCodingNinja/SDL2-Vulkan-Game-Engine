@@ -8,6 +8,12 @@
 // Physical component dependency
 #include <sprite/spritedata.h>
 
+// Game lib dependencies
+#include <utilities/genfunc.h>
+
+// Boost lib dependencies
+#include <boost/format.hpp>
+
 // Standard lib dependencies
 #include <cstring>
 
@@ -28,10 +34,16 @@ CSpriteData::CSpriteData(
         m_group = xmlNode.getAttribute( "group" );
     
     // Get the object data name
-    // Init with the node name in the event the node and the object data name are the same
-    m_objectName = nodeName;
+    // Init with the node name in the event the node and the object data names are the same and a default object name was not defined
+    if( m_objectName.empty() )
+        m_objectName = nodeName;
+
     if( xmlNode.isAttributeSet( "objectName" ) )
         m_objectName = xmlNode.getAttribute( "objectName" );
+
+    else if(defObjName.empty())
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Node name used for object data look-up (%s, %s)!") % m_group % m_objectName ) );
+    
 }
 
 CSpriteData::~CSpriteData()

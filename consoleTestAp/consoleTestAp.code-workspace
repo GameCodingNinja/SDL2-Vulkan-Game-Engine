@@ -105,7 +105,9 @@
             "slist": "cpp",
             "scoped_allocator": "cpp",
             "shared_mutex": "cpp",
-            "span": "cpp"
+            "span": "cpp",
+            "any": "cpp",
+            "source_location": "cpp"
         },
 		"editor.autoClosingBrackets": "never"
 	}

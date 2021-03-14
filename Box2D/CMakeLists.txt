@@ -6,6 +6,7 @@ project(Box2D VERSION 2.84)
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread")
 
 add_library(
     ${PROJECT_NAME} STATIC

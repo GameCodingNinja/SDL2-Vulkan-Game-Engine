@@ -38,6 +38,7 @@ ExternalProject_Add(
     SOURCE_DIR ${library_SOURCE_DIR}
     BINARY_DIR ${library_SOURCE_DIR}/build
     INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
+    BUILD_ALWAYS 1
 )
 
 # Add the external project Bullet Physics.

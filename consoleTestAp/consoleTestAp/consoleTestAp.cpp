@@ -2,6 +2,113 @@
 //
 
 #include <iostream>
+#include <string.h>
+#include <cmath>
+#include <limits>
+#include <algorithm>
+
+// fails when x and y are large
+bool absoluteToleranceCompare(double x, double y)
+{
+    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon() ;
+}
+
+// fails when x and y are small
+bool relativeToleranceCompare(double x, double y)
+{
+    double maxXY = std::max( std::fabs(x) , std::fabs(y) ) ;
+    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon()*maxXY ;
+}
+
+bool combinedToleranceCompare(double x, double y)
+{
+    double maxXYOne = std::max( { 1.0, std::fabs(x) , std::fabs(y) } ) ;
+
+    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon()*maxXYOne ;
+}
+
+bool AreSame(double a, double b)
+{
+    double maxXYOne = std::max( { 1.0, std::fabs(a) , std::fabs(b) } ) ;
+    return std::fabs(a - b) <= std::numeric_limits<double>::epsilon()*maxXYOne ;
+}
+
+void ZerosToTheBack( int arry[], const int length )
+{
+    /*int offset(0);
+    bool found;
+
+    do
+    {
+        found = false;
+        ++offset;
+        for( int i = 0; i < (length - offset); ++i )
+        {
+            if( arry[i] == 0 )
+            {
+                found = true;
+                arry[i] = arry[i+1];
+                arry[i+1] = 0;
+            }
+        }
+    }
+    while( (offset < length) && found );*/
+
+    int * pSource = arry;
+    int * pDest = arry;
+
+    // Copy over non-zero values
+    int counter(0);
+    for( int i = 0; i < length; ++i )
+    {
+        if( *pSource )
+        {
+            *pDest++ = *pSource;
+            ++counter;
+        }
+
+        ++pSource;
+    }
+
+    // Fill in the remainder of the array with zeros
+    if( counter < length )
+        memset( pDest, 0, sizeof(int) * (length - counter) );
+}
+
+int main()
+{
+    if (AreSame(124.1234567891, 124.1234567892))
+        std::cout << "same" << std::endl;
+    else
+        std::cout << "not" << std::endl;
+    
+
+    /*int arry[] = {2, 0, 2, 3, 4, 64, 98, 0, 2, 0};
+    ZerosToTheBack( arry, 10 );
+
+    for( int i = 0; i < 10; ++i )
+        std::cout << arry[i] << ", ";
+    std::cout << std::endl;*/
+
+    /*int aMatrix[2][3] = {{7, 8, 9}, {10, 11, 12}};
+    int bMatrix[3][2] = {{1, 4}, {2, 5}, {3, 6}};
+    int product[2][2] = {{0, 0}, {0, 0}};
+
+    for (int row = 0; row < 2; row++) {
+        for (int col = 0; col < 2; col++) {
+            // Multiply the row of A by the column of B to get the row, column of product.
+            for (int inner = 0; inner < 3; inner++) {
+                product[row][col] += aMatrix[row][inner] * bMatrix[inner][col];
+            }
+            std::cout << product[row][col] << "  ";
+        }
+        std::cout << "\n";
+    }*/
+
+    return 0;
+}
+
+/*#include <iostream>
 #include <vector>
 #include <chrono>
 #include <algorithm>
@@ -87,7 +194,7 @@ int main()
     std::cout << "Test started..." << std::endl;
     
     CThreadPool::Instance().stop();
-}
+}*/
 
 
 

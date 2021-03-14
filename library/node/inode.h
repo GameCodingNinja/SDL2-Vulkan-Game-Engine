@@ -36,7 +36,7 @@ public:
     // Destructor
     virtual ~iNode();
 
-    // Get the next node
+    // Get the starting position of the vector iterator
     virtual nodeVecIter_t getNodeIter()
     { return nodeVecIter_t(); }
 

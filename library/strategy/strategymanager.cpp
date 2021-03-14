@@ -27,7 +27,6 @@ CStrategyMgr::CStrategyMgr()
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -35,7 +34,6 @@ CStrategyMgr::~CStrategyMgr()
 {
     NDelFunc::DeleteMapPointers(m_pStrategyMap);
 }
-
 
 /************************************************************************
  *    DESC:  Add strategy which will load it's data from XML node
@@ -64,7 +62,6 @@ CStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, CStrategy
     return pStrategy;
 }
 
-
 /************************************************************************
  *    DESC:  activate strategy
  ************************************************************************/
@@ -79,7 +76,6 @@ void CStrategyMgr::activateStrategyAry( const CScriptArray & strategyIdAry )
     for( uint i = 0; i < strategyIdAry.GetSize(); i++ )
         activateStrategy( *reinterpret_cast<const std::string *>(strategyIdAry.At(i)) );
 }
-
 
 CStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
 {
@@ -105,7 +101,6 @@ CStrategy * CStrategyMgr::activateStrategy( const std::string & strategyId )
     
     return mapIter->second;
 }
-
 
 /************************************************************************
  *    DESC:  deactivate strategy
@@ -141,7 +136,6 @@ void CStrategyMgr::deactivateStrategy( const std::string & strategyId )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy id can't be found to deactivate (%s)!") % strategyId ) );
 }
 
-
 /************************************************************************
  *    DESC:  Delete strategy
  ************************************************************************/
@@ -175,7 +169,6 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
         NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy id can't be found to delete (%s)!") % strategyId ) );
 }
 
-
 /************************************************************************
 *    DESC:  Delete all the strategies
 ************************************************************************/
@@ -186,7 +179,6 @@ void CStrategyMgr::clear()
     m_pStrategyVec.clear();
 }
 
-
 /***************************************************************************
 *    DESC:  Update the sprites
 ****************************************************************************/
@@ -196,7 +188,6 @@ void CStrategyMgr::update()
         iter->update();
 }
 
-
 /************************************************************************
 *    DESC:  Transform the sprite
 ************************************************************************/
@@ -205,7 +196,6 @@ void CStrategyMgr::transform()
     for( auto iter : m_pStrategyVec )
         iter->transform();
 }
-
 
 /***************************************************************************
 *    DESC:  Record the command buffer for all the sprite
@@ -225,7 +215,6 @@ void CStrategyMgr::updateSecondaryCmdBuf( uint32_t index )
     for( auto iter : m_pStrategyVec )
         iter->updateSecondaryCmdBuf( index );
 }
-
 
 /************************************************************************
 *    DESC:  Get the pointer to the strategy

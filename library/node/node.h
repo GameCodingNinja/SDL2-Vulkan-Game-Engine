@@ -28,12 +28,12 @@ public:
     // Destructor
     virtual ~CNode();
 
-    // Get the next node
-    iNode * next(nodeVecIter_t & rIter) override;
-
-    // Get the next node
+    // Get the starting position of the vector iterator
     nodeVecIter_t getNodeIter() override
     { return m_nodeVec.begin(); }
+
+    // Get the next node
+    iNode * next(nodeVecIter_t & rIter) override;
 
     // Add a node
     bool addNode( iNode * pNode ) override;

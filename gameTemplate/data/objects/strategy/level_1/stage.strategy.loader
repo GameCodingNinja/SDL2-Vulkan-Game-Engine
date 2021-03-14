@@ -1,196 +1,197 @@
 <loader>
 
-    <strategy name="_stage_" cmdBufPool="(level_1)">
+    <!-- Using the default name for most of the nodes as an example -->
+    <strategy name="_stage_" defaultName="peg" cmdBufPool="(level_1)">
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-800" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-640" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-480" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-320" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-160" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="0" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="160" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="320" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="480" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="640" y="-320"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="800" y="-320"/>
             </sprite>
         </node>
 
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-720" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-560" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-400" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-240" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-80" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="80" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="240" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="400" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="560" y="-160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="720" y="-160"/>
             </sprite>
         </node>
 
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-800" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-640" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-480" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-320" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-160" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="0" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node >
             <sprite>
                 <position x="160" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="320" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="480" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="640" y="0"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="800" y="0"/>
             </sprite>
@@ -198,61 +199,61 @@
 
 
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-720" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-560" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-400" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-240" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="-80" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="80" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="240" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="400" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="560" y="160"/>
             </sprite>
         </node>
 
-        <node name="peg">
+        <node>
             <sprite>
                 <position x="720" y="160"/>
             </sprite>

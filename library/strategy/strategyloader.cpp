@@ -181,6 +181,19 @@ namespace NStrategyloader
     {
         // Set any transforms
         pObject->loadTransFromNode( nodeXML );
+
+        // See if there are any scripts that need to be prepared
+        for( int i = 0; i < nodeXML.nChildNode("script"); ++i )
+        {
+            const XMLNode scriptNodeXML = nodeXML.getChildNode( "script", i );
+
+            if( scriptNodeXML.isAttributeSet("prepare") )
+            {
+                const std::string scriptToPrepare = scriptNodeXML.getAttribute( "prepare" );
+                if( !pObject->prepare( scriptToPrepare ) )
+                    NGenFunc::PostDebugMsg( boost::str( boost::format("Script function not found in sprite (%s).") % scriptToPrepare ) );
+            }
+        }
     }
 
     void init( const XMLNode & nodeXML, CSprite * pSprite )
