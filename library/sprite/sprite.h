@@ -97,9 +97,6 @@ public:
     // Get the current frame
     uint getCurrentFrame() const;
 
-    // Does this sprite have script functions
-    bool hasScriptFunctions();
-
     // Use a point to set a column - used for 3d physics
     void setRotMatrixColumn( const int col, const float x, const float y, const float z ) final;
 

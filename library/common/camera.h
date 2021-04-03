@@ -79,6 +79,9 @@ private:
     // World position value
     CPoint<CWorldValue> m_worldValPos;
 
+    // Group name
+    std::string m_group;
+
     // Custom projection matrix
     CMatrix m_projectionMatrix;
 

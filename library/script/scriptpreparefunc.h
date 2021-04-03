@@ -2,7 +2,7 @@
 /************************************************************************
 *    FILE NAME:       scriptpreparefunc.h
 *
-*    DESCRIPTION:     Script prepare function falues
+*    DESCRIPTION:     Class for holding script attributes
 ************************************************************************/
 
 #pragma once

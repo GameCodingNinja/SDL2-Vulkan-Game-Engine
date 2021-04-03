@@ -50,8 +50,9 @@ CStrategy * CStrategyMgr::addStrategy( const std::string & strategyId, CStrategy
                 % strategyId % __FUNCTION__ % __LINE__ ));
     }
 
-    // See if there is any files associated with the strategy id in the list table
-    // NOTE: Will return an empty strategy if a file is not defined. Will do an object data search to create a node/sprite. Assumes sprite only
+    // See if there is any files associated with the strategy in the list table
+    // NOTE: Will return an empty strategy if a file is not defined. Will do an object 
+    // data search to create a node/sprite. Assumes sprite only.
     auto listTableIter = m_listTableMap.find( strategyId );
     if( listTableIter != m_listTableMap.end() )
     {

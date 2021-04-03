@@ -7,80 +7,97 @@
 #include <limits>
 #include <algorithm>
 
+// Bits compare assuming floats are stored as IEEE 754
+bool hackToleranceCompare(double x, double y)
+{
+    return (*(int *)&x == *(int *)&y);
+}
+
 // fails when x and y are large
 bool absoluteToleranceCompare(double x, double y)
 {
-    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon() ;
+    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon();
 }
 
 // fails when x and y are small
 bool relativeToleranceCompare(double x, double y)
 {
     double maxXY = std::max( std::fabs(x) , std::fabs(y) ) ;
-    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon()*maxXY ;
+    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon()*maxXY;
 }
 
 bool combinedToleranceCompare(double x, double y)
 {
     double maxXYOne = std::max( { 1.0, std::fabs(x) , std::fabs(y) } ) ;
 
-    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon()*maxXYOne ;
+    return std::fabs(x - y) <= std::numeric_limits<double>::epsilon()*maxXYOne;
 }
 
 bool AreSame(double a, double b)
 {
     double maxXYOne = std::max( { 1.0, std::fabs(a) , std::fabs(b) } ) ;
-    return std::fabs(a - b) <= std::numeric_limits<double>::epsilon()*maxXYOne ;
+    return std::fabs(a - b) <= std::numeric_limits<double>::epsilon()*maxXYOne;
 }
 
-void ZerosToTheBack( int arry[], const int length )
+
+class CNode
 {
-    /*int offset(0);
-    bool found;
-
-    do
+public:
+    CNode(const double value)
     {
-        found = false;
-        ++offset;
-        for( int i = 0; i < (length - offset); ++i )
-        {
-            if( arry[i] == 0 )
-            {
-                found = true;
-                arry[i] = arry[i+1];
-                arry[i+1] = 0;
-            }
-        }
-    }
-    while( (offset < length) && found );*/
-
-    int * pSource = arry;
-    int * pDest = arry;
-
-    // Copy over non-zero values
-    int counter(0);
-    for( int i = 0; i < length; ++i )
-    {
-        if( *pSource )
-        {
-            *pDest++ = *pSource;
-            ++counter;
-        }
-
-        ++pSource;
+        data = value;
     }
 
-    // Fill in the remainder of the array with zeros
-    if( counter < length )
-        memset( pDest, 0, sizeof(int) * (length - counter) );
-}
+    ~CNode()
+    {
+        std::cout << "Node deleted: " << data << std::endl;
+        if(pNext != nullptr)
+            delete pNext;
+    }
+
+    void add(const double value, CNode * pParentNode = nullptr)
+    {
+        if(pNext == nullptr)
+        {
+            pNext = new CNode(value);
+            pPrev = pParentNode;
+        }
+        else
+            pNext->add(value, this);
+    }
+
+    CNode * find(const double value)
+    {
+        if(AreSame(value, data))
+            return this;
+
+        else if( pNext != nullptr )
+            return pNext->find(value);
+
+        return nullptr;
+    }
+
+private:
+    double data;
+    CNode * pNext = nullptr;
+    CNode * pPrev = nullptr;
+};
 
 int main()
 {
-    if (AreSame(124.1234567891, 124.1234567892))
+    /*CNode head(1.345);
+    head.add(45.678);
+    head.add(3.7921);
+    head.add(21.5129);
+    head.add(89.6302);
+    head.add(32.9058);
+
+    auto result = head.find(32.9058);*/
+
+    /*if (AreSame(124.1234, 124.1234))
         std::cout << "same" << std::endl;
     else
-        std::cout << "not" << std::endl;
+        std::cout << "not" << std::endl;*/
     
 
     /*int arry[] = {2, 0, 2, 3, 4, 64, 98, 0, 2, 0};
@@ -91,19 +108,52 @@ int main()
     std::cout << std::endl;*/
 
     /*int aMatrix[2][3] = {{7, 8, 9}, {10, 11, 12}};
-    int bMatrix[3][2] = {{1, 4}, {2, 5}, {3, 6}};
-    int product[2][2] = {{0, 0}, {0, 0}};
+    int bMatrix[5][2] = {{1, 4}, {2, 5}, {3, 6}, {7, 9}, {5, 1}};
+    int product[5][2] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};*/
+
+    int aMatrix[2][3] = {{3, 4, 2},{6, 9, 5}};
+    int bMatrix[3][4] = {{13, 9, 7, 15}, {8, 7, 4, 6}, {6, 4, 0, 3}};
+    int product[2][4] = {{0, 0, 0, 0}};
 
     for (int row = 0; row < 2; row++) {
-        for (int col = 0; col < 2; col++) {
+        for (int col = 0; col < 4; col++) {
             // Multiply the row of A by the column of B to get the row, column of product.
             for (int inner = 0; inner < 3; inner++) {
                 product[row][col] += aMatrix[row][inner] * bMatrix[inner][col];
             }
             std::cout << product[row][col] << "  ";
         }
-        std::cout << "\n";
-    }*/
+        std::cout << std::endl;
+    }
+
+    /*
+    CPoint<float> point1(-15,10);
+    CPoint<float> point2(10,10);
+    float magnitude1 = point1.GetLength2D();
+    float magnitude2 = point2.GetLength2D();
+
+    float scalar = point1.GetDotProduct2D(point2);
+    
+    float scalarNomalized = scalar / (magnitude1 * magnitude2);
+    
+    float radians = acos( scalarNomalized );
+
+    float degrees = radians * defs_RAD_TO_DEG;
+
+    std::cout << "Using vectors: scalar: " << scalar << ", normalized scaler: " << scalarNomalized <<  ", radians: " << radians << ", degrees: " << degrees << std::endl;
+    
+    
+    point1.Normalize2D();
+    point2.Normalize2D();
+
+    float scalar2 = point1.GetDotProduct2D(point2);
+    
+    float radians2 = acos( scalar2 );
+    
+    float degrees2 = radians2 * defs_RAD_TO_DEG;
+    
+    std::cout << "Using unit vectors: scalar: " << scalar2 << ", radians: " << radians2 << ", degrees: " << degrees2 << std::endl;
+    */
 
     return 0;
 }

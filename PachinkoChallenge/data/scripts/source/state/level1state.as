@@ -29,8 +29,7 @@ final class CRunState : CCommonState
         "circle_red","circle_blue","circle_green"};*/
 
     array<string> mBallAry = 
-        {"circle_red","circle_blue","circle_green",
-        "triangle_red","triangle_blue","triangle_green",
+        {"triangle_red","triangle_blue","triangle_green",
         "circle_red","circle_blue","circle_green"};
 
     // Multiplier positions

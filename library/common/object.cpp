@@ -538,3 +538,11 @@ void CObject::copyScriptFunctions( const std::map<std::string, CScriptPrepareFun
     for( auto & iter : scriptFunctionMap )
         m_scriptFunctionMap.emplace( iter );
 }
+
+/************************************************************************
+*    DESC:  Does this object have script functions
+************************************************************************/
+bool CObject::hasScriptFunctions()
+{
+    return !m_scriptFunctionMap.empty();
+}

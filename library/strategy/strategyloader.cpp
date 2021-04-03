@@ -132,20 +132,19 @@ namespace NStrategyloader
                                         {
                                             const XMLNode nodeChildNodeXML = childNodeXML.getChildNode();
 
-                                            if( pChildNode->getType() == ENodeType::OBJECT )
+                                            if( pChildNode->getType() == ENodeType::OBJECT || 
+                                                pChildNode->getType() == ENodeType::UI_CONTROL )
                                                 init( nodeChildNodeXML, pChildNode->getObject() );
 
                                             else if( pChildNode->getType() == ENodeType::SPRITE )
                                                 init( nodeChildNodeXML, pChildNode->getSprite() );
-                                            
-                                            else if( pChildNode->getType() == ENodeType::UI_CONTROL )
-                                                init( nodeChildNodeXML, pChildNode->getObject() );
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    if( pHeadNode->getType() == ENodeType::OBJECT )
+                                    if( pHeadNode->getType() == ENodeType::OBJECT ||
+                                        pHeadNode->getType() == ENodeType::UI_CONTROL )
                                         init( childNodeXML, pHeadNode->getObject() );
 
                                     else if( pHeadNode->getType() == ENodeType::SPRITE )

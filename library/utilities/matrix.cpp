@@ -874,10 +874,10 @@ void CMatrix::perspectiveFovLH( float fovy, float aspect, float zn, float zf )
 ************************************************************************/
 void CMatrix::multiply3x3( const CMatrix & obj )
 {
-    float tmp[mMax] = { 1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1 };
+    float tmp[mMax];
+
+    // init the matrix
+    initIdentityMatrix( tmp );
 
     for( int i = 0; i < 3; ++i )
     {

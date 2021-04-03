@@ -124,6 +124,9 @@ public:
         const bool prepareOnInit = false,
         const bool forceUpdate = false,
         const bool overwrite = false );
+    
+    // Does this object have script functions
+    bool hasScriptFunctions();
 
 public: // transform related members
     

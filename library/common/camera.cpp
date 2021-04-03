@@ -84,7 +84,11 @@ void CCamera::loadFromNode( const XMLNode & node )
             m_projType = EProjectionType::PERSPECTIVE;
     }
     
+    // Load the transform data
     loadTransFromNode( node );
+
+    // Load the script functions
+    loadScriptFromNode( node, m_group );
 
     if( m_parameters.isSet( TRANSFORM ) )
         invertPos();
@@ -113,6 +117,9 @@ void CCamera::init()
     
     // Calculate the final matrix
     calcFinalMatrix();
+
+    // Prepare any script functions that are flagged to prepareOnInit
+    prepareOnInit();
 }
 
 /************************************************************************

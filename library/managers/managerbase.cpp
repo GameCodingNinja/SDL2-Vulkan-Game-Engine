@@ -22,14 +22,12 @@ CManagerBase::CManagerBase()
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
 CManagerBase::~CManagerBase()
 {
 }
-
 
 /************************************************************************
 *    DESC:  Load the data list tables
@@ -68,7 +66,6 @@ void CManagerBase::loadListTable( const std::string & filePath )
         loadUniqueData( dataListNode, group );
     }
 }
-
 
 /************************************************************************
 *    DESC:  Derived class loading of class specific data

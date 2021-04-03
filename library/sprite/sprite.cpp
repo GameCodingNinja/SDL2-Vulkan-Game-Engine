@@ -241,14 +241,6 @@ const iObjectData & CSprite::getObjectData() const
 }
 
 /************************************************************************
-*    DESC:  Does this sprite have script functions
-************************************************************************/
-bool CSprite::hasScriptFunctions()
-{
-    return !m_scriptFunctionMap.empty();
-}
-
-/************************************************************************
 *    DESC:  Apply the rotation
 ************************************************************************/
 void CSprite::applyRotation( CMatrix & matrix )
