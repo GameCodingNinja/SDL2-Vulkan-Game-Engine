@@ -12,7 +12,6 @@
 #include <node/node.h>
 
 // Standard lib dependencies
-#include <map>
 #include <string>
 
 class CRenderNode : public CNode

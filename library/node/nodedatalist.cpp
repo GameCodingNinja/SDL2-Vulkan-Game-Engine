@@ -42,7 +42,7 @@ CNodeDataList::CNodeDataList(
     if( xmlNode.isAttributeSet( "name" ) )
         nodeName = xmlNode.getAttribute( "name" );
 
-    // Get the sprite's unique id number
+    // Get the user id number
     if( xmlNode.isAttributeSet( "id" ) )
         userId = std::atoi(xmlNode.getAttribute( "id" ));
 

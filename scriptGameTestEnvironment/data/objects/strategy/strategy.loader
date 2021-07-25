@@ -4,18 +4,7 @@
     
         <node name="shapes"/>
         <node name="multiListTestNode"/>
-        <node name="player_ship">
-            <node name="fire_tail">
-                <sprite>
-                    <script prepare="animate"/>
-                </sprite>
-            </node>
-            <node name="ship_gun">
-                <sprite>
-                    <script prepare="rotate"/>
-                </sprite>
-            </node>
-        </node>
+        <node name="player_ship"/>
 
     </strategy>
   

@@ -101,7 +101,7 @@
             <sprite>
                 <position x="-120" y="-3" z="0"/>
                 <scriptList>
-                    <script animate="loopAnimation"/>
+                    <script animate="loopAnimation" prepareOnInit="true" />
                 </scriptList>
             </sprite>
 
@@ -120,7 +120,7 @@
                 <centerPos x="10" y="0" z="0"/>
                 <position x="20" y="0" z="0"/>
                 <scriptList>
-                    <script rotate="rotateGun"/>
+                    <script rotate="rotateGun" prepareOnInit="true" />
                 </scriptList>
             </sprite>
 
@@ -160,91 +160,6 @@
             </node>
 
         </node>
-
-    </node>
-
-
-
-    <node name="square_red">
-
-        <sprite objectName="square_red">
-            <scale x=".9" y=".9" z="1"/>
-            <scriptList>
-                <script init="Run_Init" prepareOnInit="true" forceUpdate="true"/>
-                <script update="Run_Update"/>
-            </scriptList>
-        </sprite>
-
-    </node>
-
-    <node name="triangle_green">
-
-        <sprite objectName="triangle_green">
-            <scriptList>
-                <script init="Run_Init" prepareOnInit="true" forceUpdate="true"/>
-                <script update="Run_Update"/>
-            </scriptList>
-        </sprite>
-
-    </node>
-
-    <node name="triangle_blue">
-
-        <sprite objectName="triangle_blue">
-            <scriptList>
-                <script init="Run_Init" prepareOnInit="true" forceUpdate="true"/>
-                <script update="Run_Update"/>
-            </scriptList>
-        </sprite>
-
-    </node>
-
-    <node name="circle_green">
-
-        <sprite objectName="circle_green">
-            <scriptList>
-                <script init="Run_Init" prepareOnInit="true" forceUpdate="true"/>
-                <script update="Run_Update"/>
-            </scriptList>
-        </sprite>
-
-    </node>
-
-    <node name="circle_blue">
-
-        <sprite objectName="circle_blue">
-            <scriptList>
-                <script init="Run_Init" prepareOnInit="true" forceUpdate="true"/>
-                <script update="Run_Update"/>
-            </scriptList>
-        </sprite>
-
-    </node>
-
-    <node name="circle_red">
-
-        <sprite objectName="circle_red">
-            <scriptList>
-                <script init="Run_Init" prepareOnInit="true" forceUpdate="true"/>
-                <script update="Run_Update"/>
-            </scriptList>
-        </sprite>
-
-    </node>
-
-    <node name="waffles">
-
-        <sprite objectName="waffles">
-            <position x="0" y="0" z="0"/>
-        </sprite>
-
-    </node>
-
-    <node name="logo">
-
-        <sprite objectName="logo">
-            <position x="0" y="0" z="0"/>
-        </sprite>
 
     </node>
 

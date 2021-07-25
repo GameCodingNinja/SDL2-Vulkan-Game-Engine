@@ -2,13 +2,13 @@
     
     <groupList groupName="(main)">
         <file path="data/scripts/library/defs.as"/>
+        <file path="data/scripts/source/game/functions.as"/>
         <file path="data/scripts/source/game/main.as"/>
         <file path="data/scripts/source/game/game.as"/>
         <file path="data/scripts/source/game/game_defs.as"/>
         <file path="data/scripts/library/shared_utilities.as"/>
         <file path="data/scripts/library/shared_sprite_utilities.as"/>
         <file path="data/scripts/library/shared_visual_utilities.as"/>
-        <file path="data/scripts/library/functions.as"/>
     </groupList>
 
 </listTable>
