@@ -646,16 +646,16 @@ std::string CActionMgr::getDeviceActionStr(
 
     std::string componetIdStr;
     XMLNode playerVisibleNode = m_mainNode.getChildNode( mappingName.c_str() ).getChildNode( "playerVisible" );
-    getActionStr( playerVisibleNode, actionNameStr, componetIdStr, configurable );
+    getComponentStr( playerVisibleNode, actionNameStr, componetIdStr, configurable );
 
     return componetIdStr;
 }
 
 
 /************************************************************************
-*    DESC:  Get the action/component strings for the keyboard device id
+*    DESC:  Get the component string for the device id
 ************************************************************************/
-int CActionMgr::getActionStr(
+int CActionMgr::getComponentStr(
     const XMLNode & playerVisibleNode,
     const std::string & actionNameStr,
     std::string & componetIdStr,
@@ -731,18 +731,19 @@ std::string CActionMgr::resetAction(
 
     // If this action ID can be found and is configurable, reset it
     XMLNode playerVisibleNode = m_mainNode.getChildNode( mappingName.c_str() ).getChildNode( "playerVisible" );
-    int xmlNodeIndex = getActionStr( playerVisibleNode, actionNameStr, oldIdStr, configurable );
+    int xmlNodeIndex = getComponentStr( playerVisibleNode, actionNameStr, oldIdStr, configurable );
 
     if( (xmlNodeIndex > UNDEFINED_ACTION) && configurable )
     {
         std::string newKeyCodeStr;
         if( getKeyCodeStr( *pKeyCodeMap, keyCode, newKeyCodeStr ) )
         {
+            componetIdStr = UNBOUND_KEYCODE_STR_ID;
             if( newKeyCodeStr != oldIdStr )
                 componetIdStr = newKeyCodeStr;
             else
-                componetIdStr = UNBOUND_KEYCODE_STR_ID;
-
+                keyCode = UNBOUND_KEYCODE_ID;
+                
             int oldKeyCodeId = getKeyCode( *pKeyCodeMap, oldIdStr );
 
             // Check for the action to remove the old key code
@@ -1075,6 +1076,8 @@ uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uin
     for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
     {
         SDL_Event & rEvent = m_eventQueue[i];
+
+        #error "This is causing a Segmentation fault when keymapping"
 
         if( rEvent.type == SDL_KEYDOWN || rEvent.type == SDL_KEYUP )
         {

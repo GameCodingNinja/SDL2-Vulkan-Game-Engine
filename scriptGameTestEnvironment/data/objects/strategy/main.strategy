@@ -98,7 +98,7 @@
 
         <node name="fire_tail">
 
-            <sprite>
+            <sprite visible="true">
                 <position x="-120" y="-3" z="0"/>
                 <scriptList>
                     <script animate="loopAnimation" prepareOnInit="true" />

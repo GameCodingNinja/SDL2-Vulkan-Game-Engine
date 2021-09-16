@@ -11,6 +11,9 @@
 #include <utilities/xmlparsehelper.h>
 #include <utilities/genfunc.h>
 
+// Standard lib dependencies
+#include <cstring>
+
 /************************************************************************
 *    DESC:  Constructor / Destructor
 ************************************************************************/
@@ -260,6 +263,10 @@ void CObject::copyTransform( const CObject * pObject )
 void CObject::loadTransFromNode( const XMLNode & node )
 {
     bool loadedFlag;
+
+    // Set if visible. Is visible by default
+    if( node.isAttributeSet( "visible" ) )
+        setVisible( std::strcmp( node.getAttribute("visible"), "true" ) == 0 );
 
     CPoint<float> pos = NParseHelper::LoadPosition( node, loadedFlag );
     if( loadedFlag )

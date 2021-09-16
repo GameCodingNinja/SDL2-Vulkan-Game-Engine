@@ -156,8 +156,8 @@ private:
         const std::string & actionStr,
         const actionMapType & actionMap );
     
-    // Get the action/component strings for the keyboard device id
-    int getActionStr(
+    // Get the component string for the device id
+    int getComponentStr(
         const XMLNode & playerVisibleNode, 
         const std::string & actionNameStr, 
         std::string & componetIdStr, 
