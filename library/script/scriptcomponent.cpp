@@ -26,7 +26,6 @@ CScriptComponent::CScriptComponent()
 {
 }
 
-
 /************************************************************************
 *    DESC:  destructor
 ************************************************************************/
@@ -35,7 +34,6 @@ CScriptComponent::~CScriptComponent()
     // Recycle the contexts we are still holding on to
     resetAndRecycle();
 }
-
 
 /************************************************************************
 *    DESC:  Prepare the script function to run
@@ -48,16 +46,14 @@ void CScriptComponent::prepare(
     CScriptMgr::Instance().prepare( group, funcName, m_pContextVec, paramVec );
 }
 
-
 /************************************************************************
 *    DESC:  Update the script
 ************************************************************************/
-void CScriptComponent::update()
+void CScriptComponent::update( const bool forcedUpdate )
 {
     if( !m_pContextVec.empty() )
-        CScriptMgr::Instance().update( m_pContextVec );
+        CScriptMgr::Instance().update( m_pContextVec, forcedUpdate );
 }
-
 
 /************************************************************************
 *    DESC:  Is this component active?
@@ -66,7 +62,6 @@ bool CScriptComponent::isActive()
 {
     return !m_pContextVec.empty();
 }
-
 
 /************************************************************************
 *    DESC:  Reset the contexts and recycle
@@ -86,7 +81,6 @@ void CScriptComponent::resetAndRecycle()
         m_pContextVec.clear();
     }
 }
-
 
 /************************************************************************
 *    DESC:  Stop a function if it is being called and recycle it
@@ -112,7 +106,6 @@ void CScriptComponent::stopAndRecycle( const std::string & funcName )
         }
     }
 }
-
 
 /************************************************************************
 *    DESC:  Stop a function if it is being called and restart it

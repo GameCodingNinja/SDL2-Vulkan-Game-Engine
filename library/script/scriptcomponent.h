@@ -37,7 +37,7 @@ public:
         const std::vector<CScriptParam> & paramVec = std::vector<CScriptParam>() );
 
     // Update the script
-    void update();
+    void update( const bool forcedUpdate = false );
 
     // Reset the contexts and recycle
     void resetAndRecycle();

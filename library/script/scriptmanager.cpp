@@ -534,12 +534,18 @@ bool CScriptMgr::update()
     return !m_pActiveContextVec.empty();
 }
 
-void CScriptMgr::update( std::vector<asIScriptContext *> & pContextVec )
+void CScriptMgr::update( std::vector<asIScriptContext *> & pContextVec, const bool forcedUpdate )
 {
+    // This is to allow for "forced Updates" when a new script has been added.
+    // A new script is always the last one in the vector
+    size_t i = 0;
+    if( forcedUpdate )
+        i = pContextVec.size() - 1;
+
     // Using a for loop because it allows the m_pActiveContextVec to grow
     // while the for loop is executing as spawn contexts are added.
     // DO NOT change to a C++11 ranged for loop. It won't work.
-    for( size_t i = 0; i < pContextVec.size(); ++i )
+    for( ; i < pContextVec.size(); ++i )
         executeScript( pContextVec[i] );
 
     auto iter = pContextVec.begin();

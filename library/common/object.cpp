@@ -493,7 +493,7 @@ bool CObject::prepare( const std::string & scriptFuncId )
         // Allow the script to execute and return it's context to the queue
         // for the scripts that don't animate
         if( iter->second.forceUpdate )
-            m_scriptComponent.update();
+            m_scriptComponent.update( true );
 
         return true;
     }

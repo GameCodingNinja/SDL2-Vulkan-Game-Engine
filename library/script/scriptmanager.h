@@ -60,7 +60,7 @@ public:
     
     // Update the active scripts
     bool update();
-    void update( std::vector<asIScriptContext *> & pContextVec );
+    void update( std::vector<asIScriptContext *> & pContextVec, const bool forcedUpdate = false );
 
     // Add the script context back to the managed pool
     void recycleContext( asIScriptContext * pContext );
