@@ -13,6 +13,11 @@ int main()
         point1->crossProduct(point1, point2, result);
 
         printf("%f, %f, %f\n", result->x, result->y, result->z);
+
+        Point_free(&point1);
+        Point_free(&point2);
+        Point_free(&result);
+        Point_free(&point1);
     }
 
     {

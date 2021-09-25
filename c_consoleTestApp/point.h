@@ -18,5 +18,8 @@ struct point
 // allocate type
 point_t * Point_alloc(float x, float y, float z);
 
+// free type
+void Point_free(point_t ** point);
+
 // Init point
 void Point_init(point_t * const point, float x, float y, float z);

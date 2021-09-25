@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
 // Forward declarations
 static void CrossProduct( const point_t * const self, const point_t * const point, point_t * const result );
@@ -27,6 +28,17 @@ point_t * Point_alloc(float x, float y, float z)
         Point_init(point, x, y, z);
 
     return point;
+}
+
+//
+// DESC: free type
+//
+void Point_free(point_t ** point)
+{
+    if(*point)
+        free(*point);
+
+    *point = NULL;
 }
 
 //
