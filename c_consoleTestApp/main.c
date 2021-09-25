@@ -1,15 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+#include "point.h"
 
-/* 
- * File:   main.c
- * Author: howie
- *
- * Created on May 27, 2018, 9:18 AM
- */
+// STD lib dependencies
+#include <stdio.h>
+
+int main()
+{
+    {
+        point_t * point1 = Point_alloc(123, 345, 68);
+        point_t * point2 = Point_alloc(458, 31, 670);
+        point_t * result = Point_alloc(0, 0, 0);
+
+        point1->crossProduct(point1, point2, result);
+
+        printf("%f, %f, %f\n", result->x, result->y, result->z);
+    }
+
+    {
+        point_t point1;
+        point_t point2;
+        point_t result;
+
+        Point_init(&point1, 68, 241, 609);
+        Point_init(&point2, 582, 231, 78);
+        Point_init(&result, 0, 0, 0);
+
+        point1.crossProduct(&point1, &point2, &result);
+
+        printf("%f, %f, %f\n", result.x, result.y, result.z);
+    }
+
+    return 0;
+}
 
 /*#include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +52,7 @@ int main()
     return 0;
 }*/
 
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <ctype.h>
@@ -74,5 +95,5 @@ int main()
     printf( "Execution time: %f, Counter: %ld\n", ((double)(clock() - start) / CLOCKS_PER_SEC), counter );
     
     return 0;
-}
+}*/
 

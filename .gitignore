@@ -46,6 +46,10 @@
 /consoleTestAp/consoleTestAp.VC.opendb
 /consoleTestAp/build/
 
+/c_consoleTestApp/c_consoleTestApp
+/c_consoleTestApp/*.o
+/c_consoleTestApp/.dep.inc
+
 /consoleSimpleApp/Win32/
 /consoleSimpleApp/AS_DEBUG/
 /consoleSimpleApp/.vs/
