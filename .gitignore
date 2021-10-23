@@ -50,6 +50,10 @@
 /c_consoleTestApp/*.o
 /c_consoleTestApp/.dep.inc
 
+/cpp_consoleTestApp/cpp_consoleTestApp
+/cpp_consoleTestApp/*.o
+/cpp_consoleTestApp/.dep.inc
+
 /consoleSimpleApp/Win32/
 /consoleSimpleApp/AS_DEBUG/
 /consoleSimpleApp/.vs/
