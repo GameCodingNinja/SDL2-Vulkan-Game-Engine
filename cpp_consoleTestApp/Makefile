@@ -9,7 +9,7 @@ hdr := $(wildcard *.h) $(wildcard *.hpp)
 app := cpp_consoleTestApp
 
 CC = g++
-CFLAGS = -std=c++20 -lm
+CFLAGS = -std=c++17 -lm
 
 # compiler flags:
 #  -g     adds debugging information to the executable file
