@@ -1,27 +1,12 @@
 #include "point.h"
+#include "point.hpp"
 
 // STD lib dependencies
 #include <stdio.h>
 
 int main()
 {
-    // Heap allocated point
-    {
-        point_t * point1 = Point_alloc(123, 345, 68);
-        point_t * point2 = Point_alloc(458, 31, 670);
-        point_t * result = Point_alloc(0, 0, 0);
-
-        point1->crossProduct(point1, point2, result);
-
-        printf("%f, %f, %f\n", result->x, result->y, result->z);
-
-        Point_free(&point1);
-        Point_free(&point2);
-        Point_free(&result);
-        Point_free(&point1);
-    }
-
-    // Local stack allocated point
+    // C style point
     {
         point_t point1;
         point_t point2;
@@ -33,7 +18,16 @@ int main()
 
         point1.crossProduct(&point1, &point2, &result);
 
-        printf("%f, %f, %f\n", result.x, result.y, result.z);
+        printf("C output: %f, %f, %f\n", result.x, result.y, result.z);
+    }
+
+    // C++ style template point
+    {
+        CPoint<float> point1(68, 241, 609), point2(582, 231, 78);
+
+        auto result = point1.getCrossProduct( point2 );
+
+        printf("C++ output: %f, %f, %f\n", result.x, result.y, result.z);
     }
 
     return 0;

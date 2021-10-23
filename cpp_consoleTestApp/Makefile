@@ -2,13 +2,14 @@
 # command: make
 # command: make clean
 
-src := $(wildcard *.c)
-obj := $(src:%.c=%.o)
-hdr := $(wildcard *.h)
-app := c_consoleTestApp
+csrc := $(wildcard *.c)
+cppsrc := $(wildcard *.cpp)
+obj := $(csrc:%.c=%.o) $(cppsrc:%.cpp=%.o)
+hdr := $(wildcard *.h) $(wildcard *.hpp)
+app := cpp_consoleTestApp
 
-CC = gcc
-CFLAGS = -std=c17 -lm
+CC = g++
+CFLAGS = -std=c++20 -lm
 
 # compiler flags:
 #  -g     adds debugging information to the executable file
