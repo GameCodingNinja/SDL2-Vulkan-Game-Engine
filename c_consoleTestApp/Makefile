@@ -8,7 +8,7 @@ hdr := $(wildcard *.h)
 app := c_consoleTestApp
 
 CC = gcc
-CFLAGS = -std=c17 -lm
+CFLAGS = -std=c17 -lm -g
 
 # compiler flags:
 #  -g     adds debugging information to the executable file

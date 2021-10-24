@@ -9,7 +9,7 @@ hdr := $(wildcard *.h) $(wildcard *.hpp)
 app := cpp_consoleTestApp
 
 CC = g++
-CFLAGS = -std=c++17 -lm
+CFLAGS = -std=c++17 -lm -g
 
 # compiler flags:
 #  -g     adds debugging information to the executable file
@@ -19,7 +19,10 @@ CFLAGS = -std=c++17 -lm
 #  -c     flag to generate the object file
 #  -o     flag to put the output of the compilation in the file named on the left side of the :
 
-%.o: %.c $(hdr)
+%.o:: %.c $(hdr)
+	$(CC) -ggdb -Wall -c -o $@ $< $(CFLAGS)
+
+%.o:: %.cpp $(hdr)
 	$(CC) -ggdb -Wall -c -o $@ $< $(CFLAGS)
 
 $(app): $(obj)

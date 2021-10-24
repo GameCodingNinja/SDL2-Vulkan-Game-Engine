@@ -3,7 +3,7 @@
 // STD lib dependencies
 #include <stdio.h>
 
-int main()
+int main( int argc, char* args[] )
 {
     // Heap allocated point
     {
