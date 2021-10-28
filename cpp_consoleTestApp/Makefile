@@ -8,25 +8,30 @@ obj := $(csrc:%.c=%.o) $(cppsrc:%.cpp=%.o)
 hdr := $(wildcard *.h) $(wildcard *.hpp)
 app := cpp_consoleTestApp
 
-CC = g++
-CFLAGS = -std=c++17 -lm -g
+CC = gcc
+CFLAGS = -std=c17
+CXX = g++
+CXXFLAGS = -std=c++17 
+FLAGS = -Wall -g
+LIBS = -lm
+LDFLAGS = -ggdb
 
 # compiler flags:
 #  -g     adds debugging information to the executable file
 #  -ggdb  adds GNU Debugger support to the executable file
 #  -Wall  turns on most, but not all, compiler warnings
-#  -lm    adds math functions to linker
+#  -lm    adds math library functions to linker
 #  -c     flag to generate the object file
 #  -o     flag to put the output of the compilation in the file named on the left side of the :
 
 %.o:: %.c $(hdr)
-	$(CC) -ggdb -Wall -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(FLAGS)
 
 %.o:: %.cpp $(hdr)
-	$(CC) -ggdb -Wall -c -o $@ $< $(CFLAGS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS) $(FLAGS)
 
 $(app): $(obj)
-	$(CC) -ggdb -Wall -o $(app) $(obj) $(CFLAGS)
+	$(CXX) -o $(app) $(obj) $(LDFLAGS) $(LIBS)
 
 all: $(app)
 

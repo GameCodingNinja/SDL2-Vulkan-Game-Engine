@@ -5,6 +5,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct point point_t;
 struct point
 {
@@ -23,3 +27,7 @@ void Point_free(point_t ** point);
 
 // Init point
 void Point_init(point_t * const point, float x, float y, float z);
+
+#ifdef __cplusplus
+} //end extern "C"
+#endif

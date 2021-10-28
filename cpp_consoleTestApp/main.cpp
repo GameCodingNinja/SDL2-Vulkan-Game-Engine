@@ -18,7 +18,7 @@ int main( int argc, char* args[] )
 
         point1.crossProduct(&point1, &point2, &result);
 
-        printf("C output: %f, %f, %f\n", result.x, result.y, result.z);
+        printf("C output:   %f, %f, %f\n", result.x, result.y, result.z);
     }
 
     // C++ style template point
