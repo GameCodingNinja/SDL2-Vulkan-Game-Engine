@@ -8,7 +8,10 @@ hdr := $(wildcard *.h)
 app := c_consoleTestApp
 
 CC = gcc
-CFLAGS = -std=c17 -lm -g
+CFLAGS = -std=c17
+FLAGS = -Wall -g
+LIBS = -lm
+LDFLAGS = -ggdb
 
 # compiler flags:
 #  -g     adds debugging information to the executable file
@@ -19,10 +22,10 @@ CFLAGS = -std=c17 -lm -g
 #  -o     flag to put the output of the compilation in the file named on the left side of the :
 
 %.o: %.c $(hdr)
-	$(CC) -ggdb -Wall -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(FLAGS)
 
 $(app): $(obj)
-	$(CC) -ggdb -Wall -o $(app) $(obj) $(CFLAGS)
+	$(CC) -o $(app) $(obj) $(LDFLAGS) $(LIBS)
 
 all: $(app)
 
