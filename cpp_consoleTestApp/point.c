@@ -1,5 +1,5 @@
 //
-//    FILE NAME:       point.h
+//    FILE NAME:       point.c
 //    DESCRIPTION:     C style point class
 //
 
