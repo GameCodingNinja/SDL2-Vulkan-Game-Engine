@@ -1,3 +1,8 @@
+//
+//    FILE NAME:       main.c
+//    DESCRIPTION:     main entry point for program
+//
+
 #include "point.h"
 #include "point.hpp"
 
