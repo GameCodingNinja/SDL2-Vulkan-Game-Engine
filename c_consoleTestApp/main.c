@@ -18,7 +18,6 @@ int main( int argc, char* args[] )
         Point_free(&point1);
         Point_free(&point2);
         Point_free(&result);
-        Point_free(&point1);
     }
 
     // Local stack allocated point

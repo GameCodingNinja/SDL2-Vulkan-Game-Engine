@@ -111,7 +111,11 @@
             "scoped_allocator": "cpp",
             "shared_mutex": "cpp",
             "span": "cpp",
-            "hash_map": "cpp"
+            "hash_map": "cpp",
+            "any": "cpp",
+            "source_location": "cpp",
+            "numbers": "cpp",
+            "semaphore": "cpp"
         },
 		"editor.autoClosingBrackets": "never"
 	}

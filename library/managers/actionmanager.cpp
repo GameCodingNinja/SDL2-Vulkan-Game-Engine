@@ -1077,7 +1077,7 @@ uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uin
     {
         SDL_Event & rEvent = m_eventQueue[i];
 
-        #error "This is causing a Segmentation fault when keymapping"
+        //#error "This is causing a Segmentation fault when keymapping"
 
         if( rEvent.type == SDL_KEYDOWN || rEvent.type == SDL_KEYUP )
         {

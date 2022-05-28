@@ -88,6 +88,10 @@ void CSprite::load( const XMLNode & node )
     // Load the font properties from XML node
     if( m_upVisualComponent->isFontSprite() )
         m_upVisualComponent->loadFontPropFromNode( node );
+    
+    // Set the frame of the animation
+    if( node.isAttributeSet( "frameIndex" ) )
+        setFrame( std::atoi( node.getAttribute("frameIndex") ) );
 }
 
 /************************************************************************
