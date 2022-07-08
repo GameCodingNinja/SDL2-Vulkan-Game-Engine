@@ -78,6 +78,9 @@ public:
     void scale( float scaleX, float scaleY );
     void scale( float scaleX, float scaleY, float scaleZ );
 
+    // Get the scale
+    CPoint<float> getScale() const;
+
     // Functions designed to transform using the master matrix
     void transform( CPoint<float> & dest, const CPoint<float> & source ) const;
     void transform( CPoint<float> * pDest, const CPoint<float> * pSource ) const;

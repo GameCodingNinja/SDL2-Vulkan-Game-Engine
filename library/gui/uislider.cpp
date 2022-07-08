@@ -159,10 +159,11 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
     {
         const float oneOverAspectRatio(1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
 
+        // (1.0 / this.getMatrix().getScale().#) handles the scaling of the control
         if( m_orientation == EOrientation::HORZ )
-            incSliderMovePos( (float)rEvent.motion.xrel * oneOverAspectRatio );
+            incSliderMovePos( (float)rEvent.motion.xrel * oneOverAspectRatio * (1.f / getMatrix().getScale().x)  );
         else
-            incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio );
+            incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio * (1.f / getMatrix().getScale().y) );
 
         // Prepare script function associated with handling this game event
         prepareControlScriptFunction( EControlState::CHANGE );
@@ -189,10 +190,11 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
                 (msgCracker.getPos() - getSubControl()->getCollisionPos()) *
                     (1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
 
+            // (1.0 / this.getMatrix().getScale().#) handles the scaling of the control
             if( m_orientation == EOrientation::HORZ )
-                incSliderMovePos( dif.x );
+                incSliderMovePos( dif.x * (1.f / getMatrix().getScale().x) );
             else
-                incSliderMovePos( dif.y );
+                incSliderMovePos( dif.y * (1.f / getMatrix().getScale().y) );
 
             // Prepare script function associated with handling this game event
             prepareControlScriptFunction( EControlState::SELECT );

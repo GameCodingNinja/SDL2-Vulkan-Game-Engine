@@ -484,6 +484,15 @@ void CMatrix::setScale( float scaleX, float scaleY, float scaleZ )
 }
 
 /************************************************************************
+*    DESC: Get the scale
+************************************************************************/
+CPoint<float> CMatrix::getScale() const
+{
+    return CPoint<float>(matrix[0], matrix[5], matrix[10]);
+}
+
+
+/************************************************************************
 *    DESC: Scale the matrix
 ************************************************************************/
 void CMatrix::scale( const CPoint<float> & point )
