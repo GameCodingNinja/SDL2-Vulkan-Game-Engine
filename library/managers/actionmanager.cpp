@@ -1073,11 +1073,9 @@ bool CActionMgr::wasWindowEvent( uint event, uint & windowID, int & data1, int &
 ************************************************************************/
 uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex )
 {
-    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
+    for( uint i = startIndex; i < m_eventQueue.size(); i++ )
     {
         SDL_Event & rEvent = m_eventQueue[i];
-
-        //#error "This is causing a Segmentation fault when keymapping"
 
         if( rEvent.type == SDL_KEYDOWN || rEvent.type == SDL_KEYUP )
         {

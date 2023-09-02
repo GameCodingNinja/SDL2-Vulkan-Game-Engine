@@ -10,6 +10,9 @@
 // Game lib dependencies
 #include <common/point.h>
 
+// Standard lib dependencies
+#include <cstdint>
+
 // Forward Declarations
 class CSprite;
 class b2Body;

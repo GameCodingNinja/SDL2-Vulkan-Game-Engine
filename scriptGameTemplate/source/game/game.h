@@ -9,6 +9,7 @@
 
 // Standard lib dependencies
 #include <string>
+#include <cstdint>
 
 // Forward declaration(s)
 union SDL_Event;

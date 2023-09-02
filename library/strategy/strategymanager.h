@@ -14,6 +14,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <cstdint>
 
 // Forward Declarations
 class CStrategy;

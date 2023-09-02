@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <cstdint>
 
 class CTmp
 {
