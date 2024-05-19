@@ -70,7 +70,9 @@ ExternalProject_Add(
     INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
 )
 
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^aarch64")
+    set(SDL_LIB_DIR /usr/lib/aarch64-linux-gnu/)
+elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^arm")
     set(SDL_LIB_DIR /usr/lib/arm-linux-gnueabihf/)
 else()
     set(SDL_LIB_DIR /usr/lib/)
