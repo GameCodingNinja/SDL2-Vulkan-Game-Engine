@@ -240,6 +240,9 @@ private:
     // Get the GPU type
     const char * getDeviceType( VkPhysicalDeviceType deviceType );
 
+    // Indicates if surface presentation mode is available
+    bool isSurfacePresMode( std::vector<VkPresentModeKHR> & surfacePresModeVec, VkPresentModeKHR mode);
+
 protected:
 
     // Print debug info

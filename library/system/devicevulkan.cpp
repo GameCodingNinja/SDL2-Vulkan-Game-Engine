@@ -593,7 +593,7 @@ void CDeviceVulkan::setupSwapChain()
     printDebug( surfaceFormatVec, surfaceFormat );
 
     // Get the best presentation mode
-    VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
+    VkPresentModeKHR surfacePresMode = VK_PRESENT_MODE_MAX_ENUM_KHR;
     uint32_t surfacePresModeCount;
     if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfacePresModeCount, nullptr)) || (surfacePresModeCount == 0) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation mode count! %s") % getError(vkResult) ) );
@@ -603,21 +603,64 @@ void CDeviceVulkan::setupSwapChain()
     if( (vkResult = GetPhysicalDeviceSurfacePresentModes( m_phyDevVec[m_phyDevIndex].pDev, m_vulkanSurface, &surfacePresModeCount, surfacePresModeVec.data() )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to get physical device surface presentation modes! %s") % getError(vkResult) ) );
 
+    NGenFunc::PostDebugMsg("Physical Device Surface Present Modes:");
     for( const auto & presentMode : surfacePresModeVec )
     {
-        if( presentMode == VK_PRESENT_MODE_FIFO_KHR )
-        {
-            surfacePresMode = presentMode;
-            if ( CSettings::Instance().getVSync() )
-                break;
-        }
+        if( presentMode == VK_PRESENT_MODE_IMMEDIATE_KHR )
+            NGenFunc::PostDebugMsg("  VK_PRESENT_MODE_IMMEDIATE_KHR");
         else if( presentMode == VK_PRESENT_MODE_MAILBOX_KHR )
-        {
-            surfacePresMode = presentMode;
-            if ( !CSettings::Instance().getVSync() )
-                break;
-        }
+            NGenFunc::PostDebugMsg("  VK_PRESENT_MODE_MAILBOX_KHR");
+        else if( presentMode == VK_PRESENT_MODE_FIFO_KHR )
+            NGenFunc::PostDebugMsg("  VK_PRESENT_MODE_FIFO_KHR");
+        else if( presentMode == VK_PRESENT_MODE_FIFO_RELAXED_KHR )
+            NGenFunc::PostDebugMsg("  VK_PRESENT_MODE_FIFO_RELAXED_KHR");
+        else if( presentMode == VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR )
+            NGenFunc::PostDebugMsg("  VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR");
+        else if( presentMode == VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR )
+            NGenFunc::PostDebugMsg("  VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR");
     }
+
+    // Choose based on vsync value
+    if ( CSettings::Instance().getVSync() )
+    {
+        if( isSurfacePresMode( surfacePresModeVec, VK_PRESENT_MODE_FIFO_KHR) )
+            surfacePresMode = VK_PRESENT_MODE_FIFO_KHR;
+
+        else if( isSurfacePresMode( surfacePresModeVec, VK_PRESENT_MODE_MAILBOX_KHR) )
+            surfacePresMode = VK_PRESENT_MODE_MAILBOX_KHR;
+    }
+    else
+    {
+        if( isSurfacePresMode( surfacePresModeVec, VK_PRESENT_MODE_IMMEDIATE_KHR) )
+            surfacePresMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
+
+        else if( isSurfacePresMode( surfacePresModeVec, VK_PRESENT_MODE_FIFO_RELAXED_KHR) )
+            surfacePresMode = VK_PRESENT_MODE_FIFO_RELAXED_KHR;
+    }
+
+    // If one wasn't picked, choose the first one in the list
+    if( surfacePresMode == VK_PRESENT_MODE_MAX_ENUM_KHR && surfacePresModeVec.size() )
+    {
+        surfacePresMode = surfacePresModeVec.at(0);
+        NGenFunc::PostDebugMsg("  Surface not seletcted. First one chosen.");
+    }
+    else // All else fails, pick one
+    {
+        surfacePresMode = VK_PRESENT_MODE_IMMEDIATE_KHR;
+    }
+
+    if( surfacePresMode == VK_PRESENT_MODE_IMMEDIATE_KHR )
+        NGenFunc::PostDebugMsg("  SELECTED: VK_PRESENT_MODE_IMMEDIATE_KHR\n");
+    else if( surfacePresMode == VK_PRESENT_MODE_MAILBOX_KHR )
+        NGenFunc::PostDebugMsg("  SELECTED: VK_PRESENT_MODE_MAILBOX_KHR\n");
+    else if( surfacePresMode == VK_PRESENT_MODE_FIFO_KHR )
+        NGenFunc::PostDebugMsg("  SELECTED: VK_PRESENT_MODE_FIFO_KHR\n");
+    else if( surfacePresMode == VK_PRESENT_MODE_FIFO_RELAXED_KHR )
+        NGenFunc::PostDebugMsg("  SELECTED: VK_PRESENT_MODE_FIFO_RELAXED_KHR\n");
+    else if( surfacePresMode == VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR )
+        NGenFunc::PostDebugMsg("  SELECTED: VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR\n");
+    else if( surfacePresMode == VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR )
+        NGenFunc::PostDebugMsg("  SELECTED: VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR\n");
 
     // Init the pre-transform
     VkSurfaceTransformFlagBitsKHR preTransform = surfCapabilities.currentTransform;
@@ -2024,6 +2067,25 @@ const char * CDeviceVulkan::getDeviceType( VkPhysicalDeviceType deviceType )
 
     return "Unknown";
 }
+
+/***************************************************************************
+*   DESC:  Indicates if surface presentation mode is available
+****************************************************************************/
+bool CDeviceVulkan::isSurfacePresMode(std::vector<VkPresentModeKHR> & surfacePresModeVec, VkPresentModeKHR mode)
+{
+    bool found = false;
+    for( auto & presentMode : surfacePresModeVec )
+    {
+        if(mode == presentMode )
+        {
+            found = true;
+            break;
+        }
+    }
+
+    return found;
+}
+
 
 /***************************************************************************
 *   DESC:  Print debug info
