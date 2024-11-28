@@ -20,7 +20,7 @@
             "options": {
                 "cwd": "${workspaceRoot}/build"
             },
-            "command": "cmake --build . --parallel -j",
+            "command": "cmake --build . --parallel -j4",
             "problemMatcher": []
         },
         {
@@ -39,6 +39,15 @@
                 "cwd": "${workspaceRoot}"
             },
             "command": "rm -rfd build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "rm -rfd build; rm -rfd ${workspaceRoot}/../angelscript/build; rm -rfd ${workspaceRoot}/../Box2D/build; rm -rfd ${workspaceRoot}/../bulletPhysics/build; rm -rfd ${workspaceRoot}/../library/build",
             "problemMatcher": []
         },
         {
