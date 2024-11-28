@@ -16,18 +16,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread")
 # Use the normal means to find the other packages
 find_package(Vulkan REQUIRED)
 
-# Add the game level executable files
-add_executable(
-    ${PROJECT_NAME}
-        source/game/game.cpp
-        source/game/main.cpp
-        source/state/commonstate.cpp
-        source/state/startupstate.cpp
-        source/state/titlescreenstate.cpp
-        source/state/loadstate.cpp
-        source/state/level1state.cpp
-)
-
 # Create library specific path variables
 get_filename_component(PARENT_SOURCE_DIR ${PROJECT_SOURCE_DIR} DIRECTORY)
 set(bulletPhysics_SOURCE_DIR ${PARENT_SOURCE_DIR}/bulletPhysics)
@@ -68,6 +56,18 @@ ExternalProject_Add(
     SOURCE_DIR ${angelscript_SOURCE_DIR}
     BINARY_DIR ${angelscript_SOURCE_DIR}/build
     INSTALL_COMMAND ${CMAKE_COMMAND} -E echo "Skipping install step."
+)
+
+# Add the game level executable files
+add_executable(
+    ${PROJECT_NAME}
+        source/game/game.cpp
+        source/game/main.cpp
+        source/state/commonstate.cpp
+        source/state/startupstate.cpp
+        source/state/titlescreenstate.cpp
+        source/state/loadstate.cpp
+        source/state/level1state.cpp
 )
 
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "^aarch64")

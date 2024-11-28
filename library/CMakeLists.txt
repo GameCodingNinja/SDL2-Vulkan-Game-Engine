@@ -32,6 +32,7 @@
 #        slot/animatedcycleresults.cpp
 
 cmake_minimum_required(VERSION 3.10)
+include(CMakePrintHelpers)
 
 # set the project name
 project(library VERSION 2.84)
@@ -41,6 +42,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Added -g to generate debug info
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -std=c++17 -Wall -pthread -g")
+
+message("We have arrived")
 
 # Add the files to the library
 add_library(

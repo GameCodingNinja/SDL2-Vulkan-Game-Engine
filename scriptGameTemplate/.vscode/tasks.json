@@ -42,6 +42,15 @@
             "problemMatcher": []
         },
         {
+            "label": "Clean",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "rm -rfd build; rm -rfd ${workspaceRoot}/../angelscript/build; rm -rfd ${workspaceRoot}/../Box2D/build; rm -rfd ${workspaceRoot}/../bulletPhysics/build; rm -rfd ${workspaceRoot}/../library/build",
+            "problemMatcher": []
+        },
+        {
             "label": "Execute",
             "type": "shell",
             "options": {
