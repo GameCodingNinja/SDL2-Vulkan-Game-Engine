@@ -363,24 +363,62 @@ void CDeviceVulkan::selectPhysicalDevice()
     // Select the discrete GPU if one is available that supports the graphics bit
     m_graphicsQueueFamilyIndex = UINT32_MAX;
     m_phyDevIndex = UINT32_MAX;
+    VkPhysicalDeviceType lastDeviceType = VK_PHYSICAL_DEVICE_TYPE_OTHER;
     for( uint32_t i = 0; i < m_phyDevVec.size(); i++ )
     {
         // Find the queue family on this graphics device
         m_graphicsQueueFamilyIndex = getQueueFamilyIndex( m_phyDevVec[i], VK_QUEUE_GRAPHICS_BIT );
 
-        // If we found a discrete GPU, our work here is done
         if( m_phyDevVec[i].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )
         {
+            // Found a discrete GPU, our work here is done. Break out on this one.
             if( m_graphicsQueueFamilyIndex != UINT32_MAX )
             {
                 m_phyDevIndex = i;
                 break;
             }
         }
-
-        // Not a discrete GPU so we'll keep looking
-        if( m_graphicsQueueFamilyIndex != UINT32_MAX )
-            m_phyDevIndex = i;
+        else if( m_phyDevVec[i].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU )
+        {
+            // Found an integrated GPU. Good but keep looking
+            if( m_graphicsQueueFamilyIndex != UINT32_MAX )
+            {
+                m_phyDevIndex = i;
+                lastDeviceType = VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
+            }
+        }
+        else if( m_phyDevVec[i].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU )
+        {
+            // Found a Virtual GPU. Keep looking for something better
+            if( m_graphicsQueueFamilyIndex != UINT32_MAX &&
+                lastDeviceType != VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU )
+            {
+                m_phyDevIndex = i;
+                lastDeviceType = VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU;
+            }
+        }
+        else if( m_phyDevVec[i].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_CPU &&
+                 lastDeviceType != VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU &&
+                 lastDeviceType != VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU  )
+        {
+            // Found a CPU. Keep looking for something better
+            if( m_graphicsQueueFamilyIndex != UINT32_MAX )
+            {
+                m_phyDevIndex = i;
+                lastDeviceType = VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_CPU;
+            }
+        }
+        else if( m_phyDevVec[i].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_OTHER &&
+                 lastDeviceType != VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU &&
+                 lastDeviceType != VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU &&
+                 lastDeviceType != VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_CPU )
+        {
+            // Found Other. Keep looking for something better
+            if( m_graphicsQueueFamilyIndex != UINT32_MAX )
+            {
+                m_phyDevIndex = i;
+            }
+        }
     }
 
     if( (m_phyDevIndex == UINT32_MAX) || (m_graphicsQueueFamilyIndex == UINT32_MAX) )
@@ -2165,12 +2203,27 @@ void CDeviceVulkan::printDebug( const CPhysicalDevice & phyDev, uint32_t index )
 
 void CDeviceVulkan::printDebugPhyDev()
 {
+    std::string devTypeStr = "Other";
+    if( m_phyDevVec[m_phyDevIndex].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU )
+        devTypeStr = "Integrated GPU";
+
+    else if( m_phyDevVec[m_phyDevIndex].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU )
+        devTypeStr = "Discrete GPU";
+
+    else if( m_phyDevVec[m_phyDevIndex].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU )
+        devTypeStr = "Virtual GPU";
+    
+    else if( m_phyDevVec[m_phyDevIndex].prop.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_CPU )
+        devTypeStr = "CPU";
+
     NGenFunc::PostDebugMsg( 
         boost::str( boost::format(
+            "Selected Physical Device Type: %s\n"
             "  %s Physical Device Index: %u\n"
             "  %s Graphics Queue Family Index: %u\n"
             "  %s Transfer Queue Family Index: %u\n"
             "  %s Presentation Queue Family Index: %u\n" )
+            % devTypeStr
             % (m_phyDevIndex < UINT32_MAX ? "SELECTED" : "UNAVAILABLE")
             % m_phyDevIndex
             % (m_graphicsQueueFamilyIndex < UINT32_MAX ? "SELECTED" : "UNAVAILABLE")
