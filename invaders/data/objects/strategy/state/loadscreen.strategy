@@ -1,0 +1,15 @@
+<strategy>
+    
+    <!-- Node name will be used for the object name look up if one isn't defined -->
+    <node name="loadAnim" defaultGroup="(load)">
+        
+        <sprite>
+            <dynamicOffset right="150" bottom="150"/>
+            <scriptList>
+                <script loadAnimationLoop="State_LoopAnimation" group="(state)"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+
+</strategy>

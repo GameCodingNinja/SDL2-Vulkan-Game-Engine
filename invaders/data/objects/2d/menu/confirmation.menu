@@ -1,0 +1,67 @@
+<menu>
+    
+    <!-- Supports initRootMenu, rootTransIn, transIn, transOut, event -->
+    <scriptList>
+        <script transIn="Menu_TransIn"/>
+        <script transOut="Menu_TransOut"/>
+    </scriptList>
+
+    <staticMenuControls>
+
+        <!-- Message Label -->
+        <control name="message_lbl" controlType="label" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/confirmation_label.ctrl"/>
+            <position x="0" y="-40" z="0"/>
+            <fontStringList>
+                <string text="Test Message"/>
+            </fontStringList>
+        </control>
+
+    </staticMenuControls>
+  
+    <menuControls>
+      
+        <control name="no_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_125x55.ctrl"/>
+            <position x="70" y="70" z="0"/>
+            <fontStringList>
+                <string text="No"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="back"/>
+            <!-- Supports up, down, left, right -->
+            <navigate left="yes_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptList>
+        </control>
+
+        <control name="yes_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_125x55.ctrl"/>
+            <position x="-70" y="70" z="0"/>
+            <fontStringList>
+                <string text="Yes"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="back"/>
+            <!-- Supports up, down, left, right -->
+            <navigate right="no_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptList>
+        </control>
+
+    </menuControls>
+
+    <spriteList>
+
+        <sprite objectName="confirmation_menu_bg"/>
+    
+    </spriteList>
+  
+</menu>
+

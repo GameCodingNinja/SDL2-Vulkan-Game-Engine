@@ -1,0 +1,65 @@
+<strategy defaultGroup="(level_1)">
+    
+    <node name="square_red">
+        
+        <sprite objectName="square_red">
+            <scale x=".9" y=".9" z="1"/>
+            <!-- Will use the default group but you can also specify the group for the script -->
+            <scriptList>
+                <script ball_ai="BallAI" group="(level_1)" prepareOnInit="true"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+    
+    <node name="triangle_green">
+        
+        <sprite objectName="triangle_green">
+            <scriptList>
+                <script ball_ai="BallAI" prepareOnInit="true"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+    
+    <node name="triangle_blue">
+        
+        <sprite objectName="triangle_blue">
+            <scriptList>
+                <script ball_ai="BallAI" prepareOnInit="true"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_green">
+        
+        <sprite objectName="circle_green">
+            <scriptList>
+                <script ball_ai="BallAI" prepareOnInit="true"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_blue">
+        
+        <sprite objectName="circle_blue">
+            <scriptList>
+                <script ball_ai="BallAI" prepareOnInit="true"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+    
+    <node name="circle_red">
+        
+        <sprite objectName="circle_red">
+            <scriptList>
+                <script ball_ai="BallAI" prepareOnInit="true"/>
+            </scriptList>
+        </sprite>
+
+    </node>
+
+</strategy>

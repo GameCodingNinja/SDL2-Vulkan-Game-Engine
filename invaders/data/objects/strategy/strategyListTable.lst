@@ -1,0 +1,19 @@
+<listTable>
+
+    <groupList groupName="_cube_">
+        <file path="data/objects/strategy/state/cube.strategy"/>
+    </groupList>
+    
+    <groupList groupName="_load_">
+        <file path="data/objects/strategy/state/loadscreen.strategy"/>
+    </groupList>
+
+    <groupList groupName="_stage_">
+        <file path="data/objects/strategy/level_1/stage.strategy"/>
+    </groupList>
+    
+    <groupList groupName="_level_1_">
+        <file path="data/objects/strategy/level_1/ball.strategy"/>
+    </groupList>
+  
+</listTable>

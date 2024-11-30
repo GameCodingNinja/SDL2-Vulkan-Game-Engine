@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "make",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "cmake --build .",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Multi-core Build",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "cmake --build . --parallel -j4",
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake Debug",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "rm -rfd build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Debug ..",
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake Release",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "rm -rfd build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release ..",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "rm -rfd build; rm -rfd ${workspaceRoot}/../angelscript/build; rm -rfd ${workspaceRoot}/../Box2D/build; rm -rfd ${workspaceRoot}/../bulletPhysics/build; rm -rfd ${workspaceRoot}/../library/build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Execute",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "command": "${workspaceRoot}/build/invaders",
+            "problemMatcher": []
+        }
+    ]
+}

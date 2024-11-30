@@ -1,0 +1,126 @@
+<menu>
+  
+    <scroll startDelay="900" scrollDelay="300" up="true" down="true"/>
+    
+    <!-- Supports initRootMenu, rootTransIn, transIn, transOut, event -->
+    <scriptList>
+        <script transIn="Menu_TransIn"/>
+        <script transOut="Menu_TransOut"/>
+    </scriptList>
+
+    <menuControls>
+
+        <!-- Continue Button -->
+        <control name="continue_btn" faction="decision_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="-140" z="0"/>
+            <fontStringList>
+                <string text="Continue"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <!-- Supports up, down, left, right -->
+            <navigate up="exit_btn" down="new_game_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+                <script execute="ConfirmBtn_execute"/>
+            </scriptList>
+        </control>
+
+        <!-- New Game Button -->
+        <control name="new_game_btn" controlType="button" defaultState="disabled">
+            <filePath file="data/objects/2d/menu/control/button_spin_275x55.ctrl"/>
+            <position x="0" y="-84" z="0"/>
+            <fontStringList>
+                <string text="New Game"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
+            <navigate up="continue_btn" down="load_game_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptList>
+        </control>
+
+        <!-- Load Game Button -->
+        <control name="load_game_btn" controlType="button" defaultState="disabled">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="-28" z="0"/>
+            <fontStringList>
+                <string text="Load Game"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
+            <navigate up="new_game_btn" down="settings_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptList>
+        </control>
+      
+        <!-- Settings Button -->
+        <control name="settings_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="28" z="0"/>
+            <fontStringList>
+                <string text="Settings"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="to_menu" executionAction="settings_menu"/>
+            <!-- Supports up, down, left, right -->
+            <navigate up="load_game_btn" down="key_binding_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptList>
+        </control>
+
+        <!-- Key Bindings Button -->
+        <control name="key_binding_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="84" z="0"/>
+            <fontStringList>
+                <string text="Key Bindings"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="to_menu" executionAction="key_bindings_menu"/>
+            <!-- Supports up, down, left, right -->
+            <navigate up="settings_btn" down="exit_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+            </scriptList>
+        </control>
+
+        <!-- Exit Game Button -->
+        <control name="exit_btn" faction="decision_btn" controlType="button" defaultState="inactive">
+            <filePath file="data/objects/2d/menu/control/button_275x55.ctrl"/>
+            <position x="0" y="140" z="0"/>
+            <fontStringList>
+                <string text="Exit Game"/>
+            </fontStringList>
+            <!-- Supports to_idle, to_tree, to_menu, back, close, change_focus, game_state_change, quit_game -->
+            <action actionType="to_menu" executionAction="confirmation_menu"/>
+            <!-- Supports up, down, left, right -->
+            <navigate up="key_binding_btn" down="continue_btn"/>
+            <!-- Supports rootTransIn, transIn, transOut, disabled, inactive, active, select, change, execute & event -->
+            <scriptList>
+                <script active="Control_OnActive"/>
+                <script select="Control_OnSelect"/>
+                <script execute="ConfirmBtn_execute"/>
+            </scriptList>
+        </control> 
+
+    </menuControls>
+
+</menu>
+

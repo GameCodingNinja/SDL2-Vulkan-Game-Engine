@@ -32,6 +32,13 @@
 /PachinkoChallenge/PachinkoChallenge.VC.opendb
 /PachinkoChallenge/build/
 
+/invaders/Win32/
+/invaders/AS_DEBUG/
+/invaders/.vs/
+/invaders/invaders.sdf
+/invaders/invaders.VC.opendb
+/invaders/build/
+
 /scriptGameTemplate/Win32/
 /scriptGameTemplate/AS_DEBUG/
 /scriptGameTemplate/.vs/

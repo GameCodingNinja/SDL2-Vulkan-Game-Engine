@@ -1,0 +1,8 @@
+<strategy defaultGroup="(level_1)">
+    
+    <!-- Node name will be used for the object name look up if one isn't defined -->
+    <node name="peg" id="-2">
+        <sprite/>
+    </node>
+
+</strategy>

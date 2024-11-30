@@ -1,0 +1,136 @@
+<objectDataList2D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <texture count="0" file="" compressed="false"/>
+            <mesh genType="quad" file="" >
+                <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file="">
+                    <!--
+                    <glyph id="weaponicons (2)"/>
+                    <glyph id="hero001"/>
+                    <glyph id="hero3down001"/>
+                    <glyph id="ship (3)"/>
+                    <glyph id="pomel (14)"/> -->
+                </spriteSheet>
+                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
+            </mesh>
+            <color r="1" g="1" b="1" a="1"/>
+            <pipeline id="2d_quad"/>
+        </visual>
+        <physics world="">
+            <body type="" linearDamping="0" angularDamping="0" fixedRotation="false"/>
+            <fixtureList>
+                <fixture shape="" radius="0" chainLoop="false" friction="0.2" density="0.2" restitution="0.2">
+                    <!-- vert list for polygon shapes - max of 8
+                    Box2D polygons are defined using Counter Clockwise Winding (CCW)
+                    <vert x="" y=""/> -->
+                    <sizeMod top="0" bottom="0" left="0" right="0"/>
+                </fixture>
+            </fixtureList>
+        </physics>
+        <size width="0" height="0"/>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+
+        <object name="background">
+            <visual>
+                <texture file="data/textures/titleScreen/title_background.png"/>
+            </visual>
+        </object>z
+        
+        <!--
+        <object name="wheel">
+            <visual>
+                <texture file="data/textures/slot/wheel.png"/>
+            </visual>
+        </object>
+        
+        <object name="triangle">
+            <visual>
+                <texture file="data/textures/slot/triangle_green.png"/>
+            </visual>
+        </object>
+        
+        <object name="black_font">
+            <visual>
+                <mesh genType="font"/>
+                <color r="0" g="0" b="0" a="1"/>
+            </visual>
+        </object>
+        
+        <object name="white_font">
+            <visual>
+                <mesh genType="font"/>
+                <color r="1" g="1" b="1" a="1"/>
+            </visual>
+        </object>
+        -->
+        
+<!--
+        <object name="spriteSheetTest1">
+            <visual>
+                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="8" glyphCount="16" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
+                        <glyph id="weaponicons (%d)"/>
+                    </spriteSheet>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+        
+        <object name="spriteSheetTest2">
+            <visual>
+                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="2" glyphCount="8" formatCodeOffset="8" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
+                        <glyph id="weaponicons (%d)"/>
+                    </spriteSheet>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+
+        <object name="spriteSheetTest3">
+            <visual>
+                <texture file="data/textures/spriteSheet/test_complex.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="3" file="data/objects/2d/mesh/titleScreen/test_complex.xml">
+                        <glyph id="weaponicons (2)"/>
+                        <glyph id="hero001"/>
+                        <glyph id="hero3down001"/>
+                        <glyph id="ship (3)"/>
+                        <glyph id="pomel (14)"/>
+                    </spriteSheet>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+
+        <object name="spriteSheetTest4">
+            <visual>
+                <texture file="data/textures/spriteSheet/cat.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="9" glyphCount="22" columns="4"/>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+
+        <object name="spriteSheetTest5">
+            <visual>
+                <texture file="data/textures/spriteSheet/test_simple.png" compressed="true"/>
+                <mesh genType="sprite_sheet">
+                    <spriteSheet defIndex="2" file="data/objects/2d/mesh/titleScreen/test_simple.xml" loadAllGlyphs="true"/>
+                </mesh>
+                <pipeline id="2d_spriteSheet"/>
+            </visual>
+        </object>
+-->
+    </objectList>
+
+</objectDataList2D>
+

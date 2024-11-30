@@ -1,0 +1,65 @@
+<objectDataList2D>
+
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+    <default  name="">
+        <visual>
+            <texture count="0" file="" compressed="false"/>
+            <mesh genType="quad" file="" >
+                <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file=""/>
+                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
+            </mesh>
+            <color r="1" g="1" b="1" a="1"/>
+            <pipeline id="2d_quad"/>
+        </visual>
+        <size width="0" height="0"/>
+    </default>
+    <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
+  
+    <objectList>
+        
+        <object name="circle_green">
+            <visual>
+                <texture file="data/textures/run/circle_green.png"/>
+            </visual>
+        </object>
+    
+        <object name="circle_blue">
+            <visual>
+                <texture file="data/textures/run/circle_blue.png"/>
+            </visual>
+        </object>
+        
+        <object name="circle_red">
+            <visual>
+                <texture file="data/textures/run/circle_red.png"/>
+            </visual>
+        </object>
+    
+        <object name="square_red">
+            <visual>
+                <texture file="data/textures/run/square_red.png"/>
+            </visual>
+        </object>
+        
+        <object name="triangle_green">
+            <visual>
+                <texture file="data/textures/run/triangle_green.png"/>
+            </visual>
+        </object>
+    
+        <object name="triangle_blue">
+            <visual>
+                <texture file="data/textures/run/triangle_blue.png"/>
+            </visual>
+        </object>
+
+        <object name="peg">
+            <visual>
+                <texture count="2" file="data/textures/run/peg%d.png"/>
+            </visual>
+        </object>
+
+    </objectList>
+
+</objectDataList2D>
+

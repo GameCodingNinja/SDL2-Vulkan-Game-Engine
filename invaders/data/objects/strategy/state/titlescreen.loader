@@ -1,0 +1,21 @@
+<loader>
+
+    <!-- One off Strategy node creation for simple nodes that don't define scripts. Bypasses the need to create a strategy file -->
+    <strategy name="_title_" cmdBufPool="(title)">
+    
+        <!-- Node name will be used for simlple sprite object name look up if one isn't defined -->
+        <node name="background"/>
+
+    </strategy>
+
+    <strategy name="_cube_" camera="cubeCamera" cmdBufPool="(title)">
+    
+        <node name="cube">
+            <sprite>
+                <script prepare="rotate"/>
+            </sprite>
+        </node>
+
+    </strategy>
+  
+</loader>

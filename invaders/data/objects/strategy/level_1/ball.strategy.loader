@@ -1,0 +1,32 @@
+<loader>
+
+    <strategy name="_level_1_" cmdBufPool="(level_1)">
+    
+        <node name="triangle_blue"/>
+        <node name="triangle_green"/>
+        <node name="circle_blue"/>
+        <node name="circle_green"/>
+        <node name="circle_red"/>
+        <node name="square_red"/>
+        <node name="triangle_blue"/>
+        <node name="triangle_green"/>
+        <node name="circle_blue"/>
+        <node name="circle_green"/>
+        <node name="circle_red"/>
+        <node name="square_red"/>
+        <node name="triangle_blue"/>
+        <node name="triangle_green"/>
+        <node name="circle_blue"/>
+        <node name="circle_green"/>
+        <node name="circle_red"/>
+        <node name="square_red"/>
+        <node name="triangle_blue"/>
+        <node name="triangle_green"/>
+        <node name="circle_blue"/>
+        <node name="circle_green"/>
+        <node name="circle_red"/>
+        <node name="square_red"/>
+
+    </strategy>
+  
+</loader>

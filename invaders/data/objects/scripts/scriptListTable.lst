@@ -1,0 +1,31 @@
+<listTable>
+    
+    <groupList groupName="(state)">
+        <file path="data/objects/scripts/state_defs.as"/>
+        <file path="data/objects/scripts/shared_utilities.as"/>
+        <file path="data/objects/scripts/shared_sprite_utilities.as"/>
+        <file path="data/objects/scripts/shared_visual_utilities.as"/>
+        <file path="data/objects/scripts/state.as"/>
+    </groupList>
+
+    <groupList groupName="(menu)">
+        <file path="data/objects/scripts/defs.as"/>
+        <file path="data/objects/scripts/uidefs.as"/>
+        <file path="data/objects/scripts/shared_utilities.as"/>
+        <file path="data/objects/scripts/shared_sprite_utilities.as"/>
+        <file path="data/objects/scripts/menu.as"/>
+        <file path="data/objects/scripts/confirmbtn.as"/>
+        <file path="data/objects/scripts/resolutionbtn.as"/>
+        <file path="data/objects/scripts/fullscreencheckbox.as"/>
+        <file path="data/objects/scripts/deadzoneslider.as"/>
+        <file path="data/objects/scripts/applybtn.as"/>
+        <file path="data/objects/scripts/keybindbtn.as"/>
+    </groupList>
+
+    <groupList groupName="(level_1)">
+        <file path="data/objects/scripts/shared_utilities.as"/>
+        <file path="data/objects/scripts/shared_sprite_utilities.as"/>
+        <file path="data/objects/scripts/level1.as"/>
+    </groupList>
+
+</listTable>
