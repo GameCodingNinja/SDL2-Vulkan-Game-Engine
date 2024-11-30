@@ -1,19 +1,47 @@
 <listTable>
 
-    <groupList groupName="_cube_">
-        <file path="data/objects/strategy/state/cube.strategy"/>
-    </groupList>
-    
     <groupList groupName="_load_">
         <file path="data/objects/strategy/state/loadscreen.strategy"/>
     </groupList>
-
-    <groupList groupName="_stage_">
-        <file path="data/objects/strategy/level_1/stage.strategy"/>
-    </groupList>
     
-    <groupList groupName="_level_1_">
-        <file path="data/objects/strategy/level_1/ball.strategy"/>
+    <groupList groupName="_background_">
+        <file path="data/objects/strategy/level1/background.strategy"/>
+    </groupList>
+
+    <groupList groupName="_buildingsback_">
+        <file path="data/objects/strategy/level1/buildingsback.strategy"/>
+    </groupList>
+
+    <groupList groupName="_buildingsfront_">
+        <file path="data/objects/strategy/level1/buildingsfront.strategy"/>
+    </groupList>
+
+    <groupList groupName="_forground_">
+        <file path="data/objects/strategy/level1/forground.strategy"/>
+    </groupList>
+
+    <groupList groupName="_buildings_">
+        <file path="data/objects/strategy/level1/buildings.strategy"/>
+    </groupList>
+
+    <groupList groupName="_player_ship_">
+        <file path="data/objects/strategy/level1/playerShip.strategy"/>
+    </groupList>
+
+    <groupList groupName="_enemy_">
+        <file path="data/objects/strategy/level1/enemy.strategy"/>
+    </groupList>
+
+    <groupList groupName="_lower_hud_">
+        <file path="data/objects/strategy/level1/lower_hud.strategy"/>
+    </groupList>
+
+    <groupList groupName="_upper_hud_">
+        <file path="data/objects/strategy/level1/upper_hud.strategy"/>
+    </groupList>
+
+    <groupList groupName="_train_">
+        <file path="data/objects/strategy/level1/train.strategy"/>
     </groupList>
   
 </listTable>

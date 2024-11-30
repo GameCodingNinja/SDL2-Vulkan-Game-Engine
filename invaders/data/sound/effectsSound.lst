@@ -1,7 +1,0 @@
-<soundList>
-
-  <soundFiles>
-    <load id="laser" file="data/sound/effects/laser.wav"/>
-  </soundFiles>
-
-</soundList>

@@ -204,7 +204,7 @@ namespace NScriptStrategy
         Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void clear()",                                  WRAP_MFN(CStrategyMgr, clear),                 asCALL_GENERIC) );
 
         // Load the strategy
-        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadStrategy(string &in)",                 WRAP_FN(NStrategyloader::load),                 asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CStrategyMgr", "void loadStrategy(string &in)",                 WRAP_MFN(CStrategyloader, load),               asCALL_GENERIC) );
 
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CStrategyMgr StrategyMgr", &CStrategyMgr::Instance()) );

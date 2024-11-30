@@ -39,7 +39,7 @@ CLevel1State::CLevel1State() :
 ************************************************************************/
 CLevel1State::~CLevel1State()
 {
-    CStrategyMgr::Instance().deleteStrategyLst( {"_level_1_", "_stage_"} );
+    CStrategyMgr::Instance().deleteStrategyLst( {"_level_1_"} );
     CDevice::Instance().deleteCommandPoolGroup( "(level_1)" );
     CObjectDataMgr::Instance().freeGroup( "(level_1)" );
     CScriptMgr::Instance().freeGroup("(level_1)");
@@ -106,6 +106,5 @@ void CLevel1State::load()
     CObjectDataMgr::Instance().loadGroup( "(level_1)");
 
     // Load the Strategy
-    //NStrategyloader::load( "data/objects/strategy/level_1/stage.strategy.loader" );
-    //NStrategyloader::load( "data/objects/strategy/level_1/ball.strategy.loader" );
+    CStrategyloader::Instance().loadGroup( "-level1-" );
 }

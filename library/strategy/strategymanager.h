@@ -49,6 +49,9 @@ public:
     void deleteStrategyLst( const std::vector<std::string> & strategyIdVec );
     void deleteStrategyAry( const CScriptArray & strategyIdAry );
 
+    // Sort all strategies
+    void sort();
+
     // Delete all the sprites
     void clear();
     

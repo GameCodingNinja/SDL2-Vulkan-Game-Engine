@@ -118,7 +118,7 @@ void CStartUpState::init()
     CMenuMgr::Instance().setCommandBuffers( "(menu)" );
 
     // Load the Strategy
-    NStrategyloader::load( "data/objects/strategy/state/startup.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/state/startup.loader" );
 
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_StartUpFadeIn" );
@@ -160,11 +160,10 @@ void CStartUpState::assetLoad()
     try
     {
         // Load the data list tables
-        CObjectDataMgr::Instance().loadListTable( "data/objects/3d/objectDataList/dataListTable.lst" );
         CMenuMgr::Instance().loadListTable( "data/objects/2d/menu/menuListTable.lst" );
         CMenuMgr::Instance().loadMenuAction( "data/objects/2d/menu/menu_action.list" );
         CSoundMgr::Instance().loadListTable( "data/sound/soundListTable.lst" );
-        CPhysicsWorldManager2D::Instance().loadListTable( "data/objects/2d/physics/physicsListTable.lst" );
+        CStrategyloader::Instance().loadListTable( "data/objects/strategy/strategyLoaderListTable.lst" );
 
         // Load in any fonts
         CFontMgr::Instance().load( "data/textures/fonts/font.lst" );

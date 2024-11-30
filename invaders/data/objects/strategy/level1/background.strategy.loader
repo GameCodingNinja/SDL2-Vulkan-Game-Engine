@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<loader>
+
+    <strategy name="_background_" cmdBufPool="(level_1)">
+
+        <node name="background"/>
+
+        <node name="cloud_0"/>
+        <node name="cloud_1"/>
+        <node name="cloud_2"/>
+        <node name="cloud_3"/>
+        <node name="cloud_4"/>
+        <node name="cloud_5"/>
+        <node name="cloud_6"/>
+        <node name="cloud_7"/>
+
+    </strategy>
+  
+</loader>

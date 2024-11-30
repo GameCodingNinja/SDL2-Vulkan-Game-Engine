@@ -3,12 +3,7 @@
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
     <default  name="">
         <visual>
-            <texture count="0" file="" compressed="false"/>
-            <mesh genType="quad" file="" >
-                <spriteSheet defIndex="0" glyphCount="0" columns="0" formatCodeOffset="0" loadAllGlyphs="false" file=""/>
-                <scaledFrame thicknessWidth="" thicknessHeight="" centerQuad="" frameBottom=""/>
-            </mesh>
-            <color r="1" g="1" b="1" a="1"/>
+            <mesh genType="quad"/>
             <pipeline id="2d_quad"/>
         </visual>
         <size width="0" height="0"/>
@@ -16,49 +11,349 @@
     <!-- DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT DEFAULT -->
   
     <objectList>
-        
-        <object name="circle_green">
+
+        <object name="progress_frame">
             <visual>
-                <texture file="data/textures/run/circle_green.png"/>
+                <texture file="data/textures/level/8x8_1_pixel_frame.png" filter="NEAREST"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="3" thicknessHeight="3" centerQuad="true"/>
+                </mesh>
+                <color r="0" g="0" b="0" a="1"/>
             </visual>
-        </object>
-    
-        <object name="circle_blue">
-            <visual>
-                <texture file="data/textures/run/circle_blue.png"/>
-            </visual>
-        </object>
-        
-        <object name="circle_red">
-            <visual>
-                <texture file="data/textures/run/circle_red.png"/>
-            </visual>
-        </object>
-    
-        <object name="square_red">
-            <visual>
-                <texture file="data/textures/run/square_red.png"/>
-            </visual>
+            <size width="60" height="8"/>
         </object>
         
-        <object name="triangle_green">
+        <object name="progress_solid">
             <visual>
-                <texture file="data/textures/run/triangle_green.png"/>
+                <shader id="shader_solid_2d"/>
+                <color r="0" g="255" b="0" a="0.8"/>
             </visual>
+            <size width="54" height="4"/>
         </object>
-    
-        <object name="triangle_blue">
+
+        <object name="background">
             <visual>
-                <texture file="data/textures/run/triangle_blue.png"/>
+                <texture file="data/textures/level/daytime_background.png" filter="NEAREST"/>
             </visual>
         </object>
 
-        <object name="peg">
+        <object name="buildingsback">
             <visual>
-                <texture count="2" file="data/textures/run/peg%d.png"/>
+                <texture file="data/textures/level/daytime_buildingsback.png" filter="NEAREST"/>
             </visual>
         </object>
 
+        <object name="trees">
+            <visual>
+                <texture file="data/textures/level/daytime_trees.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="traintracks">
+            <visual>
+                <texture file="data/textures/level/daytime_traintracks.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="train">
+            <visual>
+                <texture file="data/textures/level/daytime_train.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_0">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud01.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_1">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud02.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_2">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud03.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_3">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud04.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_4">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud05.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_5">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud06.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_6">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud07.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="cloud_7">
+            <visual>
+                <texture file="data/textures/level/daytime_cloud08.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="buildingsfront">
+            <visual>
+                <texture file="data/textures/level/daytime_buildingsfront.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building01">
+            <visual>
+                <texture file="data/textures/level/daytime_building01.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building02">
+            <visual>
+                <texture file="data/textures/level/daytime_building02.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building03">
+            <visual>
+                <texture file="data/textures/level/daytime_building03.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building04">
+            <visual>
+                <texture file="data/textures/level/daytime_building04.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building05">
+            <visual>
+                <texture file="data/textures/level/daytime_building05.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building06">
+            <visual>
+                <texture file="data/textures/level/daytime_building06.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building07">
+            <visual>
+                <texture file="data/textures/level/daytime_building07.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="building08">
+            <visual>
+                <texture file="data/textures/level/daytime_building08.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="null_player_ship">
+            <visual>
+                <mesh genType="null"/>
+            </visual>
+            <!-- Don't need a collision signal for the player ship since other elements initiate the collision -->
+            <collision filterCategoryBits="0x00000000" filterMaskBits="0x00000006" collisionSignal="false">
+                <rect radiusFromVisual="true" rectFromVisual="true" rectAsSizeModifier="true">
+                    <rect x1="-5" y1="-5" x2="-5" y2="-5"/>
+                </rect>
+                <!--<polygonList radiusFromVisual="true" pointsToModelView="true" optionalPointCheck="false">
+                    <polygon>
+                        <point x="5" y="5"/>
+                        <point x="5" y="20"/>
+                        <point x="40" y="20"/>
+                        <point x="40" y="5"/>
+                    </polygon>
+                </polygonList>-->
+            </collision>
+            <size width="45" height="25"/>
+        </object>
+
+        <object name="player_ship_body">
+            <visual>
+                <texture file="data/textures/playerShip/blue_1_idle.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="player_fire_tail">
+            <visual>
+                <texture count="12" file="data/textures/playerShip/firetail_halfsize_pixel_%d.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="player_shot">
+            <visual>
+                <texture file="data/textures/playerShip/projectile03-4.png" filter="NEAREST"/>
+            </visual>
+            <collision filterCategoryBits="0x00000001" filterMaskBits="0x00000000" collisionSignal="true">
+                <!--<circle radiusFromVisual="true"/>-->
+                <!--<rect radiusFromVisual="true" rectFromVisual="true"/>-->
+                <point radiusFromVisual="true"/>
+                <!--<lineList radiusFromVisual="true" pointsToModelView="true">
+                    <line>
+                        <point x="5" y="4"/>
+                        <point x="10" y="-4"/>
+                    </line>
+                </lineList>-->
+                <!--<polygonList radiusFromVisual="true" pointsToModelView="true" optionalPointCheck="false">
+                    <polygon>
+                        <point x="0" y="0"/>
+                        <point x="0" y="7"/>
+                        <point x="16" y="7"/>
+                        <point x="16" y="0"/>
+                    </polygon>
+                </polygonList>-->
+            </collision>
+        </object>
+
+        <object name="enemy_ship">
+            <visual>
+                <texture file="data/textures/enemyShip/enemy_3.png"/>
+            </visual>
+            <collision filterCategoryBits="0x00000002" filterMaskBits="0x00000001" collisionSignal="true">
+                
+                <!--<polygonList radiusFromVisual="true" pointsToModelView="true" optionalPointCheck="false">
+                    <polygon>
+                        <point x="2" y="2"/>
+                        <point x="2" y="86"/>
+                        <point x="68" y="86"/>
+                        <point x="68" y="2"/>
+                    </polygon>
+                </polygonList>-->
+
+                <rect radiusFromVisual="true" rectFromVisual="true" rectAsSizeModifier="true">
+                    <rect x1="-5" y1="-5" x2="-5" y2="-5"/>
+                </rect>
+
+                <!--<rect radiusFromVisual="true" rectToModelView="true">
+                    <rect x1="9" y1="12" x2="47" y2="120"/>
+                    <rect x1="45" y1="17" x2="111" y2="102"/>
+                    <rect x1="112" y1="12" x2="150" y2="120"/>
+                </rect>
+                
+                <circle radiusFromVisual="true"/>
+                <point radiusFromVisual="true"/>
+                <lineList radiusFromVisual="true" pointsToModelView="true">
+                    <line>
+                        <point x="78" y="5"/>
+                        <point x="79" y="100"/>
+                    </line>
+                </lineList>-->
+            </collision>
+        </object>
+
+        <object name="enemy_shot">
+            <visual>
+                <texture file="data/textures/enemyShip/projectile06-5.png" filter="NEAREST"/>
+            </visual>
+            <collision filterCategoryBits="0x00000004" filterMaskBits="0x00000000" collisionSignal="true">
+                <circle radius="10"/>
+            </collision>
+        </object>
+
+        <object name="hud_background">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="0" g="150" b="255" a="1"/>
+            </visual>
+            <size width="1280" height="66"/>
+        </object>
+
+        <object name="hud_frame">
+            <visual>
+                <texture file="data/textures/level/16x16_3_pixel_frame.png" filter="NEAREST"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="1288" height="74"/>
+        </object>
+
+        <object name="level_frame">
+            <visual>
+                <texture file="data/textures/level/16x16_3_pixel_frame.png" filter="NEAREST"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+            <size width="158" height="74"/>
+        </object>
+
+        <object name="hud_screen_frame">
+            <visual>
+                <texture file="data/textures/level/16x16_3_pixel_frame.png" filter="NEAREST"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="5" thicknessHeight="5" centerQuad="false"/>
+                </mesh>
+                <color r="28" g="77" b="123" a="1"/>
+            </visual>
+            <size width="140" height="69"/>
+        </object>
+
+        <object name="level_background">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="0" g="150" b="255" a="1"/>
+            </visual>
+            <size width="153" height="66"/>
+        </object>
+
+        <object name="level_font">
+            <visual>
+                <mesh genType="font"/>
+                <shader id="shader_2d"/>
+                <color r="48" g="97" b="153" a="1"/>
+            </visual>
+        </object>
+
+        <object name="level_progress_frame">
+            <visual>
+                <texture file="data/textures/level/8x8_1_pixel_frame.png" filter="NEAREST"/>
+                <mesh genType="scaled_frame">
+                    <scaledFrame thicknessWidth="3" thicknessHeight="3" centerQuad="true"/>
+                </mesh>
+                <color r="0" g="0" b="0" a="1"/>
+            </visual>
+            <size width="120" height="8"/>
+        </object>
+        
+        <object name="level_progress_solid">
+            <visual>
+                <shader id="shader_solid_2d"/>
+                <color r="0" g="255" b="0" a="0.8"/>
+            </visual>
+            <size width="114" height="4"/>
+        </object>
+
+        <object name="explode">
+            <visual>
+                <texture count="11" file="data/textures/explosion/explosion_%d.png" filter="NEAREST"/>
+            </visual>
+        </object>
+
+        <object name="marker">
+            <visual>
+                <texture file="data/textures/level/projectile02-4.png" filter="NEAREST"/>
+            </visual>
+        </object>
+        
     </objectList>
 
 </objectDataList2D>

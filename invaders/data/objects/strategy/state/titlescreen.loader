@@ -7,15 +7,5 @@
         <node name="background"/>
 
     </strategy>
-
-    <strategy name="_cube_" camera="cubeCamera" cmdBufPool="(title)">
-    
-        <node name="cube">
-            <sprite>
-                <script prepare="rotate"/>
-            </sprite>
-        </node>
-
-    </strategy>
   
 </loader>

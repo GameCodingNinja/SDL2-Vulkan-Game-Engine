@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<strategy defaultGroup="(level_1)">
+
+    <object>
+        <position z="-10"/>
+    </object>
+
+    <node name="background">
+        <sprite>
+            <scale x="4" y="3.6"/>
+        </sprite>
+    </node>
+
+    <node name="cloud_0" instance="cloud_0">
+        <sprite/>
+    </node>
+
+    <node name="cloud_1" instance="cloud_1">
+        <sprite/>
+    </node>
+
+    <node name="cloud_2" instance="cloud_2">
+        <sprite/>
+    </node>
+
+    <node name="cloud_3" instance="cloud_3">
+        <sprite/>
+    </node>
+
+    <node name="cloud_4" instance="cloud_4">
+        <sprite/>
+    </node>
+
+    <node name="cloud_5" instance="cloud_5">
+        <sprite/>
+    </node>
+
+    <node name="cloud_6" instance="cloud_6">
+        <sprite/>
+    </node>
+
+    <node name="cloud_7" instance="cloud_7">
+        <sprite/>
+    </node>
+  
+</strategy>

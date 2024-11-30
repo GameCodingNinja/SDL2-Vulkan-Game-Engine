@@ -127,30 +127,37 @@ void CStrategy::loadFromFile( const std::string & file )
     
         for( int i = 0; i < node.nChildNode(); ++i )
         {
-            const XMLNode nodeLst = node.getChildNode( "node", i );
+            const XMLNode nodeLst = node.getChildNode( i );
 
-            if( !nodeLst.isAttributeSet( "name" ) )
+            if( std::string(nodeLst.getName()) == "node" )
             {
-                throw NExcept::CCriticalException("Strategy Load Error!",
-                    boost::str( boost::format("Strategy node requires a name (%s).\n\n%s\nLine: %s")
-                        % file % __FUNCTION__ % __LINE__ ));
+                if( !nodeLst.isAttributeSet( "name" ) )
+                {
+                    throw NExcept::CCriticalException("Strategy Load Error!",
+                        boost::str( boost::format("Strategy node requires a name (%s).\n\n%s\nLine: %s")
+                            % file % __FUNCTION__ % __LINE__ ));
+                }
+
+                // Get the node list name
+                const std::string name = nodeLst.getAttribute( "name" );
+
+                // Load the sprite data into the map
+                bool duplicate = !m_dataMap.emplace(
+                    std::piecewise_construct,
+                    std::forward_as_tuple(name),
+                    std::forward_as_tuple(nodeLst, defGroup, defObjName, defUserId) ).second;
+
+                // Check for duplicate names
+                if( duplicate )
+                {
+                    throw NExcept::CCriticalException("Sprite Load Error!",
+                        boost::str( boost::format("Duplicate sprite name (%s).\n\n%s\nLine: %s")
+                            % name % __FUNCTION__ % __LINE__ ));
+                }
             }
-
-            // Get the node list name
-            const std::string name = nodeLst.getAttribute( "name" );
-
-            // Load the sprite data into the map
-            bool duplicate = !m_dataMap.emplace(
-                std::piecewise_construct,
-                std::forward_as_tuple(name),
-                std::forward_as_tuple(nodeLst, defGroup, defObjName, defUserId) ).second;
-
-            // Check for duplicate names
-            if( duplicate )
+            else if( std::string(nodeLst.getName()) == "object" )
             {
-                throw NExcept::CCriticalException("Sprite Load Error!",
-                    boost::str( boost::format("Duplicate sprite name (%s).\n\n%s\nLine: %s")
-                        % name % __FUNCTION__ % __LINE__ ));
+                loadTransFromNode( nodeLst );
             }
         }
     }

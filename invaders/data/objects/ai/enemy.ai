@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<ai>
+
+    <node name="AI_Enemy">
+
+        <head script="AI_Enemy_Head"/>
+
+        <node>
+
+            <composite script="AI_Composite" condition="all_success"/>
+
+            <node>
+
+                <leaf script="AI_Enemy_Desend"/>
+
+            </node>
+
+            <node>
+
+                <decorator script="AI_Decorator" type="repeater"/>
+
+                <node>
+
+                    <composite script="AI_Composite" condition="all_success"/>
+
+                    <node>
+
+                        <leaf script="AI_Enemy_Roam"/>
+
+                    </node>
+
+                    <node>
+
+                        <leaf script="AI_Enemy_DesendToBuilding"/>
+
+                    </node>
+
+                    <node>
+
+                        <leaf script="AI_Enemy_DestroyBuilding"/>
+
+                    </node>
+
+                </node>
+
+            </node>
+
+        </node>
+
+    </node>
+
+</ai>

@@ -4,7 +4,7 @@
     <strategy name="_startup_" defaultGroup="(startup)" cmdBufPool="(startup)" activate="true">
     
         <!-- Node name will be used for the object name look up if one isn't defined -->
-        <node name="waffles"/>
+        <node name="logo"/>
 
     </strategy>
   

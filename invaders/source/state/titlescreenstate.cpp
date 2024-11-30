@@ -40,9 +40,9 @@ CTitleScreenState::CTitleScreenState() :
 ************************************************************************/
 CTitleScreenState::~CTitleScreenState()
 {
-    CStrategyMgr::Instance().deleteStrategyLst( {"_title_", "_cube_"} );
+    CStrategyMgr::Instance().deleteStrategyLst( {"_title_"} );
     CDevice::Instance().deleteCommandPoolGroup( "(title)" );
-    CObjectDataMgr::Instance().freeGroupLst( {"(title)", "(cube)"} );
+    CObjectDataMgr::Instance().freeGroupLst( {"(title)"} );
 }
 
 
@@ -55,7 +55,7 @@ void CTitleScreenState::init()
     CMenuMgr::Instance().activateTree( "title_screen_tree" );
 
     // Activaye the strategies
-    CStrategyMgr::Instance().activateStrategyLst( {"_title_", "_cube_"} );
+    CStrategyMgr::Instance().activateStrategyLst( {"_title_"} );
     
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
@@ -102,8 +102,8 @@ void CTitleScreenState::handleEvent( const SDL_Event & rEvent )
 ****************************************************************************/
 void CTitleScreenState::load()
 {
-    CObjectDataMgr::Instance().loadGroupLst( {"(title)", "(cube)"} );
+    CObjectDataMgr::Instance().loadGroupLst( {"(title)"} );
 
     // Load the Strategies
-    NStrategyloader::load( "data/objects/strategy/state/titlescreen.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/state/titlescreen.loader" );
 }

@@ -1,0 +1,23 @@
+<listTable>
+
+    <groupList groupName="-level1-">
+        <file path="data/objects/strategy/level1/background.strategy.loader"/>
+        <file path="data/objects/strategy/level1/buildingsback.strategy.loader"/>
+        <file path="data/objects/strategy/level1/buildingsfront.strategy.loader"/>
+        <file path="data/objects/strategy/level1/buildings.strategy.loader"/>
+        <file path="data/objects/strategy/level1/forground.strategy.loader"/>
+        <file path="data/objects/strategy/level1/enemy.strategy.loader"/>
+        <!--<file path="data/objects/strategy/level1/ship.strategy.loader"/>
+        <file path="data/objects/strategy/level1/lower_hud.strategy.loader"/>
+        <file path="data/objects/strategy/level1/upper_hud.strategy.loader"/>-->
+        <file path="data/objects/strategy/level1/train.strategy.loader"/>
+    </groupList>
+
+    <groupList groupName="-reloadlevel1-">
+        <file path="data/objects/strategy/level1/nemy.strategy.loader"/>
+        <file path="data/objects/strategy/level1/buildings.strategy.loader"/>
+        <file path="data/objects/strategy/level1/ship.strategy.loader"/>
+        <file path="data/objects/strategy/level1/train.strategy.loader"/>
+    </groupList>
+
+</listTable>

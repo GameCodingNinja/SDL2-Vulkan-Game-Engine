@@ -171,6 +171,18 @@ void CStrategyMgr::deleteStrategy( const std::string & strategyId )
 }
 
 /************************************************************************
+*    DESC:  Sort all strategies
+************************************************************************/
+void CStrategyMgr::sort()
+{
+    std::sort(m_pStrategyVec.begin(), m_pStrategyVec.end(),
+        [](CStrategy * a, CStrategy * b)
+        {
+            return a->getPos().z > b->getPos().z;
+        });
+}
+
+/************************************************************************
 *    DESC:  Delete all the strategies
 ************************************************************************/
 void CStrategyMgr::clear()
