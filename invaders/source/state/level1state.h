@@ -10,6 +10,9 @@
 // Physical component dependency
 #include "commonstate.h"
 
+// Forward Declarations
+class CStrategy;
+
 class CLevel1State : public CCommonState
 {
 public:
@@ -28,7 +31,6 @@ public:
     
     // Static load function
     static void load();
-
 
 private:
     

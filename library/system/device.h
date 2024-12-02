@@ -86,7 +86,7 @@ public:
     void recycleDescriptorSet( CDescriptorSet * pDescriptorSet );
 
     // Load the image from file path
-    CTexture & createTexture( const std::string & group, const std::string & filePath, bool mipMap = false );
+    CTexture & createTexture( const std::string & group, CTexture & rTexture );
 
     // Create uniform buffer
     std::vector<CMemoryBuffer> createUniformBufferVec( uint32_t pipelineIndex );

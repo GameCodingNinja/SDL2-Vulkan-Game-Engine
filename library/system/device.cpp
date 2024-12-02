@@ -439,7 +439,7 @@ VkCommandPool CDevice::createSecondaryCommandPool( const std::string & group )
 /************************************************************************
 *    DESC:  Load the image from file path
 ************************************************************************/
-CTexture & CDevice::createTexture( const std::string & group, const std::string & filePath, bool mipMap )
+CTexture & CDevice::createTexture( const std::string & group, CTexture & rTexture )
 {
     // Create the map group if it doesn't already exist
     auto mapIter = m_textureMapMap.find( group );
@@ -447,21 +447,18 @@ CTexture & CDevice::createTexture( const std::string & group, const std::string 
         mapIter = m_textureMapMap.emplace( group, std::map<const std::string, CTexture>() ).first;
 
     // See if this texture has already been loaded
-    auto iter = mapIter->second.find( filePath );
+    auto iter = mapIter->second.find( rTexture.textFilePath );
 
     // If it's not found, load the texture and add it to the list
     if( iter == mapIter->second.end() )
     {
         //NGenFunc::PostDebugMsg( boost::str( boost::format("Create texture (%s - %s)") % group % filePath ));
 
-        CTexture texture;
-        texture.textFilePath = filePath;
-
         // Load the image from file path
-        CDeviceVulkan::createTexture( texture, mipMap );
+        CDeviceVulkan::createTexture( rTexture );
 
         // Insert the new texture info
-        iter = mapIter->second.emplace( filePath, texture ).first;
+        iter = mapIter->second.emplace( rTexture.textFilePath, rTexture ).first;
     }
 
     return iter->second;
@@ -1322,8 +1319,11 @@ void CDevice::load3DM(
         CBinaryTexture btext;
         SDL_RWread( pFile, &btext, 1, sizeof( btext ) );
 
+        CTexture texture;
+        texture.textFilePath = btext.path;
+
         // Load the texture
-        CTexture texture = createTexture( group, btext.path );
+        texture = createTexture( group, texture );
         texture.type = ETextureType(btext.type);
 
         textureVec.emplace_back( texture );

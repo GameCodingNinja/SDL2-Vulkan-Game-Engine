@@ -65,7 +65,7 @@ void CLoadState::init()
     CObjectDataMgr::Instance().loadGroup( "(load)" );
 
     // Load the Strategy
-    NStrategyloader::load( "data/objects/strategy/state/loadscreen.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/state/loadscreen.loader" );
     
     // Start the fade in and animation
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );

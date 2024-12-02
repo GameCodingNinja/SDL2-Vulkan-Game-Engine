@@ -35,7 +35,20 @@ CObjectVisualData2D::CObjectVisualData2D() :
     m_genType(EGenType::_NULL_),
     m_pipelineIndex(-1),
     m_textureSequenceCount(0),
-    m_compressed(false),
+    // The below defaults need to match the defaults in texture.h
+    m_genMipLevels(false),
+    m_magFilter(VK_FILTER_LINEAR),
+    m_minFilter(VK_FILTER_LINEAR),
+    m_samplerAddressModeU(VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE),
+    m_samplerAddressModeV(VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE),
+    m_samplerAddressModeW(VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE),
+    m_borderColor(VK_BORDER_COLOR_INT_OPAQUE_BLACK),
+    m_compareOp(VK_COMPARE_OP_ALWAYS),
+    m_mipmapMode(VK_SAMPLER_MIPMAP_MODE_LINEAR),
+    m_unnormalizedCoordinates(VK_FALSE),
+    m_compareEnable(VK_FALSE),
+    m_mipLodBias(0.0f),
+    m_minLod(0.0f),
     m_iboCount(0),
     m_defaultUniformScale(1),
     m_mirror(EMirror::_NULL_)
@@ -74,9 +87,185 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
             if( textureNode.isAttributeSet("file") )
                 m_textureFilePath = textureNode.getAttribute( "file" );
 
-            // Is this a compressed texture?
-            if( textureNode.isAttributeSet("compressed") )
-                m_compressed = (std::strcmp(textureNode.getAttribute( "compressed" ), "true") == 0);
+            // Enable mip map generation
+            if( textureNode.isAttributeSet("mip_levels") )
+                m_genMipLevels = (std::strcmp(textureNode.getAttribute( "mip_levels" ), "true") == 0);
+
+            // Select the filtering
+            if( textureNode.isAttributeSet("mag_filter") )
+            {
+                std::string filterStr = textureNode.getAttribute( "mag_filter" );
+
+                if( filterStr == "nearest" )
+                    m_magFilter = VK_FILTER_NEAREST;
+                
+                else if( filterStr == "linear" )
+                    m_magFilter = VK_FILTER_LINEAR;
+
+                else if( filterStr == "cubic_ext" )
+                    m_magFilter = VK_FILTER_CUBIC_EXT;
+
+                else if( filterStr == "cubic_img" )
+                    m_magFilter = VK_FILTER_CUBIC_IMG;
+            }
+
+            if( textureNode.isAttributeSet("min_filter") )
+            {
+                std::string filterStr = textureNode.getAttribute( "min_filter" );
+
+                if( filterStr == "nearest" )
+                    m_minFilter = VK_FILTER_NEAREST;
+                
+                else if( filterStr == "linear" )
+                    m_minFilter = VK_FILTER_LINEAR;
+
+                else if( filterStr == "cubic_ext" )
+                    m_minFilter = VK_FILTER_CUBIC_EXT;
+
+                else if( filterStr == "cubic_img" )
+                    m_minFilter = VK_FILTER_CUBIC_IMG;
+            }
+
+            if( textureNode.isAttributeSet("samp_mode_u") )
+            {
+                std::string sampAddrModeStr = textureNode.getAttribute( "samp_mode_u" );
+
+                if( sampAddrModeStr == "repeat" )
+                    m_samplerAddressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+                
+                else if( sampAddrModeStr == "mirrored_repeat" )
+                    m_samplerAddressModeU = VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
+
+                else if( sampAddrModeStr == "clamp_to_edge" )
+                    m_samplerAddressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+
+                else if( sampAddrModeStr == "clamp_to_border" )
+                    m_samplerAddressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
+                
+                else if( sampAddrModeStr == "mirror_clamp_to_edge" )
+                    m_samplerAddressModeU = VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE;
+            }
+
+            if( textureNode.isAttributeSet("samp_mode_v") )
+            {
+                std::string sampAddrModeStr = textureNode.getAttribute( "samp_mode_v" );
+
+                if( sampAddrModeStr == "repeat" )
+                    m_samplerAddressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+                
+                else if( sampAddrModeStr == "mirrored_repeat" )
+                    m_samplerAddressModeV = VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
+
+                else if( sampAddrModeStr == "clamp_to_edge" )
+                    m_samplerAddressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+
+                else if( sampAddrModeStr == "clamp_to_border" )
+                    m_samplerAddressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
+                
+                else if( sampAddrModeStr == "mirror_clamp_to_edge" )
+                    m_samplerAddressModeV = VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE;
+            }
+
+            if( textureNode.isAttributeSet("samp_mode_w") )
+            {
+                std::string sampAddrModeStr = textureNode.getAttribute( "samp_mode_w" );
+
+                if( sampAddrModeStr == "repeat" )
+                    m_samplerAddressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+                
+                else if( sampAddrModeStr == "mirrored_repeat" )
+                    m_samplerAddressModeW = VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
+
+                else if( sampAddrModeStr == "clamp_to_edge" )
+                    m_samplerAddressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+
+                else if( sampAddrModeStr == "clamp_to_border" )
+                    m_samplerAddressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
+                
+                else if( sampAddrModeStr == "mirror_clamp_to_edge" )
+                    m_samplerAddressModeW = VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE;
+            }
+
+            if( textureNode.isAttributeSet("border_color") )
+            {
+                std::string borderColorStr = textureNode.getAttribute( "border_color" );
+
+                if( borderColorStr == "float_trans_black" )
+                    m_borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
+                
+                else if( borderColorStr == "int_trans_black" )
+                    m_borderColor = VK_BORDER_COLOR_INT_TRANSPARENT_BLACK;
+
+                else if( borderColorStr == "float_opaque_black" )
+                    m_borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_BLACK;
+
+                else if( borderColorStr == "int_opaque_black" )
+                    m_borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+                
+                else if( borderColorStr == "float_opaque_white" )
+                    m_borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
+                
+                else if( borderColorStr == "int_opaque_white" )
+                    m_borderColor = VK_BORDER_COLOR_INT_OPAQUE_WHITE;
+
+                else if( borderColorStr == "float_custom_ext" )
+                    m_borderColor = VK_BORDER_COLOR_FLOAT_CUSTOM_EXT;
+
+                else if( borderColorStr == "int_custom_ext" )
+                    m_borderColor = VK_BORDER_COLOR_INT_CUSTOM_EXT;
+            }
+
+            if( textureNode.isAttributeSet("compare_op") )
+            {
+                std::string borderColorStr = textureNode.getAttribute( "compare_op" );
+
+                if( borderColorStr == "never" )
+                    m_compareOp = VK_COMPARE_OP_NEVER;
+                
+                else if( borderColorStr == "less" )
+                    m_compareOp = VK_COMPARE_OP_LESS;
+
+                else if( borderColorStr == "equal" )
+                    m_compareOp = VK_COMPARE_OP_EQUAL;
+
+                else if( borderColorStr == "less_or_equal" )
+                    m_compareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
+                
+                else if( borderColorStr == "greater" )
+                    m_compareOp = VK_COMPARE_OP_GREATER;
+                
+                else if( borderColorStr == "not_equal" )
+                    m_compareOp = VK_COMPARE_OP_NOT_EQUAL;
+
+                else if( borderColorStr == "greater_or_equal" )
+                    m_compareOp = VK_COMPARE_OP_GREATER_OR_EQUAL;
+
+                else if( borderColorStr == "always" )
+                    m_compareOp = VK_COMPARE_OP_ALWAYS;
+            }
+
+            if( textureNode.isAttributeSet("mipmap_mode") )
+            {
+                std::string borderColorStr = textureNode.getAttribute( "mipmap_mode" );
+
+                if( borderColorStr == "nearest" )
+                    m_mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
+                
+                else if( borderColorStr == "linear" )
+                    m_mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+            }
+
+            if( textureNode.isAttributeSet("unnorm_coord") )
+                m_unnormalizedCoordinates = (std::strcmp(textureNode.getAttribute( "unnorm_coord" ), "true") == 0);
+
+            if( textureNode.isAttributeSet("compare_enable") )
+                m_compareEnable = (std::strcmp(textureNode.getAttribute( "compare_enable" ), "true") == 0);
+
+            if( textureNode.isAttributeSet("mip_lod_bias") )
+                m_mipLodBias = std::atof(textureNode.getAttribute( "mip_lod_bias" ));
+            
+            if( textureNode.isAttributeSet("min_lod") )
+                m_minLod = std::atof(textureNode.getAttribute( "min_lod" ));
         }
 
         // Get the mesh node
@@ -159,15 +348,8 @@ void CObjectVisualData2D::loadFromNode( const XMLNode & objectNode, const std::s
                 // Build the sprite sheet from XML data
                 if( !m_spriteSheetFilePath.empty() )
                 {
-                    // Make a copy of the file path because we may need to add a resource extension to it
-                    std::string filePath = m_spriteSheetFilePath;
-
-                    // Add in the resource swap file extension if needed
-                    if( !m_resExt.empty() )
-                        NGenFunc::AddFileExt( m_spriteSheetFilePath, filePath, m_resExt );
-
                     // This will return the sprite sheet
-                    auto rSpriteSheet = CSpriteSheetMgr::Instance().load( filePath );
+                    auto rSpriteSheet = CSpriteSheetMgr::Instance().load( m_spriteSheetFilePath );
 
                     // Copy the needed glyph data from the manager
                     rSpriteSheet.copyTo( m_spriteSheet, m_glyphIDs, loadAllGlyphs );
@@ -333,33 +515,30 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
 {
     if( !m_textureFilePath.empty() )
     {
+        // Init texture class
+        rTexture.magFilter = m_magFilter;
+        rTexture.minFilter = m_minFilter;
+        rTexture.genMipLevels = m_genMipLevels;
+        rTexture.textFilePath = m_textureFilePath;
+        rTexture.samplerAddressModeU = m_samplerAddressModeU;
+        rTexture.samplerAddressModeV = m_samplerAddressModeV;
+        rTexture.samplerAddressModeW = m_samplerAddressModeW;
+
         if( m_textureSequenceCount > 0 )
         {
             m_textureVec.reserve( m_textureSequenceCount );
 
             for( int i = 0; i < m_textureSequenceCount; ++i )
             {
-                const std::string file = boost::str( boost::format(m_textureFilePath) % i );
+                rTexture.textFilePath = boost::str( boost::format(m_textureFilePath) % i );
 
-                std::string filePath = file;
-
-                // Add in the resource swap file extension if needed
-                if( !m_resExt.empty() )
-                    NGenFunc::AddFileExt( file, filePath, m_resExt );
-
-                rTexture = CDevice::Instance().createTexture( group, filePath );
+                rTexture = CDevice::Instance().createTexture( group, rTexture );
                 m_textureVec.emplace_back( rTexture );
             }
         }
         else
         {
-            std::string filePath = m_textureFilePath;
-
-            // Add in the resource swap file extension if needed
-            if( !m_resExt.empty() )
-                NGenFunc::AddFileExt( m_textureFilePath, filePath, m_resExt );
-
-            rTexture = CDevice::Instance().createTexture( group, filePath );
+            rTexture = CDevice::Instance().createTexture( group, rTexture );
             m_textureVec.emplace_back( rTexture );
         }
 

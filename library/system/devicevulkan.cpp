@@ -1681,7 +1681,7 @@ VkCommandPool CDeviceVulkan::createCommandPool( uint32_t queueFamilyIndex )
 /***************************************************************************
 *   DESC:  Create texture
 ****************************************************************************/
-void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
+void CDeviceVulkan::createTexture( CTexture & texture )
 {
     int channels(0);
     unsigned char * pixels = SOIL_load_image(
@@ -1717,7 +1717,8 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
 
     uint32_t imageUsageFlags( VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT );
 
-    if( mipMap )
+    // Calculate the mip levels based on the size of the texture
+    if( texture.genMipLevels )
     {
         imageUsageFlags |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         texture.mipLevels = std::floor(std::log2(std::max(texture.size.w, texture.size.h))) + 1;
@@ -1737,7 +1738,7 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
     transitionImageLayout( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, texture.mipLevels );
     copyBufferToImage( stagingBuffer, texture.textureImage, static_cast<uint32_t>(texture.size.w), static_cast<uint32_t>(texture.size.h) );
 
-    if( mipMap )
+    if( texture.genMipLevels )
         generateMipmaps( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.size.w, texture.size.h, texture.mipLevels );
     else
         transitionImageLayout( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, texture.mipLevels );
@@ -1749,7 +1750,7 @@ void CDeviceVulkan::createTexture( CTexture & texture, bool mipMap )
     texture.textureImageView = createImageView( texture.textureImage, VK_FORMAT_R8G8B8A8_UNORM, texture.mipLevels, VK_IMAGE_ASPECT_COLOR_BIT );
 
     // Create the texture sampler
-    texture.textureSampler = createTextureSampler( texture.mipLevels );
+    texture.textureSampler = createTextureSampler( texture );
 }
 
 /***************************************************************************
@@ -1845,28 +1846,28 @@ void CDeviceVulkan::generateMipmaps( VkImage image, VkFormat imageFormat, int32_
 /***************************************************************************
 *   DESC:  Create texture sampler
 ****************************************************************************/
-VkSampler CDeviceVulkan::createTextureSampler( uint32_t mipLevels )
+VkSampler CDeviceVulkan::createTextureSampler( CTexture & texture )
 {
     VkResult vkResult(VK_SUCCESS);
     VkSamplerCreateInfo samplerInfo = {};
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    samplerInfo.magFilter = VK_FILTER_LINEAR;
-    samplerInfo.minFilter = VK_FILTER_LINEAR;
+    samplerInfo.magFilter = texture.magFilter;  // Default: VK_FILTER_LINEAR
+    samplerInfo.minFilter = texture.minFilter;  // Default: VK_FILTER_LINEAR
     // Using repeat mode because clamp mode will return a solid color if sampling beyond the image
     // Have seen clamp mode cause some flickering on Android with fonts
-    samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    samplerInfo.anisotropyEnable = VK_TRUE;
+    samplerInfo.addressModeU = texture.samplerAddressModeU;  // Default: VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+    samplerInfo.addressModeV = texture.samplerAddressModeV;  // Default: VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+    samplerInfo.addressModeW = texture.samplerAddressModeW;  // Default: VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+    samplerInfo.anisotropyEnable = ((CSettings::Instance().getAnisotropicLevel() > 0) ? VK_TRUE : VK_FALSE);
     samplerInfo.maxAnisotropy = CSettings::Instance().getAnisotropicLevel();
-    samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
-    samplerInfo.unnormalizedCoordinates = VK_FALSE;
-    samplerInfo.compareEnable = VK_FALSE;
-    samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
-    samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-    samplerInfo.mipLodBias = 0.0f;
-    samplerInfo.minLod = 0.0f;
-    samplerInfo.maxLod = ((mipLevels > 1) ? mipLevels : 0.f);
+    samplerInfo.borderColor = texture.borderColor;
+    samplerInfo.unnormalizedCoordinates = texture.unnormalizedCoordinates;  // Default: VK_FALSE
+    samplerInfo.compareEnable = texture.compareEnable;                      // Default: VK_FALSE
+    samplerInfo.compareOp = texture.compareOp;    // Default: VK_COMPARE_OP_ALWAYS
+    samplerInfo.mipmapMode = texture.mipmapMode;  // Default: VK_SAMPLER_MIPMAP_MODE_LINEAR
+    samplerInfo.mipLodBias = texture.mipLodBias;  // Default: 0.0f
+    samplerInfo.minLod = texture.minLod;          // Default: 0.0f
+    samplerInfo.maxLod = ((texture.mipLevels > 1) ? texture.mipLevels : 0.f);
 
     VkSampler textureSampler;
 

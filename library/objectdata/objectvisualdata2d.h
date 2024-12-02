@@ -166,8 +166,38 @@ private:
     // Texture Sequence count
     int m_textureSequenceCount;
 
-    // Compressed flag
-    bool m_compressed;
+    // Enable generation of mip map levels
+    bool m_genMipLevels;
+
+    // Filter flag
+    VkFilter m_magFilter;
+    VkFilter m_minFilter;
+
+    // Sampler Address Mode
+    VkSamplerAddressMode m_samplerAddressModeU;
+    VkSamplerAddressMode m_samplerAddressModeV;
+    VkSamplerAddressMode m_samplerAddressModeW;
+
+    // Border color
+    VkBorderColor m_borderColor;
+
+    // Compare operation
+    VkCompareOp m_compareOp;
+
+    // Mipmap Mode
+    VkSamplerMipmapMode m_mipmapMode;
+
+    // Unnormalized Coordinates
+    VkBool32 m_unnormalizedCoordinates;
+
+    // Compare Enable
+    VkBool32 m_compareEnable;
+
+    // Mip Lod Bias
+    float m_mipLodBias;
+
+    // Min Lod
+    float m_minLod;
 
     // mesh file path
     std::string m_meshFilePath;
@@ -195,7 +225,4 @@ private:
     
     // Mirror enum
     EMirror m_mirror;
-    
-    // File extension for resolution swap
-    std::string m_resExt;
 };

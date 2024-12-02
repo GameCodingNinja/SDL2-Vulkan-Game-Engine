@@ -105,5 +105,5 @@ void CTitleScreenState::load()
     CObjectDataMgr::Instance().loadGroupLst( {"(title)", "(cube)"} );
 
     // Load the Strategies
-    NStrategyloader::load( "data/objects/strategy/state/titlescreen.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/state/titlescreen.loader" );
 }

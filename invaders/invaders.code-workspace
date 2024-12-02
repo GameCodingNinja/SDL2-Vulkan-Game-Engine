@@ -115,7 +115,11 @@
             "any": "cpp",
             "source_location": "cpp",
             "numbers": "cpp",
-            "semaphore": "cpp"
+            "semaphore": "cpp",
+            "charconv": "cpp",
+            "format": "cpp",
+            "stdfloat": "cpp",
+            "text_encoding": "cpp"
         },
 		"editor.autoClosingBrackets": "never"
 	}

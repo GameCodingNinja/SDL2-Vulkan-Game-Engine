@@ -118,7 +118,7 @@ void CStartUpState::init()
     CMenuMgr::Instance().setCommandBuffers( "(menu)" );
 
     // Load the Strategy
-    NStrategyloader::load( "data/objects/strategy/state/startup.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/state/startup.loader" );
 
     // Start the fade in
     m_scriptComponent.prepare( "(state)", "State_StartUpFadeIn" );

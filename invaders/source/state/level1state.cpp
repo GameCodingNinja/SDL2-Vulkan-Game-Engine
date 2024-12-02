@@ -54,7 +54,8 @@ void CLevel1State::init()
     CMenuMgr::Instance().activateTree("pause_tree");
 
     // Activaye the strategies
-    //CStrategyMgr::Instance().activateStrategyLst( {"_stage_", "_level_1_"} );
+    CStrategyMgr::Instance().activateStrategyLst(
+        {"_background_", "_buildingsback_", "_buildingsfront_", "_buildings_", "_forground_"} );
 
     // Start the fade
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );

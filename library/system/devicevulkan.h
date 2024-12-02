@@ -64,7 +64,7 @@ protected:
     std::vector<CMemoryBuffer> createUniformBufferVec( VkDeviceSize sizeOfUniformBuf );
     
     // Create texture
-    void createTexture( CTexture & texture, bool mipMap );
+    void createTexture( CTexture & texture );
     
     // Create descriptor pool
     VkDescriptorPool createDescriptorPool( const CDescriptorData & descData );
@@ -229,7 +229,7 @@ private:
     void generateMipmaps( VkImage image, VkFormat imageFormat, int32_t width, int32_t height, uint32_t mipLevels );
     
     // Create texture sampler
-    VkSampler createTextureSampler( uint32_t mipLevels );
+    VkSampler createTextureSampler( CTexture & texture );
     
     // Find supported format
     VkFormat findSupportedFormat( const std::vector<VkFormat> & candidates, VkImageTiling tiling, VkFormatFeatureFlags features );

@@ -162,6 +162,6 @@ void CLevel1State::load()
     CPhysicsWorldManager2D::Instance().createWorld( "(game)" );
 
     // Load the Strategy
-    NStrategyloader::load( "data/objects/strategy/level_1/stage.strategy.loader" );
-    NStrategyloader::load( "data/objects/strategy/level_1/ball.strategy.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/level_1/stage.strategy.loader" );
+    CStrategyloader::Instance().load( "data/objects/strategy/level_1/ball.strategy.loader" );
 }

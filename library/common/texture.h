@@ -26,6 +26,7 @@ enum class ETextureType
     DISPLACEMENT
 };
 
+// The below defaults need to match the defaults in objectvisualdata.cpp
 class CTexture
 {
 public:
@@ -50,6 +51,39 @@ public:
     
     // Texture type
     ETextureType type = ETextureType::DIFFUSE;
+
+    // Filter flag
+    VkFilter magFilter = VK_FILTER_LINEAR;
+    VkFilter minFilter = VK_FILTER_LINEAR;
+
+    // Sampler Address Mode
+    VkSamplerAddressMode samplerAddressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+    VkSamplerAddressMode samplerAddressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+    VkSamplerAddressMode samplerAddressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+
+    // Enable mip map generation
+    bool genMipLevels = false;
+
+    // Border color
+    VkBorderColor borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+
+    // Compare operation
+    VkCompareOp compareOp = VK_COMPARE_OP_ALWAYS;
+
+    // Mipmap Mode
+    VkSamplerMipmapMode mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+
+    // Unnormalized Coordinates
+    VkBool32 unnormalizedCoordinates = VK_FALSE;
+
+    // Compare Enable
+    VkBool32 compareEnable = VK_FALSE;
+
+    // Mip Lod Bias
+    float mipLodBias = 0.0f;
+
+    // Min Lod
+    float minLod = 0.0f;
     
     // Texture file path
     std::string textFilePath;
@@ -62,7 +96,6 @@ public:
         textFilePath.clear();
         mipLevels = 1;
         size.clear();
-        type = ETextureType::DIFFUSE;
 
         if( textureImage != VK_NULL_HANDLE )
         {

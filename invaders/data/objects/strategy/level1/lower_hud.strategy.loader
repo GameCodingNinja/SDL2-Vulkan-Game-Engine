@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <loader>
 
-    <strategy name="_lower_hud_">
+    <strategy name="_lower_hud_" cmdBufPool="(level_1)">
         <node name="hud_frame"/>
         <node name="hud_background"/>
     </strategy>
