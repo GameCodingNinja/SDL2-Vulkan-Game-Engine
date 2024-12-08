@@ -2,7 +2,7 @@
 //
 //  FILE NAME:       settings.cpp
 //
-//  DESCRIPTION:     game settings class
+//  DESCRIPTION:     game settings singleton class
 //
 
 // Physical component dependency
@@ -126,6 +126,7 @@ void CSettings::loadXML()
     m_scriptMain = json["scripting"]["mainFunction"];
     m_saveByteCode = json["scripting"]["saveByteCode"];
     m_loadByteCode = json["scripting"]["loadByteCode"];
+    m_stripDebugInfo = json["scripting"]["stripDebugInfo"]; // Flag for generating byte code without debug symbols
 
     // Sound
     m_frequency = json["sound"]["frequency"];
@@ -396,44 +397,43 @@ bool CSettings::getStripDebugInfo() const
     return m_stripDebugInfo;
 }
 
-/************************************************************************
-*    DESC:  Get the sound frequency
-************************************************************************/
+//
+//  DESC:  Get the sound frequency
+//
 int CSettings::getFrequency() const
 {
     return m_frequency;
 }
 
-/************************************************************************
-*    DESC:  Get the sound channels: mono, stero, quad, suround, etc
-************************************************************************/
+//
+//  DESC:  Get the sound channels: mono, stero, quad, suround, etc
+//
 int CSettings::getSoundChannels() const
 {
     return m_sound_channels;
 }
 
-/************************************************************************
-*    DESC:  Get the number of channels used for mixing
-************************************************************************/
+//
+//  DESC:  Get the number of channels used for mixing
+//
 int CSettings::getMixChannels() const
 {
     return m_mix_channels;
 }
 
-/************************************************************************
-*    DESC:  Get the chunk size. The amount of memory used for mixing.
-*           The higher the number, the more latency in sound responce
-*           stopping and starting
-************************************************************************/
+//
+//  DESC:  Get the chunk size. The amount of memory used for mixing.
+//         The higher the number, the more latency in sound responce
+//         stopping and starting
+//
 int CSettings::getChunkSize() const
 {
     return m_chunksize;
 }
 
-
-/************************************************************************
-*    DESC:  Get/Set the Anisotropic setting
-************************************************************************/
+//
+//  DESC:  Get/Set the Anisotropic setting
+//
 int CSettings::getAnisotropicLevel() const
 {
     return static_cast<int>(m_anisotropicLevel);
@@ -444,17 +444,17 @@ void CSettings::setAnisotropicLevel( int level )
     m_anisotropicLevel = static_cast<ETextFilter>(level);
 }
 
-/************************************************************************
-*    desc:  Do we want triple buffering?
-************************************************************************/
+//
+//  DESC:  Do we want triple buffering?
+//
 bool CSettings::getTripleBuffering() const
 {
     return m_tripleBuffering;
 }
 
-/************************************************************************
-*    DESC:  Save the settings file
-************************************************************************/
+//
+//  DESC:  Save the settings file
+//
 void CSettings::saveSettings()
 {
     #if 0

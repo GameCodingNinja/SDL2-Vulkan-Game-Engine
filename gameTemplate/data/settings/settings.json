@@ -10,6 +10,6 @@
         "backbuffer": { "tripleBuffering": false, "VSync": false, "anisotropicFiltering": 16, "activateDepthBuffer": true, "activateStencilBuffer": true },
         "gamepad": { "allow": true, "stickDeadZone": 0.3 } },
     
-    "scripting": { "scriptListTable": "", "group":"", "mainFunction": "", "saveByteCode": false, "loadByteCode": false },
+    "scripting": { "scriptListTable": "", "group":"", "mainFunction": "", "saveByteCode": false, "loadByteCode": false, "stripDebugInfo": false },
     "sound": { "frequency": 44100, "sound_channels": 2, "mix_channels": 8, "chunksize": 1024 }
 }

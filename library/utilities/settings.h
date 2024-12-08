@@ -2,7 +2,7 @@
 //
 //  FILE NAME:       settings.h
 //
-//  DESCRIPTION:     game settings class
+//  DESCRIPTION:     game settings singleton class
 //
 
 #pragma once
