@@ -48,6 +48,7 @@ void CCameraMgr::load( const std::string & filePath )
         {
             m_defCamera.loadFromNode( defaultNode );
             m_defCamera.transform();
+            m_defCamera.init();
         }
 
         for( int i = 0; i < node.nChildNode( "camera" ); ++i )

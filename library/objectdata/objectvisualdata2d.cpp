@@ -519,10 +519,17 @@ void CObjectVisualData2D::createTexture( const std::string & group, CTexture & r
         rTexture.magFilter = m_magFilter;
         rTexture.minFilter = m_minFilter;
         rTexture.genMipLevels = m_genMipLevels;
-        rTexture.textFilePath = m_textureFilePath;
         rTexture.samplerAddressModeU = m_samplerAddressModeU;
         rTexture.samplerAddressModeV = m_samplerAddressModeV;
         rTexture.samplerAddressModeW = m_samplerAddressModeW;
+        rTexture.borderColor = m_borderColor;
+        rTexture.compareOp = m_compareOp;
+        rTexture.mipmapMode = m_mipmapMode;
+        rTexture.unnormalizedCoordinates = m_unnormalizedCoordinates;
+        rTexture.compareEnable = m_compareEnable;
+        rTexture.mipLodBias = m_mipLodBias;
+        rTexture.minLod = m_minLod;
+        rTexture.textFilePath = m_textureFilePath;
 
         if( m_textureSequenceCount > 0 )
         {

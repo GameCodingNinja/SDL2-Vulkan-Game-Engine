@@ -17,36 +17,27 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CCamera::CCamera() :
-    m_projType(CSettings::Instance().getProjectionType()),
-    m_angle(CSettings::Instance().getViewAngle()),
-    m_minZDist(CSettings::Instance().getMinZdist()),
-    m_maxZDist(CSettings::Instance().getMaxZdist())
+CCamera::CCamera()
 {
-    init();
 }
 
-CCamera::CCamera( const XMLNode & node ) :
-    m_projType(CSettings::Instance().getProjectionType()),
-    m_angle(CSettings::Instance().getViewAngle()),
-    m_minZDist(CSettings::Instance().getMinZdist()),
-    m_maxZDist(CSettings::Instance().getMaxZdist())
+CCamera::CCamera( const XMLNode & node )
 {
     loadFromNode( node );
     init();
 }
 
-CCamera::CCamera( float minZDist, float maxZDist ) :
-    m_projType(EProjectionType::ORTHOGRAPHIC),
+/*CCamera::CCamera( float minZDist, float maxZDist ) :
+    m_projType(CSettings::Instance().getProjectionType()),
     m_angle(0),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
     init();
-}
+}*/
 
-CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
-    m_projType(EProjectionType::PERSPECTIVE),
+CCamera::CCamera( EProjectionType projType, float angle, float minZDist, float maxZDist ) :
+    m_projType(projType),
     m_angle(angle),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
@@ -137,7 +128,7 @@ void CCamera::createProjectionMatrix()
     }
     else
     {
-        const auto defSize = CSettings::Instance().getDefaultSize();
+        const auto defSize = CSettings::Instance().getDeviceSize();
         
         m_projectionMatrix.orthographicRH(
             defSize.w,
@@ -232,7 +223,7 @@ CPoint<float> CCamera::toOrthoCoord( const CPoint<float> & position )
     CPoint<float> pos;
 
     auto & ratio = CSettings::Instance().getOrthoAspectRatio();
-    auto & sizeHalf = CSettings::Instance().getSizeHalf();
+    auto & sizeHalf = CSettings::Instance().getDisplaySizeHalf();
 
     pos.x = (position.x - sizeHalf.w) / (ratio.w * m_scale.x);
     pos.y = (position.y - sizeHalf.h) / (ratio.h * m_scale.y);

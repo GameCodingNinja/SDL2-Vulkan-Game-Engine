@@ -72,7 +72,7 @@ CGame::CGame()
         CStatCounter::Instance().connect( std::bind(&CGame::statStringCallBack, this, std::placeholders::_1) );
 
     // Allocate max threads
-    CThreadPool::Instance().init( CSettings::Instance().getMinThreadCount(), CSettings::Instance().getMaxThreadCount() );
+    CThreadPool::Instance().init( 2, 6 );
 }
 
 /************************************************************************

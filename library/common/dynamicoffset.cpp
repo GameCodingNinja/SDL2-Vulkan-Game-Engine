@@ -76,5 +76,5 @@ CPoint<float> CDynamicOffset::getPos( CSize<float> defaultHalfSize )
 
 CPoint<float> CDynamicOffset::getPos()
 {
-    return getPos( CSettings::Instance().getDefaultSizeHalf() );
+    return getPos( CSettings::Instance().getDeviceSizeHalf() );
 }

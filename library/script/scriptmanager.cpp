@@ -14,6 +14,7 @@
 #include <utilities/statcounter.h>
 #include <utilities/settings.h>
 #include <utilities/threadpool.h>
+#include <utilities/xmlParser.h>
 #include <script/bytecodestream.h>
 
 // Boost lib dependencies

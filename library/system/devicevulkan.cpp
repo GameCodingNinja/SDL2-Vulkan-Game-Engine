@@ -742,8 +742,8 @@ void CDeviceVulkan::setupSwapChain()
     // Set the extent of the render resolution
     VkExtent2D swapchainExtent;
 
-    // Get the render size of the window
-    const CSize<uint32_t> size( CSettings::Instance().getSize() );
+    // Get the size of the window
+    const CSize<uint32_t> size( CSettings::Instance().getDisplaySize() );
 
     // width and height are either both -1, or both not -1.
     if (surfCapabilities.currentExtent.width == (uint32_t)-1)

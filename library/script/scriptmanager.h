@@ -26,6 +26,7 @@ class asIScriptModule;
 class asIScriptFunction;
 class asITypeInfo;
 struct asSMessageInfo;
+struct XMLNode;
 
 class CScriptMgr : public CManagerBase
 {

@@ -68,11 +68,11 @@ void CDevice::init( std::function<void(uint32_t)> callback )
 ****************************************************************************/
 void CDevice::create( const std::string & pipelineCfg )
 {
-    // Get the render size of the window
-    const CSize<int> size( CSettings::Instance().getSize() );
+    // Get the size of the window
+    const CSize<int> size( CSettings::Instance().getDisplaySize() );
 
     uint32_t flags( SDL_WINDOW_VULKAN | SDL_WINDOW_HIDDEN );
-    if ( !CSettings::Instance().isMobileDevice() )
+    if ( CSettings::Instance().allowWindowResize() )
         flags |= SDL_WINDOW_RESIZABLE;
 
     // Create window
@@ -1481,7 +1481,7 @@ void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
 ****************************************************************************/
 void CDevice::handleResolutionChange( int width, int height )
 {
-    CSettings::Instance().setSize( CSize<float>(width, height) );
+    CSettings::Instance().setDisplaySize( CSize<float>(width, height) );
     CSettings::Instance().calcRatio();
 
     // Reset the transform to recalculate mouse collision
