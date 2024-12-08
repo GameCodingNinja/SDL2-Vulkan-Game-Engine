@@ -172,23 +172,22 @@ uint32_t CSettings::getEngineVersion() const
 //
 void CSettings::calcRatio()
 {
+    // Recalculate the screen aspect ratio based on the display resolution
+    // This allows the mouse to line up with the GUI elements
     m_screenAspectRatio.w = m_display_size.w / m_display_size.h;
     m_screenAspectRatio.h = m_display_size.h / m_display_size.w;
 
-    if( m_allowWindowResize )
+    if( m_orientation == EOrientation::PORTRAIT )
     {
-        if( m_display_size.w / m_display_size.h > m_screenAspectRatio.w )
-        {
-            // NOTE: The default height is based on the current aspect ratio
-            // NOTE: Make sure the height does not have a floating point component
-            m_default_size.h = (float)(int)std::ceil((m_screenAspectRatio.h * m_default_size.w) + 0.5);
-        }
-        else
-        {
-            // NOTE: The default width is based on the current aspect ratio
-            // NOTE: Make sure the width does not have a floating point component
-            m_default_size.w = (float)(int)std::ceil((m_screenAspectRatio.w * m_default_size.h) + 0.5);
-        }
+        // NOTE: The default height is based on the current aspect ratio
+        // NOTE: Make sure the height does not have a floating point component
+        m_default_size.h = (float)(int)std::ceil((m_screenAspectRatio.h * m_default_size.w) + 0.5);
+    }
+    else
+    {
+        // NOTE: The default width is based on the current aspect ratio
+        // NOTE: Make sure the width does not have a floating point component
+        m_default_size.w = (float)(int)std::ceil((m_screenAspectRatio.w * m_default_size.h) + 0.5);
     }
 
     // Get half the size for use with screen boundaries
