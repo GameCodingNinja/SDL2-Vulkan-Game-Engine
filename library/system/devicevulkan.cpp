@@ -1,8 +1,10 @@
 
 /************************************************************************
-*    FILE NAME:       devicevulkan.h
+*    FILE NAME:       devicevulkan.cpp
 *
 *    DESCRIPTION:     Class used for Vulkan API implementation
+*
+*    REFERENCE:       https://vulkan-tutorial.com/
 ************************************************************************/
 
 // Physical component dependency

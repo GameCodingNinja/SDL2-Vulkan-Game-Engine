@@ -33,8 +33,8 @@ namespace NScriptSettings
         
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDisplaySize()",         WRAP_MFN(CSettings, getDisplaySize),          asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDisplaySizeHalf()",     WRAP_MFN(CSettings, getDisplaySizeHalf),      asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDeviceSize()",          WRAP_MFN(CSettings, getDeviceSize),           asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDeviceSizeHalf()",      WRAP_MFN(CSettings, getDeviceSizeHalf),       asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSize()",          WRAP_MFN(CSettings, getDefaultSize),           asCALL_GENERIC) );
+        Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getDefaultSizeHalf()",      WRAP_MFN(CSettings, getDefaultSizeHalf),       asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "void setDisplaySize(const CSize & in)",  WRAP_MFN(CSettings, setDisplaySize),          asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getScreenAspectRatio()",   WRAP_MFN(CSettings, getScreenAspectRatio),    asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CSettings", "const CSize & getOrthoAspectRatio()",    WRAP_MFN(CSettings, getOrthoAspectRatio),     asCALL_GENERIC) );

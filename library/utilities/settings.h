@@ -46,8 +46,8 @@ public:
     // Get game window size
     const CSize<float> & getDisplaySize() const;
     const CSize<float> & getDisplaySizeHalf() const;
-    const CSize<float> & getDeviceSize() const;
-    const CSize<float> & getDeviceSizeHalf() const;
+    const CSize<float> & getDefaultSize() const;
+    const CSize<float> & getDefaultSizeHalf() const;
     void setDisplaySize( const CSize<float> & size );
     bool allowWindowResize() const;
 
@@ -146,8 +146,8 @@ private:
     // with and height of game window
     CSize<float> m_display_size;
     CSize<float> m_display_size_half;
-    CSize<float> m_device_size;
-    CSize<float> m_device_size_half;
+    CSize<float> m_default_size;
+    CSize<float> m_default_size_half;
 
     // Vulkan data
     int m_major;

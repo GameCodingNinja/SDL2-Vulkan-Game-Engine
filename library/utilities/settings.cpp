@@ -29,7 +29,7 @@ CSettings::CSettings() :
     m_filePath("data/settings/settings.cfg"),
     m_debugMode(false),
     m_display_size(1280,768),
-    m_device_size(1280,768),
+    m_default_size(1280,768),
     m_major(1),
     m_minor(0),
     m_validationLayers(false),
@@ -89,22 +89,21 @@ void CSettings::loadXML()
     m_engineVersion = json["info"]["engineVersion"];
 
     // Get display info
-    m_display_size.w = json["display"]["resolution"]["width"];
-    m_display_size.h = json["display"]["resolution"]["height"];
+    m_display_size.w = json["resolution"]["display"]["width"];
+    m_display_size.h = json["resolution"]["display"]["height"];
+    m_fullScreen = json["resolution"]["display"]["fullScreen"];
+    m_allowWindowResize = json["resolution"]["display"]["allowWindowResize"];
     m_display_size_half = m_display_size / 2.f;
-    m_fullScreen = json["display"]["resolution"]["fullScreen"];
-    m_allowWindowResize = json["display"]["resolution"]["allowWindowResize"];
+
+    // The default size is the 2d design size
+    // This helps to scale 2d GUI elements on the screen
+    // so that the mouse pointer lines up with them
+    m_default_size.w = json["resolution"]["default"]["width"];
+    m_default_size.h = json["resolution"]["default"]["height"];
+    m_orientation = json["resolution"]["default"]["orientation"];
+    m_default_size_half = m_default_size / 2.f;
 
     // Get device info
-    m_device_size.w = json["device"]["resolution"]["width"];
-    m_device_size.h = json["device"]["resolution"]["height"];
-    m_device_size_half = m_device_size / 2.f;
-    m_orientation = json["device"]["resolution"]["orientation"];
-
-    // Height and width screen ratio for perspective projection
-    m_screenAspectRatio.w = m_device_size.w / m_device_size.h;
-    m_screenAspectRatio.h = m_device_size.h / m_device_size.w;
-
     // Vulkan info
     m_major = json["device"]["Vulkan"]["major"];
     m_minor = json["device"]["Vulkan"]["minor"];
@@ -173,34 +172,34 @@ uint32_t CSettings::getEngineVersion() const
 //
 void CSettings::calcRatio()
 {
+    m_screenAspectRatio.w = m_display_size.w / m_display_size.h;
+    m_screenAspectRatio.h = m_display_size.h / m_display_size.w;
+
     if( m_allowWindowResize )
     {
-        m_screenAspectRatio.w = m_display_size.w / m_display_size.h;
-        m_screenAspectRatio.h = m_display_size.h / m_display_size.w;
-
         if( m_display_size.w / m_display_size.h > m_screenAspectRatio.w )
         {
             // NOTE: The default height is based on the current aspect ratio
             // NOTE: Make sure the height does not have a floating point component
-            m_device_size.h = (float)(int)std::ceil((m_screenAspectRatio.h * m_device_size.w) + 0.5);
+            m_default_size.h = (float)(int)std::ceil((m_screenAspectRatio.h * m_default_size.w) + 0.5);
         }
         else
         {
             // NOTE: The default width is based on the current aspect ratio
             // NOTE: Make sure the width does not have a floating point component
-            m_device_size.w = (float)(int)std::ceil((m_screenAspectRatio.w * m_device_size.h) + 0.5);
+            m_default_size.w = (float)(int)std::ceil((m_screenAspectRatio.w * m_default_size.h) + 0.5);
         }
     }
 
     // Get half the size for use with screen boundaries
-    m_device_size_half = m_device_size / 2.f;
+    m_default_size_half = m_default_size / 2.f;
 
     // Screen size divided by two
     m_display_size_half = m_display_size / 2.f;
 
     // Pre-calculate the aspect ratios for orthographic projection
-    m_orthoAspectRatio.h = m_display_size.h / m_device_size.h;
-    m_orthoAspectRatio.w = m_display_size.w / m_device_size.w;
+    m_orthoAspectRatio.h = m_display_size.h / m_default_size.h;
+    m_orthoAspectRatio.w = m_display_size.w / m_default_size.w;
 }
 
 //
@@ -227,19 +226,19 @@ const CSize<float> & CSettings::getDisplaySizeHalf() const
 }
 
 //
-//  DESC:  Get device size specified in config file
+//  DESC:  Get default size specified in config file
 //
-const CSize<float> & CSettings::getDeviceSize() const
+const CSize<float> & CSettings::getDefaultSize() const
 {
-    return m_device_size;
+    return m_default_size;
 }
 
 //
 //  DESC:  Get default size in half
 //
-const CSize<float> & CSettings::getDeviceSizeHalf() const
+const CSize<float> & CSettings::getDefaultSizeHalf() const
 {
-    return m_device_size_half;
+    return m_default_size_half;
 }
 
 //

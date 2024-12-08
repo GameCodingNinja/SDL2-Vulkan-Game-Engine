@@ -128,7 +128,7 @@ void CCamera::createProjectionMatrix()
     }
     else
     {
-        const auto defSize = CSettings::Instance().getDeviceSize();
+        const auto defSize = CSettings::Instance().getDefaultSize();
         
         m_projectionMatrix.orthographicRH(
             defSize.w,
