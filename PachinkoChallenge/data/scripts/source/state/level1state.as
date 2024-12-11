@@ -130,7 +130,7 @@ final class CRunState : CCommonState
     void init() override
     {
         // Determine debug and autoplay mode
-        if( Settings.isDebugMode() )
+        if( Settings.isDebugMode() && Settings.isAutoplay() )
             DEBUG_AUTOPLAY = true;
 
         // Unblock the menu messaging and activate needed trees(s)

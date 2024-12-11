@@ -1,10 +1,8 @@
 
 /************************************************************************
-*    FILE NAME:       devicevulkan.cpp
+*    FILE NAME:       devicevulkan.h
 *
 *    DESCRIPTION:     Class used for Vulkan API implementation
-*
-*    REFERENCE:       https://vulkan-tutorial.com/
 ************************************************************************/
 
 // Physical component dependency
@@ -744,8 +742,8 @@ void CDeviceVulkan::setupSwapChain()
     // Set the extent of the render resolution
     VkExtent2D swapchainExtent;
 
-    // Get the size of the window
-    const CSize<uint32_t> size( CSettings::Instance().getDisplaySize() );
+    // Get the render size of the window
+    const CSize<uint32_t> size( CSettings::Instance().getSize() );
 
     // width and height are either both -1, or both not -1.
     if (surfCapabilities.currentExtent.width == (uint32_t)-1)

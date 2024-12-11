@@ -23,8 +23,8 @@ public:
     // Constructor
     CCamera();
     CCamera( const XMLNode & node );
-    //CCamera( float minZDist, float maxZDist );
-    CCamera( EProjectionType projType, float angle, float minZDist, float maxZDist );
+    CCamera( float minZDist, float maxZDist );
+    CCamera( float angle, float minZDist, float maxZDist );
 
     // Destructor
     virtual ~CCamera();

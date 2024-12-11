@@ -93,8 +93,8 @@ namespace NMathFunc
 
         // Convert to values between -1 and 1.
         CPoint<float> mp;
-        mp.x = (2.f * (mx / (CSettings::Instance().getDisplaySize().w - 1.f))) - 1.f;
-        mp.y = 1.f - (2.f * (my / (CSettings::Instance().getDisplaySize().h - 1.f)));
+        mp.x = (2.f * (mx / (CSettings::Instance().getSize().w - 1.f))) - 1.f;
+        mp.y = 1.f - (2.f * (my / (CSettings::Instance().getSize().h - 1.f)));
         mp.z = 1;
 
         // Undo the projection transformation.

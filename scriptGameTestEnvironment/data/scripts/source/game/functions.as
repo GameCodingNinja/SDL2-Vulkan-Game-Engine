@@ -29,7 +29,7 @@ void rotateGun( CSprite & sprite )
                 // A game resolution change will change these  
                 // values so we need to get them each time
                 float ratio = 1 / Settings.getOrthoAspectRatio().h;
-                CSize halfSize = Settings.getDisplaySizeHalf();
+                CSize halfSize = Settings.getSizeHalf();
 
                 CPoint spritePos = sprite.getTransPos();
                 CPoint mousePos = ActionMgr.getMouseAbsolutePos();

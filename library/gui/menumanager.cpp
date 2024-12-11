@@ -48,8 +48,14 @@ CMenuMgr::~CMenuMgr()
  ************************************************************************/
 void CMenuMgr::loadGroup( const std::string & group, const bool doInit )
 {
+    // Check for a hardware extension
+    std::string ext;
+    if( !m_mobileExt.empty() && CSettings::Instance().isMobileDevice() )
+        if( m_listTableMap.find( group + m_mobileExt ) != m_listTableMap.end() )
+            ext = m_mobileExt;
+
     // Make sure the group we are looking has been defined in the list table file
-    auto listTableIter = m_listTableMap.find( group );
+    auto listTableIter = m_listTableMap.find( group + ext );
     if( listTableIter == m_listTableMap.end() )
         throw NExcept::CCriticalException("Menu Load Group Error!",
             boost::str( boost::format("Menu group name can't be found (%s).\n\n%s\nLine: %s")

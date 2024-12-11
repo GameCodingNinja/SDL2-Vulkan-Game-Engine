@@ -24,7 +24,7 @@ final class CResolutionBtn
         @mResAry = GetScreenResolutions();
         
         // Get the current game size/resolution
-        CSize curRes = Settings.getDisplaySize();
+        CSize curRes = Settings.getSize();
         
         // Add the strings to the control
         for( uint i = 0; i < mResAry.length(); ++i )

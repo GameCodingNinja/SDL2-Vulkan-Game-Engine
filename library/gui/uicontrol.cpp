@@ -196,7 +196,7 @@ void CUIControl::transformCollision()
         finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
 
         // Get half the screen size to convert to screen coordinates
-        CSize<float> screenHalf = CSettings::Instance().getDisplaySizeHalf();
+        CSize<float> screenHalf = CSettings::Instance().getSizeHalf();
 
         // Create the rect of the control based on half it's size
         float halfwidth = m_size.getW() * 0.5f;
@@ -898,20 +898,23 @@ bool CUIControl::activateFirstInactiveControl()
 {
     // If a mouse was used, set the control as active but don't animate it.
     // This allows us to use the keys to scroll when pressed
-    if( CActionMgr::Instance().wasLastDeviceMouse() )
+    if ( !CSettings::Instance().isMobileDevice() )
     {
-        if( !isDisabled() )
+        if( CActionMgr::Instance().wasLastDeviceMouse() )
         {
-            m_lastState = m_state = EControlState::ACTIVE;
+            if( !isDisabled() )
+            {
+                m_lastState = m_state = EControlState::ACTIVE;
 
-            // Animate the control if the mouse just happens to be in it
-            if( isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
-                return activateControl();
-            
-            return true;
+                // Animate the control if the mouse just happens to be in it
+                if( isPointInControl( CActionMgr::Instance().getMouseAbsolutePos() ) )
+                    return activateControl();
+                
+                return true;
+            }
+
+            return false;
         }
-
-        return false;
     }
 
     return activateControl();

@@ -14,6 +14,9 @@
 		},
 		{
 			"path": "../Box2D"
+		},
+		{
+			"path": "../../SDL2"
 		}
 	],
 	"settings": {
@@ -112,11 +115,7 @@
             "any": "cpp",
             "source_location": "cpp",
             "numbers": "cpp",
-            "semaphore": "cpp",
-            "charconv": "cpp",
-            "format": "cpp",
-            "stdfloat": "cpp",
-            "text_encoding": "cpp"
+            "semaphore": "cpp"
         },
 		"editor.autoClosingBrackets": "never"
 	}

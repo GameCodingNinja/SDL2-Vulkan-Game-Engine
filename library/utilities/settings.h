@@ -1,13 +1,14 @@
 
-//
-//  FILE NAME:       settings.h
-//
-//  DESCRIPTION:     game settings singleton class
-//
+/************************************************************************
+*    FILE NAME:       settings.h
+*
+*    DESCRIPTION:     game settings class
+************************************************************************/
 
 #pragma once
 
 // Game lib dependencies
+#include <utilities/xmlParser.h>
 #include <common/size.h>
 #include <common/defs.h>
 
@@ -36,6 +37,9 @@ public:
     
     // Get debug info
     bool isDebugMode() const;
+    bool isDebugAsMobile() const;
+    bool isAutoplay() const;
+    bool isMobileDevice() const;
 
     // Get game info
     const std::string & getGameName() const;
@@ -44,12 +48,12 @@ public:
     uint32_t getEngineVersion() const;
 
     // Get game window size
-    const CSize<float> & getDisplaySize() const;
-    const CSize<float> & getDisplaySizeHalf() const;
+    const CSize<float> & getSize() const;
+    const CSize<float> & getSizeHalf() const;
+    const CSize<float> & getNativeSize() const;
     const CSize<float> & getDefaultSize() const;
     const CSize<float> & getDefaultSizeHalf() const;
-    void setDisplaySize( const CSize<float> & size );
-    bool allowWindowResize() const;
+    void setSize( const CSize<float> & size );
 
     // Do we want vSync?
     bool getVSync() const;
@@ -63,6 +67,15 @@ public:
 
     // Do we want validation layers
     bool isValidationLayers() const;
+
+    // Get the view angle
+    float getViewAngle() const;
+
+    // Get the minimum z distance
+    float getMinZdist() const;
+
+    // Get the maximum z distance
+    float getMaxZdist() const;
 
     // Height and width screen ratio for orthographic objects.
     // The difference between screen and the default size
@@ -114,9 +127,31 @@ public:
     // Get the chunk size.
     int getChunkSize() const;
 
+    // Get the minimum thread count
+    int getMinThreadCount() const;
+    
+    // Get the maximum thread count
+    int getMaxThreadCount() const;
+
+    // Get the sector size
+    int getSectorSize() const;
+
+    // Get half of the sector size
+    int getSectorSizeHalf() const;
+
     // Get the Anisotropic setting
     int getAnisotropicLevel() const;
     void setAnisotropicLevel( int level );
+
+    // Get the projection type
+    EProjectionType getProjectionType() const;
+
+    // Get the projection scale
+    float getProjectionScale() const;
+
+    // Set/Get debug string visible
+    void setDebugStrVisible( bool value );
+    bool getDebugStrVisible() const;
     
     // Do we want tripple buffering?
     bool getTripleBuffering() const;
@@ -131,11 +166,17 @@ private:
 
 private:
 
+    // xml node
+    XMLNode m_mainNode;
+
     // file path string
     std::string m_filePath;
     
     // debug members
     bool m_debugMode;
+    bool m_autoplay;
+    bool m_debugAsMobile;
+    bool m_mobileDevice;
     
     // The game/engine info
     std::string m_gameName;
@@ -144,15 +185,11 @@ private:
     uint32_t m_engineVersion;
 
     // with and height of game window
-    CSize<float> m_display_size;
-    CSize<float> m_display_size_half;
+    CSize<float> m_size;
+    CSize<float> m_size_half;
+    CSize<float> m_native_size;
     CSize<float> m_default_size;
     CSize<float> m_default_size_half;
-
-    // Vulkan data
-    int m_major;
-    int m_minor;
-    bool m_validationLayers;
 
     // Orientation of game window
     EOrientation m_orientation;
@@ -163,23 +200,28 @@ private:
     // Pre-calculated aspect ratios for orthographic projection
     CSize<float> m_orthoAspectRatio;
 
+    // Projection scale
+    float m_projectionScale;
+
     // Full screen flag loaded from file
     bool m_fullScreen;
-
-    // Allow the window to be resized
-    bool m_allowWindowResize;
 
     // VSync flag
     bool m_vSync;
 
-    // Do we activate the depth buffer
-    bool m_activateDepthBuffer;
+    // Vulkan data
+    int m_major;
+    int m_minor;
+    bool m_validationLayers;
 
-    // Do we activate the stencil buffer
-    bool m_activateStencilBuffer;
+    // view angle
+    float m_viewAngle;
 
-    // Triple buffering flag
-    bool m_tripleBuffering;
+    // minimum Z distance
+    float m_minZdist;
+
+    // maximum Z distance
+    float m_maxZdist;
 
     // Game pad enabled
     bool m_gamepadEnabled;
@@ -193,8 +235,39 @@ private:
     int m_mix_channels;
     int m_chunksize;
 
+    // Do we activate the depth buffer
+    bool m_activateDepthBuffer;
+
+    // Do we activate the stencil buffer
+    bool m_activateStencilBuffer;
+    
+    // Do we clear the target buffer
+    bool m_clearTargetBuffer;
+
+    // Minimum thread count
+    int m_minThreadCount;
+    
+    // Max thread count. Value of zero means use max hardware threads to cores
+    int m_maxThreadCount;
+
+    // the sector size
+    float m_sectorSize;
+    float m_sectorSizeHalf;
+
     // Anisotropic filtering level
     ETextFilter m_anisotropicLevel;
+
+    // The projection type
+    EProjectionType m_projectionType;
+
+    // Debug string members
+    std::string m_debugStrGroup;
+    std::string m_debugStrObject;
+    std::string m_debugStrFont;
+    bool m_debugStrVisible;
+    
+    // Triple buffering flag
+    bool m_tripleBuffering;
     
     // Scripting string members
     std::string m_scriptListTable;

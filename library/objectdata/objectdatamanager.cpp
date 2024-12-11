@@ -80,8 +80,14 @@ void CObjectDataMgr::loadGroupAry( const CScriptArray & strategyIdAry )
 
 void CObjectDataMgr::loadGroup( const std::string & group )
 {
+    // Check for a hardware extension
+    std::string ext;
+    if( !m_mobileExt.empty() && CSettings::Instance().isMobileDevice() )
+        if( m_listTableMap.find( group + m_mobileExt ) != m_listTableMap.end() )
+            ext = m_mobileExt;
+
     // Make sure the group we are looking has been defined in the list table file
-    auto listTableIter = m_listTableMap.find( group );
+    auto listTableIter = m_listTableMap.find( group + ext );
     if( listTableIter == m_listTableMap.end() )
         throw NExcept::CCriticalException("Obj Data List Load Group Data Error!",
             boost::str( boost::format("Object data list group name can't be found (%s).\n\n%s\nLine: %s")

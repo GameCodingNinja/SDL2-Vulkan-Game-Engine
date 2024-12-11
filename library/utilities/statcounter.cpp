@@ -105,8 +105,10 @@ void CStatCounter::formatStatString()
         % m_poolContexCounter
         % (m_vObjCounter / m_cycleCounter)
         % (m_physicsObjCounter / m_cycleCounter)
-        % CSettings::Instance().getDisplaySize().w
-        % CSettings::Instance().getDisplaySize().h
+        % CSettings::Instance().getSize().w
+        % CSettings::Instance().getSize().h
+        //% (playerPos.x)
+        //% (playerPos.y)
         );
 }
 

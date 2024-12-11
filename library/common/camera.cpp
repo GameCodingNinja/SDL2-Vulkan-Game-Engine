@@ -17,27 +17,36 @@
 /************************************************************************
 *    DESC:  Constructor
 ************************************************************************/
-CCamera::CCamera()
+CCamera::CCamera() :
+    m_projType(CSettings::Instance().getProjectionType()),
+    m_angle(CSettings::Instance().getViewAngle()),
+    m_minZDist(CSettings::Instance().getMinZdist()),
+    m_maxZDist(CSettings::Instance().getMaxZdist())
 {
+    init();
 }
 
-CCamera::CCamera( const XMLNode & node )
+CCamera::CCamera( const XMLNode & node ) :
+    m_projType(CSettings::Instance().getProjectionType()),
+    m_angle(CSettings::Instance().getViewAngle()),
+    m_minZDist(CSettings::Instance().getMinZdist()),
+    m_maxZDist(CSettings::Instance().getMaxZdist())
 {
     loadFromNode( node );
     init();
 }
 
-/*CCamera::CCamera( float minZDist, float maxZDist ) :
-    m_projType(CSettings::Instance().getProjectionType()),
+CCamera::CCamera( float minZDist, float maxZDist ) :
+    m_projType(EProjectionType::ORTHOGRAPHIC),
     m_angle(0),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
 {
     init();
-}*/
+}
 
-CCamera::CCamera( EProjectionType projType, float angle, float minZDist, float maxZDist ) :
-    m_projType(projType),
+CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
+    m_projType(EProjectionType::PERSPECTIVE),
     m_angle(angle),
     m_minZDist(minZDist),
     m_maxZDist(maxZDist)
@@ -223,7 +232,7 @@ CPoint<float> CCamera::toOrthoCoord( const CPoint<float> & position )
     CPoint<float> pos;
 
     auto & ratio = CSettings::Instance().getOrthoAspectRatio();
-    auto & sizeHalf = CSettings::Instance().getDisplaySizeHalf();
+    auto & sizeHalf = CSettings::Instance().getSizeHalf();
 
     pos.x = (position.x - sizeHalf.w) / (ratio.w * m_scale.x);
     pos.y = (position.y - sizeHalf.h) / (ratio.h * m_scale.y);
