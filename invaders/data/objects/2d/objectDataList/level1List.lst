@@ -349,9 +349,15 @@
             </visual>
         </object>
 
-        <object name="marker">
+        <object name="marker-orange">
             <visual>
                 <texture file="data/textures/level/projectile02-4.png"/>
+            </visual>
+        </object>
+
+        <object name="marker-green">
+            <visual>
+                <texture file="data/textures/level/projectile02-3.png"/>
             </visual>
         </object>
         

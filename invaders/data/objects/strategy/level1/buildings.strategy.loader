@@ -25,11 +25,12 @@
 
         <!-- Start of wrap around -->
 
-        <!--<node name="marker">
+        <node name="marker-green">
             <sprite>
-                <position x="-5700" y="-80"/>
+                <position x="-5690" y="-80"/>
+                <scale x="2" y="2"/>
             </sprite>
-        </node>-->
+        </node>
 
         <node name="building01" id="-28">
             <sprite>
@@ -379,11 +380,12 @@
             </sprite>
         </node>
 
-        <!--<node name="marker">
+        <node name="marker-orange">
             <sprite>
-                <position x="5500" y="-80"/>
+                <position x="5490" y="-80"/>
+                <scale x="2" y="2"/>
             </sprite>
-        </node>-->
+        </node>
 
 
         <!-- Start of wrap around -->

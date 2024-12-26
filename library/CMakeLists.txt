@@ -121,6 +121,7 @@ add_library(
         utilities/xmlpreloader.cpp
         utilities/matrix.cpp
         utilities/exceptionhandling.cpp
+        utilities/easing.cpp
         managers/managerbase.cpp
         managers/fontmanager.cpp
         managers/actionmanager.cpp

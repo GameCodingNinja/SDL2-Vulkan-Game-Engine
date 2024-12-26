@@ -176,13 +176,13 @@ void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 void CCamera::incPos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos.inc( -position.x, -position.y, -position.z );
-    CObject::incPos( m_worldValPos );
+    CObject::setPos( m_worldValPos );
 }
 
 void CCamera::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.inc( -x, -y, -z );
-    CObject::incPos( m_worldValPos );
+    CObject::setPos( m_worldValPos );
 }
 
 /************************************************************************

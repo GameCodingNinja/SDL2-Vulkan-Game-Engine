@@ -115,8 +115,8 @@ protected:
     // World position value
     CPoint<CWorldValue> m_worldValPos;
     
-    // Camera pointer
-    CCamera * m_pCamera;
+    // Default camera pointer
+    CCamera * m_pDefaultCamera;
 
     // Map of the node data
     std::map<const std::string, CNodeDataList> m_dataMap;

@@ -47,7 +47,7 @@
             </scriptList>
         </sprite>
 
-        <node name="UIProgressBar" type="uiControlNode">
+        <!--<node name="UIProgressBar" type="uiControlNode">
         
             <uiProgressBar defaultState="inactive" useSizeForRadiusCalc="false">
                 <position x="0" y="15" z="0"/>
@@ -55,13 +55,13 @@
                 <spriteLst>
                     <sprite objectName="progress_frame"/>
                     <sprite objectName="progress_solid"/>
-                </spriteLst>
+                </spriteLst>-->
                 
                 <!-- stencil mask -->
-                <stencilMask objectName="" spriteIndex="1" />
+                <!--<stencilMask objectName="" spriteIndex="1" />
             </uiProgressBar>
 
-        </node>
+        </node>-->
 
         <node name="playerShip_object">
 

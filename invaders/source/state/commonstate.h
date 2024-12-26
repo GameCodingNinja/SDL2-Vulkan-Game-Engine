@@ -36,11 +36,11 @@ public:
     virtual void update() override;
 
     // Transform the game objects
-    void transform() override;
+    virtual void transform() override;
     
     // Record the command buffer vector in the device
     // for all the sprite objects that are to be rendered
-    void recordCommandBuffer( uint32_t cmdBufIndex ) override;
+    virtual void recordCommandBuffer( uint32_t cmdBufIndex ) override;
     
 protected:
     

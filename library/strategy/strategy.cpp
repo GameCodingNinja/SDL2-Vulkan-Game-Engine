@@ -30,7 +30,7 @@
 *    DESC:  Constructor
 ************************************************************************/
 CStrategy::CStrategy() :
-    m_pCamera( &CCameraMgr::Instance().getDefault() )
+    m_pDefaultCamera( &CCameraMgr::Instance().getDefault() )
 {
 }
 
@@ -124,6 +124,9 @@ void CStrategy::loadFromFile( const std::string & file )
 
         if( node.isAttributeSet( "defaultId" ) )
             defUserId = std::atoi(node.getAttribute( "defaultId" ));
+
+        if( node.isAttributeSet( "defaultCamera" ) )
+            m_pDefaultCamera = &CCameraMgr::Instance().get( node.getAttribute( "defaultCamera" ) );
     
         for( int i = 0; i < node.nChildNode(); ++i )
         {
@@ -393,11 +396,9 @@ void CStrategy::recordCommandBuffer( uint32_t index )
 
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
-    const CCamera & rCamera = *m_pCamera;
-
     for( auto iter : m_pNodeVec )
-        iter->recordCommandBuffer( index, cmdBuf, rCamera );
-
+        iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
+    
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }
 
@@ -542,10 +543,10 @@ void CStrategy::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec 
 ************************************************************************/
 void CStrategy::setCamera( const std::string & cameraId )
 {
-    m_pCamera = &CCameraMgr::Instance().get( cameraId );
+    m_pDefaultCamera = &CCameraMgr::Instance().get( cameraId );
 }
 
 CCamera & CStrategy::getCamera()
 {
-    return *m_pCamera;
+    return *m_pDefaultCamera;
 }

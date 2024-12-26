@@ -4,7 +4,11 @@
     <strategy name="_startup_" defaultGroup="(startup)" cmdBufPool="(startup)" activate="true">
     
         <!-- Node name will be used for the object name look up if one isn't defined -->
-        <node name="logo"/>
+        <node name="logo">
+            <sprite>
+                <position z="-20"/>
+            </sprite>
+        </node>
 
     </strategy>
   

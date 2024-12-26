@@ -71,6 +71,7 @@ enum class EDeviceId
 
 enum class EActionPress
 {
+    _NULL_ = -1,
     IDLE = 0,
     DOWN,
     UP

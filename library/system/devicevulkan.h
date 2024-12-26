@@ -3,6 +3,8 @@
 *    FILE NAME:       devicevulkan.h
 *
 *    DESCRIPTION:     Class used for Vulkan API implementation
+*
+*    Based on:        https://vulkan-tutorial.com/Introduction
 ************************************************************************/
 
 #pragma once
