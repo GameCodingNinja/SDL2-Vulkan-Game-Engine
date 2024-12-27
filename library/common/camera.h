@@ -64,6 +64,18 @@ public:
     // Get the rotation matrix
     const CMatrix & getRotMatrix() const final;
 
+    //  Get the cull type
+    const ECullType getCullType() const;
+
+    // Check if the raduis is in the view frustrum
+    bool inView( const CPoint<float> & transPos, const float radius );
+
+    // Check if the raduis is in the view frustrum of the Y
+    bool inViewY( const CPoint<float> & transPos, const float radius );
+
+    // Check if the raduis is in the view frustrum of the X
+    bool inViewX( const CPoint<float> & transPos, const float radius );
+
 protected:
     
     // Apply the rotation
@@ -99,4 +111,7 @@ private:
     float m_angle;
     float m_minZDist;
     float m_maxZDist;
+
+    // Cull type
+    ECullType m_cullType;
 };

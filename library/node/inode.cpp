@@ -10,6 +10,10 @@
 
 std::atomic<handle16_t> iNode::m_hAtomicIter = defs_DEFAULT_HANDLE;
 
+// Dummy reuseable variables
+float dummyRadius = 0.f;
+CSize<float> dummySize;
+
 /************************************************************************
 *    DESC:  Constructor / Destructor
 ************************************************************************/
@@ -35,4 +39,20 @@ iNode * iNode::findChild( const uint16_t crcValue )
         return this;
 
     return nullptr;
+}
+
+/***************************************************************************
+*    DESC:  Get the radius
+****************************************************************************/
+float iNode::getRadius()
+{
+    return dummyRadius;
+}
+
+/***************************************************************************
+*    DESC:  Get the size
+****************************************************************************/
+CSize<float> iNode::getSize()
+{
+    return dummySize;
 }

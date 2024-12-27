@@ -15,6 +15,9 @@
 #include <string>
 #include <atomic>
 
+// Game lib dependencies
+#include <common/size.h>
+
 // Vulkan lib dependencies
 #include <system/vulkan.h>
 
@@ -35,6 +38,9 @@ public:
 
     // Destructor
     virtual ~iNode();
+
+    // Only called after node creation with all it's children
+    virtual void init(){}
 
     // Get the starting position of the vector iterator
     virtual nodeVecIter_t getNodeIter()
@@ -85,7 +91,7 @@ public:
     // Transform the nodes
     virtual void transform(){}
     // Used to transform object on a sector
-    virtual void transform( const CObject & object ){}
+    virtual void transform( const CObject & object ) {}
 
     // Record the command buffer
     virtual void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, const CCamera & camera ){}
@@ -108,6 +114,12 @@ public:
     // Get the control
     virtual CUIControl * getControl()
     { return nullptr; }
+
+    // Get the radius
+    virtual float getRadius();
+
+    // Get the size
+    virtual CSize<float> getSize();
 
 protected:
 

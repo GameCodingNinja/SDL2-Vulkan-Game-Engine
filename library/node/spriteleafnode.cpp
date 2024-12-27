@@ -13,14 +13,15 @@
 #include <common/object.h>
 #include <node/nodedata.h>
 #include <objectdata/objectdatamanager.h>
+#include <objectdata/objectdata2d.h>
 #include <utilities/genfunc.h>
 
 /************************************************************************
 *    DESC:  Constructor / Destructor
 ************************************************************************/
 CSpriteLeafNode::CSpriteLeafNode( const CNodeData & rNodeData ) :
-        iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
-        CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) )
+    iNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
+    CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) )
 {
     m_userId = rNodeData.getUserId();
     m_type = ENodeType::SPRITE;
@@ -96,4 +97,20 @@ CSprite * CSpriteLeafNode::getSprite()
 CObject * CSpriteLeafNode::getObject()
 {
     return static_cast<CObject *>(this);
+}
+
+/***************************************************************************
+*    DESC:  Get the radius. Need to add in the scale of the object
+****************************************************************************/
+float CSpriteLeafNode::getRadius()
+{
+    return getSprite()->getObjectData().getRadius() * getObject()->getScale().x;
+}
+
+/***************************************************************************
+*    DESC:  Get the size
+****************************************************************************/
+CSize<float> CSpriteLeafNode::getSize()
+{
+    return getSprite()->getObjectData().getSize();
 }

@@ -13,6 +13,7 @@
 
 // Standard lib dependencies
 #include <cstring>
+#include <cstdlib>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -21,7 +22,8 @@ CCamera::CCamera() :
     m_projType(CSettings::Instance().getProjectionType()),
     m_angle(CSettings::Instance().getViewAngle()),
     m_minZDist(CSettings::Instance().getMinZdist()),
-    m_maxZDist(CSettings::Instance().getMaxZdist())
+    m_maxZDist(CSettings::Instance().getMaxZdist()),
+    m_cullType(ECullType::_NULL_)
 {
     init();
 }
@@ -30,7 +32,8 @@ CCamera::CCamera( const XMLNode & node ) :
     m_projType(CSettings::Instance().getProjectionType()),
     m_angle(CSettings::Instance().getViewAngle()),
     m_minZDist(CSettings::Instance().getMinZdist()),
-    m_maxZDist(CSettings::Instance().getMaxZdist())
+    m_maxZDist(CSettings::Instance().getMaxZdist()),
+    m_cullType(ECullType::_NULL_)
 {
     loadFromNode( node );
     init();
@@ -40,7 +43,8 @@ CCamera::CCamera( float minZDist, float maxZDist ) :
     m_projType(EProjectionType::ORTHOGRAPHIC),
     m_angle(0),
     m_minZDist(minZDist),
-    m_maxZDist(maxZDist)
+    m_maxZDist(maxZDist),
+    m_cullType(ECullType::_NULL_)
 {
     init();
 }
@@ -49,7 +53,8 @@ CCamera::CCamera( float angle, float minZDist, float maxZDist ) :
     m_projType(EProjectionType::PERSPECTIVE),
     m_angle(angle),
     m_minZDist(minZDist),
-    m_maxZDist(maxZDist)
+    m_maxZDist(maxZDist),
+    m_cullType(ECullType::_NULL_)
 {
     init();
 }
@@ -82,6 +87,19 @@ void CCamera::loadFromNode( const XMLNode & node )
         
         else if( std::strcmp( node.getAttribute("projectType"), "perspective" ) == 0 )
             m_projType = EProjectionType::PERSPECTIVE;
+    }
+
+    if( node.isAttributeSet("cull") )
+    {
+        std::string cullStr = node.getAttribute("cull");
+        if( cullStr == "CULL_FULL" )
+            m_cullType = ECullType::CULL_FULL;
+
+        else if( cullStr == "cull_x_only" )
+            m_cullType = ECullType::CULL_X_ONLY;
+
+        else if( cullStr == "cull_y_only" )
+            m_cullType = ECullType::CULL_Y_ONLY;
     }
     
     // Load the transform data
@@ -258,4 +276,87 @@ void CCamera::applyRotation( CMatrix & matrix )
 const CMatrix & CCamera::getRotMatrix() const
 {
     return m_rotMatrix;
+}
+
+/************************************************************************
+*    DESC:  Get the cull type
+************************************************************************/
+const ECullType CCamera::getCullType() const
+{
+    return m_cullType;
+}
+
+//
+//  DESC: Check if the raduis is in the view frustrum
+//
+bool CCamera::inView( const CPoint<float> & transPos, const float radius )
+{
+    if( m_projType == EProjectionType::ORTHOGRAPHIC )
+    {
+        // Check the right and left sides of the screen
+        if( std::abs(-getTransPos().x - (m_scale.x * transPos.x)) > (CSettings::Instance().getDefaultSizeHalf().w + (m_scale.x * radius)) )
+            return false;
+
+        // Check the top and bottom sides of the screen
+        if( std::abs(-getTransPos().y - (m_scale.y * transPos.y)) > (CSettings::Instance().getDefaultSizeHalf().h + (m_scale.y * radius)) )
+            return false;
+    }
+    else
+    {
+        // Check the right and left sides of the screen
+        if( std::abs(-getTransPos().x - (m_scale.x * transPos.x)) > ((std::abs(transPos.z) * CSettings::Instance().getScreenAspectRatio().w) + (m_scale.x * radius)) )
+            return false;
+
+        // Check the top and bottom sides of the screen
+        if( std::abs(-getTransPos().y - (m_scale.y * transPos.y)) > ((std::abs(transPos.z) * CSettings::Instance().getScreenAspectRatio().h) + (m_scale.y * radius)) )
+            return false;
+    }
+
+    return true;
+}
+
+//
+//  DESC: Check if the raduis is in the view frustrum of the Y
+//
+bool CCamera::inViewY( const CPoint<float> & transPos, const float radius )
+{
+    if( m_projType == EProjectionType::ORTHOGRAPHIC )
+    {
+        // Check the top and bottom sides of the screen
+        if( std::abs(-getTransPos().y - (m_scale.y * transPos.y)) > (CSettings::Instance().getDefaultSizeHalf().h + (m_scale.y * radius)) )
+            return false;
+    }
+    else
+    {
+        // Check the top and bottom sides of the screen
+        if( std::abs(-getTransPos().y - (m_scale.y * transPos.y)) > ((std::abs(transPos.z) * CSettings::Instance().getScreenAspectRatio().h) + (m_scale.y * radius)) )
+            return false;
+    }
+
+    return true;
+}
+
+//
+//  DESC: Check if the raduis is in the view frustrum
+//
+bool CCamera::inViewX( const CPoint<float> & transPos, const float radius )
+{
+    float value = std::abs(-getTransPos().x - (m_scale.x * transPos.x));
+    float value2 = CSettings::Instance().getDefaultSizeHalf().w + (m_scale.x * radius);
+    float value3 = std::abs(-getTransPos().x);
+
+    if( m_projType == EProjectionType::ORTHOGRAPHIC )
+    {
+        // Check the right and left sides of the screen
+        if( std::abs(-getTransPos().x - (m_scale.x * transPos.x)) > (CSettings::Instance().getDefaultSizeHalf().w + (m_scale.x * radius)) )
+            return false;
+    }
+    else
+    {
+        // Check the right and left sides of the screen
+        if( std::abs(-getTransPos().x - (m_scale.x * transPos.x)) > ((std::abs(transPos.z) * CSettings::Instance().getScreenAspectRatio().w) + (m_scale.x * radius)) )
+            return false;
+    }
+
+    return true;
 }

@@ -246,6 +246,9 @@ iNode * CStrategy::create(
                     % dataName % pNode->getParentId() % __FUNCTION__ % __LINE__ ));
     }
 
+    // Init the head node
+    pHeadNode->init();
+
     // Add the node pointer to the vector for adding to the list
     if( instanceName.empty() || makeActive )
         m_pActivateVec.push_back( pHeadNode );
@@ -396,8 +399,35 @@ void CStrategy::recordCommandBuffer( uint32_t index )
 
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
-    for( auto iter : m_pNodeVec )
-        iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
+    if( m_pDefaultCamera->getCullType() == ECullType::_NULL_)
+    {
+        for( auto iter : m_pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
+    }
+    else if( m_pDefaultCamera->getCullType() == ECullType::CULL_FULL)
+    {
+        for( auto iter : m_pNodeVec )
+        {
+            if( m_pDefaultCamera->inView( iter->getObject()->getTransPos(), iter->getRadius() ) )
+                iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
+        }
+    }
+    else if( m_pDefaultCamera->getCullType() == ECullType::CULL_X_ONLY)
+    {
+        for( auto iter : m_pNodeVec )
+        {
+            if( m_pDefaultCamera->inViewX( iter->getObject()->getTransPos(), iter->getRadius() ) )
+                iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
+        }
+    }
+    else if( m_pDefaultCamera->getCullType() == ECullType::CULL_Y_ONLY)
+    {
+        for( auto iter : m_pNodeVec )
+        {
+            if( m_pDefaultCamera->inViewY( iter->getObject()->getTransPos(), iter->getRadius() ) )
+                iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
+        }
+    }
     
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }

@@ -43,6 +43,17 @@ CObjectNode::~CObjectNode()
 {}
 
 /***************************************************************************
+*    DESC:  Only called after node creation with all it's children
+****************************************************************************/
+void CObjectNode::init()
+{
+    calcSize(this, m_size);
+
+    // Calculate the radius
+    m_radius = sqrt( pow((float)m_size.w / 2, 2) + pow((float)m_size.h / 2, 2) );
+}
+
+/***************************************************************************
 *    DESC:  Transform the nodes
 *           NOTE: Only gets called if this is the head node
 ****************************************************************************/
@@ -68,4 +79,53 @@ void CObjectNode::transform( const CObject & object )
 CObject * CObjectNode::getObject()
 {
     return static_cast<CObject *>(this);
+}
+
+/***************************************************************************
+*    DESC:  Get the radius. Need to add in the scale of the object
+****************************************************************************/
+float CObjectNode::getRadius()
+{
+    return m_radius * getObject()->getScale().x;
+}
+
+/***************************************************************************
+*    DESC:  Get the size
+****************************************************************************/
+CSize<float> CObjectNode::getSize()
+{
+    return m_size;
+}
+
+/***************************************************************************
+*    DESC:  Calculate the total size based on all the children
+****************************************************************************/
+void CObjectNode::calcSize( iNode * pNode, CSize<float> & size )
+{
+    if( pNode != nullptr )
+    {
+        iNode * pNextNode;
+        auto nodeIter = pNode->getNodeIter();
+
+        do
+        {
+            // get the next node
+            pNextNode = pNode->next(nodeIter);
+
+            if( pNextNode != nullptr )
+            {
+                auto _size = pNextNode->getSize();
+
+                if( _size.w > size.w )
+                    size.w = _size.w;
+
+                if( _size.h > size.h )
+                    size.h = _size.h;
+
+                // Call a recursive function again
+                calcSize( pNextNode, size );
+            }
+        }
+        while( pNextNode != nullptr );
+    }
 }

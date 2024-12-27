@@ -128,6 +128,14 @@ enum class ENodeType: uint8_t
     UI_CONTROL,
 };
 
+enum class ECullType
+{
+    _NULL_,
+    CULL_FULL,
+    CULL_X_ONLY,
+    CULL_Y_ONLY
+};
+
 namespace NOffset
 {
     enum EOffset

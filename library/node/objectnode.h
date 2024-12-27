@@ -25,6 +25,9 @@ public:
 
     // Destructor
     virtual ~CObjectNode();
+
+    // Only called after node creation with all it's children
+    void init();
     
     // Transform the nodes
     void transform() override;
@@ -32,4 +35,24 @@ public:
     
     // Get the sprite
     CObject * getObject() override;
+
+    // Get the radius
+    float getRadius() override;
+
+    // Get the size
+    CSize<float> getSize() override;
+
+private:
+
+    // Calculate the radius
+    void calcSize( iNode * pNode, CSize<float> & size );
+
+private:
+
+    // Radius of this object
+    float m_radius;
+
+    // Size of this object, meaning the
+    // acumulated size of all the children
+    CSize<float> m_size;
 };

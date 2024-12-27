@@ -70,7 +70,7 @@ void CObjectData2D::createFromData( const std::string & group )
     // Create the visuals
     m_visualData.createFromData( group, m_size );
 
-    // Calculate the radii
+    // Calculate the radius
     m_radiusSquared = pow((float)m_size.w / 2, 2) + pow((float)m_size.h / 2, 2);
     m_radius = sqrt( m_radiusSquared );
 }

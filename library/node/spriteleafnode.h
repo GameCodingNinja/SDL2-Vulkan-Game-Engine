@@ -50,6 +50,12 @@ public:
     // Get the object
     CObject * getObject() override;
 
+    // Get the radius
+    float getRadius();
+
+    // Get the size
+    CSize<float> getSize();
+
 private:
 
     // Update the nodes recursive function
