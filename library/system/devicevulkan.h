@@ -25,8 +25,8 @@
 
 // Forward declaration(s)
 class CTexture;
-class CPipelineData;
-class CDescriptorData;
+class SPipelineData;
+class SDescriptorData;
 
 class CDeviceVulkan
 {
@@ -69,31 +69,31 @@ protected:
     void createTexture( CTexture & texture );
     
     // Create descriptor pool
-    VkDescriptorPool createDescriptorPool( const CDescriptorData & descData );
+    VkDescriptorPool createDescriptorPool( const SDescriptorData & descData );
 
     // Allocate the descriptor sets
     std::vector<VkDescriptorSet> allocateDescriptorSetVec(
-        const CPipelineData & pipelineData,
+        const SPipelineData & pipelineData,
         VkDescriptorPool descriptorPool );
     
     // Create descriptor sets
     void updateDescriptorSetVec(
         std::vector<VkDescriptorSet> & descriptorSetVec,
         const CTexture & texture,
-        const CDescriptorData & descData,
+        const SDescriptorData & descData,
         const std::vector<CMemoryBuffer> & uniformBufVec );
     
     // Create the shader
     VkShaderModule createShader( const std::string & filePath );
     
     // Create the descriptor set layout
-    VkDescriptorSetLayout createDescriptorSetLayout( CDescriptorData & descData );
+    VkDescriptorSetLayout createDescriptorSetLayout( SDescriptorData & descData );
     
     // Create the pipeline layout
     VkPipelineLayout createPipelineLayout( VkDescriptorSetLayout descriptorSetLayout );
     
     // Create the pipeline
-    void createPipeline( CPipelineData & pipelineData );
+    void createPipeline( SPipelineData & pipelineData );
     
     // Get Vulkan error
     const char * getError( VkResult result );

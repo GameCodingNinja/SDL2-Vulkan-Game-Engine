@@ -226,8 +226,8 @@ void CDevice::destroySwapChain()
         // Need the handles to the shaders to recreate the pipeline
         for( auto & iter : m_pipelineDataVec )
         {
-            vkDestroyPipeline( m_logicalDevice, iter.m_pipeline, nullptr );
-            iter.m_pipeline = VK_NULL_HANDLE;
+            vkDestroyPipeline( m_logicalDevice, iter.pipeline, nullptr );
+            iter.pipeline = VK_NULL_HANDLE;
         }
     }
 }
@@ -472,11 +472,11 @@ CTexture & CDevice::createTexture( const std::string & group, CTexture & rTextur
 std::vector<CMemoryBuffer> CDevice::createUniformBufferVec( uint32_t pipelineIndex )
 {
     // Get the descriptor data from the pipeline id
-    const CPipelineData & rPipelineData = getPipelineData( pipelineIndex );
-    const CDescriptorData & rDescriptorData = getDescriptorData( rPipelineData.m_descriptorId );
+    const SPipelineData & rPipelineData = getPipelineData( pipelineIndex );
+    const SDescriptorData & rDescriptorData = getDescriptorData( rPipelineData.descriptorId );
 
     // Create the uniform buffer
-    return CDeviceVulkan::createUniformBufferVec( rDescriptorData.m_descriptorVec.front().m_ubo.uboSize );
+    return CDeviceVulkan::createUniformBufferVec( rDescriptorData.m_descriptorVec.front().ubo.uboSize );
 }
 
 /***************************************************************************
@@ -490,7 +490,7 @@ void CDevice::createPushDescriptorSet(
 {
     // Get the descriptor data
     auto & rPipelineData = getPipelineData( pipelineIndex );
-    auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+    auto & rDescData = getDescriptorData( rPipelineData.descriptorId );
 
     // Copy over the function call
     pushDescSet.vkCmdPushDescriptorSetKHR = vkCmdPushDescriptorSetKHR;
@@ -502,15 +502,15 @@ void CDevice::createPushDescriptorSet(
 
         for( auto & descIdIter : rDescData.m_descriptorVec )
         {
-            if( descIdIter.m_descrId == "UNIFORM_BUFFER" )
+            if( descIdIter.descrId == "UNIFORM_BUFFER" )
             {
                 // Make sure this UBO has a size
-                if( descIdIter.m_ubo.uboSize == 0 )
-                    throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Uniform Buffer UBO size is 0! %s") % descIdIter.m_descrId ) );
+                if( descIdIter.ubo.uboSize == 0 )
+                    throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Uniform Buffer UBO size is 0! %s") % descIdIter.descrId ) );
 
                 VkDescriptorBufferInfo bufferInfo = {};
                 bufferInfo.buffer = uboIter.m_buffer;
-                bufferInfo.range = descIdIter.m_ubo.uboSize;
+                bufferInfo.range = descIdIter.ubo.uboSize;
 
                 pushDescSet.m_descriptorBufferInfoDeq.push_back( bufferInfo );
 
@@ -523,7 +523,7 @@ void CDevice::createPushDescriptorSet(
 
                 writeDescriptorSetVec.push_back( writeDescriptorSet );
             }
-            else if( descIdIter.m_descrId == "COMBINED_IMAGE_SAMPLER" )
+            else if( descIdIter.descrId == "COMBINED_IMAGE_SAMPLER" )
             {
                 VkDescriptorImageInfo imageInfo = {};
                 imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -543,7 +543,7 @@ void CDevice::createPushDescriptorSet(
             }
             else
             {
-                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Create Descriptor Set binding not defined! %s") % descIdIter.m_descrId ) );
+                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Create Descriptor Set binding not defined! %s") % descIdIter.descrId ) );
             }
         }
         pushDescSet.m_pushDescriptorSetVec.push_back(writeDescriptorSetVec);
@@ -559,13 +559,13 @@ CDescriptorSet * CDevice::getDescriptorSet(
     const std::vector<CMemoryBuffer> & uniformBufVec )
 {
     auto & rPipelineData = getPipelineData( pipelineIndex );
-    auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+    auto & rDescData = getDescriptorData( rPipelineData.descriptorId );
 
     // Create the descriptor pool group if it doesn't already exist
-    auto allocIter = m_descriptorAllocatorMap.find( rPipelineData.m_descriptorId );
+    auto allocIter = m_descriptorAllocatorMap.find( rPipelineData.descriptorId );
     if( allocIter == m_descriptorAllocatorMap.end() )
     {
-        allocIter = m_descriptorAllocatorMap.emplace( rPipelineData.m_descriptorId, CDescriptorAllocator() ).first;
+        allocIter = m_descriptorAllocatorMap.emplace( rPipelineData.descriptorId, CDescriptorAllocator() ).first;
         return allocateDescriptorPoolSet( allocIter, texture, uniformBufVec, rPipelineData, rDescData );
     }
 
@@ -593,7 +593,7 @@ CDescriptorSet * CDevice::getDescriptorSet(
     // See if there are any open spots that can be allocated
     for( size_t i = 0; i < allocIter->second.m_descriptorSetDeqVec.size(); ++i )
     {
-        if( allocIter->second.m_descriptorSetDeqVec[i].size() < rDescData.m_descPoolMax )
+        if( allocIter->second.m_descriptorSetDeqVec[i].size() < rDescData.descPoolMax )
         {
             // Get the pool for this descriptor index
             auto descPool = allocIter->second.m_descriptorPoolVec.at(i);
@@ -618,14 +618,14 @@ CDescriptorSet * CDevice::allocateDescriptorPoolSet(
     std::map< const std::string, CDescriptorAllocator >::iterator & allocIter,
     const CTexture & texture,
     const std::vector<CMemoryBuffer> & uniformBufVec,
-    const CPipelineData & rPipelineData,
-    const CDescriptorData & rDescData )
+    const SPipelineData & rPipelineData,
+    const SDescriptorData & rDescData )
 {
     // Allocate a new descriptor pool and add it to the list
     auto descPool = CDeviceVulkan::createDescriptorPool( rDescData );
     allocIter->second.m_descriptorPoolVec.push_back( descPool );
 
-    NGenFunc::PostDebugMsg( boost::str( boost::format("Descriptor pool allocated: %s, %d") % rPipelineData.m_descriptorId % rDescData.m_descPoolMax ) );
+    NGenFunc::PostDebugMsg( boost::str( boost::format("Descriptor pool allocated: %s, %d") % rPipelineData.descriptorId % rDescData.descPoolMax ) );
 
     // Allocate the first descriptor set of this new pool
     auto descSetVec = CDeviceVulkan::allocateDescriptorSetVec( rPipelineData, descPool );
@@ -634,7 +634,7 @@ CDescriptorSet * CDevice::allocateDescriptorPoolSet(
     // Allocate a new spot for more descriptor sets and add the first one
     // NOTE: Reserve the vec so that the memory location doesn't change after a push_back
     allocIter->second.m_descriptorSetDeqVec.emplace_back();
-    allocIter->second.m_descriptorSetDeqVec.back().reserve( rDescData.m_descPoolMax );
+    allocIter->second.m_descriptorSetDeqVec.back().reserve( rDescData.descPoolMax );
     allocIter->second.m_descriptorSetDeqVec.back().emplace_back( descSetVec );
 
     return &allocIter->second.m_descriptorSetDeqVec.back().back();
@@ -650,7 +650,7 @@ void CDevice::updateDescriptorSet(
     const std::vector<CMemoryBuffer> & uniformBufVec )
 {
     auto & rPipelineData = getPipelineData( pipelineIndex );
-    auto & rDescData = getDescriptorData( rPipelineData.m_descriptorId );
+    auto & rDescData = getDescriptorData( rPipelineData.descriptorId );
 
     CDeviceVulkan::updateDescriptorSetVec( pDescriptorSet->m_descriptorVec, texture, rDescData, uniformBufVec );
 }
@@ -673,7 +673,7 @@ void CDevice::recycleDescriptorSet( CDescriptorSet * pDescriptorSet )
 void CDevice::createPipelines( const std::string & filePath )
 {
     // Map containing shader information
-    std::map< const std::string, CShader > shaderMap;
+    std::map< const std::string, SShader > shaderMap;
 
     // Open and parse the XML file:
     XMLNode node = XMLNode::openFileHelper( filePath.c_str(), "pipelinemap" );
@@ -699,16 +699,16 @@ void CDevice::createPipelines( const std::string & filePath )
         const std::string descId = descriptorNode.getAttribute("id");
         const size_t descPoolMax = std::atoi(descriptorNode.getAttribute("maxDescriptorPool"));
 
-        CDescriptorData descriptorData( descPoolMax );
+        SDescriptorData descriptorData( descPoolMax );
 
         // Populate with the descriptors with binding info
         for( int j = 0; j < descriptorNode.nChildNode("binding"); ++j )
         {
-            CDescriptorData::CDescriptor descriptor;
+            SDescriptorData::SDescriptor descriptor;
 
             const XMLNode bindNode = descriptorNode.getChildNode(j);
 
-            descriptor.m_descrId = bindNode.getAttribute("id");
+            descriptor.descrId = bindNode.getAttribute("id");
 
             if( bindNode.isAttributeSet("uboId") )
             {
@@ -719,7 +719,7 @@ void CDevice::createPipelines( const std::string & filePath )
                     throw NExcept::CCriticalException(
                         "Vulkan Error!", boost::str( boost::format("UBO id not found! %s") % uboId ) );
 
-                descriptor.m_ubo = iter->second;
+                descriptor.ubo = iter->second;
             }
 
             descriptorData.m_descriptorVec.push_back( descriptor );
@@ -737,10 +737,10 @@ void CDevice::createPipelines( const std::string & filePath )
 
         const std::string id = shaderNode.getAttribute("id");
 
-        CShader shader;
+        SShader shader;
 
-        shader.m_vert = createShader( shaderNode.getChildNode("vert").getAttribute("file") );
-        shader.m_frag = createShader( shaderNode.getChildNode("frag").getAttribute("file") );
+        shader.vert = createShader( shaderNode.getChildNode("vert").getAttribute("file") );
+        shader.frag = createShader( shaderNode.getChildNode("frag").getAttribute("file") );
 
         shaderMap.emplace( id, shader );
     }
@@ -765,7 +765,7 @@ void CDevice::createPipelines( const std::string & filePath )
     {
         const XMLNode pipelineNode = pipelineLstNode.getChildNode(i);
 
-        CPipelineData pipelineData;
+        SPipelineData pipelineData;
 
         const std::string pipelineId = pipelineNode.getAttribute("id");
 
@@ -778,27 +778,27 @@ void CDevice::createPipelines( const std::string & filePath )
                 "Vulkan Error!",
                 boost::str( boost::format("Shader id not found! %s") % shaderId ) );
 
-        pipelineData.m_shader = shaderIter->second;
+        pipelineData.shader = shaderIter->second;
 
         // Get the descriptor layout
-        pipelineData.m_descriptorId = pipelineNode.getAttribute("descriptorId");
+        pipelineData.descriptorId = pipelineNode.getAttribute("descriptorId");
 
-        auto discrIter = m_descriptorSetLayoutMap.find( pipelineData.m_descriptorId );
+        auto discrIter = m_descriptorSetLayoutMap.find( pipelineData.descriptorId );
         if( discrIter == m_descriptorSetLayoutMap.end() )
             throw NExcept::CCriticalException(
                 "Vulkan Error!",
-                boost::str( boost::format("Descriptor id not found! %s") % pipelineData.m_descriptorId ) );
+                boost::str( boost::format("Descriptor id not found! %s") % pipelineData.descriptorId ) );
 
-        pipelineData.m_descriptorSetLayout = discrIter->second;
+        pipelineData.descriptorSetLayout = discrIter->second;
 
         // Get the pipeline layout. Same id as the descriptor
-        auto pipelineLayoutIter = m_pipelineLayoutMap.find( pipelineData.m_descriptorId );
+        auto pipelineLayoutIter = m_pipelineLayoutMap.find( pipelineData.descriptorId );
         if( pipelineLayoutIter == m_pipelineLayoutMap.end() )
             throw NExcept::CCriticalException(
                 "Vulkan Error!",
-                boost::str( boost::format("Pipeline id not found! %s") % pipelineData.m_descriptorId ) );
+                boost::str( boost::format("Pipeline id not found! %s") % pipelineData.descriptorId ) );
 
-        pipelineData.m_pipelineLayout = pipelineLayoutIter->second;
+        pipelineData.pipelineLayout = pipelineLayoutIter->second;
 
         // Get the vertex input descriptions
         const std::string vertexInputDescrId = pipelineNode.getAttribute("vertexInputDescrId");
@@ -810,16 +810,62 @@ void CDevice::createPipelines( const std::string & filePath )
         if( !depthStencilBufferNode.isEmpty() )
         {
             // Do we enable the depth testing
-            if( depthStencilBufferNode.isAttributeSet("enableDepthTest") )
-                pipelineData.m_enableDepthTest = ( std::strcmp( depthStencilBufferNode.getAttribute("enableDepthTest"), "true" ) == 0 );
+            if( depthStencilBufferNode.isAttributeSet("depthTestEnable") )
+                pipelineData.depthTestEnable = ( std::strcmp( depthStencilBufferNode.getAttribute("depthTestEnable"), "true" ) == 0 );
+
+            if( depthStencilBufferNode.isAttributeSet("depthWriteEnable") )
+                pipelineData.depthWriteEnable = ( std::strcmp( depthStencilBufferNode.getAttribute("depthWriteEnable"), "true" ) == 0 );
 
             // Do we enable the stencil testing
-            if( depthStencilBufferNode.isAttributeSet("enableStencilTest") )
-                pipelineData.m_enableStencilTest = ( std::strcmp( depthStencilBufferNode.getAttribute("enableStencilTest"), "true" ) == 0 );
+            if( depthStencilBufferNode.isAttributeSet("stencilTestEnable") )
+                pipelineData.stencilTestEnable = ( std::strcmp( depthStencilBufferNode.getAttribute("stencilTestEnable"), "true" ) == 0 );
             
             // Is this the stencil pipeline
             if( depthStencilBufferNode.isAttributeSet("stencilPipeline") )
-                pipelineData.m_stencilPipeline = ( std::strcmp( depthStencilBufferNode.getAttribute("stencilPipeline"), "true" ) == 0 );
+                pipelineData.stencilPipeline = ( std::strcmp( depthStencilBufferNode.getAttribute("stencilPipeline"), "true" ) == 0 );
+        }
+
+        // Get the attribute from the "rasterizer" node
+        const XMLNode rasterizerNode = pipelineNode.getChildNode("rasterizer");
+        if( !rasterizerNode.isEmpty() )
+        {
+            // Do we set polyon mode
+            if( rasterizerNode.isAttributeSet("polygonMode") )
+            {
+                std::string mode = rasterizerNode.getAttribute("polygonMode");
+                if( mode == "fill" )
+                    pipelineData.polygonMode = VK_POLYGON_MODE_FILL;
+                else if( mode == "line" )
+                    pipelineData.polygonMode = VK_POLYGON_MODE_LINE;
+                else if( mode == "point" )
+                    pipelineData.polygonMode = VK_POLYGON_MODE_POINT;
+                else if( mode == "rect" )
+                    pipelineData.polygonMode = VK_POLYGON_MODE_FILL_RECTANGLE_NV;
+            }
+
+            // Do we set cull mode
+            if( rasterizerNode.isAttributeSet("cullMode") )
+            {
+                std::string mode = rasterizerNode.getAttribute("cullMode");
+                if( mode == "none" )
+                    pipelineData.cullMode = VK_CULL_MODE_NONE;
+                else if( mode == "front" )
+                    pipelineData.cullMode = VK_CULL_MODE_FRONT_BIT;
+                else if( mode == "back" )
+                    pipelineData.cullMode = VK_CULL_MODE_BACK_BIT;
+                else if( mode == "front_and_back" )
+                    pipelineData.cullMode = VK_CULL_MODE_FRONT_AND_BACK;
+            }
+
+            // Do we set cull mode
+            if( rasterizerNode.isAttributeSet("frontFace") )
+            {
+                std::string mode = rasterizerNode.getAttribute("frontFace");
+                if( mode == "counter_clockwise" )
+                    pipelineData.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+                else if( mode == "clockwise" )
+                    pipelineData.frontFace = VK_FRONT_FACE_CLOCKWISE;
+            }
         }
 
         // Create the graphics pipeline
@@ -1083,7 +1129,7 @@ void CDevice::waitForIdle()
 /***************************************************************************
 *   DESC:  Get the pipeline
 ****************************************************************************/
-const CPipelineData & CDevice::getPipelineData( int index ) const
+const SPipelineData & CDevice::getPipelineData( int index ) const
 {
     return m_pipelineDataVec.at(index);
 }
@@ -1103,7 +1149,7 @@ int CDevice::getPipelineIndex( const std::string & id )
 /***************************************************************************
 *   DESC:  Get descriptor data map
 ****************************************************************************/
-const std::map< const std::string, CDescriptorData > & CDevice::getDescriptorDataMap() const
+const std::map< const std::string, SDescriptorData > & CDevice::getDescriptorDataMap() const
 {
     return m_descriptorDataMap;
 }
@@ -1111,7 +1157,7 @@ const std::map< const std::string, CDescriptorData > & CDevice::getDescriptorDat
 /***************************************************************************
 *   DESC:  Get descriptor data
 ****************************************************************************/
-const CDescriptorData & CDevice::getDescriptorData( const std::string & id ) const
+const SDescriptorData & CDevice::getDescriptorData( const std::string & id ) const
 {
     auto iter = m_descriptorDataMap.find( id );
     if( iter == m_descriptorDataMap.end() )

@@ -28,9 +28,9 @@
 struct SDL_Window;
 struct _SDL_GameController;
 typedef _SDL_GameController SDL_GameController;
-class CPipelineData;
-class CDescriptorData;
-class CUboData;
+class SPipelineData;
+class SDescriptorData;
+class SUboData;
 class CPushDescriptorSet;
 class CTexture;
 class CModel;
@@ -145,7 +145,7 @@ public:
     CMemoryBuffer getMemoryBuffer( const std::string & group, const std::string & id );
 
     // Get the pipeline data
-    const CPipelineData & getPipelineData( int index ) const;
+    const SPipelineData & getPipelineData( int index ) const;
 
     // Get the pipeline index
     int getPipelineIndex( const std::string & id );
@@ -188,10 +188,10 @@ public:
     void waitForIdle();
 
     // Get descriptor data map
-    const std::map< const std::string, CDescriptorData > & getDescriptorDataMap() const;
+    const std::map< const std::string, SDescriptorData > & getDescriptorDataMap() const;
 
     // Get descriptor data map
-    const CDescriptorData & getDescriptorData( const std::string & id ) const;
+    const SDescriptorData & getDescriptorData( const std::string & id ) const;
 
     // Begin the recording of the command buffer
     void beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer );
@@ -297,8 +297,8 @@ private:
         std::map< const std::string, CDescriptorAllocator >::iterator & allocIter,
         const CTexture & texture,
         const std::vector<CMemoryBuffer> & uniformBufVec,
-        const CPipelineData & rPipelineData,
-        const CDescriptorData & rDescData );
+        const SPipelineData & rPipelineData,
+        const SDescriptorData & rDescData );
 
     // Update the descriptor set
     void updateDescriptorSet(
@@ -340,7 +340,7 @@ private:
     std::map< const std::string, VkShaderModule > m_shaderModuleMap;
 
     // Vector containing data for creating the pipeline
-    std::vector< CPipelineData > m_pipelineDataVec;
+    std::vector< SPipelineData > m_pipelineDataVec;
 
     // Map containing index to pipeline in vector
     std::map< const std::string, int > m_pipelineIndexMap;
@@ -349,10 +349,10 @@ private:
     std::vector<VkCommandBuffer> m_secondaryCommandBufVec;
 
     // Map containing ubo information
-    std::map< const std::string, CUboData > m_uboDataMap;
+    std::map< const std::string, SUboData > m_uboDataMap;
 
     // Map containing descriptor information for descriptor creation
-    std::map< const std::string, CDescriptorData > m_descriptorDataMap;
+    std::map< const std::string, SDescriptorData > m_descriptorDataMap;
 
     // Map containing descriptor set layouts
     std::map< const std::string, VkDescriptorSetLayout > m_descriptorSetLayoutMap;

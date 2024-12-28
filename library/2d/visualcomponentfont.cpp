@@ -75,13 +75,13 @@ void CVisualComponentFont::recordCommandBuffer(
         auto & device( CDevice::Instance() );
 
         // Get the pipeline data
-        const CPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
+        const SPipelineData & rPipelineData = device.getPipelineData( rVisualData.getPipelineIndex() );
 
         // Update the UBO buffer
         updateUBO( index, device, rVisualData, pObject, camera );
 
         // Bind the pipeline
-        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipeline );
+        vkCmdBindPipeline( cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.pipeline );
 
         // Bind vertex buffer
         VkBuffer vertexBuffers[] = {m_vboBuffer.m_buffer};
@@ -94,10 +94,10 @@ void CVisualComponentFont::recordCommandBuffer(
         // With the regular descriptor set implementation, objects that use the same texture and UBO can't share the same
         // descriptor set because the translation matrix is part of the UBO the objects sharing this will render ontop of each other
         vkCmdBindDescriptorSets( 
-            cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.m_pipelineLayout, 0, 1, &m_pDescriptorSet->m_descriptorVec[index], 0, nullptr );
+            cmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, rPipelineData.pipelineLayout, 0, 1, &m_pDescriptorSet->m_descriptorVec[index], 0, nullptr );
 
         // Use the push descriptors
-        //m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.m_pipelineLayout );
+        //m_pushDescSet.cmdPushDescriptorSet( index, cmdBuffer, rPipelineData.pipelineLayout );
 
         // Do the draw
         vkCmdDrawIndexed( cmdBuffer, m_iboCount, 1, 0, 0, 0 );

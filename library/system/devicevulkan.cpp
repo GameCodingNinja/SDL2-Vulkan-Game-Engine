@@ -1020,7 +1020,7 @@ std::vector<VkCommandBuffer> CDeviceVulkan::createSecondaryCommandBuffers( VkCom
 /***************************************************************************
 *   DESC:  Create the descriptor set layout
 ****************************************************************************/
-VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData & descData )
+VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( SDescriptorData & descData )
 {
     VkResult vkResult(VK_SUCCESS);
     int bindingOffset = 0;
@@ -1029,7 +1029,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
     for( auto & descIdIter : descData.m_descriptorVec )
     {
         // There can be multiple uniform buffers
-        if( descIdIter.m_descrId == "UNIFORM_BUFFER" )
+        if( descIdIter.descrId == "UNIFORM_BUFFER" )
         {
             VkDescriptorSetLayoutBinding binding = {};
             binding.binding = bindingOffset++;
@@ -1040,7 +1040,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
 
             bindings.push_back( binding );
         }
-        else if( descIdIter.m_descrId == "COMBINED_IMAGE_SAMPLER" )
+        else if( descIdIter.descrId == "COMBINED_IMAGE_SAMPLER" )
         {
             VkDescriptorSetLayoutBinding binding = {};
             binding.binding = bindingOffset++;
@@ -1053,7 +1053,7 @@ VkDescriptorSetLayout CDeviceVulkan::createDescriptorSetLayout( CDescriptorData 
         }
         else
         {
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor binding not defined! %s") % descIdIter.m_descrId ) );
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor binding not defined! %s") % descIdIter.descrId ) );
         }
     }
 
@@ -1091,16 +1091,16 @@ VkPipelineLayout CDeviceVulkan::createPipelineLayout( VkDescriptorSetLayout desc
 /***************************************************************************
 *   DESC:  Create the pipeline
 ****************************************************************************/
-void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
+void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
 {
     VkResult vkResult(VK_SUCCESS);
 
     // Make sure our states are setup correctly
-    if( pipelineData.m_enableDepthTest && !CSettings::Instance().activateDepthBuffer() )
+    if( pipelineData.depthTestEnable && !CSettings::Instance().activateDepthBuffer() )
         throw NExcept::CCriticalException(
             "Vulkan Error!", "Can't enable the depth buffer without activating it in the settings.cfg!" );
 
-    if( pipelineData.m_enableStencilTest && !CSettings::Instance().activateStencilBuffer() )
+    if( pipelineData.depthTestEnable && !CSettings::Instance().activateStencilBuffer() )
         throw NExcept::CCriticalException(
             "Vulkan Error!", "Can't enable the stencil buffer without activating it in the settings.cfg!" );
 
@@ -1108,13 +1108,13 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-    vertShaderStageInfo.module = pipelineData.m_shader.m_vert;
+    vertShaderStageInfo.module = pipelineData.shader.vert;
     vertShaderStageInfo.pName = "main";
 
     VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
     fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-    fragShaderStageInfo.module = pipelineData.m_shader.m_frag;
+    fragShaderStageInfo.module = pipelineData.shader.frag;
     fragShaderStageInfo.pName = "main";
 
     std::vector<VkPipelineShaderStageCreateInfo> shaderStages = {vertShaderStageInfo, fragShaderStageInfo};
@@ -1154,10 +1154,10 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     rasterizer.depthClampEnable = VK_FALSE;
     rasterizer.rasterizerDiscardEnable = VK_FALSE;
-    rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
+    rasterizer.polygonMode = pipelineData.polygonMode;    // VK_POLYGON_MODE_FILL
     rasterizer.lineWidth = 1.0f;
-    rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-    rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE; // Counter clockwise for righthanded rule
+    rasterizer.cullMode = pipelineData.cullMode;          // VK_CULL_MODE_BACK_BIT
+    rasterizer.frontFace = pipelineData.frontFace;        // VK_FRONT_FACE_COUNTER_CLOCKWISE; // Counter clockwise for righthanded rule
     rasterizer.depthBiasEnable = VK_FALSE;
     rasterizer.depthBiasConstantFactor = 0.0f;
     rasterizer.depthBiasClamp = 0.0f;
@@ -1187,9 +1187,9 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
 
     VkPipelineDepthStencilStateCreateInfo depthStencil = {};
     depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-    depthStencil.depthTestEnable = pipelineData.m_enableDepthTest;
-    depthStencil.depthWriteEnable = pipelineData.m_enableDepthTest;
-    depthStencil.stencilTestEnable = pipelineData.m_enableStencilTest;
+    depthStencil.depthTestEnable = pipelineData.depthTestEnable;       // VK_FALSE
+    depthStencil.depthWriteEnable = pipelineData.depthWriteEnable;     // VK_FALSE
+    depthStencil.stencilTestEnable = pipelineData.stencilTestEnable;   // VK_FALSE
     depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
     depthStencil.depthBoundsTestEnable = VK_FALSE; // This is not a toggle to turn on depth testing
     // Stencil buffer masks
@@ -1201,7 +1201,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     depthStencil.back.writeMask = 0xff;
     depthStencil.back.reference = 1;
 
-    if( pipelineData.m_stencilPipeline )
+    if( pipelineData.stencilPipeline )
     {
         colorBlendAttachment.colorWriteMask = 0;
         colorBlendAttachment.blendEnable = VK_FALSE;
@@ -1227,7 +1227,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
     pipelineInfo.pDynamicState = VK_NULL_HANDLE;
-    pipelineInfo.layout = pipelineData.m_pipelineLayout;
+    pipelineInfo.layout = pipelineData.pipelineLayout;
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
@@ -1237,7 +1237,7 @@ void CDeviceVulkan::createPipeline( CPipelineData & pipelineData )
     if( CSettings::Instance().activateDepthBuffer() )
         pipelineInfo.pDepthStencilState = &depthStencil;
 
-    if( (vkResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineData.m_pipeline )) )
+    if( (vkResult = vkCreateGraphicsPipelines( m_logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineData.pipeline )) )
         throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Failed to create graphics pipeline! %s") % getError(vkResult) ) );
 }
 
@@ -1911,17 +1911,17 @@ VkImageView CDeviceVulkan::createImageView( VkImage image, VkFormat format, uint
 *   DESC:  Create descriptor pool
 *          NOTE: Each discriptor count must equal the total number needed in the pool
 ****************************************************************************/
-VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & descData )
+VkDescriptorPool CDeviceVulkan::createDescriptorPool( const SDescriptorData & descData )
 {
     VkResult vkResult(VK_SUCCESS);
     std::vector<VkDescriptorPoolSize> descriptorPoolVec;
     descriptorPoolVec.reserve( descData.m_descriptorVec.size() );
-    const uint32_t MAX_POOL_SIZE( m_framebufferVec.size() * descData.m_descPoolMax );
+    const uint32_t MAX_POOL_SIZE( m_framebufferVec.size() * descData.descPoolMax );
 
     for( auto & descIdIter : descData.m_descriptorVec )
     {
         // There can be multiple uniform buffers
-        if( descIdIter.m_descrId == "UNIFORM_BUFFER" )
+        if( descIdIter.descrId == "UNIFORM_BUFFER" )
         {
             VkDescriptorPoolSize uniformBufferPoolSize = {};
             uniformBufferPoolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -1929,7 +1929,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
 
             descriptorPoolVec.push_back( uniformBufferPoolSize );
         }
-        else if( descIdIter.m_descrId == "COMBINED_IMAGE_SAMPLER" )
+        else if( descIdIter.descrId == "COMBINED_IMAGE_SAMPLER" )
         {
             VkDescriptorPoolSize combinedImageSamplerPoolSize = {};
             combinedImageSamplerPoolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
@@ -1939,7 +1939,7 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
         }
         else
         {
-            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool binding not defined! %s") % descIdIter.m_descrId ) );
+            throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Descriptor pool binding not defined! %s") % descIdIter.descrId ) );
         }
     }
 
@@ -1962,11 +1962,11 @@ VkDescriptorPool CDeviceVulkan::createDescriptorPool( const CDescriptorData & de
 *   DESC:  Allocate the descriptor sets
 ****************************************************************************/
 std::vector<VkDescriptorSet> CDeviceVulkan::allocateDescriptorSetVec(
-    const CPipelineData & pipelineData,
+    const SPipelineData & pipelineData,
     VkDescriptorPool descriptorPool )
 {
     VkResult vkResult(VK_SUCCESS);
-    std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), pipelineData.m_descriptorSetLayout );
+    std::vector<VkDescriptorSetLayout> layouts( m_framebufferVec.size(), pipelineData.descriptorSetLayout );
 
     VkDescriptorSetAllocateInfo allocInfo = {};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -1988,7 +1988,7 @@ std::vector<VkDescriptorSet> CDeviceVulkan::allocateDescriptorSetVec(
 void CDeviceVulkan::updateDescriptorSetVec(
     std::vector<VkDescriptorSet> & descriptorSetVec,
     const CTexture & texture,
-    const CDescriptorData & descData,
+    const SDescriptorData & descData,
     const std::vector<CMemoryBuffer> & uniformBufVec )
 {
     for( size_t i = 0; i < descriptorSetVec.size(); ++i )
@@ -2003,16 +2003,16 @@ void CDeviceVulkan::updateDescriptorSetVec(
 
         for( auto & descIdIter : descData.m_descriptorVec )
         {
-            if( descIdIter.m_descrId == "UNIFORM_BUFFER" )
+            if( descIdIter.descrId == "UNIFORM_BUFFER" )
             {
                 // Make sure this UBO has a size
-                if( descIdIter.m_ubo.uboSize == 0 )
-                    throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Uniform Buffer UBO size is 0! %s") % descIdIter.m_descrId ) );
+                if( descIdIter.ubo.uboSize == 0 )
+                    throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Uniform Buffer UBO size is 0! %s") % descIdIter.descrId ) );
 
                 VkDescriptorBufferInfo bufferInfo = {};
                 bufferInfo.buffer = uniformBufVec[i].m_buffer;
                 bufferInfo.offset = 0;
-                bufferInfo.range = descIdIter.m_ubo.uboSize;
+                bufferInfo.range = descIdIter.ubo.uboSize;
 
                 descriptorBufferInfoVec.emplace_back( bufferInfo );
 
@@ -2027,7 +2027,7 @@ void CDeviceVulkan::updateDescriptorSetVec(
 
                 writeDescriptorSetVec.push_back( writeDescriptorSet );
             }
-            else if( descIdIter.m_descrId == "COMBINED_IMAGE_SAMPLER" )
+            else if( descIdIter.descrId == "COMBINED_IMAGE_SAMPLER" )
             {
                 VkDescriptorImageInfo imageInfo = {};
                 imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -2049,7 +2049,7 @@ void CDeviceVulkan::updateDescriptorSetVec(
             }
             else
             {
-                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Create Descriptor Set binding not defined! %s") % descIdIter.m_descrId ) );
+                throw NExcept::CCriticalException( "Vulkan Error!", boost::str( boost::format("Create Descriptor Set binding not defined! %s") % descIdIter.descrId ) );
             }
         }
 

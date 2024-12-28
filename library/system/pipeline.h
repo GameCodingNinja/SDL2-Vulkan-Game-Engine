@@ -14,74 +14,67 @@
 #include <string>
 #include <vector>
 
-class CUboData
+struct SUboData
 {
-public:
-    
-    CUboData(){}
-    CUboData( const std::string & uboId, int size ) : m_uboId(uboId), uboSize(size)
+    SUboData(){}
+    SUboData( const std::string & uboId, int size ) :
+        uboId(uboId), uboSize(size)
     {}
     
     // UBO string Id
-    std::string m_uboId;
+    std::string uboId;
     
     // UBO size
     int uboSize = 0;
 };
     
-class CDescriptorData
+struct SDescriptorData
 {
 public:
     
-    class CDescriptor
+    struct SDescriptor
     {
-    public:
-        
         // UBO data needed for the descriptor
-        CUboData m_ubo;
+        SUboData ubo;
         
         // Descriptor name id
-        std::string m_descrId;
+        std::string descrId;
     };
 
-    CDescriptorData( const size_t descPoolMax ) : m_descPoolMax( descPoolMax )
+    SDescriptorData( const size_t descPoolMax ) : descPoolMax( descPoolMax )
     {}
 
-    std::vector<CDescriptor> m_descriptorVec;
+    std::vector<SDescriptor> m_descriptorVec;
 
     // Descriptor pool max
-    const size_t m_descPoolMax;
+    const size_t descPoolMax;
 };
 
-class CShader
+struct SShader
 {
-public:
-    
     // Handle to the vertex shader
-    VkShaderModule m_vert = VK_NULL_HANDLE;
+    VkShaderModule vert = VK_NULL_HANDLE;
     
     // handle to the fragment shader
-    VkShaderModule m_frag = VK_NULL_HANDLE;
+    VkShaderModule frag = VK_NULL_HANDLE;
 };
 
-class CPipelineData
+struct SPipelineData
 {
-public:
-    
     // Shader for this pipeline
-    CShader m_shader;
+    SShader shader;
     
     // Handle to the descriptor set layout
-    VkDescriptorSetLayout m_descriptorSetLayout = VK_NULL_HANDLE;
+    VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
     
     // Handle to the pipeline layout
-    VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;
+    VkPipelineLayout pipelineLayout = VK_NULL_HANDLE;
     
     // Handle to the pipeline
-    VkPipeline m_pipeline = VK_NULL_HANDLE;
+    VkPipeline pipeline = VK_NULL_HANDLE;
     
     // Name of the descriptor id
-    std::string m_descriptorId;
+    std::string descriptorId;
     
     // Vertex input binding description
     VkVertexInputBindingDescription vertInputBindingDesc = {};
@@ -90,11 +83,18 @@ public:
     std::vector<VkVertexInputAttributeDescription> vertInputAttrDescVec;
     
     // Do we enable the depth test
-    bool m_enableDepthTest = false;
+    bool depthTestEnable = false;
+    bool depthWriteEnable = false;
 
     // Do we create the depth stencil test
-    bool m_enableStencilTest = false;
-    
+    bool stencilTestEnable = false;
+
     // Flag if this is the stencil pipeline
-    bool m_stencilPipeline = false;
+    bool stencilPipeline = false;
+
+    // Raster mode members
+    VkPolygonMode polygonMode = VK_POLYGON_MODE_FILL;
+    VkCullModeFlagBits cullMode = VK_CULL_MODE_BACK_BIT;
+    VkFrontFace frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+
 };

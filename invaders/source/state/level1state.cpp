@@ -158,6 +158,9 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
 
                 if( i == MOVE_LEFT )
                 {
+                    // Flip the ship facing left
+                    m_pPlayerShipNode->getObject()->setRot( 0, 180 );
+
                     // The camera easing positions the player ship at then end of the screen facing inwards
                     if( actionResult == EActionPress::DOWN )
                     {
@@ -183,6 +186,9 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                 }
                 else if( i == MOVE_RIGHT )
                 {
+                    // Flip the ship facing right
+                    m_pPlayerShipNode->getObject()->setRot();
+
                     // The camera easing positions the player ship at then end of the screen facing inwards
                     if( actionResult == EActionPress::DOWN )
                     {
@@ -301,6 +307,9 @@ void CLevel1State::update()
             m_buildingsCamera->incPos( -(GAMEPLAY_LOOPING_WRAP_DIST * 2) );
         else if( m_buildingsCamera->getPos().x > 6350)
             m_buildingsCamera->incPos( GAMEPLAY_LOOPING_WRAP_DIST * 2 );
+        
+
+        m_pPlayerShipNode->getObject()->incPos( m_easingX.getValue(), m_easingY.getValue() );
     }
 
     CCommonState::update();
