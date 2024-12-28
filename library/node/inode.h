@@ -40,7 +40,7 @@ public:
     virtual ~iNode();
 
     // Only called after node creation with all it's children
-    virtual void init(){}
+    virtual void init();
 
     // Get the starting position of the vector iterator
     virtual nodeVecIter_t getNodeIter()
@@ -122,6 +122,9 @@ public:
     virtual CSize<float> getSize();
 
 protected:
+
+    // head node
+    bool m_headNode;
 
     // Node type
     ENodeType m_type;

@@ -18,6 +18,7 @@ CSize<float> dummySize;
 *    DESC:  Constructor / Destructor
 ************************************************************************/
 iNode::iNode( uint8_t nodeId, uint8_t parentId ) :
+    m_headNode(false),
     m_type(ENodeType::_NULL_),
     m_handle(m_hAtomicIter++),
     m_userId(defs_DEFAULT_ID),
@@ -28,6 +29,14 @@ iNode::iNode( uint8_t nodeId, uint8_t parentId ) :
 
 iNode::~iNode()
 {}
+
+/***************************************************************************
+*    DESC:  Only called after node creation to indicate head node
+****************************************************************************/
+void iNode::init()
+{
+    m_headNode = true;
+}
 
 /************************************************************************
 *    DESC:  get the child node

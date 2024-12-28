@@ -16,7 +16,8 @@
 *    DESC:  Constructor / Destructor
 ************************************************************************/
 CObjectNode::CObjectNode( const CNodeData & rNodeData ) :
-    CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() )
+    CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
+    m_radius(0.f)
 {
     m_userId = rNodeData.getUserId();
     m_type = ENodeType::OBJECT;
@@ -47,6 +48,8 @@ CObjectNode::~CObjectNode()
 ****************************************************************************/
 void CObjectNode::init()
 {
+    iNode::init();
+
     calcSize(this, m_size);
 
     // Calculate the radius
@@ -86,7 +89,10 @@ CObject * CObjectNode::getObject()
 ****************************************************************************/
 float CObjectNode::getRadius()
 {
-    return m_radius * getObject()->getScale().x;
+    if(m_headNode)
+        return m_radius * getObject()->getScale().x;
+
+    return 0.f;
 }
 
 /***************************************************************************

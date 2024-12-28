@@ -20,7 +20,8 @@
 ************************************************************************/
 CSpriteNode::CSpriteNode( const CNodeData & rNodeData ) :
     CRenderNode( rNodeData.getNodeId(), rNodeData.getParentNodeId() ),
-    CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) )
+    CSprite( CObjectDataMgr::Instance().getData( rNodeData.getGroup(), rNodeData.getObjectName() ) ),
+    m_radius(0.f)
 {
     m_userId = rNodeData.getUserId();
     m_type = ENodeType::SPRITE;
@@ -47,6 +48,8 @@ CSpriteNode::~CSpriteNode()
 ****************************************************************************/
 void CSpriteNode::init()
 {
+    iNode::init();
+
     m_size = getSprite()->getObjectData().getSize();
     calcSize(this, m_size);
 
@@ -131,7 +134,10 @@ CObject * CSpriteNode::getObject()
 ****************************************************************************/
 float CSpriteNode::getRadius()
 {
-    return m_radius * getObject()->getScale().x;
+    if(m_headNode)
+        return m_radius * getObject()->getScale().x;
+
+    return getSprite()->getObjectData().getRadius() * getObject()->getScale().x;
 }
 
 /***************************************************************************
