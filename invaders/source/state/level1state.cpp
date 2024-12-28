@@ -286,9 +286,15 @@ void CLevel1State::update()
 
         // Set the wrap around camera when we are about to exceed the range of the buildings
         if( m_buildingsCamera->getPos().x > -6200 && m_buildingsCamera->getPos().x < -4900 )
+        {
             m_wrapAroundCamera->setPos( -(m_buildingsCamera->getPos().x + (GAMEPLAY_LOOPING_WRAP_DIST * 2)) );
-        else if( m_buildingsCamera->getPos().x > 5000 && m_buildingsCamera->getPos().x < 6300 )
+            m_buildingsStrategy->setExtraCamera( m_wrapAroundCamera );
+        }
+        else if( m_buildingsCamera->getPos().x > 5000 && m_buildingsCamera->getPos().x < 6350 )
+        {
             m_wrapAroundCamera->setPos( -(m_buildingsCamera->getPos().x - (GAMEPLAY_LOOPING_WRAP_DIST * 2)) );
+            m_buildingsStrategy->setExtraCamera( m_wrapAroundCamera );
+        }
 
         // Reset the building camera once we are done with filling the gap with the wrap around camera
         if( m_buildingsCamera->getPos().x < -6200 )
@@ -329,14 +335,9 @@ void CLevel1State::recordCommandBuffer( uint32_t cmdBufIndex )
 {
     if( m_gameReady )
     {
-        // Render with the wrap around camera when we exceed the range of the buildings
-        /*if( m_buildingsCamera->getPos().x < -4900 || m_buildingsCamera->getPos().x > 5000 )
-        {
-            //this.buildingsStrategy.render( this.wrapAroundCamera );
-            //this.enemyStrategy.render( this.wrapAroundCamera );
-        }*/
-
         CCommonState::recordCommandBuffer( cmdBufIndex );
+
+        m_buildingsStrategy->setExtraCamera( nullptr );
     }
 }
 

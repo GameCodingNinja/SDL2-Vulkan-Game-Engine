@@ -242,6 +242,8 @@ void CDevice::updateSecondaryCmdBuf( VkCommandBuffer cmdBuf )
 
 /***************************************************************************
 *   DESC:  Record the command buffers
+*
+*   NOTE:  Can only record once per game object (sprite)
 ****************************************************************************/
 void CDevice::recordCommandBuffers( uint32_t cmdBufIndex )
 {

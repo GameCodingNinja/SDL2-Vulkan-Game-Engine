@@ -10,6 +10,7 @@
 // Game lib dependencies
 #include <utilities/settings.h>
 #include <utilities/xmlParser.h>
+#include <node/inode.h>
 
 // Standard lib dependencies
 #include <cstring>
@@ -341,10 +342,6 @@ bool CCamera::inViewY( const CPoint<float> & transPos, const float radius )
 //
 bool CCamera::inViewX( const CPoint<float> & transPos, const float radius )
 {
-    float value = std::abs(-getTransPos().x - (m_scale.x * transPos.x));
-    float value2 = CSettings::Instance().getDefaultSizeHalf().w + (m_scale.x * radius);
-    float value3 = std::abs(-getTransPos().x);
-
     if( m_projType == EProjectionType::ORTHOGRAPHIC )
     {
         // Check the right and left sides of the screen
@@ -359,4 +356,40 @@ bool CCamera::inViewX( const CPoint<float> & transPos, const float radius )
     }
 
     return true;
+}
+
+/************************************************************************
+*    DESC:  Handle the recording of the command buffers based on culling
+************************************************************************/
+void CCamera::recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, std::vector<iNode *> & pNodeVec )
+{
+    if( m_cullType == ECullType::_NULL_)
+    {
+        for( auto iter : pNodeVec )
+            iter->recordCommandBuffer( index, cmdBuffer, *this );
+    }
+    else if( m_cullType == ECullType::CULL_FULL)
+    {
+        for( auto iter : pNodeVec )
+        {
+            if( inView( iter->getObject()->getTransPos(), iter->getRadius() ) )
+                iter->recordCommandBuffer( index, cmdBuffer, *this );
+        }
+    }
+    else if( m_cullType == ECullType::CULL_X_ONLY)
+    {
+        for( auto iter : pNodeVec )
+        {
+            if( inViewX( iter->getObject()->getTransPos(), iter->getRadius() ) )
+                iter->recordCommandBuffer( index, cmdBuffer, *this );
+        }
+    }
+    else if( m_cullType == ECullType::CULL_Y_ONLY)
+    {
+        for( auto iter : pNodeVec )
+        {
+            if( inViewY( iter->getObject()->getTransPos(), iter->getRadius() ) )
+                iter->recordCommandBuffer( index, cmdBuffer, *this );
+        }
+    }
 }

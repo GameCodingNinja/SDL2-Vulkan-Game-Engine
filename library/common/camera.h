@@ -13,8 +13,12 @@
 #include <utilities/matrix.h>
 #include <common/worldvalue.h>
 
+// Vulkan lib dependencies
+#include <system/vulkan.h>
+
 // Forward Declarations
 struct XMLNode;
+class iNode;
 
 class CCamera : public CObject
 {
@@ -75,6 +79,9 @@ public:
 
     // Check if the raduis is in the view frustrum of the X
     bool inViewX( const CPoint<float> & transPos, const float radius );
+
+    // Handle the recording of the command buffers based on culling
+    void recordCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, std::vector<iNode *> & m_pNodeVec );
 
 protected:
     

@@ -870,16 +870,14 @@ void CMenuMgr::recordCommandBuffer( uint32_t index )
         auto cmdBuf( m_commandBufVec[index] );
 
         CDevice::Instance().beginCommandBuffer( index, cmdBuf );
-
-        const CCamera & rCamera = *m_pCamera;
     
         for( auto iter : m_pActiveInterTreeVec )
             if( iter->isActive() )
-                iter->recordCommandBuffer( index, cmdBuf, rCamera );
+                iter->recordCommandBuffer( index, cmdBuf, *m_pCamera );
         
         for( auto iter : m_pActiveMenuTreeVec )
             if( iter->isActive() )
-                iter->recordCommandBuffer( index, cmdBuf, rCamera );
+                iter->recordCommandBuffer( index, cmdBuf, *m_pCamera );
         
         CDevice::Instance().endCommandBuffer( cmdBuf );
     }

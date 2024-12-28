@@ -91,6 +91,9 @@ public:
     // Update the secondary command buffer vector
     void updateSecondaryCmdBuf( uint32_t index );
 
+    // Set the extra camera
+    void setExtraCamera( CCamera * pCamera );
+
 protected:
 
     // Get the node data by name
@@ -117,6 +120,9 @@ protected:
     
     // Default camera pointer
     CCamera * m_pDefaultCamera;
+
+    // Extra camera
+    CCamera * m_extraCamera;
 
     // Map of the node data
     std::map<const std::string, CNodeDataList> m_dataMap;

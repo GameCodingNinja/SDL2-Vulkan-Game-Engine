@@ -30,7 +30,8 @@
 *    DESC:  Constructor
 ************************************************************************/
 CStrategy::CStrategy() :
-    m_pDefaultCamera( &CCameraMgr::Instance().getDefault() )
+    m_pDefaultCamera( &CCameraMgr::Instance().getDefault() ),
+    m_extraCamera(nullptr)
 {
 }
 
@@ -399,35 +400,10 @@ void CStrategy::recordCommandBuffer( uint32_t index )
 
     CDevice::Instance().beginCommandBuffer( index, cmdBuf );
 
-    if( m_pDefaultCamera->getCullType() == ECullType::_NULL_)
-    {
-        for( auto iter : m_pNodeVec )
-            iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
-    }
-    else if( m_pDefaultCamera->getCullType() == ECullType::CULL_FULL)
-    {
-        for( auto iter : m_pNodeVec )
-        {
-            if( m_pDefaultCamera->inView( iter->getObject()->getTransPos(), iter->getRadius() ) )
-                iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
-        }
-    }
-    else if( m_pDefaultCamera->getCullType() == ECullType::CULL_X_ONLY)
-    {
-        for( auto iter : m_pNodeVec )
-        {
-            if( m_pDefaultCamera->inViewX( iter->getObject()->getTransPos(), iter->getRadius() ) )
-                iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
-        }
-    }
-    else if( m_pDefaultCamera->getCullType() == ECullType::CULL_Y_ONLY)
-    {
-        for( auto iter : m_pNodeVec )
-        {
-            if( m_pDefaultCamera->inViewY( iter->getObject()->getTransPos(), iter->getRadius() ) )
-                iter->recordCommandBuffer( index, cmdBuf, *m_pDefaultCamera );
-        }
-    }
+    m_pDefaultCamera->recordCommandBuffer( index, cmdBuf, m_pNodeVec );
+
+    if(m_extraCamera != nullptr)
+        m_extraCamera->recordCommandBuffer( index, cmdBuf, m_pNodeVec );
     
     CDevice::Instance().endCommandBuffer( cmdBuf );
 }
@@ -579,4 +555,13 @@ void CStrategy::setCamera( const std::string & cameraId )
 CCamera & CStrategy::getCamera()
 {
     return *m_pDefaultCamera;
+}
+
+
+/************************************************************************
+*    DESC:  Set the extra camera
+************************************************************************/
+void CStrategy::setExtraCamera( CCamera * pCamera )
+{
+    m_extraCamera = pCamera;
 }
