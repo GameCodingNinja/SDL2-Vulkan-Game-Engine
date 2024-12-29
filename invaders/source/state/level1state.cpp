@@ -11,6 +11,7 @@
 // Game lib dependencies
 #include <gui/menumanager.h>
 #include <utilities/highresolutiontimer.h>
+#include <utilities/settings.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
 #include <system/device.h>
@@ -141,7 +142,7 @@ void CLevel1State::initPlayerShip()
 //
 void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
 {
-    //float dir = -m_rLevelCamera.getPos().x - m_pPlayerShipNode->getSprite()->getPos().x;
+    //float dir = -m_levelCamera->getPos().x - m_pPlayerShipNode->getSprite()->getPos().x;
 
     int i = 0;
     for(auto iter: m_moveActionVec)
@@ -159,7 +160,7 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                 if( i == MOVE_LEFT )
                 {
                     // Flip the ship facing left
-                    m_pPlayerShipNode->getObject()->setRot( 0, 180 );
+                    m_pPlayerShipNode->getSprite()->setRot( 0, 180 );
 
                     // The camera easing positions the player ship at then end of the screen facing inwards
                     if( actionResult == EActionPress::DOWN )
@@ -187,7 +188,7 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                 else if( i == MOVE_RIGHT )
                 {
                     // Flip the ship facing right
-                    m_pPlayerShipNode->getObject()->setRot();
+                    m_pPlayerShipNode->getSprite()->setRot();
 
                     // The camera easing positions the player ship at then end of the screen facing inwards
                     if( actionResult == EActionPress::DOWN )
@@ -223,12 +224,12 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                     if( actionResult == EActionPress::DOWN )
                     {
                         //NGenFunc::PostDebugMsg( "Move Up DOWN" );
-                        //this.easingY.init( this.easingY.getValue(), 7, 0.5, easing.getLinear() );
+                        m_easingY.init( m_easingY.getValue(), -0.3, 3, NEasing::linear );
                     }
                     else
                     {
                         //NGenFunc::PostDebugMsg( "Move Up UP" );
-                        //this.easingY.init( this.easingY.getValue(), 0, 0.25, easing.getLinear() );
+                        m_easingY.init( m_easingY.getValue(), 0, 0.25f, NEasing::linear );
                     }
 
                     m_moveDirY = MOVE_UP;
@@ -238,12 +239,12 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                     if( actionResult == EActionPress::DOWN )
                     {
                         //NGenFunc::PostDebugMsg( "Move Down DOWN" );
-                        //this.easingY.init( this.easingY.getValue(), -7, 0.5, easing.getLinear() );
+                        m_easingY.init( m_easingY.getValue(), 0.3, 3, NEasing::linear );
                     }
                     else
                     {
                         //NGenFunc::PostDebugMsg( "Move Down UP" );
-                        //this.easingY.init( this.easingY.getValue(), 0, 0.25, easing.getLinear() );
+                        m_easingY.init( m_easingY.getValue(), 0, 0.25f, NEasing::linear );
                     }
 
                     m_moveDirY = MOVE_DOWN;
@@ -307,9 +308,17 @@ void CLevel1State::update()
             m_buildingsCamera->incPos( -(GAMEPLAY_LOOPING_WRAP_DIST * 2) );
         else if( m_buildingsCamera->getPos().x > 6350)
             m_buildingsCamera->incPos( GAMEPLAY_LOOPING_WRAP_DIST * 2 );
+
+        // Stop the up/down movement
+        if( (m_moveDirY == MOVE_UP && m_pPlayerShipNode->getSprite()->getTransPos().y < -(CSettings::Instance().getDefaultSizeHalf().h * 0.73f)) ||
+            (m_moveDirY == MOVE_DOWN && m_pPlayerShipNode->getSprite()->getTransPos().y > (CSettings::Instance().getDefaultSizeHalf().h * 0.92f)) )
+        {
+            m_moveDirY = MOVE_NULL;
+            m_easingY.init( m_easingY.getValue(), 0, 0, NEasing::linear );
+        }
         
 
-        m_pPlayerShipNode->getObject()->incPos( m_easingX.getValue(), m_easingY.getValue() );
+        m_pPlayerShipNode->getSprite()->incPos( m_easingX.getValue(), m_easingY.getValue() );
     }
 
     CCommonState::update();
