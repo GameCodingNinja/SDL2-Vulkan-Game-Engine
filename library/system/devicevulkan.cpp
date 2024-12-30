@@ -1109,13 +1109,13 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
     vertShaderStageInfo.module = pipelineData.shader.vert;
-    vertShaderStageInfo.pName = "main";
+    vertShaderStageInfo.pName = pipelineData.shader.vertFunc.c_str();
 
     VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
     fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
     fragShaderStageInfo.module = pipelineData.shader.frag;
-    fragShaderStageInfo.pName = "main";
+    fragShaderStageInfo.pName = pipelineData.shader.fragFunc.c_str();
 
     std::vector<VkPipelineShaderStageCreateInfo> shaderStages = {vertShaderStageInfo, fragShaderStageInfo};
 
@@ -1152,16 +1152,16 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
 
     VkPipelineRasterizationStateCreateInfo rasterizer = {};
     rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-    rasterizer.depthClampEnable = VK_FALSE;
-    rasterizer.rasterizerDiscardEnable = VK_FALSE;
-    rasterizer.polygonMode = pipelineData.polygonMode;    // VK_POLYGON_MODE_FILL
-    rasterizer.lineWidth = 1.0f;
-    rasterizer.cullMode = pipelineData.cullMode;          // VK_CULL_MODE_BACK_BIT
-    rasterizer.frontFace = pipelineData.frontFace;        // VK_FRONT_FACE_COUNTER_CLOCKWISE; // Counter clockwise for righthanded rule
-    rasterizer.depthBiasEnable = VK_FALSE;
-    rasterizer.depthBiasConstantFactor = 0.0f;
-    rasterizer.depthBiasClamp = 0.0f;
-    rasterizer.depthBiasSlopeFactor = 0.0f;
+    rasterizer.depthClampEnable = pipelineData.depthClampEnable;                  // VK_FALSE
+    rasterizer.rasterizerDiscardEnable = pipelineData.rasterizerDiscardEnable;    // VK_FALSE
+    rasterizer.polygonMode = pipelineData.polygonMode;                            // VK_POLYGON_MODE_FILL
+    rasterizer.lineWidth = pipelineData.lineWidth;                                // 1.0f
+    rasterizer.cullMode = pipelineData.cullMode;                                  // VK_CULL_MODE_BACK_BIT
+    rasterizer.frontFace = pipelineData.frontFace;                                // VK_FRONT_FACE_COUNTER_CLOCKWISE; // Counter clockwise for righthanded rule
+    rasterizer.depthBiasEnable = pipelineData.depthBiasEnable;                    // VK_FALSE
+    rasterizer.depthBiasConstantFactor = pipelineData.depthBiasConstantFactor;    // 0.f
+    rasterizer.depthBiasClamp = pipelineData.depthBiasClamp;                      // 0.f
+    rasterizer.depthBiasSlopeFactor = pipelineData.depthBiasSlopeFactor;          // 0.f
 
     VkPipelineMultisampleStateCreateInfo multisampling = {};
     multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
@@ -1169,8 +1169,8 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
     multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
     
     VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
-    colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-    colorBlendAttachment.blendEnable = VK_TRUE;
+    colorBlendAttachment.colorWriteMask = pipelineData.colorWriteMask; // VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT
+    colorBlendAttachment.blendEnable = pipelineData.blendEnable;                        // VK_TRUE;
     colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
     colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
     colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
@@ -1190,30 +1190,16 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
     depthStencil.depthTestEnable = pipelineData.depthTestEnable;       // VK_FALSE
     depthStencil.depthWriteEnable = pipelineData.depthWriteEnable;     // VK_FALSE
     depthStencil.stencilTestEnable = pipelineData.stencilTestEnable;   // VK_FALSE
-    depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
-    depthStencil.depthBoundsTestEnable = VK_FALSE; // This is not a toggle to turn on depth testing
+    depthStencil.depthCompareOp = pipelineData.depthCompareOp;         // VK_COMPARE_OP_LESS;
+    depthStencil.depthBoundsTestEnable = pipelineData.depthBoundsTestEnable; // VK_FALSE; // This is not a toggle to turn on depth testing
     // Stencil buffer masks
-    depthStencil.back.compareOp = VK_COMPARE_OP_EQUAL;
-    depthStencil.back.failOp = VK_STENCIL_OP_KEEP;
-    depthStencil.back.depthFailOp = VK_STENCIL_OP_KEEP;
-    depthStencil.back.passOp = VK_STENCIL_OP_REPLACE;
-    depthStencil.back.compareMask = 0xff;
-    depthStencil.back.writeMask = 0xff;
-    depthStencil.back.reference = 1;
-
-    if( pipelineData.stencilPipeline )
-    {
-        colorBlendAttachment.colorWriteMask = 0;
-        colorBlendAttachment.blendEnable = VK_FALSE;
-        rasterizer.cullMode = VK_CULL_MODE_NONE;
-        
-        depthStencil.depthTestEnable = VK_FALSE;
-        depthStencil.depthWriteEnable = VK_FALSE;
-        depthStencil.back.compareOp = VK_COMPARE_OP_ALWAYS;
-        depthStencil.back.failOp = VK_STENCIL_OP_REPLACE;
-        depthStencil.back.depthFailOp = VK_STENCIL_OP_REPLACE;
-    }
-    
+    depthStencil.back.compareOp = pipelineData.compareOp;              // VK_COMPARE_OP_EQUAL
+    depthStencil.back.failOp = pipelineData.failOp;                    // VK_STENCIL_OP_KEEP
+    depthStencil.back.depthFailOp = pipelineData.depthFailOp;          // VK_STENCIL_OP_KEEP
+    depthStencil.back.passOp = pipelineData.passOp;                    // VK_STENCIL_OP_REPLACE
+    depthStencil.back.compareMask = pipelineData.compareMask;          // 0xff
+    depthStencil.back.writeMask = pipelineData.writeMask;              // 0xff
+    depthStencil.back.reference = pipelineData.reference;              // 1
     depthStencil.front = depthStencil.back;
 
     VkGraphicsPipelineCreateInfo pipelineInfo = {};

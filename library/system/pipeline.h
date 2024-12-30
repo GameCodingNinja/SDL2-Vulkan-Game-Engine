@@ -57,6 +57,9 @@ struct SShader
     
     // handle to the fragment shader
     VkShaderModule frag = VK_NULL_HANDLE;
+
+    std::string vertFunc;
+    std::string fragFunc;
 };
 
 struct SPipelineData
@@ -81,18 +84,33 @@ struct SPipelineData
     
     // Vertex input attribute description
     std::vector<VkVertexInputAttributeDescription> vertInputAttrDescVec;
+
+    // Color blend mode members
+    VkColorComponentFlags colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+    bool blendEnable = true;
     
-    // Do we enable the depth test
+    // Depth stencil mode members
     bool depthTestEnable = false;
     bool depthWriteEnable = false;
-
-    // Do we create the depth stencil test
     bool stencilTestEnable = false;
+    VkCompareOp compareOp = VK_COMPARE_OP_EQUAL;
+    VkCompareOp depthCompareOp = VK_COMPARE_OP_LESS;
+    bool depthBoundsTestEnable = false;
+    VkStencilOp failOp = VK_STENCIL_OP_KEEP;
+    VkStencilOp depthFailOp = VK_STENCIL_OP_KEEP;
+    VkStencilOp passOp = VK_STENCIL_OP_REPLACE;
+    uint32_t compareMask = 0xff;
+    uint32_t writeMask = 0xff;
+    uint32_t reference = 1;
 
-    // Flag if this is the stencil pipeline
-    bool stencilPipeline = false;
-
-    // Raster mode members
+    // Rasterizer mode members
+    bool depthClampEnable = false;
+    bool rasterizerDiscardEnable = false;
+    float lineWidth = 1.0f;
+    bool depthBiasEnable = false;
+    float depthBiasConstantFactor = 0.f;
+    float depthBiasClamp = 0.f;
+    float depthBiasSlopeFactor = 0.f;
     VkPolygonMode polygonMode = VK_POLYGON_MODE_FILL;
     VkCullModeFlagBits cullMode = VK_CULL_MODE_BACK_BIT;
     VkFrontFace frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;

@@ -741,6 +741,8 @@ void CDevice::createPipelines( const std::string & filePath )
 
         shader.vert = createShader( shaderNode.getChildNode("vert").getAttribute("file") );
         shader.frag = createShader( shaderNode.getChildNode("frag").getAttribute("file") );
+        shader.vertFunc = shaderNode.getChildNode("vert").getAttribute("func");
+        shader.fragFunc = shaderNode.getChildNode("frag").getAttribute("func");
 
         shaderMap.emplace( id, shader );
     }
@@ -804,31 +806,180 @@ void CDevice::createPipelines( const std::string & filePath )
         const std::string vertexInputDescrId = pipelineNode.getAttribute("vertexInputDescrId");
         pipelineData.vertInputBindingDesc = NVertex::getBindingDesc( vertexInputDescrId );
         pipelineData.vertInputAttrDescVec = NVertex::getAttributeDesc( vertexInputDescrId );
-        
-        // Get the attribute from the "depthStencilBuffer" node
-        const XMLNode depthStencilBufferNode = pipelineNode.getChildNode("depthStencilBuffer");
-        if( !depthStencilBufferNode.isEmpty() )
+
+        // Get the attribute from the "colorBlendAttachment" node
+        const XMLNode colorBlendAttachmentNode = pipelineNode.getChildNode("colorBlendAttachment");
+        if( !colorBlendAttachmentNode.isEmpty() )
         {
+            if( colorBlendAttachmentNode.isAttributeSet("colorWriteMask") )
+                pipelineData.colorWriteMask = std::atoi( colorBlendAttachmentNode.getAttribute("colorWriteMask") );
+                
             // Do we enable the depth testing
-            if( depthStencilBufferNode.isAttributeSet("depthTestEnable") )
-                pipelineData.depthTestEnable = ( std::strcmp( depthStencilBufferNode.getAttribute("depthTestEnable"), "true" ) == 0 );
+            if( colorBlendAttachmentNode.isAttributeSet("blendEnable") )
+                pipelineData.blendEnable = ( std::strcmp( colorBlendAttachmentNode.getAttribute("blendEnable"), "true" ) == 0 );
+        }
+        
+        // Get the attribute from the "depthStencil" node
+        const XMLNode depthStencilNode = pipelineNode.getChildNode("depthStencil");
+        if( !depthStencilNode.isEmpty() )
+        {
+            if( depthStencilNode.isAttributeSet("depthTestEnable") )
+                pipelineData.depthTestEnable = ( std::strcmp( depthStencilNode.getAttribute("depthTestEnable"), "true" ) == 0 );
 
-            if( depthStencilBufferNode.isAttributeSet("depthWriteEnable") )
-                pipelineData.depthWriteEnable = ( std::strcmp( depthStencilBufferNode.getAttribute("depthWriteEnable"), "true" ) == 0 );
+            if( depthStencilNode.isAttributeSet("depthWriteEnable") )
+                pipelineData.depthWriteEnable = ( std::strcmp( depthStencilNode.getAttribute("depthWriteEnable"), "true" ) == 0 );
 
-            // Do we enable the stencil testing
-            if( depthStencilBufferNode.isAttributeSet("stencilTestEnable") )
-                pipelineData.stencilTestEnable = ( std::strcmp( depthStencilBufferNode.getAttribute("stencilTestEnable"), "true" ) == 0 );
-            
-            // Is this the stencil pipeline
-            if( depthStencilBufferNode.isAttributeSet("stencilPipeline") )
-                pipelineData.stencilPipeline = ( std::strcmp( depthStencilBufferNode.getAttribute("stencilPipeline"), "true" ) == 0 );
+            if( depthStencilNode.isAttributeSet("stencilTestEnable") )
+                pipelineData.stencilTestEnable = ( std::strcmp( depthStencilNode.getAttribute("stencilTestEnable"), "true" ) == 0 );
+
+            if( depthStencilNode.isAttributeSet("compareMask") )
+                pipelineData.compareMask = std::atoi( depthStencilNode.getAttribute("compareMask") );
+
+            if( depthStencilNode.isAttributeSet("writeMask") )
+                pipelineData.writeMask = std::atoi( depthStencilNode.getAttribute("writeMask") );
+
+            if( depthStencilNode.isAttributeSet("reference") )
+                pipelineData.reference = std::atoi( depthStencilNode.getAttribute("reference") );
+
+            if( depthStencilNode.isAttributeSet("depthBoundsTestEnable") )
+                pipelineData.depthBoundsTestEnable = ( std::strcmp( depthStencilNode.getAttribute("depthBoundsTestEnable"), "true" ) == 0 );
+
+            // Do we set compare Op mode
+            if( depthStencilNode.isAttributeSet("compareOp") )
+            {
+                std::string mode = depthStencilNode.getAttribute("compareOp");
+                if( mode == "never" )
+                    pipelineData.compareOp = VK_COMPARE_OP_NEVER;
+                else if( mode == "less" )
+                    pipelineData.compareOp = VK_COMPARE_OP_LESS;
+                else if( mode == "equil" )
+                    pipelineData.compareOp = VK_COMPARE_OP_EQUAL;
+                else if( mode == "less_or_equal" )
+                    pipelineData.compareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
+                else if( mode == "greater" )
+                    pipelineData.compareOp = VK_COMPARE_OP_GREATER;
+                else if( mode == "not_equal" )
+                    pipelineData.compareOp = VK_COMPARE_OP_NOT_EQUAL;
+                else if( mode == "greater_or_equal" )
+                    pipelineData.compareOp = VK_COMPARE_OP_GREATER_OR_EQUAL;
+                else if( mode == "always" )
+                    pipelineData.compareOp = VK_COMPARE_OP_ALWAYS;
+            }
+
+            // Do we set depth Compare Op
+            if( depthStencilNode.isAttributeSet("depthCompareOp") )
+            {
+                std::string mode = depthStencilNode.getAttribute("depthCompareOp");
+                if( mode == "never" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_NEVER;
+                else if( mode == "less" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_LESS;
+                else if( mode == "equil" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_EQUAL;
+                else if( mode == "less_or_equal" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
+                else if( mode == "greater" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_GREATER;
+                else if( mode == "not_equal" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_NOT_EQUAL;
+                else if( mode == "greater_or_equal" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_GREATER_OR_EQUAL;
+                else if( mode == "always" )
+                    pipelineData.depthCompareOp = VK_COMPARE_OP_ALWAYS;
+            }
+
+            // Do we set fail Op
+            if( depthStencilNode.isAttributeSet("failOp") )
+            {
+                std::string mode = depthStencilNode.getAttribute("failOp");
+                if( mode == "keep" )
+                    pipelineData.failOp = VK_STENCIL_OP_KEEP;
+                else if( mode == "zero" )
+                    pipelineData.failOp = VK_STENCIL_OP_ZERO;
+                else if( mode == "replace" )
+                    pipelineData.failOp = VK_STENCIL_OP_REPLACE;
+                else if( mode == "inc_and_clamp" )
+                    pipelineData.failOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
+                else if( mode == "dec_and_clamp" )
+                    pipelineData.failOp = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
+                else if( mode == "invert" )
+                    pipelineData.failOp = VK_STENCIL_OP_INVERT;
+                else if( mode == "inc_and_wrap" )
+                    pipelineData.failOp = VK_STENCIL_OP_INCREMENT_AND_WRAP;
+                else if( mode == "dec_and_wrap" )
+                    pipelineData.failOp = VK_STENCIL_OP_DECREMENT_AND_WRAP;
+            }
+
+            // Do we set depth fail Op
+            if( depthStencilNode.isAttributeSet("depthFailOp") )
+            {
+                std::string mode = depthStencilNode.getAttribute("depthFailOp");
+                if( mode == "keep" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_KEEP;
+                else if( mode == "zero" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_ZERO;
+                else if( mode == "replace" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_REPLACE;
+                else if( mode == "inc_and_clamp" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
+                else if( mode == "dec_and_clamp" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
+                else if( mode == "invert" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_INVERT;
+                else if( mode == "inc_and_wrap" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_INCREMENT_AND_WRAP;
+                else if( mode == "dec_and_wrap" )
+                    pipelineData.depthFailOp = VK_STENCIL_OP_DECREMENT_AND_WRAP;
+            }
+
+            // Do we set pass Op
+            if( depthStencilNode.isAttributeSet("passOp") )
+            {
+                std::string mode = depthStencilNode.getAttribute("passOp");
+                if( mode == "keep" )
+                    pipelineData.passOp = VK_STENCIL_OP_KEEP;
+                else if( mode == "zero" )
+                    pipelineData.passOp = VK_STENCIL_OP_ZERO;
+                else if( mode == "replace" )
+                    pipelineData.passOp = VK_STENCIL_OP_REPLACE;
+                else if( mode == "inc_and_clamp" )
+                    pipelineData.passOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
+                else if( mode == "dec_and_clamp" )
+                    pipelineData.passOp = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
+                else if( mode == "invert" )
+                    pipelineData.passOp = VK_STENCIL_OP_INVERT;
+                else if( mode == "inc_and_wrap" )
+                    pipelineData.passOp = VK_STENCIL_OP_INCREMENT_AND_WRAP;
+                else if( mode == "dec_and_wrap" )
+                    pipelineData.passOp = VK_STENCIL_OP_DECREMENT_AND_WRAP;
+            }
         }
 
         // Get the attribute from the "rasterizer" node
         const XMLNode rasterizerNode = pipelineNode.getChildNode("rasterizer");
         if( !rasterizerNode.isEmpty() )
         {
+            if( rasterizerNode.isAttributeSet("depthClampEnable") )
+                pipelineData.depthClampEnable = ( std::strcmp( rasterizerNode.getAttribute("depthClampEnable"), "true" ) == 0 );
+
+            if( rasterizerNode.isAttributeSet("rasterizerDiscardEnable") )
+                pipelineData.rasterizerDiscardEnable = ( std::strcmp( rasterizerNode.getAttribute("rasterizerDiscardEnable"), "true" ) == 0 );
+            
+            if( rasterizerNode.isAttributeSet("lineWidth") )
+                pipelineData.lineWidth = std::atof( rasterizerNode.getAttribute("lineWidth") );
+
+            if( rasterizerNode.isAttributeSet("depthBiasEnable") )
+                pipelineData.depthBiasEnable = ( std::strcmp( rasterizerNode.getAttribute("depthBiasEnable"), "true" ) == 0 );
+
+            if( rasterizerNode.isAttributeSet("depthBiasConstantFactor") )
+                pipelineData.depthBiasConstantFactor = std::atof( rasterizerNode.getAttribute("depthBiasConstantFactor") );
+
+            if( rasterizerNode.isAttributeSet("depthBiasClamp") )
+                pipelineData.depthBiasClamp = std::atof( rasterizerNode.getAttribute("depthBiasClamp") );
+
+            if( rasterizerNode.isAttributeSet("depthBiasSlopeFactor") )
+                pipelineData.depthBiasSlopeFactor = std::atof( rasterizerNode.getAttribute("depthBiasSlopeFactor") );
+
             // Do we set polyon mode
             if( rasterizerNode.isAttributeSet("polygonMode") )
             {
@@ -857,7 +1008,7 @@ void CDevice::createPipelines( const std::string & filePath )
                     pipelineData.cullMode = VK_CULL_MODE_FRONT_AND_BACK;
             }
 
-            // Do we set cull mode
+            // Do we set the front face mode
             if( rasterizerNode.isAttributeSet("frontFace") )
             {
                 std::string mode = rasterizerNode.getAttribute("frontFace");
