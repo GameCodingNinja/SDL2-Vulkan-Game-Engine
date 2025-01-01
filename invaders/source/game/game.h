@@ -7,6 +7,9 @@
 
 #pragma once
 
+// Game lib dependencies
+#include <system/device.h>
+
 // Standard lib dependencies
 #include <memory>
 
@@ -50,6 +53,9 @@ private:
 
     // Poll for game events
     void pollEvents();
+
+    // Callback for the viewport pipeline
+    void viewportCallback(VkViewport & viewport, const std::string & pipelineId);
 
 private:
     

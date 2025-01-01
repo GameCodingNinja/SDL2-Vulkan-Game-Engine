@@ -1132,12 +1132,15 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
     inputAssembly.primitiveRestartEnable = VK_FALSE;
 
     VkViewport viewport = {};
-    viewport.x = 0.0f;
-    viewport.y = 0.0f;
+    viewport.x = 0.f;
+    viewport.y = 0.f;
     viewport.width = m_swapchainInfo.imageExtent.width;
     viewport.height = m_swapchainInfo.imageExtent.height;
-    viewport.minDepth = 0.0f;
-    viewport.maxDepth = 1.0f;
+    viewport.minDepth = 0.f;
+    viewport.maxDepth = 1.f;
+
+    // Allow the viewport data to be changed by a registered slot
+    m_deviceViewportSignal(viewport, pipelineData.id);
 
     VkRect2D scissor = {};
     scissor.offset = {0, 0};
@@ -2112,7 +2115,6 @@ bool CDeviceVulkan::isSurfacePresMode(std::vector<VkPresentModeKHR> & surfacePre
 
     return found;
 }
-
 
 /***************************************************************************
 *   DESC:  Print debug info

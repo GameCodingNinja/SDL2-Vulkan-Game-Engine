@@ -16,6 +16,7 @@
 #include <utilities/exceptionhandling.h>
 #include <utilities/deletefuncs.h>
 #include <gui/messagecracker.h>
+#include <gui/menumanager.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
 #include <system/device.h>
@@ -194,6 +195,7 @@ void CUIControl::transformCollision()
     {
         CMatrix finalMatrix( getMatrix() );
         finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
+        finalMatrix.mergeMatrix( CMenuMgr::Instance().getCamera().getMatrix() );
 
         // Get half the screen size to convert to screen coordinates
         CSize<float> screenHalf = CSettings::Instance().getSizeHalf();

@@ -81,6 +81,10 @@ void CLevel1State::init()
     m_radarCamera1 = &CCameraMgr::Instance().get("radarCamera1");
     m_radarCamera2 = &CCameraMgr::Instance().get("radarCamera2");
 
+    CCameraMgr::Instance().addToTransListVec( 
+        {"buildingsbackCamera", "buildingsfrontCamera", "buildingsCamera", "forgroundCamera",
+         "levelCamera", "wrapAroundCamera", "radarCamera1", "radarCamera2", "menuCamera"} );
+
     // Init the player ship
     initPlayerShip();
 
@@ -330,15 +334,6 @@ void CLevel1State::update()
 void CLevel1State::transform()
 {
     CCommonState::transform();
-
-    m_levelCamera->transform();
-    m_forgroundCamera->transform();
-    m_buildingsCamera->transform();
-    m_buildingsbackCamera->transform();
-    m_buildingsfrontCamera->transform();
-    m_wrapAroundCamera->transform();
-    m_radarCamera1->transform();
-    m_radarCamera2->transform();
 
     if( m_gameReady )
     {

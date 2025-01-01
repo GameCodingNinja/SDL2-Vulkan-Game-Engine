@@ -88,6 +88,7 @@ CCamera & CCameraMgr::get( const std::string & id )
         return m_defCamera;
     }
     
+    iter->second.transform();
     return iter->second;
 }
 
@@ -95,6 +96,13 @@ CCamera & CCameraMgr::get( const std::string & id )
 /************************************************************************
 *    DESC:  Add camera to transform list
 ************************************************************************/
+
+void CCameraMgr::addToTransListVec( const std::vector<std::string> & cameraIdVec )
+{
+    for( auto & iter : cameraIdVec )
+        addToTransList( iter );
+}
+
 void CCameraMgr::addToTransList( const std::string & id )
 {
     auto mapIter = m_cameraMap.find( id );

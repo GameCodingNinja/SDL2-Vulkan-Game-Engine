@@ -64,6 +64,9 @@ struct SShader
 
 struct SPipelineData
 {
+    // Id name of this pipeline data
+    std::string id;
+
     // Shader for this pipeline
     SShader shader;
     

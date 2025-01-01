@@ -47,6 +47,9 @@ CGame::CGame() :
 
     if( CSettings::Instance().isDebugMode() )
         CStatCounter::Instance().connect( std::bind(&CGame::statStringCallBack, this, std::placeholders::_1) );
+    
+    // Call back for managing the pipeline viewport
+    CDevice::Instance().connectViewportSignal( std::bind(&CGame::viewportCallback, this, std::placeholders::_1, std::placeholders::_2) );
 }
 
 
@@ -109,6 +112,13 @@ void CGame::statStringCallBack( const std::string & statStr )
     #else
     NGenFunc::PostDebugMsg(statStr);
     #endif
+}
+
+/************************************************************************
+*    DESC:  Callback for the viewport pipeline
+************************************************************************/
+void CGame::viewportCallback(VkViewport & viewport, const std::string & pipelineId)
+{
 }
 
 

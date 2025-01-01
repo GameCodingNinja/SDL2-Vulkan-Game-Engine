@@ -119,7 +119,7 @@ protected:
     CPoint<CWorldValue> m_worldValPos;
     
     // Default camera pointer
-    CCamera * m_pDefaultCamera;
+    CCamera * m_pCamera;
 
     // Extra camera
     CCamera * m_extraCamera;

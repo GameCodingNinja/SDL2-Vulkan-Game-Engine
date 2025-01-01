@@ -23,6 +23,9 @@
 #include <system/vulkan.h>
 #include <system/physicaldevice.h>
 
+// Boost lib dependencies
+#include <boost/signals2.hpp>
+
 // Forward declaration(s)
 class CTexture;
 class SPipelineData;
@@ -31,6 +34,9 @@ class SDescriptorData;
 class CDeviceVulkan
 {
 protected:
+
+    // Boost signal defination
+    typedef boost::signals2::signal<void (VkViewport &, const std::string &)> deviceViewportSignal_t;
     
     // Constructor
     CDeviceVulkan();
@@ -344,4 +350,7 @@ protected:
 
     // General purpose mutex
     std::mutex m_mutex;
+
+    // Viewport signal
+    deviceViewportSignal_t m_deviceViewportSignal;
 };

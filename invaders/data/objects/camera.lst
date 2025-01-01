@@ -4,6 +4,10 @@
         <position x="0" y="0" z="20"/>
     </default>
 
+    <camera id="menuCamera" projectType="orthographic" minZDist="5" maxZDist="1000" view_angle="45.0">
+        <position x="0" y="0" z="20"/>
+    </camera>
+
     <camera id="levelCamera" projectType="orthographic" minZDist="5" maxZDist="1000" view_angle="45.0" cull="cull_full">
         <position x="400" y="0" z="0"/>
     </camera>

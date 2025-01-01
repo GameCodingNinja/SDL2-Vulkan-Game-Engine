@@ -18,9 +18,9 @@
 class CStatCounter
 {
 public:
-    
+
     // Boost signal defination
-    typedef boost::signals2::signal<void (const std::string &)> StatCounterSignal;
+    typedef boost::signals2::signal<void (const std::string &)> statCounterSignal_t;
 
     // Get the instance of the singleton class
     static CStatCounter & Instance()
@@ -43,7 +43,7 @@ public:
     void setActiveContexCounter( int value );
     
     // Connect/Disconnect to the signal
-    void connect( const StatCounterSignal::slot_type & slot );
+    void connect( const statCounterSignal_t::slot_type & slot );
     void disconnect();
 
 private:
@@ -82,5 +82,5 @@ private:
     CTimer m_statsDisplayTimer;
     
     // Stat counter signal
-    StatCounterSignal m_statCounterSignal;
+    statCounterSignal_t m_statCounterSignal;
 };

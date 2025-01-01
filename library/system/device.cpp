@@ -769,7 +769,8 @@ void CDevice::createPipelines( const std::string & filePath )
 
         SPipelineData pipelineData;
 
-        const std::string pipelineId = pipelineNode.getAttribute("id");
+        // Set the pipeline name
+        pipelineData.id = pipelineNode.getAttribute("id");
 
         // Get the shader
         const std::string shaderId = pipelineNode.getAttribute("shaderId");
@@ -846,113 +847,23 @@ void CDevice::createPipelines( const std::string & filePath )
 
             // Do we set compare Op mode
             if( depthStencilNode.isAttributeSet("compareOp") )
-            {
-                std::string mode = depthStencilNode.getAttribute("compareOp");
-                if( mode == "never" )
-                    pipelineData.compareOp = VK_COMPARE_OP_NEVER;
-                else if( mode == "less" )
-                    pipelineData.compareOp = VK_COMPARE_OP_LESS;
-                else if( mode == "equil" )
-                    pipelineData.compareOp = VK_COMPARE_OP_EQUAL;
-                else if( mode == "less_or_equal" )
-                    pipelineData.compareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
-                else if( mode == "greater" )
-                    pipelineData.compareOp = VK_COMPARE_OP_GREATER;
-                else if( mode == "not_equal" )
-                    pipelineData.compareOp = VK_COMPARE_OP_NOT_EQUAL;
-                else if( mode == "greater_or_equal" )
-                    pipelineData.compareOp = VK_COMPARE_OP_GREATER_OR_EQUAL;
-                else if( mode == "always" )
-                    pipelineData.compareOp = VK_COMPARE_OP_ALWAYS;
-            }
+                pipelineData.compareOp = selectVkCompareOp( depthStencilNode.getAttribute("compareOp"), pipelineData.compareOp );
 
             // Do we set depth Compare Op
             if( depthStencilNode.isAttributeSet("depthCompareOp") )
-            {
-                std::string mode = depthStencilNode.getAttribute("depthCompareOp");
-                if( mode == "never" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_NEVER;
-                else if( mode == "less" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_LESS;
-                else if( mode == "equil" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_EQUAL;
-                else if( mode == "less_or_equal" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
-                else if( mode == "greater" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_GREATER;
-                else if( mode == "not_equal" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_NOT_EQUAL;
-                else if( mode == "greater_or_equal" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_GREATER_OR_EQUAL;
-                else if( mode == "always" )
-                    pipelineData.depthCompareOp = VK_COMPARE_OP_ALWAYS;
-            }
+                pipelineData.depthCompareOp = selectVkCompareOp( depthStencilNode.getAttribute("depthCompareOp"), pipelineData.depthCompareOp );
 
             // Do we set fail Op
             if( depthStencilNode.isAttributeSet("failOp") )
-            {
-                std::string mode = depthStencilNode.getAttribute("failOp");
-                if( mode == "keep" )
-                    pipelineData.failOp = VK_STENCIL_OP_KEEP;
-                else if( mode == "zero" )
-                    pipelineData.failOp = VK_STENCIL_OP_ZERO;
-                else if( mode == "replace" )
-                    pipelineData.failOp = VK_STENCIL_OP_REPLACE;
-                else if( mode == "inc_and_clamp" )
-                    pipelineData.failOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
-                else if( mode == "dec_and_clamp" )
-                    pipelineData.failOp = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
-                else if( mode == "invert" )
-                    pipelineData.failOp = VK_STENCIL_OP_INVERT;
-                else if( mode == "inc_and_wrap" )
-                    pipelineData.failOp = VK_STENCIL_OP_INCREMENT_AND_WRAP;
-                else if( mode == "dec_and_wrap" )
-                    pipelineData.failOp = VK_STENCIL_OP_DECREMENT_AND_WRAP;
-            }
+                pipelineData.failOp = selectVkStencilOp( depthStencilNode.getAttribute("failOp"), pipelineData.failOp );
 
             // Do we set depth fail Op
             if( depthStencilNode.isAttributeSet("depthFailOp") )
-            {
-                std::string mode = depthStencilNode.getAttribute("depthFailOp");
-                if( mode == "keep" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_KEEP;
-                else if( mode == "zero" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_ZERO;
-                else if( mode == "replace" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_REPLACE;
-                else if( mode == "inc_and_clamp" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
-                else if( mode == "dec_and_clamp" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
-                else if( mode == "invert" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_INVERT;
-                else if( mode == "inc_and_wrap" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_INCREMENT_AND_WRAP;
-                else if( mode == "dec_and_wrap" )
-                    pipelineData.depthFailOp = VK_STENCIL_OP_DECREMENT_AND_WRAP;
-            }
+                pipelineData.depthFailOp = selectVkStencilOp( depthStencilNode.getAttribute("depthFailOp"), pipelineData.depthFailOp );
 
             // Do we set pass Op
             if( depthStencilNode.isAttributeSet("passOp") )
-            {
-                std::string mode = depthStencilNode.getAttribute("passOp");
-                if( mode == "keep" )
-                    pipelineData.passOp = VK_STENCIL_OP_KEEP;
-                else if( mode == "zero" )
-                    pipelineData.passOp = VK_STENCIL_OP_ZERO;
-                else if( mode == "replace" )
-                    pipelineData.passOp = VK_STENCIL_OP_REPLACE;
-                else if( mode == "inc_and_clamp" )
-                    pipelineData.passOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
-                else if( mode == "dec_and_clamp" )
-                    pipelineData.passOp = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
-                else if( mode == "invert" )
-                    pipelineData.passOp = VK_STENCIL_OP_INVERT;
-                else if( mode == "inc_and_wrap" )
-                    pipelineData.passOp = VK_STENCIL_OP_INCREMENT_AND_WRAP;
-                else if( mode == "dec_and_wrap" )
-                    pipelineData.passOp = VK_STENCIL_OP_DECREMENT_AND_WRAP;
-            }
+                pipelineData.passOp = selectVkStencilOp( depthStencilNode.getAttribute("passOp"), pipelineData.passOp );
         }
 
         // Get the attribute from the "rasterizer" node
@@ -1023,11 +934,65 @@ void CDevice::createPipelines( const std::string & filePath )
         CDeviceVulkan::createPipeline( pipelineData );
 
         // Map for holding index of the pipeline in the vector
-        m_pipelineIndexMap.emplace( pipelineId, i );
+        m_pipelineIndexMap.emplace( pipelineData.id, i );
 
         // Vector of pipeline data for quick access
         m_pipelineDataVec.emplace_back( pipelineData );
     }
+}
+
+/************************************************************************
+*    DESC:  Select the VkCompareOp mode
+************************************************************************/
+VkCompareOp CDevice::selectVkCompareOp( const std::string modeStr, VkCompareOp defaultValue )
+{
+    VkCompareOp result = defaultValue;
+
+    if( modeStr == "never" )
+        result = VK_COMPARE_OP_NEVER;
+    else if( modeStr == "less" )
+        result = VK_COMPARE_OP_LESS;
+    else if( modeStr == "equil" )
+        result = VK_COMPARE_OP_EQUAL;
+    else if( modeStr == "less_or_equal" )
+        result = VK_COMPARE_OP_LESS_OR_EQUAL;
+    else if( modeStr == "greater" )
+        result = VK_COMPARE_OP_GREATER;
+    else if( modeStr == "not_equal" )
+        result = VK_COMPARE_OP_NOT_EQUAL;
+    else if( modeStr == "greater_or_equal" )
+        result = VK_COMPARE_OP_GREATER_OR_EQUAL;
+    else if( modeStr == "always" )
+        result = VK_COMPARE_OP_ALWAYS;
+
+    return result;
+}
+
+/************************************************************************
+*    DESC:  Select the VkStencilOp mode
+************************************************************************/
+VkStencilOp CDevice::selectVkStencilOp( const std::string modeStr, VkStencilOp defaultValue )
+{
+    VkStencilOp result = defaultValue;
+
+    if( modeStr == "keep" )
+        result = VK_STENCIL_OP_KEEP;
+    else if( modeStr == "zero" )
+        result = VK_STENCIL_OP_ZERO;
+    else if( modeStr == "replace" )
+        result = VK_STENCIL_OP_REPLACE;
+    else if( modeStr == "inc_and_clamp" )
+        result = VK_STENCIL_OP_INCREMENT_AND_CLAMP;
+    else if( modeStr == "dec_and_clamp" )
+        result = VK_STENCIL_OP_DECREMENT_AND_CLAMP;
+    else if( modeStr == "invert" )
+        result = VK_STENCIL_OP_INVERT;
+    else if( modeStr == "inc_and_wrap" )
+        result = VK_STENCIL_OP_INCREMENT_AND_WRAP;
+    else if( modeStr == "dec_and_wrap" )
+        result = VK_STENCIL_OP_DECREMENT_AND_WRAP;
+
+    return result;
 }
 
 /************************************************************************
@@ -1699,6 +1664,22 @@ void CDevice::handleResolutionChange( int width, int height )
 void CDevice::setClearColor( float r, float g, float b, float a )
 {
     m_clearColor.set( r, g, b, a );
+}
+
+/************************************************************************
+*    DESC:  Connect to the viewport signal
+************************************************************************/
+void CDevice::connectViewportSignal( const deviceViewportSignal_t::slot_type & slot )
+{
+    m_deviceViewportSignal.connect(slot);
+}
+
+/************************************************************************
+*    DESC:  Disconnect all signal slots
+************************************************************************/
+void CDevice::disconnect()
+{
+    m_deviceViewportSignal.disconnect_all_slots();
 }
 
 /************************************************************************

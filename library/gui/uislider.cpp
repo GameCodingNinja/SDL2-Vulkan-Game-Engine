@@ -12,6 +12,7 @@
 #include <utilities/genfunc.h>
 #include <utilities/xmlParser.h>
 #include <utilities/settings.h>
+#include <gui/menumanager.h>
 
 // Boost lib dependencies
 #include <boost/format.hpp>
@@ -157,13 +158,14 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
 
     if( isActive() && (m_pressType == EActionPress::DOWN) )
     {
-        const float oneOverAspectRatio(1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
+        CMatrix finalMatrix( getMatrix() );
+        finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
+        finalMatrix.mergeMatrix( CMenuMgr::Instance().getCamera().getMatrix() );
 
-        // (1.0 / this.getMatrix().getScale().#) handles the scaling of the control
         if( m_orientation == EOrientation::HORZ )
-            incSliderMovePos( (float)rEvent.motion.xrel * oneOverAspectRatio * (1.f / getMatrix().getScale().x)  );
+            incSliderMovePos( (float)rEvent.motion.xrel * (1.f / finalMatrix.getScale().x) );
         else
-            incSliderMovePos( (float)rEvent.motion.yrel * oneOverAspectRatio * (1.f / getMatrix().getScale().y) );
+            incSliderMovePos( (float)rEvent.motion.yrel * (1.f / finalMatrix.getScale().y) );
 
         // Prepare script function associated with handling this game event
         prepareControlScriptFunction( EControlState::CHANGE );
@@ -186,15 +188,17 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
 
         if( msgCracker.isPressDown() )
         {
-            CPoint<float> dif =
-                (msgCracker.getPos() - getSubControl()->getCollisionPos()) *
-                    (1.f / CSettings::Instance().getOrthoAspectRatioOrientation());
+            CMatrix finalMatrix( getMatrix() );
+            finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
+            finalMatrix.mergeMatrix( CMenuMgr::Instance().getCamera().getMatrix() );
 
-            // (1.0 / this.getMatrix().getScale().#) handles the scaling of the control
+            CPoint<float> dif = (msgCracker.getPos() - getSubControl()->getCollisionPos());
+
+            // (1.0 / finalMatrix.getScale().#) handles the scaling of the control
             if( m_orientation == EOrientation::HORZ )
-                incSliderMovePos( dif.x * (1.f / getMatrix().getScale().x) );
+                incSliderMovePos( dif.x * (1.f / finalMatrix.getScale().x) );
             else
-                incSliderMovePos( dif.y * (1.f / getMatrix().getScale().y) );
+                incSliderMovePos( dif.y * (1.f / finalMatrix.getScale().y) );
 
             // Prepare script function associated with handling this game event
             prepareControlScriptFunction( EControlState::SELECT );

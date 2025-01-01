@@ -47,7 +47,7 @@ public:
         static CDevice device;
         return device;
     }
-    
+
     // Init the device
     void init( std::function<void(uint32_t)> callback );
 
@@ -230,6 +230,12 @@ public:
     // Set the clear color
     void setClearColor( float r, float g, float b, float a );
 
+    // Connect to the viewport signal
+    void connectViewportSignal( const deviceViewportSignal_t::slot_type & slot );
+
+    // Disconnect all signal slots
+    void disconnect();
+
     // Delete a secondary command buffer of a specific group
     //void deleteCommandBuffer( const std::string & group, std::vector<VkCommandBuffer> & commandBufVec );
 
@@ -312,6 +318,12 @@ private:
 
     // Handle the resolution change
     virtual void handleResolutionChange( int width, int height ) override;
+
+    // Select the VkCompareOp mode
+    VkCompareOp selectVkCompareOp( const std::string modeStr, VkCompareOp defaultValue );
+
+    // Select the VkStencilOp mode
+    VkStencilOp selectVkStencilOp( const std::string modeStr, VkStencilOp defaultValue );
 
 private:
 

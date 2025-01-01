@@ -138,6 +138,10 @@ public:
     // Dispatch the toggle action
     void dispatchToggleAction();
 
+    // Set to create the sprite
+    void setCamera( const std::string & cameraId );
+    CCamera & getCamera();
+
 private:
     
     // Constructor

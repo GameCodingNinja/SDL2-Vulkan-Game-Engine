@@ -11,6 +11,7 @@
 // Game lib dependencies
 #include <utilities/exceptionhandling.h>
 #include <strategy/strategymanager.h>
+#include <managers/cameramanager.h>
 #include <gui/menumanager.h>
 
 // Boost lib dependencies
@@ -85,6 +86,7 @@ void CCommonState::update()
 ****************************************************************************/
 void CCommonState::transform()
 {
+    CCameraMgr::Instance().transform();
     CStrategyMgr::Instance().transform();
     CMenuMgr::Instance().transform();
 }

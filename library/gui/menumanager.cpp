@@ -176,6 +176,13 @@ void CMenuMgr::loadMenusFromNode( const std::string & group, const XMLNode & nod
     // Get an iterator to the menu group
     auto menuMapIter = m_menuMapMap.find( group );
 
+    // Load the default camera
+    if( node.isAttributeSet("defaultCamera") )
+    {
+        m_pCamera = &CCameraMgr::Instance().get( node.getAttribute("defaultCamera") );
+        m_pCamera->transform();
+    }
+
     // Get the node to the default object data
     const XMLNode menuLstNode = node.getChildNode( "menuList" );
 
@@ -1090,4 +1097,18 @@ void CMenuMgr::setCommandBuffers( const std::string & cmdBufPool )
 void CMenuMgr::setCommandBuffers( std::vector<VkCommandBuffer> & commandBufVec )
 {
     m_commandBufVec = commandBufVec;
+}
+
+
+/************************************************************************
+*    DESC:  Set/Get the camera
+************************************************************************/
+void CMenuMgr::setCamera( const std::string & cameraId )
+{
+    m_pCamera = &CCameraMgr::Instance().get( cameraId );
+}
+
+CCamera & CMenuMgr::getCamera()
+{
+    return *m_pCamera;
 }

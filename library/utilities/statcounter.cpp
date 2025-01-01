@@ -42,7 +42,7 @@ CStatCounter::~CStatCounter()
 /************************************************************************
 *    DESC:  Connect to the signal
 ************************************************************************/
-void CStatCounter::connect( const StatCounterSignal::slot_type & slot )
+void CStatCounter::connect( const statCounterSignal_t::slot_type & slot )
 {
     m_statCounterSignal.connect(slot);
 }

@@ -36,6 +36,7 @@ public:
     CCamera & get( const std::string & id );
 
     // Add to transform list
+    void addToTransListVec( const std::vector<std::string> & cameraIdVec );
     void addToTransList( const std::string & id );
 
     // Remove camera from transform list
