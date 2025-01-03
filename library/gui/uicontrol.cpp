@@ -194,8 +194,8 @@ void CUIControl::transformCollision()
     if( wasTranformed() && !m_size.isEmpty() )
     {
         CMatrix finalMatrix( getMatrix() );
-        finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
         finalMatrix.mergeMatrix( CMenuMgr::Instance().getCamera().getMatrix() );
+        finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
 
         // Get half the screen size to convert to screen coordinates
         CSize<float> screenHalf = CSettings::Instance().getSizeHalf();

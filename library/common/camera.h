@@ -46,12 +46,19 @@ public:
     // Get the world value position
     const CPoint<CWorldValue> & getWorldValuePos() const;
 
-    // Set/Inc the world value position
-    void setPos( const CPoint<CWorldValue> & position );
-    void setPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
+    // Set/Inc the position but invert for camera perspective
+    void setPos( const CPoint<float> & position );
+    void setPos( float x = 0, float y = 0, float z = 0 );
 
-    void incPos( const CPoint<CWorldValue> & position );
-    void incPos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
+    void incPos( const CPoint<float> & position );
+    void incPos( float x = 0, float y = 0, float z = 0 );
+
+    // Set/Inc the world value position
+    void setWorldValuePos( const CPoint<CWorldValue> & position );
+    void setWorldValuePos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
+
+    void incWorldValuePos( const CPoint<CWorldValue> & position );
+    void incWorldValuePos( CWorldValue x = 0, CWorldValue y = 0, CWorldValue z = 0 );
 
     // Get the projected matrix
     const CMatrix & getProjectionMatrix() const;

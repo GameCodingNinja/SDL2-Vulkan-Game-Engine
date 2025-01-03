@@ -94,6 +94,9 @@ public:
     // Set the extra camera
     void setExtraCamera( CCamera * pCamera );
 
+    // Increment tha active node vector position of all elements  
+    void incActiveVecPos( const float x = 0.f, const float y = 0.f, float z = 0.f );
+
 protected:
 
     // Get the node data by name

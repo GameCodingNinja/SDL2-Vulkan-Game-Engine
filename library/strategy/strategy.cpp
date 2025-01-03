@@ -347,6 +347,15 @@ void CStrategy::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
 }
 
 /************************************************************************
+*    DESC:  Increment tha active node vector position of all elements
+************************************************************************/  
+void CStrategy::incActiveVecPos( const float x, const float y, float z )
+{
+    for( auto iter : m_pNodeVec )
+        iter->getObject()->incPos(x, y, z);
+}
+
+/************************************************************************
 *    DESC:  destroy the node
 ************************************************************************/
 void CStrategy::destroy( const handle16_t handle )

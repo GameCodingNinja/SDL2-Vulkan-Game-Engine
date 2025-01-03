@@ -111,6 +111,8 @@ void CCamera::loadFromNode( const XMLNode & node )
 
     if( m_parameters.isSet( TRANSFORM ) )
         invertPos();
+
+    m_worldValPos = m_pos;
 }
 
 /************************************************************************
@@ -174,16 +176,44 @@ const CMatrix & CCamera::getProjectionMatrix() const
     return m_projectionMatrix;
 }
 
+
+/************************************************************************
+*    DESC:  Set the position but invert for camera perspective
+************************************************************************/  
+void CCamera::setPos( const CPoint<float> & position )
+{
+    CObject::setPos( -position );
+}
+
+void CCamera::setPos( float x, float y, float z )
+{
+    CObject::setPos( -x, -y, -z );
+}
+
+/************************************************************************
+*    DESC:  Increment the position but invert for camera perspective
+************************************************************************/  
+void CCamera::incPos( const CPoint<float> & position )
+{
+    CObject::incPos( -position );
+}
+
+void CCamera::incPos( float x, float y, float z )
+{
+    CObject::incPos( -x, -y, -z );
+}
+
+
 /************************************************************************
 *    DESC:  Set the world value position
 ************************************************************************/  
-void CCamera::setPos( const CPoint<CWorldValue> & position )
+void CCamera::setWorldValuePos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos = -position;
     CObject::setPos( m_worldValPos );
 }
 
-void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
+void CCamera::setWorldValuePos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.set( -x, -y, -z );
     CObject::setPos( m_worldValPos );
@@ -192,13 +222,13 @@ void CCamera::setPos( CWorldValue x, CWorldValue y, CWorldValue z )
 /************************************************************************
 *    DESC:  Increment the world value position
 ************************************************************************/  
-void CCamera::incPos( const CPoint<CWorldValue> & position )
+void CCamera::incWorldValuePos( const CPoint<CWorldValue> & position )
 {
     m_worldValPos.inc( -position.x, -position.y, -position.z );
     CObject::setPos( m_worldValPos );
 }
 
-void CCamera::incPos( CWorldValue x, CWorldValue y, CWorldValue z )
+void CCamera::incWorldValuePos( CWorldValue x, CWorldValue y, CWorldValue z )
 {
     m_worldValPos.inc( -x, -y, -z );
     CObject::setPos( m_worldValPos );

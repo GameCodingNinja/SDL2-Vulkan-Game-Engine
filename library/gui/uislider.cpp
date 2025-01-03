@@ -159,8 +159,8 @@ bool CUISlider::onMouseMove( const SDL_Event & rEvent )
     if( isActive() && (m_pressType == EActionPress::DOWN) )
     {
         CMatrix finalMatrix( getMatrix() );
-        finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
         finalMatrix.mergeMatrix( CMenuMgr::Instance().getCamera().getMatrix() );
+        finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
 
         if( m_orientation == EOrientation::HORZ )
             incSliderMovePos( (float)rEvent.motion.xrel * (1.f / finalMatrix.getScale().x) );
@@ -189,8 +189,8 @@ bool CUISlider::handleSelectAction( const CSelectMsgCracker & msgCracker )
         if( msgCracker.isPressDown() )
         {
             CMatrix finalMatrix( getMatrix() );
-            finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
             finalMatrix.mergeMatrix( CMenuMgr::Instance().getCamera().getMatrix() );
+            finalMatrix.scale( CSettings::Instance().getOrthoAspectRatioOrientation() );
 
             CPoint<float> dif = (msgCracker.getPos() - getSubControl()->getCollisionPos());
 

@@ -161,6 +161,13 @@ void CMenuMgr::load( const std::string & group, const std::string & filePath )
     // open and parse the XML file:
     const XMLNode node = XMLNode::openFileHelper( filePath.c_str(), "menuTreeList" );
 
+    // Load the default camera
+    if( node.isAttributeSet("defaultCamera") )
+    {
+        m_pCamera = &CCameraMgr::Instance().get( node.getAttribute("defaultCamera") );
+        m_pCamera->transform();
+    }
+
     // Load the menus from node
     loadMenusFromNode( group, node );
 
@@ -175,13 +182,6 @@ void CMenuMgr::loadMenusFromNode( const std::string & group, const XMLNode & nod
 {
     // Get an iterator to the menu group
     auto menuMapIter = m_menuMapMap.find( group );
-
-    // Load the default camera
-    if( node.isAttributeSet("defaultCamera") )
-    {
-        m_pCamera = &CCameraMgr::Instance().get( node.getAttribute("defaultCamera") );
-        m_pCamera->transform();
-    }
 
     // Get the node to the default object data
     const XMLNode menuLstNode = node.getChildNode( "menuList" );
