@@ -12,6 +12,7 @@
 #include <gui/menumanager.h>
 #include <utilities/highresolutiontimer.h>
 #include <utilities/settings.h>
+#include <utilities/genfunc.h>
 #include <objectdata/objectdata2d.h>
 #include <objectdata/objectdatamanager.h>
 #include <system/device.h>
@@ -22,6 +23,7 @@
 #include <strategy/strategyloader.h>
 #include <managers/cameramanager.h>
 #include <managers/actionmanager.h>
+#include <common/ivisualcomponent.h>
 #include <node/inode.h>
 
 // Standard lib dependencies
@@ -71,6 +73,7 @@ void CLevel1State::init()
         {"_background_", "_buildingsback_", "_buildingsfront_", "_buildings_", "_forground_"} );
 
     m_buildingsStrategy = CStrategyMgr::Instance().getStrategy("_buildings_");
+    m_backgroundStrategy = CStrategyMgr::Instance().getStrategy("_background_");
 
     m_buildingsbackCamera = &CCameraMgr::Instance().get("buildingsbackCamera");
     m_buildingsfrontCamera = &CCameraMgr::Instance().get("buildingsfrontCamera");
@@ -84,6 +87,21 @@ void CLevel1State::init()
     CCameraMgr::Instance().addToTransListVec( 
         {"buildingsbackCamera", "buildingsfrontCamera", "buildingsCamera", "forgroundCamera",
          "levelCamera", "wrapAroundCamera", "radarCamera1", "radarCamera2", "menuCamera"} );
+
+    // Randomly distrabute the clouds
+    for( int i = 0; i < MAX_CLOUDS; ++i )
+    {
+        SCloud cloud;
+        cloud.pNode = m_backgroundStrategy->getNode(boost::str( boost::format("cloud_%d") % i));
+        cloud.speed = NGenFunc::UniformRandomFloat(0.001, 0.02);
+        cloud.pNode->getSprite()->setPos(NGenFunc::UniformRandomInt(-640, 640), NGenFunc::UniformRandomInt(CLOUD_MAX_Y, CLOUD_MIN_Y));
+        cloud.pNode->getSprite()->setScale(NGenFunc::UniformRandomInt(2, 4), NGenFunc::UniformRandomInt(2, 4));
+        // Flip the sprite?
+        if(NGenFunc::UniformRandomInt(0, 1))
+            cloud.pNode->getSprite()->setRot(0, 180);
+
+        m_cloudVec.push_back(cloud);
+    }
 
     // Init the player ship
     initPlayerShip();
@@ -146,7 +164,7 @@ void CLevel1State::initPlayerShip()
 //
 void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
 {
-    //float dir = -m_levelCamera->getPos().x - m_pPlayerShipNode->getSprite()->getPos().x;
+    float dir = -m_levelCamera->getTransPos().x - m_pPlayerShipNode->getSprite()->getTransPos().x;
 
     int i = 0;
     for(auto iter: m_moveActionVec)
@@ -169,19 +187,17 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                     // The camera easing positions the player ship at then end of the screen facing inwards
                     if( actionResult == EActionPress::DOWN )
                     {
-                        NGenFunc::PostDebugMsg( "Move Left DOWN" );
-
+                        //NGenFunc::PostDebugMsg( "Move Left DOWN" );
                         m_easingX.init( m_easingX.getValue(), -(PLAYER_SHIP_TOP_SPEED + m_playerShipBoostSpeed), 2, NEasing::linear );
 
                         // Camera easing has to move slower or faster then the elements on the screen to avoid movement studder
                         // Don't allow any more camera easing, in this direction, after a certain point
-                        //if(dir > -CAMERA_EASING_OFFSET)
-                        //    m_cameraEasingX.init( m_cameraEasingX.getValue(), -CAMERA_EASING_SPEED, 1, NEasing::linear );
+                        if(dir > -CAMERA_EASING_OFFSET)
+                            m_cameraEasingX.init( m_cameraEasingX.getValue(), -CAMERA_EASING_SPEED, 1, NEasing::linear );
                     }
                     else
                     {
-                        NGenFunc::PostDebugMsg( "Move Left UP" );
-
+                        //NGenFunc::PostDebugMsg( "Move Left UP" );
                         m_easingX.init( m_easingX.getValue(), 0, 3, NEasing::linear );
 
                         m_cameraEasingX.init( m_cameraEasingX.getValue(), 0, 1, NEasing::linear );
@@ -197,19 +213,17 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
                     // The camera easing positions the player ship at then end of the screen facing inwards
                     if( actionResult == EActionPress::DOWN )
                     {
-                        NGenFunc::PostDebugMsg( "Move Right DOWN" );
-
+                        //NGenFunc::PostDebugMsg( "Move Right DOWN" );
                         m_easingX.init( m_easingX.getValue(), PLAYER_SHIP_TOP_SPEED + m_playerShipBoostSpeed, 2, NEasing::linear );
 
                         // Camera easing has to move slower or faster then the elements on the screen to avoid movement studder
                         // Don't allow any more camera easing, in this direction, after a certain point
-                        //if(dir < CAMERA_EASING_OFFSET)
-                        //    m_cameraEasingX.init( m_cameraEasingX.getValue(), CAMERA_EASING_SPEED, 1, NEasing::linear );
+                        if(dir < CAMERA_EASING_OFFSET)
+                            m_cameraEasingX.init( m_cameraEasingX.getValue(), CAMERA_EASING_SPEED, 1, NEasing::linear );
                     }
                     else
                     {
-                        NGenFunc::PostDebugMsg( "Move Right UP" );
-
+                        //NGenFunc::PostDebugMsg( "Move Right UP" );
                         m_easingX.init( m_easingX.getValue(), 0, 3, NEasing::linear );
 
                         m_cameraEasingX.init( m_cameraEasingX.getValue(), 0, 1, NEasing::linear );
@@ -260,6 +274,29 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
     }
 }
 
+// 
+//  DESC: Handle the cloud movement
+//
+void CLevel1State::handleCloudMovement()
+{
+    for( auto iter : m_cloudVec )
+    {
+        iter.pNode->getSprite()->incPos(CHighResTimer::Instance().getElapsedTime() * iter.speed);
+
+        if(iter.pNode->getSprite()->getTransPos().x - (iter.pNode->getSize().w / 2) > CSettings::Instance().getDefaultSizeHalf().w)
+        {
+            iter.pNode->getSprite()->setScale(NGenFunc::UniformRandomInt(2, 4), NGenFunc::UniformRandomInt(2, 4));
+            iter.speed = NGenFunc::UniformRandomFloat(0.001, 0.02);
+            iter.pNode->getSprite()->setPos(-((iter.pNode->getSize().w / 2) + CSettings::Instance().getDefaultSizeHalf().w), NGenFunc::UniformRandomInt(CLOUD_MAX_Y, CLOUD_MIN_Y));
+            
+            // Flip the sprite?
+            iter.pNode->getSprite()->setRot();
+            if(NGenFunc::UniformRandomInt(0, 1))
+                iter.pNode->getSprite()->setRot(0, 180);
+        }
+    }
+}
+
 //
 //  DESC:  Update objects that require them
 //
@@ -271,6 +308,9 @@ void CLevel1State::update()
         m_easingY.execute();
         m_cameraEasingX.execute();
 
+        // Handle the cloud movement
+        handleCloudMovement();
+
         float easingVal = m_easingX.getValue() + m_cameraEasingX.getValue();
 
         m_levelCamera->incPos( easingVal );
@@ -280,37 +320,37 @@ void CLevel1State::update()
         m_buildingsfrontCamera->incPos( easingVal * 0.5f );
 
         // Loop the static backgrounds
-        if( m_buildingsbackCamera->getPos().x < -LOOPING_BKG_WRAP_DIST )
+        if( m_buildingsbackCamera->getTransPos().x < -LOOPING_BKG_WRAP_DIST )
             m_buildingsbackCamera->incPos( -(LOOPING_BKG_WRAP_DIST * 2) );
-        else if( m_buildingsbackCamera->getPos().x > LOOPING_BKG_WRAP_DIST )
+        else if( m_buildingsbackCamera->getTransPos().x > LOOPING_BKG_WRAP_DIST )
             m_buildingsbackCamera->incPos( LOOPING_BKG_WRAP_DIST * 2 );
 
-        if( m_buildingsfrontCamera->getPos().x < -LOOPING_BKG_WRAP_DIST )
+        if( m_buildingsfrontCamera->getTransPos().x < -LOOPING_BKG_WRAP_DIST )
             m_buildingsfrontCamera->incPos( -(LOOPING_BKG_WRAP_DIST * 2) );
-        else if( m_buildingsfrontCamera->getPos().x > LOOPING_BKG_WRAP_DIST )
+        else if( m_buildingsfrontCamera->getTransPos().x > LOOPING_BKG_WRAP_DIST )
             m_buildingsfrontCamera->incPos( LOOPING_BKG_WRAP_DIST * 2 );
 
-        if( m_forgroundCamera->getPos().x < -LOOPING_BKG_WRAP_DIST )
+        if( m_forgroundCamera->getTransPos().x < -LOOPING_BKG_WRAP_DIST )
             m_forgroundCamera->incPos( -(LOOPING_BKG_WRAP_DIST * 2) );
-        else if( m_forgroundCamera->getPos().x > LOOPING_BKG_WRAP_DIST )
+        else if( m_forgroundCamera->getTransPos().x > LOOPING_BKG_WRAP_DIST )
             m_forgroundCamera->incPos( LOOPING_BKG_WRAP_DIST * 2 );
 
         // Set the wrap around camera when we are about to exceed the range of the buildings
-        if( m_buildingsCamera->getPos().x > -6200 && m_buildingsCamera->getPos().x < -4900 )
+        if( m_buildingsCamera->getTransPos().x > -6200 && m_buildingsCamera->getTransPos().x < -4900 )
         {
-            m_wrapAroundCamera->setPos( -(m_buildingsCamera->getPos().x + (GAMEPLAY_LOOPING_WRAP_DIST * 2)) );
+            m_wrapAroundCamera->setPos( -(m_buildingsCamera->getTransPos().x + (GAMEPLAY_LOOPING_WRAP_DIST * 2)) );
             m_buildingsStrategy->setExtraCamera( m_wrapAroundCamera );
         }
-        else if( m_buildingsCamera->getPos().x > 5000 && m_buildingsCamera->getPos().x < 6350 )
+        else if( m_buildingsCamera->getTransPos().x > 5000 && m_buildingsCamera->getTransPos().x < 6350 )
         {
-            m_wrapAroundCamera->setPos( -(m_buildingsCamera->getPos().x - (GAMEPLAY_LOOPING_WRAP_DIST * 2)) );
+            m_wrapAroundCamera->setPos( -(m_buildingsCamera->getTransPos().x - (GAMEPLAY_LOOPING_WRAP_DIST * 2)) );
             m_buildingsStrategy->setExtraCamera( m_wrapAroundCamera );
         }
 
         // Reset the building camera once we are done with filling the gap with the wrap around camera
-        if( m_buildingsCamera->getPos().x < -6200 )
+        if( m_buildingsCamera->getTransPos().x < -6200 )
             m_buildingsCamera->incPos( -(GAMEPLAY_LOOPING_WRAP_DIST * 2) );
-        else if( m_buildingsCamera->getPos().x > 6350)
+        else if( m_buildingsCamera->getTransPos().x > 6350)
             m_buildingsCamera->incPos( GAMEPLAY_LOOPING_WRAP_DIST * 2 );
 
         // Stop the up/down movement
@@ -320,9 +360,64 @@ void CLevel1State::update()
             m_moveDirY = MOVE_NULL;
             m_easingY.init( m_easingY.getValue(), 0, 0, NEasing::linear );
         }
-        
 
+        // Handle camera easing when at the other end of the screen, based on which way the player ship is facing.
+        // The camera easing positions the player ship at then end of the screen facing inwards
+        if( m_moveDirX > MOVE_NULL )
+        {
+            float dir = -m_levelCamera->getTransPos().x - m_pPlayerShipNode->getSprite()->getTransPos().x;
+
+            if( (m_moveDirX == MOVE_LEFT && dir < -(CSettings::Instance().getDefaultSizeHalf().w - CAMERA_EASING_OFFSET)) )
+            {
+                m_moveDirX = MOVE_NULL;
+                float time = CAMERA_EASING_DIVISOR / std::abs(m_cameraEasingX.getValue());
+
+                // Don't allow any more camera easing, in this direction, after a certain point
+                // We enter this if when the player holds down thrust
+                if( time < CAMERA_EASING_DIVISOR && dir > -CAMERA_EASING_OFFSET )
+                {
+                    m_cameraEasingX.init( m_cameraEasingX.getValue(), 0, time, NEasing::linear );
+                }
+                // Bring the camera easing to a stop once we've reached our limit
+                // We enter this eles if the player is constantly thrusting
+                else
+                {
+                    m_cameraEasingX.init( m_cameraEasingX.getValue(), 0, 0.25, NEasing::linear );
+                }
+            }
+            else if( (m_moveDirX == MOVE_RIGHT && dir > (CSettings::Instance().getDefaultSizeHalf().w - CAMERA_EASING_OFFSET)) )
+            {
+                m_moveDirX = MOVE_NULL;
+                float time = CAMERA_EASING_DIVISOR / std::abs(m_cameraEasingX.getValue());
+
+                // Don't allow any more camera easing, in this direction, after a certain point
+                // We enter this if when the player holds down thrust
+                if( time < CAMERA_EASING_DIVISOR && dir < CAMERA_EASING_OFFSET )
+                {
+                    m_cameraEasingX.init( m_cameraEasingX.getValue(), 0, time, NEasing::linear );
+                }
+                // Bring the camera easing to a stop once we've reached our limit
+                // We enter this eles if the player is constantly thrusting
+                else
+                {
+                    m_cameraEasingX.init( m_cameraEasingX.getValue(), 0, 0.25, NEasing::linear );
+                }
+            }
+        }
+        
         m_pPlayerShipNode->getSprite()->incPos( m_easingX.getValue(), m_easingY.getValue() );
+
+        // Loop the player strategy and camera
+        if( m_pPlayerShipNode->getSprite()->getTransPos().x < -GAMEPLAY_LOOPING_WRAP_DIST )
+        {
+            m_pPlayerShipStrategy->incActiveVecPos( GAMEPLAY_LOOPING_WRAP_DIST * 2 );
+            m_levelCamera->incPos( GAMEPLAY_LOOPING_WRAP_DIST * 2 );
+        }
+        else if( m_pPlayerShipNode->getSprite()->getTransPos().x > GAMEPLAY_LOOPING_WRAP_DIST )
+        {
+            m_pPlayerShipStrategy->incActiveVecPos( -(GAMEPLAY_LOOPING_WRAP_DIST * 2) );
+            m_levelCamera->incPos( -(GAMEPLAY_LOOPING_WRAP_DIST * 2) );
+        }
     }
 
     CCommonState::update();
@@ -333,10 +428,9 @@ void CLevel1State::update()
 //
 void CLevel1State::transform()
 {
-    CCommonState::transform();
-
     if( m_gameReady )
     {
+        CCommonState::transform();
     }
 }
 

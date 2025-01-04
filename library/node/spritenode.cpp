@@ -10,6 +10,7 @@
 
 // Game lib dependencies
 #include <common/object.h>
+#include <common/ivisualcomponent.h>
 #include <node/nodedata.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
@@ -50,7 +51,7 @@ void CSpriteNode::init()
 {
     iNode::init();
 
-    m_size = getSprite()->getObjectData().getSize();
+    m_size = getSprite()->getVisualComponent()->getSize();
     calcSize(this, m_size);
 
     // Calculate the radius
@@ -135,9 +136,9 @@ CObject * CSpriteNode::getObject()
 float CSpriteNode::getRadius()
 {
     if(m_headNode)
-        return m_radius * getObject()->getScale().x;
+        return m_radius * getSprite()->getScale().x;
 
-    return getSprite()->getObjectData().getRadius() * getObject()->getScale().x;
+    return getSprite()->getObjectData().getRadius() * getSprite()->getScale().x;
 }
 
 /***************************************************************************
@@ -145,6 +146,9 @@ float CSpriteNode::getRadius()
 ****************************************************************************/
 CSize<float> CSpriteNode::getSize()
 {
+    if(m_headNode)
+        return m_size * getSprite()->getScale();
+
     return m_size;
 }
 

@@ -152,12 +152,12 @@ namespace NGenFunc
     ************************************************************************/
     int UniformRandomInt( int startRange, int endRange, int seed )
     {
-        std::default_random_engine generator;
+        std::mt19937 generator;
 
         if( seed == 0 )
         {
-            auto timeInNano = std::chrono::high_resolution_clock::now().time_since_epoch();
-            generator.seed( std::chrono::duration_cast<std::chrono::nanoseconds>(timeInNano).count() );
+            std::random_device rseed;
+            generator.seed( rseed() );
         }
         else
         {
@@ -173,12 +173,12 @@ namespace NGenFunc
     ************************************************************************/
     float UniformRandomFloat( float startRange, float endRange, int seed )
     {
-        std::default_random_engine generator;
+        std::mt19937 generator;
 
         if( seed == 0 )
         {
-            auto timeInNano = std::chrono::high_resolution_clock::now().time_since_epoch();
-            generator.seed( std::chrono::duration_cast<std::chrono::nanoseconds>(timeInNano).count() );
+            std::random_device rseed;
+            generator.seed( rseed() );
         }
         else
         {

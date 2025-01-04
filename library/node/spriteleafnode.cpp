@@ -11,6 +11,7 @@
 
 // Game lib dependencies
 #include <common/object.h>
+#include <common/ivisualcomponent.h>
 #include <node/nodedata.h>
 #include <objectdata/objectdatamanager.h>
 #include <objectdata/objectdata2d.h>
@@ -112,5 +113,8 @@ float CSpriteLeafNode::getRadius()
 ****************************************************************************/
 CSize<float> CSpriteLeafNode::getSize()
 {
-    return getSprite()->getObjectData().getSize();
+    if(m_headNode)
+        return getSprite()->getVisualComponent()->getSize() * getSprite()->getScale();
+    
+    return getSprite()->getVisualComponent()->getSize();
 }

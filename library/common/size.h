@@ -16,6 +16,9 @@
 #endif
 
 template <typename type>
+class CPoint;
+
+template <typename type>
 class CSize
 {
 public:
@@ -76,6 +79,16 @@ public:
         CSize tmp;
         tmp.w = static_cast<type>(w * value);
         tmp.h = static_cast<type>(h * value);
+
+        return tmp;
+    }
+
+    template <typename U>
+    CSize<U> operator * ( const CPoint<U> & value ) const
+    {
+        CSize tmp;
+        tmp.w = w * value.x;
+        tmp.h = h * value.y;
 
         return tmp;
     }

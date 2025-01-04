@@ -100,6 +100,9 @@ float CObjectNode::getRadius()
 ****************************************************************************/
 CSize<float> CObjectNode::getSize()
 {
+    if(m_headNode)
+        return m_size * getObject()->getScale();
+
     return m_size;
 }
 

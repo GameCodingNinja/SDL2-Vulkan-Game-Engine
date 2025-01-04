@@ -37,8 +37,8 @@ enum
     PLAYER_SHIP_ID = 0,
     ENEMY_SHOT_ID = -2,
     ENEMY_SHIP_ID = -3,
-    CLOUD_MIN_Y = -150,
-    CLOUD_MAX_Y = 300,
+    CLOUD_MIN_Y = 150,
+    CLOUD_MAX_Y = -300,
     LOOPING_BKG_WRAP_DIST = 1280,
     GAMEPLAY_LOOPING_WRAP_DIST = 5600,
 };
@@ -80,11 +80,23 @@ protected:
     // Handle the ship movement
     void handleShipMovement( const SDL_Event & rEvent );
 
+    // Handle the cloud movement
+    void handleCloudMovement();
+
 private:
     
     bool m_gameReady;
 
     CStrategy * m_buildingsStrategy;
+    CStrategy * m_backgroundStrategy;
+
+    struct SCloud
+    {
+        iNode * pNode;
+        float speed;
+    };
+
+    std::vector<SCloud> m_cloudVec;
 
     // The cameras
     CCamera * m_buildingsbackCamera;
