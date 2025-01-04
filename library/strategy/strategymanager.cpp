@@ -130,11 +130,19 @@ void CStrategyMgr::deactivateStrategy( const std::string & strategyId )
             NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy is not active (%s)!") % strategyId ) );
         
         else
-            // Remove the strategy from the render vector
+            // Remove the strategy from the active vector
             m_pStrategyVec.erase( strategyIter );
     }
     else
         NGenFunc::PostDebugMsg( boost::str( boost::format("Strategy id can't be found to deactivate (%s)!") % strategyId ) );
+}
+
+void CStrategyMgr::deactivateStrategyPtr( CStrategy * pStrategy )
+{
+    // Remove the strategy from the active vector
+    auto strategyIter = std::find( m_pStrategyVec.begin(), m_pStrategyVec.end(), pStrategy );
+    if( strategyIter != m_pStrategyVec.end() )
+        m_pStrategyVec.erase( strategyIter );
 }
 
 /************************************************************************

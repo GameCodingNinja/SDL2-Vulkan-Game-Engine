@@ -13,6 +13,7 @@
 // Game lib dependencies
 #include <common/camera.h>
 #include <utilities/easing.h>
+#include <utilities/timer.h>
 
 // Standard lib dependencies
 #include <string>
@@ -21,6 +22,7 @@
 // Forward Declarations
 class CStrategy;
 class iNode;
+class CSprite;
 
 enum
 {
@@ -77,24 +79,39 @@ protected:
     // Init the player ship
     void initPlayerShip();
 
+    // Init the misc objects
+    void initMiscObjects();
+
     // Handle the ship movement
     void handleShipMovement( const SDL_Event & rEvent );
 
     // Handle the cloud movement
     void handleCloudMovement();
 
+    // Handle the train spawn
+    void handleTrainSpawn( float easingVal );
+
 private:
+
+    struct SCloud
+    {
+        iNode * pNode = nullptr;
+        float speed = 0.f;
+    };
+
+    struct STrain
+    {
+        iNode * pNode = nullptr;
+        CSprite * pSprite = nullptr;
+        int dir = 0;
+        CTimer timer;
+        CStrategy * trainStrategy = nullptr;
+    };
     
     bool m_gameReady;
 
     CStrategy * m_buildingsStrategy;
     CStrategy * m_backgroundStrategy;
-
-    struct SCloud
-    {
-        iNode * pNode;
-        float speed;
-    };
 
     std::vector<SCloud> m_cloudVec;
 
@@ -127,4 +144,6 @@ private:
     iNode * m_pPlayerShipNode;
 
     float m_playerShipBoostSpeed;
+
+    STrain m_train;
 };

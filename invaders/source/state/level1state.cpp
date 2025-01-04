@@ -106,6 +106,9 @@ void CLevel1State::init()
     // Init the player ship
     initPlayerShip();
 
+    // Init the misc objects
+    initMiscObjects();
+
     // Start the fade
     m_scriptComponent.prepare( "(state)", "State_FadeIn" );
 
@@ -113,6 +116,23 @@ void CLevel1State::init()
     
     // Reset the elapsed time before entering game loop
     CHighResTimer::Instance().calcElapsedTime();
+}
+
+// 
+//  DESC: Init the player ship
+//
+void CLevel1State::initPlayerShip()
+{
+    m_pPlayerShipStrategy = CStrategyMgr::Instance().activateStrategy("_player_ship_");
+    m_pPlayerShipNode = m_pPlayerShipStrategy->getNode("player_ship");
+}
+
+// 
+//  DESC: Init the misc objects
+//
+void CLevel1State::initMiscObjects()
+{
+    m_train.timer.set( NGenFunc::UniformRandomInt( 10000, 25000 ) );
 }
 
 //
@@ -148,15 +168,6 @@ void CLevel1State::handleEvent( const SDL_Event & rEvent )
         // Handle the ship movement
         handleShipMovement( rEvent );
     }
-}
-
-// 
-//  DESC: Init the player ship
-//
-void CLevel1State::initPlayerShip()
-{
-    m_pPlayerShipStrategy = CStrategyMgr::Instance().activateStrategy("_player_ship_");
-    m_pPlayerShipNode = m_pPlayerShipStrategy->getNode("player_ship");
 }
 
 // 
@@ -275,6 +286,49 @@ void CLevel1State::handleShipMovement( const SDL_Event & rEvent )
 }
 
 // 
+//  DESC: Handle the train spawn
+//
+void CLevel1State::handleTrainSpawn( float easingVal )
+{
+    if( m_train.trainStrategy != nullptr )
+    {
+        // If a train is active, move it
+        m_train.pSprite->incPos( (m_train.dir * CHighResTimer::Instance().getElapsedTime()) + -easingVal );
+
+        // Delete the train if it exit's the side of the screen it's moving towards
+        if( (m_train.dir == 1 && (m_train.pSprite->getTransPos().x - m_train.pNode->getSize().w) > CSettings::Instance().getDefaultSizeHalf().w) ||
+            (m_train.dir == -1 && (m_train.pSprite->getTransPos().x + m_train.pNode->getSize().w) < -CSettings::Instance().getDefaultSizeHalf().w) )
+        {
+            CStrategyMgr::Instance().deactivateStrategyPtr( m_train.trainStrategy );
+            m_train.timer.set( NGenFunc::UniformRandomInt( 10000, 25000 ) );
+            m_train.trainStrategy = nullptr;
+            m_train.pNode = nullptr;
+            m_train.pSprite = nullptr;
+        }
+    }
+    // If we've been without a train for a long enough period, activate it
+    else if( m_train.timer.expired() )
+    {
+        m_train.timer.disable( true );
+
+        m_train.trainStrategy = CStrategyMgr::Instance().activateStrategy("_train_");
+        m_train.pNode = m_train.trainStrategy->getNode( "train" );
+        m_train.pSprite = m_train.pNode->getSprite();
+
+        if( NGenFunc::UniformRandomInt( 0, 1 ) == 0 )
+        {
+            m_train.dir = -1;
+            m_train.pSprite->setPos( CSettings::Instance().getDefaultSizeHalf().w + m_train.pNode->getSize().w, 298 );
+        }
+        else
+        {
+            m_train.dir = 1;
+            m_train.pSprite->setPos( -(CSettings::Instance().getDefaultSizeHalf().w + m_train.pNode->getSize().w), 298 );
+        }
+    }
+}
+
+// 
 //  DESC: Handle the cloud movement
 //
 void CLevel1State::handleCloudMovement()
@@ -308,10 +362,13 @@ void CLevel1State::update()
         m_easingY.execute();
         m_cameraEasingX.execute();
 
+        float easingVal = m_easingX.getValue() + m_cameraEasingX.getValue();
+
         // Handle the cloud movement
         handleCloudMovement();
 
-        float easingVal = m_easingX.getValue() + m_cameraEasingX.getValue();
+        // Handle the train spawn
+        handleTrainSpawn( easingVal );
 
         m_levelCamera->incPos( easingVal );
         m_forgroundCamera->incPos( easingVal );

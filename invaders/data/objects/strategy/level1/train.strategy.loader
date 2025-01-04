@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <loader>
 
-    <strategy name="_train_" cmdBufPool="(level_1)"/>
+    <strategy name="_train_" cmdBufPool="(level_1)">
+        <node name="train" instance="train"/>
+    </strategy>
   
 </loader>

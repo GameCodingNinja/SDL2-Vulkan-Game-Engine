@@ -32,7 +32,7 @@ public:
     }
     
     // Add strategy which will load it's data from XML node
-    CStrategy * addStrategy( const std::string & strategyId, CStrategy * pSpriteStrategy );
+    CStrategy * addStrategy( const std::string & strategyId, CStrategy * pStrategy );
     
     // activate strategy
     CStrategy * activateStrategy( const std::string & strategyId );
@@ -43,6 +43,7 @@ public:
     void deactivateStrategy( const std::string & strategyId );
     void deactivateStrategyLst( const std::vector<std::string> & strategyIdVec );
     void deactivateStrategyAry( const CScriptArray & strategyIdAry );
+    void deactivateStrategyPtr( CStrategy * pStrategy );
     
     // Delete strategy
     void deleteStrategy( const std::string & strategyId );
