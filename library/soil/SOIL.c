@@ -32,6 +32,7 @@
 #include "stb_image_aug.h"
 #include "image_helper.h"
 #include "image_DXT.h"
+#include <stdlib.h>
 
 /*	error reporting	*/
 char *result_string_pointer = "SOIL initialized";

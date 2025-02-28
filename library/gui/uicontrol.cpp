@@ -375,7 +375,7 @@ void CUIControl::onSelectExecute( const SDL_Event & rEvent )
             NGenFunc::DispatchEvent( NMenuEvent::GAME_STATE_CHANGE, NTransCode::BEGIN, &m_executionAction );
 
         else if( m_actionType == EControlActionType::QUIT_GAME )
-            NGenFunc::DispatchEvent( SDL_QUIT );
+            NGenFunc::DispatchEvent( SDL_EVENT_QUIT );
 
         // Prepare script function associated with handling this event
         prepareControlScriptFunction( EControlState::EXECUTE );

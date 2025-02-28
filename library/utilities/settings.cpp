@@ -18,8 +18,8 @@
 #include <cstring>
 
 // SDL lib dependencies
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL.h>
+//#include <SDL2/SDL_mixer.h>
+#include <SDL3/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -45,8 +45,8 @@ CSettings::CSettings() :
     m_gamepadEnabled(false),
     m_gamepadStickDeadZone(2500),
     m_frequency(44100),
-    m_sound_channels(MIX_DEFAULT_CHANNELS),
-    m_mix_channels(MIX_CHANNELS),
+    m_sound_channels(2), // MIX_DEFAULT_CHANNELS
+    m_mix_channels(8), // MIX_CHANNELS
     m_chunksize(1024),
     m_activateDepthBuffer(false),
     m_activateStencilBuffer(false),
@@ -139,8 +139,8 @@ void CSettings::loadXML()
         {
             if (m_mobileDevice)
             {
-                SDL_DisplayMode dm;
-                SDL_GetDesktopDisplayMode(0, &dm);
+                SDL_DisplayID displayID = SDL_GetPrimaryDisplay();
+                SDL_DisplayMode dm = *SDL_GetCurrentDisplayMode(displayID);
                 m_size.w = dm.w;
                 m_size.h = dm.h;
             }

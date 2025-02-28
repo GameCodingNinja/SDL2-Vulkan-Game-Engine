@@ -12,7 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 namespace NSmart
 {
@@ -125,7 +125,7 @@ namespace NSmart
         {
             if( !isNull() )
             {
-                SDL_RWclose( ptr );
+                SDL_CloseIO( ptr );
                 ptr = nullptr;
             }
         }

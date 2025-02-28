@@ -36,32 +36,32 @@ CActionMgr::CActionMgr() :
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("ARROW LEFT",  SDLK_LEFT) );
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("ARROW RIGHT", SDLK_RIGHT) );
 
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("A",  SDLK_a) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("B",  SDLK_b) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("C",  SDLK_c) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("D",  SDLK_d) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("E",  SDLK_e) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("F",  SDLK_f) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("G",  SDLK_g) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("H",  SDLK_h) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("I",  SDLK_i) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("J",  SDLK_j) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("K",  SDLK_k) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("L",  SDLK_l) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("M",  SDLK_m) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("N",  SDLK_n) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("O",  SDLK_o) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("P",  SDLK_p) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("Q",  SDLK_q) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("R",  SDLK_r) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("S",  SDLK_s) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("T",  SDLK_t) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("U",  SDLK_u) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("V",  SDLK_v) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("W",  SDLK_w) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("X",  SDLK_x) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("Y",  SDLK_y) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("Z",  SDLK_z) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("A",  SDLK_A) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("B",  SDLK_B) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("C",  SDLK_C) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("D",  SDLK_D) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("E",  SDLK_E) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("F",  SDLK_F) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("G",  SDLK_G) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("H",  SDLK_H) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("I",  SDLK_I) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("J",  SDLK_J) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("K",  SDLK_K) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("L",  SDLK_L) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("M",  SDLK_M) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("N",  SDLK_N) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("O",  SDLK_O) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("P",  SDLK_P) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("Q",  SDLK_Q) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("R",  SDLK_R) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("S",  SDLK_S) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("T",  SDLK_T) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("U",  SDLK_U) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("V",  SDLK_V) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("W",  SDLK_W) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("X",  SDLK_X) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("Y",  SDLK_Y) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("Z",  SDLK_Z) );
 
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("F1",  SDLK_F1) );
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("F2",  SDLK_F2) );
@@ -137,8 +137,8 @@ CActionMgr::CActionMgr() :
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("[",  SDLK_LEFTBRACKET) );
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("\\", SDLK_BACKSLASH) );
     m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("]",  SDLK_RIGHTBRACKET) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("`",  SDLK_BACKQUOTE) );
-    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("'",  SDLK_QUOTE) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("`",  SDLK_GRAVE) );
+    m_keyboardKeyCodeMap.insert( keyCodeMapType::value_type("'",  SDLK_APOSTROPHE) );
 
     m_mouseKeyCodeMap.insert( keyCodeMapType::value_type(UNBOUND_KEYCODE_STR_ID, UNBOUND_KEYCODE_ID) );
     m_mouseKeyCodeMap.insert( keyCodeMapType::value_type("LEFT MOUSE",           SDL_BUTTON_LEFT) );
@@ -154,21 +154,21 @@ CActionMgr::CActionMgr() :
     m_mouseKeyCodeMap.insert( keyCodeMapType::value_type("MOUSE 8",              MOUSE_BTN_X8) );
 
     m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type(UNBOUND_KEYCODE_STR_ID, UNBOUND_KEYCODE_ID) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("A",                    SDL_CONTROLLER_BUTTON_A) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("B",                    SDL_CONTROLLER_BUTTON_B) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("X",                    SDL_CONTROLLER_BUTTON_X) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("Y",                    SDL_CONTROLLER_BUTTON_Y) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("BACK",                 SDL_CONTROLLER_BUTTON_BACK) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("GUIDE",                SDL_CONTROLLER_BUTTON_GUIDE) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("START",                SDL_CONTROLLER_BUTTON_START) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("UP",                   SDL_CONTROLLER_BUTTON_DPAD_UP) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("RIGHT",                SDL_CONTROLLER_BUTTON_DPAD_RIGHT) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("DOWN",                 SDL_CONTROLLER_BUTTON_DPAD_DOWN) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("LEFT",                 SDL_CONTROLLER_BUTTON_DPAD_LEFT) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("L STICK",              SDL_CONTROLLER_BUTTON_LEFTSTICK) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("R STICK",              SDL_CONTROLLER_BUTTON_RIGHTSTICK) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("L BUMPER",             SDL_CONTROLLER_BUTTON_LEFTSHOULDER) );
-    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("R BUMPER",             SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("A",                    SDL_GAMEPAD_BUTTON_SOUTH) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("B",                    SDL_GAMEPAD_BUTTON_EAST) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("X",                    SDL_GAMEPAD_BUTTON_WEST) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("Y",                    SDL_GAMEPAD_BUTTON_NORTH) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("BACK",                 SDL_GAMEPAD_BUTTON_BACK) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("GUIDE",                SDL_GAMEPAD_BUTTON_GUIDE) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("START",                SDL_GAMEPAD_BUTTON_START) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("UP",                   SDL_GAMEPAD_BUTTON_DPAD_UP) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("RIGHT",                SDL_GAMEPAD_BUTTON_DPAD_RIGHT) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("DOWN",                 SDL_GAMEPAD_BUTTON_DPAD_DOWN) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("LEFT",                 SDL_GAMEPAD_BUTTON_DPAD_LEFT) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("L STICK",              SDL_GAMEPAD_BUTTON_LEFT_STICK) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("R STICK",              SDL_GAMEPAD_BUTTON_RIGHT_STICK) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("L BUMPER",             SDL_GAMEPAD_BUTTON_LEFT_SHOULDER) );
+    m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("R BUMPER",             SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER) );
 
     // Key codes to use analog sticks as buttons
     m_gamepadKeyCodeMap.insert( keyCodeMapType::value_type("L STICK UP",    ANALOG1_UP) );
@@ -335,35 +335,35 @@ EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::string 
 
     if( m_allowAction )
     {
-        if( (rEvent.type == SDL_CONTROLLERBUTTONDOWN) || (rEvent.type == SDL_CONTROLLERBUTTONUP) )
+        if( (rEvent.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) || (rEvent.type == SDL_EVENT_GAMEPAD_BUTTON_UP) )
         {
             m_lastDeviceUsed = EDeviceId::GAMEPAD;
 
-            if( wasAction( rEvent.cbutton.button, actionStr, m_gamepadActionMap ) )
+            if( wasAction( rEvent.gbutton.button, actionStr, m_gamepadActionMap ) )
             {
                 result = EActionPress::UP;
 
-                if( rEvent.type == SDL_CONTROLLERBUTTONDOWN )
+                if( rEvent.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN )
                 {
                     result = EActionPress::DOWN;
                 }
             }
         }
-        else if( ((rEvent.type == SDL_KEYDOWN) || (rEvent.type == SDL_KEYUP)) && (rEvent.key.repeat == 0) )
+        else if( ((rEvent.type == SDL_EVENT_KEY_DOWN) || (rEvent.type == SDL_EVENT_KEY_UP)) && (rEvent.key.repeat == 0) )
         {
             m_lastDeviceUsed = EDeviceId::KEYBOARD;
 
-            if( wasAction( rEvent.key.keysym.sym, actionStr, m_keyboardActionMap ) )
+            if( wasAction( rEvent.key.key, actionStr, m_keyboardActionMap ) )
             {
                 result = EActionPress::UP;
 
-                if( rEvent.type == SDL_KEYDOWN )
+                if( rEvent.type == SDL_EVENT_KEY_DOWN )
                 {
                     result = EActionPress::DOWN;
                 }
             }
         }
-        else if( (rEvent.type == SDL_MOUSEBUTTONDOWN) || (rEvent.type == SDL_MOUSEBUTTONUP) )
+        else if( (rEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN) || (rEvent.type == SDL_EVENT_MOUSE_BUTTON_UP) )
         {
             m_lastDeviceUsed = EDeviceId::MOUSE;
 
@@ -374,48 +374,48 @@ EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::string 
                 m_mouseAbsolutePos.x = rEvent.button.x;
                 m_mouseAbsolutePos.y = rEvent.button.y;
 
-                if( rEvent.type == SDL_MOUSEBUTTONDOWN )
+                if( rEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN )
                 {
                     result = EActionPress::DOWN;
                 }
             }
         }
-        else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
+        else if( rEvent.type == SDL_EVENT_GAMEPAD_AXIS_MOTION )
         {
-            if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
+            if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTX )
             {
-                if( m_analogLXButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE )
+                if( m_analogLXButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE )
                 {
                     //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left X: %d") % ((int)rEvent.caxis.value) ) );
 
-                    if( (rEvent.caxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
 
-                    else if( (rEvent.caxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_RIGHT, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_RIGHT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
                 }
-                else if( m_analogLXButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN )
+                else if( m_analogLXButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN )
                 {
                     //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left X: %d") % ((int)rEvent.caxis.value) ) );
 
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_LEFT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_RIGHT, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_RIGHT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
                 }
 
                 if( result != EActionPress::IDLE )
                 {
-                    if( m_analogLXButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
+                    if( m_analogLXButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogLXButtonStateAry[rEvent.caxis.which] = EActionPress::DOWN;
+                        m_analogLXButtonStateAry[rEvent.gaxis.which] = EActionPress::DOWN;
                     }
-                    else if( m_analogLXButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN && result == EActionPress::UP )
+                    else if( m_analogLXButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN && result == EActionPress::UP )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogLXButtonStateAry[rEvent.caxis.which] = EActionPress::IDLE;
+                        m_analogLXButtonStateAry[rEvent.gaxis.which] = EActionPress::IDLE;
                     }
                     else
                         result = EActionPress::IDLE;
@@ -423,36 +423,36 @@ EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::string 
                     m_lastDeviceUsed = EDeviceId::GAMEPAD;
                 }
             }
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
+            else if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTY )
             {
-                if( m_analogLYButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE )
+                if( m_analogLYButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE )
                 {
-                    if( (rEvent.caxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_UP, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_UP, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
 
-                    else if( (rEvent.caxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_DOWN, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_DOWN, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
                 }
-                else if( m_analogLYButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN )
+                else if( m_analogLYButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_UP, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_UP, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_DOWN, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG1_DOWN, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
                 }
 
                 if( result != EActionPress::IDLE )
                 {
-                    if( m_analogLYButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
+                    if( m_analogLYButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogLYButtonStateAry[rEvent.caxis.which] = EActionPress::DOWN;
+                        m_analogLYButtonStateAry[rEvent.gaxis.which] = EActionPress::DOWN;
                     }
-                    else if( m_analogLYButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN && result == EActionPress::UP )
+                    else if( m_analogLYButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN && result == EActionPress::UP )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogLYButtonStateAry[rEvent.caxis.which] = EActionPress::IDLE;
+                        m_analogLYButtonStateAry[rEvent.gaxis.which] = EActionPress::IDLE;
                     }
                     else
                         result = EActionPress::IDLE;
@@ -460,36 +460,36 @@ EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::string 
                     m_lastDeviceUsed = EDeviceId::GAMEPAD;
                 }
             }
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
+            else if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_RIGHTX )
             {
-                if( m_analogRXButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE )
+                if( m_analogRXButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE )
                 {
-                    if( (rEvent.caxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_LEFT, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_LEFT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
 
-                    else if( (rEvent.caxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_RIGHT, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_RIGHT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
                 }
-                else if( m_analogRXButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN )
+                else if( m_analogRXButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_LEFT, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_LEFT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_RIGHT, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_RIGHT, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
                 }
 
                 if( result != EActionPress::IDLE )
                 {
-                    if( m_analogRXButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
+                    if( m_analogRXButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogRXButtonStateAry[rEvent.caxis.which] = EActionPress::DOWN;
+                        m_analogRXButtonStateAry[rEvent.gaxis.which] = EActionPress::DOWN;
                     }
-                    else if( m_analogRXButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN && result == EActionPress::UP )
+                    else if( m_analogRXButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN && result == EActionPress::UP )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogRXButtonStateAry[rEvent.caxis.which] = EActionPress::IDLE;
+                        m_analogRXButtonStateAry[rEvent.gaxis.which] = EActionPress::IDLE;
                     }
                     else
                         result = EActionPress::IDLE;
@@ -497,36 +497,36 @@ EActionPress CActionMgr::wasAction( const SDL_Event & rEvent, const std::string 
                     m_lastDeviceUsed = EDeviceId::GAMEPAD;
                 }
             }
-            else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
+            else if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_RIGHTY )
             {
-                if( m_analogRYButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE )
+                if( m_analogRYButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE )
                 {
-                    if( (rEvent.caxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_UP, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value < -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_UP, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
 
-                    else if( (rEvent.caxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_DOWN, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value > ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_DOWN, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::DOWN;
                 }
-                else if( m_analogRYButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN )
+                else if( m_analogRYButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN )
                 {
-                    if( (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_UP, actionStr, m_gamepadActionMap ) )
+                    if( (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_UP, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
 
-                    else if( (rEvent.caxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.caxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_DOWN, actionStr, m_gamepadActionMap ) )
+                    else if( (rEvent.gaxis.value < ANALOG_STICK_MSG_MAX) && (rEvent.gaxis.value > -ANALOG_STICK_MSG_MAX) && wasAction( ANALOG2_DOWN, actionStr, m_gamepadActionMap ) )
                         result = EActionPress::UP;
                 }
 
                 if( result != EActionPress::IDLE )
                 {
-                    if( m_analogRYButtonStateAry[rEvent.caxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
+                    if( m_analogRYButtonStateAry[rEvent.gaxis.which] == EActionPress::IDLE && result == EActionPress::DOWN )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogRYButtonStateAry[rEvent.caxis.which] = EActionPress::DOWN;
+                        m_analogRYButtonStateAry[rEvent.gaxis.which] = EActionPress::DOWN;
                     }
-                    else if( m_analogRYButtonStateAry[rEvent.caxis.which] == EActionPress::DOWN && result == EActionPress::UP )
+                    else if( m_analogRYButtonStateAry[rEvent.gaxis.which] == EActionPress::DOWN && result == EActionPress::UP )
                     {
                         //NGenFunc::PostDebugMsg( boost::str( boost::format("Axis Value Left Y: %d") % ((int)rEvent.caxis.value) ) );
-                        m_analogRYButtonStateAry[rEvent.caxis.which] = EActionPress::IDLE;
+                        m_analogRYButtonStateAry[rEvent.gaxis.which] = EActionPress::IDLE;
                     }
                     else
                         result = EActionPress::IDLE;
@@ -859,7 +859,7 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
 {
     m_eventQueue.emplace_back( rEvent );
 
-    if( rEvent.type == SDL_MOUSEMOTION )
+    if( rEvent.type == SDL_EVENT_MOUSE_MOTION )
     {
         m_mouseAbsolutePos.x = rEvent.motion.x;
         m_mouseAbsolutePos.y = rEvent.motion.y;
@@ -869,26 +869,26 @@ void CActionMgr::queueEvent( const SDL_Event & rEvent )
         
         m_lastDeviceUsed = EDeviceId::MOUSE;
     }
-    else if( rEvent.type == SDL_MOUSEBUTTONDOWN || rEvent.type == SDL_MOUSEBUTTONUP )
+    else if( rEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN || rEvent.type == SDL_EVENT_MOUSE_BUTTON_UP )
     {
         m_mouseAbsolutePos.x = rEvent.button.x;
         m_mouseAbsolutePos.y = rEvent.button.y;
 
         m_lastDeviceUsed = EDeviceId::MOUSE;
     }
-    else if( rEvent.type == SDL_CONTROLLERAXISMOTION )
+    else if( rEvent.type == SDL_EVENT_GAMEPAD_AXIS_MOTION )
     {
-        if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX )
-            m_lastAnalogLeft.x = rEvent.caxis.value;
+        if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTX )
+            m_lastAnalogLeft.x = rEvent.gaxis.value;
 
-        else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY )
-            m_lastAnalogLeft.y = rEvent.caxis.value;
+        else if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTY )
+            m_lastAnalogLeft.y = rEvent.gaxis.value;
 
-        if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX )
-            m_lastAnalogRight.x = rEvent.caxis.value;
+        if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_RIGHTX )
+            m_lastAnalogRight.x = rEvent.gaxis.value;
 
-        else if( rEvent.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY )
-            m_lastAnalogRight.y = rEvent.caxis.value;
+        else if( rEvent.gaxis.axis == SDL_GAMEPAD_AXIS_RIGHTY )
+            m_lastAnalogRight.y = rEvent.gaxis.value;
         
         m_lastDeviceUsed = EDeviceId::GAMEPAD;
     }
@@ -948,7 +948,6 @@ bool CActionMgr::wasActionEvent( const std::string & actionStr, EActionPress act
     return false;
 }
 
-
 /************************************************************************
 *    DESC:  Device specific key checks
 ************************************************************************/
@@ -959,14 +958,14 @@ bool CActionMgr::wasKeyboardEvent( const std::string & componentIdStr, EActionPr
     {
         for( auto & iter : m_eventQueue )
         {
-            if( iter.key.keysym.sym == keyCodeIter->second )
+            if( (int)iter.key.key == keyCodeIter->second )
             {
-                if( (iter.type == SDL_KEYDOWN) &&
+                if( (iter.type == SDL_EVENT_KEY_DOWN) &&
                     (actionPress == EActionPress::DOWN) &&
                     (iter.key.repeat == 0) )
                     return true;
 
-                else if( (iter.type == SDL_KEYUP) &&
+                else if( (iter.type == SDL_EVENT_KEY_UP) &&
                     (actionPress == EActionPress::UP) &&
                     (iter.key.repeat == 0) )
                     return true;
@@ -987,11 +986,11 @@ bool CActionMgr::wasMouseBtnEvent( const std::string & componentIdStr, EActionPr
             if( iter.button.button == keyCodeIter->second )
             {
                 if( (actionPress == EActionPress::DOWN) &&
-                    (iter.type == SDL_MOUSEBUTTONDOWN) )
+                    (iter.type == SDL_EVENT_MOUSE_BUTTON_DOWN) )
                     return true;
 
                 else if( (actionPress == EActionPress::UP) &&
-                    (iter.type == SDL_MOUSEBUTTONUP) )
+                    (iter.type == SDL_EVENT_MOUSE_BUTTON_UP) )
                     return true;
             }
         }
@@ -1007,14 +1006,14 @@ bool CActionMgr::wasGamepadBtnEvent( const std::string & componentIdStr, EAction
     {
         for( auto & iter : m_eventQueue )
         {
-            if( iter.cbutton.button == keyCodeIter->second )
+            if( iter.gbutton.button == keyCodeIter->second )
             {
                 if( (actionPress == EActionPress::DOWN) &&
-                    (iter.type == SDL_CONTROLLERBUTTONDOWN) )
+                    (iter.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) )
                     return true;
 
                 else if( (actionPress == EActionPress::UP) &&
-                    (iter.type == SDL_CONTROLLERBUTTONUP) )
+                    (iter.type == SDL_EVENT_GAMEPAD_BUTTON_UP) )
                     return true;
             }
         }
@@ -1051,24 +1050,6 @@ bool CActionMgr::wasGameEvent( uint type, int code )
 
 
 /************************************************************************
-*    DESC:  Was this a window event
-************************************************************************/
-bool CActionMgr::wasWindowEvent( uint event, uint & windowID, int & data1, int & data2 )
-{
-    for( auto & iter : m_eventQueue )
-        if( (iter.type == SDL_WINDOWEVENT) && (iter.window.event == event) )
-        {
-            windowID = iter.window.windowID;
-            data1 = iter.window.data1;
-            data2 = iter.window.data2;
-            return true;
-        }
-
-    return false;
-}
-
-
-/************************************************************************
 *    DESC:  Enumerate button events on all devices
 ************************************************************************/
 uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex )
@@ -1077,15 +1058,15 @@ uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uin
     {
         SDL_Event & rEvent = m_eventQueue[i];
 
-        if( rEvent.type == SDL_KEYDOWN || rEvent.type == SDL_KEYUP )
+        if( rEvent.type == SDL_EVENT_KEY_DOWN || rEvent.type == SDL_EVENT_KEY_UP )
         {
             type = rEvent.type;
-            code = rEvent.key.keysym.sym;
+            code = rEvent.key.key;
             data = rEvent.key.repeat;
 
             return i + 1;
         }
-        else if( rEvent.type == SDL_MOUSEBUTTONDOWN || rEvent.type == SDL_MOUSEBUTTONUP )
+        else if( rEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN || rEvent.type == SDL_EVENT_MOUSE_BUTTON_UP )
         {
             type = rEvent.type;
             code = rEvent.button.button;
@@ -1093,34 +1074,11 @@ uint CActionMgr::enumerateButtonEvents( uint & type, int & code, int & data, uin
 
             return i + 1;
         }
-        else if( rEvent.type == SDL_CONTROLLERBUTTONDOWN || rEvent.type == SDL_CONTROLLERBUTTONUP )
+        else if( rEvent.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN || rEvent.type == SDL_EVENT_GAMEPAD_BUTTON_UP )
         {
             type = rEvent.type;
-            code = rEvent.cbutton.button;
-            data = rEvent.cbutton.which;
-
-            return i + 1;
-        }
-    }
-
-    return 0;
-}
-
-
-/************************************************************************
-*    DESC:  Enumerate display events
-************************************************************************/
-uint CActionMgr::enumerateDisplayEvents( uint & eventId, uint & displayIndex, int & orientation, uint startIndex )
-{
-    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
-    {
-        SDL_Event & rEvent = m_eventQueue[i];
-
-        if( rEvent.type == SDL_DISPLAYEVENT )
-        {
-            eventId = rEvent.display.event;
-            displayIndex = rEvent.display.display;
-            orientation = rEvent.window.data1;
+            code = rEvent.gbutton.button;
+            data = rEvent.gbutton.which;
 
             return i + 1;
         }
@@ -1139,36 +1097,12 @@ uint CActionMgr::enumerateMouseWheelEvents( uint & windowID, int & x, int & y, u
     {
         SDL_Event & rEvent = m_eventQueue[i];
 
-        if( rEvent.type == SDL_MOUSEWHEEL )
+        if( rEvent.type == SDL_EVENT_MOUSE_WHEEL )
         {
             windowID = rEvent.wheel.windowID;
             x = rEvent.wheel.x;
             y = rEvent.wheel.y;
             direction = rEvent.wheel.direction;
-
-            return i + 1;
-        }
-    }
-
-    return 0;
-}
-
-
-/************************************************************************
-*    DESC:  Enumerate window events
-************************************************************************/
-uint CActionMgr::enumerateWindowEvents( uint & eventId, uint & windowID, int & data1, int & data2, uint startIndex )
-{
-    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
-    {
-        SDL_Event & rEvent = m_eventQueue[i];
-
-        if( rEvent.type == SDL_WINDOWEVENT )
-        {
-            eventId = rEvent.window.event;
-            windowID = rEvent.window.windowID;
-            data1 = rEvent.window.data1;
-            data2 = rEvent.window.data2;
 
             return i + 1;
         }
@@ -1188,70 +1122,16 @@ uint CActionMgr::enumerateTouchFingerEvents(
     {
         SDL_Event & rEvent = m_eventQueue[i];
 
-        if( (rEvent.type >= SDL_FINGERDOWN) && (rEvent.type <= SDL_FINGERMOTION) )
+        if( (rEvent.type >= SDL_EVENT_FINGER_DOWN) && (rEvent.type <= SDL_EVENT_FINGER_MOTION) )
         {
             eventId = rEvent.type;
-            touchId = rEvent.tfinger.touchId;
-            fingerId = rEvent.tfinger.fingerId;
+            touchId = rEvent.tfinger.touchID;
+            fingerId = rEvent.tfinger.fingerID;
             x = rEvent.tfinger.x;
             y = rEvent.tfinger.y;
             dx = rEvent.tfinger.dx;
             dy = rEvent.tfinger.dy;
             pressure = rEvent.tfinger.pressure;
-
-            return i + 1;
-        }
-    }
-
-    return 0;
-}
-
-
-/************************************************************************
-*    DESC:  Enumerate Multiple finger events
-************************************************************************/
-uint CActionMgr::enumerateMultipleFingerEvents(
-    int64_t & touchId, float & dTheta, float & dDist, float & x, float & y, uint & numFingers, uint startIndex )
-{
-    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
-    {
-        SDL_Event & rEvent = m_eventQueue[i];
-
-        if( rEvent.type == SDL_MULTIGESTURE )
-        {
-            touchId = rEvent.mgesture.touchId;
-            dTheta = rEvent.mgesture.dTheta;
-            dDist = rEvent.mgesture.dDist;
-            x = rEvent.mgesture.x;
-            y = rEvent.mgesture.y;
-            numFingers = rEvent.mgesture.numFingers;
-
-            return i + 1;
-        }
-    }
-
-    return 0;
-}
-
-
-/************************************************************************
-*    DESC:  Enumerate Dollar Gesture events
-************************************************************************/
-uint CActionMgr::enumerateDollarGestureEvents(
-    int64_t & touchId, int64_t & gestureId, uint & numFingers, float & error, float & x, float & y, uint startIndex )
-{
-    for( uint i = startIndex; startIndex < m_eventQueue.size(); i++ )
-    {
-        SDL_Event & rEvent = m_eventQueue[i];
-
-        if( rEvent.type == SDL_MULTIGESTURE )
-        {
-            touchId = rEvent.dgesture.touchId;
-            gestureId = rEvent.dgesture.gestureId;
-            numFingers = rEvent.dgesture.numFingers;
-            error = rEvent.dgesture.error;
-            x = rEvent.dgesture.x;
-            y = rEvent.dgesture.y;
 
             return i + 1;
         }

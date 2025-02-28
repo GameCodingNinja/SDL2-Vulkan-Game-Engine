@@ -24,7 +24,7 @@
 #include <objectdata/objectdata2d.h>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -191,7 +191,7 @@ void CUIScrollBox::handleEvent( const SDL_Event & rEvent )
     // Call the parent
     CUISubControl::handleEvent( rEvent );
 
-    if( rEvent.wheel.type == SDL_MOUSEWHEEL )
+    if( rEvent.wheel.type == SDL_EVENT_MOUSE_WHEEL )
     {
         // Invalidate the active control
         m_activeScrollCtrl = NUIDefs::NO_ACTIVE_CONTROL;

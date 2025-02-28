@@ -23,7 +23,7 @@
 #include <system/vulkan.h>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 // Forward declaration(s)
 class CObject;

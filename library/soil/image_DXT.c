@@ -10,7 +10,7 @@
 #pragma warning(disable : 4996)
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 #include "image_DXT.h"
 #include <math.h>
@@ -53,7 +53,7 @@ int
     )
 {
     /*	variables	*/
-    SDL_RWops *fout;
+    SDL_IOStream *fout;
     unsigned char *DDS_data;
     DDS_header header;
     int DDS_size;
@@ -94,10 +94,10 @@ int
     }
     header.sCaps.dwCaps1 = DDSCAPS_TEXTURE;
     /*	write it out	*/
-    fout = SDL_RWFromFile( filename, "wb");
-    SDL_RWwrite( fout, &header, sizeof( DDS_header ), 1 );
-    SDL_RWwrite( fout, DDS_data, 1, DDS_size );
-    SDL_RWclose( fout );
+    fout = SDL_IOFromFile( filename, "wb");
+    SDL_WriteIO( fout, &header, sizeof( DDS_header ) );
+    SDL_WriteIO( fout, DDS_data, DDS_size );
+    SDL_CloseIO( fout );
     /*	done	*/
     free( DDS_data );
     return 1;

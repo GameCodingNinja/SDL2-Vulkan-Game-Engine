@@ -106,4 +106,7 @@ private:
     // Null members
     CPlayList m_null_playLst;
     CSound m_null_sound;
+
+    // Flag to indicate the audio was initialized
+    bool m_initialized;
 };

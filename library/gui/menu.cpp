@@ -25,7 +25,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -488,7 +488,7 @@ void CMenu::handleEvent( const SDL_Event & rEvent )
         {
             onRightAction( rEvent );
         }
-        else if( rEvent.type == SDL_MOUSEMOTION )
+        else if( rEvent.type == SDL_EVENT_MOUSE_MOTION )
         {
             onMouseMove( rEvent );
         }

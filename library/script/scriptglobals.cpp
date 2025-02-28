@@ -22,7 +22,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 // AngelScript lib dependencies
 #include <angelscript.h>
@@ -87,19 +87,18 @@ namespace NScriptGlobals
     void GetScreenResolutions( asIScriptGeneric * pScriptGen )
     {
         std::vector< CSize<int> > resVec;
-        int displayCount = SDL_GetNumDisplayModes(0);
+
+        int displayCount = 0;
+        SDL_DisplayID displayID = SDL_GetPrimaryDisplay();
+        SDL_DisplayMode ** mode = SDL_GetFullscreenDisplayModes(displayID, &displayCount);
+
         for( int i = 0; i < displayCount; i++ )
         {
-            SDL_DisplayMode mode;
+            CSize<int> size(mode[i]->w, mode[i]->h);
 
-            if( SDL_GetDisplayMode(0, i, &mode) == 0 )
-            {
-                CSize<int> size(mode.w, mode.h);
-
-                // Keep out any duplicates
-                if( std::find(resVec.begin(), resVec.end(), size) == resVec.end() )
-                    resVec.push_back( size );
-            }
+            // Keep out any duplicates
+            if( std::find(resVec.begin(), resVec.end(), size) == resVec.end() )
+                resVec.push_back( size );
         }
 
         // The resolutions are in greatest to smallest. We need the order reversed
@@ -109,7 +108,7 @@ namespace NScriptGlobals
         asITypeInfo * arrayType = CScriptMgr::Instance().getPtrToTypeInfo( "array<CSize>" );
         
         CScriptArray* ary = CScriptArray::Create(arrayType, resVec.size());
-        for( size_t i = 0; i < resVec.size(); ++i )
+        for( std::size_t i = 0; i < resVec.size(); ++i )
         {
             CSize<float> mode( resVec[i] );
             ary->SetValue(i, &mode);

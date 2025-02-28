@@ -18,7 +18,7 @@
 #include <scriptarray/scriptarray.h>
 
 // SDL lib dependencies
-#include <SDL2/SDL_events.h>
+#include <SDL3/SDL_events.h>
 
 namespace NScriptEvent
 {
@@ -36,12 +36,6 @@ namespace NScriptEvent
     const std::string & GetTextInputString( SDL_TextInputEvent & rText )
     {
         string = rText.text;
-        return string;
-    }
-
-    const std::string & GetFileString( SDL_DropEvent & rDrop )
-    {
-        string = rDrop.file;
         return string;
     }
 
@@ -78,7 +72,7 @@ namespace NScriptEvent
         Throw( pEngine->RegisterObjectType( "CDisplayEvent",          0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CWindowEvent",           0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CKeyboardEvent",         0, asOBJ_REF|asOBJ_NOCOUNT) );
-        Throw( pEngine->RegisterObjectType( "CKeysym",                0, asOBJ_REF|asOBJ_NOCOUNT) );
+        Throw( pEngine->RegisterObjectType( "SDL_Keycode",            0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CTextEditingEvent",      0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CTextInputEvent",        0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CMouseMotionEvent",      0, asOBJ_REF|asOBJ_NOCOUNT) );
@@ -97,9 +91,6 @@ namespace NScriptEvent
         Throw( pEngine->RegisterObjectType( "CQuitEvent",             0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CUserEvent",             0, asOBJ_REF|asOBJ_NOCOUNT) );
         Throw( pEngine->RegisterObjectType( "CTouchFingerEvent",      0, asOBJ_REF|asOBJ_NOCOUNT) );
-        Throw( pEngine->RegisterObjectType( "CMultiGestureEvent",     0, asOBJ_REF|asOBJ_NOCOUNT) );
-        Throw( pEngine->RegisterObjectType( "CDollarGestureEvent",    0, asOBJ_REF|asOBJ_NOCOUNT) );
-        Throw( pEngine->RegisterObjectType( "CDropEvent",             0, asOBJ_REF|asOBJ_NOCOUNT) );
 
         // Register property
         Throw( pEngine->RegisterObjectProperty("CEvent", "uint type",                      asOFFSET(SDL_Event, type)) );
@@ -117,40 +108,36 @@ namespace NScriptEvent
         Throw( pEngine->RegisterObjectProperty("CEvent", "CJoyHatEvent jhat",              asOFFSET(SDL_Event, jhat)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CJoyButtonEvent jbutton",        asOFFSET(SDL_Event, jbutton)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CJoyDeviceEvent jdevice",        asOFFSET(SDL_Event, jdevice)) );
-        Throw( pEngine->RegisterObjectProperty("CEvent", "CControllerAxisEvent caxis",     asOFFSET(SDL_Event, caxis)) );
-        Throw( pEngine->RegisterObjectProperty("CEvent", "CControllerButtonEvent cbutton", asOFFSET(SDL_Event, cbutton)) );
-        Throw( pEngine->RegisterObjectProperty("CEvent", "CControllerDeviceEvent cdevice", asOFFSET(SDL_Event, cdevice)) );
+        Throw( pEngine->RegisterObjectProperty("CEvent", "CControllerAxisEvent gaxis",     asOFFSET(SDL_Event, gaxis)) );
+        Throw( pEngine->RegisterObjectProperty("CEvent", "CControllerButtonEvent gbutton", asOFFSET(SDL_Event, gbutton)) );
+        Throw( pEngine->RegisterObjectProperty("CEvent", "CControllerDeviceEvent gdevice", asOFFSET(SDL_Event, gdevice)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CAudioDeviceEvent adevice",      asOFFSET(SDL_Event, adevice)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CSensorEvent sensor",            asOFFSET(SDL_Event, sensor)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CQuitEvent quit",                asOFFSET(SDL_Event, quit)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CUserEvent user",                asOFFSET(SDL_Event, user)) );
         Throw( pEngine->RegisterObjectProperty("CEvent", "CTouchFingerEvent tfinger",      asOFFSET(SDL_Event, tfinger)) );
-        Throw( pEngine->RegisterObjectProperty("CEvent", "CMultiGestureEvent mgesture",    asOFFSET(SDL_Event, mgesture)) );
-        Throw( pEngine->RegisterObjectProperty("CEvent", "CDollarGestureEvent dgesture",   asOFFSET(SDL_Event, dgesture)) );
-        Throw( pEngine->RegisterObjectProperty("CEvent", "CDropEvent drop",                asOFFSET(SDL_Event, drop)) );
 
         Throw( pEngine->RegisterObjectProperty("CCommonEvent", "uint type",                asOFFSET(SDL_CommonEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CCommonEvent", "uint timestamp",           asOFFSET(SDL_CommonEvent, timestamp)) );
 
         Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "uint type",               asOFFSET(SDL_DisplayEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "uint timestamp",          asOFFSET(SDL_DisplayEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "uint display",            asOFFSET(SDL_DisplayEvent, display)) );
-        Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "uint8 event",             asOFFSET(SDL_DisplayEvent, event)) );
+        Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "uint displayID",          asOFFSET(SDL_DisplayEvent, displayID)) );
+        Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "int data1",               asOFFSET(SDL_DisplayEvent, data1)) );
+        Throw( pEngine->RegisterObjectProperty("CDisplayEvent", "int data2",               asOFFSET(SDL_DisplayEvent, data2)) );
 
         Throw( pEngine->RegisterObjectProperty("CWindowEvent", "uint type",                asOFFSET(SDL_WindowEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CWindowEvent", "uint timestamp",           asOFFSET(SDL_WindowEvent, timestamp)) );
         Throw( pEngine->RegisterObjectProperty("CWindowEvent", "uint windowID",            asOFFSET(SDL_WindowEvent, windowID)) );
-        Throw( pEngine->RegisterObjectProperty("CWindowEvent", "uint8 event",              asOFFSET(SDL_WindowEvent, event)) );
+        Throw( pEngine->RegisterObjectProperty("CWindowEvent", "int data1",                asOFFSET(SDL_WindowEvent, data1)) );
+        Throw( pEngine->RegisterObjectProperty("CWindowEvent", "int data2",                asOFFSET(SDL_WindowEvent, data2)) );
 
         Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "uint type",              asOFFSET(SDL_KeyboardEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "uint timestamp",         asOFFSET(SDL_KeyboardEvent, timestamp)) );
         Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "uint windowID",          asOFFSET(SDL_KeyboardEvent, windowID)) );
-        Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "uint8 state",            asOFFSET(SDL_KeyboardEvent, state)) );
+        Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "bool down",              asOFFSET(SDL_KeyboardEvent, down)) );
         Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "uint8 repeat",           asOFFSET(SDL_KeyboardEvent, repeat)) );
-        Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "CKeysym keysym",         asOFFSET(SDL_KeyboardEvent, keysym)) );
-        Throw( pEngine->RegisterObjectProperty("CKeysym", "int scancode",                  asOFFSET(SDL_Keysym, scancode)) );
-        Throw( pEngine->RegisterObjectProperty("CKeysym", "int sym",                       asOFFSET(SDL_Keysym, sym)) );
-        Throw( pEngine->RegisterObjectProperty("CKeysym", "int16 mod",                     asOFFSET(SDL_Keysym, mod)) );
+        Throw( pEngine->RegisterObjectProperty("CKeyboardEvent", "SDL_Keycode key",        asOFFSET(SDL_KeyboardEvent, key)) );
 
         Throw( pEngine->RegisterObjectProperty("CTextEditingEvent", "uint type",           asOFFSET(SDL_TextEditingEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CTextEditingEvent", "uint timestamp",      asOFFSET(SDL_TextEditingEvent, timestamp)) );
@@ -179,7 +166,7 @@ namespace NScriptEvent
         Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "uint windowID",       asOFFSET(SDL_MouseButtonEvent, windowID)) );
         Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "uint which",          asOFFSET(SDL_MouseButtonEvent, which)) );
         Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "uint8 button",        asOFFSET(SDL_MouseButtonEvent, button)) );
-        Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "uint8 state",         asOFFSET(SDL_MouseButtonEvent, state)) );
+        Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "bool down",           asOFFSET(SDL_MouseButtonEvent, down)) );
         Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "uint8 clicks",        asOFFSET(SDL_MouseButtonEvent, clicks)) );
         Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "int x",               asOFFSET(SDL_MouseButtonEvent, x)) );
         Throw( pEngine->RegisterObjectProperty("CMouseButtonEvent", "int y",               asOFFSET(SDL_MouseButtonEvent, y)) );
@@ -214,32 +201,31 @@ namespace NScriptEvent
         Throw( pEngine->RegisterObjectProperty("CJoyButtonEvent", "uint timestamp",        asOFFSET(SDL_JoyButtonEvent, timestamp)) );
         Throw( pEngine->RegisterObjectProperty("CJoyButtonEvent", "int which",             asOFFSET(SDL_JoyButtonEvent, which)) );
         Throw( pEngine->RegisterObjectProperty("CJoyButtonEvent", "uint8 button",          asOFFSET(SDL_JoyButtonEvent, button)) );
-        Throw( pEngine->RegisterObjectProperty("CJoyButtonEvent", "uint8 state",           asOFFSET(SDL_JoyButtonEvent, state)) );
+        Throw( pEngine->RegisterObjectProperty("CJoyButtonEvent", "bool down",             asOFFSET(SDL_JoyButtonEvent, down)) );
 
         Throw( pEngine->RegisterObjectProperty("CJoyDeviceEvent", "uint type",             asOFFSET(SDL_JoyDeviceEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CJoyDeviceEvent", "uint timestamp",        asOFFSET(SDL_JoyDeviceEvent, timestamp)) );
         Throw( pEngine->RegisterObjectProperty("CJoyDeviceEvent", "int which",             asOFFSET(SDL_JoyDeviceEvent, which)) );
 
-        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "uint type",        asOFFSET(SDL_ControllerAxisEvent, type)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "uint timestamp",   asOFFSET(SDL_ControllerAxisEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "int which",        asOFFSET(SDL_ControllerAxisEvent, which)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "uint8 axis",       asOFFSET(SDL_ControllerAxisEvent, axis)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "int16 value",      asOFFSET(SDL_ControllerAxisEvent, value)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "uint type",        asOFFSET(SDL_GamepadAxisEvent, type)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "uint timestamp",   asOFFSET(SDL_GamepadAxisEvent, timestamp)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "int which",        asOFFSET(SDL_GamepadAxisEvent, which)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "uint8 axis",       asOFFSET(SDL_GamepadAxisEvent, axis)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerAxisEvent", "int16 value",      asOFFSET(SDL_GamepadAxisEvent, value)) );
 
-        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint type",      asOFFSET(SDL_ControllerButtonEvent, type)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint timestamp", asOFFSET(SDL_ControllerButtonEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "int which",      asOFFSET(SDL_ControllerButtonEvent, which)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint8 button",   asOFFSET(SDL_ControllerButtonEvent, button)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint8 state",    asOFFSET(SDL_ControllerButtonEvent, state)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint type",      asOFFSET(SDL_GamepadButtonEvent, type)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint timestamp", asOFFSET(SDL_GamepadButtonEvent, timestamp)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "int which",      asOFFSET(SDL_GamepadButtonEvent, which)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "uint8 button",   asOFFSET(SDL_GamepadButtonEvent, button)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerButtonEvent", "bool down",      asOFFSET(SDL_GamepadButtonEvent, down)) );
 
-        Throw( pEngine->RegisterObjectProperty("CControllerDeviceEvent", "uint type",      asOFFSET(SDL_ControllerDeviceEvent, type)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerDeviceEvent", "uint timestamp", asOFFSET(SDL_ControllerDeviceEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CControllerDeviceEvent", "int which",      asOFFSET(SDL_ControllerDeviceEvent, which)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerDeviceEvent", "uint type",      asOFFSET(SDL_GamepadDeviceEvent, type)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerDeviceEvent", "uint timestamp", asOFFSET(SDL_GamepadDeviceEvent, timestamp)) );
+        Throw( pEngine->RegisterObjectProperty("CControllerDeviceEvent", "int which",      asOFFSET(SDL_GamepadDeviceEvent, which)) );
 
         Throw( pEngine->RegisterObjectProperty("CAudioDeviceEvent", "uint type",           asOFFSET(SDL_AudioDeviceEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CAudioDeviceEvent", "uint timestamp",      asOFFSET(SDL_AudioDeviceEvent, timestamp)) );
         Throw( pEngine->RegisterObjectProperty("CAudioDeviceEvent", "uint which",          asOFFSET(SDL_AudioDeviceEvent, which)) );
-        Throw( pEngine->RegisterObjectProperty("CAudioDeviceEvent", "uint8 iscapture",     asOFFSET(SDL_AudioDeviceEvent, iscapture)) );
 
         Throw( pEngine->RegisterObjectProperty("CSensorEvent", "uint type",                asOFFSET(SDL_SensorEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CSensorEvent", "uint timestamp",           asOFFSET(SDL_SensorEvent, timestamp)) );
@@ -256,35 +242,12 @@ namespace NScriptEvent
 
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "uint type",           asOFFSET(SDL_TouchFingerEvent, type)) );
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "uint timestamp",      asOFFSET(SDL_TouchFingerEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "int64 touchId",       asOFFSET(SDL_TouchFingerEvent, touchId)) );
-        Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "int64 fingerId",      asOFFSET(SDL_TouchFingerEvent, fingerId)) );
+        Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "int64 touchId",       asOFFSET(SDL_TouchFingerEvent, touchID)) );
+        Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "int64 fingerId",      asOFFSET(SDL_TouchFingerEvent, fingerID)) );
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "float x",             asOFFSET(SDL_TouchFingerEvent, x)) );
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "float y",             asOFFSET(SDL_TouchFingerEvent, y)) );
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "float dx",            asOFFSET(SDL_TouchFingerEvent, dx)) );
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "float dy",            asOFFSET(SDL_TouchFingerEvent, dy)) );
         Throw( pEngine->RegisterObjectProperty("CTouchFingerEvent", "float pressure",      asOFFSET(SDL_TouchFingerEvent, pressure)) );
-
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "uint type",          asOFFSET(SDL_MultiGestureEvent, type)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "uint timestamp",     asOFFSET(SDL_MultiGestureEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "int64 touchId",      asOFFSET(SDL_MultiGestureEvent, touchId)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "float dTheta",       asOFFSET(SDL_MultiGestureEvent, dTheta)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "float dDist",        asOFFSET(SDL_MultiGestureEvent, dDist)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "float x",            asOFFSET(SDL_MultiGestureEvent, x)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "float y",            asOFFSET(SDL_MultiGestureEvent, y)) );
-        Throw( pEngine->RegisterObjectProperty("CMultiGestureEvent", "uint16 numFingers",  asOFFSET(SDL_MultiGestureEvent, numFingers)) );
-
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "uint type",         asOFFSET(SDL_DollarGestureEvent, type)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "uint timestamp",    asOFFSET(SDL_DollarGestureEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "int64 touchId",     asOFFSET(SDL_DollarGestureEvent, touchId)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "int64 gestureId",   asOFFSET(SDL_DollarGestureEvent, gestureId)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "uint numFingers",   asOFFSET(SDL_DollarGestureEvent, numFingers)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "float error",       asOFFSET(SDL_DollarGestureEvent, error)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "float x",           asOFFSET(SDL_DollarGestureEvent, x)) );
-        Throw( pEngine->RegisterObjectProperty("CDollarGestureEvent", "float y",           asOFFSET(SDL_DollarGestureEvent, y)) );
-
-        Throw( pEngine->RegisterObjectProperty("CDropEvent", "uint type",                  asOFFSET(SDL_DropEvent, type)) );
-        Throw( pEngine->RegisterObjectProperty("CDropEvent", "uint timestamp",             asOFFSET(SDL_DropEvent, timestamp)) );
-        Throw( pEngine->RegisterObjectProperty("CDropEvent", "uint windowID",              asOFFSET(SDL_DropEvent, windowID)) );
-        Throw( pEngine->RegisterObjectMethod("CDropEvent", "const string & getFileStr()",  WRAP_OBJ_LAST(GetFileString), asCALL_GENERIC) );
      }
 }

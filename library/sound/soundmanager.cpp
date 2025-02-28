@@ -28,11 +28,13 @@
 ************************************************************************/
 CSoundMgr::CSoundMgr() :
     m_mixChannel(0),
-    m_maxMixChannels(MIX_CHANNELS)
+    m_maxMixChannels(MIX_CHANNELS),
+    m_initialized(true)
 {
     // Init for the OGG compressed file format
     if( Mix_Init(MIX_INIT_OGG) == 0 )
     {
+        m_initialized = false;
         NGenFunc::PostDebugMsg( boost::str( boost::format("Sound mixer init error (%s).\n\n%s\nLine: %s")
                     % SDL_GetError() % __FUNCTION__ % __LINE__ ) );
     }
@@ -45,6 +47,7 @@ CSoundMgr::CSoundMgr() :
         CSettings::Instance().getSoundChannels(), // mono, stero, quad, suround, etc
         CSettings::Instance().getChunkSize() ) != 0 )
     {
+        m_initialized = false;
         NGenFunc::PostDebugMsg( boost::str( boost::format("Sound mixer open error (%s).\n\n%s\nLine: %s")
             % Mix_GetError() % __FUNCTION__ % __LINE__ ) );
     }
@@ -77,24 +80,27 @@ CSoundMgr::~CSoundMgr()
 ************************************************************************/
 void CSoundMgr::loadGroup( const std::string & group )
 {
-    // Make sure the group we are looking has been defined in the list table file
-    auto listTableIter = m_listTableMap.find( group );
-    if( listTableIter == m_listTableMap.end() )
-        throw NExcept::CCriticalException("Sound List Load Group Data Error!",
-            boost::str( boost::format("Sound list group name can't be found (%s).\n\n%s\nLine: %s")
-                % group % __FUNCTION__ % __LINE__ ));
+    if(m_initialized)
+    {
+        // Make sure the group we are looking has been defined in the list table file
+        auto listTableIter = m_listTableMap.find( group );
+        if( listTableIter == m_listTableMap.end() )
+            throw NExcept::CCriticalException("Sound List Load Group Data Error!",
+                boost::str( boost::format("Sound list group name can't be found (%s).\n\n%s\nLine: %s")
+                    % group % __FUNCTION__ % __LINE__ ));
 
-    // Load the group data if it doesn't already exist
-    if( m_soundMapMap.find( group ) == m_soundMapMap.end() )
-    {
-        for( auto & iter : listTableIter->second )
-            load( group, iter );
-    }
-    else
-    {
-        throw NExcept::CCriticalException("Sound Data List 2D load Error!",
-            boost::str( boost::format("Sound data list group has alread been loaded (%s).\n\n%s\nLine: %s")
-                % group % __FUNCTION__ % __LINE__ ));
+        // Load the group data if it doesn't already exist
+        if( m_soundMapMap.find( group ) == m_soundMapMap.end() )
+        {
+            for( auto & iter : listTableIter->second )
+                load( group, iter );
+        }
+        else
+        {
+            throw NExcept::CCriticalException("Sound Data List 2D load Error!",
+                boost::str( boost::format("Sound data list group has alread been loaded (%s).\n\n%s\nLine: %s")
+                    % group % __FUNCTION__ % __LINE__ ));
+        }
     }
 }
 
@@ -208,30 +214,35 @@ void CSoundMgr::freeGroup( const std::string & group )
 ************************************************************************/
 CSound & CSoundMgr::getSound( const std::string & group, const std::string & soundID )
 {
-    // Check if this is a playlist sound ID
-    auto playListMapIter = m_playListMapMap.find( group );
-    if( playListMapIter != m_playListMapMap.end() )
+    if(m_initialized)
     {
-        auto iter = playListMapIter->second.find( soundID );
-        if( iter != playListMapIter->second.end() )
-            return iter->second.getSound();
+        // Check if this is a playlist sound ID
+        auto playListMapIter = m_playListMapMap.find( group );
+        if( playListMapIter != m_playListMapMap.end() )
+        {
+            auto iter = playListMapIter->second.find( soundID );
+            if( iter != playListMapIter->second.end() )
+                return iter->second.getSound();
+        }
+
+        auto soundMapIter = m_soundMapMap.find( group );
+        if( soundMapIter == m_soundMapMap.end() )
+        {
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Sound group can't be found (%s).") % group ) );
+            return m_null_sound;
+        }
+
+        auto iter = soundMapIter->second.find( soundID );
+        if( iter == soundMapIter->second.end() )
+        {
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Sound ID can't be found (%s - %s).") % group % soundID ) );
+            return m_null_sound;
+        }
+
+        return iter->second;
     }
 
-    auto soundMapIter = m_soundMapMap.find( group );
-    if( soundMapIter == m_soundMapMap.end() )
-    {
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Sound group can't be found (%s).") % group ) );
-        return m_null_sound;
-    }
-
-    auto iter = soundMapIter->second.find( soundID );
-    if( iter == soundMapIter->second.end() )
-    {
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Sound ID can't be found (%s - %s).") % group % soundID ) );
-        return m_null_sound;
-    }
-
-    return iter->second;
+    return m_null_sound;
 }
 
 

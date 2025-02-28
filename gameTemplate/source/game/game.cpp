@@ -29,7 +29,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -161,24 +161,24 @@ void CGame::doStateChange()
 ************************************************************************/
 bool CGame::handleEvent( const SDL_Event & rEvent )
 {
-    if( (rEvent.type == SDL_QUIT) || (rEvent.type == SDL_APP_TERMINATING) )
+    if( (rEvent.type == SDL_EVENT_QUIT) || (rEvent.type == SDL_EVENT_TERMINATING) )
         return true;
 
     // Filter out these events. Can't do this through the normal event filter
-    if( (rEvent.type >= SDL_JOYAXISMOTION) && (rEvent.type <= SDL_JOYBUTTONUP) )
+    if( (rEvent.type >= SDL_EVENT_JOYSTICK_AXIS_MOTION) && (rEvent.type <= SDL_EVENT_JOYSTICK_BUTTON_UP) )
         return false;
 
-    else if( rEvent.type == SDL_CONTROLLERDEVICEADDED )
+    else if( rEvent.type == SDL_EVENT_GAMEPAD_ADDED )
         CDevice::Instance().addGamepad( rEvent.cdevice.which );
 
-    else if( rEvent.type == SDL_CONTROLLERDEVICEREMOVED )
+    else if( rEvent.type == SDL_EVENT_GAMEPAD_REMOVED )
         CDevice::Instance().removeGamepad( rEvent.cdevice.which );
 
-    else if( rEvent.type == SDL_APP_LOWMEMORY )
+    else if( rEvent.type == SDL_EVENT_LOW_MEMORY )
         displayErrorMsg( "Low Memory Error", "The device is experiencing low memory. Try freeing up some apps." );
 
     // In a traditional game, want the pause menu to display when the game is sent to the background
-    else if( (rEvent.type == SDL_APP_WILLENTERBACKGROUND) && !CMenuMgr::Instance().isMenuActive() )
+    else if( (rEvent.type == SDL_EVENT_WILL_ENTER_BACKGROUND) && !CMenuMgr::Instance().isMenuActive() )
         NGenFunc::DispatchEvent( NMenuEvent::ESCAPE_ACTION );
 
     // Handle events
@@ -281,21 +281,21 @@ void CGame::displayErrorMsg( const std::string & title, const std::string & msg 
 /***************************************************************************
 *    decs:  Filter out events we don't want
 ****************************************************************************/
-int FilterEvents( void * userdata, SDL_Event * pEvent )
+bool FilterEvents( void * userdata, SDL_Event * pEvent )
 {
-    // Return 0 to indicate that the event should be removed from the event queue
+    // Return false to indicate that the event should be dropped from the internal event queue
 
     // Do our own deadzone filtering
-    if( pEvent->type == SDL_CONTROLLERAXISMOTION )
+    if( pEvent->type == SDL_EVENT_GAMEPAD_AXIS_MOTION )
     {
         // Analog stick max values -32768 to 32767
         const int deadZone = CSettings::Instance().getGamePadStickDeadZone() *
             defs_ANALOG_PERCENTAGE_CONVERTION;
 
-        if( std::abs(pEvent->caxis.value) < deadZone )
-            return 0;
+        if( std::abs(pEvent->gaxis.value) < deadZone )
+            return false;
     }
 
-    // Return 1 to indicate that the event should stay in the event queue
-    return 1;
+    // Return true to indicate that the event should be added to the internal event queue
+    return true;
 }

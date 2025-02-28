@@ -51,7 +51,7 @@
  */
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 // disable warning about unsafe functions
 #if defined(_WINDOWS)
@@ -427,13 +427,13 @@ XMLNode XMLNode::openFileHelper(XMLCSTR filename, XMLCSTR tag)
 
     #else*/
     
-    SDL_RWops *f=SDL_RWFromFile(filename,_CXML("rb"));
+    SDL_IOStream *f=SDL_IOFromFile(filename,_CXML("rb"));
     if (f)
     {
         char bb[205];
-        int l=SDL_RWread( f, bb, 1, 200 );
+        int l=SDL_ReadIO( f, bb, 200 );
         setGlobalOptions(guessCharEncoding(bb,l),guessWideCharChars,dropWhiteSpace,removeCommentsInMiddleOfText);
-        SDL_RWclose(f);
+        SDL_CloseIO(f);
     }
     //#endif
     
@@ -642,7 +642,7 @@ XMLError XMLNode::writeToFile(XMLCSTR filename, const char *encoding, char nForm
     /*#if !(defined(__IOS__) || defined(__ANDROID__))
     FILE *f=xfopen(filename,_CXML("wb"));
     #else*/
-    SDL_RWops *f=SDL_RWFromFile(filename,_CXML("wb"));
+    SDL_IOStream *f=SDL_IOFromFile(filename,_CXML("wb"));
     //#endif
     if (!f) return eXMLErrorCannotOpenWriteFile;
 #ifdef _XMLWIDECHAR
@@ -673,9 +673,9 @@ XMLError XMLNode::writeToFile(XMLCSTR filename, const char *encoding, char nForm
             {
                 fclose(f);
             #else*/
-            if (!SDL_RWwrite(f,h,1,3)) 
+            if (!SDL_WriteIO(f,h,3)) 
             {
-                SDL_RWclose(f);
+                SDL_CloseIO(f);
             //#endif
                 return eXMLErrorCannotWriteFile;
             }
@@ -686,7 +686,7 @@ XMLError XMLNode::writeToFile(XMLCSTR filename, const char *encoding, char nForm
         /*if (!encoding) encoding="ISO-8859-1";
         if (fprintf(f,"<?xml version=\"1.0\" encoding=\"%s\"?>\n",encoding)<0) 
         {
-            SDL_RWclose(f);
+            SDL_CloseIO(f);
             return eXMLErrorCannotWriteFile;
         }*/
     } else
@@ -700,9 +700,9 @@ XMLError XMLNode::writeToFile(XMLCSTR filename, const char *encoding, char nForm
             {
                 fclose(f);
             #else*/
-            if (!SDL_RWwrite(f,h,1,3)) 
+            if (!SDL_WriteIO(f,h,3)) 
             {
-                SDL_RWclose(f);
+                SDL_CloseIO(f);
             //#endif
                 return eXMLErrorCannotWriteFile;
             }
@@ -722,13 +722,13 @@ XMLError XMLNode::writeToFile(XMLCSTR filename, const char *encoding, char nForm
     if (fclose(f)!=0)
     #else*/
         
-    if (!SDL_RWwrite(f,t,1,sizeof(XMLCHAR)*i)) 
+    if (!SDL_WriteIO(f,t,sizeof(XMLCHAR)*i)) 
     {
        free(t);
-       SDL_RWclose(f);
+       SDL_CloseIO(f);
        return eXMLErrorCannotWriteFile;
     }
-    if (SDL_RWclose(f)!=0)
+    if (SDL_CloseIO(f)!=0)
     //#endif
     {
         free(t);
@@ -1936,15 +1936,15 @@ XMLNode XMLNode::parseFile(XMLCSTR filename, XMLCSTR tag, XMLResults *pResults)
     l=(int)fread(buf,1,l,f);
     fclose(f);
     #else*/
-    SDL_RWops *f=SDL_RWFromFile(filename,_CXML("rb"));
+    SDL_IOStream *f=SDL_IOFromFile(filename,_CXML("rb"));
     if (f==NULL) { if (pResults) pResults->error=eXMLErrorFileNotFound; return emptyXMLNode; }
-    int l=SDL_RWseek(f, 0, RW_SEEK_END), headerSz=0;
+    int l=SDL_SeekIO(f, 0, SDL_IO_SEEK_END), headerSz=0;
     //int l=SDL_RWtell(f), headerSz=0;
-    if (l<1) { if (pResults) pResults->error=eXMLErrorEmpty; SDL_RWclose(f); return emptyXMLNode; }
-    SDL_RWseek(f,0,RW_SEEK_SET);
+    if (l<1) { if (pResults) pResults->error=eXMLErrorEmpty; SDL_CloseIO(f); return emptyXMLNode; }
+    SDL_SeekIO(f,0,SDL_IO_SEEK_SET);
     unsigned char *buf=(unsigned char*)malloc(l+4);
-    l=(int)SDL_RWread(f,buf,1,l);
-    SDL_RWclose(f);
+    l=(int)SDL_ReadIO(f,buf,l);
+    SDL_CloseIO(f);
     //#endif
     buf[l]=0;buf[l+1]=0;buf[l+2]=0;buf[l+3]=0;
     

@@ -179,16 +179,16 @@ unsigned char *stbi_load(char const *filename, int *x, int *y, int *comp, int re
 {
    
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    unsigned char *result;
    if (!f) return epuc("can't fopen", "Unable to open file");
    result = stbi_load_from_file(f,x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return result;
 }
 
 
-unsigned char *stbi_load_from_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+unsigned char *stbi_load_from_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    int i;
    if (stbi_png_test_file(f))
@@ -255,15 +255,15 @@ unsigned char *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int
 float *stbi_loadf(char const *filename, int *x, int *y, int *comp, int req_comp)
 {
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    float *result;
    if (!f) return epf("can't fopen", "Unable to open file");
    result = stbi_loadf_from_file(f,x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return result;
 }
 
-float *stbi_loadf_from_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+float *stbi_loadf_from_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    unsigned char *data;
    #ifndef STBI_NO_HDR
@@ -308,16 +308,16 @@ int stbi_is_hdr_from_memory(stbi_uc const *buffer, int len)
 extern int      stbi_is_hdr          (char const *filename)
 {
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    int result=0;
    if (f) {
       result = stbi_is_hdr_from_file(f);
-      SDL_RWclose(f);
+      SDL_CloseIO(f);
    }
    return result;
 }
 
-extern int      stbi_is_hdr_from_file(SDL_RWops *f)
+extern int      stbi_is_hdr_from_file(SDL_IOStream *f)
 {
    #ifndef STBI_NO_HDR
    return stbi_hdr_test_file(f);
@@ -331,7 +331,7 @@ extern int      stbi_is_hdr_from_file(SDL_RWops *f)
 // @TODO: get image dimensions & components without fully decoding
 #ifndef STBI_NO_STDIO
 extern int      stbi_info            (char const *filename,           int *x, int *y, int *comp);
-extern int      stbi_info_from_file  (SDL_RWops *f,                  int *x, int *y, int *comp);
+extern int      stbi_info_from_file  (SDL_IOStream *f,                  int *x, int *y, int *comp);
 #endif
 extern int      stbi_info_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp);
 
@@ -365,13 +365,13 @@ typedef struct
    int img_n, img_out_n;
 
    #ifndef STBI_NO_STDIO
-   SDL_RWops  *img_file;
+   SDL_IOStream  *img_file;
    #endif
    uint8 *img_buffer, *img_buffer_end;
 } stbi;
 
 #ifndef STBI_NO_STDIO
-static void start_file(stbi *s, SDL_RWops *f)
+static void start_file(stbi *s, SDL_IOStream *f)
 {
    s->img_file = f;
 }
@@ -392,7 +392,7 @@ static int get8(stbi *s)
     if (s->img_file)
     {
         Uint8 c = 0;
-        if( SDL_RWread(s->img_file, &c, sizeof(c), 1) > 0)
+        if( SDL_ReadIO(s->img_file, &c, sizeof(c)) > 0)
             return c;
         
         return 0;
@@ -409,8 +409,8 @@ static int get16(stbi *s)
     if (s->img_file)
     {
         Uint16 c = 0;
-        if( SDL_RWread(s->img_file, &c, sizeof(c), 1) > 0 )
-            return SDL_SwapBE16(c);
+        if( SDL_ReadIO(s->img_file, &c, sizeof(c)) > 0 )
+            return SDL_Swap16BE(c);
         
         return 0;
     }
@@ -426,8 +426,8 @@ static int get16le(stbi *s)
     if (s->img_file)
     {
         Uint16 c = 0;
-        if( SDL_RWread(s->img_file, &c, sizeof(c), 1) > 0 )
-            return SDL_SwapLE16(c);
+        if( SDL_ReadIO(s->img_file, &c, sizeof(c)) > 0 )
+            return SDL_Swap16LE(c);
         
         return 0;
     }
@@ -443,8 +443,8 @@ static uint32 get32(stbi *s)
     if (s->img_file)
     {
         Uint32 c = 0;
-        if( SDL_RWread(s->img_file, &c, sizeof(c), 1) > 0 )
-            return SDL_SwapBE32(c);
+        if( SDL_ReadIO(s->img_file, &c, sizeof(c)) > 0 )
+            return SDL_Swap32BE(c);
         
         return 0;
     }
@@ -460,8 +460,8 @@ static int get32le(stbi *s)
     if (s->img_file)
     {
         Uint32 c = 0;
-        if( SDL_RWread(s->img_file, &c, sizeof(c), 1) > 0)
-            return SDL_SwapLE32(c);
+        if( SDL_ReadIO(s->img_file, &c, sizeof(c)) > 0)
+            return SDL_Swap32LE(c);
         
         return 0;
     }
@@ -502,9 +502,9 @@ __forceinline static int at_eof(stbi *s)
 #ifndef STBI_NO_STDIO
    if (s->img_file)
    {
-       Sint64 old_position = SDL_RWseek(s->img_file, 0, RW_SEEK_CUR);
-       Sint64 end_position = SDL_RWseek(s->img_file, 0, RW_SEEK_END);
-       SDL_RWseek(s->img_file, old_position, RW_SEEK_SET);
+       Sint64 old_position = SDL_SeekIO(s->img_file, 0, SDL_IO_SEEK_CUR);
+       Sint64 end_position = SDL_SeekIO(s->img_file, 0, SDL_IO_SEEK_END);
+       SDL_SeekIO(s->img_file, old_position, SDL_IO_SEEK_SET);
        return (old_position == end_position);
    }
 #endif
@@ -520,7 +520,7 @@ static void skip(stbi *s, int n)
 {
 #ifndef STBI_NO_STDIO
    if (s->img_file)
-      SDL_RWseek(s->img_file, n, RW_SEEK_CUR);
+      SDL_SeekIO(s->img_file, n, SDL_IO_SEEK_CUR);
    else
 #endif
       s->img_buffer += n;
@@ -530,7 +530,7 @@ static void getn(stbi *s, stbi_uc *buffer, int n)
 {
 #ifndef STBI_NO_STDIO
    if (s->img_file) {
-      SDL_RWread(s->img_file, buffer, 1, n);
+      SDL_ReadIO(s->img_file, buffer, n);
       return;
    }
 #endif
@@ -1631,7 +1631,7 @@ static uint8 *load_jpeg_image(jpeg *z, int *out_x, int *out_y, int *comp, int re
 }
 
 #ifndef STBI_NO_STDIO
-unsigned char *stbi_jpeg_load_from_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+unsigned char *stbi_jpeg_load_from_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    jpeg j;
    start_file(&j.s, f);
@@ -1642,10 +1642,10 @@ unsigned char *stbi_jpeg_load(char const *filename, int *x, int *y, int *comp, i
 {
    unsigned char *data;
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    if (!f) return NULL;
    data = stbi_jpeg_load_from_file(f,x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return data;
 }
 #endif
@@ -1658,14 +1658,14 @@ unsigned char *stbi_jpeg_load_from_memory(stbi_uc const *buffer, int len, int *x
 }
 
 #ifndef STBI_NO_STDIO
-int stbi_jpeg_test_file(SDL_RWops *f)
+int stbi_jpeg_test_file(SDL_IOStream *f)
 {
    int n,r;
    jpeg j;
-   n = SDL_RWtell(f);
+   n = SDL_TellIO(f);
    start_file(&j.s, f);
    r = decode_jpeg_header(&j, SCAN_type);
-   SDL_RWseek(f,n,RW_SEEK_SET);
+   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
    return r;
 }
 #endif
@@ -1680,7 +1680,7 @@ int stbi_jpeg_test_memory(stbi_uc const *buffer, int len)
 // @TODO:
 #ifndef STBI_NO_STDIO
 extern int      stbi_jpeg_info            (char const *filename,           int *x, int *y, int *comp);
-extern int      stbi_jpeg_info_from_file  (SDL_RWops *f,                  int *x, int *y, int *comp);
+extern int      stbi_jpeg_info_from_file  (SDL_IOStream *f,                  int *x, int *y, int *comp);
 #endif
 extern int      stbi_jpeg_info_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp);
 
@@ -2385,7 +2385,7 @@ static int parse_png_file(png *z, int scan, int req_comp)
             #ifndef STBI_NO_STDIO
             if (s->img_file)
             {
-               if (SDL_RWread(s->img_file,z->idata+ioff,1,c.length) != c.length) return e("outofdata","Corrupt PNG");
+               if (SDL_ReadIO(s->img_file,z->idata+ioff, c.length) != c.length) return e("outofdata","Corrupt PNG");
             }
             else
             #endif
@@ -2471,7 +2471,7 @@ static unsigned char *do_png(png *p, int *x, int *y, int *n, int req_comp)
 }
 
 #ifndef STBI_NO_STDIO
-unsigned char *stbi_png_load_from_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+unsigned char *stbi_png_load_from_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    png p;
    start_file(&p.s, f);
@@ -2482,10 +2482,10 @@ unsigned char *stbi_png_load(char const *filename, int *x, int *y, int *comp, in
 {
    unsigned char *data;
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    if (!f) return NULL;
    data = stbi_png_load_from_file(f,x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return data;
 }
 #endif
@@ -2498,14 +2498,14 @@ unsigned char *stbi_png_load_from_memory(stbi_uc const *buffer, int len, int *x,
 }
 
 #ifndef STBI_NO_STDIO
-int stbi_png_test_file(SDL_RWops *f)
+int stbi_png_test_file(SDL_IOStream *f)
 {
    png p;
    int n,r;
-   n = SDL_RWtell(f);
+   n = SDL_TellIO(f);
    start_file(&p.s, f);
    r = parse_png_file(&p, SCAN_type,STBI_default);
-   SDL_RWseek(f,n,RW_SEEK_SET);
+   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
    return r;
 }
 #endif
@@ -2520,7 +2520,7 @@ int stbi_png_test_memory(stbi_uc const *buffer, int len)
 // TODO: load header from png
 #ifndef STBI_NO_STDIO
 extern int      stbi_png_info             (char const *filename,           int *x, int *y, int *comp);
-extern int      stbi_png_info_from_file   (SDL_RWops *f,                  int *x, int *y, int *comp);
+extern int      stbi_png_info_from_file   (SDL_IOStream *f,                  int *x, int *y, int *comp);
 #endif
 extern int      stbi_png_info_from_memory (stbi_uc const *buffer, int len, int *x, int *y, int *comp);
 
@@ -2541,13 +2541,13 @@ static int bmp_test(stbi *s)
 }
 
 #ifndef STBI_NO_STDIO
-int      stbi_bmp_test_file        (SDL_RWops *f)
+int      stbi_bmp_test_file        (SDL_IOStream *f)
 {
    stbi s;
-   int r,n = SDL_RWtell(f);
+   int r,n = SDL_TellIO(f);
    start_file(&s,f);
    r = bmp_test(&s);
-   SDL_RWseek(f,n,RW_SEEK_SET);
+   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
    return r;
 }
 #endif
@@ -2798,14 +2798,14 @@ stbi_uc *stbi_bmp_load             (char const *filename,           int *x, int 
 {
    stbi_uc *data;
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    if (!f) return NULL;
    data = stbi_bmp_load_from_file(f, x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return data;
 }
 
-stbi_uc *stbi_bmp_load_from_file   (SDL_RWops *f,                  int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_bmp_load_from_file   (SDL_IOStream *f,                  int *x, int *y, int *comp, int req_comp)
 {
    stbi s;
    start_file(&s, f);
@@ -2844,13 +2844,13 @@ static int tga_test(stbi *s)
 }
 
 #ifndef STBI_NO_STDIO
-int      stbi_tga_test_file        (SDL_RWops *f)
+int      stbi_tga_test_file        (SDL_IOStream *f)
 {
    stbi s;
-   int r,n = SDL_RWtell(f);
+   int r,n = SDL_TellIO(f);
    start_file(&s, f);
    r = tga_test(&s);
-   SDL_RWseek(f,n,RW_SEEK_SET);
+   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
    return r;
 }
 #endif
@@ -3085,14 +3085,14 @@ stbi_uc *stbi_tga_load             (char const *filename,           int *x, int 
 {
    stbi_uc *data;
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    if (!f) return NULL;
    data = stbi_tga_load_from_file(f, x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return data;
 }
 
-stbi_uc *stbi_tga_load_from_file   (SDL_RWops *f,                  int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_tga_load_from_file   (SDL_IOStream *f,                  int *x, int *y, int *comp, int req_comp)
 {
    stbi s;
    start_file(&s, f);
@@ -3118,13 +3118,13 @@ static int psd_test(stbi *s)
 }
 
 #ifndef STBI_NO_STDIO
-int stbi_psd_test_file(SDL_RWops *f)
+int stbi_psd_test_file(SDL_IOStream *f)
 {
    stbi s;
-   int r,n = SDL_RWtell(f);
+   int r,n = SDL_TellIO(f);
    start_file(&s, f);
    r = psd_test(&s);
-   SDL_RWseek(f,n,RW_SEEK_SET);
+   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
    return r;
 }
 #endif
@@ -3300,14 +3300,14 @@ stbi_uc *stbi_psd_load(char const *filename, int *x, int *y, int *comp, int req_
 {
    stbi_uc *data;
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    if (!f) return NULL;
    data = stbi_psd_load_from_file(f, x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return data;
 }
 
-stbi_uc *stbi_psd_load_from_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_psd_load_from_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    stbi s;
    start_file(&s, f);
@@ -3345,13 +3345,13 @@ int stbi_hdr_test_memory(stbi_uc const *buffer, int len)
 }
 
 #ifndef STBI_NO_STDIO
-int stbi_hdr_test_file(SDL_RWops *f)
+int stbi_hdr_test_file(SDL_IOStream *f)
 {
    stbi s;
-   int r,n = SDL_RWtell(f);
+   int r,n = SDL_TellIO(f);
    start_file(&s, f);
    r = hdr_test(&s);
-   SDL_RWseek(f,n,RW_SEEK_SET);
+   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
    return r;
 }
 #endif
@@ -3623,14 +3623,14 @@ static stbi_uc *hdr_load_rgbe(stbi *s, int *x, int *y, int *comp, int req_comp)
 }
 
 #ifndef STBI_NO_STDIO
-float *stbi_hdr_load_from_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+float *stbi_hdr_load_from_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    stbi s;
    start_file(&s,f);
    return hdr_load(&s,x,y,comp,req_comp);
 }
 
-stbi_uc *stbi_hdr_load_rgbe_file(SDL_RWops *f, int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_hdr_load_rgbe_file(SDL_IOStream *f, int *x, int *y, int *comp, int req_comp)
 {
    stbi s;
    start_file(&s,f);
@@ -3640,11 +3640,11 @@ stbi_uc *stbi_hdr_load_rgbe_file(SDL_RWops *f, int *x, int *y, int *comp, int re
 stbi_uc *stbi_hdr_load_rgbe        (char const *filename,           int *x, int *y, int *comp, int req_comp)
 {
    //FILE *f = fopen(filename, "rb");
-   SDL_RWops *f = SDL_RWFromFile( filename, "rb" );
+   SDL_IOStream *f = SDL_IOFromFile( filename, "rb" );
    unsigned char *result;
    if (!f) return epuc("can't fopen", "Unable to open file");
    result = stbi_hdr_load_rgbe_file(f,x,y,comp,req_comp);
-   SDL_RWclose(f);
+   SDL_CloseIO(f);
    return result;
 }
 #endif

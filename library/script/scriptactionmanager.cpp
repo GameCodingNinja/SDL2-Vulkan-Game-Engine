@@ -108,18 +108,13 @@ namespace NScriptActionManager
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool isQueueEmpty()",                                      WRAP_MFN(CActionMgr, isQueueEmpty),              asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void saveToFile()",                                        WRAP_MFN(CActionMgr, saveToFile),                asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void resetKeyBindingsToDefault()",                         WRAP_MFN(CActionMgr, resetKeyBindingsToDefault), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "bool wasWindowEvent(uint, uint &out, int &out, int &out)", WRAP_MFN(CActionMgr, wasWindowEvent),            asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "string getDeviceActionStr(int, string &in, bool &out)",    WRAP_MFN(CActionMgr, getDeviceActionStr),        asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "string resetAction(int, string &in, int, bool &out)",      WRAP_MFN(CActionMgr, resetAction),               asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "void resetLastUsedDevice()",                               WRAP_MFN(CActionMgr, resetLastUsedDevice),       asCALL_GENERIC) );
 
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateButtonEvents(uint &out, int &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateButtonEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateDisplayEvents(uint &out, uint &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateDisplayEvents), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateMouseWheelEvents(uint &out, int &out, int &out, uint &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateMouseWheelEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateWindowEvents(uint &out, uint &out, int &out, int &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateWindowEvents), asCALL_GENERIC) );
         Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateTouchFingerEvents(uint &out, int64 &out, int64 &out, float &out, float &out, float &out, float &out, float &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateTouchFingerEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateMultipleFingerEvents(int64 &out, float &out, float &out, float &out, float &out, uint &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateMultipleFingerEvents), asCALL_GENERIC) );
-        Throw( pEngine->RegisterObjectMethod("CActionMgr", "uint enumerateDollarGestureEvents(int64 &out, int64 &out, uint &out, float &out, float &out, float &out, uint startIndex = 0)", WRAP_MFN(CActionMgr, enumerateDollarGestureEvents), asCALL_GENERIC) );
         
         // Set this object registration as a global property to simulate a singleton
         Throw( pEngine->RegisterGlobalProperty("CActionMgr ActionMgr", &CActionMgr::Instance()) );

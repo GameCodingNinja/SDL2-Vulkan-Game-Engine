@@ -22,7 +22,7 @@
 #include <map>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 // Forward declaration(s)
 struct SDL_Window;
@@ -175,11 +175,11 @@ public:
     void initStartupGamepads();
 
     // Add/Remove the game pad
-    void addGamepad( int id );
-    void removeGamepad( int id );
+    void addGamepad( SDL_JoystickID id );
+    void removeGamepad( SDL_JoystickID id );
 
     // Get the gamepad count
-    size_t getGamepadCount();
+    std::size_t getGamepadCount();
 
     // Get window
     SDL_Window * getWindow();
@@ -206,7 +206,7 @@ public:
     CMemoryBuffer & getSharedFontIBO();
     
     // Get the shared font ibo max indice count
-    size_t getSharedFontIBOMaxIndiceCount();
+    std::size_t getSharedFontIBOMaxIndiceCount();
     
     // Add a memory buffer to the delete queue
     void AddToDeleteQueue( CMemoryBuffer & memoryBuffer );
@@ -289,14 +289,14 @@ private:
     
     // Load 3d mesh file with textures
     void load3DM(
-        SDL_RWops * pFile,
+        SDL_IOStream * pFile,
         const CMeshBinaryFileHeader & fileHeader,
         const std::string & group,
         const std::string & filePath,
         CModel & model );
     
     // Do the tag check to insure we are in the correct spot
-    void tagCheck( SDL_RWops * file, const std::string & filePath );
+    void tagCheck( SDL_IOStream * file, const std::string & filePath );
 
     // Allocate the descriptor pool and first sets
     CDescriptorSet * allocateDescriptorPoolSet(
@@ -334,7 +334,7 @@ private:
     SDL_Window * m_pWindow;
 
     // Map of gamepad pointers
-    std::map<int, SDL_GameController *> m_pGamepadMap;
+    std::map<int, SDL_Gamepad *> m_pGamepadMap;
 
     // Map containing a group of command pools
     std::map< const std::string, VkCommandPool > m_commandPoolMap;
@@ -379,7 +379,7 @@ private:
     std::map< const std::string, std::map< const std::string, CModel > > m_modelMapMap;
 
     // Current dynamic font IBO indices size
-    size_t m_currentMaxFontIndices = 0;
+    std::size_t m_currentMaxFontIndices = 0;
 
     // Shared font IBO
     CMemoryBuffer m_sharedFontIbo;
