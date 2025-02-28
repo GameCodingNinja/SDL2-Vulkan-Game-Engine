@@ -16,7 +16,7 @@
 #include <ctime>
 
 // SDL lib dependencies
-#include <SDL2/SDL.h> // This needs to be here otherwise Android build will not run
+#include <SDL3/SDL.h> // This needs to be here otherwise Android build will not run
 
 int main( int argc, char* args[] )
 {
