@@ -17,7 +17,7 @@
 #include <string>
 
 // Forward declaration(s)
-struct SDL_IOStream;
+struct SDL_RWops;
 
 class CByteCodeStream : public asIBinaryStream
 {
@@ -38,5 +38,5 @@ public:
 private:
 
     // Scoped file handle pointer
-    NSmart::scoped_SDL_filehandle_ptr<SDL_IOStream> m_scpFile;
+    NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> m_scpFile;
 };

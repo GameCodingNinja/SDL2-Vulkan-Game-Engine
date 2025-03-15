@@ -24,7 +24,7 @@
 #include <sprite/sprite.h>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor

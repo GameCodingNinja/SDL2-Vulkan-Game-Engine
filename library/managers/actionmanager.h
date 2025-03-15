@@ -23,7 +23,7 @@
 #include <map>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 class CActionMgr
 {
@@ -110,12 +110,21 @@ public:
     bool wasKeyboardEvent( const std::string & componentIdStr, EActionPress actionPress = EActionPress::DOWN );
     bool wasMouseBtnEvent( const std::string & componentIdStr, EActionPress actionPress = EActionPress::DOWN );
     bool wasGamepadBtnEvent( const std::string & componentIdStr, EActionPress actionPress = EActionPress::DOWN );
+
+    // Was this a window event
+    bool wasWindowEvent( uint event, uint & windowID, int & data1, int & data2 );
     
     // Enumerate events
     uint enumerateButtonEvents( uint & type, int & code, int & data, uint startIndex = 0 );
+    uint enumerateDisplayEvents( uint & eventId, uint & displayIndex, int & orientation, uint startIndex = 0 );
     uint enumerateMouseWheelEvents( uint & windowID, int & x, int & y, uint & direction, uint startIndex = 0 );
+    uint enumerateWindowEvents( uint & eventId, uint & windowID, int & data1, int & data2, uint startIndex = 0 );
     uint enumerateTouchFingerEvents(
         uint & eventId, int64_t & touchId, int64_t & fingerId, float & x, float & y, float & dx, float & dy, float & pressure, uint startIndex = 0 );
+    uint enumerateMultipleFingerEvents(
+        int64_t & touchId, float & dTheta, float & dDist, float & x, float & y, uint & numFingers, uint startIndex = 0 );
+    uint enumerateDollarGestureEvents(
+        int64_t & touchId, int64_t & gestureId, uint & numFingers, float & error, float & x, float & y, uint startIndex = 0 );
 
 private:
 
@@ -169,7 +178,7 @@ private:
 
     enum
     {
-        ANALOG1_UP = SDL_GAMEPAD_BUTTON_COUNT,
+        ANALOG1_UP = SDL_CONTROLLER_BUTTON_MAX,
         ANALOG1_DOWN,
         ANALOG1_LEFT,
         ANALOG1_RIGHT,

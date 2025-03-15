@@ -13,7 +13,7 @@
 #include <utilities/genfunc.h>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 // Boost lib dependencies
 #include <boost/noncopyable.hpp>

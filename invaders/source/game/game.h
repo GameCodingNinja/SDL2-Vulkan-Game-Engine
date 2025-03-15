@@ -66,4 +66,4 @@ private:
     std::unique_ptr<iGameState> upGameState;
 };
 
-bool FilterEvents( void * userdata, SDL_Event * pEvent );
+int FilterEvents( void * userdata, SDL_Event * pEvent );

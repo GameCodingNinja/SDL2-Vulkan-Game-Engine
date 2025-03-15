@@ -580,7 +580,7 @@ void CMenuMgr::transitionMenu( const std::string & group, const std::string & tr
 void CMenuMgr::handleEvent( const SDL_Event & rEvent )
 {
     // Convert keyboard, mouse and controller messages in action type messages
-    if( (rEvent.type >= SDL_EVENT_KEY_DOWN) && (rEvent.type <= SDL_EVENT_FINGER_CANCELED) )
+    if( (rEvent.type > SDL_SYSWMEVENT) && (rEvent.type < SDL_CLIPBOARDUPDATE) )
     {
         // Only allow hardware events when it's time to handle them
         if( m_allow )
@@ -636,7 +636,7 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
                 EActionPress pressType;
 
                 // common and can result in many messages which is why it's specifically defined here
-                if( rEvent.type == SDL_EVENT_MOUSE_MOTION )
+                if( rEvent.type == SDL_MOUSEMOTION )
                 {
                     // Allow the mouse move message to get eaten when action handling is disabled.
                     handleEventForTrees( rEvent );
@@ -686,7 +686,7 @@ void CMenuMgr::handleEvent( const SDL_Event & rEvent )
             }
         }
     }
-    else if( rEvent.type > SDL_EVENT_USER )
+    else if( rEvent.type > SDL_USEREVENT )
     {
         // Are we doing menu actions? May need to do some scrolling
         if( (rEvent.type >= NMenuEvent::UP_ACTION) && (rEvent.type <= NMenuEvent::RIGHT_ACTION) )
@@ -1069,9 +1069,9 @@ void CMenuMgr::resetDynamicOffset()
 /************************************************************************
 *    DESC:  Timer call back function for
 ************************************************************************/
-Uint32 CMenuMgr::scrollTimerCallbackFunc( void *userdata, SDL_TimerID timerID, Uint32 interval )
+Uint32 CMenuMgr::scrollTimerCallbackFunc( Uint32 interval, void *param )
 {
-    CScrollParam * pScrollParam = static_cast<CScrollParam *>(userdata);
+    CScrollParam * pScrollParam = static_cast<CScrollParam *>(param);
 
     NGenFunc::DispatchEvent( pScrollParam->getMsg() );
 

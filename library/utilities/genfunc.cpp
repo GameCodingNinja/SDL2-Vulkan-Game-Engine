@@ -22,7 +22,7 @@
 #include <boost/crc.hpp>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 // Standard lib dependencies
 #include <iostream>
@@ -46,7 +46,7 @@ namespace NGenFunc
     int CountStrOccurrence( const std::string & searchStr, const std::string & subStr )
     {
         int result = 0;
-        std::size_t found = std::string::npos;
+        size_t found = std::string::npos;
 
         do
         {
@@ -65,19 +65,19 @@ namespace NGenFunc
     ************************************************************************/
     std::vector<char> FileToVec( const std::string & file, bool terminate )
     {
-        std::size_t terminatorSize = 0;
+        size_t terminatorSize = 0;
         if( terminate )
             terminatorSize = 1;
 
         // Open file for reading
-        NSmart::scoped_SDL_filehandle_ptr<SDL_IOStream> scpFile( SDL_IOFromFile( file.c_str(), "rb" ) );
+        NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( file.c_str(), "rb" ) );
         if( scpFile.isNull() )
             throw NExcept::CCriticalException("File Load Error!",
                 boost::str( boost::format("Error Loading file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
 
         // Seek to the end of the file to find out how many 
         // bytes into the file we are and add one for temination
-        std::size_t sizeInBytes = (std::size_t)SDL_SeekIO( scpFile.get(), 0, SDL_IO_SEEK_END );
+        size_t sizeInBytes = (size_t)SDL_RWseek( scpFile.get(), 0, RW_SEEK_END );
         
         if( (int)sizeInBytes == -1 )
             throw NExcept::CCriticalException("File Load Error!",
@@ -88,8 +88,8 @@ namespace NGenFunc
 
         // Go back to the beginning of the file and 
         // read the contents of the file in to the buffer
-        SDL_SeekIO( scpFile.get(), 0, SDL_IO_SEEK_SET );
-        SDL_ReadIO( scpFile.get(), bufferVec.data(), sizeInBytes );
+        SDL_RWseek( scpFile.get(), 0, RW_SEEK_SET );
+        SDL_RWread( scpFile.get(), bufferVec.data(), 1, sizeInBytes );
 
         if( terminate )
             bufferVec[sizeInBytes] = 0;
@@ -194,7 +194,7 @@ namespace NGenFunc
     ************************************************************************/
     void AddFileExt( const std::string & source, std::string & dest, const std::string & ext )
     {
-        std::size_t index = source.rfind('.', source.length());
+        size_t index = source.rfind('.', source.length());
         if( index != std::string::npos )
         {
             dest = source.substr(0, index);

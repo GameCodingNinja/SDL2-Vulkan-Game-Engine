@@ -25,7 +25,7 @@
 #include <system/vulkan.h>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 // Forward declaration(s)
 class CMenu;
@@ -160,7 +160,7 @@ private:
     void loadTreesFromNode( const std::string & group, const XMLNode & node );
 
     // Timer call back function
-    static Uint32 scrollTimerCallbackFunc( void *userdata, SDL_TimerID timerID, Uint32 interval );
+    static Uint32 scrollTimerCallbackFunc( Uint32 interval, void *param );
     
     // Handle input events depending on if this is a menu or interface tree
     void handleEventForTrees( const SDL_Event & rEvent );

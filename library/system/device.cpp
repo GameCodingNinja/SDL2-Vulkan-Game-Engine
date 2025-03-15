@@ -30,7 +30,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL3/SDL_vulkan.h>
+#include <SDL2/SDL_vulkan.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -53,7 +53,7 @@ CDevice::~CDevice()
 void CDevice::init( std::function<void(uint32_t)> callback )
 {
     // Initialize SDL - The File I/O and Threading subsystems are initialized by default.
-    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_EVENTS | SDL_INIT_SENSOR ) == false )
+    if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER | SDL_INIT_SENSOR ) < 0 )
         throw NExcept::CCriticalException("SDL could not initialize!", SDL_GetError() );
 
     // All file I/O is handled by SDL and SDL_Init must be called before doing any I/O.
@@ -76,7 +76,7 @@ void CDevice::create( const std::string & pipelineCfg )
         flags |= SDL_WINDOW_RESIZABLE;
 
     // Create window
-    m_pWindow = SDL_CreateWindow( "", size.getW(), size.getH(), flags );
+    m_pWindow = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.getW(), size.getH(), flags );
     if( m_pWindow == nullptr )
         throw NExcept::CCriticalException("Game window could not be created!", SDL_GetError() );
     
@@ -85,16 +85,15 @@ void CDevice::create( const std::string & pipelineCfg )
         throw NExcept::CCriticalException("Vulkan Error!", "Can't activate stencil buffer without activating the depth buffer. They are one in the same." );
 
     uint32_t instanceExtensionCount(0);
-    const char *const * strAry = SDL_Vulkan_GetInstanceExtensions(&instanceExtensionCount);
-    if(strAry == nullptr || instanceExtensionCount == 0)
+    if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, nullptr) || (instanceExtensionCount == 0) )
         throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension count!", SDL_GetError() );
 
     std::vector<const char*> physicalDeviceExtensionNameVec = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
-    std::vector<const char*> instanceExtensionNameVec;
+    std::vector<const char*> instanceExtensionNameVec(instanceExtensionCount);
     std::vector<const char*> validationNameVec;
 
-    for(uint32_t i = 0; i < instanceExtensionCount; ++i)
-        instanceExtensionNameVec.push_back(strAry[i]);
+    if( !SDL_Vulkan_GetInstanceExtensions(m_pWindow, &instanceExtensionCount, instanceExtensionNameVec.data()) )
+        throw NExcept::CCriticalException("Could not retrieve Vulkan instance extension names!", SDL_GetError() );
 
     // If we want validation, add it and debug reporting extension
     if( CSettings::Instance().isValidationLayers() )
@@ -125,8 +124,8 @@ void CDevice::create( const std::string & pipelineCfg )
         setFullScreen( CSettings::Instance().getFullScreen() );
 
     // Init current gamepads plugged in at startup
-    //initStartupGamepads();
-    //initSensors();
+    initStartupGamepads();
+    initSensors();
 }
 
 /***************************************************************************
@@ -408,7 +407,7 @@ void CDevice::frameCounterMemoryOperations()
 ****************************************************************************/
 void CDevice::createSurface()
 {
-    if( !SDL_Vulkan_CreateSurface( m_pWindow, m_vulkanInstance, nullptr, &m_vulkanSurface ) )
+    if( !SDL_Vulkan_CreateSurface( m_pWindow, m_vulkanInstance, &m_vulkanSurface ) )
         throw NExcept::CCriticalException("Could not create Vulkan surface!", SDL_GetError() );
 }
 
@@ -1125,7 +1124,7 @@ void CDevice::setFullScreen( bool fullscreen )
         if( fullscreen )
             flag = SDL_WINDOW_FULLSCREEN;
 
-        if( SDL_SetWindowFullscreen( m_pWindow, flag ) == false )
+        if( SDL_SetWindowFullscreen( m_pWindow, flag ) < 0 )
             NGenFunc::PostDebugMsg( boost::str( boost::format("Warning: Unable to set full screen! SDL GL Error: %s") % SDL_GetError() ) );
     }
 }
@@ -1155,14 +1154,13 @@ void CDevice::setWindowTitle( const std::string & title )
 ****************************************************************************/
 void CDevice::initSensors()
 {
-    int sensorCount = 0;
-    SDL_SensorID * pSensorIdAry = SDL_GetSensors(&sensorCount);
+    const int sensorCount = SDL_NumSensors();
 
     NGenFunc::PostDebugMsg( boost::str( boost::format("Number of sensors: %d") % sensorCount ) );
 
     for( int i = 0; i < sensorCount; ++i )
     {
-        NGenFunc::PostDebugMsg( boost::str( boost::format("Sensor Name: %s") % SDL_GetSensorNameForID(pSensorIdAry[i]) ) );
+        NGenFunc::PostDebugMsg( boost::str( boost::format("Sensor Name: %s") % SDL_SensorGetDeviceName(i) ) );
     }
 }
 
@@ -1171,39 +1169,37 @@ void CDevice::initSensors()
 ****************************************************************************/
 void CDevice::initStartupGamepads()
 {
+    // May not need this anymore
+    //int newMappings = SDL_GameControllerAddMappingsFromFile("data/settings/gamecontrollerdb.txt");
+    //NGenFunc::PostDebugMsg( boost::str( boost::format("New controller mappings found: %d - Number of controllers found: %d") % newMappings % (int)SDL_NumJoysticks() ) );
+
     if( CSettings::Instance().isGamePadEnabled() )
-    {
-        int gamepadCount = 0;
-        SDL_JoystickID * pJoystickIdAry = SDL_GetGamepads(&gamepadCount);
-        for( int i = 0; i < gamepadCount; ++i )
-        {
-            addGamepad( pJoystickIdAry[i] );
-        }
-    }
+        for( int i = 0; i < SDL_NumJoysticks(); ++i )
+            addGamepad( i );
 }
 
 /***************************************************************************
 *   DESC:  Add/Remove the game pad
 ****************************************************************************/
-void CDevice::addGamepad( SDL_JoystickID id )
+void CDevice::addGamepad( int id )
 {
-    if( SDL_IsGamepad( id ) )
+    if( SDL_IsGameController( id ) )
     {
-        SDL_Gamepad * pGamePad = SDL_OpenGamepad(id);
+        SDL_GameController * pGamePad = SDL_GameControllerOpen(id);
         if( pGamePad != NULL )
         {
-            NGenFunc::PostDebugMsg( boost::str( boost::format("Game controller added: %d - %s") % id % SDL_GetGamepadNameForID(id) ) );
+            NGenFunc::PostDebugMsg( boost::str( boost::format("Game controller added: %d - %s") % id % SDL_GameControllerNameForIndex(id) ) );
             m_pGamepadMap.emplace( id, pGamePad );
         }
     }
 }
 
-void CDevice::removeGamepad( SDL_JoystickID id )
+void CDevice::removeGamepad( int id )
 {
     auto iter = m_pGamepadMap.find( id );
     if( iter != m_pGamepadMap.end() )
     {
-        SDL_CloseGamepad( iter->second );
+        SDL_GameControllerClose( iter->second );
         m_pGamepadMap.erase( iter );
     }
 }
@@ -1212,7 +1208,7 @@ void CDevice::removeGamepad( SDL_JoystickID id )
 /***************************************************************************
 *   DESC:  Get the gamepad count
 ****************************************************************************/
-std::size_t CDevice::getGamepadCount()
+size_t CDevice::getGamepadCount()
 {
     return m_pGamepadMap.size();
 }
@@ -1361,7 +1357,7 @@ CMemoryBuffer & CDevice::getSharedFontIBO()
 /************************************************************************
 *    DESC:  Get the shared font ibo max indice count
 ************************************************************************/
-std::size_t CDevice::getSharedFontIBOMaxIndiceCount()
+size_t CDevice::getSharedFontIBOMaxIndiceCount()
 {
     return m_currentMaxFontIndices;
 }
@@ -1439,7 +1435,7 @@ void CDevice::loadFrom3DM(
     CModel & model )
 {
     // Open file for reading
-    NSmart::scoped_SDL_filehandle_ptr<SDL_IOStream> scpFile( SDL_IOFromFile( filePath.c_str(), "rb" ) );
+    NSmart::scoped_SDL_filehandle_ptr<SDL_RWops> scpFile( SDL_RWFromFile( filePath.c_str(), "rb" ) );
     if( scpFile.isNull() )
         throw NExcept::CCriticalException( "File Load Error!",
             boost::str( boost::format( "Error Loading file (%s).\n\n%s\nLine: %s" )
@@ -1447,7 +1443,7 @@ void CDevice::loadFrom3DM(
 
     // Read in the file header
     CMeshBinaryFileHeader fileHeader;
-    SDL_ReadIO( scpFile.get(), &fileHeader, sizeof( fileHeader ) );
+    SDL_RWread( scpFile.get(), &fileHeader, 1, sizeof( fileHeader ) );
 
     // Check to make sure we're loading in the right kind of file
     if( fileHeader.file_header != MESH_FILE_HEADER )
@@ -1467,7 +1463,7 @@ void CDevice::loadFrom3DM(
  *    DESC: Load 3d mesh file with textures
  ************************************************************************/
 void CDevice::load3DM(
-    SDL_IOStream * pFile,
+    SDL_RWops * pFile,
     const CMeshBinaryFileHeader & fileHeader,
     const std::string & group,
     const std::string & filePath,
@@ -1485,7 +1481,7 @@ void CDevice::load3DM(
     {
         // Get the texture and it's type
         CBinaryTexture btext;
-        SDL_ReadIO( pFile, &btext, sizeof( btext ) );
+        SDL_RWread( pFile, &btext, 1, sizeof( btext ) );
 
         CTexture texture;
         texture.textFilePath = btext.path;
@@ -1500,17 +1496,17 @@ void CDevice::load3DM(
     // Load in the verts
     std::vector<CPoint<float>> vertLstVec( fileHeader.vert_count );
     tagCheck( pFile, filePath );
-    SDL_ReadIO( pFile, vertLstVec.data(), vertLstVec.size() * sizeof( vertLstVec.back() ) );
+    SDL_RWread( pFile, vertLstVec.data(), vertLstVec.size(), sizeof( vertLstVec.back() ) );
 
     // Load in the normals
     std::vector<CPoint<float>> normalLstVec( fileHeader.vert_norm_count );
     tagCheck( pFile, filePath );
-    SDL_ReadIO( pFile, normalLstVec.data(), normalLstVec.size() * sizeof( normalLstVec.back() ) );
+    SDL_RWread( pFile, normalLstVec.data(), normalLstVec.size(), sizeof( normalLstVec.back() ) );
 
     // Check to insure we are in the correct spot in the binary file
     std::vector<CUV> uvLstVec( fileHeader.uv_count );
     tagCheck( pFile, filePath );
-    SDL_ReadIO( pFile, uvLstVec.data(), uvLstVec.size() * sizeof( uvLstVec.back() ) );
+    SDL_RWread( pFile, uvLstVec.data(), uvLstVec.size(), sizeof( uvLstVec.back() ) );
 
     // Reserve the number of vbo groups
     model.m_meshVec.reserve( fileHeader.face_group_count );
@@ -1523,7 +1519,7 @@ void CDevice::load3DM(
 
         // Get the number faces in the group as well as the material index
         CBinaryFaceGroup faceGroup;
-        SDL_ReadIO( pFile, &faceGroup, sizeof( faceGroup ) );
+        SDL_RWread( pFile, &faceGroup, 1, sizeof( faceGroup ) );
         
         // Allocate the buffers for loading the index lists
         std::vector<uint16_t> textIndexVec( faceGroup.textureCount );
@@ -1534,16 +1530,16 @@ void CDevice::load3DM(
         std::vector<NVertex::vert_uv_normal> vert( faceGroup.vertexBufCount );
 
         // Read in the indexes that are the textures
-        SDL_ReadIO( pFile, textIndexVec.data(), textIndexVec.size() * sizeof( textIndexVec.back() ) );
+        SDL_RWread( pFile, textIndexVec.data(), textIndexVec.size(), sizeof( textIndexVec.back() ) );
 
         // Read in the indexes used to create the VBO
-        SDL_ReadIO( pFile, vertIndexVec.data(), vertIndexVec.size() * sizeof( vertIndexVec.back() ) );
+        SDL_RWread( pFile, vertIndexVec.data(), vertIndexVec.size(), sizeof( vertIndexVec.back() ) );
 
         // Read in the indexes that are the IBO
-        SDL_ReadIO( pFile, indexBufVec.data(), indexBufVec.size() * sizeof( indexBufVec.back() ) );
+        SDL_RWread( pFile, indexBufVec.data(), indexBufVec.size(), sizeof( indexBufVec.back() ) );
 
         // Build the VBO
-        for( std::size_t j = 0; j < vertIndexVec.size(); ++j )
+        for( size_t j = 0; j < vertIndexVec.size(); ++j )
         {
             vert[j].vert = vertLstVec[ vertIndexVec[j].vert ];
             vert[j].norm = normalLstVec[ vertIndexVec[j].norm ];
@@ -1582,12 +1578,12 @@ void CDevice::load3DM(
 /************************************************************************
  *    DESC: Do the tag check to insure we are in the correct spot
  ************************************************************************/
-void CDevice::tagCheck( SDL_IOStream * file, const std::string & filePath )
+void CDevice::tagCheck( SDL_RWops * file, const std::string & filePath )
 {
     int tag_check;
 
     // Read in new tag
-    SDL_ReadIO( file, &tag_check, sizeof( tag_check ) );
+    SDL_RWread( file, &tag_check, 1, sizeof( tag_check ) );
 
     if( tag_check != TAG_CHECK )
         throw NExcept::CCriticalException( "Visual Mesh Load Error!",
@@ -1620,14 +1616,14 @@ void CDevice::changeResolution( const CSize<float> & size, bool fullScreen )
     // Wait for all rendering to be finished
     waitForIdle();
     
-    SDL_DisplayID displayID = SDL_GetPrimaryDisplay();
-    SDL_DisplayMode mode = *SDL_GetCurrentDisplayMode(displayID);
+    SDL_DisplayMode mode;
+    SDL_GetCurrentDisplayMode(0, &mode);
 
     mode.w = size.getW();
     mode.h = size.getH();
     mode.refresh_rate = 0;
 
-    SDL_SetWindowFullscreenMode( m_pWindow, &mode );
+    SDL_SetWindowDisplayMode( m_pWindow, &mode );
 
     setFullScreen( fullScreen );
 

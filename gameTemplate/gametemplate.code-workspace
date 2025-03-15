@@ -16,7 +16,7 @@
 			"path": "../Box2D"
 		},
 		{
-			"path": "/usr/include/SDL3"
+			"path": "../../SDL2"
 		}
 	],
 	"settings": {
@@ -115,8 +115,7 @@
             "any": "cpp",
             "source_location": "cpp",
             "numbers": "cpp",
-            "semaphore": "cpp",
-            "sdl.h": "c"
+            "semaphore": "cpp"
         },
 		"editor.autoClosingBrackets": "never"
 	}

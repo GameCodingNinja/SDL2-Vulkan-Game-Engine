@@ -56,4 +56,4 @@ private:
     void recordCommandBuffer( uint32_t cmdBufIndex );
 };
 
-bool FilterEvents( void * userdata, SDL_Event * pEvent );
+int FilterEvents( void * userdata, SDL_Event * pEvent );

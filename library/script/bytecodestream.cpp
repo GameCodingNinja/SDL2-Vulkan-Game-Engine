@@ -15,7 +15,7 @@
 #include <boost/format.hpp>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    desc:  Constructor
@@ -23,7 +23,7 @@
 CByteCodeStream::CByteCodeStream( const std::string & file, const std::string & mode )
 {
     // Open file for reading
-    m_scpFile.reset( SDL_IOFromFile( file.c_str(), mode.c_str() ) );
+    m_scpFile.reset( SDL_RWFromFile( file.c_str(), mode.c_str() ) );
     if( m_scpFile.isNull() )
         throw NExcept::CCriticalException("AngelScript File Open Error!",
             boost::str( boost::format("Error Opening file (%s).\n\n%s\nLine: %s") % file % __FUNCTION__ % __LINE__ ));
@@ -44,7 +44,7 @@ int CByteCodeStream::Write( const void *ptr, asUINT sizeInBytes )
 {
     if( sizeInBytes > 0 )
     {
-        if( SDL_WriteIO( m_scpFile.get(), ptr, sizeInBytes ) == 0 )
+        if( SDL_RWwrite( m_scpFile.get(), ptr, 1, sizeInBytes ) == 0 )
             return -1;
     }
 
@@ -58,7 +58,7 @@ int CByteCodeStream::Read( void *ptr, asUINT sizeInBytes )
 { 
     if( sizeInBytes > 0 )
     {
-        if( SDL_ReadIO( m_scpFile.get(), ptr, sizeInBytes ) == 0 )
+        if( SDL_RWread( m_scpFile.get(), ptr, 1, sizeInBytes ) == 0 )
             return -1;
     }
 

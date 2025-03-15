@@ -3,7 +3,7 @@
 ///	(use SOIL for that ;-)
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 ///	A bunch of DirectDraw Surface structures and flags
 typedef struct {
@@ -86,13 +86,13 @@ static int dds_test(stbi *s)
     return 1;
 }
 #ifndef STBI_NO_STDIO
-int      stbi_dds_test_file        (SDL_IOStream *f)
+int      stbi_dds_test_file        (SDL_RWops *f)
 {
    stbi s;
-   int r,n = SDL_TellIO(f);
+   int r,n = SDL_RWtell(f);
    start_file(&s,f);
    r = dds_test(&s);
-   SDL_SeekIO(f,n,SDL_IO_SEEK_SET);
+   SDL_RWseek(f,n,RW_SEEK_SET);
    return r;
 }
 #endif
@@ -488,7 +488,7 @@ static stbi_uc *dds_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 }
 
 #ifndef STBI_NO_STDIO
-stbi_uc *stbi_dds_load_from_file   (SDL_IOStream *f,                  int *x, int *y, int *comp, int req_comp)
+stbi_uc *stbi_dds_load_from_file   (SDL_RWops *f,                  int *x, int *y, int *comp, int req_comp)
 {
     stbi s;
    start_file(&s,f);
@@ -498,10 +498,10 @@ stbi_uc *stbi_dds_load_from_file   (SDL_IOStream *f,                  int *x, in
 stbi_uc *stbi_dds_load             (char *filename,           int *x, int *y, int *comp, int req_comp)
 {
    stbi_uc *data;
-   SDL_IOStream *f = SDL_IOFromFile(filename, "rb");
+   SDL_RWops *f = SDL_RWFromFile(filename, "rb");
    if (!f) return NULL;
    data = stbi_dds_load_from_file(f,x,y,comp,req_comp);
-   SDL_CloseIO(f);
+   SDL_RWclose(f);
    return data;
 }
 #endif

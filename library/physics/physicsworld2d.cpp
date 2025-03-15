@@ -22,7 +22,7 @@
 #include <cstring>
 
 // SDL lib dependencies
-#include <SDL3/SDL.h>
+#include <SDL2/SDL.h>
 
 /************************************************************************
 *    DESC:  Constructor
@@ -90,8 +90,8 @@ void CPhysicsWorld2D::loadFromNode( const XMLNode & node )
         // If the number is negative, get the current refresh rate
         if( fps < 0.f )
         {
-            SDL_DisplayID displayID = SDL_GetPrimaryDisplay();
-            SDL_DisplayMode dm = *SDL_GetCurrentDisplayMode(displayID);
+            SDL_DisplayMode dm;
+            SDL_GetDesktopDisplayMode(0, &dm);
 
             if( dm.refresh_rate == 0 )
                 fps = 60.f;

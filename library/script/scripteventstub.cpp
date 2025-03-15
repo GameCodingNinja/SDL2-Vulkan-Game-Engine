@@ -17,7 +17,7 @@
 #include <angelscript.h>
 
 // SDL lib dependencies
-#include <SDL3/SDL_events.h>
+#include <SDL2/SDL_events.h>
 
 namespace NScriptEventStub
 {
