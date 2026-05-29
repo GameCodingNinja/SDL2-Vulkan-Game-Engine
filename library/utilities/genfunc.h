@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <assert.h>
+#include <cstdint>
 
 namespace NGenFunc
 {

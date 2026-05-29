@@ -9,6 +9,7 @@
 
 // Standard lib dependencies
 #include <memory>
+#include <cstdint>
 
 // Forward declaration(s)
 class iGameState;
