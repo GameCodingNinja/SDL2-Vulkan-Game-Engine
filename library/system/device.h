@@ -14,6 +14,7 @@
 #include <system/descriptorallocator.h>
 #include <common/size.h>
 #include <common/color.h>
+#include <common/defs.h>
 
 // Standard lib dependencies
 #include <functional>
@@ -194,7 +195,7 @@ public:
     const SDescriptorData & getDescriptorData( const std::string & id ) const;
 
     // Begin the recording of the command buffer
-    void beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer );
+    void beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, EProjectionType projType = EProjectionType::PERSPECTIVE );
 
     // End the recording of the command buffer
     void endCommandBuffer( VkCommandBuffer cmdBuffer );

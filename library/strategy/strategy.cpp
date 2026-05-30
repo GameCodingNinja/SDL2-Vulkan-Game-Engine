@@ -407,7 +407,7 @@ void CStrategy::recordCommandBuffer( uint32_t index )
 {
     auto cmdBuf( m_commandBufVec.at(index) );
 
-    CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+    CDevice::Instance().beginCommandBuffer( index, cmdBuf, m_pCamera->getProjectionType() );
 
     m_pCamera->recordCommandBuffer( index, cmdBuf, m_pNodeVec );
 

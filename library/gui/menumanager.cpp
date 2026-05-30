@@ -876,7 +876,7 @@ void CMenuMgr::recordCommandBuffer( uint32_t index )
     {
         auto cmdBuf( m_commandBufVec[index] );
 
-        CDevice::Instance().beginCommandBuffer( index, cmdBuf );
+        CDevice::Instance().beginCommandBuffer( index, cmdBuf, EProjectionType::ORTHOGRAPHIC );
     
         for( auto iter : m_pActiveInterTreeVec )
             if( iter->isActive() )

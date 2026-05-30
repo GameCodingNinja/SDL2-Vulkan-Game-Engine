@@ -1293,7 +1293,7 @@ const SDescriptorData & CDevice::getDescriptorData( const std::string & id ) con
 /***************************************************************************
 *   DESC:  Begin the recording of the command buffer
 ****************************************************************************/
-void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer )
+void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer, EProjectionType projType )
 {
     // Setup to begin recording the command buffer
     VkCommandBufferInheritanceInfo cmdBufInheritanceInfo = {};
@@ -1308,19 +1308,60 @@ void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer )
     // Start recording the command buffer
     vkBeginCommandBuffer( cmdBuffer, &cmdBeginInfo );
 
-    // Set dynamic viewport and scissor to the current swapchain extent
+    // Set dynamic viewport and scissor
     VkViewport viewport = {};
-    viewport.x = 0.f;
-    viewport.y = 0.f;
-    viewport.width = static_cast<float>(m_swapchainInfo.imageExtent.width);
-    viewport.height = static_cast<float>(m_swapchainInfo.imageExtent.height);
     viewport.minDepth = 0.f;
     viewport.maxDepth = 1.f;
-    vkCmdSetViewport( cmdBuffer, 0, 1, &viewport );
 
     VkRect2D scissor = {};
-    scissor.offset = {0, 0};
-    scissor.extent = m_swapchainInfo.imageExtent;
+
+    if( projType == EProjectionType::ORTHOGRAPHIC )
+    {
+        // Compute aspect-locked display rect for 2D rendering
+        float swapW = static_cast<float>(m_swapchainInfo.imageExtent.width);
+        float swapH = static_cast<float>(m_swapchainInfo.imageExtent.height);
+        float nativeAspect = CSettings::Instance().getNativeAspectRatio();
+        float swapAspect = swapW / swapH;
+
+        float displayW, displayH;
+
+        if( swapAspect > nativeAspect )
+        {
+            // Swapchain is wider — use full height, constrain width
+            displayH = swapH;
+            displayW = nativeAspect * displayH;
+        }
+        else
+        {
+            // Swapchain is taller — use full width, constrain height
+            displayW = swapW;
+            displayH = displayW / nativeAspect;
+        }
+
+        float offsetX = (swapW - displayW) / 2.f;
+        float offsetY = (swapH - displayH) / 2.f;
+
+        viewport.x = offsetX;
+        viewport.y = offsetY;
+        viewport.width = displayW;
+        viewport.height = displayH;
+
+        scissor.offset = { static_cast<int32_t>(offsetX), static_cast<int32_t>(offsetY) };
+        scissor.extent = { static_cast<uint32_t>(displayW), static_cast<uint32_t>(displayH) };
+    }
+    else
+    {
+        // Full swapchain extent for 3D perspective
+        viewport.x = 0.f;
+        viewport.y = 0.f;
+        viewport.width = static_cast<float>(m_swapchainInfo.imageExtent.width);
+        viewport.height = static_cast<float>(m_swapchainInfo.imageExtent.height);
+
+        scissor.offset = {0, 0};
+        scissor.extent = m_swapchainInfo.imageExtent;
+    }
+
+    vkCmdSetViewport( cmdBuffer, 0, 1, &viewport );
     vkCmdSetScissor( cmdBuffer, 0, 1, &scissor );
 }
 

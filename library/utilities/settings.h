@@ -85,6 +85,9 @@ public:
     // Height and width screen ratio for perspective projection
     const CSize<float> & getScreenAspectRatio() const;
 
+    // Get the native aspect ratio (fixed at startup, never changes)
+    float getNativeAspectRatio() const;
+
     // Is the gamepad enabled
     bool isGamePadEnabled() const;
 
@@ -199,6 +202,9 @@ private:
 
     // Pre-calculated aspect ratios for orthographic projection
     CSize<float> m_orthoAspectRatio;
+
+    // Native aspect ratio (w/h) from startup resolution — never changes
+    float m_nativeAspectRatio;
 
     // Projection scale
     float m_projectionScale;

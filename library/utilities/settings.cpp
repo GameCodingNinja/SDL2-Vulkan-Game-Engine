@@ -16,6 +16,7 @@
 
 // Standard lib dependencies
 #include <cstring>
+#include <algorithm>
 
 // SDL lib dependencies
 #include <SDL2/SDL_mixer.h>
@@ -33,6 +34,7 @@ CSettings::CSettings() :
     m_size(1280,768),
     m_default_size(1280,768),
     m_orientation(EOrientation::LANDSCAPE),
+    m_nativeAspectRatio(1280.f/768.f),
     m_projectionScale(1),
     m_fullScreen(false),
     m_vSync(false),
@@ -169,7 +171,14 @@ void CSettings::loadXML()
                     m_orientation = EOrientation::PORTRAIT;
         }
 
+        // Set the native aspect ratio once from the startup resolution
+        m_nativeAspectRatio = m_size.w / m_size.h;
+
         calcRatio();
+
+        // Save the native default size after the initial calcRatio
+        // so it captures the properly calculated width
+        m_native_size = m_default_size;
 
         const XMLNode deviceNode = m_mainNode.getChildNode("device");
         if( !deviceNode.isEmpty() )
@@ -475,10 +484,8 @@ const CSize<float> & CSettings::getOrthoAspectRatio() const
 
 float CSettings::getOrthoAspectRatioOrientation() const
 {
-    if( m_orientation == EOrientation::PORTRAIT )
-        return m_orthoAspectRatio.w;
-    else
-        return m_orthoAspectRatio.h;
+    // Use the uniform scale that matches the aspect-locked viewport
+    return std::min( m_size.w / m_native_size.w, m_size.h / m_native_size.h );
 }
 
 /************************************************************************
@@ -487,6 +494,14 @@ float CSettings::getOrthoAspectRatioOrientation() const
 const CSize<float> & CSettings::getScreenAspectRatio() const
 {
     return m_screenAspectRatio;
+}
+
+/************************************************************************
+*    DESC:  Get the native aspect ratio (fixed at startup)
+************************************************************************/
+float CSettings::getNativeAspectRatio() const
+{
+    return m_nativeAspectRatio;
 }
 
 /************************************************************************

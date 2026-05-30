@@ -158,11 +158,11 @@ void CCamera::createProjectionMatrix()
     }
     else
     {
-        const auto defSize = CSettings::Instance().getDefaultSize();
+        const auto & nativeSize = CSettings::Instance().getNativeSize();
         
         m_projectionMatrix.orthographicRH(
-            defSize.w,
-            defSize.h,
+            nativeSize.w,
+            nativeSize.h,
             m_minZDist,
             m_maxZDist );
     }
@@ -315,6 +315,14 @@ const CMatrix & CCamera::getRotMatrix() const
 const ECullType CCamera::getCullType() const
 {
     return m_cullType;
+}
+
+/************************************************************************
+*    DESC:  Get the projection type
+************************************************************************/
+EProjectionType CCamera::getProjectionType() const
+{
+    return m_projType;
 }
 
 //

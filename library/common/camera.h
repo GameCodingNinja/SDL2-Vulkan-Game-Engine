@@ -78,6 +78,9 @@ public:
     //  Get the cull type
     const ECullType getCullType() const;
 
+    //  Get the projection type
+    EProjectionType getProjectionType() const;
+
     // Check if the raduis is in the view frustrum
     bool inView( const CPoint<float> & transPos, const float radius );
 
