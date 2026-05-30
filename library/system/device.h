@@ -230,6 +230,9 @@ public:
     // Set the clear color
     void setClearColor( float r, float g, float b, float a );
 
+    // Notify the device that the window has been resized
+    void handleWindowResizeEvent( int width, int height );
+
     // Connect to the viewport signal
     void connectViewportSignal( const deviceViewportSignal_t::slot_type & slot );
 
@@ -392,4 +395,7 @@ private:
 
     // The clear color
     CColor m_clearColor;
+
+    // Flag indicating the framebuffer needs to be resized
+    bool m_framebufferResized = false;
 };

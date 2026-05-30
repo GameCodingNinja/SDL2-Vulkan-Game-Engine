@@ -174,6 +174,10 @@ bool CGame::handleEvent( const SDL_Event & rEvent )
     else if( rEvent.type == SDL_CONTROLLERDEVICEREMOVED )
         CDevice::Instance().removeGamepad( rEvent.cdevice.which );
 
+    else if( rEvent.type == SDL_WINDOWEVENT &&
+             (rEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) )
+        CDevice::Instance().handleWindowResizeEvent( rEvent.window.data1, rEvent.window.data2 );
+
     else if( rEvent.type == SDL_APP_LOWMEMORY )
         displayErrorMsg( "Low Memory Error", "The device is experiencing low memory. Try freeing up some apps." );
 

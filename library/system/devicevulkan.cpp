@@ -1205,6 +1205,17 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
     depthStencil.back.reference = pipelineData.reference;              // 1
     depthStencil.front = depthStencil.back;
 
+    // Enable dynamic viewport and scissor so they update every frame
+    std::vector<VkDynamicState> dynamicStates = {
+        VK_DYNAMIC_STATE_VIEWPORT,
+        VK_DYNAMIC_STATE_SCISSOR
+    };
+
+    VkPipelineDynamicStateCreateInfo dynamicState = {};
+    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+    dynamicState.dynamicStateCount = dynamicStates.size();
+    dynamicState.pDynamicStates = dynamicStates.data();
+
     VkGraphicsPipelineCreateInfo pipelineInfo = {};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     pipelineInfo.stageCount = shaderStages.size();
@@ -1215,7 +1226,7 @@ void CDeviceVulkan::createPipeline( SPipelineData & pipelineData )
     pipelineInfo.pRasterizationState = &rasterizer;
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
-    pipelineInfo.pDynamicState = VK_NULL_HANDLE;
+    pipelineInfo.pDynamicState = &dynamicState;
     pipelineInfo.layout = pipelineData.pipelineLayout;
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;

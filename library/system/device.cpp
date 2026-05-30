@@ -303,6 +303,14 @@ void CDevice::render()
 
     vkWaitForFences( m_logicalDevice, 1, &m_frameFenceVec[m_currentFrame], VK_TRUE, UINT64_MAX );
 
+    // If the window was resized via SDL, recreate the swap chain now
+    if( m_framebufferResized )
+    {
+        m_framebufferResized = false;
+        recreateSwapChain();
+        return;
+    }
+
     uint32_t imageIndex(0);
     vkResult = vkAcquireNextImageKHR( m_logicalDevice, m_swapchain, UINT64_MAX, m_imageAvailableSemaphoreVec[m_currentFrame], VK_NULL_HANDLE, &imageIndex );
     if( (vkResult == VK_ERROR_OUT_OF_DATE_KHR) || (vkResult == VK_SUBOPTIMAL_KHR) )
@@ -1299,6 +1307,21 @@ void CDevice::beginCommandBuffer( uint32_t index, VkCommandBuffer cmdBuffer )
 
     // Start recording the command buffer
     vkBeginCommandBuffer( cmdBuffer, &cmdBeginInfo );
+
+    // Set dynamic viewport and scissor to the current swapchain extent
+    VkViewport viewport = {};
+    viewport.x = 0.f;
+    viewport.y = 0.f;
+    viewport.width = static_cast<float>(m_swapchainInfo.imageExtent.width);
+    viewport.height = static_cast<float>(m_swapchainInfo.imageExtent.height);
+    viewport.minDepth = 0.f;
+    viewport.maxDepth = 1.f;
+    vkCmdSetViewport( cmdBuffer, 0, 1, &viewport );
+
+    VkRect2D scissor = {};
+    scissor.offset = {0, 0};
+    scissor.extent = m_swapchainInfo.imageExtent;
+    vkCmdSetScissor( cmdBuffer, 0, 1, &scissor );
 }
 
 /***************************************************************************
@@ -1656,6 +1679,19 @@ void CDevice::handleResolutionChange( int width, int height )
 
     // Rebuild all the camera projection matrixes
     CCameraMgr::Instance().rebuildProjectionMatrix();
+}
+
+/***************************************************************************
+*   DESC:  Handle SDL window resize event. Updates settings and cameras
+*          immediately and defers swapchain recreation to next render.
+****************************************************************************/
+void CDevice::handleWindowResizeEvent( int width, int height )
+{
+    if( width > 0 && height > 0 )
+    {
+        handleResolutionChange( width, height );
+        m_framebufferResized = true;
+    }
 }
 
 /***************************************************************************
